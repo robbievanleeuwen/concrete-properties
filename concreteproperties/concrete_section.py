@@ -15,4 +15,4 @@ class ConcreteSection:
         :type concrete_section: :class:`sectionproperties.analysis.section.Section`
         """
 
-        pass
+        self.concrete_section = concrete_section

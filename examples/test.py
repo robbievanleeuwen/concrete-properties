@@ -1,22 +1,20 @@
 from sectionproperties.pre.library.concrete_sections import concrete_tee_section
-from sectionproperties.pre.pre import Material
 from sectionproperties.analysis.section import Section
+from concreteproperties.material import Concrete, Steel
+from concreteproperties.concrete_section import ConcreteSection
 
-concrete = Material(
-    name="Concrete",
+concrete = Concrete(
+    name="32 MPa Concrete",
     elastic_modulus=30.1e3,
-    poissons_ratio=0.2,
-    yield_strength=32,
+    compressive_strength=32,
     density=2.4e-6,
-    color="lightgrey",
 )
-steel = Material(
-    name="Steel",
+
+steel = Steel(
+    name="500 MPa Steel",
     elastic_modulus=200e3,
-    poissons_ratio=0.3,
     yield_strength=500,
     density=7.85e-6,
-    color="grey",
 )
 
 geometry = concrete_tee_section(
@@ -32,6 +30,7 @@ geometry = concrete_tee_section(
     steel_mat=steel,
 )
 geometry.create_mesh(mesh_sizes=[500])
-
 section = Section(geometry)
-section.plot_mesh()
+
+conc_sec = ConcreteSection(section)
+conc_sec.concrete_section.plot_mesh()
