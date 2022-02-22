@@ -16,9 +16,50 @@ class StressStrainProfile:
 
         raise NotImplementedError
 
+    def plot_stress_strain(
+        self,
+    ):
+        """Plots the stress-strain profile."""
+
+        raise NotImplementedError
+
 
 class WhitneyStressBlock(StressStrainProfile):
-    pass
+    """Class for a Whitney (rectangular) stress block."""
+
+    def __init__(
+        self,
+        alpha: float,
+        gamma: float,
+        compressive_strength: float,
+        ultimate_strain: float,
+    ):
+        """Inits the WhitneyStressBlock class.
+
+        :param float alpha: Factor that modifies the concrete compressive strength
+        :param float gamma: Factor that modifies the depth of the stress block
+        :param float compressive_strength: Concrete compressive strength
+        :param float ultimate_strain: Strain at the extreme compression fibre
+        """
+
+        self.alpha = alpha
+        self.gamma = gamma
+        self.compressive_strength = compressive_strength
+        self.ultimate_strain = ultimate_strain
+
+    def get_stress(
+        self,
+        strain: float,
+    ):
+        """Returns a stress given a strain.
+
+        :param float strain: Strain at which to return a stress.
+        """
+
+        if strain > self.ultimate_strain * (1 - self.gamma):
+            return self.alpha * self.compressive_strength
+        else:
+            return 0
 
 
 class ParabolicStressBlock(StressStrainProfile):
@@ -34,37 +75,44 @@ class PiecewiseLinearProfile(StressStrainProfile):
 
     def __init__(
         self,
-        strain: List[float],
-        stress: List[float],
+        strains: List[float],
+        stresses: List[float],
     ):
         """Inits the BilinearProfile class.
 
-        :param strain: List of strains (must start with 0 and must be increasing)
-        :type strain: List[float]
-        :param stress: List of stresses (must start with 0 and must be increasing)
-        :type stress: List[float]
+        :param strains: List of strains (must start with 0 and must be increasing)
+        :type strains: List[float]
+        :param stresses: List of stresses (must start with 0 and must be increasing)
+        :type stresses: List[float]
         """
 
         # validate input - first value zero
-        if strain[0] != 0 or stress[0] != 0:
-            raise ValueError("First value of strain and stress must be zero.")
+        if strains[0] != 0 or stresses[0] != 0:
+            raise ValueError("First value of strains and stresses must be zero.")
 
         # validate input - same length lists
-        if len(strain) != len(stress):
-            raise ValueErorr("Length of strain must equal length of stress")
+        if len(strains) != len(stresses):
+            raise ValueError("Length of strains must equal length of stresses")
+
+        # validate input - length > 1
+        if len(strains) < 2:
+            raise ValueError("Length of strains and stresses must be greater than 1")
 
         # validate input - increasing values
         prev_strain = 0
         prev_stress = 0
 
-        for idx in range(len(strain)):
+        for idx in range(len(strains)):
             if idx != 0:
-                if strain[idx] < prev_strain or stress[idx] < prev_stress:
-                    msg = "strain and strain must containing increasing values."
+                if strains[idx] <= prev_strain or stresses[idx] <= prev_stress:
+                    msg = "strains and stresses must containing increasing values."
                     raise ValueError(msg)
 
-        self.strain = strain
-        self.stress = stress
+                prev_strain = strains[idx]
+                prev_stress = stresses[idx]
+
+        self.strains = strains
+        self.stresses = stresses
 
     def get_stress(
         self,
@@ -83,8 +131,8 @@ class PiecewiseLinearProfile(StressStrainProfile):
 
         # create interpolation function
         stress_function = interp1d(
-            x=strain,
-            y=stress,
+            x=self.strains,
+            y=self.stresses,
             kind="linear",
             fill_value="extrapolate",
         )
@@ -110,7 +158,7 @@ class BilinearProfile(PiecewiseLinearProfile):
         :param float stress2: Stress at end of bilinear curve.
         """
 
-        super.__init__(
-            strain=[0, strain1, strain2],
-            stress=[0, stress1, stress2],
+        super().__init__(
+            strains=[0, strain1, strain2],
+            stresses=[0, stress1, stress2],
         )
