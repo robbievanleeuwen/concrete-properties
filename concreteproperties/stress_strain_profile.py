@@ -11,7 +11,7 @@ class StressStrainProfile:
     ):
         """Returns a stress given a strain.
 
-        :param float strain: Strain at which to return a stress.
+        :param float strain: Strain at which to return a stress
         """
 
         raise NotImplementedError
@@ -71,7 +71,7 @@ class PCAStressProfile(StressStrainProfile):
 
 
 class PiecewiseLinearProfile(StressStrainProfile):
-    """Class for a piecewise linear stress strain profile."""
+    """Class for a piecewise linear stress-strain profile."""
 
     def __init__(
         self,
@@ -82,7 +82,8 @@ class PiecewiseLinearProfile(StressStrainProfile):
 
         :param strains: List of strains (must start with 0 and must be increasing)
         :type strains: List[float]
-        :param stresses: List of stresses (must start with 0 and must be increasing)
+        :param stresses: List of stresses (must start with 0 and must be increasing or
+            equal)
         :type stresses: List[float]
         """
 
@@ -104,7 +105,7 @@ class PiecewiseLinearProfile(StressStrainProfile):
 
         for idx in range(len(strains)):
             if idx != 0:
-                if strains[idx] <= prev_strain or stresses[idx] <= prev_stress:
+                if strains[idx] <= prev_strain or stresses[idx] < prev_stress:
                     msg = "strains and stresses must containing increasing values."
                     raise ValueError(msg)
 
@@ -141,7 +142,7 @@ class PiecewiseLinearProfile(StressStrainProfile):
 
 
 class BilinearProfile(PiecewiseLinearProfile):
-    """Class for a bilinear stress strain profile."""
+    """Class for a bilinear stress-strain profile."""
 
     def __init__(
         self,
@@ -152,13 +153,37 @@ class BilinearProfile(PiecewiseLinearProfile):
     ):
         """Inits the BilinearProfile class.
 
-        :param float strain1: Strain at kink in bilinear curve.
-        :param float strain2: Strain at end of bilinear curve.
-        :param float stress1: Stress at kink in bilinear curve.
-        :param float stress2: Stress at end of bilinear curve.
+        :param float strain1: Strain at kink in bilinear curve
+        :param float strain2: Strain at end of bilinear curve
+        :param float stress1: Stress at kink in bilinear curve
+        :param float stress2: Stress at end of bilinear curve
         """
 
         super().__init__(
             strains=[0, strain1, strain2],
             stresses=[0, stress1, stress2],
+        )
+
+
+class SteelElasticPlastic(BilinearProfile):
+    """Class for a perfectly elastic-plastic steel stress-strain profile."""
+
+    def __init__(
+        self,
+        yield_strength: float,
+        elastic_modulus: float,
+        fracture_strain: float,
+    ):
+        """Inits the SteelElasticPlastic class.
+
+        :param float yield_strength: Steel yield stress
+        :param float elastic_modulus: Steel elastic modulus
+        :param float fracture_strain: Steel fracture strain
+        """
+
+        super().__init__(
+            strain1=yield_strength / elastic_modulus,
+            strain2=fracture_strain,
+            stress1=yield_strength,
+            stress2=yield_strength,
         )
