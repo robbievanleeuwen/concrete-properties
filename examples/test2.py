@@ -49,4 +49,9 @@ geometry.create_mesh(mesh_sizes=[500])
 section = Section(geometry)
 
 conc_sec = ConcreteSection(section)
-print(conc_sec.calculate_section_actions(d_n=59.21, theta=0))
+# print(conc_sec.calculate_section_actions(d_n=59.21, theta=0))
+print(conc_sec.ultimate_bending_capacity(theta=0, n=-450e3))
+
+
+
+# CHECK MOMENT CALCULATION METHOD?!?!?

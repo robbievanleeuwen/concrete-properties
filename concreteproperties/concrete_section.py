@@ -1,5 +1,6 @@
-from typing import List, Tuple
+from typing import List, Tuple, Union
 import numpy as np
+from scipy.optimize import brentq
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.stress_strain_profile import WhitneyStressBlock
 from sectionproperties.pre.geometry import Geometry, CompoundGeometry
@@ -28,19 +29,58 @@ class ConcreteSection:
 
         self.concrete_section = concrete_section
 
+    def ultimate_bending_capacity(
+        self,
+        theta: float,
+        n: float,
+    ) -> Tuple[float, float]:
+        """Given a neutral axis angle `theta` and an axial force `n`, calculates the
+        ultimate bending capacity.
+
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float n: Axial force
+
+        :return: Ultimate bending capacity about the x & y axes `(mx, my)`
+        :rtype: Tuple[float, float]
+        """
+
+        # set neutral axis depth limits
+        # depth of neutral axis at extreme tensile fibre
+        d_t = self.calculate_extreme_fibre(theta=theta, min=True)[1]
+
+        # TODO: figure out how to calculate strain at d_n = 0 & d_n = d_t ?
+        a = 1e-6 * d_t
+        b = (1 - 1e-6) * d_t
+
+        (d_n, r) = brentq(
+            f=self.normal_force_convergence,
+            a=a,
+            b=b,
+            args=(theta, n),
+            xtol=1e-3,
+            rtol=1e-6,
+            full_output=True,
+            disp=False,
+        )
+
+        print(d_n)
+
+        return self.calculate_section_actions(d_n=d_n, theta=theta)
+        # return self.calculate_section_actions(d_n=d_n, theta=theta)[1:]
+
     def calculate_section_actions(
         self,
         d_n: float,
         theta: float,
     ) -> Tuple[float, float, float]:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
-        the resultant bending moments `m_x` and `m_y` and the net axial force `n`.
+        the resultant bending moments `mx` and `my` and the net axial force `n`.
 
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
         :param float theta: Angle the neutral axis makes with the horizontal axis
 
-        :return: xxx
-        :rtype: xxx
+        :return: Section actions `(n, mx, my)`
+        :rtype: Tuple[float, float, float]
         """
 
         # calculate extreme fibre in global coordinates
@@ -98,7 +138,7 @@ class ConcreteSection:
         new_geom = CompoundGeometry(top_geoms + bot_geoms)
 
         # generate a mesh (refinement not important)
-        new_geom.create_mesh(0)
+        new_geom.create_mesh(0, True)
 
         # create new section object
         new_section = Section(new_geom)
@@ -108,19 +148,48 @@ class ConcreteSection:
             conc_only_section=new_section, point_na=point_na, d_n=d_n, theta=theta
         )
 
-        return n, m_v
+        # convert mv to mx & my
+        (my, mx) = global_coordinate(phi=theta * 180 / np.pi, x11=0, y22=m_v)
+
+        return n, mx, my
+
+    def normal_force_convergence(
+        self,
+        d_n: float,
+        theta: float,
+        n: float,
+    ) -> float:
+        """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
+        the difference between the desired net axial force `n` and the axial force
+        given `d_n` & `theta`.
+
+        :param float d_n: Depth of the neutral axis from the extreme compression fibre
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+
+        :return: Axial force convergence
+        :rtype: float
+        """
+
+        # calculate convergence
+        conv = n - self.calculate_section_actions(d_n=d_n, theta=theta)[0]
+
+        return conv
 
     def calculate_extreme_fibre(
         self,
         theta: float,
-    ) -> Tuple[float, float]:
+        min: bool= False,
+    ) -> Union[Tuple[float, float], Tuple[Tuple[float, float], float]]:
         """Calculates the locations of the extreme compression fibre in global
         coordinates given a neutral axis angle `theta`.
 
         :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param bool min: If true, returns the neutral axis depth at the extreme tensile
+            fibre
 
-        :return: Global coordinate of the extreme compression fibre `(x, y)`
-        :rtype: Tuple[float, float]
+        :return: Global coordinate of the extreme compression fibre `(x, y)`, if
+            min=True also returns the neutral axis depth at the extreme tensile fibre
+        :rtype: Union[Tuple[float, float], Tuple[Tuple[float, float], float]]
         """
 
         # loop through all points in the geometry
@@ -130,17 +199,29 @@ class ConcreteSection:
                 phi=theta * 180 / np.pi, x=point[0], y=point[1]
             )
 
-            # initialise max variable & point
+            # initialise min/max variable & point
             if idx == 0:
+                v_min = v
+                min_pt = point
                 v_max = v
                 max_pt = point
 
-            # update the max & point where necessary
+            # update the min/max & point where necessary
+            if v < v_min:
+                v_min = v
+                min_pt = point
+
             if v > v_max:
                 v_max = v
                 max_pt = point
 
-        return max_pt
+        if min:
+            # calculate depth of neutral axis at tensile fibre
+            d_t = v_max - v_min
+
+            return (max_pt, d_t)
+        else:
+            return max_pt
 
     def point_on_neutral_axis(
         self,
@@ -221,6 +302,7 @@ class ConcreteSection:
 
         # initialise section actions
         n = 0
+        n_steel = 0
         m_v = 0
 
         # Gauss points for 6 point Gaussian integration
@@ -283,7 +365,10 @@ class ConcreteSection:
 
                     n_el = gp[0] * stress * j
                     n += n_el
+                    n_steel += n_el
                     m_v += n_el * d
+
+        print(n_steel)
 
         return n, m_v
 
