@@ -181,6 +181,10 @@ class SteelElasticPlastic(BilinearProfile):
         :param float fracture_strain: Steel fracture strain
         """
 
+        self.yield_strength = yield_strength
+        self.elastic_modulus = elastic_modulus
+        self.fracture_strain = fracture_strain
+
         super().__init__(
             strain1=yield_strength / elastic_modulus,
             strain2=fracture_strain,

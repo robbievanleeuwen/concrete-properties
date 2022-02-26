@@ -1,8 +1,10 @@
 from typing import List, Tuple, Union
 import numpy as np
 from scipy.optimize import brentq
+import matplotlib.pyplot as plt
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.stress_strain_profile import WhitneyStressBlock
+from concreteproperties.post import plotting_context
 from sectionproperties.pre.geometry import Geometry, CompoundGeometry
 from sectionproperties.analysis.section import Section
 from sectionproperties.analysis.fea import (
@@ -11,6 +13,7 @@ from sectionproperties.analysis.fea import (
     gauss_points,
     shape_function,
 )
+import progress.bar as prog_bar
 
 
 class ConcreteSection:
@@ -118,19 +121,112 @@ class ConcreteSection:
 
         return principal_coordinate(phi=theta * 180 / np.pi, x=self.pc[0], y=self.pc[1])
 
+    def moment_interaction_diagram(
+        self,
+        theta: float,
+        n_points: int = 24,
+        n_scale: float = 1e-3,
+        m_scale: float = 1e-6,
+        plot: bool = True,
+        **kwargs,
+    ) -> Tuple[List[float], List[float]]:
+        """Generates a moment interaction diagram given a neutral axis angle `theta`
+        and `n_points` calculation points between the decompression case and the pure
+        bending case.
+
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param int n_points: Number of calculation points between the decompression
+            case and the pure bending case.
+        :param float n_scale: Scaling factor to apply to axial force
+        :param float m_scale: Scaling factor to apply to bending moment
+        :param bool plot: If set to true, displays a plot of the moment interaction
+            diagram
+        :param \**kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: A list of the points on the moment interaction diagram `(n, m)`
+        :rtype: Tuple[List[float], List[float]]
+        """
+
+        # initialise variables
+        n_curve = []
+        m_curve = []
+
+        # add squash load
+        n_curve.append(self.squash_load * n_scale)
+        m_curve.append(0)
+
+        # compute extreme tensile fibre
+        _, d_t = self.calculate_extreme_fibre(theta=theta)
+
+        # compute neutral axis depth for pure bending case
+        _, _, _, _, d_nb = self.ultimate_bending_capacity(theta=theta, n=0)
+
+        # generate list of neutral axes
+        d_n_list = np.linspace(start=d_t, stop=d_nb, num=n_points)
+
+        # generate progress bar
+        with prog_bar.IncrementalBar(
+            message="Generating M-N diagram...",
+            max=n_points,
+            suffix="%(percent)d%% [ %(elapsed)ds ]",
+        ) as progress_bar:
+            # loop through each neutral axis and calculate actions
+            for d_n in d_n_list:
+                n, _, _, mv = self.calculate_section_actions(d_n=d_n, theta=theta)
+                n_curve.append(n * n_scale)
+                m_curve.append(mv * m_scale)
+                progress_bar.next()
+
+        # add tensile load
+        n_curve.append(self.tensile_load * n_scale)
+        m_curve.append(0)
+
+        if plot:
+            self.plot_moment_interaction_diagram(
+                n_i=[n_curve], m_i=[m_curve], labels=["Concrete Section"], **kwargs
+            )
+
+        return n_curve, m_curve
+
+    def plot_moment_interaction_diagram(
+        self,
+        n_i: List[List[float]],
+        m_i: List[List[float]],
+        labels: List[str],
+        **kwargs,
+    ):
+        """ """
+
+        # create plot and setup the plot
+        with plotting_context(title="Moment Interaction Diagram", **kwargs) as (
+            fig,
+            ax,
+        ):
+            # for each M-N curve
+            for idx in range(len(n_i)):
+                ax.plot(m_i[idx], n_i[idx], "o-", label=labels[idx], markersize=3)
+
+            plt.xlabel("Bending Moment")
+            plt.ylabel("Axial Force")
+            plt.grid(True)
+
+            if idx > 0:
+                ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+
     def ultimate_bending_capacity(
         self,
         theta: float,
         n: float,
-    ) -> Tuple[float, float]:
+    ) -> Tuple[float, float, float, float, float]:
         """Given a neutral axis angle `theta` and an axial force `n`, calculates the
         ultimate bending capacity.
 
         :param float theta: Angle the neutral axis makes with the horizontal axis
         :param float n: Axial force
 
-        :return: Ultimate bending capacity about the x & y axes `(mx, my)`
-        :rtype: Tuple[float, float]
+        :return: Axial force, ultimate bending capacity about the x & y axes, resultant
+            moment and the depth to the neutral axis `(n, mx, my, mv, d_n)`
+        :rtype: Tuple[float, float, float, float, float]
         """
 
         # set neutral axis depth limits
@@ -151,10 +247,9 @@ class ConcreteSection:
             disp=False,
         )
 
-        print(d_n)
+        n, mx, my, mv = self.calculate_section_actions(d_n=d_n, theta=theta)
 
-        return self.calculate_section_actions(d_n=d_n, theta=theta)
-        # return self.calculate_section_actions(d_n=d_n, theta=theta)[1:]
+        return n, mx, my, mv, d_n
 
     def normal_force_convergence(
         self,
@@ -182,7 +277,7 @@ class ConcreteSection:
         self,
         d_n: float,
         theta: float,
-    ) -> Tuple[float, float, float]:
+    ) -> Tuple[float, float, float, float]:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
         the resultant bending moments `mx` and `my` and the net axial force `n`.
 
@@ -193,8 +288,8 @@ class ConcreteSection:
             d_n must be within the section and not equal to zero
         :param float theta: Angle the neutral axis makes with the horizontal axis
 
-        :return: Section actions `(n, mx, my)`
-        :rtype: Tuple[float, float, float]
+        :return: Section actions `(n, mx, my, mv)`
+        :rtype: Tuple[float, float, float, float]
         """
 
         # calculate extreme fibre in global coordinates
@@ -262,16 +357,17 @@ class ConcreteSection:
 
         # create new section object
         new_section = Section(geometry=new_geom)
+        # new_section.plot_mesh()
 
         # calculate section actions
-        n, m_v = self.stress_analysis(
+        n, mv = self.stress_analysis(
             conc_only_section=new_section, point_na=point_na, d_n=d_n, theta=theta
         )
 
         # convert mv to mx & my
-        (my, mx) = global_coordinate(phi=theta * 180 / np.pi, x11=0, y22=m_v)
+        (my, mx) = global_coordinate(phi=theta * 180 / np.pi, x11=0, y22=mv)
 
-        return n, mx, my
+        return n, mx, my, mv
 
     def calculate_extreme_fibre(
         self,
@@ -394,7 +490,7 @@ class ConcreteSection:
 
         # initialise section actions
         n = 0
-        m_v = 0
+        mv = 0
 
         # Gauss points for 3 point Gaussian integration
         gps = gauss_points(n=3)
@@ -446,7 +542,7 @@ class ConcreteSection:
 
             # add to totals
             n += force_e
-            m_v += force_e * (c_v - self.get_pc_local(theta=theta)[1])
+            mv += force_e * (c_v - self.get_pc_local(theta=theta)[1])
 
         # loop through all steel elements
         for element in self.concrete_section.elements:
@@ -498,9 +594,9 @@ class ConcreteSection:
 
                 # add to totals
                 n += force_e
-                m_v += force_e * (c_v - self.get_pc_local(theta=theta)[1])
+                mv += force_e * (c_v - self.get_pc_local(theta=theta)[1])
 
-        return n, m_v
+        return n, mv
 
     def get_strain(
         self,
