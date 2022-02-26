@@ -29,20 +29,20 @@ class WhitneyStressBlock(StressStrainProfile):
 
     def __init__(
         self,
-        alpha: float,
+        alpha_2: float,
         gamma: float,
         compressive_strength: float,
         ultimate_strain: float,
     ):
         """Inits the WhitneyStressBlock class.
 
-        :param float alpha: Factor that modifies the concrete compressive strength
+        :param float alpha_2: Factor that modifies the concrete compressive strength
         :param float gamma: Factor that modifies the depth of the stress block
         :param float compressive_strength: Concrete compressive strength
         :param float ultimate_strain: Strain at the extreme compression fibre
         """
 
-        self.alpha = alpha
+        self.alpha_2 = alpha_2
         self.gamma = gamma
         self.compressive_strength = compressive_strength
         self.ultimate_strain = ultimate_strain
@@ -57,7 +57,7 @@ class WhitneyStressBlock(StressStrainProfile):
         """
 
         if strain > self.ultimate_strain * (1 - self.gamma):
-            return self.alpha * self.compressive_strength
+            return self.alpha_2 * self.compressive_strength
         else:
             return 0
 

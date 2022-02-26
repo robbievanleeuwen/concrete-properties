@@ -10,6 +10,8 @@ class Concrete(sp_pre.Material):
     :param string name: Concrete material name
     :param float elastic_modulus: Concrete modulus of elasticity
     :param float compressive_strength: Concrete compressive strength
+    :param float alpha_1: Factor that modifies the concrete compressive strength at
+        squash load
     :param float density: Concrete density (mass per unit volume)
     :param stress_strain_profile: Concrete stress-strain profile
     :type stress_strain_profile:
@@ -17,6 +19,7 @@ class Concrete(sp_pre.Material):
     """
 
     compressive_strength: float
+    alpha_1: float
     stress_strain_profile: StressStrainProfile
     yield_strength: float = field(init=False)
     poissons_ratio: float = field(init=False)

@@ -1,12 +1,12 @@
 import numpy as np
-from sectionproperties.pre.library.concrete_sections import concrete_tee_section
+from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
 from sectionproperties.analysis.section import Section
 import concreteproperties.stress_strain_profile as cp_profile
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
 
 concrete_profile = cp_profile.WhitneyStressBlock(
-    alpha=0.85,
+    alpha_2=0.85,
     gamma=0.77,
     compressive_strength=40,
     ultimate_strain=0.003,
@@ -22,6 +22,7 @@ concrete = Concrete(
     name="40 MPa Concrete",
     elastic_modulus=32.8e3,
     compressive_strength=40,
+    alpha_1=0.85,
     density=2.4e-6,
     stress_strain_profile=concrete_profile,
 )
@@ -34,15 +35,14 @@ steel = Steel(
     stress_strain_profile=steel_profile,
 )
 
-geometry = concrete_tee_section(
-    b=450,
-    d=900,
-    b_f=1200,
-    d_f=250,
-    dia=24,
-    n_bar=2,
+geometry = concrete_rectangular_section(
+    b=300,
+    d=600,
+    dia=20,
+    n_bar=3,
     n_circle=16,
     cover=30,
+    area=310,
     conc_mat=concrete,
     steel_mat=steel,
 )
@@ -50,4 +50,5 @@ geometry.create_mesh(mesh_sizes=[500])
 section = Section(geometry)
 
 conc_sec = ConcreteSection(section)
-print(conc_sec.calculate_section_actions(d_n=500, theta=-np.pi / 4 - np.pi / 2))
+# print(conc_sec.calculate_section_actions(d_n=600, theta=0))
+print(conc_sec.ultimate_bending_capacity(theta=0, n=4500e3))
