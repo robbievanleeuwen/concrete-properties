@@ -46,9 +46,6 @@ class ConcreteSection:
         """Calculates the plastic centroid of the section assuming all steel is at
         yield and the concrete experiences a stress of alpha_1 * f'c. Stores the
         plastic centroid in the class variable
-
-        :return: Plastic centroid `(x, y)`
-        :rtype: Tuple[float, float]
         """
 
         # initialise the squash load, tensile load and squash moment variables
@@ -195,7 +192,21 @@ class ConcreteSection:
         labels: List[str],
         **kwargs,
     ):
-        """ """
+        """Plots a number of moment interaction diagrams.
+
+        :param n_i: List containing outputs of axial force from moment interaction
+            diagrams.
+        :type n_i: List[List[float]]
+        :param m_i: List containing outputs of bending moment from moment interaction
+            diagrams.
+        :type m_i: List[List[float]]
+        :param labels: List of labels for each moment interaction diagram
+        :type labels: List[str]
+        :param \**kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes`
+        """
 
         # create plot and setup the plot
         with plotting_context(title="Moment Interaction Diagram", **kwargs) as (
@@ -212,6 +223,8 @@ class ConcreteSection:
 
             if idx > 0:
                 ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+
+        return ax
 
     def ultimate_bending_capacity(
         self,
@@ -258,11 +271,12 @@ class ConcreteSection:
         n: float,
     ) -> float:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
-        the difference between the desired net axial force `n` and the axial force
+        the difference between the target net axial force `n` and the axial force
         given `d_n` & `theta`.
 
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
         :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float n: Target axial force
 
         :return: Axial force convergence
         :rtype: float
@@ -279,7 +293,7 @@ class ConcreteSection:
         theta: float,
     ) -> Tuple[float, float, float, float]:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
-        the resultant bending moments `mx` and `my` and the net axial force `n`.
+        the resultant bending moments `mx`, `my`, `mv` and the net axial force `n`.
 
         TODO - don't count area of concrete in steel areas! (currently counted)
 
@@ -444,7 +458,14 @@ class ConcreteSection:
         self,
         geometry: CompoundGeometry,
     ) -> CompoundGeometry:
-        """Extracts only the concrete geometries from the cross-section."""
+        """Extracts only the concrete geometries from the cross-section.
+
+        :param geometry: Reinforced concrete geometry
+        :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`
+
+        :return: Concrete geometries
+        :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`
+        """
 
         geom_idx = 0
 
@@ -465,7 +486,20 @@ class ConcreteSection:
         point: Tuple[float, float],
         theta: float,
     ) -> Tuple[List[Geometry], List[Geometry]]:
-        """Splits the section..."""
+        """Splits the geometry along a line defined by a `point` and rotation angle
+        `theta`.
+
+        :param geometry: Geometry to split
+        :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`
+        :param point: Point at which to split the geometry `(x, y)`
+        :type point: Tuple[float, float]
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+
+        :return: Split geometry above and below the line
+        :rtype:
+            Tuple[List[:class:`sectionproperties.pre.geometry.Geometry],
+            List[sectionproperties.pre.geometry.Geometry]]
+        """
 
         # split the section using the sectionproperties method
         top_geoms, bot_geoms = geometry.split_section(
@@ -486,7 +520,20 @@ class ConcreteSection:
         d_n: float,
         theta: float,
     ) -> Tuple[float, float]:
-        """Determines the section actions."""
+        """Calculate the net axial force and moment within the section given the
+        netural axis and netural axis rotation.
+
+        :param conc_only_section: *sectionproperties* object contain only the concrete
+            geometry
+        :type conc_only_section: :class:`sectionproperties.analysis.section.Section`
+        :param point_na: Point on the neutral axis in global coordinates
+        :type point_na: Tuple[float, float]
+        :param float d_n: Depth of the neutral axis from the extreme compression fibre
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+
+        :return: Section actions - axial force and moment about netural axis `(n, mv)`
+        :rtype: Tuple[float, float]
+        """
 
         # initialise section actions
         n = 0
