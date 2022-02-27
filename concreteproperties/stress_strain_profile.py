@@ -78,7 +78,7 @@ class PiecewiseLinearProfile(StressStrainProfile):
         strains: List[float],
         stresses: List[float],
     ):
-        """Inits the BilinearProfile class.
+        """Inits the PiecewiseLinearProfile class.
 
         :param strains: List of strains (must start with 0 and must be increasing)
         :type strains: List[float]

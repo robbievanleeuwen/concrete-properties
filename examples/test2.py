@@ -67,6 +67,4 @@ for idx in range(4):
     m_results.append(m)
     labels.append("p = {0}".format(0.01 * (idx + 1)))
 
-conc_sec.plot_moment_interaction_diagram(
-    n_i=n_results, m_i=m_results, labels=labels
-)
+conc_sec.plot_moment_interaction_diagram(n_i=n_results, m_i=m_results, labels=labels)
