@@ -1,8 +1,5 @@
 import numpy as np
-from sectionproperties.pre.library.concrete_sections import (
-    concrete_rectangular_section,
-    concrete_circular_section,
-)
+from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
 from sectionproperties.analysis.section import Section
 import concreteproperties.stress_strain_profile as cp_profile
 from concreteproperties.material import Concrete, Steel

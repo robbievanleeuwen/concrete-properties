@@ -35,10 +35,18 @@ class ConcreteSection:
         # initialise class variables
         self.squash_load = 0  # squash load (positive = compression)
         self.tensile_load = 0  # tension load (negative = tension)
-        self.pc = [0, 0]  # plastic centroid (global coordinates)
+        self.axial_pc = [0, 0]  # axial plastic centroid (global coordinates)
 
         # calculate the plastic centroid (& squash load)
         self.calculate_plastic_centroid()
+
+        # assign ultimate concrete strain
+        for material in self.concrete_section.materials:
+            if isinstance(material, Concrete):
+                self.conc_ultimate_strain = (
+                    material.stress_strain_profile.ultimate_strain
+                )
+                return
 
     def calculate_plastic_centroid(
         self,
@@ -102,7 +110,7 @@ class ConcreteSection:
         # store squash load, tensile load and plastic centroid
         self.squash_load = squash_load
         self.tensile_load = tensile_load
-        self.pc = [squash_moment_x / squash_load, squash_moment_y / squash_load]
+        self.axial_pc = [squash_moment_x / squash_load, squash_moment_y / squash_load]
 
     def get_pc_local(
         self,
@@ -116,7 +124,9 @@ class ConcreteSection:
         :rtype: Tuple[float, float]
         """
 
-        return principal_coordinate(phi=theta * 180 / np.pi, x=self.pc[0], y=self.pc[1])
+        return principal_coordinate(
+            phi=theta * 180 / np.pi, x=self.axial_pc[0], y=self.axial_pc[1]
+        )
 
     def moment_interaction_diagram(
         self,
@@ -320,12 +330,12 @@ class ConcreteSection:
             extreme_fibre=extreme_fibre, d_n=d_n, theta=theta
         )
 
-        # extract concrete section
-        geom = self.extract_concrete(self.concrete_section.geometry)
+        # # extract concrete section
+        # geom = self.extract_concrete(self.concrete_section.geometry)
 
         # split the section at the neutral axis
         top_geoms, bot_geoms = self.split_section(
-            geometry=geom,
+            geometry=self.concrete_section.geometry,
             point=point_na,
             theta=theta,
         )
@@ -353,14 +363,14 @@ class ConcreteSection:
             # combine top geometries into one CompoundGeometry
             top_geoms = CompoundGeometry(geoms=top_geoms)
 
-            # split the section at the neutral axis
+            # split the section at the whitney axis
             top_geoms1, top_geoms2 = self.split_section(
                 geometry=top_geoms,
                 point=pt_whitney,
                 theta=theta,
             )
 
-            # combine geometries
+            # combine all top geometries (above and below whitney axis)
             top_geoms = top_geoms1 + top_geoms2
 
         # combine geometries back into a new CompoundGeometry object
@@ -371,11 +381,10 @@ class ConcreteSection:
 
         # create new section object
         new_section = Section(geometry=new_geom)
-        # new_section.plot_mesh()
 
         # calculate section actions
         n, mv = self.stress_analysis(
-            conc_only_section=new_section, point_na=point_na, d_n=d_n, theta=theta
+            section=new_section, point_na=point_na, d_n=d_n, theta=theta
         )
 
         # convert mv to mx & my
@@ -454,31 +463,31 @@ class ConcreteSection:
         # convert point back to global coordinates
         return global_coordinate(phi=theta * 180 / np.pi, x11=u, y22=v)
 
-    def extract_concrete(
-        self,
-        geometry: CompoundGeometry,
-    ) -> CompoundGeometry:
-        """Extracts only the concrete geometries from the cross-section.
-
-        :param geometry: Reinforced concrete geometry
-        :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`
-
-        :return: Concrete geometries
-        :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`
-        """
-
-        geom_idx = 0
-
-        for idx, geom in enumerate(geometry.geoms):
-            if isinstance(geom.material, Concrete):
-                if geom_idx == 0:
-                    conc_geoms = geom
-                else:
-                    conc_geoms += geom
-
-                geom_idx += 1
-
-        return conc_geoms
+    # def extract_concrete(
+    #     self,
+    #     geometry: CompoundGeometry,
+    # ) -> CompoundGeometry:
+    #     """Extracts only the concrete geometries from the cross-section.
+    #
+    #     :param geometry: Reinforced concrete geometry
+    #     :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`
+    #
+    #     :return: Concrete geometries
+    #     :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`
+    #     """
+    #
+    #     geom_idx = 0
+    #
+    #     for idx, geom in enumerate(geometry.geoms):
+    #         if isinstance(geom.material, Concrete):
+    #             if geom_idx == 0:
+    #                 conc_geoms = geom
+    #             else:
+    #                 conc_geoms += geom
+    #
+    #             geom_idx += 1
+    #
+    #     return conc_geoms
 
     def split_section(
         self,
@@ -515,7 +524,7 @@ class ConcreteSection:
 
     def stress_analysis(
         self,
-        conc_only_section: Section,
+        section: Section,
         point_na: Tuple[float, float],
         d_n: float,
         theta: float,
@@ -523,9 +532,9 @@ class ConcreteSection:
         """Calculate the net axial force and moment within the section given the
         netural axis and netural axis rotation.
 
-        :param conc_only_section: *sectionproperties* object contain only the concrete
-            geometry
-        :type conc_only_section: :class:`sectionproperties.analysis.section.Section`
+        :param section: *sectionproperties* section object on which to perform the
+            stress analysis
+        :type section: :class:`sectionproperties.analysis.section.Section`
         :param point_na: Point on the neutral axis in global coordinates
         :type point_na: Tuple[float, float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
@@ -542,9 +551,10 @@ class ConcreteSection:
         # Gauss points for 3 point Gaussian integration
         gps = gauss_points(n=3)
 
-        # loop through all concrete elements
-        for element in conc_only_section.elements:
-            conc_mat = element.material
+        # loop through all elements (concrete & steel)
+        for element in section.elements:
+            # get current element material
+            mat = element.material
 
             # initialise element results
             area_e = 0
@@ -572,11 +582,11 @@ class ConcreteSection:
                     point_na=point_na,
                     d_n=d_n,
                     theta=theta,
-                    ultimate_strain=conc_mat.stress_strain_profile.ultimate_strain,
+                    ultimate_strain=self.conc_ultimate_strain,
                 )
 
                 # get stress at gauss point
-                stress = conc_mat.stress_strain_profile.get_stress(strain=strain)
+                stress = mat.stress_strain_profile.get_stress(strain=strain)
 
                 # calculate force (stress * area)
                 force_e += gp[0] * stress * j
@@ -590,58 +600,6 @@ class ConcreteSection:
             # add to totals
             n += force_e
             mv += force_e * (c_v - self.get_pc_local(theta=theta)[1])
-
-        # loop through all steel elements
-        for element in self.concrete_section.elements:
-            if isinstance(element.material, Steel):
-                steel_mat = element.material
-
-                # initialise element results
-                area_e = 0
-                qx_e = 0
-                qy_e = 0
-                force_e = 0
-
-                # loop through each Gauss point
-                for gp in gps:
-                    # determine shape function and jacobian
-                    (N, _, j) = shape_function(coords=element.coords, gauss_point=gp)
-
-                    # get coordinates of the gauss point
-                    x = np.dot(N, np.transpose(element.coords[0, :]))
-                    y = np.dot(N, np.transpose(element.coords[1, :]))
-
-                    # calculate area properties
-                    area_e += gp[0] * j
-                    qx_e += gp[0] * y * j
-                    qy_e += gp[0] * x * j
-
-                    # get strain at gauss point
-                    d, strain = self.get_strain(
-                        point=(x, y),
-                        point_na=point_na,
-                        d_n=d_n,
-                        theta=theta,
-                        ultimate_strain=conc_mat.stress_strain_profile.ultimate_strain,
-                    )
-
-                    # get stress at gauss point
-                    stress = steel_mat.stress_strain_profile.get_stress(strain=strain)
-
-                    # calculate force (stress * area)
-                    force_e += gp[0] * stress * j
-
-                # calculate element centroid
-                cx_e, cy_e = qy_e / area_e, qx_e / area_e
-
-                # convert centroid to local coordinates
-                (c_u, c_v) = principal_coordinate(
-                    phi=theta * 180 / np.pi, x=cx_e, y=cy_e
-                )
-
-                # add to totals
-                n += force_e
-                mv += force_e * (c_v - self.get_pc_local(theta=theta)[1])
 
         return n, mv
 
