@@ -24,17 +24,21 @@ steel_profile = cp_profile.SteelElasticPlastic(
 concrete = Concrete(
     name="40 MPa Concrete",
     elastic_modulus=32.8e3,
+    poissons_ratio=0.3,
     compressive_strength=concrete_profile.compressive_strength,
     alpha_1=0.85,
     density=2.4e-6,
+    color="lightgrey",
     stress_strain_profile=concrete_profile,
 )
 
 steel = Steel(
     name="500 MPa Steel",
     elastic_modulus=steel_profile.elastic_modulus,
+    poissons_ratio=0.2,
     yield_strength=steel_profile.yield_strength,
     density=7.85e-6,
+    color="grey",
     stress_strain_profile=steel_profile,
 )
 
