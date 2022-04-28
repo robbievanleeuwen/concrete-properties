@@ -69,7 +69,6 @@ class Steel(Material):
         :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`
     """
 
-
     def __post_init__(self):
         super().__init__(
             name=self.name,
