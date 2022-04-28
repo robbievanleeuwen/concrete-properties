@@ -28,14 +28,14 @@ class Concrete(Material):
     :param string name: Concrete material name
     :param float elastic_modulus: Concrete modulus of elasticity
     :param float poissons_ratio: Material Poisson's ratio
-    :param float compressive_strength: Concrete compressive strength
-    :param float alpha_1: Factor that modifies the concrete compressive strength at
-        squash load
     :param float density: Concrete density (mass per unit volume)
     :param str color: Colour of the material for rendering
     :param stress_strain_profile: Concrete stress-strain profile
     :type stress_strain_profile:
         :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`
+    :param float compressive_strength: Concrete compressive strength
+    :param float alpha_1: Factor that modifies the concrete compressive strength at
+        squash load
     """
 
     compressive_strength: float
