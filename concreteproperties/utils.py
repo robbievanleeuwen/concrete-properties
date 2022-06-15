@@ -187,6 +187,8 @@ def gauss_points():
     """
 
     return [[0.5, 1.0 / 3, 1.0 / 3]]
+
+
 #
 # def gauss_points():
 #     """x

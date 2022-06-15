@@ -384,7 +384,6 @@ class ConcreteSection:
             n += n_sec
             mv += mv_sec
 
-
         # calculate steel actions
         for steel_geom in steel_geoms:
             # calculate area and centroid
