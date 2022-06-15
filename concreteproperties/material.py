@@ -1,6 +1,12 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 from dataclasses import dataclass, field
+
 import sectionproperties.pre.pre as sp_pre
-from concreteproperties.stress_strain_profile import StressStrainProfile
+
+if TYPE_CHECKING:
+    from concreteproperties.stress_strain_profile import StressStrainProfile
 
 
 @dataclass(eq=True, frozen=True)
