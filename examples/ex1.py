@@ -8,6 +8,8 @@ import concreteproperties.stress_strain_profile as cp_profile
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
 
+from rich.pretty import pprint
+
 concrete_profile = cp_profile.WhitneyStressBlock(
     alpha_2=0.85,
     gamma=0.77,
@@ -59,6 +61,11 @@ geometry.create_mesh(mesh_sizes=[500])
 section = Section(geometry)
 
 conc_sec = ConcreteSection(section)
+pprint(conc_sec.squash_load)
+pprint(conc_sec.tensile_load)
+pprint(conc_sec.axial_pc)
+
+
 # print(conc_sec.calculate_section_actions(d_n=600, theta=0))
 # print(conc_sec.ultimate_bending_capacity(theta=0, n=0))
-conc_sec.moment_interaction_diagram(theta=0)
+# conc_sec.moment_interaction_diagram(theta=0)
