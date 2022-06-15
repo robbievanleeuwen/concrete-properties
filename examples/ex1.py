@@ -1,47 +1,44 @@
 import numpy as np
-from sectionproperties.pre.library.concrete_sections import (
-    concrete_rectangular_section,
-    concrete_circular_section,
-)
-from sectionproperties.analysis.section import Section
-import concreteproperties.stress_strain_profile as cp_profile
+from sectionproperties.pre.library.concrete_sections import concrete_circular_section
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
-
-from rich.pretty import pprint
-
-concrete_profile = cp_profile.WhitneyStressBlock(
-    alpha_2=0.85,
-    gamma=0.77,
-    compressive_strength=40,
-    ultimate_strain=0.003,
+from concreteproperties.stress_strain_profile import (
+    WhitneyStressBlock,
+    SteelElasticPlastic,
 )
 
-steel_profile = cp_profile.SteelElasticPlastic(
-    yield_strength=500,
-    elastic_modulus=200e3,
-    fracture_strain=0.05,
-)
+concrete_compressive_strength = 40
+steel_yield_strength = 500
+steel_elastic_modulus = 200e3
 
 concrete = Concrete(
     name="40 MPa Concrete",
     elastic_modulus=32.8e3,
     poissons_ratio=0.2,
-    compressive_strength=concrete_profile.compressive_strength,
+    compressive_strength=concrete_compressive_strength,
     alpha_1=0.85,
     density=2.4e-6,
     color="lightgrey",
-    stress_strain_profile=concrete_profile,
+    stress_strain_profile=WhitneyStressBlock(
+        alpha_2=0.85,
+        gamma=0.77,
+        compressive_strength=concrete_compressive_strength,
+        ultimate_strain=0.003,
+    ),
 )
 
 steel = Steel(
     name="500 MPa Steel",
-    elastic_modulus=steel_profile.elastic_modulus,
+    elastic_modulus=steel_elastic_modulus,
     poissons_ratio=0.3,
-    yield_strength=steel_profile.yield_strength,
+    yield_strength=steel_yield_strength,
     density=7.85e-6,
     color="grey",
-    stress_strain_profile=steel_profile,
+    stress_strain_profile=SteelElasticPlastic(
+        yield_strength=steel_yield_strength,
+        elastic_modulus=steel_elastic_modulus,
+        fracture_strain=0.05,
+    ),
 )
 
 geometry = concrete_circular_section(
@@ -57,15 +54,8 @@ geometry = concrete_circular_section(
     steel_mat=steel,
 )
 
-geometry.create_mesh(mesh_sizes=[500])
-section = Section(geometry)
+conc_sec = ConcreteSection(geometry)
 
-conc_sec = ConcreteSection(section)
-pprint(conc_sec.squash_load)
-pprint(conc_sec.tensile_load)
-pprint(conc_sec.axial_pc)
-
-
-# print(conc_sec.calculate_section_actions(d_n=600, theta=0))
+# print(conc_sec.calculate_section_actions(d_n=100, theta=0))
 # print(conc_sec.ultimate_bending_capacity(theta=0, n=0))
-# conc_sec.moment_interaction_diagram(theta=0)
+conc_sec.moment_interaction_diagram(theta=0)

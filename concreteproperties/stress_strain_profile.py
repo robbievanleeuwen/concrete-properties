@@ -1,20 +1,99 @@
 from typing import List
+
+import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 
 
 class StressStrainProfile:
-    """Abstract base class for a material stress-strain profile."""
+    """Abstract base class for a material stress-strain profile.
+
+    Implements a piecewise linear stress-strain profile.
+
+    Positive stresses & strains are compression.
+    """
+
+    def __init__(
+        self,
+        strains: List[float],
+        stresses: List[float],
+    ):
+        """Inits the StressStrainProfile class.
+
+        :param strains: List of strains (must be increasing or equal)
+        :type strains: List[float]
+        :param stresses: List of stresses (must be increasing or equal)
+        :type stresses: List[float]
+        """
+
+        # validate input - same length lists
+        if len(strains) != len(stresses):
+            raise ValueError("Length of strains must equal length of stresses")
+
+        # validate input - length > 1
+        if len(strains) < 2:
+            raise ValueError("Length of strains and stresses must be greater than 1")
+
+        # validate input - increasing values
+        prev_strain = strains[0]
+        prev_stress = stresses[0]
+
+        for idx in range(len(strains)):
+            if idx != 0:
+                if strains[idx] < prev_strain or stresses[idx] < prev_stress:
+                    msg = "strains and stresses must containing increasing values."
+                    raise ValueError(msg)
+
+                prev_strain = strains[idx]
+                prev_stress = stresses[idx]
+
+        self.strains = strains
+        self.stresses = stresses
 
     def get_stress(
         self,
         strain: float,
-    ):
+    ) -> float:
         """Returns a stress given a strain.
 
-        :param float strain: Strain at which to return a stress
+        :param float strain: Strain at which to return a stress.
+
+        :return: Stress
+        :rtype: float
         """
 
-        raise NotImplementedError
+        # create interpolation function
+        stress_function = interp1d(
+            x=self.strains,
+            y=self.stresses,
+            kind="linear",
+            fill_value="extrapolate",
+        )
+
+        return stress_function(strain)
+
+    def get_ultimate_strain(
+        self,
+    ) -> float:
+        """Returns the largest strain.
+
+        :return: Ultimate strain
+        :rtype: float
+        """
+
+        return max(self.strains)
+
+    def get_unique_strains(
+        self,
+    ) -> List[float]:
+        """Returns an ordered list of unique strains.
+
+        :return: Ordered list of unique strains
+        """
+
+        unique_strains = list(set(self.strains))
+        unique_strains.sort()
+
+        return unique_strains
 
     def plot_stress_strain(
         self,
@@ -22,6 +101,30 @@ class StressStrainProfile:
         """Plots the stress-strain profile."""
 
         raise NotImplementedError
+
+
+class BilinearProfile(StressStrainProfile):
+    """Class for a symmetric bilinear stress-strain profile."""
+
+    def __init__(
+        self,
+        strain1: float,
+        strain2: float,
+        stress1: float,
+        stress2: float,
+    ):
+        """Inits the BilinearProfile class.
+
+        :param float strain1: Strain at kink in bilinear curve
+        :param float strain2: Strain at end of bilinear curve
+        :param float stress1: Stress at kink in bilinear curve
+        :param float stress2: Stress at end of bilinear curve
+        """
+
+        super().__init__(
+            strains=[-strain2, -strain1, 0, strain1, strain2],
+            stresses=[-stress2, -stress1, 0, stress1, stress2],
+        )
 
 
 class WhitneyStressBlock(StressStrainProfile):
@@ -42,24 +145,20 @@ class WhitneyStressBlock(StressStrainProfile):
         :param float ultimate_strain: Strain at the extreme compression fibre
         """
 
-        self.alpha_2 = alpha_2
-        self.gamma = gamma
-        self.compressive_strength = compressive_strength
-        self.ultimate_strain = ultimate_strain
-
-    def get_stress(
-        self,
-        strain: float,
-    ):
-        """Returns a stress given a strain.
-
-        :param float strain: Strain at which to return a stress.
-        """
-
-        if strain > self.ultimate_strain * (1 - self.gamma):
-            return self.alpha_2 * self.compressive_strength
-        else:
-            return 0
+        super().__init__(
+            strains=[
+                0,
+                ultimate_strain * (1 - gamma),
+                ultimate_strain * (1 - gamma),
+                ultimate_strain,
+            ],
+            stresses=[
+                0,
+                0,
+                alpha_2 * compressive_strength,
+                alpha_2 * compressive_strength,
+            ],
+        )
 
 
 class ParabolicStressBlock(StressStrainProfile):
@@ -68,101 +167,6 @@ class ParabolicStressBlock(StressStrainProfile):
 
 class PCAStressProfile(StressStrainProfile):
     pass
-
-
-class PiecewiseLinearProfile(StressStrainProfile):
-    """Class for a piecewise linear stress-strain profile."""
-
-    def __init__(
-        self,
-        strains: List[float],
-        stresses: List[float],
-    ):
-        """Inits the PiecewiseLinearProfile class.
-
-        :param strains: List of strains (must start with 0 and must be increasing)
-        :type strains: List[float]
-        :param stresses: List of stresses (must start with 0 and must be increasing or
-            equal)
-        :type stresses: List[float]
-        """
-
-        # validate input - first value zero
-        if strains[0] != 0 or stresses[0] != 0:
-            raise ValueError("First value of strains and stresses must be zero.")
-
-        # validate input - same length lists
-        if len(strains) != len(stresses):
-            raise ValueError("Length of strains must equal length of stresses")
-
-        # validate input - length > 1
-        if len(strains) < 2:
-            raise ValueError("Length of strains and stresses must be greater than 1")
-
-        # validate input - increasing values
-        prev_strain = 0
-        prev_stress = 0
-
-        for idx in range(len(strains)):
-            if idx != 0:
-                if strains[idx] <= prev_strain or stresses[idx] < prev_stress:
-                    msg = "strains and stresses must containing increasing values."
-                    raise ValueError(msg)
-
-                prev_strain = strains[idx]
-                prev_stress = stresses[idx]
-
-        self.strains = strains
-        self.stresses = stresses
-
-    def get_stress(
-        self,
-        strain: float,
-    ):
-        """Returns a stress given a strain for the bilinear profile.
-
-        :param float strain: Strain at which to return a stress.
-        """
-
-        # determine if strain is positive or negative
-        if strain > 0:
-            mult = 1
-        else:
-            mult = -1
-
-        # create interpolation function
-        stress_function = interp1d(
-            x=self.strains,
-            y=self.stresses,
-            kind="linear",
-            fill_value="extrapolate",
-        )
-
-        return mult * stress_function(abs(strain))
-
-
-class BilinearProfile(PiecewiseLinearProfile):
-    """Class for a bilinear stress-strain profile."""
-
-    def __init__(
-        self,
-        strain1: float,
-        strain2: float,
-        stress1: float,
-        stress2: float,
-    ):
-        """Inits the BilinearProfile class.
-
-        :param float strain1: Strain at kink in bilinear curve
-        :param float strain2: Strain at end of bilinear curve
-        :param float stress1: Stress at kink in bilinear curve
-        :param float stress2: Stress at end of bilinear curve
-        """
-
-        super().__init__(
-            strains=[0, strain1, strain2],
-            stresses=[0, stress1, stress2],
-        )
 
 
 class SteelElasticPlastic(BilinearProfile):

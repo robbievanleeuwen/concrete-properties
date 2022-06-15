@@ -18,21 +18,18 @@ def test_whitney():
 
 def test_piecewise_linear():
     with pytest.raises(ValueError):
-        profile = PiecewiseLinearProfile([0], [0])
+        profile = StressStrainProfile([0], [0])
 
     with pytest.raises(ValueError):
-        profile = PiecewiseLinearProfile([-1, 0, 1], [1, 2, 3])
+        profile = StressStrainProfile([-1, 0, 1], [0, 2])
 
     with pytest.raises(ValueError):
-        profile = PiecewiseLinearProfile([-1, 0, 1], [0, 2])
+        profile = StressStrainProfile([0, 1, 0.5], [0, 3, 5])
 
     with pytest.raises(ValueError):
-        profile = PiecewiseLinearProfile([0, 1, 0.5], [0, 3, 5])
+        profile = StressStrainProfile([0, 1, 2], [0, 3, 2])
 
-    with pytest.raises(ValueError):
-        profile = PiecewiseLinearProfile([0, 1, 2], [0, 3, 2])
-
-    profile = PiecewiseLinearProfile([0, 0.0025, 0.05], [0, 500, 600])
+    profile = StressStrainProfile([-0.05, 0, 0.0025, 0.05], [0, 0, 500, 600])
 
     assert pytest.approx(profile.get_stress(0)) == 0
     assert pytest.approx(profile.get_stress(0.0025)) == 500
@@ -40,17 +37,10 @@ def test_piecewise_linear():
     assert pytest.approx(profile.get_stress(0.001)) == 200
     assert pytest.approx(profile.get_stress(0.01)) == 515.789
     assert pytest.approx(profile.get_stress(0.1)) == 705.263
-    assert pytest.approx(profile.get_stress(-0.0025)) == -500
-    assert pytest.approx(profile.get_stress(-0.05)) == -600
-    assert pytest.approx(profile.get_stress(-0.001)) == -200
-    assert pytest.approx(profile.get_stress(-0.01)) == -515.789
-    assert pytest.approx(profile.get_stress(-0.1)) == -705.263
+    assert pytest.approx(profile.get_stress(-0.0025)) == 0
 
 
 def test_bilinear():
-    with pytest.raises(ValueError):
-        profile = BilinearProfile(0, 0, 0, 0)
-
     with pytest.raises(ValueError):
         profile = BilinearProfile(0, -1, 1, 2)
 
