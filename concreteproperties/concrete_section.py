@@ -1,4 +1,5 @@
 from typing import List, Tuple
+from dataclasses import dataclass
 import numpy as np
 from scipy.optimize import brentq
 import matplotlib.pyplot as plt
@@ -20,47 +21,62 @@ class ConcreteSection:
 
     def __init__(
         self,
-        concrete_geometry: CompoundGeometry,
+        geometry: CompoundGeometry,
     ):
         """Inits the ConcreteSection class.
 
-        :param concrete_section: *sectionproperties* compound geometry object describing
-            the reinforced concrete section
+        :param geometry: *sectionproperties* compound geometry object describing the
+            reinforced concrete section
         :type concrete_section: :class:`sectionproperties.pre.geometry.CompoundGeometry`
         """
 
-        self.concrete_geometry = concrete_geometry
+        self.geometry = geometry
 
-        # initialise class variables
-        self.squash_load = 0  # squash load (positive = compression)
-        self.tensile_load = 0  # tension load (negative = tension)
-        self.axial_pc = [0, 0]  # axial plastic centroid (global coordinates)
+        # sort into concrete and steel geometries
+        self.concrete_geometries = []
+        self.steel_geometries = []
 
-        # calculate the plastic centroid (& squash load)
-        self.calculate_plastic_centroid()
-
-        # check there is concrete & steel, and assign ultimate concrete strain
-        conc = False
-        steel = False
-
-        for geom in self.concrete_geometry.geoms:
+        for geom in self.geometry.geoms:
             if isinstance(geom.material, Concrete):
-                conc = True
-                self.conc_ultimate_strain = (
-                    geom.material.stress_strain_profile.get_ultimate_strain()
-                )
+                self.concrete_geometries.append(geom)
             if isinstance(geom.material, Steel):
-                steel = True
+                self.steel_geometries.append(geom)
 
-        if not conc or not steel:
-            raise ValueError("Geometry must contain Concrete and Steel.")
+        # validate reinforced concrete input
+        if len(self.concrete_geometries) == 0 or len(self.steel_geometries) == 0:
+            raise ValueError(
+                "geometry must contain both Concrete and Steel geometries."
+            )
 
-    def calculate_plastic_centroid(
+        # initialise gross properties results class
+        self.gross_properties = ConcreteProperties()
+
+        # calculate gross area properties
+        self.calculate_gross_area_properties()
+
+        # calculate gross plastic properties
+        self.calculate_gross_plastic_properties()
+
+    def calculate_gross_area_properties(
         self,
     ):
-        """Calculates the plastic centroid of the section assuming all steel is at
-        yield and the concrete experiences a stress of alpha_1 * f'c. Stores the
-        plastic centroid in the class variable
+        """Calculates and stores gross section area properties.
+
+        xxx
+        """
+
+        pass
+
+    def calculate_gross_plastic_properties(
+        self,
+    ):
+        """Calculates and stores gross section plastic properties.
+
+        Calculates the plastic centroid and squash load assuming all steel is at yield
+        and the concrete experiences a stress of alpha_1 * f'c.
+
+        Calculates tensile load assuming all steel is at yield and the concrete is
+        entirely cracked.
         """
 
         # initialise the squash load, tensile load and squash moment variables
@@ -69,21 +85,33 @@ class ConcreteSection:
         squash_moment_x = 0
         squash_moment_y = 0
 
-        # loop through all geometries in the CompoundGeometry
-        for geom in self.concrete_geometry.geoms:
-            mat = geom.material  # get material
-            area = geom.calculate_area()  # calculate area
-            centroid = geom.calculate_centroid()  # calculate centroid
+        # loop through all concrete geometries
+        for conc_geom in self.concrete_geometries:
+            # calculate area and centroid
+            area = conc_geom.calculate_area()
+            centroid = conc_geom.calculate_centroid()
 
-            # calculate plastic forces
-            if isinstance(mat, Concrete):
-                force_c = area * mat.alpha_1 * mat.compressive_strength
-                force_t = 0
-            elif isinstance(mat, Steel):
-                force_c = area * mat.yield_strength
-                force_t = -force_c
-            else:
-                raise ValueError("Material is not Concrete or Steel!")
+            # calculate compressive force
+            force_c = (
+                area
+                * conc_geom.material.alpha_1
+                * conc_geom.material.compressive_strength
+            )
+
+            # add to totals
+            squash_load += force_c
+            squash_moment_x += force_c * centroid[0]
+            squash_moment_y += force_c * centroid[1]
+
+        # loop through all steel geometries
+        for steel_geom in self.steel_geometries:
+            # calculate area and centroid
+            area = steel_geom.calculate_area()
+            centroid = steel_geom.calculate_centroid()
+
+            # calculate compressive and tensile force
+            force_c = area * steel_geom.material.yield_strength
+            force_t = -force_c
 
             # add to totals
             squash_load += force_c
@@ -92,9 +120,16 @@ class ConcreteSection:
             squash_moment_y += force_c * centroid[1]
 
         # store squash load, tensile load and plastic centroid
-        self.squash_load = squash_load
-        self.tensile_load = tensile_load
-        self.axial_pc = [squash_moment_x / squash_load, squash_moment_y / squash_load]
+        self.gross_properties.squash_load = squash_load
+        self.gross_properties.tensile_load = tensile_load
+        self.gross_properties.axial_pc_x = squash_moment_x / squash_load
+        self.gross_properties.axial_pc_y = squash_moment_y / squash_load
+
+        # store ultimate concrete strain (get from first concrete geometry)
+        # note this MUST not vary between different concrete materials
+        self.gross_properties.conc_ultimate_strain = self.concrete_geometries[
+            0
+        ].material.stress_strain_profile.get_ultimate_strain()
 
     def get_pc_local(
         self,
@@ -109,7 +144,9 @@ class ConcreteSection:
         """
 
         return principal_coordinate(
-            phi=theta * 180 / np.pi, x=self.axial_pc[0], y=self.axial_pc[1]
+            phi=theta * 180 / np.pi,
+            x=self.gross_properties.axial_pc_x,
+            y=self.gross_properties.axial_pc_y,
         )
 
     def moment_interaction_diagram(
@@ -143,13 +180,11 @@ class ConcreteSection:
         m_curve = []
 
         # add squash load
-        n_curve.append(self.squash_load * n_scale)
+        n_curve.append(self.gross_properties.squash_load * n_scale)
         m_curve.append(0)
 
         # compute extreme tensile fibre
-        _, d_t = utils.calculate_extreme_fibre(
-            points=self.concrete_geometry.points, theta=theta
-        )
+        _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
 
         # compute neutral axis depth for pure bending case
         _, _, _, _, d_nb = self.ultimate_bending_capacity(theta=theta, n=0)
@@ -171,7 +206,7 @@ class ConcreteSection:
                 progress_bar.next()
 
         # add tensile load
-        n_curve.append(self.tensile_load * n_scale)
+        n_curve.append(self.gross_properties.tensile_load * n_scale)
         m_curve.append(0)
 
         if plot:
@@ -217,6 +252,7 @@ class ConcreteSection:
             plt.ylabel("Axial Force")
             plt.grid(True)
 
+            # if there is more than one curve show legend
             if idx > 0:
                 ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
 
@@ -240,12 +276,13 @@ class ConcreteSection:
 
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
-        _, d_t = utils.calculate_extreme_fibre(
-            points=self.concrete_geometry.points, theta=theta
-        )
+        _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
 
         a = 1e-6 * d_t  # sufficiently small depth of compressive zone
         b = d_t  # neutral axis at extreme tensile fibre
+
+        # initialise ultimate bending results
+        self._ult_bend_res = [None, None, None, None]
 
         (d_n, r) = brentq(
             f=self.normal_force_convergence,
@@ -258,7 +295,8 @@ class ConcreteSection:
             disp=False,
         )
 
-        n, mx, my, mv = self.calculate_section_actions(d_n=d_n, theta=theta)
+        # unpack ultimate bending results from last run of brentq
+        n, mx, my, mv = self._ult_bend_res
 
         return n, mx, my, mv, d_n
 
@@ -293,8 +331,6 @@ class ConcreteSection:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
         the resultant bending moments `mx`, `my`, `mv` and the net axial force `n`.
 
-        TODO - don't count area of concrete in steel areas! (currently counted)
-
         :param float d_n: Depth of the neutral axis from the extreme compression fibre,
             0 < d_n <= d_t, where d_t is the depth of the extreme tensile fibre, i.e.
             d_n must be within the section and not equal to zero
@@ -306,7 +342,7 @@ class ConcreteSection:
 
         # calculate extreme fibre in global coordinates
         extreme_fibre, d_t = utils.calculate_extreme_fibre(
-            points=self.concrete_geometry.points, theta=theta
+            points=self.geometry.points, theta=theta
         )
 
         # validate d_n input
@@ -323,21 +359,10 @@ class ConcreteSection:
         # get principal coordinates of plastic centroid
         pc_local = self.get_pc_local(theta=theta)
 
-        # get all concrete & steel geometries
-        concrete_geoms = []
-        steel_geoms = []
-
-        for geom in self.concrete_geometry.geoms:
-            if isinstance(geom.material, Concrete):
-                concrete_geoms.append(geom)
-
-            if isinstance(geom.material, Steel):
-                steel_geoms.append(geom)
-
         # create splits in concrete geometries at points in stress strain profiles
         concrete_split_geoms = []
 
-        for conc_geom in concrete_geoms:
+        for conc_geom in self.concrete_geometries:
             strains = conc_geom.material.stress_strain_profile.get_unique_strains()
 
             # loop through intermediate points on stress strain profile
@@ -347,7 +372,7 @@ class ConcreteSection:
                     point_na=point_na,
                     d_n=d_n,
                     theta=theta,
-                    ultimate_strain=self.conc_ultimate_strain,
+                    ultimate_strain=self.gross_properties.conc_ultimate_strain,
                 )
 
                 # split concrete geometry (from bottom up)
@@ -377,7 +402,7 @@ class ConcreteSection:
                 point_na=point_na,
                 d_n=d_n,
                 theta=theta,
-                ultimate_strain=self.conc_ultimate_strain,
+                ultimate_strain=self.gross_properties.conc_ultimate_strain,
                 pc_local=pc_local[1],
             )
 
@@ -385,7 +410,7 @@ class ConcreteSection:
             mv += mv_sec
 
         # calculate steel actions
-        for steel_geom in steel_geoms:
+        for steel_geom in self.steel_geometries:
             # calculate area and centroid
             area = steel_geom.calculate_area()
             centroid = steel_geom.calculate_centroid()
@@ -396,7 +421,7 @@ class ConcreteSection:
                 point_na=point_na,
                 d_n=d_n,
                 theta=theta,
-                ultimate_strain=self.conc_ultimate_strain,
+                ultimate_strain=self.gross_properties.conc_ultimate_strain,
             )
 
             # calculate stress and force
@@ -415,4 +440,62 @@ class ConcreteSection:
         # convert mv to mx & my
         (my, mx) = global_coordinate(phi=theta * 180 / np.pi, x11=0, y22=mv)
 
+        # save results
+        self._ult_bend_res = [n, mx, my, mv]
+
         return n, mx, my, mv
+
+
+@dataclass
+class ConcreteProperties:
+    """Class for storing basic gross concrete section properties."""
+
+    # section areas
+    total_area: float = None
+    concrete_area: float = None
+    steel_area: float = None
+    e_a: float = None
+
+    # section mass
+    mass: float = None
+
+    # section perimeter
+    perimeter: float = None
+
+    # first moments of area
+    e_qx: float = None
+    e_qy: float = None
+
+    # centroids
+    cx: float = None
+    cy: float = None
+
+    # second moments of area
+    e_ixx_g: float = None
+    e_iyy_g: float = None
+    e_ixy_g: float = None
+    e_ixx_c: float = None
+    e_iyy_c: float = None
+    e_ixy_c: float = None
+    e_i11_c: float = None
+    e_i22_c: float = None
+
+    # principal axis angle
+    phi: float = None
+
+    # section moduli
+    zxx_plus: float = None
+    zxx_minus: float = None
+    zyy_plus: float = None
+    zyy_minus: float = None
+    z11_plus: float = None
+    z11_minus: float = None
+    z22_plus: float = None
+    z22_minus: float = None
+
+    # plastic properties
+    squash_load: float = None
+    tensile_load: float = None
+    axial_pc_x: float = None
+    axial_pc_y: float = None
+    conc_ultimate_strain: float = None

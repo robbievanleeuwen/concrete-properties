@@ -27,8 +27,7 @@ pip install concreteproperties
 - [ ] Add visualisation
   - [ ] Stress visualisation
   - [ ] Free body diagrams
-- [ ] Expand to include prestressed concrete
-- [ ] Exclude holes made by reinforcement in ultimate calculation
+- [x] Exclude holes made by reinforcement in ultimate calculation
 
 ## Current limitations:
 - Can only have only value of ultimate concrete strain

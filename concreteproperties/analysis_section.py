@@ -18,7 +18,7 @@ from rich.pretty import pprint
 
 
 class AnalysisSection:
-    """Class for an analysis section to perform a fast and simple stress analysis."""
+    """Class for an analysis section to perform a fast analysis on concrete sections."""
 
     def __init__(self, geometry: Geometry):
         """Inits the AnalysisSection class.
@@ -66,6 +66,16 @@ class AnalysisSection:
                     conc_material=self.geometry.material,
                 )
             )
+
+    def area_properties(
+        self,
+    ):
+        """x
+
+        x
+        """
+
+        area = self.geometry.calculate_area()
 
     def ultimate_stress_analysis(
         self,
