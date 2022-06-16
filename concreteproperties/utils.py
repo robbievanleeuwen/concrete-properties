@@ -278,6 +278,7 @@ def calculate_local_extents(
 
     return x11_max, x11_min, y22_max, y22_min
 
+
 class CustomTimeElapsedColumn(ProgressColumn):
     """Renders time elapsed in milliseconds."""
 

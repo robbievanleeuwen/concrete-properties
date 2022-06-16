@@ -32,7 +32,7 @@ class Concrete(Material):
     yield_strength: float = field(init=False)
 
     def __post_init__(self):
-        object.__setattr__(self, 'yield_strength', self.compressive_strength)
+        object.__setattr__(self, "yield_strength", self.compressive_strength)
 
 
 @dataclass(eq=True, frozen=True)
