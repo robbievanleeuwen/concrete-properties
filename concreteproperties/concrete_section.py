@@ -60,12 +60,59 @@ class ConcreteSection:
     def calculate_gross_area_properties(
         self,
     ):
-        """Calculates and stores gross section area properties.
+        """Calculates and stores gross section area properties."""
 
-        xxx
-        """
+        # concrete areas
+        for conc_geom in self.concrete_geometries:
+            # area and centroid of geometry
+            area = conc_geom.calculate_area()
+            centroid = conc_geom.calculate_centroid()
 
-        pass
+            self.gross_properties.concrete_area += area
+            self.gross_properties.e_a += area * conc_geom.material.elastic_modulus
+            self.gross_properties.mass += area * conc_geom.material.density
+            self.gross_properties.e_qx += (
+                area * conc_geom.material.elastic_modulus * centroid[1]
+            )
+            self.gross_properties.e_qy += (
+                area * conc_geom.material.elastic_modulus * centroid[0]
+            )
+
+        # steel area
+        for steel_geom in self.steel_geometries:
+            # area and centroid of geometry
+            area = steel_geom.calculate_area()
+            centroid = steel_geom.calculate_centroid()
+
+            self.gross_properties.steel_area += area
+            self.gross_properties.e_a += area * steel_geom.material.elastic_modulus
+            self.gross_properties.mass += area * steel_geom.material.density
+            self.gross_properties.e_qx += (
+                area * steel_geom.material.elastic_modulus * centroid[1]
+            )
+            self.gross_properties.e_qy += (
+                area * steel_geom.material.elastic_modulus * centroid[0]
+            )
+
+        # total area
+        self.gross_properties.total_area = (
+            self.gross_properties.concrete_area + self.gross_properties.steel_area
+        )
+
+        # perimeter
+        self.gross_properties.perimeter = self.geometry.calculate_perimeter()
+
+        # centroids
+        self.gross_properties.cx = (
+            self.gross_properties.e_qy / self.gross_properties.e_a
+        )
+        self.gross_properties.cy = (
+            self.gross_properties.e_qx / self.gross_properties.e_a
+        )
+
+        # second moments of area
+
+        pprint(self.gross_properties)
 
     def calculate_gross_plastic_properties(
         self,
@@ -451,51 +498,51 @@ class ConcreteProperties:
     """Class for storing basic gross concrete section properties."""
 
     # section areas
-    total_area: float = None
-    concrete_area: float = None
-    steel_area: float = None
-    e_a: float = None
+    total_area: float = 0
+    concrete_area: float = 0
+    steel_area: float = 0
+    e_a: float = 0
 
     # section mass
-    mass: float = None
+    mass: float = 0
 
     # section perimeter
-    perimeter: float = None
+    perimeter: float = 0
 
     # first moments of area
-    e_qx: float = None
-    e_qy: float = None
+    e_qx: float = 0
+    e_qy: float = 0
 
     # centroids
-    cx: float = None
-    cy: float = None
+    cx: float = 0
+    cy: float = 0
 
     # second moments of area
-    e_ixx_g: float = None
-    e_iyy_g: float = None
-    e_ixy_g: float = None
-    e_ixx_c: float = None
-    e_iyy_c: float = None
-    e_ixy_c: float = None
-    e_i11_c: float = None
-    e_i22_c: float = None
+    e_ixx_g: float = 0
+    e_iyy_g: float = 0
+    e_ixy_g: float = 0
+    e_ixx_c: float = 0
+    e_iyy_c: float = 0
+    e_ixy_c: float = 0
+    e_i11_c: float = 0
+    e_i22_c: float = 0
 
     # principal axis angle
-    phi: float = None
+    phi: float = 0
 
     # section moduli
-    zxx_plus: float = None
-    zxx_minus: float = None
-    zyy_plus: float = None
-    zyy_minus: float = None
-    z11_plus: float = None
-    z11_minus: float = None
-    z22_plus: float = None
-    z22_minus: float = None
+    zxx_plus: float = 0
+    zxx_minus: float = 0
+    zyy_plus: float = 0
+    zyy_minus: float = 0
+    z11_plus: float = 0
+    z11_minus: float = 0
+    z22_plus: float = 0
+    z22_minus: float = 0
 
     # plastic properties
-    squash_load: float = None
-    tensile_load: float = None
-    axial_pc_x: float = None
-    axial_pc_y: float = None
-    conc_ultimate_strain: float = None
+    squash_load: float = 0
+    tensile_load: float = 0
+    axial_pc_x: float = 0
+    axial_pc_y: float = 0
+    conc_ultimate_strain: float = 0

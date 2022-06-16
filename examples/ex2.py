@@ -57,4 +57,4 @@ geometry = concrete_rectangular_section(
 )
 
 conc_sec = ConcreteSection(geometry)
-n, m = conc_sec.moment_interaction_diagram(theta=0, plot=True)
+# n, m = conc_sec.moment_interaction_diagram(theta=0, plot=True)
