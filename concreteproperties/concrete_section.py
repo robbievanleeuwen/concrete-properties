@@ -17,7 +17,6 @@ from sectionproperties.analysis.fea import principal_coordinate, global_coordina
 if TYPE_CHECKING:
     import matplotlib.axes
 
-import progress.bar as prog_bar
 from rich.pretty import pprint
 
 
@@ -358,18 +357,23 @@ class ConcreteSection:
         # generate list of neutral axes
         d_n_list = np.linspace(start=d_t, stop=d_nb, num=n_points)
 
-        # generate progress bar
-        with prog_bar.IncrementalBar(
-            message="Generating M-N diagram...",
-            max=n_points,
-            suffix="%(percent)d%% [ %(elapsed)ds ]",
-        ) as progress_bar:
-            # loop through each neutral axis and calculate actions
+        # create progress bar
+        with utils.create_progress() as progress:
+            task = progress.add_task(
+                description="[red]Generating M-N diagram",
+                total=n_points,
+            )
+
             for d_n in d_n_list:
                 n, _, _, mv = self.calculate_section_actions(d_n=d_n, theta=theta)
                 n_curve.append(n * n_scale)
                 m_curve.append(mv * m_scale)
-                progress_bar.next()
+                progress.update(task, advance=1)
+
+            progress.update(
+                task,
+                description="[bold green]:white_check_mark: M-N diagram generated",
+            )
 
         # add tensile load
         n_curve.append(self.gross_properties.tensile_load * n_scale)

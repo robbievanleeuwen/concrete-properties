@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from typing import List, Tuple, TYPE_CHECKING
 import numpy as np
+from rich.progress import Progress, BarColumn, ProgressColumn, TextColumn, SpinnerColumn
+from rich.table import Column
+from rich.text import Text
 
 from sectionproperties.analysis.fea import principal_coordinate, global_coordinate
 
@@ -275,3 +278,33 @@ def calculate_local_extents(
         y22_min = min(y22_min, y22)
 
     return x11_max, x11_min, y22_max, y22_min
+
+class CustomTimeElapsedColumn(ProgressColumn):
+    """Renders time elapsed in milliseconds."""
+
+    def render(self, task: "Task") -> Text:
+        """Show time remaining."""
+
+        elapsed = task.finished_time if task.finished else task.elapsed
+
+        if elapsed is None:
+            return Text("-:--:--", style="progress.elapsed")
+
+        elapsed_string = "[ {0:.4f} s ]".format(elapsed)
+
+        return Text(elapsed_string, style="progress.elapsed")
+
+
+def create_progress():
+    """Returns a Rich Progress class."""
+
+    return Progress(
+        SpinnerColumn(),
+        TextColumn(
+            "[progress.description]{task.description}", table_column=Column(ratio=1)
+        ),
+        BarColumn(bar_width=None, table_column=Column(ratio=1)),
+        TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+        CustomTimeElapsedColumn(),
+        expand=True,
+    )
