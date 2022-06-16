@@ -487,6 +487,10 @@
                 <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
             <span class="p">)</span>
 
+            <span class="c1"># if no part of the section is in tension, go to next geometry</span>
+            <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
             <span class="c1"># cracking moment for this geometry</span>
             <span class="n">f_t</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">flexural_tensile_strength</span>
@@ -619,8 +623,8 @@
 
 <div class="viewcode-block" id="ConcreteSection.ultimate_bending_capacity"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_bending_capacity</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis angle `theta` and an axial force `n`, calculates the</span>
 <span class="sd">        ultimate bending capacity.</span>
