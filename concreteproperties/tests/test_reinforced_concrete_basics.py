@@ -214,10 +214,10 @@ def test_example_3_4():
 
         geom = (geom - bar) + bar
 
-
     conc_sec = ConcreteSection(geom)
 
     # TODO: cracked neutral axis, cracking second moment of area
+
 
 def test_example_3_8():
     concrete = Concrete(
@@ -269,6 +269,7 @@ def test_example_3_8():
     assert pytest.approx(d_n, abs=1) == 133
     assert pytest.approx(mx, rel=0.01) == 302e6
 
+
 def test_example_3_9():
     concrete = Concrete(
         name="32 MPa Concrete",
@@ -319,6 +320,7 @@ def test_example_3_9():
     assert pytest.approx(d_n, rel=0.03) == 100.7
     assert pytest.approx(mx, rel=0.01) == 309e6
 
+
 def test_example_3_11():
     concrete = Concrete(
         name="25 MPa Concrete",
@@ -364,7 +366,6 @@ def test_example_3_11():
         steel_mat=steel,
     )
 
-
     # bot bars 1
     for idx in range(4):
         bar = circular_section_by_area(area=800, n=4, material=steel).shift_section(
@@ -385,6 +386,7 @@ def test_example_3_11():
     n, mx, my, mv, d_n = conc_sec.ultimate_bending_capacity()
     assert pytest.approx(d_n, abs=1) == 196
     assert pytest.approx(mx, rel=0.01) == 1860e6
+
 
 def test_example_3_14():
     pass
