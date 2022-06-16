@@ -1,0 +1,33 @@
+concreteproperties.concrete\_section.ConcreteSection
+====================================================
+
+.. currentmodule:: concreteproperties.concrete_section
+
+.. autoclass:: ConcreteSection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ConcreteSection.calculate_gross_area_properties
+      ~ConcreteSection.calculate_gross_plastic_properties
+      ~ConcreteSection.calculate_section_actions
+      ~ConcreteSection.get_pc_local
+      ~ConcreteSection.get_transformed_gross_properties
+      ~ConcreteSection.moment_interaction_diagram
+      ~ConcreteSection.normal_force_convergence
+      ~ConcreteSection.plot_moment_interaction_diagram
+      ~ConcreteSection.ultimate_bending_capacity
+   
+   
+
+   
+   
+   
