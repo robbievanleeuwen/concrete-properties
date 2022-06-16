@@ -20,6 +20,8 @@ Documentation
 
 What is *concreteproperties*???
 
+- Can only have only value of ultimate concrete strain
+
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
