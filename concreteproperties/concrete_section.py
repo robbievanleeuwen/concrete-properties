@@ -111,6 +111,16 @@ class ConcreteSection:
         )
 
         # second moments of area
+        # concrete geometries
+        for conc_geom in self.concrete_geometries:
+            conc_sec = AnalysisSection(geometry=conc_geom, order=2)
+            # conc_sec.plot_mesh()
+
+            for conc_el in conc_sec.elements:
+                el_e_ixx_g, el_e_iyy_g, el_e_ixy_g = conc_el.second_moments_of_area()
+                self.gross_properties.e_ixx_g += el_e_ixx_g
+                self.gross_properties.e_iyy_g += el_e_iyy_g
+                self.gross_properties.e_ixy_g += el_e_ixy_g
 
         pprint(self.gross_properties)
 
@@ -444,7 +454,7 @@ class ConcreteSection:
 
         # calculate concrete actions
         for conc_geom in concrete_split_geoms:
-            sec = AnalysisSection(conc_geom)
+            sec = AnalysisSection(geometry=conc_geom)
             n_sec, mv_sec = sec.ultimate_stress_analysis(
                 point_na=point_na,
                 d_n=d_n,

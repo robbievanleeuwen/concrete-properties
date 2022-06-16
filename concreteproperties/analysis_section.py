@@ -8,7 +8,7 @@ import triangle
 from concreteproperties.utils import get_strain, gauss_points, shape_function
 from concreteproperties.post import plotting_context
 
-from sectionproperties.analysis.fea import principal_coordinate
+import sectionproperties.analysis.fea as sp_fea
 
 if TYPE_CHECKING:
     from concreteproperties.material import Concrete
@@ -20,11 +20,16 @@ from rich.pretty import pprint
 class AnalysisSection:
     """Class for an analysis section to perform a fast analysis on concrete sections."""
 
-    def __init__(self, geometry: Geometry):
+    def __init__(
+        self,
+        geometry: Geometry,
+        order: int = 1,
+    ):
         """Inits the AnalysisSection class.
 
         :param geometry: Geometry object
         :type geometry: :class:`sectionproperties.pre.geometry.Geometry`
+        :param int order: Mesh element order, linear (n = 1) or quadratic (n = 2)
         """
 
         self.geometry = geometry
@@ -37,11 +42,18 @@ class AnalysisSection:
         if geometry.holes:
             tri["holes"] = geometry.holes  # set holes
 
-        self.mesh = triangle.triangulate(tri, "p")
+        if order == 1:
+            self.mesh = triangle.triangulate(tri, "pq")
+        elif order == 2:
+            self.mesh = triangle.triangulate(tri, "po2")
 
         # extract mesh data
         self.mesh_nodes = np.array(self.mesh["vertices"], dtype=np.dtype(float))
         self.mesh_elements = np.array(self.mesh["triangles"], dtype=np.dtype(int))
+
+        if order == 2:
+            # swap mid-node order to retain node ordering consistency
+            self.mesh_elements[:, [3, 4, 5]] = self.mesh_elements[:, [5, 3, 4]]
 
         # build elements
         self.elements = []
@@ -54,28 +66,38 @@ class AnalysisSection:
             x3 = self.mesh_nodes[node_ids[2]][0]
             y3 = self.mesh_nodes[node_ids[2]][1]
 
-            # create a list containing the vertex coordinates
-            coords = np.array([[x1, x2, x3], [y1, y2, y3]])
+            if order == 2:
+                x4 = self.mesh_nodes[node_ids[3]][0]
+                y4 = self.mesh_nodes[node_ids[3]][1]
+                x5 = self.mesh_nodes[node_ids[4]][0]
+                y5 = self.mesh_nodes[node_ids[4]][1]
+                x6 = self.mesh_nodes[node_ids[5]][0]
+                y6 = self.mesh_nodes[node_ids[5]][1]
 
-            # add tri6 elements to the mesh
-            self.elements.append(
-                Tri3(
+            # create a list containing the vertex coordinates
+            if order == 1:
+                coords = np.array([[x1, x2, x3], [y1, y2, y3]])
+            elif order == 2:
+                coords = coords = np.array([[x1, x2, x3, x4, x5, x6], [y1, y2, y3, y4, y5, y6]])
+
+            # add tri elements to the mesh
+            if order == 1:
+                new_el = Tri3(
                     el_id=idx,
                     coords=coords,
                     node_ids=node_ids,
                     conc_material=self.geometry.material,
                 )
-            )
+            elif order == 2:
+                new_el = Tri6(
+                    el_id=idx,
+                    coords=coords,
+                    node_ids=node_ids,
+                    conc_material=self.geometry.material,
+                )
 
-    def area_properties(
-        self,
-    ):
-        """x
-
-        x
-        """
-
-        area = self.geometry.calculate_area()
+            self.elements.append(new_el)
+            self.order = order
 
     def ultimate_stress_analysis(
         self,
@@ -147,6 +169,49 @@ class Tri3:
     node_ids: List[int]
     conc_material: Concrete
 
+    def second_moments_of_area(
+        self,
+    ):
+        """x
+
+        x
+        """
+
+        # initialise properties
+        e_ixx = 0
+        e_iyy = 0
+        e_ixy = 0
+
+        # get points for 3 point Gaussian integration
+        gps = gauss_points(n=3)
+
+        # loop through each gauss point
+        for gp in gps:
+            # determine shape function and jacobian
+            N, j = shape_function(coords=self.coords, gauss_point=gp)
+
+            e_ixx += (
+                self.conc_material.elastic_modulus
+                * gp[0]
+                * np.dot(N, np.transpose(self.coords[1, :])) ** 2
+                * j
+            )
+            e_iyy += (
+                self.conc_material.elastic_modulus
+                * gp[0]
+                * np.dot(N, np.transpose(self.coords[0, :])) ** 2
+                * j
+            )
+            e_ixy += (
+                self.conc_material.elastic_modulus
+                * gp[0]
+                * np.dot(N, np.transpose(self.coords[1, :]))
+                * np.dot(N, np.transpose(self.coords[0, :]))
+                * j
+            )
+
+        return e_ixx, e_iyy, e_ixy
+
     def calculate_ultimate_actions(
         self,
         point_na,
@@ -166,13 +231,13 @@ class Tri3:
         qy_e = 0
         force_e = 0
 
-        # get points for 3 point Gaussian integration
-        gps = gauss_points()
+        # get points for 1 point Gaussian integration
+        gps = gauss_points(n=1)
 
         # loop through each gauss point
         for gp in gps:
             # determine shape function and jacobian
-            N, j = shape_function(self.coords, gp)
+            N, j = shape_function(coords=self.coords, gauss_point=gp)
 
             # get coordinates of the gauss point
             x = np.dot(N, np.transpose(self.coords[0, :]))
@@ -202,9 +267,65 @@ class Tri3:
         cx_e, cy_e = qy_e / area_e, qx_e / area_e
 
         # convert centroid to local coordinates
-        _, c_v = principal_coordinate(phi=theta * 180 / np.pi, x=cx_e, y=cy_e)
+        _, c_v = sp_fea.principal_coordinate(phi=theta * 180 / np.pi, x=cx_e, y=cy_e)
 
         # calculate moment
         mv = force_e * (c_v - pc_local)
 
         return force_e, mv
+
+
+@dataclass
+class Tri6:
+    """xxx
+
+    xxx
+    """
+
+    el_id: int
+    coords: np.ndarray
+    node_ids: List[int]
+    conc_material: Concrete
+
+    def second_moments_of_area(
+        self,
+    ):
+        """x
+
+        x
+        """
+
+        # initialise properties
+        e_ixx = 0
+        e_iyy = 0
+        e_ixy = 0
+
+        # get points for 6 point Gaussian integration
+        gps = sp_fea.gauss_points(n=6)
+
+        # loop through each gauss point
+        for gp in gps:
+            # determine shape function and jacobian
+            N, _, j = sp_fea.shape_function(coords=self.coords, gauss_point=gp)
+
+            e_ixx += (
+                self.conc_material.elastic_modulus
+                * gp[0]
+                * np.dot(N, np.transpose(self.coords[1, :])) ** 2
+                * j
+            )
+            e_iyy += (
+                self.conc_material.elastic_modulus
+                * gp[0]
+                * np.dot(N, np.transpose(self.coords[0, :])) ** 2
+                * j
+            )
+            e_ixy += (
+                self.conc_material.elastic_modulus
+                * gp[0]
+                * np.dot(N, np.transpose(self.coords[1, :]))
+                * np.dot(N, np.transpose(self.coords[0, :]))
+                * j
+            )
+
+        return e_ixx, e_iyy, e_ixy

@@ -180,40 +180,37 @@ def calculate_extreme_fibre(
     return max_pt, d_t
 
 
-def gauss_points():
-    """x
-
-    x
-    """
-
-    return [[0.5, 1.0 / 3, 1.0 / 3]]
-
-
-#
-# def gauss_points():
-#     """x
-#
-#     x
-#     """
-#
-#     return [
-#         [1.0 / 6, 0, 0.5],
-#         [1.0 / 6, 0.5, 0],
-#         [1.0 / 6, 0.5, 0.5],
-#     ]
-
-
-def shape_function(
-    coords,
-    gp,
+def gauss_points(
+    n: float,
 ):
     """x
 
     x
     """
 
-    xi = gp[1]
-    eta = gp[2]
+    if n == 1:
+        return [[0.5, 1.0 / 3, 1.0 / 3]]
+    elif n == 3:
+        return [
+            [1.0 / 6, 0, 0.5],
+            [1.0 / 6, 0.5, 0],
+            [1.0 / 6, 0.5, 0.5],
+        ]
+    else:
+        raise ValueError(f"{n} gauss points not implemented.")
+
+
+def shape_function(
+    coords,
+    gauss_point,
+):
+    """x
+
+    x
+    """
+
+    xi = gauss_point[1]
+    eta = gauss_point[2]
 
     N = np.array([1 - xi - eta, xi, eta])
     dN = [[-1, -1], [1, 0], [0, 1]]
