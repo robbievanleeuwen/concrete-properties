@@ -13,8 +13,8 @@ if TYPE_CHECKING:
 
 
 def get_strain(
-    point: Tuple[float, float],
-    point_na: Tuple[float, float],
+    point: Tuple[float],
+    point_na: Tuple[float],
     d_n: float,
     theta: float,
     ultimate_strain: float,
@@ -23,9 +23,9 @@ def get_strain(
     neutral axis angle `theta`. Positive strain is compression.
 
     :param point: Point at which to evaluate the strain
-    :type point: Tuple[float, float]
+    :type point: Tuple[float]
     :param point_na: Point on the neutral axis
-    :type point_na: Tuple[float, float]
+    :type point_na: Tuple[float]
     :param float d_n: Depth of the neutral axis from the extreme compression fibre
     :param float theta: Angle the neutral axis makes with the horizontal axis
     :param float ultimate_strain: Strain at the extreme compression fibre
@@ -50,23 +50,23 @@ def get_strain(
 
 def get_point_from_strain(
     strain: float,
-    point_na: Tuple[float, float],
+    point_na: Tuple[float],
     d_n: float,
     theta: float,
     ultimate_strain: float,
-) -> Tuple[float, float]:
+) -> Tuple[float]:
     """Returns a point experiencing a certain `strain`, given neutral axis depth
     `d_n` and neutral axis angle `theta`.
 
     :param float strain: Strain at which to get point
     :param point_na: Point on the neutral axis
-    :type point_na: Tuple[float, float]
+    :type point_na: Tuple[float]
     :param float d_n: Depth of the neutral axis from the extreme compression fibre
     :param float theta: Angle the neutral axis makes with the horizontal axis
     :param float ultimate_strain: Strain at the extreme compression fibre
 
     :return: Point experiencing `strain`
-    :rtype: Tuple[float, float]
+    :rtype: Tuple[float]
     """
 
     # depth to point from NA
@@ -79,20 +79,20 @@ def get_point_from_strain(
 
 
 def point_on_neutral_axis(
-    extreme_fibre: Tuple[float, float],
+    extreme_fibre: Tuple[float],
     d_n: float,
     theta: float,
-) -> Tuple[float, float]:
+) -> Tuple[float]:
     """Returns a point on the neutral axis given an extreme fibre, a depth to the
     neutral axis and a neutral axis angle.
 
     :param extreme_fibre: Global coordinate of the extreme compression fibre
-    :type extreme_fibre: Tuple[float, float]
+    :type extreme_fibre: Tuple[float]
     :param float d_n: Depth of the neutral axis from the extreme compression fibre
     :param float theta: Angle the neutral axis makes with the horizontal axis
 
     :return: Point on the neutral axis in global coordinates `(x, y)`
-    :rtype: Tuple[float, float]
+    :rtype: Tuple[float]
     """
 
     # determine the coordinate of the point wrt the local axis
@@ -109,21 +109,20 @@ def point_on_neutral_axis(
 
 def split_section(
     geometry: CompoundGeometry,
-    point: Tuple[float, float],
+    point: Tuple[float],
     theta: float,
-) -> Tuple[List[Geometry], List[Geometry]]:
+) -> Tuple[List[Geometry]]:
     """Splits the geometry along a line defined by a `point` and rotation angle
     `theta`.
 
     :param geometry: Geometry to split
     :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`
     :param point: Point at which to split the geometry `(x, y)`
-    :type point: Tuple[float, float]
+    :type point: Tuple[float]
     :param float theta: Angle the neutral axis makes with the horizontal axis
 
     :return: Split geometry above and below the line
-    :rtype: Tuple[List[:class:`sectionproperties.pre.geometry.Geometry`],
-        List[:class:`sectionproperties.pre.geometry.Geometry`]]
+    :rtype: Tuple[List[:class:`sectionproperties.pre.geometry.Geometry`]]
     """
 
     # split the section using the sectionproperties method
@@ -142,23 +141,23 @@ def split_section(
 def calculate_extreme_fibre(
     points: List[List[float]],
     theta: float,
-) -> Tuple[Tuple[float, float], float]:
+) -> Tuple[Tuple[float], float]:
     """Calculates the locations of the extreme compression fibre in global
     coordinates given a neutral axis angle `theta`.
 
     :param points: Points over which to search for an extreme fibre
-    :type points: List[List[float, float]]
+    :type points: List[List[float]]
     :param float theta: Angle the neutral axis makes with the horizontal axis
 
     :return: Global coordinate of the extreme compression fibre `(x, y)` and the
         neutral axis depth at the extreme tensile fibre
-    :rtype: Tuple[Tuple[float, float], float]
+    :rtype: Tuple[Tuple[float], float]
     """
 
-    # loop through all points in the geometry
-    for (idx, point) in enumerate(points):
+    # loop through all points
+    for idx, point in enumerate(points):
         # determine the coordinate of the point wrt the local axis
-        (u, v) = principal_coordinate(phi=theta * 180 / np.pi, x=point[0], y=point[1])
+        u, v = principal_coordinate(phi=theta * 180 / np.pi, x=point[0], y=point[1])
 
         # initialise min/max variable & point
         if idx == 0:
@@ -180,6 +179,35 @@ def calculate_extreme_fibre(
     d_t = v_max - v_min
 
     return max_pt, d_t
+
+
+def calculate_max_bending_depth(
+    points: List[List[float]],
+    c_local_v: float,
+    theta: float,
+) -> float:
+    """Calculates the maximum distance from the centroid to an extreme fibre when
+    bending about an axis `theta`.
+
+    :param points: Points over which to search for a bending depth
+    :type points: List[List[float]]
+    :param float c_local_v: Centroid coordinate in the local v-direction
+    :param float theta: Angle the bending axis makes with the horizontal axis
+
+    :return: Maximum bending depth
+    :rtype: float
+    """
+
+    max_bending_depth = 0
+
+    # loop through all points
+    for idx, point in enumerate(points):
+        # determine the coordinate of the point wrt the local axis
+        _, v = principal_coordinate(phi=theta * 180 / np.pi, x=point[0], y=point[1])
+
+        max_bending_depth = max(c_local_v - v, max_bending_depth)
+
+    return max_bending_depth
 
 
 def gauss_points(

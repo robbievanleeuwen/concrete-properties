@@ -28,13 +28,13 @@ def test_rectangle_second_moment_of_area():
         iyy_g += el_iyy_g
         ixy_g += el_ixy_g
 
-    pytest.approx(ixx_g) == b * d * d * d / 3
-    pytest.approx(iyy_g) == d * b * b * b / 3
+    assert pytest.approx(ixx_g) == b * d * d * d / 3
+    assert pytest.approx(iyy_g) == d * b * b * b / 3
 
     ixx_c = ixx_g - qx**2 / area
     iyy_c = iyy_g - qy**2 / area
     ixy_c = ixy_g - qx * qy / area
 
-    pytest.approx(ixx_c) == b * d * d * d / 12
-    pytest.approx(iyy_c) == d * b * b * b / 12
-    pytest.approx(ixy_c) == 0
+    assert pytest.approx(ixx_c) == b * d * d * d / 12
+    assert pytest.approx(iyy_c) == d * b * b * b / 12
+    assert pytest.approx(ixy_c, abs=1e-6) == 0

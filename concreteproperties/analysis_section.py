@@ -74,7 +74,7 @@ class AnalysisSection:
 
     def ultimate_stress_analysis(
         self,
-        point_na: Tuple[float, float],
+        point_na: Tuple[float],
         d_n: float,
         theta: float,
         ultimate_strain: float,
@@ -83,7 +83,7 @@ class AnalysisSection:
         """Performs an ultimate stress analysis on the section.
 
         :param point_na: Point on the neutral axis
-        :type point_na: Tuple[float, float]
+        :type point_na: Tuple[float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
         :param float theta: Angle the neutral axis makes with the horizontal axis
         :param float ultimate_strain: Strain at the extreme compression fibre
@@ -128,18 +128,18 @@ class AnalysisSection:
         """
 
         with plotting_context(title=title, **kwargs) as (fig, ax):
-            color_array = []
-            c = []  # Indices of elements for mapping colors
+            colour_array = []
+            c = []  # Indices of elements for mapping colours
 
             # create an array of finite element colours
             for idx, element in enumerate(self.elements):
-                color_array.append(element.conc_material.color)
+                colour_array.append(element.conc_material.colour)
                 c.append(idx)
 
-            cmap = ListedColormap(color_array)  # custom colormap
+            cmap = ListedColormap(colour_array)  # custom colourmap
 
             # plot the mesh colours
-            ax.tripcolor(
+            ax.tripcolour(
                 self.mesh_nodes[:, 0],
                 self.mesh_nodes[:, 1],
                 self.mesh_elements[:, 0:3],
@@ -153,7 +153,7 @@ class AnalysisSection:
                 self.mesh_nodes[:, 1],
                 self.mesh_elements[:, 0:3],
                 lw=0.5,
-                color="black",
+                colour="black",
                 alpha=alpha,
             )
 
@@ -226,7 +226,7 @@ class Tri3:
 
     def calculate_ultimate_actions(
         self,
-        point_na: Tuple[float, float],
+        point_na: Tuple[float],
         d_n: float,
         theta: float,
         ultimate_strain: float,
@@ -235,7 +235,7 @@ class Tri3:
         """Calculates ultimate actions for the current finite element.
 
         :param point_na: Point on the neutral axis
-        :type point_na: Tuple[float, float]
+        :type point_na: Tuple[float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
         :param float theta: Angle the neutral axis makes with the horizontal axis
         :param float ultimate_strain: Strain at the extreme compression fibre
@@ -278,7 +278,9 @@ class Tri3:
             )
 
             # get stress at gauss point
-            stress = self.conc_material.stress_strain_profile.get_stress(strain=strain)
+            stress = self.conc_material.ultimate_stress_strain_profile.get_stress(
+                strain=strain
+            )
 
             # calculate force (stress * area)
             force_e += gp[0] * stress * j

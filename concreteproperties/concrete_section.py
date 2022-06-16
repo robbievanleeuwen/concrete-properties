@@ -260,7 +260,7 @@ class ConcreteSection:
             force_c = (
                 area
                 * conc_geom.material.alpha_1
-                * conc_geom.material.compressive_strength
+                * conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
             )
 
             # add to totals
@@ -294,25 +294,56 @@ class ConcreteSection:
         # note this MUST not vary between different concrete materials
         self.gross_properties.conc_ultimate_strain = self.concrete_geometries[
             0
-        ].material.stress_strain_profile.get_ultimate_strain()
+        ].material.ultimate_stress_strain_profile.get_ultimate_strain()
 
-    def get_pc_local(
+    def calculate_cracking_moment(
         self,
-        theta: float,
-    ) -> Tuple[float, float]:
-        """Returns the plastic centroid location in local coordinates.
+        theta: float = 0,
+    ) -> float:
+        """Calculates the cracking moment given a bending angle `theta`.
 
-        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float theta: Angle the bending axis makes with the horizontal axis
 
-        :return: Plastic centroid in local coordinates `(pc_u, pc_v)`
-        :rtype: Tuple[float, float]
+        :return: Cracking moment
+        :rtype: float
         """
 
-        return principal_coordinate(
-            phi=theta * 180 / np.pi,
-            x=self.gross_properties.axial_pc_x,
-            y=self.gross_properties.axial_pc_y,
+        # get centroidal second moments of area
+        e_ixx = self.gross_properties.e_ixx_c
+        e_iyy = self.gross_properties.e_iyy_c
+        e_ixy = self.gross_properties.e_ixy_c
+
+        # determine rotated second moment of area
+        e_iuu = (
+            e_iyy * (np.sin(theta)) ** 2
+            + e_ixx * (np.cos(theta)) ** 2
+            - 2 * e_ixy * np.sin(theta) * np.cos(theta)
         )
+
+        # loop through all concrete geometries to find lowest cracking moment
+        for idx, conc_geom in enumerate(self.concrete_geometries):
+            # get distance from centroid to extreme tensile fibre
+            d = utils.calculate_max_bending_depth(
+                points=conc_geom.points,
+                c_local_v=self.get_c_local(theta=theta)[1],
+                theta=theta,
+            )
+
+            # cracking moment for this geometry
+            f_t = (
+                conc_geom.material.flexural_tensile_strength
+                - conc_geom.material.residual_shrinkage_stress
+            )
+            m_c_geom = (f_t / conc_geom.material.elastic_modulus) * (e_iuu / d)
+
+            # if first geometry, initialise cracking moment
+            if idx == 0:
+                m_c = m_c_geom
+            # otherwise take smallest cracking moment
+            else:
+                m_c = min(m_c, m_c_geom)
+
+        return m_c
 
     def moment_interaction_diagram(
         self,
@@ -432,7 +463,7 @@ class ConcreteSection:
         self,
         theta: float,
         n: float,
-    ) -> Tuple[float, float, float, float, float]:
+    ) -> Tuple[float]:
         """Given a neutral axis angle `theta` and an axial force `n`, calculates the
         ultimate bending capacity.
 
@@ -441,7 +472,7 @@ class ConcreteSection:
 
         :return: Axial force, ultimate bending capacity about the x & y axes, resultant
             moment and the depth to the neutral axis `(n, mx, my, mv, d_n)`
-        :rtype: Tuple[float, float, float, float, float]
+        :rtype: Tuple[float]
         """
 
         # set neutral axis depth limits
@@ -497,7 +528,7 @@ class ConcreteSection:
         self,
         d_n: float,
         theta: float,
-    ) -> Tuple[float, float, float, float]:
+    ) -> Tuple[float]:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
         the resultant bending moments `mx`, `my`, `mv` and the net axial force `n`.
 
@@ -507,7 +538,7 @@ class ConcreteSection:
         :param float theta: Angle the neutral axis makes with the horizontal axis
 
         :return: Section actions `(n, mx, my, mv)`
-        :rtype: Tuple[float, float, float, float]
+        :rtype: Tuple[float]
         """
 
         # calculate extreme fibre in global coordinates
@@ -533,7 +564,9 @@ class ConcreteSection:
         concrete_split_geoms = []
 
         for conc_geom in self.concrete_geometries:
-            strains = conc_geom.material.stress_strain_profile.get_unique_strains()
+            strains = (
+                conc_geom.material.ultimate_stress_strain_profile.get_unique_strains()
+            )
 
             # loop through intermediate points on stress strain profile
             for idx, strain in enumerate(strains[1:-1]):
@@ -595,7 +628,9 @@ class ConcreteSection:
             )
 
             # calculate stress and force
-            stress = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
+            stress = steel_geom.material.ultimate_stress_strain_profile.get_stress(
+                strain=strain
+            )
             force = stress * area
             n += force
 
@@ -614,6 +649,42 @@ class ConcreteSection:
         self._ult_bend_res = [n, mx, my, mv]
 
         return n, mx, my, mv
+
+    def get_c_local(
+        self,
+        theta: float,
+    ) -> Tuple[float]:
+        """Returns the elastic centroid location in local coordinates.
+
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+
+        :return: Elastic centroid in local coordinates `(c_u, c_v)`
+        :rtype: Tuple[float]
+        """
+
+        return principal_coordinate(
+            phi=theta * 180 / np.pi,
+            x=self.gross_properties.cx,
+            y=self.gross_properties.cy,
+        )
+
+    def get_pc_local(
+        self,
+        theta: float,
+    ) -> Tuple[float]:
+        """Returns the plastic centroid location in local coordinates.
+
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+
+        :return: Plastic centroid in local coordinates `(pc_u, pc_v)`
+        :rtype: Tuple[float]
+        """
+
+        return principal_coordinate(
+            phi=theta * 180 / np.pi,
+            x=self.gross_properties.axial_pc_x,
+            y=self.gross_properties.axial_pc_y,
+        )
 
 
 @dataclass

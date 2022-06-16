@@ -10,12 +10,12 @@ pip install concreteproperties
 ```
 
 ## To do:
-- [ ] Expand material properties
-  - [ ] Tensile strength
-  - [ ] Residual shrinkage tensile stress
+- [x] Expand material properties
+  - [x] Tensile strength
+  - [x] Residual shrinkage tensile stress
 - [ ] Add concrete property calculations
   - [x] Gross second moment of area (I_g)
-  - [ ] Cracking moment (M_cr)
+  - [x] Cracking moment (M_cr)
   - [ ] Cracked second moment of area (I_cr)
   - [ ] Effective second moment of area (I_ef)
   - [ ] Reporting of k_u

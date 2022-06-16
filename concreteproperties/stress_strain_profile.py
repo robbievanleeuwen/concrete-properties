@@ -71,6 +71,28 @@ class StressStrainProfile:
 
         return stress_function(strain)
 
+    def get_compressive_strength(
+        self,
+    ) -> float:
+        """Returns the most positive stress.
+
+        :return: Compressive strength
+        :rtype: float
+        """
+
+        return max(self.stresses)
+
+    def get_tensile_strength(
+        self,
+    ) -> float:
+        """Returns the most negative stress.
+
+        :return: Tensile strength
+        :rtype: float
+        """
+
+        return min(self.stresses)
+
     def get_ultimate_strain(
         self,
     ) -> float:

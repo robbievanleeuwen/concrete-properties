@@ -85,8 +85,8 @@ html_theme_options = {
     ],
     "use_edit_page_button": True,
     "logo": {
-       "image_light": "cp_logo.png",
-       "image_dark": "cp_logo_dark.png",
+        "image_light": "cp_logo.png",
+        "image_dark": "cp_logo_dark.png",
     },
 }
 
