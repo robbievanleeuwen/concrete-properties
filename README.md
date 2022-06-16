@@ -54,7 +54,6 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
 
 ### Ultimate Analysis
 - [x] Ultimate bending capacities
-  - [ ] Ultimate curvatures
 - [ ] Moment-curvature diagrams
 - [x] Squash load
 - [x] Tensile load

@@ -329,6 +329,10 @@ class ConcreteSection:
                 theta=theta,
             )
 
+            # if no part of the section is in tension, go to next geometry
+            if d == 0:
+                continue
+
             # cracking moment for this geometry
             f_t = (
                 conc_geom.material.flexural_tensile_strength
@@ -461,8 +465,8 @@ class ConcreteSection:
 
     def ultimate_bending_capacity(
         self,
-        theta: float,
-        n: float,
+        theta: float = 0,
+        n: float = 0,
     ) -> Tuple[float]:
         """Given a neutral axis angle `theta` and an axial force `n`, calculates the
         ultimate bending capacity.
