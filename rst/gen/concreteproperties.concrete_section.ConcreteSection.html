@@ -281,6 +281,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.utils.calculate_max_bending_depth.html">
+     concreteproperties.utils.calculate_max_bending_depth
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.utils.create_progress.html">
      concreteproperties.utils.create_progress
     </a>
@@ -388,14 +393,20 @@ reinforced concrete section</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_gross_area_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_gross_area_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_gross_area_properties</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_cracking_moment</span></code></a></p></td>
+<td><p>Calculates the cracking moment given a bending angle <cite>theta</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_gross_area_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_gross_area_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_gross_area_properties</span></code></a></p></td>
 <td><p>Calculates and stores gross section area properties.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_gross_plastic_properties</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_gross_plastic_properties</span></code></a></p></td>
 <td><p>Calculates and stores gross section plastic properties.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_section_actions" title="concreteproperties.concrete_section.ConcreteSection.calculate_section_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_section_actions</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_section_actions" title="concreteproperties.concrete_section.ConcreteSection.calculate_section_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_section_actions</span></code></a></p></td>
 <td><p>Given a neutral axis depth <cite>d_n</cite> and neutral axis angle <cite>theta</cite>, calculates the resultant bending moments <cite>mx</cite>, <cite>my</cite>, <cite>mv</cite> and the net axial force <cite>n</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_c_local" title="concreteproperties.concrete_section.ConcreteSection.get_c_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_c_local</span></code></a></p></td>
+<td><p>Returns the elastic centroid location in local coordinates.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_pc_local" title="concreteproperties.concrete_section.ConcreteSection.get_pc_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pc_local</span></code></a></p></td>
 <td><p>Returns the plastic centroid location in local coordinates.</p></td>
@@ -451,18 +462,18 @@ entirely cracked.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.get_pc_local">
-<span class="sig-name descname"><span class="pre">get_pc_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_pc_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.get_pc_local" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the plastic centroid location in local coordinates.</p>
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment">
+<span class="sig-name descname"><span class="pre">calculate_cracking_moment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_cracking_moment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the cracking moment given a bending angle <cite>theta</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle the bending axis makes with the horizontal axis</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Plastic centroid in local coordinates <cite>(pc_u, pc_v)</cite></p>
+<dd class="field-even"><p>Cracking moment</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[float, float]</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -521,7 +532,7 @@ diagrams.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity">
-<span class="sig-name descname"><span class="pre">ultimate_bending_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.ultimate_bending_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ultimate_bending_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.ultimate_bending_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a neutral axis angle <cite>theta</cite> and an axial force <cite>n</cite>, calculates the
 ultimate bending capacity.</p>
 <dl class="field-list simple">
@@ -536,7 +547,7 @@ ultimate bending capacity.</p>
 moment and the depth to the neutral axis <cite>(n, mx, my, mv, d_n)</cite></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[float, float, float, float, float]</p>
+<dd class="field-odd"><p>Tuple[float]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -566,7 +577,7 @@ given <cite>d_n</cite> &amp; <cite>theta</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.calculate_section_actions">
-<span class="sig-name descname"><span class="pre">calculate_section_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_section_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_section_actions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_section_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_section_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_section_actions" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a neutral axis depth <cite>d_n</cite> and neutral axis angle <cite>theta</cite>, calculates
 the resultant bending moments <cite>mx</cite>, <cite>my</cite>, <cite>mv</cite> and the net axial force <cite>n</cite>.</p>
 <dl class="field-list simple">
@@ -582,7 +593,41 @@ d_n must be within the section and not equal to zero</p></li>
 <dd class="field-even"><p>Section actions <cite>(n, mx, my, mv)</cite></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[float, float, float, float]</p>
+<dd class="field-odd"><p>Tuple[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.get_c_local">
+<span class="sig-name descname"><span class="pre">get_c_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_c_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.get_c_local" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the elastic centroid location in local coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Elastic centroid in local coordinates <cite>(c_u, c_v)</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.get_pc_local">
+<span class="sig-name descname"><span class="pre">get_pc_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_pc_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.get_pc_local" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the plastic centroid location in local coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Plastic centroid in local coordinates <cite>(pc_u, pc_v)</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[float]</p>
 </dd>
 </dl>
 </dd></dl>

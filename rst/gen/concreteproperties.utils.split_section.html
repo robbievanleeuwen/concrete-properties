@@ -281,6 +281,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.utils.calculate_max_bending_depth.html">
+     concreteproperties.utils.calculate_max_bending_depth
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.utils.create_progress.html">
      concreteproperties.utils.create_progress
     </a>
@@ -371,14 +376,14 @@
 <h1>concreteproperties.utils.split_section<a class="headerlink" href="#concreteproperties-utils-split-section" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="concreteproperties.utils.split_section">
-<span class="sig-name descname"><span class="pre">split_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CompoundGeometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Geometry</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Geometry</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/utils.html#split_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.utils.split_section" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">split_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CompoundGeometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Geometry</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/utils.html#split_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.utils.split_section" title="Permalink to this definition">#</a></dt>
 <dd><p>Splits the geometry along a line defined by a <cite>point</cite> and rotation angle
 <cite>theta</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>geometry</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.CompoundGeometry</span></code>) – Geometry to split</p></li>
-<li><p><strong>point</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Point at which to split the geometry <cite>(x, y)</cite></p></li>
+<li><p><strong>point</strong> (<em>Tuple</em><em>[</em><em>float</em><em>]</em>) – Point at which to split the geometry <cite>(x, y)</cite></p></li>
 <li><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p></li>
 </ul>
 </dd>
@@ -386,8 +391,7 @@
 <dd class="field-even"><p>Split geometry above and below the line</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[List[<code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.Geometry</span></code>],
-List[<code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.Geometry</span></code>]]</p>
+<dd class="field-odd"><p>Tuple[List[<code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.Geometry</span></code>]]</p>
 </dd>
 </dl>
 </dd></dl>

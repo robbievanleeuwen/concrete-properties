@@ -281,6 +281,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.utils.calculate_max_bending_depth.html">
+     concreteproperties.utils.calculate_max_bending_depth
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.utils.create_progress.html">
      concreteproperties.utils.create_progress
     </a>
@@ -392,8 +397,14 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_stress" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_stress</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_compressive_strength" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_compressive_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_compressive_strength</span></code></a></p></td>
+<td><p>Returns the most positive stress.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_stress" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_stress</span></code></a></p></td>
 <td><p>Returns a stress given a strain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_tensile_strength" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_tensile_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tensile_strength</span></code></a></p></td>
+<td><p>Returns the most negative stress.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_ultimate_strain" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_ultimate_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_strain</span></code></a></p></td>
 <td><p>Returns the largest strain.</p></td>
@@ -419,6 +430,34 @@
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StressStrainProfile.get_compressive_strength">
+<span class="sig-name descname"><span class="pre">get_compressive_strength</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#StressStrainProfile.get_compressive_strength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_compressive_strength" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the most positive stress.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Compressive strength</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StressStrainProfile.get_tensile_strength">
+<span class="sig-name descname"><span class="pre">get_tensile_strength</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#StressStrainProfile.get_tensile_strength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_tensile_strength" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the most negative stress.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Tensile strength</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>

@@ -171,8 +171,8 @@
 
 
 <div class="viewcode-block" id="get_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.get_strain.html#concreteproperties.utils.get_strain">[docs]</a><span class="k">def</span> <span class="nf">get_strain</span><span class="p">(</span>
-    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
-    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
     <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -181,9 +181,9 @@
 <span class="sd">    neutral axis angle `theta`. Positive strain is compression.</span>
 
 <span class="sd">    :param point: Point at which to evaluate the strain</span>
-<span class="sd">    :type point: Tuple[float, float]</span>
+<span class="sd">    :type point: Tuple[float]</span>
 <span class="sd">    :param point_na: Point on the neutral axis</span>
-<span class="sd">    :type point_na: Tuple[float, float]</span>
+<span class="sd">    :type point_na: Tuple[float]</span>
 <span class="sd">    :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
 <span class="sd">    :param float theta: Angle the neutral axis makes with the horizontal axis</span>
 <span class="sd">    :param float ultimate_strain: Strain at the extreme compression fibre</span>
@@ -208,23 +208,23 @@
 
 <div class="viewcode-block" id="get_point_from_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.get_point_from_strain.html#concreteproperties.utils.get_point_from_strain">[docs]</a><span class="k">def</span> <span class="nf">get_point_from_strain</span><span class="p">(</span>
     <span class="n">strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
     <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Returns a point experiencing a certain `strain`, given neutral axis depth</span>
 <span class="sd">    `d_n` and neutral axis angle `theta`.</span>
 
 <span class="sd">    :param float strain: Strain at which to get point</span>
 <span class="sd">    :param point_na: Point on the neutral axis</span>
-<span class="sd">    :type point_na: Tuple[float, float]</span>
+<span class="sd">    :type point_na: Tuple[float]</span>
 <span class="sd">    :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
 <span class="sd">    :param float theta: Angle the neutral axis makes with the horizontal axis</span>
 <span class="sd">    :param float ultimate_strain: Strain at the extreme compression fibre</span>
 
 <span class="sd">    :return: Point experiencing `strain`</span>
-<span class="sd">    :rtype: Tuple[float, float]</span>
+<span class="sd">    :rtype: Tuple[float]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># depth to point from NA</span>
@@ -237,20 +237,20 @@
 
 
 <div class="viewcode-block" id="point_on_neutral_axis"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.point_on_neutral_axis.html#concreteproperties.utils.point_on_neutral_axis">[docs]</a><span class="k">def</span> <span class="nf">point_on_neutral_axis</span><span class="p">(</span>
-    <span class="n">extreme_fibre</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">extreme_fibre</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
     <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Returns a point on the neutral axis given an extreme fibre, a depth to the</span>
 <span class="sd">    neutral axis and a neutral axis angle.</span>
 
 <span class="sd">    :param extreme_fibre: Global coordinate of the extreme compression fibre</span>
-<span class="sd">    :type extreme_fibre: Tuple[float, float]</span>
+<span class="sd">    :type extreme_fibre: Tuple[float]</span>
 <span class="sd">    :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
 <span class="sd">    :param float theta: Angle the neutral axis makes with the horizontal axis</span>
 
 <span class="sd">    :return: Point on the neutral axis in global coordinates `(x, y)`</span>
-<span class="sd">    :rtype: Tuple[float, float]</span>
+<span class="sd">    :rtype: Tuple[float]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># determine the coordinate of the point wrt the local axis</span>
@@ -267,21 +267,20 @@
 
 <div class="viewcode-block" id="split_section"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.split_section.html#concreteproperties.utils.split_section">[docs]</a><span class="k">def</span> <span class="nf">split_section</span><span class="p">(</span>
     <span class="n">geometry</span><span class="p">:</span> <span class="n">CompoundGeometry</span><span class="p">,</span>
-    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Splits the geometry along a line defined by a `point` and rotation angle</span>
 <span class="sd">    `theta`.</span>
 
 <span class="sd">    :param geometry: Geometry to split</span>
 <span class="sd">    :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`</span>
 <span class="sd">    :param point: Point at which to split the geometry `(x, y)`</span>
-<span class="sd">    :type point: Tuple[float, float]</span>
+<span class="sd">    :type point: Tuple[float]</span>
 <span class="sd">    :param float theta: Angle the neutral axis makes with the horizontal axis</span>
 
 <span class="sd">    :return: Split geometry above and below the line</span>
-<span class="sd">    :rtype: Tuple[List[:class:`sectionproperties.pre.geometry.Geometry`],</span>
-<span class="sd">        List[:class:`sectionproperties.pre.geometry.Geometry`]]</span>
+<span class="sd">    :rtype: Tuple[List[:class:`sectionproperties.pre.geometry.Geometry`]]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># split the section using the sectionproperties method</span>
@@ -300,23 +299,23 @@
 <div class="viewcode-block" id="calculate_extreme_fibre"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.calculate_extreme_fibre.html#concreteproperties.utils.calculate_extreme_fibre">[docs]</a><span class="k">def</span> <span class="nf">calculate_extreme_fibre</span><span class="p">(</span>
     <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Calculates the locations of the extreme compression fibre in global</span>
 <span class="sd">    coordinates given a neutral axis angle `theta`.</span>
 
 <span class="sd">    :param points: Points over which to search for an extreme fibre</span>
-<span class="sd">    :type points: List[List[float, float]]</span>
+<span class="sd">    :type points: List[List[float]]</span>
 <span class="sd">    :param float theta: Angle the neutral axis makes with the horizontal axis</span>
 
 <span class="sd">    :return: Global coordinate of the extreme compression fibre `(x, y)` and the</span>
 <span class="sd">        neutral axis depth at the extreme tensile fibre</span>
-<span class="sd">    :rtype: Tuple[Tuple[float, float], float]</span>
+<span class="sd">    :rtype: Tuple[Tuple[float], float]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># loop through all points in the geometry</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="c1"># loop through all points</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
         <span class="c1"># determine the coordinate of the point wrt the local axis</span>
-        <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="c1"># initialise min/max variable &amp; point</span>
         <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -338,6 +337,35 @@
     <span class="n">d_t</span> <span class="o">=</span> <span class="n">v_max</span> <span class="o">-</span> <span class="n">v_min</span>
 
     <span class="k">return</span> <span class="n">max_pt</span><span class="p">,</span> <span class="n">d_t</span></div>
+
+
+<div class="viewcode-block" id="calculate_max_bending_depth"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.calculate_max_bending_depth.html#concreteproperties.utils.calculate_max_bending_depth">[docs]</a><span class="k">def</span> <span class="nf">calculate_max_bending_depth</span><span class="p">(</span>
+    <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+    <span class="n">c_local_v</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the maximum distance from the centroid to an extreme fibre when</span>
+<span class="sd">    bending about an axis `theta`.</span>
+
+<span class="sd">    :param points: Points over which to search for a bending depth</span>
+<span class="sd">    :type points: List[List[float]]</span>
+<span class="sd">    :param float c_local_v: Centroid coordinate in the local v-direction</span>
+<span class="sd">    :param float theta: Angle the bending axis makes with the horizontal axis</span>
+
+<span class="sd">    :return: Maximum bending depth</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">max_bending_depth</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># loop through all points</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+        <span class="c1"># determine the coordinate of the point wrt the local axis</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">max_bending_depth</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">c_local_v</span> <span class="o">-</span> <span class="n">v</span><span class="p">,</span> <span class="n">max_bending_depth</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">max_bending_depth</span></div>
 
 
 <div class="viewcode-block" id="gauss_points"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.gauss_points.html#concreteproperties.utils.gauss_points">[docs]</a><span class="k">def</span> <span class="nf">gauss_points</span><span class="p">(</span>

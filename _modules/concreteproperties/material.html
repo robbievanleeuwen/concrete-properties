@@ -161,54 +161,57 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 
-<span class="kn">from</span> <span class="nn">sectionproperties.pre.pre</span> <span class="kn">import</span> <span class="n">Material</span>
-
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="n">StressStrainProfile</span>
 
 
-<div class="viewcode-block" id="Concrete"><a class="viewcode-back" href="../../rst/gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Concrete</span><span class="p">(</span><span class="n">Material</span><span class="p">):</span>
+<div class="viewcode-block" id="Concrete"><a class="viewcode-back" href="../../rst/gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Concrete</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for a concrete material.</span>
 
 <span class="sd">    :param string name: Concrete material name</span>
 <span class="sd">    :param float elastic_modulus: Concrete modulus of elasticity</span>
-<span class="sd">    :param float poissons_ratio: Material Poisson&#39;s ratio</span>
 <span class="sd">    :param float density: Concrete density (mass per unit volume)</span>
-<span class="sd">    :param str color: Colour of the material for rendering</span>
-<span class="sd">    :param stress_strain_profile: Concrete stress-strain profile</span>
-<span class="sd">    :type stress_strain_profile:</span>
+<span class="sd">    :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile</span>
+<span class="sd">    :type ultimate_stress_strain_profile:</span>
 <span class="sd">        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`</span>
-<span class="sd">    :param float compressive_strength: Concrete compressive strength</span>
 <span class="sd">    :param float alpha_1: Factor that modifies the concrete compressive strength at</span>
 <span class="sd">        squash load</span>
+<span class="sd">    :param float flexural_tensile_strength: Concrete flexural tensile strength</span>
+<span class="sd">    :param float residual_shrinkage_stress: Concrete residual shrinkage stress</span>
+<span class="sd">    :param str colour: Colour of the material for rendering</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">compressive_strength</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="p">:</span> <span class="n">StressStrainProfile</span>
     <span class="n">alpha_1</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">StressStrainProfile</span>
-    <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;yield_strength&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span><span class="p">)</span></div>
+    <span class="n">flexural_tensile_strength</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">residual_shrinkage_stress</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span></div>
 
 
-<div class="viewcode-block" id="Steel"><a class="viewcode-back" href="../../rst/gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Steel</span><span class="p">(</span><span class="n">Material</span><span class="p">):</span>
+<div class="viewcode-block" id="Steel"><a class="viewcode-back" href="../../rst/gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Steel</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for a steel material.</span>
 
 <span class="sd">    :param string name: Steel material name</span>
 <span class="sd">    :param float elastic_modulus: Steel modulus of elasticity</span>
-<span class="sd">    :param float poissons_ratio: Material Poisson&#39;s ratio</span>
-<span class="sd">    :param float yield_strength: Steel yield strength</span>
 <span class="sd">    :param float density: Steel density (mass per unit volume)</span>
-<span class="sd">    :param str color: Colour of the material for rendering</span>
-<span class="sd">    :param stress_strain_profile: Steel stress-strain profile</span>
-<span class="sd">    :type stress_strain_profile:</span>
+<span class="sd">    :param float yield_strength: Steel yield stress</span>
+<span class="sd">    :param ultimate_stress_strain_profile: Ultimate steel stress-strain profile</span>
+<span class="sd">    :type ultimate_stress_strain_profile:</span>
 <span class="sd">        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`</span>
+<span class="sd">    :param str colour: Colour of the material for rendering</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">StressStrainProfile</span></div>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="p">:</span> <span class="n">StressStrainProfile</span>
+    <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span></div>
 </pre></div>
 
               </article>
