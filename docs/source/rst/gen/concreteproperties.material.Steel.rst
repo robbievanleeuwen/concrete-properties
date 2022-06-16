@@ -1,0 +1,30 @@
+concreteproperties.material.Steel
+=================================
+
+.. currentmodule:: concreteproperties.material
+
+.. autoclass:: Steel
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Steel.stress_strain_profile
+   
+   

@@ -37,9 +37,20 @@ release = ver
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.mathjax",
+    "sphinx.ext.autosummary",
     "sphinx.ext.viewcode",
+    "sphinx.ext.mathjax",
 ]
+
+autodoc_member_order = "bysource"
+autosummary_generate = True  # Turn on sphinx.ext.autosummary
+autosummary_mock_imports = ["sectionproperties"]
+autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
+html_show_sourcelink = (
+    False  # Remove 'view source code' from top of page (for html, not python)
+)
+autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
+add_module_names = False  # Remove namespaces from class/method signatures
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -55,9 +66,31 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
+html_theme = "pydata_sphinx_theme"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+
+# Theme options
+html_logo = "_static/logo.png"
+
+html_theme_options = {
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/robbievanleeuwen/concrete-properties",
+            "icon": "fab fa-github-square",
+            "type": "fontawesome",
+        },
+    ],
+    "use_edit_page_button": True,
+}
+
+html_context = {
+    "github_user": "robbievanleeuwen",
+    "github_repo": "concrete-properties",
+    "github_version": "master",
+    "doc_path": "docs/source/",
+}

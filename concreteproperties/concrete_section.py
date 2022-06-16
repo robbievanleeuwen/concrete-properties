@@ -31,7 +31,7 @@ class ConcreteSection:
 
         :param geometry: *sectionproperties* compound geometry object describing the
             reinforced concrete section
-        :type concrete_section: :class:`sectionproperties.pre.geometry.CompoundGeometry`
+        :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`
         """
 
         self.geometry = geometry

@@ -122,9 +122,8 @@ def split_section(
     :param float theta: Angle the neutral axis makes with the horizontal axis
 
     :return: Split geometry above and below the line
-    :rtype:
-        Tuple[List[:class:`sectionproperties.pre.geometry.Geometry],
-        List[sectionproperties.pre.geometry.Geometry]]
+    :rtype: Tuple[List[:class:`sectionproperties.pre.geometry.Geometry`],
+        List[:class:`sectionproperties.pre.geometry.Geometry`]]
     """
 
     # split the section using the sectionproperties method

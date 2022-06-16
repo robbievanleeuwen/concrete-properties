@@ -1,0 +1,35 @@
+concreteproperties.analysis\_section.Tri3
+=========================================
+
+.. currentmodule:: concreteproperties.analysis_section
+
+.. autoclass:: Tri3
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~Tri3.calculate_ultimate_actions
+      ~Tri3.second_moments_of_area
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Tri3.el_id
+      ~Tri3.coords
+      ~Tri3.node_ids
+      ~Tri3.conc_material
+   
+   

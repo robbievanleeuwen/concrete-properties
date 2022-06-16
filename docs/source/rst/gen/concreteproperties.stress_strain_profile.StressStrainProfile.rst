@@ -1,0 +1,28 @@
+concreteproperties.stress\_strain\_profile.StressStrainProfile
+==============================================================
+
+.. currentmodule:: concreteproperties.stress_strain_profile
+
+.. autoclass:: StressStrainProfile
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~StressStrainProfile.get_stress
+      ~StressStrainProfile.get_ultimate_strain
+      ~StressStrainProfile.get_unique_strains
+      ~StressStrainProfile.plot_stress_strain
+   
+   
+
+   
+   
+   

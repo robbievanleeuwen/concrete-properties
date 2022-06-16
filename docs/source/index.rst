@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-   LOGO
-
 Welcome to concreteproperties's documentation!
 ==============================================
+
+What is *concreteproperties*???
 
 .. toctree::
    :maxdepth: 1

@@ -3,28 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from dataclasses import dataclass, field
 
-import sectionproperties.pre.pre as sp_pre
+from sectionproperties.pre.pre import Material
 
 if TYPE_CHECKING:
     from concreteproperties.stress_strain_profile import StressStrainProfile
-
-
-@dataclass(eq=True, frozen=True)
-class Material(sp_pre.Material):
-    """Class for a *concreteproperties* material.
-
-    :param string name: Material name
-    :param float elastic_modulus: Material modulus of elasticity
-    :param float poissons_ratio: Material Poisson's ratio
-    :param float yield_strength: Material yield strength
-    :param float density: Material density (mass per unit volume)
-    :param str color: Colour of the material for rendering
-    :param stress_strain_profile: Concrete stress-strain profile
-    :type stress_strain_profile:
-        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`
-    """
-
-    stress_strain_profile: StressStrainProfile
 
 
 @dataclass(eq=True, frozen=True)
@@ -46,18 +28,11 @@ class Concrete(Material):
 
     compressive_strength: float
     alpha_1: float
+    stress_strain_profile: StressStrainProfile
     yield_strength: float = field(init=False)
 
     def __post_init__(self):
-        super().__init__(
-            name=self.name,
-            elastic_modulus=self.elastic_modulus,
-            poissons_ratio=self.poissons_ratio,
-            yield_strength=self.compressive_strength,
-            density=self.density,
-            color=self.color,
-            stress_strain_profile=self.stress_strain_profile,
-        )
+        object.__setattr__(self, 'yield_strength', self.compressive_strength)
 
 
 @dataclass(eq=True, frozen=True)
@@ -75,13 +50,4 @@ class Steel(Material):
         :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`
     """
 
-    def __post_init__(self):
-        super().__init__(
-            name=self.name,
-            elastic_modulus=self.elastic_modulus,
-            poissons_ratio=self.poissons_ratio,
-            yield_strength=self.yield_strength,
-            density=self.density,
-            color=self.color,
-            stress_strain_profile=self.stress_strain_profile,
-        )
+    stress_strain_profile: StressStrainProfile

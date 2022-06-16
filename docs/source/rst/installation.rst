@@ -9,7 +9,7 @@ Installing *concreteproperties*
 -------------------------------
 
 *concreteproperties* uses `sectionproperties <https://github.com/robbievanleeuwen/section-properties>`_
-to generate a reinforced concrete cross-section and conduct various analyses.
+to generate a reinforced concrete geometry.
 
 *concreteproperties* and all of its dependencies can be installed through the python
 package index::
