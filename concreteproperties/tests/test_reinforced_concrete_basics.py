@@ -12,6 +12,7 @@ from sectionproperties.pre.library.concrete_sections import concrete_rectangular
 # All examples come from:
 # Warner, R. F., Foster, S. J., & Kilpatrick, A. E. (2007). Reinforced Concrete Basics (1st ed.). Pearson Australia.
 
+
 def test_example_3_1():
     concrete = Concrete(
         name="32 MPa Concrete",

@@ -3,35 +3,69 @@
 
 [![Run Tests](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/tests.yml/badge.svg)](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/tests.yml) [![Lint with Black](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/black.yml/badge.svg)](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/black.yml) [![Build Documentation](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/build_docs.yml/badge.svg)](https://robbievanleeuwen.github.io/concrete-properties/) [![PyPI version](https://badge.fury.io/py/concreteproperties.svg)](https://badge.fury.io/py/concreteproperties) [![Python versions](https://img.shields.io/badge/python-3.7%20%7C%203.8%20%7C%203.9-blue?style=flat&logo=python)](https://badge.fury.io/py/concreteproperties) [![GitHub license](https://img.shields.io/github/license/robbievanleeuwen/concrete-properties)](https://github.com/robbievanleeuwen/concrete-properties/blob/master/LICENSE.md)
 
-Calculate section properties for reinforced concrete sections.
+A python package to calculate the section properties of arbitrary reinforced concrete
+sections.
+
+## Installation:
+
+For more detailed installation instructions, refer to the [documentation](https://robbievanleeuwen.github.io/concrete-properties/rst/installation.html).
 
 ```shell
 pip install concreteproperties
 ```
 
-## To do:
-- [x] Expand material properties
-  - [x] Tensile strength
-  - [x] Residual shrinkage tensile stress
-- [ ] Add concrete property calculations
-  - [x] Gross second moment of area (I_g)
-  - [x] Cracking moment (M_cr)
-  - [ ] Cracked second moment of area (I_cr)
-  - [ ] Effective second moment of area (I_ef)
-  - [ ] Reporting of k_u
-- [ ] Add stress calculations
-  - [ ] Uncracked stresses
-  - [ ] Cracked stresses
-  - [ ] Stresses at ultimate
-- [ ] Add code module
-  - [ ] Codify calculation of material properties
-- [ ] Add visualisation
-  - [ ] Stress visualisation
-  - [ ] Free body diagrams
-- [x] Exclude holes made by reinforcement in ultimate calculation
+## Documentation:
 
-## Current limitations:
-- Can only have only value of ultimate concrete strain
+The documentation for *concreteproperties* is currently under construction. The
+documentation can found at [https://robbievanleeuwen.github.io/concrete-properties/rst/installation.html](https://robbievanleeuwen.github.io/concrete-properties/rst/installation.html).
 
-## Assumptions
-- Compression (+ve); Tension (-ve)
+## Current Capabilities:
+
+### Material Properties
+- [x] Concrete materials
+  - [x] Ultimate stress-strain profiles
+    - [x] Piecewise linear profile
+    - [x] Whitney stress block (AS stress block)
+  - [ ] Service stress-strain profiles
+  - [x] Flexural tensile strength
+- [x] Steel materials
+  - [x] Ultimate stress-strain profiles
+    - [x] Piecewise linear profile
+    - [x] Elastic-plastic profile
+
+### Gross Section Properties
+- [x] Areas (Gross, Concrete, Steel)
+- [x] Axial rigidity
+- [x] Cross-section mass
+- [x] Cross-section perimeter
+- [x] First moments of area
+- [x] Elastic centroid
+- [x] Global second moments of area
+- [x] Centroidal second moments of area
+- [x] Principal axis angle
+- [x] Principal second moments of area
+- [x] Centroidal section moduli
+- [x] Principal section moduli
+
+### Cracked Section Properties
+- [x] Cracking moment
+- [ ] Cracked second moment of area
+- [ ] Effective second moment of area
+
+### Ultimate Analysis
+- [x] Ultimate bending capacities
+  - [ ] Ultimate curvatures
+- [ ] Moment-curvature diagrams
+- [x] Squash load
+- [x] Tensile load
+- [x] Moment interaction diagrams
+
+### Stress Analysis
+- [ ] Uncracked stresses
+- [ ] Cracked stresses
+- [ ] Ultimate stresses
+
+### Design Codes
+- [ ] Design code modules
+  - [ ] AS3600
+  - [ ] AS5100
