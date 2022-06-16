@@ -3,8 +3,20 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to concreteproperties's documentation!
-==============================================
+.. image:: _static/cp_logo.png
+ :width: 100 %
+ :alt: concreteproperties
+ :align: left
+ :class: only-light
+
+.. image:: _static/cp_logo_dark.png
+ :width: 100 %
+ :alt: concreteproperties
+ :align: left
+ :class: only-dark
+
+Documentation
+=============
 
 What is *concreteproperties*???
 
