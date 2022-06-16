@@ -74,8 +74,6 @@ html_theme = "pydata_sphinx_theme"
 html_static_path = ["_static"]
 
 # Theme options
-html_logo = "_static/logo.png"
-
 html_theme_options = {
     "icon_links": [
         {
@@ -86,6 +84,10 @@ html_theme_options = {
         },
     ],
     "use_edit_page_button": True,
+    "logo": {
+       "image_light": "cp_logo.png",
+       "image_dark": "cp_logo_dark.png",
+    },
 }
 
 html_context = {
