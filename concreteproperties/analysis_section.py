@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import List, Tuple, TYPE_CHECKING
 from dataclasses import dataclass
 import numpy as np
+from matplotlib.colors import ListedColormap
 import triangle
 
 from concreteproperties.utils import get_strain, gauss_points, shape_function
@@ -11,6 +12,7 @@ from concreteproperties.post import plotting_context
 import sectionproperties.analysis.fea as sp_fea
 
 if TYPE_CHECKING:
+    import matplotlib.axes
     from concreteproperties.material import Concrete
     from sectionproperties.pre.geometry import Geometry
 
@@ -23,13 +25,11 @@ class AnalysisSection:
     def __init__(
         self,
         geometry: Geometry,
-        order: int = 1,
     ):
         """Inits the AnalysisSection class.
 
         :param geometry: Geometry object
         :type geometry: :class:`sectionproperties.pre.geometry.Geometry`
-        :param int order: Mesh element order, linear (n = 1) or quadratic (n = 2)
         """
 
         self.geometry = geometry
@@ -42,18 +42,11 @@ class AnalysisSection:
         if geometry.holes:
             tri["holes"] = geometry.holes  # set holes
 
-        if order == 1:
-            self.mesh = triangle.triangulate(tri, "pq")
-        elif order == 2:
-            self.mesh = triangle.triangulate(tri, "po2")
+        self.mesh = triangle.triangulate(tri, "p")
 
         # extract mesh data
         self.mesh_nodes = np.array(self.mesh["vertices"], dtype=np.dtype(float))
         self.mesh_elements = np.array(self.mesh["triangles"], dtype=np.dtype(int))
-
-        if order == 2:
-            # swap mid-node order to retain node ordering consistency
-            self.mesh_elements[:, [3, 4, 5]] = self.mesh_elements[:, [5, 3, 4]]
 
         # build elements
         self.elements = []
@@ -66,47 +59,40 @@ class AnalysisSection:
             x3 = self.mesh_nodes[node_ids[2]][0]
             y3 = self.mesh_nodes[node_ids[2]][1]
 
-            if order == 2:
-                x4 = self.mesh_nodes[node_ids[3]][0]
-                y4 = self.mesh_nodes[node_ids[3]][1]
-                x5 = self.mesh_nodes[node_ids[4]][0]
-                y5 = self.mesh_nodes[node_ids[4]][1]
-                x6 = self.mesh_nodes[node_ids[5]][0]
-                y6 = self.mesh_nodes[node_ids[5]][1]
-
             # create a list containing the vertex coordinates
-            if order == 1:
-                coords = np.array([[x1, x2, x3], [y1, y2, y3]])
-            elif order == 2:
-                coords = coords = np.array([[x1, x2, x3, x4, x5, x6], [y1, y2, y3, y4, y5, y6]])
+            coords = np.array([[x1, x2, x3], [y1, y2, y3]])
 
             # add tri elements to the mesh
-            if order == 1:
-                new_el = Tri3(
+            self.elements.append(
+                Tri3(
                     el_id=idx,
                     coords=coords,
                     node_ids=node_ids,
                     conc_material=self.geometry.material,
                 )
-            elif order == 2:
-                new_el = Tri6(
-                    el_id=idx,
-                    coords=coords,
-                    node_ids=node_ids,
-                    conc_material=self.geometry.material,
-                )
-
-            self.elements.append(new_el)
-            self.order = order
+            )
 
     def ultimate_stress_analysis(
         self,
-        point_na,
-        d_n,
-        theta,
-        ultimate_strain,
-        pc_local,
-    ):
+        point_na: Tuple[float, float],
+        d_n: float,
+        theta: float,
+        ultimate_strain: float,
+        pc_local: float,
+    ) -> Tuple[float]:
+        """Performs an ultimate stress analysis on the section.
+
+        :param point_na: Point on the neutral axis
+        :type point_na: Tuple[float, float]
+        :param float d_n: Depth of the neutral axis from the extreme compression fibre
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float ultimate_strain: Strain at the extreme compression fibre
+        :param float pc_local: y-location of the plastic centroid in local coordinates
+
+        :return: Axial force and resultant moment
+        :rtype: Tuple[float]
+        """
+
         # initialise section actions
         n = 0
         mv = 0
@@ -130,7 +116,7 @@ class AnalysisSection:
         alpha=0.5,
         title="Finite Element Mesh",
         **kwargs,
-    ):
+    ) -> matplotlib.axes._subplots.AxesSubplot:
         """Plots the finite element mesh.
 
         :param float alpha: Transparency of the mesh outlines
@@ -138,10 +124,29 @@ class AnalysisSection:
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes`
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
         """
 
         with plotting_context(title=title, **kwargs) as (fig, ax):
+            color_array = []
+            c = []  # Indices of elements for mapping colors
+
+            # create an array of finite element colours
+            for idx, element in enumerate(self.elements):
+                color_array.append(element.conc_material.color)
+                c.append(idx)
+
+            cmap = ListedColormap(color_array)  # custom colormap
+
+            # plot the mesh colours
+            ax.tripcolor(
+                self.mesh_nodes[:, 0],
+                self.mesh_nodes[:, 1],
+                self.mesh_elements[:, 0:3],
+                c,
+                cmap=cmap,
+            )
+
             # plot the mesh
             ax.triplot(
                 self.mesh_nodes[:, 0],
@@ -159,9 +164,15 @@ class AnalysisSection:
 
 @dataclass
 class Tri3:
-    """xxx
+    """Class for a three noded linear triangular element.
 
-    xxx
+    :param int el_id: Unique element id
+    :param coords: A 2 x 3 array of the coordinates of the tri-3 nodes.
+    :type coords: :class:`numpy.ndarray`
+    :param node_ids: A list of the global node ids for the current element
+    :type node_ids: List[int]
+    :param conc_material: Material object for the current finite element.
+    :type conc_material: :class:`~concreteproperties.material.Concrete`
     """
 
     el_id: int
@@ -171,10 +182,11 @@ class Tri3:
 
     def second_moments_of_area(
         self,
-    ):
-        """x
+    ) -> Tuple[float]:
+        """Calculates the second moments of area for the current finite element.
 
-        x
+        :return: Modulus weighted second moments of area *(e_ixx, e_iyy, e_ixy)*
+        :rtype: Tuple[float]
         """
 
         # initialise properties
@@ -214,15 +226,23 @@ class Tri3:
 
     def calculate_ultimate_actions(
         self,
-        point_na,
-        d_n,
-        theta,
-        ultimate_strain,
-        pc_local,
-    ):
-        """x
+        point_na: Tuple[float, float],
+        d_n: float,
+        theta: float,
+        ultimate_strain: float,
+        pc_local: float,
+    ) -> Tuple[float]:
+        """Calculates ultimate actions for the current finite element.
 
-        x
+        :param point_na: Point on the neutral axis
+        :type point_na: Tuple[float, float]
+        :param float d_n: Depth of the neutral axis from the extreme compression fibre
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float ultimate_strain: Strain at the extreme compression fibre
+        :param float pc_local: y-location of the plastic centroid in local coordinates
+
+        :return: Axial force and resultant moment
+        :rtype: Tuple[float]
         """
 
         # initialise element results
@@ -273,59 +293,3 @@ class Tri3:
         mv = force_e * (c_v - pc_local)
 
         return force_e, mv
-
-
-@dataclass
-class Tri6:
-    """xxx
-
-    xxx
-    """
-
-    el_id: int
-    coords: np.ndarray
-    node_ids: List[int]
-    conc_material: Concrete
-
-    def second_moments_of_area(
-        self,
-    ):
-        """x
-
-        x
-        """
-
-        # initialise properties
-        e_ixx = 0
-        e_iyy = 0
-        e_ixy = 0
-
-        # get points for 6 point Gaussian integration
-        gps = sp_fea.gauss_points(n=6)
-
-        # loop through each gauss point
-        for gp in gps:
-            # determine shape function and jacobian
-            N, _, j = sp_fea.shape_function(coords=self.coords, gauss_point=gp)
-
-            e_ixx += (
-                self.conc_material.elastic_modulus
-                * gp[0]
-                * np.dot(N, np.transpose(self.coords[1, :])) ** 2
-                * j
-            )
-            e_iyy += (
-                self.conc_material.elastic_modulus
-                * gp[0]
-                * np.dot(N, np.transpose(self.coords[0, :])) ** 2
-                * j
-            )
-            e_ixy += (
-                self.conc_material.elastic_modulus
-                * gp[0]
-                * np.dot(N, np.transpose(self.coords[1, :]))
-                * np.dot(N, np.transpose(self.coords[0, :]))
-                * j
-            )
-
-        return e_ixx, e_iyy, e_ixy

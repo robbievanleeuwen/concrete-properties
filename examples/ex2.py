@@ -7,6 +7,8 @@ from concreteproperties.stress_strain_profile import (
     SteelElasticPlastic,
 )
 
+from rich.pretty import pprint
+
 concrete_compressive_strength = 40
 steel_yield_strength = 500
 steel_elastic_modulus = 200e3
@@ -57,4 +59,8 @@ geometry = concrete_rectangular_section(
 )
 
 conc_sec = ConcreteSection(geometry)
-# n, m = conc_sec.moment_interaction_diagram(theta=0, plot=True)
+
+pprint(conc_sec.gross_properties)
+pprint(conc_sec.get_transformed_gross_properties(elastic_modulus=32.8e3))
+
+n, m = conc_sec.moment_interaction_diagram(theta=0, plot=True)

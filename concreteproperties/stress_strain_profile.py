@@ -161,12 +161,12 @@ class WhitneyStressBlock(StressStrainProfile):
         )
 
 
-class ParabolicStressBlock(StressStrainProfile):
-    pass
-
-
-class PCAStressProfile(StressStrainProfile):
-    pass
+# class ParabolicStressBlock(StressStrainProfile):
+#     pass
+#
+#
+# class PCAStressProfile(StressStrainProfile):
+#     pass
 
 
 class SteelElasticPlastic(BilinearProfile):

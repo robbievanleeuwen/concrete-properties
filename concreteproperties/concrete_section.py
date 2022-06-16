@@ -1,5 +1,7 @@
-from typing import List, Tuple
-from dataclasses import dataclass
+from __future__ import annotations
+
+from typing import List, Tuple, TYPE_CHECKING
+from dataclasses import dataclass, field
 import numpy as np
 from scipy.optimize import brentq
 import matplotlib.pyplot as plt
@@ -11,6 +13,9 @@ from concreteproperties.post import plotting_context
 
 from sectionproperties.pre.geometry import CompoundGeometry
 from sectionproperties.analysis.fea import principal_coordinate, global_coordinate
+
+if TYPE_CHECKING:
+    import matplotlib.axes
 
 import progress.bar as prog_bar
 from rich.pretty import pprint
@@ -110,11 +115,10 @@ class ConcreteSection:
             self.gross_properties.e_qx / self.gross_properties.e_a
         )
 
-        # second moments of area
+        # global second moments of area
         # concrete geometries
         for conc_geom in self.concrete_geometries:
-            conc_sec = AnalysisSection(geometry=conc_geom, order=2)
-            # conc_sec.plot_mesh()
+            conc_sec = AnalysisSection(geometry=conc_geom)
 
             for conc_el in conc_sec.elements:
                 el_e_ixx_g, el_e_iyy_g, el_e_ixy_g = conc_el.second_moments_of_area()
@@ -122,7 +126,112 @@ class ConcreteSection:
                 self.gross_properties.e_iyy_g += el_e_iyy_g
                 self.gross_properties.e_ixy_g += el_e_ixy_g
 
-        pprint(self.gross_properties)
+        # steel geometries
+        for steel_geom in self.steel_geometries:
+            # area, diameter and centroid of geometry
+            area = steel_geom.calculate_area()
+            diam = np.sqrt(4 * area / np.pi)
+            centroid = steel_geom.calculate_centroid()
+
+            self.gross_properties.e_ixx_g += steel_geom.material.elastic_modulus * (
+                np.pi * pow(diam, 4) / 64 + area * centroid[1] * centroid[1]
+            )
+            self.gross_properties.e_iyy_g += steel_geom.material.elastic_modulus * (
+                np.pi * pow(diam, 4) / 64 + area * centroid[0] * centroid[0]
+            )
+            self.gross_properties.e_ixy_g += steel_geom.material.elastic_modulus * (
+                area * centroid[0] * centroid[1]
+            )
+
+        # centroidal second moments of area
+        self.gross_properties.e_ixx_c = (
+            self.gross_properties.e_ixx_g
+            - self.gross_properties.e_qx**2 / self.gross_properties.e_a
+        )
+        self.gross_properties.e_iyy_c = (
+            self.gross_properties.e_iyy_g
+            - self.gross_properties.e_qy**2 / self.gross_properties.e_a
+        )
+        self.gross_properties.e_ixy_c = (
+            self.gross_properties.e_ixy_g
+            - self.gross_properties.e_qx
+            * self.gross_properties.e_qy
+            / self.gross_properties.e_a
+        )
+
+        # principal 2nd moments of area about the centroidal xy axis
+        Delta = (
+            ((self.gross_properties.e_ixx_c - self.gross_properties.e_iyy_c) / 2) ** 2
+            + self.gross_properties.e_ixy_c**2
+        ) ** 0.5
+        self.gross_properties.e_i11_c = (
+            self.gross_properties.e_ixx_c + self.gross_properties.e_iyy_c
+        ) / 2 + Delta
+        self.gross_properties.e_i22_c = (
+            self.gross_properties.e_ixx_c + self.gross_properties.e_iyy_c
+        ) / 2 - Delta
+
+        # principal axis angle
+        if (
+            abs(self.gross_properties.e_ixx_c - self.gross_properties.e_i11_c)
+            < 1e-12 * self.gross_properties.e_i11_c
+        ):
+            self.gross_properties.phi = 0
+        else:
+            self.gross_properties.phi = (
+                np.arctan2(
+                    self.gross_properties.e_ixx_c - self.gross_properties.e_i11_c,
+                    self.gross_properties.e_ixy_c,
+                )
+                * 180
+                / np.pi
+            )
+
+        # centroidal section moduli
+        x_min, x_max, y_min, y_max = self.geometry.calculate_extents()
+        self.gross_properties.e_zxx_plus = self.gross_properties.e_ixx_c / abs(
+            y_max - self.gross_properties.cy
+        )
+        self.gross_properties.e_zxx_minus = self.gross_properties.e_ixx_c / abs(
+            y_min - self.gross_properties.cy
+        )
+        self.gross_properties.e_zyy_plus = self.gross_properties.e_iyy_c / abs(
+            x_max - self.gross_properties.cx
+        )
+        self.gross_properties.e_zyy_minus = self.gross_properties.e_iyy_c / abs(
+            x_min - self.gross_properties.cx
+        )
+
+        # principal section moduli
+        x11_max, x11_min, y22_max, y22_min = utils.calculate_local_extents(
+            geometry=self.geometry,
+            cx=self.gross_properties.cx,
+            cy=self.gross_properties.cy,
+            theta=self.gross_properties.phi,
+        )
+
+        # evaluate principal section moduli
+        self.gross_properties.e_z11_plus = self.gross_properties.e_i11_c / abs(y22_max)
+        self.gross_properties.e_z11_minus = self.gross_properties.e_i11_c / abs(y22_min)
+        self.gross_properties.e_z22_plus = self.gross_properties.e_i22_c / abs(x11_max)
+        self.gross_properties.e_z22_minus = self.gross_properties.e_i22_c / abs(x11_min)
+
+    def get_transformed_gross_properties(
+        self,
+        elastic_modulus: float,
+    ) -> TransformedConcreteProperties:
+        """Transforms gross section properties given a reference elastic modulus.
+
+        :param float elastic_modulus: Reference elastic modulus
+
+        :return: Transformed concrete properties object
+        :rtype:
+            :class:`~concreteproperties.concrete_section.TransformedConcreteProperties`
+        """
+
+        return TransformedConcreteProperties(
+            concrete_properties=self.gross_properties, elastic_modulus=elastic_modulus
+        )
 
     def calculate_gross_plastic_properties(
         self,
@@ -279,7 +388,7 @@ class ConcreteSection:
         m_i: List[List[float]],
         labels: List[str],
         **kwargs,
-    ):
+    ) -> matplotlib.axes._subplots.AxesSubplot:
         """Plots a number of moment interaction diagrams.
 
         :param n_i: List containing outputs of axial force from moment interaction
@@ -293,7 +402,7 @@ class ConcreteSection:
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes`
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
         """
 
         # create plot and setup the plot
@@ -505,7 +614,7 @@ class ConcreteSection:
 
 @dataclass
 class ConcreteProperties:
-    """Class for storing basic gross concrete section properties."""
+    """Class for storing gross concrete section properties."""
 
     # section areas
     total_area: float = 0
@@ -541,6 +650,51 @@ class ConcreteProperties:
     phi: float = 0
 
     # section moduli
+    e_zxx_plus: float = 0
+    e_zxx_minus: float = 0
+    e_zyy_plus: float = 0
+    e_zyy_minus: float = 0
+    e_z11_plus: float = 0
+    e_z11_minus: float = 0
+    e_z22_plus: float = 0
+    e_z22_minus: float = 0
+
+    # plastic properties
+    squash_load: float = 0
+    tensile_load: float = 0
+    axial_pc_x: float = 0
+    axial_pc_y: float = 0
+    conc_ultimate_strain: float = 0
+
+
+@dataclass
+class TransformedConcreteProperties:
+    """Class for storing transformed gross concrete section properties.
+
+    :param concrete_properties: Concrete properties object
+    :type concrete_properties:
+        :class:`~concreteproperties.concrete_section.ConcreteProperties`
+    :param float elastic_modulus: Reference elastic modulus
+    """
+
+    concrete_properties: ConcreteProperties = field(repr=False)
+    elastic_modulus: float
+
+    # first moments of area
+    qx: float = 0
+    qy: float = 0
+
+    # second moments of area
+    ixx_g: float = 0
+    iyy_g: float = 0
+    ixy_g: float = 0
+    ixx_c: float = 0
+    iyy_c: float = 0
+    ixy_c: float = 0
+    i11_c: float = 0
+    i22_c: float = 0
+
+    # section moduli
     zxx_plus: float = 0
     zxx_minus: float = 0
     zyy_plus: float = 0
@@ -550,9 +704,25 @@ class ConcreteProperties:
     z22_plus: float = 0
     z22_minus: float = 0
 
-    # plastic properties
-    squash_load: float = 0
-    tensile_load: float = 0
-    axial_pc_x: float = 0
-    axial_pc_y: float = 0
-    conc_ultimate_strain: float = 0
+    def __post_init__(
+        self,
+    ):
+
+        self.qx = self.concrete_properties.e_qx / self.elastic_modulus
+        self.qy = self.concrete_properties.e_qy / self.elastic_modulus
+        self.ixx_g = self.concrete_properties.e_ixx_g / self.elastic_modulus
+        self.iyy_g = self.concrete_properties.e_iyy_g / self.elastic_modulus
+        self.ixy_g = self.concrete_properties.e_ixy_g / self.elastic_modulus
+        self.ixx_c = self.concrete_properties.e_ixx_c / self.elastic_modulus
+        self.iyy_c = self.concrete_properties.e_iyy_c / self.elastic_modulus
+        self.ixy_c = self.concrete_properties.e_ixy_c / self.elastic_modulus
+        self.i11_c = self.concrete_properties.e_i11_c / self.elastic_modulus
+        self.i22_c = self.concrete_properties.e_i22_c / self.elastic_modulus
+        self.zxx_plus = self.concrete_properties.e_zxx_plus / self.elastic_modulus
+        self.zxx_minus = self.concrete_properties.e_zxx_minus / self.elastic_modulus
+        self.zyy_plus = self.concrete_properties.e_zyy_plus / self.elastic_modulus
+        self.zyy_minus = self.concrete_properties.e_zyy_minus / self.elastic_modulus
+        self.z11_plus = self.concrete_properties.e_z11_plus / self.elastic_modulus
+        self.z11_minus = self.concrete_properties.e_z11_minus / self.elastic_modulus
+        self.z22_plus = self.concrete_properties.e_z22_plus / self.elastic_modulus
+        self.z22_minus = self.concrete_properties.e_z22_minus / self.elastic_modulus

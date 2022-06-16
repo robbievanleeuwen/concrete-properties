@@ -182,10 +182,15 @@ def calculate_extreme_fibre(
 
 def gauss_points(
     n: float,
-):
-    """x
+) -> List[List[float]]:
+    """Returns the Gaussian weights and locations for *n* point Gaussian integration of
+    a linear triangular element.
 
-    x
+    :param int n: Number of Gauss points (1, 3 or 6)
+
+    :return: An *n x 3* matrix consisting of the integration weight and the xi and eta
+        locations for *n* Gauss points
+    :rtype: List[List[float]]
     """
 
     if n == 1:
@@ -201,12 +206,20 @@ def gauss_points(
 
 
 def shape_function(
-    coords,
-    gauss_point,
-):
-    """x
+    coords: np.ndarray,
+    gauss_point: List[float],
+) -> Tuple[np.ndarry, float]:
+    """Computes shape functions and the determinant of the Jacobian matrix for a
+    linear triangular element at a given Gauss point.
 
-    x
+    :param coords: Global coordinates of the linear triangle vertices [2 x 3]
+    :type coords: :class:`numpy.ndarray`
+    :param gauss_point: Gaussian weight and isoparametric location of the Gauss point
+    :type gauss_point: List[float]
+
+    :return: The value of the shape functions *N(i)* at the given Gauss point [1 x 3]
+        and the determinant of the Jacobian matrix *j*
+    :rtype: Tuple[:class:`numpy.ndarray`, float]
     """
 
     xi = gauss_point[1]
@@ -220,3 +233,45 @@ def shape_function(
     j = np.linalg.det(J_mat)
 
     return N, j
+
+
+def calculate_local_extents(
+    geometry: CompoundGeometry,
+    cx: float,
+    cy: float,
+    theta: float,
+) -> Tuple[float]:
+    """Calculates the local extents of a geometry given a centroid and axis angle.
+
+    :param geometry: Geometry over which to calculate extents
+    :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`
+    :param float cx: x-location of the centroid
+    :param float cy: y-location of the centroid
+    :param float theta: Angle the local axis makes with the x-axis
+
+    :return: Local extents *(x11_max, x11_min, y22_max, y22_min)*
+    :rtype: Tuple[float]
+    """
+
+    # loop through all points in geometry
+    for idx, pt in enumerate(geometry.points):
+        x = pt[0] - cx
+        y = pt[1] - cy
+
+        # determine the coordinate of the point wrt the principal axis
+        x11, y22 = principal_coordinate(phi=theta, x=x, y=y)
+
+        # initialise min, max variables
+        if idx == 0:
+            x11_max = x11
+            x11_min = x11
+            y22_max = y22
+            y22_min = y22
+
+        # update the mins and maxes where necessary
+        x11_max = max(x11_max, x11)
+        x11_min = min(x11_min, x11)
+        y22_max = max(y22_max, y22)
+        y22_min = min(y22_min, y22)
+
+    return x11_max, x11_min, y22_max, y22_min
