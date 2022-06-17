@@ -17,7 +17,7 @@ pip install concreteproperties
 ## Documentation:
 
 The documentation for *concreteproperties* is currently under construction. The
-documentation can found at [https://robbievanleeuwen.github.io/concrete-properties/rst/installation.html](https://robbievanleeuwen.github.io/concrete-properties/rst/installation.html).
+documentation can found at [https://robbievanleeuwen.github.io/concrete-properties](https://robbievanleeuwen.github.io/concrete-properties).
 
 ## Current Capabilities:
 
@@ -26,6 +26,8 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
   - [x] Ultimate stress-strain profiles
     - [x] Piecewise linear profile
     - [x] Whitney stress block (AS stress block)
+    - [ ] Parabolic stress profile
+    - [ ] PCA stress profile
   - [ ] Service stress-strain profiles
   - [x] Flexural tensile strength
 - [x] Steel materials
@@ -58,6 +60,9 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
 - [x] Squash load
 - [x] Tensile load
 - [x] Moment interaction diagrams
+  - [x] Basic M-N curves
+  - [ ] Advanced M-N curves (sagging & hogging)
+  - [ ] Biaxial bending curves
 
 ### Stress Analysis
 - [ ] Uncracked stresses
