@@ -159,7 +159,6 @@
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">brentq</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -168,6 +167,7 @@
 <span class="kn">from</span> <span class="nn">concreteproperties.analysis_section</span> <span class="kn">import</span> <span class="n">AnalysisSection</span>
 <span class="kn">import</span> <span class="nn">concreteproperties.utils</span> <span class="k">as</span> <span class="nn">utils</span>
 <span class="kn">from</span> <span class="nn">concreteproperties.post</span> <span class="kn">import</span> <span class="n">plotting_context</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.results</span> <span class="kn">import</span> <span class="n">ConcreteProperties</span><span class="p">,</span> <span class="n">TransformedConcreteProperties</span>
 
 <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">CompoundGeometry</span>
 <span class="kn">from</span> <span class="nn">sectionproperties.analysis.fea</span> <span class="kn">import</span> <span class="n">principal_coordinate</span><span class="p">,</span> <span class="n">global_coordinate</span>
@@ -852,122 +852,6 @@
             <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_x</span><span class="p">,</span>
             <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_y</span><span class="p">,</span>
         <span class="p">)</span></div></div>
-
-
-<div class="viewcode-block" id="ConcreteProperties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteProperties.html#concreteproperties.concrete_section.ConcreteProperties">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">ConcreteProperties</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Class for storing gross concrete section properties.&quot;&quot;&quot;</span>
-
-    <span class="c1"># section areas</span>
-    <span class="n">total_area</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">concrete_area</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">steel_area</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1"># section mass</span>
-    <span class="n">mass</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1"># section perimeter</span>
-    <span class="n">perimeter</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1"># first moments of area</span>
-    <span class="n">e_qx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_qy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1"># centroids</span>
-    <span class="n">cx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">cy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1"># second moments of area</span>
-    <span class="n">e_ixx_g</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_iyy_g</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_ixy_g</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_ixx_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_iyy_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_ixy_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_i11_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_i22_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1"># principal axis angle</span>
-    <span class="n">phi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1"># section moduli</span>
-    <span class="n">e_zxx_plus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_zxx_minus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_zyy_plus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_zyy_minus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_z11_plus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_z11_minus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_z22_plus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">e_z22_minus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1"># plastic properties</span>
-    <span class="n">squash_load</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">tensile_load</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">axial_pc_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">axial_pc_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">conc_ultimate_strain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span></div>
-
-
-<div class="viewcode-block" id="TransformedConcreteProperties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.TransformedConcreteProperties.html#concreteproperties.concrete_section.TransformedConcreteProperties">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">TransformedConcreteProperties</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Class for storing transformed gross concrete section properties.</span>
-
-<span class="sd">    :param concrete_properties: Concrete properties object</span>
-<span class="sd">    :type concrete_properties:</span>
-<span class="sd">        :class:`~concreteproperties.concrete_section.ConcreteProperties`</span>
-<span class="sd">    :param float elastic_modulus: Reference elastic modulus</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">concrete_properties</span><span class="p">:</span> <span class="n">ConcreteProperties</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
-
-    <span class="c1"># first moments of area</span>
-    <span class="n">qx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">qy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1"># second moments of area</span>
-    <span class="n">ixx_g</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">iyy_g</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">ixy_g</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">ixx_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">iyy_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">ixy_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">i11_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">i22_c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1"># section moduli</span>
-    <span class="n">zxx_plus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">zxx_minus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">zyy_plus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">zyy_minus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">z11_plus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">z11_minus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">z22_plus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">z22_minus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-    <span class="p">):</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">qx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_qx</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_qy</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ixx_g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_ixx_g</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">iyy_g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_iyy_g</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ixy_g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_ixy_g</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ixx_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_ixx_c</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">iyy_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_iyy_c</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ixy_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_ixy_c</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">i11_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_i11_c</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">i22_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_i22_c</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">zxx_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_zxx_plus</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">zxx_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_zxx_minus</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">zyy_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_zyy_plus</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">zyy_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_zyy_minus</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">z11_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_z11_plus</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">z11_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_z11_minus</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">z22_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_z22_plus</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">z22_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_z22_minus</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span></div>
 </pre></div>
 
               </article>
