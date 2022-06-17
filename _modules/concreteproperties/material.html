@@ -170,8 +170,10 @@
     <span class="sd">&quot;&quot;&quot;Class for a concrete material.</span>
 
 <span class="sd">    :param string name: Concrete material name</span>
-<span class="sd">    :param float elastic_modulus: Concrete modulus of elasticity</span>
 <span class="sd">    :param float density: Concrete density (mass per unit volume)</span>
+<span class="sd">    :param stress_strain_profile: Ultimate concrete stress-strain profile</span>
+<span class="sd">    :type stress_strain_profile:</span>
+<span class="sd">        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`</span>
 <span class="sd">    :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile</span>
 <span class="sd">    :type ultimate_stress_strain_profile:</span>
 <span class="sd">        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`</span>
@@ -183,13 +185,16 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">StressStrainProfile</span>
     <span class="n">ultimate_stress_strain_profile</span><span class="p">:</span> <span class="n">StressStrainProfile</span>
     <span class="n">alpha_1</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">flexural_tensile_strength</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">residual_shrinkage_stress</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span></div>
+    <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Steel"><a class="viewcode-back" href="../../rst/gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -197,21 +202,22 @@
     <span class="sd">&quot;&quot;&quot;Class for a steel material.</span>
 
 <span class="sd">    :param string name: Steel material name</span>
-<span class="sd">    :param float elastic_modulus: Steel modulus of elasticity</span>
 <span class="sd">    :param float density: Steel density (mass per unit volume)</span>
 <span class="sd">    :param float yield_strength: Steel yield stress</span>
-<span class="sd">    :param ultimate_stress_strain_profile: Ultimate steel stress-strain profile</span>
+<span class="sd">    :param stress_strain_profile: Ultimate steel stress-strain profile</span>
 <span class="sd">    :type ultimate_stress_strain_profile:</span>
 <span class="sd">        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`</span>
 <span class="sd">    :param str colour: Colour of the material for rendering</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">ultimate_stress_strain_profile</span><span class="p">:</span> <span class="n">StressStrainProfile</span>
-    <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span></div>
+    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">StressStrainProfile</span>
+    <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">()</span></div>
 </pre></div>
 
               </article>
@@ -244,7 +250,7 @@
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.2.<br>
 </p>
   </div>
   

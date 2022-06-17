@@ -178,6 +178,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.LinearProfile.html">
+     concreteproperties.stress_strain_profile.LinearProfile
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelElasticPlastic.html">
      concreteproperties.stress_strain_profile.SteelElasticPlastic
     </a>
@@ -400,19 +405,22 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_compressive_strength" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_compressive_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_compressive_strength</span></code></a></p></td>
 <td><p>Returns the most positive stress.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_stress" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_stress</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_elastic_modulus" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_elastic_modulus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_elastic_modulus</span></code></a></p></td>
+<td><p>Returns the elastic modulus of the stress-strain profile.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_stress" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_stress</span></code></a></p></td>
 <td><p>Returns a stress given a strain.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_tensile_strength" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_tensile_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tensile_strength</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_tensile_strength" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_tensile_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tensile_strength</span></code></a></p></td>
 <td><p>Returns the most negative stress.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_ultimate_strain" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_ultimate_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_strain</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_ultimate_strain" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_ultimate_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_strain</span></code></a></p></td>
 <td><p>Returns the largest strain.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_unique_strains" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_unique_strains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_unique_strains</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_unique_strains" title="concreteproperties.stress_strain_profile.StressStrainProfile.get_unique_strains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_unique_strains</span></code></a></p></td>
 <td><p>Returns an ordered list of unique strains.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.plot_stress_strain" title="concreteproperties.stress_strain_profile.StressStrainProfile.plot_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_stress_strain</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StressStrainProfile.plot_stress_strain" title="concreteproperties.stress_strain_profile.StressStrainProfile.plot_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_stress_strain</span></code></a></p></td>
 <td><p>Plots the stress-strain profile.</p></td>
 </tr>
 </tbody>
@@ -430,6 +438,20 @@
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StressStrainProfile.get_elastic_modulus">
+<span class="sig-name descname"><span class="pre">get_elastic_modulus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#StressStrainProfile.get_elastic_modulus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.StressStrainProfile.get_elastic_modulus" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the elastic modulus of the stress-strain profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Elastic modulus</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -542,7 +564,7 @@
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.2.<br>
 </p>
   </div>
   

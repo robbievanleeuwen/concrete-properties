@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="concreteproperties.stress_strain_profile.StressStrainProfile" href="concreteproperties.stress_strain_profile.StressStrainProfile.html" />
-    <link rel="prev" title="concreteproperties.stress_strain_profile.BilinearProfile" href="concreteproperties.stress_strain_profile.BilinearProfile.html" />
+    <link rel="prev" title="concreteproperties.stress_strain_profile.LinearProfile" href="concreteproperties.stress_strain_profile.LinearProfile.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -175,6 +175,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearProfile.html">
      concreteproperties.stress_strain_profile.BilinearProfile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.LinearProfile.html">
+     concreteproperties.stress_strain_profile.LinearProfile
     </a>
    </li>
    <li class="toctree-l2 current active">
@@ -399,19 +404,22 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.get_compressive_strength" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.get_compressive_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_compressive_strength</span></code></a></p></td>
 <td><p>Returns the most positive stress.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.get_stress" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.get_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_stress</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.get_elastic_modulus" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.get_elastic_modulus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_elastic_modulus</span></code></a></p></td>
+<td><p>Returns the elastic modulus of the stress-strain profile.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.get_stress" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.get_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_stress</span></code></a></p></td>
 <td><p>Returns a stress given a strain.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.get_tensile_strength" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.get_tensile_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tensile_strength</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.get_tensile_strength" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.get_tensile_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tensile_strength</span></code></a></p></td>
 <td><p>Returns the most negative stress.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.get_ultimate_strain" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.get_ultimate_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_strain</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.get_ultimate_strain" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.get_ultimate_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_strain</span></code></a></p></td>
 <td><p>Returns the largest strain.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.get_unique_strains" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.get_unique_strains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_unique_strains</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.get_unique_strains" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.get_unique_strains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_unique_strains</span></code></a></p></td>
 <td><p>Returns an ordered list of unique strains.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.plot_stress_strain" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.plot_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_stress_strain</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.plot_stress_strain" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.plot_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_stress_strain</span></code></a></p></td>
 <td><p>Plots the stress-strain profile.</p></td>
 </tr>
 </tbody>
@@ -423,6 +431,20 @@
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Compressive strength</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.SteelElasticPlastic.get_elastic_modulus">
+<span class="sig-name descname"><span class="pre">get_elastic_modulus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.get_elastic_modulus" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the elastic modulus of the stress-strain profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Elastic modulus</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>float</p>
@@ -504,11 +526,11 @@
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="concreteproperties.stress_strain_profile.BilinearProfile.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="concreteproperties.stress_strain_profile.LinearProfile.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">concreteproperties.stress_strain_profile.BilinearProfile</p>
+          <p class="prev-next-title">concreteproperties.stress_strain_profile.LinearProfile</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="concreteproperties.stress_strain_profile.StressStrainProfile.html" title="next page">
@@ -541,7 +563,7 @@
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.2.<br>
 </p>
   </div>
   

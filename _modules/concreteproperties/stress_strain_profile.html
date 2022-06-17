@@ -157,7 +157,9 @@
                 
   <h1>Source code for concreteproperties.stress_strain_profile</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
 
@@ -229,6 +231,39 @@
 
         <span class="k">return</span> <span class="n">stress_function</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="StressStrainProfile.get_elastic_modulus"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_elastic_modulus">[docs]</a>    <span class="k">def</span> <span class="nf">get_elastic_modulus</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the elastic modulus of the stress-strain profile.</span>
+
+<span class="sd">        :return: Elastic modulus</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">small_strain</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+        <span class="c1"># get stress at zero strain</span>
+        <span class="n">stress_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># get stress at small positive strain &amp; compute elastic modulus</span>
+        <span class="n">stress_positive</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">small_strain</span><span class="p">)</span>
+        <span class="n">em_positive</span> <span class="o">=</span> <span class="n">stress_positive</span> <span class="o">/</span> <span class="n">small_strain</span>
+
+        <span class="c1"># get stress at small negative strain &amp; compute elastic modulus</span>
+        <span class="n">stress_negative</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=-</span><span class="n">small_strain</span><span class="p">)</span>
+        <span class="n">em_negative</span> <span class="o">=</span> <span class="n">stress_negative</span> <span class="o">/</span> <span class="o">-</span><span class="n">small_strain</span>
+
+        <span class="c1"># check elastic moduli are equal, if not print warning</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">em_positive</span><span class="p">,</span> <span class="n">em_negative</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;Initial compressive and tensile elastic moduli are not equal&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">em_positive</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Elastic modulus is zero.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">em_positive</span></div>
+
 <div class="viewcode-block" id="StressStrainProfile.get_compressive_strength"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_compressive_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_compressive_strength</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -281,6 +316,24 @@
         <span class="sd">&quot;&quot;&quot;Plots the stress-strain profile.&quot;&quot;&quot;</span>
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+
+
+<div class="viewcode-block" id="LinearProfile"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.LinearProfile.html#concreteproperties.stress_strain_profile.LinearProfile">[docs]</a><span class="k">class</span> <span class="nc">LinearProfile</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for a symmetric linear stress-strain profile.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits the BilinearProfile class.</span>
+
+<span class="sd">        :param float elastic_modulus: Elastic modulus of the stress-strain profile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">strains</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">],</span>
+            <span class="n">stresses</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.001</span> <span class="o">*</span> <span class="n">elastic_modulus</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.001</span> <span class="o">*</span> <span class="n">elastic_modulus</span><span class="p">],</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BilinearProfile"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.BilinearProfile.html#concreteproperties.stress_strain_profile.BilinearProfile">[docs]</a><span class="k">class</span> <span class="nc">BilinearProfile</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
@@ -407,7 +460,7 @@
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.2.<br>
 </p>
   </div>
   
