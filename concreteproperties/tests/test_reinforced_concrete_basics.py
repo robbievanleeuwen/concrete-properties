@@ -3,9 +3,11 @@ import pytest
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.stress_strain_profile import (
+    LinearProfile,
     WhitneyStressBlock,
     SteelElasticPlastic,
 )
+
 
 from sectionproperties.pre.library.concrete_sections import (
     concrete_rectangular_section,
@@ -20,8 +22,8 @@ from sectionproperties.pre.library.primitive_sections import circular_section_by
 def test_example_3_1():
     concrete = Concrete(
         name="32 MPa Concrete",
-        elastic_modulus=30.1e3,
         density=2.4e-6,
+        stress_strain_profile=LinearProfile(elastic_modulus=30.1e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
             alpha_2=0.85,
             gamma=0.83,
@@ -36,10 +38,9 @@ def test_example_3_1():
 
     steel = Steel(
         name="500 MPa Steel",
-        elastic_modulus=200e3,
         density=7.85e-6,
         yield_strength=500,
-        ultimate_stress_strain_profile=SteelElasticPlastic(
+        stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
             fracture_strain=0.05,
@@ -76,8 +77,8 @@ def test_example_3_1():
 def test_example_3_2():
     concrete = Concrete(
         name="32 MPa Concrete",
-        elastic_modulus=30.1e3,
         density=2.4e-6,
+        stress_strain_profile=LinearProfile(elastic_modulus=30.1e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
             alpha_2=0.85,
             gamma=0.83,
@@ -92,10 +93,9 @@ def test_example_3_2():
 
     steel = Steel(
         name="500 MPa Steel",
-        elastic_modulus=200e3,
         density=7.85e-6,
         yield_strength=500,
-        ultimate_stress_strain_profile=SteelElasticPlastic(
+        stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
             fracture_strain=0.05,
@@ -156,8 +156,8 @@ def test_example_3_2():
 def test_example_3_4():
     concrete = Concrete(
         name="32 MPa Concrete",
-        elastic_modulus=30.1e3,
         density=2.4e-6,
+        stress_strain_profile=LinearProfile(elastic_modulus=30.1e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
             alpha_2=0.85,
             gamma=0.83,
@@ -172,10 +172,9 @@ def test_example_3_4():
 
     steel = Steel(
         name="500 MPa Steel",
-        elastic_modulus=200e3,
         density=7.85e-6,
         yield_strength=500,
-        ultimate_stress_strain_profile=SteelElasticPlastic(
+        stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
             fracture_strain=0.05,
@@ -222,8 +221,8 @@ def test_example_3_4():
 def test_example_3_8():
     concrete = Concrete(
         name="32 MPa Concrete",
-        elastic_modulus=30.1e3,
         density=2.4e-6,
+        stress_strain_profile=LinearProfile(elastic_modulus=30.1e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
             alpha_2=0.85,
             gamma=0.83,
@@ -238,10 +237,9 @@ def test_example_3_8():
 
     steel = Steel(
         name="500 MPa Steel",
-        elastic_modulus=200e3,
         density=7.85e-6,
         yield_strength=500,
-        ultimate_stress_strain_profile=SteelElasticPlastic(
+        stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
             fracture_strain=0.05,
@@ -273,8 +271,8 @@ def test_example_3_8():
 def test_example_3_9():
     concrete = Concrete(
         name="32 MPa Concrete",
-        elastic_modulus=30.1e3,
         density=2.4e-6,
+        stress_strain_profile=LinearProfile(elastic_modulus=30.1e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
             alpha_2=0.85,
             gamma=0.83,
@@ -289,10 +287,9 @@ def test_example_3_9():
 
     steel = Steel(
         name="500 MPa Steel",
-        elastic_modulus=200e3,
         density=7.85e-6,
         yield_strength=500,
-        ultimate_stress_strain_profile=SteelElasticPlastic(
+        stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
             fracture_strain=0.05,
@@ -324,8 +321,8 @@ def test_example_3_9():
 def test_example_3_11():
     concrete = Concrete(
         name="25 MPa Concrete",
-        elastic_modulus=26.7e3,
         density=2.4e-6,
+        stress_strain_profile=LinearProfile(elastic_modulus=26.7e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
             alpha_2=0.85,
             gamma=0.85,
@@ -340,10 +337,9 @@ def test_example_3_11():
 
     steel = Steel(
         name="500 MPa Steel",
-        elastic_modulus=200e3,
         density=7.85e-6,
         yield_strength=500,
-        ultimate_stress_strain_profile=SteelElasticPlastic(
+        stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
             fracture_strain=0.05,

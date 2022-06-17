@@ -12,8 +12,10 @@ class Concrete:
     """Class for a concrete material.
 
     :param string name: Concrete material name
-    :param float elastic_modulus: Concrete modulus of elasticity
     :param float density: Concrete density (mass per unit volume)
+    :param stress_strain_profile: Ultimate concrete stress-strain profile
+    :type stress_strain_profile:
+        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`
     :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile
     :type ultimate_stress_strain_profile:
         :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`
@@ -25,13 +27,16 @@ class Concrete:
     """
 
     name: str
-    elastic_modulus: float
     density: float
+    stress_strain_profile: StressStrainProfile
     ultimate_stress_strain_profile: StressStrainProfile
     alpha_1: float
     flexural_tensile_strength: float
     residual_shrinkage_stress: float
     colour: str
+
+    def __post_init__(self):
+        self.elastic_modulus = self.stress_strain_profile.get_elastic_modulus()
 
 
 @dataclass(eq=True)
@@ -39,18 +44,19 @@ class Steel:
     """Class for a steel material.
 
     :param string name: Steel material name
-    :param float elastic_modulus: Steel modulus of elasticity
     :param float density: Steel density (mass per unit volume)
     :param float yield_strength: Steel yield stress
-    :param ultimate_stress_strain_profile: Ultimate steel stress-strain profile
+    :param stress_strain_profile: Ultimate steel stress-strain profile
     :type ultimate_stress_strain_profile:
         :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`
     :param str colour: Colour of the material for rendering
     """
 
     name: str
-    elastic_modulus: float
     density: float
     yield_strength: float
-    ultimate_stress_strain_profile: StressStrainProfile
+    stress_strain_profile: StressStrainProfile
     colour: str
+
+    def __post_init__(self):
+        self.elastic_modulus = self.stress_strain_profile.get_elastic_modulus()

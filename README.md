@@ -22,21 +22,23 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
 ## Current Capabilities:
 
 ### Material Properties
-- [x] Concrete materials
-  - [x] Ultimate stress-strain profiles
-    - [x] Piecewise linear profile
-    - [x] Whitney stress block (AS stress block)
-    - [ ] Parabolic stress profile
-    - [ ] PCA stress profile
-  - [ ] Service stress-strain profiles
+- [x] Concrete material
+  - [x] Service stress-strain profile
+  - [x] Ultimate stress-strain profile
   - [x] Flexural tensile strength
-- [x] Steel materials
-  - [x] Ultimate stress-strain profiles
-    - [x] Piecewise linear profile
-    - [x] Elastic-plastic profile
+- [x] Steel material
+  - [x] Stress-strain profile
+- [x] Built-in stress-strain profiles
+  - [x] Piecewise linear profile
+  - [x] Linear profile
+  - [x] Bilinear profile
+  - [x] Whitney stress block (AS stress block)
+  - [ ] Parabolic stress profile
+  - [ ] PCA stress profile
+  - [x] Steel elastic-plastic profile
 
 ### Gross Section Properties
-- [x] Areas (Gross, Concrete, Steel)
+- [x] Cross-sectional areas (total, concrete, steel)
 - [x] Axial rigidity
 - [x] Cross-section mass
 - [x] Cross-section perimeter
@@ -60,9 +62,9 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
 - [x] Squash load
 - [x] Tensile load
 - [x] Moment interaction diagrams
-  - [x] Basic M-N curves
-  - [ ] Advanced M-N curves (sagging & hogging)
-  - [ ] Biaxial bending curves
+  - [x] Basic M-N curve
+  - [ ] Combined M-N curve (sagging & hogging)
+  - [ ] Biaxial bending curve
 
 ### Stress Analysis
 - [ ] Uncracked stresses

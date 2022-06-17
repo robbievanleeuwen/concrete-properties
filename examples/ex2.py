@@ -3,6 +3,7 @@ from sectionproperties.pre.library.concrete_sections import concrete_rectangular
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.stress_strain_profile import (
+    LinearProfile,
     WhitneyStressBlock,
     SteelElasticPlastic,
 )
@@ -12,8 +13,8 @@ from rich.pretty import pprint
 
 concrete = Concrete(
     name="40 MPa Concrete",
-    elastic_modulus=32.8e3,
     density=2.4e-6,
+    stress_strain_profile=LinearProfile(elastic_modulus=32.8e3),
     ultimate_stress_strain_profile=WhitneyStressBlock(
         alpha_2=0.85,
         gamma=0.77,
@@ -28,10 +29,9 @@ concrete = Concrete(
 
 steel = Steel(
     name="500 MPa Steel",
-    elastic_modulus=200e3,
     density=7.85e-6,
     yield_strength=500,
-    ultimate_stress_strain_profile=SteelElasticPlastic(
+    stress_strain_profile=SteelElasticPlastic(
         yield_strength=500,
         elastic_modulus=200e3,
         fracture_strain=0.05,
@@ -57,8 +57,8 @@ geometry = concrete_rectangular_section(
 conc_sec = ConcreteSection(geometry)
 
 pprint(conc_sec.gross_properties)
-# pprint(conc_sec.get_transformed_gross_properties(elastic_modulus=32.8e3))
-#
-# n, m = conc_sec.moment_interaction_diagram(theta=0, plot=True)
+pprint(conc_sec.get_transformed_gross_properties(elastic_modulus=32.8e3))
+
+n, m = conc_sec.moment_interaction_diagram(theta=0, plot=True)
 
 pprint(conc_sec.calculate_cracking_moment(theta=np.pi))

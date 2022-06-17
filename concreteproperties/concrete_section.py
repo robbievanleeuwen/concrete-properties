@@ -415,11 +415,11 @@ class ConcreteSection:
         """
 
         # calculate convergence
-        conv = n - self.calculate_section_actions(d_n=d_n, theta=theta)[0]
+        conv = n - self.calculate_ultimate_section_actions(d_n=d_n, theta=theta)[0]
 
         return conv
 
-    def calculate_section_actions(
+    def calculate_ultimate_section_actions(
         self,
         d_n: float,
         theta: float,
@@ -523,9 +523,7 @@ class ConcreteSection:
             )
 
             # calculate stress and force
-            stress = steel_geom.material.ultimate_stress_strain_profile.get_stress(
-                strain=strain
-            )
+            stress = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
             force = stress * area
             n += force
 
@@ -596,7 +594,9 @@ class ConcreteSection:
             )
 
             for d_n in d_n_list:
-                n, _, _, mv = self.calculate_section_actions(d_n=d_n, theta=theta)
+                n, _, _, mv = self.calculate_ultimate_section_actions(
+                    d_n=d_n, theta=theta
+                )
                 n_curve.append(n * n_scale)
                 m_curve.append(mv * m_scale)
                 progress.update(task, advance=1)

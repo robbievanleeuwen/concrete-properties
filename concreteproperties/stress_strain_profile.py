@@ -1,5 +1,7 @@
 from typing import List
+import warnings
 
+import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 
@@ -71,6 +73,39 @@ class StressStrainProfile:
 
         return stress_function(strain)
 
+    def get_elastic_modulus(
+        self,
+    ) -> float:
+        """Returns the elastic modulus of the stress-strain profile.
+
+        :return: Elastic modulus
+        :rtype: float
+        """
+
+        small_strain = 1e-6
+
+        # get stress at zero strain
+        stress_0 = self.get_stress(strain=0)
+
+        # get stress at small positive strain & compute elastic modulus
+        stress_positive = self.get_stress(strain=small_strain)
+        em_positive = stress_positive / small_strain
+
+        # get stress at small negative strain & compute elastic modulus
+        stress_negative = self.get_stress(strain=-small_strain)
+        em_negative = stress_negative / -small_strain
+
+        # check elastic moduli are equal, if not print warning
+        if not np.isclose(em_positive, em_negative):
+            warnings.warn(
+                "Initial compressive and tensile elastic moduli are not equal"
+            )
+
+        if np.isclose(em_positive, 0):
+            raise ValueError("Elastic modulus is zero.")
+
+        return em_positive
+
     def get_compressive_strength(
         self,
     ) -> float:
@@ -123,6 +158,24 @@ class StressStrainProfile:
         """Plots the stress-strain profile."""
 
         raise NotImplementedError
+
+
+class LinearProfile(StressStrainProfile):
+    """Class for a symmetric linear stress-strain profile."""
+
+    def __init__(
+        self,
+        elastic_modulus: float,
+    ):
+        """Inits the BilinearProfile class.
+
+        :param float elastic_modulus: Elastic modulus of the stress-strain profile
+        """
+
+        super().__init__(
+            strains=[-0.001, 0, 0.001],
+            stresses=[-0.001 * elastic_modulus, 0, 0.001 * elastic_modulus],
+        )
 
 
 class BilinearProfile(StressStrainProfile):
