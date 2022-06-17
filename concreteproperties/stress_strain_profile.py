@@ -115,7 +115,10 @@ class StressStrainProfile:
         :rtype: float
         """
 
-        return max(self.stresses)
+        try:
+            return self.compressive_strength
+        except AttributeError:
+            return max(self.stresses)
 
     def get_tensile_strength(
         self,
@@ -234,6 +237,8 @@ class WhitneyStressBlock(StressStrainProfile):
                 alpha_2 * compressive_strength,
             ],
         )
+
+        self.compressive_strength = compressive_strength
 
 
 # class ParabolicStressBlock(StressStrainProfile):
