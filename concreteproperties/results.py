@@ -115,3 +115,7 @@ class TransformedConcreteProperties:
         self.z11_minus = self.concrete_properties.e_z11_minus / self.elastic_modulus
         self.z22_plus = self.concrete_properties.e_z22_plus / self.elastic_modulus
         self.z22_minus = self.concrete_properties.e_z22_minus / self.elastic_modulus
+
+
+class UltimateBendingResults:
+    pass

@@ -51,14 +51,13 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
 - [x] Centroidal section moduli
 - [x] Principal section moduli
 
-### Cracked Section Properties
+### Service Analysis
 - [x] Cracking moment
 - [ ] Cracked second moment of area
-- [ ] Effective second moment of area
+- [ ] Moment-curvature diagram
 
 ### Ultimate Analysis
-- [x] Ultimate bending capacities
-- [ ] Moment-curvature diagrams
+- [x] Ultimate bending capacity
 - [x] Squash load
 - [x] Tensile load
 - [x] Moment interaction diagrams

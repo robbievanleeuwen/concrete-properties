@@ -351,8 +351,101 @@ class ConcreteSection:
 
     def calculate_cracked_properties(
         self,
+        theta: float = 0,
     ):
-        pass
+        """x
+
+        x
+        """
+
+        # set neutral axis depth limits
+        # depth of neutral axis at extreme tensile fibre
+        _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
+
+        a = 1e-6 * d_t  # sufficiently small depth of compressive zone
+        b = d_t  # neutral axis at extreme tensile fibre
+
+        (d_nc, r) = brentq(
+            f=self.cracked_neutral_axis_convergence,
+            a=a,
+            b=b,
+            args=(theta),
+            xtol=1e-3,
+            rtol=1e-6,
+            full_output=True,
+            disp=False,
+        )
+
+        CompoundGeometry(self._conc_geoms).plot_geometry()
+
+        return d_nc
+
+    def cracked_neutral_axis_convergence(
+        self,
+        d_nc: float,
+        theta: float,
+    ):
+        """x
+
+        x
+        """
+
+        # calculate extreme fibre in global coordinates
+        extreme_fibre, d_t = utils.calculate_extreme_fibre(
+            points=self.geometry.points, theta=theta
+        )
+
+        # validate d_nc input
+        if d_nc <= 0:
+            raise ValueError("d_nc must be positive.")
+        elif d_nc > d_t:
+            raise ValueError("d_nc must lie within the section, i.e. d_nc <= d_t")
+
+        # find point on neutral axis by shifting by d_nc
+        point_na = utils.point_on_neutral_axis(
+            extreme_fibre=extreme_fibre, d_n=d_nc, theta=theta
+        )
+
+        # get principal coordinates of neutral axis
+        na_local = principal_coordinate(
+            phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+        )
+
+        # split concrete geometries above and below d_nc, discard below
+        cracked_geoms = []
+
+        for conc_geom in self.concrete_geometries:
+            top_geoms, _ = utils.split_section(
+                geometry=conc_geom,
+                point=point_na,
+                theta=theta,
+            )
+
+            # save compression geometries
+            cracked_geoms.extend(top_geoms)
+
+        # determine moment of area equilibrium about neutral axis
+        e_qu = 0  # initialise first moment of area
+
+        # add steel geometries to list
+        cracked_geoms.extend(self.steel_geometries)
+
+        # concrete
+        for conc_geom in cracked_geoms:
+            ea = conc_geom.calculate_area() * conc_geom.material.elastic_modulus
+            centroid = conc_geom.calculate_centroid()
+
+            # convert centroid to local coordinates
+            _, c_v = principal_coordinate(
+                phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
+            )
+
+            # calculate first moment of area
+            e_qu += ea * (c_v - na_local[1])
+
+        self._conc_geoms = cracked_geoms
+
+        return e_qu
 
     def ultimate_bending_capacity(
         self,
