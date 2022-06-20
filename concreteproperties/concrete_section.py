@@ -637,9 +637,7 @@ class ConcreteSection:
         """Given a neutral axis depth `d_n` and curvature `kappa`, calculates the
         resultant axial force and bending moment.
 
-        :param float d_n: Depth of the neutral axis from the extreme compression fibre,
-            0 < d_n <= d_t, where d_t is the depth of the extreme tensile fibre, i.e.
-            d_n must be within the section and not equal to zero
+        :param float d_n: Depth of the neutral axis from the extreme compression fibre
         :param float kappa: Curvature
         :param moment_curvature: Moment curvature results object
         :type moment_curvature:
@@ -766,16 +764,15 @@ class ConcreteSection:
         self,
         theta: float = 0,
         n: float = 0,
-    ) -> Tuple[float]:
+    ) -> results.UltimateBendingResults:
         """Given a neutral axis angle `theta` and an axial force `n`, calculates the
         ultimate bending capacity.
 
         :param float theta: Angle the neutral axis makes with the horizontal axis
         :param float n: Net axial force
 
-        :return: Axial force, ultimate bending capacity about the x & y axes, resultant
-            moment and the depth to the neutral axis `(n, mx, my, mv, d_n)`
-        :rtype: Tuple[float]
+        :return: Ultimate bending results object
+        :rtype: :class:`~concreteproperties.results.UltimateBendingResults`
         """
 
         # set neutral axis depth limits
@@ -785,66 +782,70 @@ class ConcreteSection:
         b = d_t  # neutral axis at extreme tensile fibre
 
         # initialise ultimate bending results
-        self._ult_bend_res = [None, None, None, None]
+        ultimate_results = res.UltimateBendingResults()
 
         # find neutral axis that gives convergence of the axial force
         (d_n, r) = brentq(
             f=self.ultimate_normal_force_convergence,
             a=a,
             b=b,
-            args=(theta, n),
+            args=(n, ultimate_results),
             xtol=1e-3,
             rtol=1e-6,
             full_output=True,
             disp=False,
         )
 
-        # unpack ultimate bending results from last run of brentq
-        n, mx, my, mv = self._ult_bend_res
-
-        return n, mx, my, mv, d_n
+        return ultimate_results
 
     def ultimate_normal_force_convergence(
         self,
         d_n: float,
-        theta: float,
         n: float,
+        ultimate_results: results.UltimateBendingResults,
     ) -> float:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
         the difference between the target net axial force `n` and the axial force
         given `d_n` & `theta`.
 
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle the neutral axis makes with the horizontal axis
-        :param float n: Target axial force
+        :param float n: Net axial force
+        :param ultimate_results: Ultimate bending results object
+        :type ultimate_results:
+            :class:`~concreteproperties.results.UltimateBendingResults`
 
         :return: Axial force convergence
         :rtype: float
         """
 
         # calculate convergence
-        return n - self.calculate_ultimate_section_actions(d_n=d_n, theta=theta)[0]
+        return (
+            n
+            - self.calculate_ultimate_section_actions(
+                d_n=d_n, ultimate_results=ultimate_results
+            ).n
+        )
 
     def calculate_ultimate_section_actions(
         self,
         d_n: float,
-        theta: float,
-    ) -> Tuple[float]:
+        ultimate_results: results.UltimateBendingResults,
+    ) -> results.UltimateBendingResults:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
         the resultant bending moments `mx`, `my`, `mv` and the net axial force `n`.
 
-        :param float d_n: Depth of the neutral axis from the extreme compression fibre,
-            0 < d_n <= d_t, where d_t is the depth of the extreme tensile fibre, i.e.
-            d_n must be within the section and not equal to zero
-        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float d_n: Depth of the neutral axis from the extreme compression fibre
+        :param ultimate_results: Ultimate bending results object
+        :type ultimate_results:
+            :class:`~concreteproperties.results.UltimateBendingResults`
 
-        :return: Section actions `(n, mx, my, mv)`
-        :rtype: Tuple[float]
+        :return: Ultimate bending results object
+        :rtype: :class:`~concreteproperties.results.UltimateBendingResults`
         """
 
         # calculate extreme fibre in global coordinates
         extreme_fibre, d_t = utils.calculate_extreme_fibre(
-            points=self.geometry.points, theta=theta
+            points=self.geometry.points, theta=ultimate_results.theta
         )
 
         # validate d_n input
@@ -855,11 +856,11 @@ class ConcreteSection:
 
         # find point on neutral axis by shifting by d_n
         point_na = utils.point_on_neutral_axis(
-            extreme_fibre=extreme_fibre, d_n=d_n, theta=theta
+            extreme_fibre=extreme_fibre, d_n=d_n, theta=ultimate_results.theta
         )
 
         # get principal coordinates of plastic centroid
-        pc_local = self.get_pc_local(theta=theta)
+        pc_local = self.get_pc_local(theta=ultimate_results.theta)
 
         # create splits in concrete geometries at points in stress strain profiles
         concrete_split_geoms = []
@@ -875,7 +876,9 @@ class ConcreteSection:
                 d = strain / self.gross_properties.conc_ultimate_strain * d_n
 
                 # convert depth to global coordinates
-                dx, dy = global_coordinate(phi=theta * 180 / np.pi, x11=0, y22=d)
+                dx, dy = global_coordinate(
+                    phi=ultimate_results.theta * 180 / np.pi, x11=0, y22=d
+                )
 
                 # calculate location of point with `strain`
                 pt = point_na[0] + dx, point_na[1] + dy
@@ -884,7 +887,7 @@ class ConcreteSection:
                 top_geoms, bot_geoms = utils.split_section(
                     geometry=conc_geom,
                     point=pt,
-                    theta=theta,
+                    theta=ultimate_results.theta,
                 )
 
                 # save bottom geoms
@@ -906,7 +909,7 @@ class ConcreteSection:
             n_sec, mv_sec = sec.ultimate_stress_analysis(
                 point_na=point_na,
                 d_n=d_n,
-                theta=theta,
+                theta=ultimate_results.theta,
                 ultimate_strain=self.gross_properties.conc_ultimate_strain,
                 pc_local=pc_local[1],
             )
@@ -925,7 +928,7 @@ class ConcreteSection:
                 point=(centroid[0], centroid[1]),
                 point_na=point_na,
                 d_n=d_n,
-                theta=theta,
+                theta=ultimate_results.theta,
                 ultimate_strain=self.gross_properties.conc_ultimate_strain,
             )
 
@@ -936,19 +939,25 @@ class ConcreteSection:
 
             # convert centroid to local coordinates
             _, c_v = principal_coordinate(
-                phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
+                phi=ultimate_results.theta * 180 / np.pi, x=centroid[0], y=centroid[1]
             )
 
             # calculate moment
             mv += force * (c_v - pc_local[1])
 
         # convert mv to mx & my
-        (my, mx) = global_coordinate(phi=theta * 180 / np.pi, x11=0, y22=mv)
+        (my, mx) = global_coordinate(
+            phi=ultimate_results.theta * 180 / np.pi, x11=0, y22=mv
+        )
 
         # save results
-        self._ult_bend_res = [n, mx, my, mv]
+        ultimate_results.d_n = d_n
+        ultimate_results.n = n
+        ultimate_results.mx = mx
+        ultimate_results.my = my
+        ultimate_results.mv = mv
 
-        return n, mx, my, mv
+        return ultimate_results
 
     def moment_interaction_diagram(
         self,
@@ -988,10 +997,10 @@ class ConcreteSection:
         _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
 
         # compute neutral axis depth for pure bending case
-        _, _, _, _, d_nb = self.ultimate_bending_capacity(theta=theta, n=0)
+        ultimate_results = self.ultimate_bending_capacity(theta=theta, n=0)
 
         # generate list of neutral axes
-        d_n_list = np.linspace(start=d_t, stop=d_nb, num=n_points)
+        d_n_list = np.linspace(start=d_t, stop=ultimate_results.d_n, num=n_points)
 
         # create progress bar
         with utils.create_known_progress() as progress:
@@ -1001,11 +1010,11 @@ class ConcreteSection:
             )
 
             for d_n in d_n_list:
-                n, _, _, mv = self.calculate_ultimate_section_actions(
-                    d_n=d_n, theta=theta
+                ultimate_results = self.calculate_ultimate_section_actions(
+                    d_n=d_n, ultimate_results=ultimate_results
                 )
-                n_curve.append(n * n_scale)
-                m_curve.append(mv * m_scale)
+                n_curve.append(ultimate_results.n * n_scale)
+                m_curve.append(ultimate_results.mv * m_scale)
                 progress.update(task, advance=1)
 
             progress.update(

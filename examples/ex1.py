@@ -52,6 +52,5 @@ geometry = concrete_circular_section(
 
 conc_sec = ConcreteSection(geometry)
 
-print(conc_sec.calculate_ultimate_section_actions(d_n=100, theta=0))
-print(conc_sec.ultimate_bending_capacity(theta=0, n=0))
+print(conc_sec.ultimate_bending_capacity())
 conc_sec.moment_interaction_diagram(theta=0)

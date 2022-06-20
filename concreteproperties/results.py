@@ -232,5 +232,14 @@ class MomentCurvatureResults:
         return ax
 
 
-# class UltimateBendingResults:
-#     pass
+@dataclass
+class UltimateBendingResults:
+    """Class for storing ultimate bending results."""
+
+    # results
+    theta: float = 0
+    d_n: float = 0
+    n: float = 0
+    mx: float = 0
+    my: float = 0
+    mv: float = 0

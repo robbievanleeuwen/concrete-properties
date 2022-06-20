@@ -276,9 +276,9 @@ def test_example_3_8():
     )
 
     conc_sec = ConcreteSection(geometry)
-    n, mx, my, mv, d_n = conc_sec.ultimate_bending_capacity()
-    assert pytest.approx(d_n, abs=1) == 133
-    assert pytest.approx(mx, rel=0.01) == 302e6
+    ultimate_results = conc_sec.ultimate_bending_capacity()
+    assert pytest.approx(ultimate_results.d_n, abs=1) == 133
+    assert pytest.approx(ultimate_results.mx, rel=0.01) == 302e6
 
 
 def test_example_3_9():
@@ -326,9 +326,9 @@ def test_example_3_9():
     )
 
     conc_sec = ConcreteSection(geometry)
-    n, mx, my, mv, d_n = conc_sec.ultimate_bending_capacity()
-    assert pytest.approx(d_n, rel=0.03) == 100.7
-    assert pytest.approx(mx, rel=0.01) == 309e6
+    ultimate_results = conc_sec.ultimate_bending_capacity()
+    assert pytest.approx(ultimate_results.d_n, rel=0.03) == 100.7
+    assert pytest.approx(ultimate_results.mx, rel=0.01) == 309e6
 
 
 def test_example_3_11():
@@ -392,9 +392,9 @@ def test_example_3_11():
         geom = (geom - bar) + bar
 
     conc_sec = ConcreteSection(geom)
-    n, mx, my, mv, d_n = conc_sec.ultimate_bending_capacity()
-    assert pytest.approx(d_n, abs=1) == 196
-    assert pytest.approx(mx, rel=0.01) == 1860e6
+    ultimate_results = conc_sec.ultimate_bending_capacity()
+    assert pytest.approx(ultimate_results.d_n, abs=1) == 196
+    assert pytest.approx(ultimate_results.mx, rel=0.01) == 1860e6
 
 
 def test_example_3_14():
