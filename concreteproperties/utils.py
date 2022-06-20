@@ -327,8 +327,8 @@ class CustomTimeElapsedColumn(ProgressColumn):
         return Text(elapsed_string, style="progress.elapsed")
 
 
-def create_progress():
-    """Returns a Rich Progress class."""
+def create_known_progress():
+    """Returns a Rich Progress class for a known number of iterations."""
 
     return Progress(
         SpinnerColumn(),
@@ -337,6 +337,20 @@ def create_progress():
         ),
         BarColumn(bar_width=None, table_column=Column(ratio=1)),
         TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+        CustomTimeElapsedColumn(),
+        expand=True,
+    )
+
+
+def create_unknown_progress():
+    """Returns a Rich Progress class for a known number of iterations."""
+
+    return Progress(
+        SpinnerColumn(),
+        TextColumn(
+            "[progress.description]{task.description}", table_column=Column(ratio=1)
+        ),
+        BarColumn(bar_width=None, table_column=Column(ratio=1)),
         CustomTimeElapsedColumn(),
         expand=True,
     )

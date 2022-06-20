@@ -316,9 +316,7 @@ class Tri3:
             )
 
             # get stress at gauss point
-            stress = self.conc_material.service_stress_strain_profile.get_stress(
-                strain=strain
-            )
+            stress = self.conc_material.stress_strain_profile.get_stress(strain=strain)
 
             # calculate force (stress * area)
             force_e += gp[0] * stress * j

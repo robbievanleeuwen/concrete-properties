@@ -27,9 +27,6 @@ def test_piecewise_linear():
     with pytest.raises(ValueError):
         profile = StressStrainProfile([0, 1, 0.5], [0, 3, 5])
 
-    with pytest.raises(ValueError):
-        profile = StressStrainProfile([0, 1, 2], [0, 3, 2])
-
     profile = StressStrainProfile([-0.05, 0, 0.0025, 0.05], [0, 0, 500, 600])
 
     assert pytest.approx(profile.get_stress(0)) == 0
@@ -47,9 +44,6 @@ def test_bilinear():
 
     with pytest.raises(ValueError):
         profile = BilinearProfile(1, 0.5, 3, 5)
-
-    with pytest.raises(ValueError):
-        profile = BilinearProfile(1, 2, 3, 2)
 
     profile = BilinearProfile(0.0025, 0.05, 500, 600)
 

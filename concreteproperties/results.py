@@ -2,9 +2,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import List, TYPE_CHECKING
+import numpy as np
+import matplotlib.pyplot as plt
+
+from concreteproperties.post import plotting_context
 
 if TYPE_CHECKING:
     from sectionproperties.pre.geometry import Geometry
+    import matplotlib.axes
 
 
 @dataclass
@@ -183,19 +188,48 @@ class MomentCurvatureResults:
 
     # results
     theta: float = 0
-    n: n = 0
     kappa: List[float] = field(default_factory=list)
     moment: List[float] = field(default_factory=list)
 
     # for analysis
-    _n_i: float = 0
-    _m_i: float = 0
+    _n_i: float = field(default=0, repr=False)
+    _m_i: float = field(default=0, repr=False)
+    _failure: bool = field(default=False, repr=False)
 
     def __post_init__(
         self,
     ):
         self.kappa.append(0)
         self.moment.append(0)
+
+    def plot_results(
+        self,
+        m_scale: float = 1e-6,
+        **kwargs,
+    ) -> matplotlib.axes._subplots.AxesSubplot:
+        """Plots the moment curvature results.
+
+        :param float m_scale: Scaling factor to apply to bending moment
+        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        """
+
+        # scale moments
+        moments = np.array(self.moment) * m_scale
+
+        # create plot and setup the plot
+        with plotting_context(title="Moment-Curvature", **kwargs) as (
+            fig,
+            ax,
+        ):
+            ax.plot(self.kappa, moments, "o-", markersize=3)
+            plt.xlabel("Curvature")
+            plt.ylabel("Moment")
+            plt.grid(True)
+
+        return ax
 
 
 # class UltimateBendingResults:

@@ -523,21 +523,30 @@ class ConcreteSection:
         return e_qu
 
     def moment_curvature_diagram(
-        self, theta: float = 0, n: float = 0, kappa_inc: float = 2e-6
-    ):
-        """Generates a moment curvature diagram given a bending angle `theta` and axial
-        force `n`.
+        self,
+        theta: float = 0,
+        kappa_inc: float = 1e-7,
+        delta_m_min: float = 0.15,
+        delta_m_max: float = 0.3,
+    ) -> results.MomentCurvatureResults:
+        """Generates a moment curvature diagram given a bending angle `theta`.
 
         Analysis continues until the steel reaches fracture strain.
 
         :param float theta: Neutral axis angle about which bending is taking place
-        :param float n: Net axial force
-        :param float kappa_inc: Curvature increment for each step
+        :param float kappa_inc: Initial curvature increment
+        :param float delta_m_min: Relative change in moment at which to double step
+            size
+        :param float delta_m_max: Relative change in moment at which to halve step
+            size
+
+        :return: Moment curvature results object
+        :rtype: :class:`~concreteproperties.results.MomentCurvatureResults`
         """
 
         # initiliase variables
-        moment_curvature = res.MomentCurvatureResults(theta=theta, n=n)
-        failure = False
+        moment_curvature = res.MomentCurvatureResults(theta=theta)
+        iter = 0
 
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
@@ -545,26 +554,55 @@ class ConcreteSection:
         a = 1e-6 * d_t  # sufficiently small depth of compressive zone
         b = d_t  # neutral axis at extreme tensile fibre
 
-        # while there hasn't been a failure
-        while not failure:
-            # incremement strain
-            kappa = moment_curvature.kappa[-1] + kappa_inc
-
-            # find neutral axis that gives convergence of the axial force
-            (d_n, r) = brentq(
-                f=self.service_normal_force_convergence,
-                a=a,
-                b=b,
-                args=(kappa, moment_curvature),
-                xtol=1e-3,
-                rtol=1e-6,
-                full_output=True,
-                disp=False,
+        # create progress bar
+        with utils.create_unknown_progress() as progress:
+            task = progress.add_task(
+                description="[red]Generating M-K diagram",
+                total=None,
             )
 
-            # save results
-            moment_curvature.kappa.append(kappa)
-            # moment_curvature.moment.append(moment)
+            # while there hasn't been a failure in the steel
+            while not moment_curvature._failure:
+                # calculate adaptive step size for curvature
+                if iter > 1:
+                    moment_diff = (
+                        abs(moment_curvature.kappa[-1] - moment_curvature.kappa[-2])
+                        / moment_curvature.kappa[-1]
+                    )
+                    if moment_diff <= delta_m_min:
+                        kappa_inc *= 2
+                    elif moment_diff >= delta_m_max:
+                        kappa_inc *= 0.5
+
+                kappa = moment_curvature.kappa[-1] + kappa_inc
+
+                # find neutral axis that gives convergence of the axial force
+                (d_n, r) = brentq(
+                    f=self.service_normal_force_convergence,
+                    a=a,
+                    b=b,
+                    args=(kappa, moment_curvature),
+                    xtol=1e-3,
+                    rtol=1e-6,
+                    full_output=True,
+                    disp=False,
+                )
+                text_update = "[red]Generating M-K diagram: "
+                text_update += f"M={moment_curvature._m_i:.3e}"
+
+                progress.update(task, description=text_update)
+
+                # save results
+                moment_curvature.kappa.append(kappa)
+                moment_curvature.moment.append(moment_curvature._m_i)
+                iter += 1
+
+            progress.update(
+                task,
+                description="[bold green]:white_check_mark: M-K diagram generated",
+            )
+
+        return moment_curvature
 
     def service_normal_force_convergence(
         self,
@@ -586,12 +624,9 @@ class ConcreteSection:
         """
 
         # calculate convergence
-        return (
-            moment_curvature.n
-            - self.calculate_service_section_actions(
-                d_n=d_n, kappa=kappa, moment_curvature=moment_curvature
-            )._n_i
-        )
+        return self.calculate_service_section_actions(
+            d_n=d_n, kappa=kappa, moment_curvature=moment_curvature
+        )._n_i
 
     def calculate_service_section_actions(
         self,
@@ -639,9 +674,7 @@ class ConcreteSection:
         concrete_split_geoms = []
 
         for conc_geom in self.concrete_geometries:
-            strains = (
-                conc_geom.material.service_stress_strain_profile.get_unique_strains()
-            )
+            strains = conc_geom.material.stress_strain_profile.get_unique_strains()
 
             # loop through intermediate points on stress strain profile
             for idx, strain in enumerate(strains[1:-1]):
@@ -649,7 +682,9 @@ class ConcreteSection:
                 d = strain / kappa
 
                 # convert depth to global coordinates
-                dx, dy = global_coordinate(phi=theta * 180 / np.pi, x11=0, y22=d)
+                dx, dy = global_coordinate(
+                    phi=moment_curvature.theta * 180 / np.pi, x11=0, y22=d
+                )
 
                 # calculate location of point with `strain`
                 pt = point_na[0] + dx, point_na[1] + dy
@@ -702,6 +737,13 @@ class ConcreteSection:
                 kappa=kappa,
             )
 
+            # check for steel failure
+            if (
+                abs(strain)
+                > steel_geom.material.stress_strain_profile.get_ultimate_strain()
+            ):
+                moment_curvature._failure = True
+
             # calculate stress and force
             stress = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
             force = stress * area
@@ -709,13 +751,16 @@ class ConcreteSection:
 
             # convert centroid to local coordinates
             _, c_v = principal_coordinate(
-                phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
+                phi=moment_curvature.theta * 180 / np.pi, x=centroid[0], y=centroid[1]
             )
 
             # calculate moment
             mv += force * (c_v - na_local[1])
 
-        return n, mv
+        moment_curvature._n_i = n
+        moment_curvature._m_i = mv
+
+        return moment_curvature
 
     def ultimate_bending_capacity(
         self,
@@ -949,7 +994,7 @@ class ConcreteSection:
         d_n_list = np.linspace(start=d_t, stop=d_nb, num=n_points)
 
         # create progress bar
-        with utils.create_progress() as progress:
+        with utils.create_known_progress() as progress:
             task = progress.add_task(
                 description="[red]Generating M-N diagram",
                 total=n_points,

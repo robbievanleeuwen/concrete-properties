@@ -54,7 +54,7 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
 ### Service Analysis
 - [x] Cracking moment
 - [x] Cracked second moment of area
-- [ ] Moment-curvature diagram
+- [x] Moment-curvature diagram
 
 ### Ultimate Analysis
 - [x] Ultimate bending capacity

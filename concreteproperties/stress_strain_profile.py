@@ -1,9 +1,16 @@
-from typing import List
+from __future__ import annotations
+
+from typing import List, TYPE_CHECKING
 import warnings
 
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
+
+from concreteproperties.post import plotting_context
+
+if TYPE_CHECKING:
+    import matplotlib.axes
 
 
 class StressStrainProfile:
@@ -37,16 +44,14 @@ class StressStrainProfile:
 
         # validate input - increasing values
         prev_strain = strains[0]
-        prev_stress = stresses[0]
 
         for idx in range(len(strains)):
             if idx != 0:
-                if strains[idx] < prev_strain or stresses[idx] < prev_stress:
-                    msg = "strains and stresses must containing increasing values."
+                if strains[idx] < prev_strain:
+                    msg = "strains must contain increasing values."
                     raise ValueError(msg)
 
                 prev_strain = strains[idx]
-                prev_stress = stresses[idx]
 
         self.strains = strains
         self.stresses = stresses
@@ -157,10 +162,29 @@ class StressStrainProfile:
 
     def plot_stress_strain(
         self,
-    ):
-        """Plots the stress-strain profile."""
+        title="Stress-Strain Profile",
+        **kwargs,
+    ) -> matplotlib.axes._subplots.AxesSubplot:
+        """Plots the stress-strain profile.
 
-        raise NotImplementedError
+        :param str title: Plot title
+        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        """
+
+        # create plot and setup the plot
+        with plotting_context(title=title, **kwargs) as (
+            fig,
+            ax,
+        ):
+            ax.plot(self.strains, self.stresses, "o-", markersize=3)
+            plt.xlabel("Strain")
+            plt.ylabel("Stress")
+            plt.grid(True)
+
+        return ax
 
 
 class LinearProfile(StressStrainProfile):
