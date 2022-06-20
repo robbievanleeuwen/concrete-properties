@@ -389,7 +389,7 @@ reinforced concrete section</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_cracked_properties</span></code></a></p></td>
-<td><p>x</p></td>
+<td><p>Calculates cracked section properties given a neutral axis angle <cite>theta</cite>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_cracking_moment</span></code></a></p></td>
 <td><p>Calculates the cracking moment given a bending angle <cite>theta</cite>.</p></td>
@@ -404,7 +404,7 @@ reinforced concrete section</p>
 <td><p>Given a neutral axis depth <cite>d_n</cite> and neutral axis angle <cite>theta</cite>, calculates the resultant bending moments <cite>mx</cite>, <cite>my</cite>, <cite>mv</cite> and the net axial force <cite>n</cite>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence" title="concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cracked_neutral_axis_convergence</span></code></a></p></td>
-<td><p>x</p></td>
+<td><p>Given a trial cracked neutral axis depth <cite>d_nc</cite> and bending angle <cite>theta</cite>, determines the difference between the first moments of area above and below the trial axis.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_c_local" title="concreteproperties.concrete_section.ConcreteSection.get_c_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_c_local</span></code></a></p></td>
 <td><p>Returns the elastic centroid location in local coordinates.</p></td>
@@ -437,7 +437,7 @@ reinforced concrete section</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties">
-<span class="sig-name descname"><span class="pre">get_transformed_gross_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.concrete_section.TransformedConcreteProperties.html#concreteproperties.concrete_section.TransformedConcreteProperties" title="concreteproperties.results.TransformedConcreteProperties"><span class="pre">TransformedConcreteProperties</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_transformed_gross_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_transformed_gross_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TransformedConcreteProperties</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_transformed_gross_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Transforms gross section properties given a reference elastic modulus.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -447,7 +447,7 @@ reinforced concrete section</p>
 <dd class="field-even"><p>Transformed concrete properties object</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.concrete_section.TransformedConcreteProperties.html#concreteproperties.concrete_section.TransformedConcreteProperties" title="concreteproperties.concrete_section.TransformedConcreteProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformedConcreteProperties</span></code></a></p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformedConcreteProperties</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -463,12 +463,29 @@ entirely cracked.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties">
+<span class="sig-name descname"><span class="pre">calculate_cracked_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">CrackedResults</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_cracked_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates cracked section properties given a neutral axis angle <cite>theta</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Neutral axis angle about which bending is taking place</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Cracked results object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">CrackedResults</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment">
-<span class="sig-name descname"><span class="pre">calculate_cracking_moment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_cracking_moment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_cracking_moment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_cracking_moment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the cracking moment given a bending angle <cite>theta</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle the bending axis makes with the horizontal axis</p>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Neutral axis angle about which bending is taking place</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Cracking moment</p>
@@ -480,17 +497,26 @@ entirely cracked.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties">
-<span class="sig-name descname"><span class="pre">calculate_cracked_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_cracked_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties" title="Permalink to this definition">#</a></dt>
-<dd><p>x</p>
-<p>x</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence">
-<span class="sig-name descname"><span class="pre">cracked_neutral_axis_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_nc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.cracked_neutral_axis_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence" title="Permalink to this definition">#</a></dt>
-<dd><p>x</p>
-<p>x</p>
+<span class="sig-name descname"><span class="pre">cracked_neutral_axis_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_nc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cracked_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CrackedResults</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.cracked_neutral_axis_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence" title="Permalink to this definition">#</a></dt>
+<dd><p>Given a trial cracked neutral axis depth <cite>d_nc</cite> and bending angle <cite>theta</cite>,
+determines the difference between the first moments of area above and below the
+trial axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_nc</strong> (<em>float</em>) – Trial cracked neutral axis</p></li>
+<li><p><strong>theta</strong> (<em>floa</em>) – Neutral axis angle about which bending is taking place</p></li>
+<li><p><strong>cracked_results</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">CrackedResults</span></code>) – Cracked results object</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Cracked neutral axis convergence</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

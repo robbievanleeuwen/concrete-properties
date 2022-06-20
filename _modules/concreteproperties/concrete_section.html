@@ -167,7 +167,7 @@
 <span class="kn">from</span> <span class="nn">concreteproperties.analysis_section</span> <span class="kn">import</span> <span class="n">AnalysisSection</span>
 <span class="kn">import</span> <span class="nn">concreteproperties.utils</span> <span class="k">as</span> <span class="nn">utils</span>
 <span class="kn">from</span> <span class="nn">concreteproperties.post</span> <span class="kn">import</span> <span class="n">plotting_context</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.results</span> <span class="kn">import</span> <span class="n">ConcreteProperties</span><span class="p">,</span> <span class="n">TransformedConcreteProperties</span>
+<span class="kn">import</span> <span class="nn">concreteproperties.results</span> <span class="k">as</span> <span class="nn">results</span>
 
 <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">CompoundGeometry</span>
 <span class="kn">from</span> <span class="nn">sectionproperties.analysis.fea</span> <span class="kn">import</span> <span class="n">principal_coordinate</span><span class="p">,</span> <span class="n">global_coordinate</span>
@@ -211,7 +211,7 @@
             <span class="p">)</span>
 
         <span class="c1"># initialise gross properties results class</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span> <span class="o">=</span> <span class="n">ConcreteProperties</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">ConcreteProperties</span><span class="p">()</span>
 
         <span class="c1"># calculate gross area properties</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_gross_area_properties</span><span class="p">()</span>
@@ -265,12 +265,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">perimeter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">calculate_perimeter</span><span class="p">()</span>
 
         <span class="c1"># centroids</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_qy</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_a</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_qx</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_a</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_qy</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_qx</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_a</span>
 
         <span class="c1"># global second moments of area</span>
         <span class="c1"># concrete geometries</span>
@@ -376,17 +372,17 @@
 <div class="viewcode-block" id="ConcreteSection.get_transformed_gross_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties">[docs]</a>    <span class="k">def</span> <span class="nf">get_transformed_gross_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TransformedConcreteProperties</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">TransformedConcreteProperties</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Transforms gross section properties given a reference elastic modulus.</span>
 
 <span class="sd">        :param float elastic_modulus: Reference elastic modulus</span>
 
 <span class="sd">        :return: Transformed concrete properties object</span>
 <span class="sd">        :rtype:</span>
-<span class="sd">            :class:`~concreteproperties.concrete_section.TransformedConcreteProperties`</span>
+<span class="sd">            :class:`~concreteproperties.results.TransformedConcreteProperties`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">TransformedConcreteProperties</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">results</span><span class="o">.</span><span class="n">TransformedConcreteProperties</span><span class="p">(</span>
             <span class="n">concrete_properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="p">,</span> <span class="n">elastic_modulus</span><span class="o">=</span><span class="n">elastic_modulus</span>
         <span class="p">)</span></div>
 
@@ -454,13 +450,112 @@
             <span class="mi">0</span>
         <span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ConcreteSection.calculate_cracking_moment"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_cracking_moment</span><span class="p">(</span>
+<div class="viewcode-block" id="ConcreteSection.calculate_cracked_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_cracked_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Calculates cracked section properties given a neutral axis angle `theta`.</span>
+
+<span class="sd">        :param float theta: Neutral axis angle about which bending is taking place</span>
+
+<span class="sd">        :return: Cracked results object</span>
+<span class="sd">        :rtype: :class:`~concreteproperties.results.CrackedResults`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">cracked_results</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">cracked_results</span><span class="o">.</span><span class="n">m_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_cracking_moment</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+
+        <span class="c1"># set neutral axis depth limits</span>
+        <span class="c1"># depth of neutral axis at extreme tensile fibre</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">d_t</span>  <span class="c1"># sufficiently small depth of compressive zone</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">d_t</span>  <span class="c1"># neutral axis at extreme tensile fibre</span>
+
+        <span class="p">(</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">d_nc</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span>
+            <span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cracked_neutral_axis_convergence</span><span class="p">,</span>
+            <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
+            <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">cracked_results</span><span class="p">),</span>
+            <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+            <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
+            <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># calculate cracked section properties</span>
+        <span class="c1"># axial rigidity &amp; first moments of area</span>
+        <span class="k">for</span> <span class="n">geom</span> <span class="ow">in</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">cracked_geometries</span><span class="p">:</span>
+            <span class="n">area</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
+            <span class="n">centroid</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
+
+            <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_a_cr</span> <span class="o">+=</span> <span class="n">area</span> <span class="o">*</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
+            <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_qx_cr</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="n">area</span> <span class="o">*</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_qy_cr</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="n">area</span> <span class="o">*</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="c1"># global second moments of area</span>
+        <span class="k">for</span> <span class="n">geom</span> <span class="ow">in</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">cracked_geometries</span><span class="p">:</span>
+            <span class="c1"># if concrete</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="p">,</span> <span class="n">Concrete</span><span class="p">):</span>
+                <span class="n">conc_sec</span> <span class="o">=</span> <span class="n">AnalysisSection</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">conc_el</span> <span class="ow">in</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+                    <span class="p">(</span>
+                        <span class="n">el_e_ixx_g</span><span class="p">,</span>
+                        <span class="n">el_e_iyy_g</span><span class="p">,</span>
+                        <span class="n">el_e_ixy_g</span><span class="p">,</span>
+                    <span class="p">)</span> <span class="o">=</span> <span class="n">conc_el</span><span class="o">.</span><span class="n">second_moments_of_area</span><span class="p">()</span>
+                    <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixx_g_cr</span> <span class="o">+=</span> <span class="n">el_e_ixx_g</span>
+                    <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_iyy_g_cr</span> <span class="o">+=</span> <span class="n">el_e_iyy_g</span>
+                    <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixy_g_cr</span> <span class="o">+=</span> <span class="n">el_e_ixy_g</span>
+
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="p">,</span> <span class="n">Steel</span><span class="p">):</span>
+                <span class="c1"># area, diameter and centroid of geometry</span>
+                <span class="n">area</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
+                <span class="n">diam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">area</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+                <span class="n">centroid</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
+
+                <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixx_g_cr</span> <span class="o">+=</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="n">diam</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="mi">64</span> <span class="o">+</span> <span class="n">area</span> <span class="o">*</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_iyy_g_cr</span> <span class="o">+=</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="n">diam</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="mi">64</span> <span class="o">+</span> <span class="n">area</span> <span class="o">*</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixy_g_cr</span> <span class="o">+=</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="n">area</span> <span class="o">*</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span>
+
+        <span class="c1"># centroidal second moments of area</span>
+        <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixx_c_cr</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixx_g_cr</span>
+            <span class="o">-</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_qx_cr</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_a_cr</span>
+        <span class="p">)</span>
+        <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_iyy_c_cr</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_iyy_g_cr</span>
+            <span class="o">-</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_qy_cr</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_a_cr</span>
+        <span class="p">)</span>
+        <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixy_c_cr</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixy_g_cr</span>
+            <span class="o">-</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_qx_cr</span> <span class="o">*</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_qy_cr</span> <span class="o">/</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_a_cr</span>
+        <span class="p">)</span>
+        <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_iuu_cr</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_iyy_c_cr</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">+</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixx_c_cr</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixy_c_cr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cracked_results</span></div>
+
+<div class="viewcode-block" id="ConcreteSection.calculate_cracking_moment"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_cracking_moment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Calculates the cracking moment given a bending angle `theta`.</span>
 
-<span class="sd">        :param float theta: Angle the bending axis makes with the horizontal axis</span>
+<span class="sd">        :param float theta: Neutral axis angle about which bending is taking place</span>
 
 <span class="sd">        :return: Cracking moment</span>
 <span class="sd">        :rtype: float</span>
@@ -507,45 +602,23 @@
 
         <span class="k">return</span> <span class="n">m_c</span></div>
 
-<div class="viewcode-block" id="ConcreteSection.calculate_cracked_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_cracked_properties</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;x</span>
-
-<span class="sd">        x</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># set neutral axis depth limits</span>
-        <span class="c1"># depth of neutral axis at extreme tensile fibre</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
-
-        <span class="n">a</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">d_t</span>  <span class="c1"># sufficiently small depth of compressive zone</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">d_t</span>  <span class="c1"># neutral axis at extreme tensile fibre</span>
-
-        <span class="p">(</span><span class="n">d_nc</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span>
-            <span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cracked_neutral_axis_convergence</span><span class="p">,</span>
-            <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
-            <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span>
-            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span>
-            <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
-            <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
-            <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="n">CompoundGeometry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_conc_geoms</span><span class="p">)</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">d_nc</span></div>
-
 <div class="viewcode-block" id="ConcreteSection.cracked_neutral_axis_convergence"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence">[docs]</a>    <span class="k">def</span> <span class="nf">cracked_neutral_axis_convergence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">d_nc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;x</span>
+        <span class="n">cracked_results</span><span class="p">:</span> <span class="n">results</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Given a trial cracked neutral axis depth `d_nc` and bending angle `theta`,</span>
+<span class="sd">        determines the difference between the first moments of area above and below the</span>
+<span class="sd">        trial axis.</span>
 
-<span class="sd">        x</span>
+<span class="sd">        :param float d_nc: Trial cracked neutral axis</span>
+<span class="sd">        :param floa theta: Neutral axis angle about which bending is taking place</span>
+<span class="sd">        :param cracked_results: Cracked results object</span>
+<span class="sd">        :type cracked_results: :class:`~concreteproperties.results.CrackedResults`</span>
+
+<span class="sd">        :return: Cracked neutral axis convergence</span>
+<span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># calculate extreme fibre in global coordinates</span>
@@ -601,7 +674,7 @@
             <span class="c1"># calculate first moment of area</span>
             <span class="n">e_qu</span> <span class="o">+=</span> <span class="n">ea</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_conc_geoms</span> <span class="o">=</span> <span class="n">cracked_geoms</span>
+        <span class="n">cracked_results</span><span class="o">.</span><span class="n">cracked_geometries</span> <span class="o">=</span> <span class="n">cracked_geoms</span>
 
         <span class="k">return</span> <span class="n">e_qu</span></div>
 
@@ -624,7 +697,6 @@
         <span class="c1"># set neutral axis depth limits</span>
         <span class="c1"># depth of neutral axis at extreme tensile fibre</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
-
         <span class="n">a</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">d_t</span>  <span class="c1"># sufficiently small depth of compressive zone</span>
         <span class="n">b</span> <span class="o">=</span> <span class="n">d_t</span>  <span class="c1"># neutral axis at extreme tensile fibre</span>
 
