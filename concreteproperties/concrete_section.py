@@ -9,7 +9,7 @@ from concreteproperties.material import Concrete, Steel
 from concreteproperties.analysis_section import AnalysisSection
 import concreteproperties.utils as utils
 from concreteproperties.post import plotting_context
-import concreteproperties.results as results
+import concreteproperties.results as res
 
 from sectionproperties.pre.geometry import CompoundGeometry
 from sectionproperties.analysis.fea import principal_coordinate, global_coordinate
@@ -53,7 +53,7 @@ class ConcreteSection:
             )
 
         # initialise gross properties results class
-        self.gross_properties = results.ConcreteProperties()
+        self.gross_properties = res.ConcreteProperties()
 
         # calculate gross area properties
         self.calculate_gross_area_properties()
@@ -218,7 +218,7 @@ class ConcreteSection:
     def get_transformed_gross_properties(
         self,
         elastic_modulus: float,
-    ) -> results.TransformedConcreteProperties:
+    ) -> res.TransformedConcreteProperties:
         """Transforms gross section properties given a reference elastic modulus.
 
         :param float elastic_modulus: Reference elastic modulus
@@ -228,7 +228,7 @@ class ConcreteSection:
             :class:`~concreteproperties.results.TransformedConcreteProperties`
         """
 
-        return results.TransformedConcreteProperties(
+        return res.TransformedConcreteProperties(
             concrete_properties=self.gross_properties, elastic_modulus=elastic_modulus
         )
 
@@ -299,7 +299,7 @@ class ConcreteSection:
     def calculate_cracked_properties(
         self,
         theta: float = 0,
-    ) -> results.CrackedResults:
+    ) -> res.CrackedResults:
         """Calculates cracked section properties given a neutral axis angle `theta`.
 
         :param float theta: Neutral axis angle about which bending is taking place
@@ -308,7 +308,7 @@ class ConcreteSection:
         :rtype: :class:`~concreteproperties.results.CrackedResults`
         """
 
-        cracked_results = results.CrackedResults(theta=theta)
+        cracked_results = res.CrackedResults(theta=theta)
         cracked_results.m_cr = self.calculate_cracking_moment(theta=theta)
 
         # set neutral axis depth limits
@@ -317,11 +317,12 @@ class ConcreteSection:
         a = 1e-6 * d_t  # sufficiently small depth of compressive zone
         b = d_t  # neutral axis at extreme tensile fibre
 
+        # find neutral axis that gives convergence of the the cracked neutral axis
         (cracked_results.d_nc, r) = brentq(
             f=self.cracked_neutral_axis_convergence,
             a=a,
             b=b,
-            args=(theta, cracked_results),
+            args=(cracked_results),
             xtol=1e-3,
             rtol=1e-6,
             full_output=True,
@@ -451,15 +452,12 @@ class ConcreteSection:
     def cracked_neutral_axis_convergence(
         self,
         d_nc: float,
-        theta: float,
-        cracked_results: results.CrackedResults,
+        cracked_results: res.CrackedResults,
     ) -> float:
-        """Given a trial cracked neutral axis depth `d_nc` and bending angle `theta`,
-        determines the difference between the first moments of area above and below the
-        trial axis.
+        """Given a trial cracked neutral axis depth `d_nc`, determines the difference
+        between the first moments of area above and below the trial axis.
 
         :param float d_nc: Trial cracked neutral axis
-        :param floa theta: Neutral axis angle about which bending is taking place
         :param cracked_results: Cracked results object
         :type cracked_results: :class:`~concreteproperties.results.CrackedResults`
 
@@ -469,7 +467,7 @@ class ConcreteSection:
 
         # calculate extreme fibre in global coordinates
         extreme_fibre, d_t = utils.calculate_extreme_fibre(
-            points=self.geometry.points, theta=theta
+            points=self.geometry.points, theta=cracked_results.theta
         )
 
         # validate d_nc input
@@ -480,12 +478,12 @@ class ConcreteSection:
 
         # find point on neutral axis by shifting by d_nc
         point_na = utils.point_on_neutral_axis(
-            extreme_fibre=extreme_fibre, d_n=d_nc, theta=theta
+            extreme_fibre=extreme_fibre, d_n=d_nc, theta=cracked_results.theta
         )
 
         # get principal coordinates of neutral axis
         na_local = principal_coordinate(
-            phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+            phi=cracked_results.theta * 180 / np.pi, x=point_na[0], y=point_na[1]
         )
 
         # split concrete geometries above and below d_nc, discard below
@@ -495,7 +493,7 @@ class ConcreteSection:
             top_geoms, _ = utils.split_section(
                 geometry=conc_geom,
                 point=point_na,
-                theta=theta,
+                theta=cracked_results.theta,
             )
 
             # save compression geometries
@@ -514,7 +512,7 @@ class ConcreteSection:
 
             # convert centroid to local coordinates
             _, c_v = principal_coordinate(
-                phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
+                phi=cracked_results.theta * 180 / np.pi, x=centroid[0], y=centroid[1]
             )
 
             # calculate first moment of area
@@ -523,6 +521,201 @@ class ConcreteSection:
         cracked_results.cracked_geometries = cracked_geoms
 
         return e_qu
+
+    def moment_curvature_diagram(
+        self, theta: float = 0, n: float = 0, kappa_inc: float = 2e-6
+    ):
+        """Generates a moment curvature diagram given a bending angle `theta` and axial
+        force `n`.
+
+        Analysis continues until the steel reaches fracture strain.
+
+        :param float theta: Neutral axis angle about which bending is taking place
+        :param float n: Net axial force
+        :param float kappa_inc: Curvature increment for each step
+        """
+
+        # initiliase variables
+        moment_curvature = res.MomentCurvatureResults(theta=theta, n=n)
+        failure = False
+
+        # set neutral axis depth limits
+        # depth of neutral axis at extreme tensile fibre
+        _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
+        a = 1e-6 * d_t  # sufficiently small depth of compressive zone
+        b = d_t  # neutral axis at extreme tensile fibre
+
+        # while there hasn't been a failure
+        while not failure:
+            # incremement strain
+            kappa = moment_curvature.kappa[-1] + kappa_inc
+
+            # find neutral axis that gives convergence of the axial force
+            (d_n, r) = brentq(
+                f=self.service_normal_force_convergence,
+                a=a,
+                b=b,
+                args=(kappa, moment_curvature),
+                xtol=1e-3,
+                rtol=1e-6,
+                full_output=True,
+                disp=False,
+            )
+
+            # save results
+            moment_curvature.kappa.append(kappa)
+            # moment_curvature.moment.append(moment)
+
+    def service_normal_force_convergence(
+        self,
+        d_n: float,
+        kappa: float,
+        moment_curvature: res.MomentCurvatureResults,
+    ) -> float:
+        """Given a trial neutral axis depth `d_n` and curvature `kappa`, determines the
+        difference between the net axial force and the desired axial force.
+
+        :param float d_nc: Trial cracked neutral axis
+        :param float kappa: Curvature
+        :param moment_curvature: Moment curvature results object
+        :type moment_curvature:
+            :class:`~concreteproperties.results.MomentCurvatureResults`
+
+        :return: Service normal force convergence
+        :rtype: float
+        """
+
+        # calculate convergence
+        return (
+            moment_curvature.n
+            - self.calculate_service_section_actions(
+                d_n=d_n, kappa=kappa, moment_curvature=moment_curvature
+            )._n_i
+        )
+
+    def calculate_service_section_actions(
+        self,
+        d_n: float,
+        kappa: float,
+        moment_curvature: res.MomentCurvatureResults = res.MomentCurvatureResults(),
+    ) -> res.MomentCurvatureResults:
+        """Given a neutral axis depth `d_n` and curvature `kappa`, calculates the
+        resultant axial force and bending moment.
+
+        :param float d_n: Depth of the neutral axis from the extreme compression fibre,
+            0 < d_n <= d_t, where d_t is the depth of the extreme tensile fibre, i.e.
+            d_n must be within the section and not equal to zero
+        :param float kappa: Curvature
+        :param moment_curvature: Moment curvature results object
+        :type moment_curvature:
+            :class:`~concreteproperties.results.MomentCurvatureResults`
+
+        :return: Moment curvature results object
+        :rtype: :class:`~concreteproperties.results.MomentCurvatureResults`
+        """
+
+        # calculate extreme fibre in global coordinates
+        extreme_fibre, d_t = utils.calculate_extreme_fibre(
+            points=self.geometry.points, theta=moment_curvature.theta
+        )
+
+        # validate d_n input
+        if d_n <= 0:
+            raise ValueError("d_n must be positive.")
+        elif d_n > d_t:
+            raise ValueError("d_n must lie within the section, i.e. d_n <= d_t")
+
+        # find point on neutral axis by shifting by d_n
+        point_na = utils.point_on_neutral_axis(
+            extreme_fibre=extreme_fibre, d_n=d_n, theta=moment_curvature.theta
+        )
+
+        # get principal coordinates of neutral axis
+        na_local = principal_coordinate(
+            phi=moment_curvature.theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+        )
+
+        # create splits in concrete geometries at points in stress strain profiles
+        concrete_split_geoms = []
+
+        for conc_geom in self.concrete_geometries:
+            strains = (
+                conc_geom.material.service_stress_strain_profile.get_unique_strains()
+            )
+
+            # loop through intermediate points on stress strain profile
+            for idx, strain in enumerate(strains[1:-1]):
+                # depth to point with `strain` from NA
+                d = strain / kappa
+
+                # convert depth to global coordinates
+                dx, dy = global_coordinate(phi=theta * 180 / np.pi, x11=0, y22=d)
+
+                # calculate location of point with `strain`
+                pt = point_na[0] + dx, point_na[1] + dy
+
+                # split concrete geometry (from bottom up)
+                top_geoms, bot_geoms = utils.split_section(
+                    geometry=conc_geom,
+                    point=pt,
+                    theta=moment_curvature.theta,
+                )
+
+                # save bottom geoms
+                concrete_split_geoms.extend(bot_geoms)
+
+                # continue to split top geoms
+                conc_geom = CompoundGeometry(geoms=top_geoms)
+
+            # save final top geoms
+            concrete_split_geoms.extend(top_geoms)
+
+        # initialise results
+        n = 0
+        mv = 0
+
+        # calculate concrete actions
+        for conc_geom in concrete_split_geoms:
+            sec = AnalysisSection(geometry=conc_geom)
+            n_sec, mv_sec = sec.service_stress_analysis(
+                point_na=point_na,
+                d_n=d_n,
+                theta=moment_curvature.theta,
+                kappa=kappa,
+                na_local=na_local[1],
+            )
+
+            n += n_sec
+            mv += mv_sec
+
+        # calculate steel actions
+        for steel_geom in self.steel_geometries:
+            # calculate area and centroid
+            area = steel_geom.calculate_area()
+            centroid = steel_geom.calculate_centroid()
+
+            # get strain at centroid of steel
+            strain = utils.get_service_strain(
+                point=(centroid[0], centroid[1]),
+                point_na=point_na,
+                theta=moment_curvature.theta,
+                kappa=kappa,
+            )
+
+            # calculate stress and force
+            stress = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
+            force = stress * area
+            n += force
+
+            # convert centroid to local coordinates
+            _, c_v = principal_coordinate(
+                phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
+            )
+
+            # calculate moment
+            mv += force * (c_v - na_local[1])
+
+        return n, mv
 
     def ultimate_bending_capacity(
         self,
@@ -533,7 +726,7 @@ class ConcreteSection:
         ultimate bending capacity.
 
         :param float theta: Angle the neutral axis makes with the horizontal axis
-        :param float n: Axial force
+        :param float n: Net axial force
 
         :return: Axial force, ultimate bending capacity about the x & y axes, resultant
             moment and the depth to the neutral axis `(n, mx, my, mv, d_n)`
@@ -549,8 +742,9 @@ class ConcreteSection:
         # initialise ultimate bending results
         self._ult_bend_res = [None, None, None, None]
 
+        # find neutral axis that gives convergence of the axial force
         (d_n, r) = brentq(
-            f=self.normal_force_convergence,
+            f=self.ultimate_normal_force_convergence,
             a=a,
             b=b,
             args=(theta, n),
@@ -565,7 +759,7 @@ class ConcreteSection:
 
         return n, mx, my, mv, d_n
 
-    def normal_force_convergence(
+    def ultimate_normal_force_convergence(
         self,
         d_n: float,
         theta: float,
@@ -584,9 +778,7 @@ class ConcreteSection:
         """
 
         # calculate convergence
-        conv = n - self.calculate_ultimate_section_actions(d_n=d_n, theta=theta)[0]
-
-        return conv
+        return n - self.calculate_ultimate_section_actions(d_n=d_n, theta=theta)[0]
 
     def calculate_ultimate_section_actions(
         self,
@@ -634,13 +826,14 @@ class ConcreteSection:
 
             # loop through intermediate points on stress strain profile
             for idx, strain in enumerate(strains[1:-1]):
-                pt = utils.get_point_from_strain(
-                    strain=strain,
-                    point_na=point_na,
-                    d_n=d_n,
-                    theta=theta,
-                    ultimate_strain=self.gross_properties.conc_ultimate_strain,
-                )
+                # depth to point with `strain` from NA
+                d = strain / self.gross_properties.conc_ultimate_strain * d_n
+
+                # convert depth to global coordinates
+                dx, dy = global_coordinate(phi=theta * 180 / np.pi, x11=0, y22=d)
+
+                # calculate location of point with `strain`
+                pt = point_na[0] + dx, point_na[1] + dy
 
                 # split concrete geometry (from bottom up)
                 top_geoms, bot_geoms = utils.split_section(
@@ -683,7 +876,7 @@ class ConcreteSection:
             centroid = steel_geom.calculate_centroid()
 
             # get strain at centroid of steel
-            strain = utils.get_strain(
+            strain = utils.get_ultimate_strain(
                 point=(centroid[0], centroid[1]),
                 point_na=point_na,
                 d_n=d_n,

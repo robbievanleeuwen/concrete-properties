@@ -12,7 +12,41 @@ if TYPE_CHECKING:
     from sectionproperties.pre.geometry import Geometry, CompoundGeometry
 
 
-def get_strain(
+def get_service_strain(
+    point: Tuple[float],
+    point_na: Tuple[float],
+    theta: float,
+    kappa: float,
+) -> float:
+    """Determines the strain at point `point` given curvcature `kappa` and neutral axis
+    angle `theta`. Positive strain is compression.
+
+    :param point: Point at which to evaluate the strain
+    :type point: Tuple[float]
+    :param point_na: Point on the neutral axis
+    :type point_na: Tuple[float]
+    :param float theta: Angle the neutral axis makes with the horizontal axis
+    :param float kappa: Curvature
+
+    :return: Strain
+    :rtype: float
+    """
+
+    # convert point to local coordinates
+    u, v = principal_coordinate(phi=theta * 180 / np.pi, x=point[0], y=point[1])
+
+    # convert point_na to local coordinates
+    u_na, v_na = principal_coordinate(
+        phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+    )
+
+    # calculate distance between NA and point in `v` direction
+    d = v - v_na
+
+    return kappa * d
+
+
+def get_ultimate_strain(
     point: Tuple[float],
     point_na: Tuple[float],
     d_n: float,
@@ -46,36 +80,6 @@ def get_strain(
     d = v - v_na
 
     return d / d_n * ultimate_strain
-
-
-def get_point_from_strain(
-    strain: float,
-    point_na: Tuple[float],
-    d_n: float,
-    theta: float,
-    ultimate_strain: float,
-) -> Tuple[float]:
-    """Returns a point experiencing a certain `strain`, given neutral axis depth
-    `d_n` and neutral axis angle `theta`.
-
-    :param float strain: Strain at which to get point
-    :param point_na: Point on the neutral axis
-    :type point_na: Tuple[float]
-    :param float d_n: Depth of the neutral axis from the extreme compression fibre
-    :param float theta: Angle the neutral axis makes with the horizontal axis
-    :param float ultimate_strain: Strain at the extreme compression fibre
-
-    :return: Point experiencing `strain`
-    :rtype: Tuple[float]
-    """
-
-    # depth to point from NA
-    d = strain / ultimate_strain * d_n
-
-    # convert depth to global coordinates
-    dx, dy = global_coordinate(phi=theta * 180 / np.pi, x11=0, y22=d)
-
-    return point_na[0] + dx, point_na[1] + dy
 
 
 def point_on_neutral_axis(

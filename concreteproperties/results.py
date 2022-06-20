@@ -177,5 +177,26 @@ class CrackedResults:
         self.iuu_cr = self.e_iuu_cr / elastic_modulus
 
 
+@dataclass
+class MomentCurvatureResults:
+    """Class for storing moment curvature results."""
+
+    # results
+    theta: float = 0
+    n: n = 0
+    kappa: List[float] = field(default_factory=list)
+    moment: List[float] = field(default_factory=list)
+
+    # for analysis
+    _n_i: float = 0
+    _m_i: float = 0
+
+    def __post_init__(
+        self,
+    ):
+        self.kappa.append(0)
+        self.moment.append(0)
+
+
 # class UltimateBendingResults:
 #     pass

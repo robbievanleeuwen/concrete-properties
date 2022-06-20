@@ -6,7 +6,7 @@ import numpy as np
 from matplotlib.colors import ListedColormap
 import triangle
 
-from concreteproperties.utils import get_strain, gauss_points, shape_function
+import concreteproperties.utils as utils
 from concreteproperties.post import plotting_context
 
 import sectionproperties.analysis.fea as sp_fea
@@ -71,6 +71,45 @@ class AnalysisSection:
                     conc_material=self.geometry.material,
                 )
             )
+
+    def service_stress_analysis(
+        self,
+        point_na: Tuple[float],
+        d_n: float,
+        theta: float,
+        kappa: float,
+        na_local: float,
+    ) -> Tuple[float]:
+        """Performs an ultimate stress analysis on the section.
+
+        :param point_na: Point on the neutral axis
+        :type point_na: Tuple[float]
+        :param float d_n: Depth of the neutral axis from the extreme compression fibre
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float kappa: Curvature
+        :param float na_local: y-location of the neutral axis in local coordinates
+
+        :return: Axial force and resultant moment
+        :rtype: Tuple[float]
+        """
+
+        # initialise section actions
+        n = 0
+        mv = 0
+
+        for el in self.elements:
+            el_n, el_mv = el.calculate_service_actions(
+                point_na=point_na,
+                d_n=d_n,
+                theta=theta,
+                kappa=kappa,
+                na_local=na_local,
+            )
+
+            n += el_n
+            mv += el_mv
+
+        return n, mv
 
     def ultimate_stress_analysis(
         self,
@@ -195,12 +234,12 @@ class Tri3:
         e_ixy = 0
 
         # get points for 3 point Gaussian integration
-        gps = gauss_points(n=3)
+        gps = utils.gauss_points(n=3)
 
         # loop through each gauss point
         for gp in gps:
             # determine shape function and jacobian
-            N, j = shape_function(coords=self.coords, gauss_point=gp)
+            N, j = utils.shape_function(coords=self.coords, gauss_point=gp)
 
             e_ixx += (
                 self.conc_material.elastic_modulus
@@ -223,6 +262,77 @@ class Tri3:
             )
 
         return e_ixx, e_iyy, e_ixy
+
+    def calculate_service_actions(
+        self,
+        point_na: Tuple[float],
+        d_n: float,
+        theta: float,
+        kappa: float,
+        na_local: float,
+    ) -> Tuple[float]:
+        """Calculates ultimate actions for the current finite element.
+
+        :param point_na: Point on the neutral axis
+        :type point_na: Tuple[float]
+        :param float d_n: Depth of the neutral axis from the extreme compression fibre
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float kappa: Curvature
+        :param float na_local: y-location of the neutral axis in local coordinates
+
+        :return: Axial force and resultant moment
+        :rtype: Tuple[float]
+        """
+
+        # initialise element results
+        area_e = 0
+        qx_e = 0
+        qy_e = 0
+        force_e = 0
+
+        # get points for 1 point Gaussian integration
+        gps = utils.gauss_points(n=1)
+
+        # loop through each gauss point
+        for gp in gps:
+            # determine shape function and jacobian
+            N, j = utils.shape_function(coords=self.coords, gauss_point=gp)
+
+            # get coordinates of the gauss point
+            x = np.dot(N, np.transpose(self.coords[0, :]))
+            y = np.dot(N, np.transpose(self.coords[1, :]))
+
+            # calculate area properties
+            area_e += gp[0] * j
+            qx_e += gp[0] * y * j
+            qy_e += gp[0] * x * j
+
+            # get strain at gauss point
+            strain = utils.get_service_strain(
+                point=(x, y),
+                point_na=point_na,
+                theta=theta,
+                kappa=kappa,
+            )
+
+            # get stress at gauss point
+            stress = self.conc_material.service_stress_strain_profile.get_stress(
+                strain=strain
+            )
+
+            # calculate force (stress * area)
+            force_e += gp[0] * stress * j
+
+        # calculate element centroid
+        cx_e, cy_e = qy_e / area_e, qx_e / area_e
+
+        # convert centroid to local coordinates
+        _, c_v = sp_fea.principal_coordinate(phi=theta * 180 / np.pi, x=cx_e, y=cy_e)
+
+        # calculate moment
+        mv = force_e * (c_v - na_local)
+
+        return force_e, mv
 
     def calculate_ultimate_actions(
         self,
@@ -252,12 +362,12 @@ class Tri3:
         force_e = 0
 
         # get points for 1 point Gaussian integration
-        gps = gauss_points(n=1)
+        gps = utils.gauss_points(n=1)
 
         # loop through each gauss point
         for gp in gps:
             # determine shape function and jacobian
-            N, j = shape_function(coords=self.coords, gauss_point=gp)
+            N, j = utils.shape_function(coords=self.coords, gauss_point=gp)
 
             # get coordinates of the gauss point
             x = np.dot(N, np.transpose(self.coords[0, :]))
@@ -269,7 +379,7 @@ class Tri3:
             qy_e += gp[0] * x * j
 
             # get strain at gauss point
-            strain = get_strain(
+            strain = utils.get_ultimate_strain(
                 point=(x, y),
                 point_na=point_na,
                 d_n=d_n,
