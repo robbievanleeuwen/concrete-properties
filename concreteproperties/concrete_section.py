@@ -107,8 +107,12 @@ class ConcreteSection:
         self.gross_properties.perimeter = self.geometry.calculate_perimeter()
 
         # centroids
-        self.gross_properties.cx = self.gross_properties.e_qy / self.gross_properties.e_a
-        self.gross_properties.cy = self.gross_properties.e_qx / self.gross_properties.e_a
+        self.gross_properties.cx = (
+            self.gross_properties.e_qy / self.gross_properties.e_a
+        )
+        self.gross_properties.cy = (
+            self.gross_properties.e_qx / self.gross_properties.e_a
+        )
 
         # global second moments of area
         # concrete geometries
