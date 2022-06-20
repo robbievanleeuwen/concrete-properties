@@ -156,10 +156,21 @@
               <article class="bd-article" role="main">
                 
   <h1>Source code for concreteproperties.results</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">concreteproperties.post</span> <span class="kn">import</span> <span class="n">plotting_context</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.axes</span>
 
 
-<div class="viewcode-block" id="ConcreteProperties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteProperties.html#concreteproperties.concrete_section.ConcreteProperties">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="ConcreteProperties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.ConcreteProperties.html#concreteproperties.results.ConcreteProperties">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ConcreteProperties</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for storing gross concrete section properties.&quot;&quot;&quot;</span>
 
@@ -167,6 +178,7 @@
     <span class="n">total_area</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">concrete_area</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">steel_area</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">e_a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">e_a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="c1"># section mass</span>
@@ -214,7 +226,7 @@
     <span class="n">conc_ultimate_strain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span></div>
 
 
-<div class="viewcode-block" id="TransformedConcreteProperties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.TransformedConcreteProperties.html#concreteproperties.concrete_section.TransformedConcreteProperties">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="TransformedConcreteProperties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.TransformedConcreteProperties.html#concreteproperties.results.TransformedConcreteProperties">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">TransformedConcreteProperties</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for storing transformed gross concrete section properties.</span>
 
@@ -275,8 +287,206 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">z22_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_properties</span><span class="o">.</span><span class="n">e_z22_minus</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span></div>
 
 
+<div class="viewcode-block" id="CrackedResults"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.CrackedResults.html#concreteproperties.results.CrackedResults">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CrackedResults</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for storing cracked concrete section properties.&quot;&quot;&quot;</span>
+
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">m_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">d_nc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">cracked_geometries</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">e_a_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">e_qx_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">e_qy_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">e_ixx_g_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">e_iyy_g_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">e_ixy_g_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">e_ixx_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">e_iyy_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">e_ixy_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">e_iuu_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># transformed properties</span>
+    <span class="n">a_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">qx_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">qy_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ixx_g_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">iyy_g_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ixy_g_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ixx_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">iyy_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ixy_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">iuu_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="CrackedResults.calculate_transformed_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.CrackedResults.html#concreteproperties.results.CrackedResults.calculate_transformed_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_transformed_properties</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates and stores transformed cracked properties using a reference</span>
+<span class="sd">        elastic modulus.</span>
+
+<span class="sd">        :param float elastic_modulus: Reference elastic modulus</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">a_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_a_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qx_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_qx_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qy_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_qy_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ixx_g_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_ixx_g_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iyy_g_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_iyy_g_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ixy_g_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_ixy_g_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ixx_c_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_ixx_c_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iyy_c_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_iyy_c_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ixy_c_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_ixy_c_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iuu_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_iuu_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span></div></div>
+
+
+<div class="viewcode-block" id="MomentCurvatureResults"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">MomentCurvatureResults</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for storing moment curvature results.&quot;&quot;&quot;</span>
+
+    <span class="c1"># results</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">kappa</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">moment</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="c1"># for analysis</span>
+    <span class="n">_n_i</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">_m_i</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">_failure</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kappa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moment</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MomentCurvatureResults.plot_results"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults.plot_results">[docs]</a>    <span class="k">def</span> <span class="nf">plot_results</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Plots the moment curvature results.</span>
+
+<span class="sd">        :param float m_scale: Scaling factor to apply to bending moment</span>
+<span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
+
+<span class="sd">        :return: Matplotlib axes object</span>
+<span class="sd">        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># scale moments</span>
+        <span class="n">moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moment</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+
+        <span class="c1"># create plot and setup the plot</span>
+        <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Moment-Curvature&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span>
+            <span class="n">fig</span><span class="p">,</span>
+            <span class="n">ax</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kappa</span><span class="p">,</span> <span class="n">moments</span><span class="p">,</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Curvature&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Moment&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div></div>
+
+
+<div class="viewcode-block" id="UltimateBendingResults"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">UltimateBendingResults</span><span class="p">:</span>
-    <span class="k">pass</span>
+    <span class="sd">&quot;&quot;&quot;Class for storing ultimate bending results.&quot;&quot;&quot;</span>
+
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">mx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">my</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">mv</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="MomentInteractionResults"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">MomentInteractionResults</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for storing moment interaction results.&quot;&quot;&quot;</span>
+
+    <span class="n">n</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">m</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MomentInteractionResults.plot_diagram"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults.plot_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">plot_diagram</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+        <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Plots a moment interaction diagram.</span>
+
+<span class="sd">        :param float n_scale: Scaling factor to apply to axial force</span>
+<span class="sd">        :param float m_scale: Scaling factor to apply to bending moment</span>
+<span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
+
+<span class="sd">        :return: Matplotlib axes object</span>
+<span class="sd">        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># create plot and setup the plot</span>
+        <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Moment Interaction Diagram&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span>
+            <span class="n">fig</span><span class="p">,</span>
+            <span class="n">ax</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="c1"># scale results</span>
+            <span class="n">forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_scale</span>
+            <span class="n">moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">moments</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Axial Force&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="MomentInteractionResults.plot_multiple_diagrams"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults.plot_multiple_diagrams">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">plot_multiple_diagrams</span><span class="p">(</span>
+        <span class="n">moment_interaction_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MomentInteractionResults</span><span class="p">],</span>
+        <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">n_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+        <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Plots multiple moment interaction diagrams.</span>
+
+<span class="sd">        :param moment_interaction_results: List of moment interaction results objects</span>
+<span class="sd">        :type moment_interaction_results:</span>
+<span class="sd">            List[:class:`~concreteproperties.results.MomentInteractionResults`]</span>
+<span class="sd">        :param labels: List of labels for each moment interaction diagram</span>
+<span class="sd">        :type labels: List[str]</span>
+<span class="sd">        :param float n_scale: Scaling factor to apply to axial force</span>
+<span class="sd">        :param float m_scale: Scaling factor to apply to bending moment</span>
+<span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
+
+<span class="sd">        :return: Matplotlib axes object</span>
+<span class="sd">        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># create plot and setup the plot</span>
+        <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Moment Interaction Diagram&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span>
+            <span class="n">fig</span><span class="p">,</span>
+            <span class="n">ax</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="c1"># for each M-N curve</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">mi_result</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">moment_interaction_results</span><span class="p">):</span>
+                <span class="c1"># scale results</span>
+                <span class="n">forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mi_result</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_scale</span>
+                <span class="n">moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mi_result</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">moments</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Axial Force&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># if there is more than one curve show legend</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div></div>
 </pre></div>
 
               </article>

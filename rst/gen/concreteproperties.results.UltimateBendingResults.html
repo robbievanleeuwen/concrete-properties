@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>concreteproperties.analysis_section &#8212; concreteproperties 0.0.4 documentation</title>
+    <title>concreteproperties.results.UltimateBendingResults &#8212; concreteproperties 0.0.4 documentation</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -35,8 +35,8 @@
     <script src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="concreteproperties.analysis_section.AnalysisSection" href="concreteproperties.analysis_section.AnalysisSection.html" />
-    <link rel="prev" title="concreteproperties.concrete_section.ConcreteSection" href="concreteproperties.concrete_section.ConcreteSection.html" />
+    <link rel="next" title="concreteproperties.post" href="concreteproperties.post.html" />
+    <link rel="prev" title="concreteproperties.results.TransformedConcreteProperties" href="concreteproperties.results.TransformedConcreteProperties.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -216,11 +216,11 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 current active has-children">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="concreteproperties.analysis_section.html">
    concreteproperties.analysis_section
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
   <label for="toctree-checkbox-4">
    <i class="fas fa-chevron-down">
    </i>
@@ -238,16 +238,16 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="concreteproperties.results.html">
    concreteproperties.results
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
   <label for="toctree-checkbox-5">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
+  <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.results.ConcreteProperties.html">
      concreteproperties.results.ConcreteProperties
@@ -273,8 +273,8 @@
      concreteproperties.results.TransformedConcreteProperties
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      concreteproperties.results.UltimateBendingResults
     </a>
    </li>
@@ -397,7 +397,7 @@
       
 
 <div class="tocsection editthispage">
-    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/rst/gen/concreteproperties.analysis_section.rst">
+    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/rst/gen/concreteproperties.results.UltimateBendingResults.rst">
         <i class="fas fa-pencil-alt"></i> Edit this page
     </a>
 </div>
@@ -414,23 +414,51 @@
               
               <article class="bd-article" role="main">
                 
-  <div class="section" id="module-concreteproperties.analysis_section">
-<span id="concreteproperties-analysis-section"></span><h1>concreteproperties.analysis_section<a class="headerlink" href="#module-concreteproperties.analysis_section" title="Permalink to this heading">#</a></h1>
-<p class="rubric">Classes</p>
+  <div class="section" id="concreteproperties-results-ultimatebendingresults">
+<h1>concreteproperties.results.UltimateBendingResults<a class="headerlink" href="#concreteproperties-results-ultimatebendingresults" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="concreteproperties.results.UltimateBendingResults">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UltimateBendingResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#UltimateBendingResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.UltimateBendingResults" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for storing ultimate bending results.</p>
+<p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection" title="concreteproperties.analysis_section.AnalysisSection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AnalysisSection</span></code></a></p></td>
-<td><p>Class for an analysis section to perform a fast analysis on concrete sections.</p></td>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">d_n</span></code></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3" title="concreteproperties.analysis_section.Tri3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tri3</span></code></a></p></td>
-<td><p>Class for a three noded linear triangular element.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mv</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mx</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">my</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">theta</span></code></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
 </div>
 
 
@@ -441,17 +469,17 @@
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="concreteproperties.concrete_section.ConcreteSection.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="concreteproperties.results.TransformedConcreteProperties.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">concreteproperties.concrete_section.ConcreteSection</p>
+          <p class="prev-next-title">concreteproperties.results.TransformedConcreteProperties</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="concreteproperties.analysis_section.AnalysisSection.html" title="next page">
+  <a class='right-next' id="next-link" href="concreteproperties.post.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">concreteproperties.analysis_section.AnalysisSection</p>
+      <p class="prev-next-title">concreteproperties.post</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>
