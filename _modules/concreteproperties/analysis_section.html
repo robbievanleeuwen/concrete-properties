@@ -474,9 +474,7 @@
             <span class="p">)</span>
 
             <span class="c1"># get stress at gauss point</span>
-            <span class="n">stress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_material</span><span class="o">.</span><span class="n">service_stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span>
-                <span class="n">strain</span><span class="o">=</span><span class="n">strain</span>
-            <span class="p">)</span>
+            <span class="n">stress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">)</span>
 
             <span class="c1"># calculate force (stress * area)</span>
             <span class="n">force_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">stress</span> <span class="o">*</span> <span class="n">j</span>

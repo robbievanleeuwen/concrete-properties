@@ -485,8 +485,8 @@
         <span class="k">return</span> <span class="n">Text</span><span class="p">(</span><span class="n">elapsed_string</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;progress.elapsed&quot;</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="create_progress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.create_progress.html#concreteproperties.utils.create_progress">[docs]</a><span class="k">def</span> <span class="nf">create_progress</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Returns a Rich Progress class.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="create_known_progress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.create_known_progress.html#concreteproperties.utils.create_known_progress">[docs]</a><span class="k">def</span> <span class="nf">create_known_progress</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns a Rich Progress class for a known number of iterations.&quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="n">Progress</span><span class="p">(</span>
         <span class="n">SpinnerColumn</span><span class="p">(),</span>
@@ -495,6 +495,20 @@
         <span class="p">),</span>
         <span class="n">BarColumn</span><span class="p">(</span><span class="n">bar_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
         <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&quot;[progress.percentage]</span><span class="si">{task.percentage:&gt;3.0f}</span><span class="s2">%&quot;</span><span class="p">),</span>
+        <span class="n">CustomTimeElapsedColumn</span><span class="p">(),</span>
+        <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_unknown_progress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.create_unknown_progress.html#concreteproperties.utils.create_unknown_progress">[docs]</a><span class="k">def</span> <span class="nf">create_unknown_progress</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns a Rich Progress class for a known number of iterations.&quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">Progress</span><span class="p">(</span>
+        <span class="n">SpinnerColumn</span><span class="p">(),</span>
+        <span class="n">TextColumn</span><span class="p">(</span>
+            <span class="s2">&quot;[progress.description]</span><span class="si">{task.description}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">table_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">BarColumn</span><span class="p">(</span><span class="n">bar_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
         <span class="n">CustomTimeElapsedColumn</span><span class="p">(),</span>
         <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span></div>

@@ -681,21 +681,30 @@
         <span class="k">return</span> <span class="n">e_qu</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.moment_curvature_diagram"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_curvature_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">moment_curvature_diagram</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kappa_inc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2e-6</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generates a moment curvature diagram given a bending angle `theta` and axial</span>
-<span class="sd">        force `n`.</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">kappa_inc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-7</span><span class="p">,</span>
+        <span class="n">delta_m_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span>
+        <span class="n">delta_m_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Generates a moment curvature diagram given a bending angle `theta`.</span>
 
 <span class="sd">        Analysis continues until the steel reaches fracture strain.</span>
 
 <span class="sd">        :param float theta: Neutral axis angle about which bending is taking place</span>
-<span class="sd">        :param float n: Net axial force</span>
-<span class="sd">        :param float kappa_inc: Curvature increment for each step</span>
+<span class="sd">        :param float kappa_inc: Initial curvature increment</span>
+<span class="sd">        :param float delta_m_min: Relative change in moment at which to double step</span>
+<span class="sd">            size</span>
+<span class="sd">        :param float delta_m_max: Relative change in moment at which to halve step</span>
+<span class="sd">            size</span>
+
+<span class="sd">        :return: Moment curvature results object</span>
+<span class="sd">        :rtype: :class:`~concreteproperties.results.MomentCurvatureResults`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># initiliase variables</span>
-        <span class="n">moment_curvature</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
-        <span class="n">failure</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">moment_curvature</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+        <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># set neutral axis depth limits</span>
         <span class="c1"># depth of neutral axis at extreme tensile fibre</span>
@@ -703,26 +712,55 @@
         <span class="n">a</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">d_t</span>  <span class="c1"># sufficiently small depth of compressive zone</span>
         <span class="n">b</span> <span class="o">=</span> <span class="n">d_t</span>  <span class="c1"># neutral axis at extreme tensile fibre</span>
 
-        <span class="c1"># while there hasn&#39;t been a failure</span>
-        <span class="k">while</span> <span class="ow">not</span> <span class="n">failure</span><span class="p">:</span>
-            <span class="c1"># incremement strain</span>
-            <span class="n">kappa</span> <span class="o">=</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">kappa_inc</span>
-
-            <span class="c1"># find neutral axis that gives convergence of the axial force</span>
-            <span class="p">(</span><span class="n">d_n</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span>
-                <span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">service_normal_force_convergence</span><span class="p">,</span>
-                <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
-                <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span>
-                <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">moment_curvature</span><span class="p">),</span>
-                <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
-                <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
-                <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># create progress bar</span>
+        <span class="k">with</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_unknown_progress</span><span class="p">()</span> <span class="k">as</span> <span class="n">progress</span><span class="p">:</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Generating M-K diagram&quot;</span><span class="p">,</span>
+                <span class="n">total</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="p">)</span>
 
-            <span class="c1"># save results</span>
-            <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa</span><span class="p">)</span></div>
-            <span class="c1"># moment_curvature.moment.append(moment)</span>
+            <span class="c1"># while there hasn&#39;t been a failure in the steel</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure</span><span class="p">:</span>
+                <span class="c1"># calculate adaptive step size for curvature</span>
+                <span class="k">if</span> <span class="nb">iter</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">moment_diff</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="nb">abs</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+                        <span class="o">/</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">moment_diff</span> <span class="o">&lt;=</span> <span class="n">delta_m_min</span><span class="p">:</span>
+                        <span class="n">kappa_inc</span> <span class="o">*=</span> <span class="mi">2</span>
+                    <span class="k">elif</span> <span class="n">moment_diff</span> <span class="o">&gt;=</span> <span class="n">delta_m_max</span><span class="p">:</span>
+                        <span class="n">kappa_inc</span> <span class="o">*=</span> <span class="mf">0.5</span>
+
+                <span class="n">kappa</span> <span class="o">=</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">kappa_inc</span>
+
+                <span class="c1"># find neutral axis that gives convergence of the axial force</span>
+                <span class="p">(</span><span class="n">d_n</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span>
+                    <span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">service_normal_force_convergence</span><span class="p">,</span>
+                    <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
+                    <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span>
+                    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">moment_curvature</span><span class="p">),</span>
+                    <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+                    <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
+                    <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">text_update</span> <span class="o">=</span> <span class="s2">&quot;[red]Generating M-K diagram: &quot;</span>
+                <span class="n">text_update</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;M=</span><span class="si">{</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_i</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span>
+
+                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">text_update</span><span class="p">)</span>
+
+                <span class="c1"># save results</span>
+                <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa</span><span class="p">)</span>
+                <span class="n">moment_curvature</span><span class="o">.</span><span class="n">moment</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_i</span><span class="p">)</span>
+                <span class="nb">iter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="n">task</span><span class="p">,</span>
+                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: M-K diagram generated&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">moment_curvature</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.service_normal_force_convergence"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence">[docs]</a>    <span class="k">def</span> <span class="nf">service_normal_force_convergence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -744,12 +782,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># calculate convergence</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="n">moment_curvature</span><span class="o">.</span><span class="n">n</span>
-            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_service_section_actions</span><span class="p">(</span>
-                <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span> <span class="n">moment_curvature</span><span class="o">=</span><span class="n">moment_curvature</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">_n_i</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_service_section_actions</span><span class="p">(</span>
+            <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span> <span class="n">moment_curvature</span><span class="o">=</span><span class="n">moment_curvature</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">_n_i</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.calculate_service_section_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_service_section_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_service_section_actions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -797,9 +832,7 @@
         <span class="n">concrete_split_geoms</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_geometries</span><span class="p">:</span>
-            <span class="n">strains</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">service_stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>
-            <span class="p">)</span>
+            <span class="n">strains</span> <span class="o">=</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>
 
             <span class="c1"># loop through intermediate points on stress strain profile</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">strain</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">strains</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
@@ -807,7 +840,9 @@
                 <span class="n">d</span> <span class="o">=</span> <span class="n">strain</span> <span class="o">/</span> <span class="n">kappa</span>
 
                 <span class="c1"># convert depth to global coordinates</span>
-                <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+                <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span>
+                    <span class="n">phi</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">d</span>
+                <span class="p">)</span>
 
                 <span class="c1"># calculate location of point with `strain`</span>
                 <span class="n">pt</span> <span class="o">=</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span>
@@ -860,6 +895,13 @@
                 <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
             <span class="p">)</span>
 
+            <span class="c1"># check for steel failure</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">abs</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span>
+                <span class="o">&gt;</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">()</span>
+            <span class="p">):</span>
+                <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure</span> <span class="o">=</span> <span class="kc">True</span>
+
             <span class="c1"># calculate stress and force</span>
             <span class="n">stress</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">)</span>
             <span class="n">force</span> <span class="o">=</span> <span class="n">stress</span> <span class="o">*</span> <span class="n">area</span>
@@ -867,13 +909,16 @@
 
             <span class="c1"># convert centroid to local coordinates</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-                <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="p">)</span>
 
             <span class="c1"># calculate moment</span>
             <span class="n">mv</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">mv</span></div>
+        <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_n_i</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_i</span> <span class="o">=</span> <span class="n">mv</span>
+
+        <span class="k">return</span> <span class="n">moment_curvature</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.ultimate_bending_capacity"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_bending_capacity</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1107,7 +1152,7 @@
         <span class="n">d_n_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">d_t</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">d_nb</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
 
         <span class="c1"># create progress bar</span>
-        <span class="k">with</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_progress</span><span class="p">()</span> <span class="k">as</span> <span class="n">progress</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span> <span class="k">as</span> <span class="n">progress</span><span class="p">:</span>
             <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
                 <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Generating M-N diagram&quot;</span><span class="p">,</span>
                 <span class="n">total</span><span class="o">=</span><span class="n">n_points</span><span class="p">,</span>
