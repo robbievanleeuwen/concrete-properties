@@ -795,9 +795,7 @@
         <span class="sd">&quot;&quot;&quot;Given a neutral axis depth `d_n` and curvature `kappa`, calculates the</span>
 <span class="sd">        resultant axial force and bending moment.</span>
 
-<span class="sd">        :param float d_n: Depth of the neutral axis from the extreme compression fibre,</span>
-<span class="sd">            0 &lt; d_n &lt;= d_t, where d_t is the depth of the extreme tensile fibre, i.e.</span>
-<span class="sd">            d_n must be within the section and not equal to zero</span>
+<span class="sd">        :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
 <span class="sd">        :param float kappa: Curvature</span>
 <span class="sd">        :param moment_curvature: Moment curvature results object</span>
 <span class="sd">        :type moment_curvature:</span>
@@ -924,16 +922,15 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis angle `theta` and an axial force `n`, calculates the</span>
 <span class="sd">        ultimate bending capacity.</span>
 
 <span class="sd">        :param float theta: Angle the neutral axis makes with the horizontal axis</span>
 <span class="sd">        :param float n: Net axial force</span>
 
-<span class="sd">        :return: Axial force, ultimate bending capacity about the x &amp; y axes, resultant</span>
-<span class="sd">            moment and the depth to the neutral axis `(n, mx, my, mv, d_n)`</span>
-<span class="sd">        :rtype: Tuple[float]</span>
+<span class="sd">        :return: Ultimate bending results object</span>
+<span class="sd">        :rtype: :class:`~concreteproperties.results.UltimateBendingResults`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># set neutral axis depth limits</span>
@@ -943,66 +940,70 @@
         <span class="n">b</span> <span class="o">=</span> <span class="n">d_t</span>  <span class="c1"># neutral axis at extreme tensile fibre</span>
 
         <span class="c1"># initialise ultimate bending results</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ult_bend_res</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="n">ultimate_results</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">()</span>
 
         <span class="c1"># find neutral axis that gives convergence of the axial force</span>
         <span class="p">(</span><span class="n">d_n</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span>
             <span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ultimate_normal_force_convergence</span><span class="p">,</span>
             <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
             <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span>
-            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">ultimate_results</span><span class="p">),</span>
             <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
             <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
             <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># unpack ultimate bending results from last run of brentq</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">mv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ult_bend_res</span>
-
-        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">mv</span><span class="p">,</span> <span class="n">d_n</span></div>
+        <span class="k">return</span> <span class="n">ultimate_results</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.ultimate_normal_force_convergence"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_normal_force_convergence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">ultimate_results</span><span class="p">:</span> <span class="n">results</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates</span>
 <span class="sd">        the difference between the target net axial force `n` and the axial force</span>
 <span class="sd">        given `d_n` &amp; `theta`.</span>
 
 <span class="sd">        :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
-<span class="sd">        :param float theta: Angle the neutral axis makes with the horizontal axis</span>
-<span class="sd">        :param float n: Target axial force</span>
+<span class="sd">        :param float n: Net axial force</span>
+<span class="sd">        :param ultimate_results: Ultimate bending results object</span>
+<span class="sd">        :type ultimate_results:</span>
+<span class="sd">            :class:`~concreteproperties.results.UltimateBendingResults`</span>
 
 <span class="sd">        :return: Axial force convergence</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># calculate convergence</span>
-        <span class="k">return</span> <span class="n">n</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span><span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">n</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">ultimate_results</span><span class="o">=</span><span class="n">ultimate_results</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">n</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.calculate_ultimate_section_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ultimate_section_actions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="n">ultimate_results</span><span class="p">:</span> <span class="n">results</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates</span>
 <span class="sd">        the resultant bending moments `mx`, `my`, `mv` and the net axial force `n`.</span>
 
-<span class="sd">        :param float d_n: Depth of the neutral axis from the extreme compression fibre,</span>
-<span class="sd">            0 &lt; d_n &lt;= d_t, where d_t is the depth of the extreme tensile fibre, i.e.</span>
-<span class="sd">            d_n must be within the section and not equal to zero</span>
-<span class="sd">        :param float theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">        :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">        :param ultimate_results: Ultimate bending results object</span>
+<span class="sd">        :type ultimate_results:</span>
+<span class="sd">            :class:`~concreteproperties.results.UltimateBendingResults`</span>
 
-<span class="sd">        :return: Section actions `(n, mx, my, mv)`</span>
-<span class="sd">        :rtype: Tuple[float]</span>
+<span class="sd">        :return: Ultimate bending results object</span>
+<span class="sd">        :rtype: :class:`~concreteproperties.results.UltimateBendingResults`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># calculate extreme fibre in global coordinates</span>
         <span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
-            <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
+            <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span>
         <span class="p">)</span>
 
         <span class="c1"># validate d_n input</span>
@@ -1013,11 +1014,11 @@
 
         <span class="c1"># find point on neutral axis by shifting by d_n</span>
         <span class="n">point_na</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">point_on_neutral_axis</span><span class="p">(</span>
-            <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
+            <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span>
         <span class="p">)</span>
 
         <span class="c1"># get principal coordinates of plastic centroid</span>
-        <span class="n">pc_local</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pc_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">pc_local</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pc_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span>
 
         <span class="c1"># create splits in concrete geometries at points in stress strain profiles</span>
         <span class="n">concrete_split_geoms</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1033,7 +1034,9 @@
                 <span class="n">d</span> <span class="o">=</span> <span class="n">strain</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span> <span class="o">*</span> <span class="n">d_n</span>
 
                 <span class="c1"># convert depth to global coordinates</span>
-                <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+                <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span>
+                    <span class="n">phi</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">d</span>
+                <span class="p">)</span>
 
                 <span class="c1"># calculate location of point with `strain`</span>
                 <span class="n">pt</span> <span class="o">=</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span>
@@ -1042,7 +1045,7 @@
                 <span class="n">top_geoms</span><span class="p">,</span> <span class="n">bot_geoms</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">split_section</span><span class="p">(</span>
                     <span class="n">geometry</span><span class="o">=</span><span class="n">conc_geom</span><span class="p">,</span>
                     <span class="n">point</span><span class="o">=</span><span class="n">pt</span><span class="p">,</span>
-                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
                 <span class="p">)</span>
 
                 <span class="c1"># save bottom geoms</span>
@@ -1064,7 +1067,7 @@
             <span class="n">n_sec</span><span class="p">,</span> <span class="n">mv_sec</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">ultimate_stress_analysis</span><span class="p">(</span>
                 <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
                 <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
-                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
                 <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
                 <span class="n">pc_local</span><span class="o">=</span><span class="n">pc_local</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
             <span class="p">)</span>
@@ -1083,7 +1086,7 @@
                 <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
                 <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
                 <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
-                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
                 <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
             <span class="p">)</span>
 
@@ -1094,19 +1097,25 @@
 
             <span class="c1"># convert centroid to local coordinates</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-                <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="p">)</span>
 
             <span class="c1"># calculate moment</span>
             <span class="n">mv</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">pc_local</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="c1"># convert mv to mx &amp; my</span>
-        <span class="p">(</span><span class="n">my</span><span class="p">,</span> <span class="n">mx</span><span class="p">)</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">mv</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">my</span><span class="p">,</span> <span class="n">mx</span><span class="p">)</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span>
+            <span class="n">phi</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">mv</span>
+        <span class="p">)</span>
 
         <span class="c1"># save results</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ult_bend_res</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">mv</span><span class="p">]</span>
+        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span> <span class="o">=</span> <span class="n">d_n</span>
+        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">mx</span> <span class="o">=</span> <span class="n">mx</span>
+        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">my</span> <span class="o">=</span> <span class="n">my</span>
+        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">mv</span> <span class="o">=</span> <span class="n">mv</span>
 
-        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">mv</span></div>
+        <span class="k">return</span> <span class="n">ultimate_results</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.moment_interaction_diagram"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">moment_interaction_diagram</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1146,10 +1155,10 @@
         <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
 
         <span class="c1"># compute neutral axis depth for pure bending case</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">d_nb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ultimate_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># generate list of neutral axes</span>
-        <span class="n">d_n_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">d_t</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">d_nb</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
+        <span class="n">d_n_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">d_t</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
 
         <span class="c1"># create progress bar</span>
         <span class="k">with</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span> <span class="k">as</span> <span class="n">progress</span><span class="p">:</span>
@@ -1159,11 +1168,11 @@
             <span class="p">)</span>
 
             <span class="k">for</span> <span class="n">d_n</span> <span class="ow">in</span> <span class="n">d_n_list</span><span class="p">:</span>
-                <span class="n">n</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">mv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
-                    <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
+                <span class="n">ultimate_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
+                    <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">ultimate_results</span><span class="o">=</span><span class="n">ultimate_results</span>
                 <span class="p">)</span>
-                <span class="n">n_curve</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">n_scale</span><span class="p">)</span>
-                <span class="n">m_curve</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mv</span> <span class="o">*</span> <span class="n">m_scale</span><span class="p">)</span>
+                <span class="n">n_curve</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">n</span> <span class="o">*</span> <span class="n">n_scale</span><span class="p">)</span>
+                <span class="n">m_curve</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">mv</span> <span class="o">*</span> <span class="n">m_scale</span><span class="p">)</span>
                 <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
             <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
