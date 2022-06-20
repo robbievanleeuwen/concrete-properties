@@ -58,7 +58,9 @@ conc_sec = ConcreteSection(geometry)
 
 pprint(conc_sec.gross_properties)
 pprint(conc_sec.get_transformed_gross_properties(elastic_modulus=32.8e3))
-n, m = conc_sec.moment_interaction_diagram(theta=0, plot=True)
-pprint(conc_sec.calculate_cracking_moment(theta=np.pi))
-
-pprint(conc_sec.calculate_cracked_properties())
+mi_res = conc_sec.moment_interaction_diagram()
+pprint(mi_res)
+mi_res.plot_diagram()
+cracked_res = conc_sec.calculate_cracked_properties()
+cracked_res.calculate_transformed_properties(elastic_modulus=32.8e3)
+pprint(cracked_res)

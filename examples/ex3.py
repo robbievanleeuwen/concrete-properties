@@ -37,8 +37,7 @@ steel = Steel(
     colour="grey",
 )
 
-n_results = []
-m_results = []
+mi_results = []
 labels = []
 
 for idx in range(4):
@@ -58,9 +57,9 @@ for idx in range(4):
     )
 
     conc_sec = ConcreteSection(geometry)
-    n, m = conc_sec.moment_interaction_diagram(theta=0, plot=False)
-    n_results.append(n)
-    m_results.append(m)
+    mi_results.append(conc_sec.moment_interaction_diagram())
     labels.append("p = {0}".format(0.01 * (idx + 1)))
 
-conc_sec.plot_moment_interaction_diagram(n_i=n_results, m_i=m_results, labels=labels)
+mi_results[0].plot_multiple_diagrams(
+    moment_interaction_results=mi_results, labels=labels
+)

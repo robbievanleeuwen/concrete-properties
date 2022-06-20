@@ -236,10 +236,96 @@ class MomentCurvatureResults:
 class UltimateBendingResults:
     """Class for storing ultimate bending results."""
 
-    # results
     theta: float = 0
     d_n: float = 0
     n: float = 0
     mx: float = 0
     my: float = 0
     mv: float = 0
+
+
+@dataclass
+class MomentInteractionResults:
+    """Class for storing moment interaction results."""
+
+    n: List[float] = field(default_factory=list)
+    m: List[float] = field(default_factory=list)
+
+    def plot_diagram(
+        self,
+        n_scale: float = 1e-3,
+        m_scale: float = 1e-6,
+        **kwargs,
+    ) -> matplotlib.axes._subplots.AxesSubplot:
+        """Plots a moment interaction diagram.
+
+        :param float n_scale: Scaling factor to apply to axial force
+        :param float m_scale: Scaling factor to apply to bending moment
+        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        """
+
+        # create plot and setup the plot
+        with plotting_context(title="Moment Interaction Diagram", **kwargs) as (
+            fig,
+            ax,
+        ):
+            # scale results
+            forces = np.array(self.n) * n_scale
+            moments = np.array(self.m) * m_scale
+
+            ax.plot(moments, forces, "o-", markersize=3)
+
+            plt.xlabel("Bending Moment")
+            plt.ylabel("Axial Force")
+            plt.grid(True)
+
+        return ax
+
+    @staticmethod
+    def plot_multiple_diagrams(
+        moment_interaction_results: List[MomentInteractionResults],
+        labels: List[str],
+        n_scale: float = 1e-3,
+        m_scale: float = 1e-6,
+        **kwargs,
+    ) -> matplotlib.axes._subplots.AxesSubplot:
+        """Plots multiple moment interaction diagrams.
+
+        :param moment_interaction_results: List of moment interaction results objects
+        :type moment_interaction_results:
+            List[:class:`~concreteproperties.results.MomentInteractionResults`]
+        :param labels: List of labels for each moment interaction diagram
+        :type labels: List[str]
+        :param float n_scale: Scaling factor to apply to axial force
+        :param float m_scale: Scaling factor to apply to bending moment
+        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        """
+
+        # create plot and setup the plot
+        with plotting_context(title="Moment Interaction Diagram", **kwargs) as (
+            fig,
+            ax,
+        ):
+            # for each M-N curve
+            for idx, mi_result in enumerate(moment_interaction_results):
+                # scale results
+                forces = np.array(mi_result.n) * n_scale
+                moments = np.array(mi_result.m) * m_scale
+
+                ax.plot(moments, forces, "o-", label=labels[idx], markersize=3)
+
+            plt.xlabel("Bending Moment")
+            plt.ylabel("Axial Force")
+            plt.grid(True)
+
+            # if there is more than one curve show legend
+            if idx > 0:
+                ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+
+        return ax

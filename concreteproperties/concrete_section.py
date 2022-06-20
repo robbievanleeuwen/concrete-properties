@@ -528,7 +528,7 @@ class ConcreteSection:
         kappa_inc: float = 1e-7,
         delta_m_min: float = 0.15,
         delta_m_max: float = 0.3,
-    ) -> results.MomentCurvatureResults:
+    ) -> res.MomentCurvatureResults:
         """Generates a moment curvature diagram given a bending angle `theta`.
 
         Analysis continues until the steel reaches fracture strain.
@@ -961,13 +961,9 @@ class ConcreteSection:
 
     def moment_interaction_diagram(
         self,
-        theta: float,
+        theta: float = 0,
         n_points: int = 24,
-        n_scale: float = 1e-3,
-        m_scale: float = 1e-6,
-        plot: bool = True,
-        **kwargs,
-    ) -> Tuple[List[float], List[float]]:
+    ) -> res.MomentInteractionResults:
         """Generates a moment interaction diagram given a neutral axis angle `theta`
         and `n_points` calculation points between the decompression case and the pure
         bending case.
@@ -975,23 +971,17 @@ class ConcreteSection:
         :param float theta: Angle the neutral axis makes with the horizontal axis
         :param int n_points: Number of calculation points between the decompression
             case and the pure bending case.
-        :param float n_scale: Scaling factor to apply to axial force
-        :param float m_scale: Scaling factor to apply to bending moment
-        :param bool plot: If set to true, displays a plot of the moment interaction
-            diagram
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: A list of the points on the moment interaction diagram `(n, m)`
-        :rtype: Tuple[List[float], List[float]]
+        :return: Moment interaction results object
+        :rtype: :class:`~concreteproperties.results.MomentInteractionResults`
         """
 
-        # initialise variables
-        n_curve = []
-        m_curve = []
+        # initialise results
+        mi_results = res.MomentInteractionResults()
 
         # add squash load
-        n_curve.append(self.gross_properties.squash_load * n_scale)
-        m_curve.append(0)
+        mi_results.n.append(self.gross_properties.squash_load)
+        mi_results.m.append(0)
 
         # compute extreme tensile fibre
         _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
@@ -1013,8 +1003,8 @@ class ConcreteSection:
                 ultimate_results = self.calculate_ultimate_section_actions(
                     d_n=d_n, ultimate_results=ultimate_results
                 )
-                n_curve.append(ultimate_results.n * n_scale)
-                m_curve.append(ultimate_results.mv * m_scale)
+                mi_results.n.append(ultimate_results.n)
+                mi_results.m.append(ultimate_results.mv)
                 progress.update(task, advance=1)
 
             progress.update(
@@ -1023,57 +1013,10 @@ class ConcreteSection:
             )
 
         # add tensile load
-        n_curve.append(self.gross_properties.tensile_load * n_scale)
-        m_curve.append(0)
+        mi_results.n.append(self.gross_properties.tensile_load)
+        mi_results.m.append(0)
 
-        if plot:
-            self.plot_moment_interaction_diagram(
-                n_i=[n_curve], m_i=[m_curve], labels=["Concrete Section"], **kwargs
-            )
-
-        return n_curve, m_curve
-
-    def plot_moment_interaction_diagram(
-        self,
-        n_i: List[List[float]],
-        m_i: List[List[float]],
-        labels: List[str],
-        **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
-        """Plots a number of moment interaction diagrams.
-
-        :param n_i: List containing outputs of axial force from moment interaction
-            diagrams.
-        :type n_i: List[List[float]]
-        :param m_i: List containing outputs of bending moment from moment interaction
-            diagrams.
-        :type m_i: List[List[float]]
-        :param labels: List of labels for each moment interaction diagram
-        :type labels: List[str]
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
-
-        :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
-        """
-
-        # create plot and setup the plot
-        with plotting_context(title="Moment Interaction Diagram", **kwargs) as (
-            fig,
-            ax,
-        ):
-            # for each M-N curve
-            for idx in range(len(n_i)):
-                ax.plot(m_i[idx], n_i[idx], "o-", label=labels[idx], markersize=3)
-
-            plt.xlabel("Bending Moment")
-            plt.ylabel("Axial Force")
-            plt.grid(True)
-
-            # if there is more than one curve show legend
-            if idx > 0:
-                ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
-
-        return ax
+        return mi_results
 
     def get_c_local(
         self,
