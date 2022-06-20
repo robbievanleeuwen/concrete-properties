@@ -9,7 +9,7 @@ from concreteproperties.material import Concrete, Steel
 from concreteproperties.analysis_section import AnalysisSection
 import concreteproperties.utils as utils
 from concreteproperties.post import plotting_context
-from concreteproperties.results import ConcreteProperties, TransformedConcreteProperties
+import concreteproperties.results as results
 
 from sectionproperties.pre.geometry import CompoundGeometry
 from sectionproperties.analysis.fea import principal_coordinate, global_coordinate
@@ -53,7 +53,7 @@ class ConcreteSection:
             )
 
         # initialise gross properties results class
-        self.gross_properties = ConcreteProperties()
+        self.gross_properties = results.ConcreteProperties()
 
         # calculate gross area properties
         self.calculate_gross_area_properties()
@@ -107,12 +107,8 @@ class ConcreteSection:
         self.gross_properties.perimeter = self.geometry.calculate_perimeter()
 
         # centroids
-        self.gross_properties.cx = (
-            self.gross_properties.e_qy / self.gross_properties.e_a
-        )
-        self.gross_properties.cy = (
-            self.gross_properties.e_qx / self.gross_properties.e_a
-        )
+        self.gross_properties.cx = self.gross_properties.e_qy / self.gross_properties.e_a
+        self.gross_properties.cy = self.gross_properties.e_qx / self.gross_properties.e_a
 
         # global second moments of area
         # concrete geometries
@@ -218,17 +214,17 @@ class ConcreteSection:
     def get_transformed_gross_properties(
         self,
         elastic_modulus: float,
-    ) -> TransformedConcreteProperties:
+    ) -> results.TransformedConcreteProperties:
         """Transforms gross section properties given a reference elastic modulus.
 
         :param float elastic_modulus: Reference elastic modulus
 
         :return: Transformed concrete properties object
         :rtype:
-            :class:`~concreteproperties.concrete_section.TransformedConcreteProperties`
+            :class:`~concreteproperties.results.TransformedConcreteProperties`
         """
 
-        return TransformedConcreteProperties(
+        return results.TransformedConcreteProperties(
             concrete_properties=self.gross_properties, elastic_modulus=elastic_modulus
         )
 
@@ -296,13 +292,112 @@ class ConcreteSection:
             0
         ].material.ultimate_stress_strain_profile.get_ultimate_strain()
 
-    def calculate_cracking_moment(
+    def calculate_cracked_properties(
         self,
         theta: float = 0,
+    ) -> results.CrackedResults:
+        """Calculates cracked section properties given a neutral axis angle `theta`.
+
+        :param float theta: Neutral axis angle about which bending is taking place
+
+        :return: Cracked results object
+        :rtype: :class:`~concreteproperties.results.CrackedResults`
+        """
+
+        cracked_results = results.CrackedResults(theta=theta)
+        cracked_results.m_cr = self.calculate_cracking_moment(theta=theta)
+
+        # set neutral axis depth limits
+        # depth of neutral axis at extreme tensile fibre
+        _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
+        a = 1e-6 * d_t  # sufficiently small depth of compressive zone
+        b = d_t  # neutral axis at extreme tensile fibre
+
+        (cracked_results.d_nc, r) = brentq(
+            f=self.cracked_neutral_axis_convergence,
+            a=a,
+            b=b,
+            args=(theta, cracked_results),
+            xtol=1e-3,
+            rtol=1e-6,
+            full_output=True,
+            disp=False,
+        )
+
+        # calculate cracked section properties
+        # axial rigidity & first moments of area
+        for geom in cracked_results.cracked_geometries:
+            area = geom.calculate_area()
+            centroid = geom.calculate_centroid()
+
+            cracked_results.e_a_cr += area * geom.material.elastic_modulus
+            cracked_results.e_qx_cr += (
+                area * geom.material.elastic_modulus * centroid[1]
+            )
+            cracked_results.e_qy_cr += (
+                area * geom.material.elastic_modulus * centroid[0]
+            )
+
+        # global second moments of area
+        for geom in cracked_results.cracked_geometries:
+            # if concrete
+            if isinstance(geom.material, Concrete):
+                conc_sec = AnalysisSection(geometry=geom)
+
+                for conc_el in conc_sec.elements:
+                    (
+                        el_e_ixx_g,
+                        el_e_iyy_g,
+                        el_e_ixy_g,
+                    ) = conc_el.second_moments_of_area()
+                    cracked_results.e_ixx_g_cr += el_e_ixx_g
+                    cracked_results.e_iyy_g_cr += el_e_iyy_g
+                    cracked_results.e_ixy_g_cr += el_e_ixy_g
+
+            elif isinstance(geom.material, Steel):
+                # area, diameter and centroid of geometry
+                area = geom.calculate_area()
+                diam = np.sqrt(4 * area / np.pi)
+                centroid = geom.calculate_centroid()
+
+                cracked_results.e_ixx_g_cr += geom.material.elastic_modulus * (
+                    np.pi * pow(diam, 4) / 64 + area * centroid[1] * centroid[1]
+                )
+                cracked_results.e_iyy_g_cr += geom.material.elastic_modulus * (
+                    np.pi * pow(diam, 4) / 64 + area * centroid[0] * centroid[0]
+                )
+                cracked_results.e_ixy_g_cr += geom.material.elastic_modulus * (
+                    area * centroid[0] * centroid[1]
+                )
+
+        # centroidal second moments of area
+        cracked_results.e_ixx_c_cr = (
+            cracked_results.e_ixx_g_cr
+            - cracked_results.e_qx_cr**2 / cracked_results.e_a_cr
+        )
+        cracked_results.e_iyy_c_cr = (
+            cracked_results.e_iyy_g_cr
+            - cracked_results.e_qy_cr**2 / cracked_results.e_a_cr
+        )
+        cracked_results.e_ixy_c_cr = (
+            cracked_results.e_ixy_g_cr
+            - cracked_results.e_qx_cr * cracked_results.e_qy_cr / cracked_results.e_a_cr
+        )
+        cracked_results.e_iuu_cr = (
+            cracked_results.e_iyy_c_cr * (np.sin(theta)) ** 2
+            + cracked_results.e_ixx_c_cr * (np.cos(theta)) ** 2
+            - 2 * cracked_results.e_ixy_c_cr * np.sin(theta) * np.cos(theta)
+        )
+
+        return cracked_results
+
+    def calculate_cracking_moment(
+        self,
+        theta: float,
     ) -> float:
         """Calculates the cracking moment given a bending angle `theta`.
 
-        :param float theta: Angle the bending axis makes with the horizontal axis
+        :param float theta: Neutral axis angle about which bending is taking place
 
         :return: Cracking moment
         :rtype: float
@@ -349,45 +444,23 @@ class ConcreteSection:
 
         return m_c
 
-    def calculate_cracked_properties(
-        self,
-        theta: float = 0,
-    ):
-        """x
-
-        x
-        """
-
-        # set neutral axis depth limits
-        # depth of neutral axis at extreme tensile fibre
-        _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
-
-        a = 1e-6 * d_t  # sufficiently small depth of compressive zone
-        b = d_t  # neutral axis at extreme tensile fibre
-
-        (d_nc, r) = brentq(
-            f=self.cracked_neutral_axis_convergence,
-            a=a,
-            b=b,
-            args=(theta),
-            xtol=1e-3,
-            rtol=1e-6,
-            full_output=True,
-            disp=False,
-        )
-
-        CompoundGeometry(self._conc_geoms).plot_geometry()
-
-        return d_nc
-
     def cracked_neutral_axis_convergence(
         self,
         d_nc: float,
         theta: float,
-    ):
-        """x
+        cracked_results: results.CrackedResults,
+    ) -> float:
+        """Given a trial cracked neutral axis depth `d_nc` and bending angle `theta`,
+        determines the difference between the first moments of area above and below the
+        trial axis.
 
-        x
+        :param float d_nc: Trial cracked neutral axis
+        :param floa theta: Neutral axis angle about which bending is taking place
+        :param cracked_results: Cracked results object
+        :type cracked_results: :class:`~concreteproperties.results.CrackedResults`
+
+        :return: Cracked neutral axis convergence
+        :rtype: float
         """
 
         # calculate extreme fibre in global coordinates
@@ -443,7 +516,7 @@ class ConcreteSection:
             # calculate first moment of area
             e_qu += ea * (c_v - na_local[1])
 
-        self._conc_geoms = cracked_geoms
+        cracked_results.cracked_geometries = cracked_geoms
 
         return e_qu
 
@@ -466,7 +539,6 @@ class ConcreteSection:
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
         _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
-
         a = 1e-6 * d_t  # sufficiently small depth of compressive zone
         b = d_t  # neutral axis at extreme tensile fibre
 

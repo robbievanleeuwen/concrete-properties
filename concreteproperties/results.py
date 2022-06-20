@@ -1,4 +1,10 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
+from typing import List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from sectionproperties.pre.geometry import Geometry
 
 
 @dataclass
@@ -9,6 +15,7 @@ class ConcreteProperties:
     total_area: float = 0
     concrete_area: float = 0
     steel_area: float = 0
+    e_a: float = 0
     e_a: float = 0
 
     # section mass
@@ -117,5 +124,58 @@ class TransformedConcreteProperties:
         self.z22_minus = self.concrete_properties.e_z22_minus / self.elastic_modulus
 
 
-class UltimateBendingResults:
-    pass
+@dataclass
+class CrackedResults:
+    """Class for storing cracked concrete section properties."""
+
+    theta: float
+    m_cr: float = 0
+    d_nc: float = 0
+    cracked_geometries: List[Geometry] = field(default_factory=list, repr=False)
+    e_a_cr: float = 0
+    e_qx_cr: float = 0
+    e_qy_cr: float = 0
+    e_ixx_g_cr: float = 0
+    e_iyy_g_cr: float = 0
+    e_ixy_g_cr: float = 0
+    e_ixx_c_cr: float = 0
+    e_iyy_c_cr: float = 0
+    e_ixy_c_cr: float = 0
+    e_iuu_cr: float = 0
+
+    # transformed properties
+    a_cr: float = 0
+    qx_cr: float = 0
+    qy_cr: float = 0
+    ixx_g_cr: float = 0
+    iyy_g_cr: float = 0
+    ixy_g_cr: float = 0
+    ixx_c_cr: float = 0
+    iyy_c_cr: float = 0
+    ixy_c_cr: float = 0
+    iuu_cr: float = 0
+
+    def calculate_transformed_properties(
+        self,
+        elastic_modulus: float,
+    ):
+        """Calculates and stores transformed cracked properties using a reference
+        elastic modulus.
+
+        :param float elastic_modulus: Reference elastic modulus
+        """
+
+        self.a_cr = self.e_a_cr / elastic_modulus
+        self.qx_cr = self.e_qx_cr / elastic_modulus
+        self.qy_cr = self.e_qy_cr / elastic_modulus
+        self.ixx_g_cr = self.e_ixx_g_cr / elastic_modulus
+        self.iyy_g_cr = self.e_iyy_g_cr / elastic_modulus
+        self.ixy_g_cr = self.e_ixy_g_cr / elastic_modulus
+        self.ixx_c_cr = self.e_ixx_c_cr / elastic_modulus
+        self.iyy_c_cr = self.e_iyy_c_cr / elastic_modulus
+        self.ixy_c_cr = self.e_ixy_c_cr / elastic_modulus
+        self.iuu_cr = self.e_iuu_cr / elastic_modulus
+
+
+# class UltimateBendingResults:
+#     pass

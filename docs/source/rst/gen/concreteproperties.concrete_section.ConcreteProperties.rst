@@ -9,29 +9,29 @@ concreteproperties.concrete\_section.ConcreteProperties
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~ConcreteProperties.axial_pc_x
       ~ConcreteProperties.axial_pc_y
       ~ConcreteProperties.conc_ultimate_strain
       ~ConcreteProperties.concrete_area
       ~ConcreteProperties.cx
       ~ConcreteProperties.cy
-      ~ConcreteProperties.e_a
+      ~ConcreteProperties.ea
       ~ConcreteProperties.e_i11_c
       ~ConcreteProperties.e_i22_c
       ~ConcreteProperties.e_ixx_c
@@ -57,5 +57,3 @@ concreteproperties.concrete\_section.ConcreteProperties
       ~ConcreteProperties.steel_area
       ~ConcreteProperties.tensile_load
       ~ConcreteProperties.total_area
-   
-   

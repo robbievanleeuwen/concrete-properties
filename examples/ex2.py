@@ -56,9 +56,9 @@ geometry = concrete_rectangular_section(
 
 conc_sec = ConcreteSection(geometry)
 
-# pprint(conc_sec.gross_properties)
-# pprint(conc_sec.get_transformed_gross_properties(elastic_modulus=32.8e3))
-# n, m = conc_sec.moment_interaction_diagram(theta=0, plot=True)
-# pprint(conc_sec.calculate_cracking_moment(theta=np.pi))
+pprint(conc_sec.gross_properties)
+pprint(conc_sec.get_transformed_gross_properties(elastic_modulus=32.8e3))
+n, m = conc_sec.moment_interaction_diagram(theta=0, plot=True)
+pprint(conc_sec.calculate_cracking_moment(theta=np.pi))
 
 pprint(conc_sec.calculate_cracked_properties())

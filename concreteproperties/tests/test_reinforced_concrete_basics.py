@@ -1,4 +1,5 @@
 import pytest
+import numpy as np
 
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
@@ -65,13 +66,17 @@ def test_example_3_1():
 
     conc_sec = ConcreteSection(geometry)
     props = conc_sec.get_transformed_gross_properties(elastic_modulus=30.1e3)
-    m_c = conc_sec.calculate_cracking_moment()
+    cracked_results = conc_sec.calculate_cracked_properties()
+    cracked_results.calculate_transformed_properties(elastic_modulus=30.1e3)
 
     assert pytest.approx(conc_sec.gross_properties.cy, abs=1) == 450 - 234
     assert pytest.approx(props.ixx_c, rel=0.01) == 2.47e9
-    assert pytest.approx(m_c, rel=0.01) == 11.4e6
+    assert pytest.approx(cracked_results.m_cr, rel=0.01) == 11.4e6
+    assert pytest.approx(cracked_results.d_nc, rel=0.01) == 125
+    assert pytest.approx(cracked_results.ixx_c_cr, rel=0.01) == 821e6
+    assert pytest.approx(cracked_results.iuu_cr, rel=0.01) == 821e6
 
-    # TODO: cracked neutral axis, cracking second moment of area, stresses
+    # TODO: stresses
 
 
 def test_example_3_2():
@@ -144,13 +149,17 @@ def test_example_3_2():
 
     conc_sec = ConcreteSection(geom)
     props = conc_sec.get_transformed_gross_properties(elastic_modulus=30.1e3)
-    m_c = conc_sec.calculate_cracking_moment()
+    cracked_results = conc_sec.calculate_cracked_properties()
+    cracked_results.calculate_transformed_properties(elastic_modulus=30.1e3)
 
     assert pytest.approx(conc_sec.gross_properties.cy, abs=1) == 800 - 327
     assert pytest.approx(props.ixx_c, rel=0.01) == 24.1e9
-    assert pytest.approx(m_c, rel=0.01) == 30.6e6
+    assert pytest.approx(cracked_results.m_cr, rel=0.01) == 30.6e6
+    assert pytest.approx(cracked_results.d_nc, rel=0.01) == 160
+    assert pytest.approx(cracked_results.ixx_c_cr, rel=0.01) == 8.9e9
+    assert pytest.approx(cracked_results.iuu_cr, rel=0.01) == 8.9e9
 
-    # TODO: cracked neutral axis, cracking second moment of area, stresses
+    # TODO: stresses
 
 
 def test_example_3_4():
@@ -214,8 +223,12 @@ def test_example_3_4():
         geom = (geom - bar) + bar
 
     conc_sec = ConcreteSection(geom)
+    cracked_results = conc_sec.calculate_cracked_properties(theta=np.pi)
+    cracked_results.calculate_transformed_properties(elastic_modulus=30.1e3)
 
-    # TODO: cracked neutral axis, cracking second moment of area
+    assert pytest.approx(cracked_results.d_nc, rel=0.01) == 302
+    assert pytest.approx(cracked_results.ixx_c_cr, rel=0.01) == 10.46e9
+    assert pytest.approx(cracked_results.iuu_cr, rel=0.01) == 10.46e9
 
 
 def test_example_3_8():

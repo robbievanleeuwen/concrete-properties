@@ -53,7 +53,7 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
 
 ### Service Analysis
 - [x] Cracking moment
-- [ ] Cracked second moment of area
+- [x] Cracked second moment of area
 - [ ] Moment-curvature diagram
 
 ### Ultimate Analysis
