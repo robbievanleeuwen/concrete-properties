@@ -164,7 +164,7 @@
 <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
 <span class="kn">import</span> <span class="nn">triangle</span>
 
-<span class="kn">from</span> <span class="nn">concreteproperties.utils</span> <span class="kn">import</span> <span class="n">get_strain</span><span class="p">,</span> <span class="n">gauss_points</span><span class="p">,</span> <span class="n">shape_function</span>
+<span class="kn">import</span> <span class="nn">concreteproperties.utils</span> <span class="k">as</span> <span class="nn">utils</span>
 <span class="kn">from</span> <span class="nn">concreteproperties.post</span> <span class="kn">import</span> <span class="n">plotting_context</span>
 
 <span class="kn">import</span> <span class="nn">sectionproperties.analysis.fea</span> <span class="k">as</span> <span class="nn">sp_fea</span>
@@ -229,6 +229,45 @@
                     <span class="n">conc_material</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">material</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
+
+<div class="viewcode-block" id="AnalysisSection.service_stress_analysis"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.service_stress_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">service_stress_analysis</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">na_local</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Performs an ultimate stress analysis on the section.</span>
+
+<span class="sd">        :param point_na: Point on the neutral axis</span>
+<span class="sd">        :type point_na: Tuple[float]</span>
+<span class="sd">        :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">        :param float theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">        :param float kappa: Curvature</span>
+<span class="sd">        :param float na_local: y-location of the neutral axis in local coordinates</span>
+
+<span class="sd">        :return: Axial force and resultant moment</span>
+<span class="sd">        :rtype: Tuple[float]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># initialise section actions</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mv</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="n">el_n</span><span class="p">,</span> <span class="n">el_mv</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_service_actions</span><span class="p">(</span>
+                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
+                <span class="n">na_local</span><span class="o">=</span><span class="n">na_local</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">n</span> <span class="o">+=</span> <span class="n">el_n</span>
+            <span class="n">mv</span> <span class="o">+=</span> <span class="n">el_mv</span>
+
+        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">mv</span></div>
 
 <div class="viewcode-block" id="AnalysisSection.ultimate_stress_analysis"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.ultimate_stress_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_stress_analysis</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -353,12 +392,12 @@
         <span class="n">e_ixy</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># get points for 3 point Gaussian integration</span>
-        <span class="n">gps</span> <span class="o">=</span> <span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
         <span class="c1"># loop through each gauss point</span>
         <span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="n">gps</span><span class="p">:</span>
             <span class="c1"># determine shape function and jacobian</span>
-            <span class="n">N</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">shape_function</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">gauss_point</span><span class="o">=</span><span class="n">gp</span><span class="p">)</span>
+            <span class="n">N</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">shape_function</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">gauss_point</span><span class="o">=</span><span class="n">gp</span><span class="p">)</span>
 
             <span class="n">e_ixx</span> <span class="o">+=</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">conc_material</span><span class="o">.</span><span class="n">elastic_modulus</span>
@@ -381,6 +420,77 @@
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">e_ixx</span><span class="p">,</span> <span class="n">e_iyy</span><span class="p">,</span> <span class="n">e_ixy</span></div>
+
+<div class="viewcode-block" id="Tri3.calculate_service_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_service_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_service_actions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">na_local</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Calculates ultimate actions for the current finite element.</span>
+
+<span class="sd">        :param point_na: Point on the neutral axis</span>
+<span class="sd">        :type point_na: Tuple[float]</span>
+<span class="sd">        :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">        :param float theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">        :param float kappa: Curvature</span>
+<span class="sd">        :param float na_local: y-location of the neutral axis in local coordinates</span>
+
+<span class="sd">        :return: Axial force and resultant moment</span>
+<span class="sd">        :rtype: Tuple[float]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># initialise element results</span>
+        <span class="n">area_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">qx_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">qy_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">force_e</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># get points for 1 point Gaussian integration</span>
+        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># loop through each gauss point</span>
+        <span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="n">gps</span><span class="p">:</span>
+            <span class="c1"># determine shape function and jacobian</span>
+            <span class="n">N</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">shape_function</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">gauss_point</span><span class="o">=</span><span class="n">gp</span><span class="p">)</span>
+
+            <span class="c1"># get coordinates of the gauss point</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]))</span>
+
+            <span class="c1"># calculate area properties</span>
+            <span class="n">area_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">j</span>
+            <span class="n">qx_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">j</span>
+            <span class="n">qy_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">j</span>
+
+            <span class="c1"># get strain at gauss point</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_service_strain</span><span class="p">(</span>
+                <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># get stress at gauss point</span>
+            <span class="n">stress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_material</span><span class="o">.</span><span class="n">service_stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span>
+                <span class="n">strain</span><span class="o">=</span><span class="n">strain</span>
+            <span class="p">)</span>
+
+            <span class="c1"># calculate force (stress * area)</span>
+            <span class="n">force_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">stress</span> <span class="o">*</span> <span class="n">j</span>
+
+        <span class="c1"># calculate element centroid</span>
+        <span class="n">cx_e</span><span class="p">,</span> <span class="n">cy_e</span> <span class="o">=</span> <span class="n">qy_e</span> <span class="o">/</span> <span class="n">area_e</span><span class="p">,</span> <span class="n">qx_e</span> <span class="o">/</span> <span class="n">area_e</span>
+
+        <span class="c1"># convert centroid to local coordinates</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">sp_fea</span><span class="o">.</span><span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">cx_e</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">cy_e</span><span class="p">)</span>
+
+        <span class="c1"># calculate moment</span>
+        <span class="n">mv</span> <span class="o">=</span> <span class="n">force_e</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">mv</span></div>
 
 <div class="viewcode-block" id="Tri3.calculate_ultimate_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_ultimate_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ultimate_actions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -410,12 +520,12 @@
         <span class="n">force_e</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># get points for 1 point Gaussian integration</span>
-        <span class="n">gps</span> <span class="o">=</span> <span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># loop through each gauss point</span>
         <span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="n">gps</span><span class="p">:</span>
             <span class="c1"># determine shape function and jacobian</span>
-            <span class="n">N</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">shape_function</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">gauss_point</span><span class="o">=</span><span class="n">gp</span><span class="p">)</span>
+            <span class="n">N</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">shape_function</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">gauss_point</span><span class="o">=</span><span class="n">gp</span><span class="p">)</span>
 
             <span class="c1"># get coordinates of the gauss point</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))</span>
@@ -427,7 +537,7 @@
             <span class="n">qy_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">j</span>
 
             <span class="c1"># get strain at gauss point</span>
-            <span class="n">strain</span> <span class="o">=</span> <span class="n">get_strain</span><span class="p">(</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(</span>
                 <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
                 <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
                 <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>

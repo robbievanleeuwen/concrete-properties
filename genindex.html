@@ -166,7 +166,6 @@
  | <a href="#G"><strong>G</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
- | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
@@ -216,6 +215,10 @@
 </li>
       <li><a href="rst/gen/concreteproperties.utils.calculate_max_bending_depth.html#concreteproperties.utils.calculate_max_bending_depth">calculate_max_bending_depth() (in module concreteproperties.utils)</a>
 </li>
+      <li><a href="rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_service_actions">calculate_service_actions() (Tri3 method)</a>
+</li>
+      <li><a href="rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_service_section_actions">calculate_service_section_actions() (ConcreteSection method)</a>
+</li>
       <li><a href="rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_ultimate_actions">calculate_ultimate_actions() (Tri3 method)</a>
 </li>
       <li><a href="rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions">calculate_ultimate_section_actions() (ConcreteSection method)</a>
@@ -229,6 +232,8 @@
         <li><a href="rst/gen/concreteproperties.analysis_section.html#module-concreteproperties.analysis_section">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     concreteproperties.concrete_section
 
@@ -236,8 +241,6 @@
         <li><a href="rst/gen/concreteproperties.concrete_section.html#module-concreteproperties.concrete_section">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     concreteproperties.material
 
@@ -310,9 +313,7 @@
       </ul></li>
       <li><a href="rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_pc_local">get_pc_local() (ConcreteSection method)</a>
 </li>
-      <li><a href="rst/gen/concreteproperties.utils.get_point_from_strain.html#concreteproperties.utils.get_point_from_strain">get_point_from_strain() (in module concreteproperties.utils)</a>
-</li>
-      <li><a href="rst/gen/concreteproperties.utils.get_strain.html#concreteproperties.utils.get_strain">get_strain() (in module concreteproperties.utils)</a>
+      <li><a href="rst/gen/concreteproperties.utils.get_service_strain.html#concreteproperties.utils.get_service_strain">get_service_strain() (in module concreteproperties.utils)</a>
 </li>
       <li><a href="rst/gen/concreteproperties.stress_strain_profile.BilinearProfile.html#concreteproperties.stress_strain_profile.BilinearProfile.get_stress">get_stress() (BilinearProfile method)</a>
 
@@ -347,6 +348,8 @@
       <li><a href="rst/gen/concreteproperties.stress_strain_profile.BilinearProfile.html#concreteproperties.stress_strain_profile.BilinearProfile.get_ultimate_strain">get_ultimate_strain() (BilinearProfile method)</a>
 
       <ul>
+        <li><a href="rst/gen/concreteproperties.utils.get_ultimate_strain.html#concreteproperties.utils.get_ultimate_strain">(in module concreteproperties.utils)</a>
+</li>
         <li><a href="rst/gen/concreteproperties.stress_strain_profile.LinearProfile.html#concreteproperties.stress_strain_profile.LinearProfile.get_ultimate_strain">(LinearProfile method)</a>
 </li>
         <li><a href="rst/gen/concreteproperties.stress_strain_profile.SteelElasticPlastic.html#concreteproperties.stress_strain_profile.SteelElasticPlastic.get_ultimate_strain">(SteelElasticPlastic method)</a>
@@ -401,15 +404,9 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram">moment_interaction_diagram() (ConcreteSection method)</a>
+      <li><a href="rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_curvature_diagram">moment_curvature_diagram() (ConcreteSection method)</a>
 </li>
-  </ul></td>
-</tr></table>
-
-<h2 id="N">N</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.normal_force_convergence">normal_force_convergence() (ConcreteSection method)</a>
+      <li><a href="rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram">moment_interaction_diagram() (ConcreteSection method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -455,12 +452,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.second_moments_of_area">second_moments_of_area() (Tri3 method)</a>
 </li>
-      <li><a href="rst/gen/concreteproperties.utils.shape_function.html#concreteproperties.utils.shape_function">shape_function() (in module concreteproperties.utils)</a>
+      <li><a href="rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence">service_normal_force_convergence() (ConcreteSection method)</a>
 </li>
-      <li><a href="rst/gen/concreteproperties.utils.split_section.html#concreteproperties.utils.split_section">split_section() (in module concreteproperties.utils)</a>
+      <li><a href="rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.service_stress_analysis">service_stress_analysis() (AnalysisSection method)</a>
+</li>
+      <li><a href="rst/gen/concreteproperties.utils.shape_function.html#concreteproperties.utils.shape_function">shape_function() (in module concreteproperties.utils)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst/gen/concreteproperties.utils.split_section.html#concreteproperties.utils.split_section">split_section() (in module concreteproperties.utils)</a>
+</li>
       <li><a href="rst/gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel">Steel (class in concreteproperties.material)</a>
 </li>
       <li><a href="rst/gen/concreteproperties.stress_strain_profile.SteelElasticPlastic.html#concreteproperties.stress_strain_profile.SteelElasticPlastic">SteelElasticPlastic (class in concreteproperties.stress_strain_profile)</a>
@@ -485,6 +486,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence">ultimate_normal_force_convergence() (ConcreteSection method)</a>
+</li>
       <li><a href="rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.ultimate_stress_analysis">ultimate_stress_analysis() (AnalysisSection method)</a>
 </li>
   </ul></td>

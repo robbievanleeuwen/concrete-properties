@@ -167,7 +167,7 @@
 <span class="kn">from</span> <span class="nn">concreteproperties.analysis_section</span> <span class="kn">import</span> <span class="n">AnalysisSection</span>
 <span class="kn">import</span> <span class="nn">concreteproperties.utils</span> <span class="k">as</span> <span class="nn">utils</span>
 <span class="kn">from</span> <span class="nn">concreteproperties.post</span> <span class="kn">import</span> <span class="n">plotting_context</span>
-<span class="kn">import</span> <span class="nn">concreteproperties.results</span> <span class="k">as</span> <span class="nn">results</span>
+<span class="kn">import</span> <span class="nn">concreteproperties.results</span> <span class="k">as</span> <span class="nn">res</span>
 
 <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">CompoundGeometry</span>
 <span class="kn">from</span> <span class="nn">sectionproperties.analysis.fea</span> <span class="kn">import</span> <span class="n">principal_coordinate</span><span class="p">,</span> <span class="n">global_coordinate</span>
@@ -211,7 +211,7 @@
             <span class="p">)</span>
 
         <span class="c1"># initialise gross properties results class</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">ConcreteProperties</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">ConcreteProperties</span><span class="p">()</span>
 
         <span class="c1"># calculate gross area properties</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_gross_area_properties</span><span class="p">()</span>
@@ -376,7 +376,7 @@
 <div class="viewcode-block" id="ConcreteSection.get_transformed_gross_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties">[docs]</a>    <span class="k">def</span> <span class="nf">get_transformed_gross_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">TransformedConcreteProperties</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">TransformedConcreteProperties</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Transforms gross section properties given a reference elastic modulus.</span>
 
 <span class="sd">        :param float elastic_modulus: Reference elastic modulus</span>
@@ -386,7 +386,7 @@
 <span class="sd">            :class:`~concreteproperties.results.TransformedConcreteProperties`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">results</span><span class="o">.</span><span class="n">TransformedConcreteProperties</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">TransformedConcreteProperties</span><span class="p">(</span>
             <span class="n">concrete_properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="p">,</span> <span class="n">elastic_modulus</span><span class="o">=</span><span class="n">elastic_modulus</span>
         <span class="p">)</span></div>
 
@@ -457,7 +457,7 @@
 <div class="viewcode-block" id="ConcreteSection.calculate_cracked_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_cracked_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Calculates cracked section properties given a neutral axis angle `theta`.</span>
 
 <span class="sd">        :param float theta: Neutral axis angle about which bending is taking place</span>
@@ -466,7 +466,7 @@
 <span class="sd">        :rtype: :class:`~concreteproperties.results.CrackedResults`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">cracked_results</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">cracked_results</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
         <span class="n">cracked_results</span><span class="o">.</span><span class="n">m_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_cracking_moment</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
 
         <span class="c1"># set neutral axis depth limits</span>
@@ -475,11 +475,12 @@
         <span class="n">a</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">d_t</span>  <span class="c1"># sufficiently small depth of compressive zone</span>
         <span class="n">b</span> <span class="o">=</span> <span class="n">d_t</span>  <span class="c1"># neutral axis at extreme tensile fibre</span>
 
+        <span class="c1"># find neutral axis that gives convergence of the the cracked neutral axis</span>
         <span class="p">(</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">d_nc</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span>
             <span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cracked_neutral_axis_convergence</span><span class="p">,</span>
             <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
             <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span>
-            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">cracked_results</span><span class="p">),</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">cracked_results</span><span class="p">),</span>
             <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
             <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
             <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -609,15 +610,12 @@
 <div class="viewcode-block" id="ConcreteSection.cracked_neutral_axis_convergence"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence">[docs]</a>    <span class="k">def</span> <span class="nf">cracked_neutral_axis_convergence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">d_nc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">cracked_results</span><span class="p">:</span> <span class="n">results</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">,</span>
+        <span class="n">cracked_results</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Given a trial cracked neutral axis depth `d_nc` and bending angle `theta`,</span>
-<span class="sd">        determines the difference between the first moments of area above and below the</span>
-<span class="sd">        trial axis.</span>
+        <span class="sd">&quot;&quot;&quot;Given a trial cracked neutral axis depth `d_nc`, determines the difference</span>
+<span class="sd">        between the first moments of area above and below the trial axis.</span>
 
 <span class="sd">        :param float d_nc: Trial cracked neutral axis</span>
-<span class="sd">        :param floa theta: Neutral axis angle about which bending is taking place</span>
 <span class="sd">        :param cracked_results: Cracked results object</span>
 <span class="sd">        :type cracked_results: :class:`~concreteproperties.results.CrackedResults`</span>
 
@@ -627,7 +625,7 @@
 
         <span class="c1"># calculate extreme fibre in global coordinates</span>
         <span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
-            <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
+            <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">theta</span>
         <span class="p">)</span>
 
         <span class="c1"># validate d_nc input</span>
@@ -638,12 +636,12 @@
 
         <span class="c1"># find point on neutral axis by shifting by d_nc</span>
         <span class="n">point_na</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">point_on_neutral_axis</span><span class="p">(</span>
-            <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_n</span><span class="o">=</span><span class="n">d_nc</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
+            <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_n</span><span class="o">=</span><span class="n">d_nc</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">theta</span>
         <span class="p">)</span>
 
         <span class="c1"># get principal coordinates of neutral axis</span>
         <span class="n">na_local</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-            <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">phi</span><span class="o">=</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="p">)</span>
 
         <span class="c1"># split concrete geometries above and below d_nc, discard below</span>
@@ -653,7 +651,7 @@
             <span class="n">top_geoms</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">split_section</span><span class="p">(</span>
                 <span class="n">geometry</span><span class="o">=</span><span class="n">conc_geom</span><span class="p">,</span>
                 <span class="n">point</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
-                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="c1"># save compression geometries</span>
@@ -672,7 +670,7 @@
 
             <span class="c1"># convert centroid to local coordinates</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-                <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="p">)</span>
 
             <span class="c1"># calculate first moment of area</span>
@@ -681,6 +679,201 @@
         <span class="n">cracked_results</span><span class="o">.</span><span class="n">cracked_geometries</span> <span class="o">=</span> <span class="n">cracked_geoms</span>
 
         <span class="k">return</span> <span class="n">e_qu</span></div>
+
+<div class="viewcode-block" id="ConcreteSection.moment_curvature_diagram"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_curvature_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">moment_curvature_diagram</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kappa_inc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2e-6</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generates a moment curvature diagram given a bending angle `theta` and axial</span>
+<span class="sd">        force `n`.</span>
+
+<span class="sd">        Analysis continues until the steel reaches fracture strain.</span>
+
+<span class="sd">        :param float theta: Neutral axis angle about which bending is taking place</span>
+<span class="sd">        :param float n: Net axial force</span>
+<span class="sd">        :param float kappa_inc: Curvature increment for each step</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># initiliase variables</span>
+        <span class="n">moment_curvature</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">failure</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># set neutral axis depth limits</span>
+        <span class="c1"># depth of neutral axis at extreme tensile fibre</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">d_t</span>  <span class="c1"># sufficiently small depth of compressive zone</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">d_t</span>  <span class="c1"># neutral axis at extreme tensile fibre</span>
+
+        <span class="c1"># while there hasn&#39;t been a failure</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">failure</span><span class="p">:</span>
+            <span class="c1"># incremement strain</span>
+            <span class="n">kappa</span> <span class="o">=</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">kappa_inc</span>
+
+            <span class="c1"># find neutral axis that gives convergence of the axial force</span>
+            <span class="p">(</span><span class="n">d_n</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span>
+                <span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">service_normal_force_convergence</span><span class="p">,</span>
+                <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
+                <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">moment_curvature</span><span class="p">),</span>
+                <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+                <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
+                <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># save results</span>
+            <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa</span><span class="p">)</span></div>
+            <span class="c1"># moment_curvature.moment.append(moment)</span>
+
+<div class="viewcode-block" id="ConcreteSection.service_normal_force_convergence"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence">[docs]</a>    <span class="k">def</span> <span class="nf">service_normal_force_convergence</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_curvature</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Given a trial neutral axis depth `d_n` and curvature `kappa`, determines the</span>
+<span class="sd">        difference between the net axial force and the desired axial force.</span>
+
+<span class="sd">        :param float d_nc: Trial cracked neutral axis</span>
+<span class="sd">        :param float kappa: Curvature</span>
+<span class="sd">        :param moment_curvature: Moment curvature results object</span>
+<span class="sd">        :type moment_curvature:</span>
+<span class="sd">            :class:`~concreteproperties.results.MomentCurvatureResults`</span>
+
+<span class="sd">        :return: Service normal force convergence</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># calculate convergence</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">moment_curvature</span><span class="o">.</span><span class="n">n</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_service_section_actions</span><span class="p">(</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span> <span class="n">moment_curvature</span><span class="o">=</span><span class="n">moment_curvature</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">_n_i</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ConcreteSection.calculate_service_section_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_service_section_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_service_section_actions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_curvature</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">(),</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Given a neutral axis depth `d_n` and curvature `kappa`, calculates the</span>
+<span class="sd">        resultant axial force and bending moment.</span>
+
+<span class="sd">        :param float d_n: Depth of the neutral axis from the extreme compression fibre,</span>
+<span class="sd">            0 &lt; d_n &lt;= d_t, where d_t is the depth of the extreme tensile fibre, i.e.</span>
+<span class="sd">            d_n must be within the section and not equal to zero</span>
+<span class="sd">        :param float kappa: Curvature</span>
+<span class="sd">        :param moment_curvature: Moment curvature results object</span>
+<span class="sd">        :type moment_curvature:</span>
+<span class="sd">            :class:`~concreteproperties.results.MomentCurvatureResults`</span>
+
+<span class="sd">        :return: Moment curvature results object</span>
+<span class="sd">        :rtype: :class:`~concreteproperties.results.MomentCurvatureResults`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># calculate extreme fibre in global coordinates</span>
+        <span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
+            <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span>
+        <span class="p">)</span>
+
+        <span class="c1"># validate d_n input</span>
+        <span class="k">if</span> <span class="n">d_n</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;d_n must be positive.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">d_n</span> <span class="o">&gt;</span> <span class="n">d_t</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;d_n must lie within the section, i.e. d_n &lt;= d_t&quot;</span><span class="p">)</span>
+
+        <span class="c1"># find point on neutral axis by shifting by d_n</span>
+        <span class="n">point_na</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">point_on_neutral_axis</span><span class="p">(</span>
+            <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span>
+        <span class="p">)</span>
+
+        <span class="c1"># get principal coordinates of neutral axis</span>
+        <span class="n">na_local</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
+            <span class="n">phi</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># create splits in concrete geometries at points in stress strain profiles</span>
+        <span class="n">concrete_split_geoms</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_geometries</span><span class="p">:</span>
+            <span class="n">strains</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">service_stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>
+            <span class="p">)</span>
+
+            <span class="c1"># loop through intermediate points on stress strain profile</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">strain</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">strains</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="c1"># depth to point with `strain` from NA</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">strain</span> <span class="o">/</span> <span class="n">kappa</span>
+
+                <span class="c1"># convert depth to global coordinates</span>
+                <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+
+                <span class="c1"># calculate location of point with `strain`</span>
+                <span class="n">pt</span> <span class="o">=</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span>
+
+                <span class="c1"># split concrete geometry (from bottom up)</span>
+                <span class="n">top_geoms</span><span class="p">,</span> <span class="n">bot_geoms</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">split_section</span><span class="p">(</span>
+                    <span class="n">geometry</span><span class="o">=</span><span class="n">conc_geom</span><span class="p">,</span>
+                    <span class="n">point</span><span class="o">=</span><span class="n">pt</span><span class="p">,</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="c1"># save bottom geoms</span>
+                <span class="n">concrete_split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">bot_geoms</span><span class="p">)</span>
+
+                <span class="c1"># continue to split top geoms</span>
+                <span class="n">conc_geom</span> <span class="o">=</span> <span class="n">CompoundGeometry</span><span class="p">(</span><span class="n">geoms</span><span class="o">=</span><span class="n">top_geoms</span><span class="p">)</span>
+
+            <span class="c1"># save final top geoms</span>
+            <span class="n">concrete_split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">top_geoms</span><span class="p">)</span>
+
+        <span class="c1"># initialise results</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mv</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># calculate concrete actions</span>
+        <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="n">concrete_split_geoms</span><span class="p">:</span>
+            <span class="n">sec</span> <span class="o">=</span> <span class="n">AnalysisSection</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">conc_geom</span><span class="p">)</span>
+            <span class="n">n_sec</span><span class="p">,</span> <span class="n">mv_sec</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">service_stress_analysis</span><span class="p">(</span>
+                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
+                <span class="n">na_local</span><span class="o">=</span><span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">)</span>
+
+            <span class="n">n</span> <span class="o">+=</span> <span class="n">n_sec</span>
+            <span class="n">mv</span> <span class="o">+=</span> <span class="n">mv_sec</span>
+
+        <span class="c1"># calculate steel actions</span>
+        <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">:</span>
+            <span class="c1"># calculate area and centroid</span>
+            <span class="n">area</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
+            <span class="n">centroid</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
+
+            <span class="c1"># get strain at centroid of steel</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_service_strain</span><span class="p">(</span>
+                <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># calculate stress and force</span>
+            <span class="n">stress</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">)</span>
+            <span class="n">force</span> <span class="o">=</span> <span class="n">stress</span> <span class="o">*</span> <span class="n">area</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="n">force</span>
+
+            <span class="c1"># convert centroid to local coordinates</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="c1"># calculate moment</span>
+            <span class="n">mv</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">mv</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.ultimate_bending_capacity"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_bending_capacity</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -691,7 +884,7 @@
 <span class="sd">        ultimate bending capacity.</span>
 
 <span class="sd">        :param float theta: Angle the neutral axis makes with the horizontal axis</span>
-<span class="sd">        :param float n: Axial force</span>
+<span class="sd">        :param float n: Net axial force</span>
 
 <span class="sd">        :return: Axial force, ultimate bending capacity about the x &amp; y axes, resultant</span>
 <span class="sd">            moment and the depth to the neutral axis `(n, mx, my, mv, d_n)`</span>
@@ -707,8 +900,9 @@
         <span class="c1"># initialise ultimate bending results</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ult_bend_res</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
 
+        <span class="c1"># find neutral axis that gives convergence of the axial force</span>
         <span class="p">(</span><span class="n">d_n</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span>
-            <span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">normal_force_convergence</span><span class="p">,</span>
+            <span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ultimate_normal_force_convergence</span><span class="p">,</span>
             <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
             <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span>
             <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span>
@@ -723,7 +917,7 @@
 
         <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">mv</span><span class="p">,</span> <span class="n">d_n</span></div>
 
-<div class="viewcode-block" id="ConcreteSection.normal_force_convergence"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.normal_force_convergence">[docs]</a>    <span class="k">def</span> <span class="nf">normal_force_convergence</span><span class="p">(</span>
+<div class="viewcode-block" id="ConcreteSection.ultimate_normal_force_convergence"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_normal_force_convergence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -742,9 +936,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># calculate convergence</span>
-        <span class="n">conv</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span><span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="n">conv</span></div>
+        <span class="k">return</span> <span class="n">n</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span><span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.calculate_ultimate_section_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ultimate_section_actions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -792,13 +984,14 @@
 
             <span class="c1"># loop through intermediate points on stress strain profile</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">strain</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">strains</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
-                <span class="n">pt</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_point_from_strain</span><span class="p">(</span>
-                    <span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">,</span>
-                    <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
-                    <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
-                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
-                    <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
-                <span class="p">)</span>
+                <span class="c1"># depth to point with `strain` from NA</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">strain</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span> <span class="o">*</span> <span class="n">d_n</span>
+
+                <span class="c1"># convert depth to global coordinates</span>
+                <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+
+                <span class="c1"># calculate location of point with `strain`</span>
+                <span class="n">pt</span> <span class="o">=</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span>
 
                 <span class="c1"># split concrete geometry (from bottom up)</span>
                 <span class="n">top_geoms</span><span class="p">,</span> <span class="n">bot_geoms</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">split_section</span><span class="p">(</span>
@@ -841,7 +1034,7 @@
             <span class="n">centroid</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
 
             <span class="c1"># get strain at centroid of steel</span>
-            <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_strain</span><span class="p">(</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(</span>
                 <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
                 <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
                 <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>

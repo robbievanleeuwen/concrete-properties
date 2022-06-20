@@ -170,7 +170,41 @@
     <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span><span class="p">,</span> <span class="n">CompoundGeometry</span>
 
 
-<div class="viewcode-block" id="get_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.get_strain.html#concreteproperties.utils.get_strain">[docs]</a><span class="k">def</span> <span class="nf">get_strain</span><span class="p">(</span>
+<div class="viewcode-block" id="get_service_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.get_service_strain.html#concreteproperties.utils.get_service_strain">[docs]</a><span class="k">def</span> <span class="nf">get_service_strain</span><span class="p">(</span>
+    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Determines the strain at point `point` given curvcature `kappa` and neutral axis</span>
+<span class="sd">    angle `theta`. Positive strain is compression.</span>
+
+<span class="sd">    :param point: Point at which to evaluate the strain</span>
+<span class="sd">    :type point: Tuple[float]</span>
+<span class="sd">    :param point_na: Point on the neutral axis</span>
+<span class="sd">    :type point_na: Tuple[float]</span>
+<span class="sd">    :param float theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">    :param float kappa: Curvature</span>
+
+<span class="sd">    :return: Strain</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># convert point to local coordinates</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># convert point_na to local coordinates</span>
+    <span class="n">u_na</span><span class="p">,</span> <span class="n">v_na</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
+        <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># calculate distance between NA and point in `v` direction</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">v_na</span>
+
+    <span class="k">return</span> <span class="n">kappa</span> <span class="o">*</span> <span class="n">d</span></div>
+
+
+<div class="viewcode-block" id="get_ultimate_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.get_ultimate_strain.html#concreteproperties.utils.get_ultimate_strain">[docs]</a><span class="k">def</span> <span class="nf">get_ultimate_strain</span><span class="p">(</span>
     <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
     <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
     <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -204,36 +238,6 @@
     <span class="n">d</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">v_na</span>
 
     <span class="k">return</span> <span class="n">d</span> <span class="o">/</span> <span class="n">d_n</span> <span class="o">*</span> <span class="n">ultimate_strain</span></div>
-
-
-<div class="viewcode-block" id="get_point_from_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.get_point_from_strain.html#concreteproperties.utils.get_point_from_strain">[docs]</a><span class="k">def</span> <span class="nf">get_point_from_strain</span><span class="p">(</span>
-    <span class="n">strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-    <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Returns a point experiencing a certain `strain`, given neutral axis depth</span>
-<span class="sd">    `d_n` and neutral axis angle `theta`.</span>
-
-<span class="sd">    :param float strain: Strain at which to get point</span>
-<span class="sd">    :param point_na: Point on the neutral axis</span>
-<span class="sd">    :type point_na: Tuple[float]</span>
-<span class="sd">    :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
-<span class="sd">    :param float theta: Angle the neutral axis makes with the horizontal axis</span>
-<span class="sd">    :param float ultimate_strain: Strain at the extreme compression fibre</span>
-
-<span class="sd">    :return: Point experiencing `strain`</span>
-<span class="sd">    :rtype: Tuple[float]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># depth to point from NA</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">strain</span> <span class="o">/</span> <span class="n">ultimate_strain</span> <span class="o">*</span> <span class="n">d_n</span>
-
-    <span class="c1"># convert depth to global coordinates</span>
-    <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span></div>
 
 
 <div class="viewcode-block" id="point_on_neutral_axis"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.point_on_neutral_axis.html#concreteproperties.utils.point_on_neutral_axis">[docs]</a><span class="k">def</span> <span class="nf">point_on_neutral_axis</span><span class="p">(</span>
