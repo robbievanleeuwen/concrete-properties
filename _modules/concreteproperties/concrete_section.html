@@ -188,7 +188,7 @@
   <h1>Source code for concreteproperties.concrete_section</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">brentq</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -487,11 +487,12 @@
 
 <div class="viewcode-block" id="ConcreteSection.calculate_cracked_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_cracked_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Calculates cracked section properties given a neutral axis angle `theta`.</span>
 
-<span class="sd">        :param float theta: Neutral axis angle about which bending is taking place</span>
+<span class="sd">        :param theta: Neutral axis angle about which bending is taking place</span>
+<span class="sd">        :type theta: Optional[float]</span>
 
 <span class="sd">        :return: Cracked results object</span>
 <span class="sd">        :rtype: :class:`~concreteproperties.results.CrackedResults`</span>
@@ -713,21 +714,23 @@
 
 <div class="viewcode-block" id="ConcreteSection.moment_curvature_diagram"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_curvature_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">moment_curvature_diagram</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">kappa_inc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-7</span><span class="p">,</span>
-        <span class="n">delta_m_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span>
-        <span class="n">delta_m_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">kappa_inc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-7</span><span class="p">,</span>
+        <span class="n">delta_m_min</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span>
+        <span class="n">delta_m_max</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Generates a moment curvature diagram given a bending angle `theta`.</span>
 
 <span class="sd">        Analysis continues until the steel reaches fracture strain.</span>
 
-<span class="sd">        :param float theta: Neutral axis angle about which bending is taking place</span>
-<span class="sd">        :param float kappa_inc: Initial curvature increment</span>
-<span class="sd">        :param float delta_m_min: Relative change in moment at which to double step</span>
-<span class="sd">            size</span>
-<span class="sd">        :param float delta_m_max: Relative change in moment at which to halve step</span>
-<span class="sd">            size</span>
+<span class="sd">        :param theta: Neutral axis angle about which bending is taking place</span>
+<span class="sd">        :type theta: Optional[float]</span>
+<span class="sd">        :param kappa_inc: Initial curvature increment</span>
+<span class="sd">        :type kappa_inc: Optional[float]</span>
+<span class="sd">        :param delta_m_min: Relative change in moment at which to double step</span>
+<span class="sd">        :type delta_m_min: Optional[float]</span>
+<span class="sd">        :param delta_m_max: Relative change in moment at which to halve step</span>
+<span class="sd">        :type delta_m_max: Optional[float]</span>
 
 <span class="sd">        :return: Moment curvature results object</span>
 <span class="sd">        :rtype: :class:`~concreteproperties.results.MomentCurvatureResults`</span>
@@ -822,9 +825,9 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">moment_curvature</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">(</span>
-            <span class="n">theta</span><span class="o">=</span><span class="mi">0</span>
-        <span class="p">),</span>
+        <span class="n">moment_curvature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis depth `d_n` and curvature `kappa`, calculates the</span>
 <span class="sd">        resultant axial force and bending moment.</span>
@@ -833,7 +836,7 @@
 <span class="sd">        :param float kappa: Curvature</span>
 <span class="sd">        :param moment_curvature: Moment curvature results object</span>
 <span class="sd">        :type moment_curvature:</span>
-<span class="sd">            :class:`~concreteproperties.results.MomentCurvatureResults`</span>
+<span class="sd">            Optional[:class:`~concreteproperties.results.MomentCurvatureResults`]</span>
 
 <span class="sd">        :return: Moment curvature results object</span>
 <span class="sd">        :rtype: :class:`~concreteproperties.results.MomentCurvatureResults`</span>
@@ -954,14 +957,16 @@
 
 <div class="viewcode-block" id="ConcreteSection.ultimate_bending_capacity"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_bending_capacity</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis angle `theta` and an axial force `n`, calculates the</span>
 <span class="sd">        ultimate bending capacity.</span>
 
-<span class="sd">        :param float theta: Angle the neutral axis makes with the horizontal axis</span>
-<span class="sd">        :param float n: Net axial force</span>
+<span class="sd">        :param theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">        :type theta: Optional[float]</span>
+<span class="sd">        :param n: Net axial force</span>
+<span class="sd">        :type n: Optional[float]</span>
 
 <span class="sd">        :return: Ultimate bending results object</span>
 <span class="sd">        :rtype: :class:`~concreteproperties.results.UltimateBendingResults`</span>
@@ -1020,9 +1025,9 @@
 <div class="viewcode-block" id="ConcreteSection.calculate_ultimate_section_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ultimate_section_actions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">ultimate_results</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
-            <span class="n">theta</span><span class="o">=</span><span class="mi">0</span>
-        <span class="p">),</span>
+        <span class="n">ultimate_results</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates</span>
 <span class="sd">        the resultant bending moments `mx`, `my`, `mv` and the net axial force `n`.</span>
@@ -1030,7 +1035,7 @@
 <span class="sd">        :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
 <span class="sd">        :param ultimate_results: Ultimate bending results object</span>
 <span class="sd">        :type ultimate_results:</span>
-<span class="sd">            :class:`~concreteproperties.results.UltimateBendingResults`</span>
+<span class="sd">            Optional[:class:`~concreteproperties.results.UltimateBendingResults`]</span>
 
 <span class="sd">        :return: Ultimate bending results object</span>
 <span class="sd">        :rtype: :class:`~concreteproperties.results.UltimateBendingResults`</span>
@@ -1154,19 +1159,20 @@
 
 <div class="viewcode-block" id="ConcreteSection.moment_interaction_diagram"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">moment_interaction_diagram</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">m_neg</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">m_neg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">n_points</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram given a neutral axis angle `theta`</span>
 <span class="sd">        and `n_points` calculation points between the decompression case and the pure</span>
 <span class="sd">        bending case.</span>
 
-<span class="sd">        :param float theta: Angle the neutral axis makes with the horizontal axis</span>
-<span class="sd">        :param bool m_neg: If set to true, also calculates the moment interaction for</span>
-<span class="sd">            theta = theta + pi, i.e. positive and negative bending</span>
-<span class="sd">        :param int n_points: Number of calculation points between the decompression</span>
-<span class="sd">            case and the pure bending case.</span>
+<span class="sd">        :param theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">        :type theta: Optional[float]</span>
+<span class="sd">        :param m_neg: If set to true, also calculates the moment interaction for</span>
+<span class="sd">        :type m_neg: Optional[bool]</span>
+<span class="sd">        :param n_points: Number of calculation points between the decompression</span>
+<span class="sd">        :type n_points: Optional[int]</span>
 
 <span class="sd">        :return: Moment interaction results object</span>
 <span class="sd">        :rtype: :class:`~concreteproperties.results.MomentInteractionResults`</span>
@@ -1255,15 +1261,16 @@
 
 <div class="viewcode-block" id="ConcreteSection.biaxial_bending_diagram"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.biaxial_bending_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">biaxial_bending_diagram</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">48</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">n_points</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">48</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">BiaxialBendingResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Generates a biaxial bending diagram given a net axial force `n` and</span>
 <span class="sd">        `n_points` calculation points.</span>
 
-<span class="sd">        :param float n: Net axial force</span>
-<span class="sd">        :param int n_points: Number of calculation points between the decompression</span>
-<span class="sd">            case and the pure bending case.</span>
+<span class="sd">        :param n: Net axial force</span>
+<span class="sd">        :type n: Optional[float]</span>
+<span class="sd">        :param n_points: Number of calculation points between the decompression</span>
+<span class="sd">        :type n_points: Optional[int]</span>
 
 <span class="sd">        :return: Biaxial bending results</span>
 <span class="sd">        :rtype: :class:`~concreteproperties.results.BiaxialBendingResults`</span>
@@ -1341,12 +1348,13 @@
 
 <div class="viewcode-block" id="ConcreteSection.plot_section"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.plot_section">[docs]</a>    <span class="k">def</span> <span class="nf">plot_section</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Reinforced Concrete Section&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Reinforced Concrete Section&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Plots the reinforced concrete section.</span>
 
-<span class="sd">        :param str title: Plot title</span>
+<span class="sd">        :param title: Plot title</span>
+<span class="sd">        :type title: Optional[str]</span>
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
