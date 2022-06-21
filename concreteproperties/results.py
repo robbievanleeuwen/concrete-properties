@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List, TYPE_CHECKING
+from typing import List, Optional, TYPE_CHECKING
 import numpy as np
 import matplotlib.pyplot as plt
 from rich.console import Console
@@ -74,10 +74,14 @@ class ConcreteProperties:
     axial_pc_y: float = 0
     conc_ultimate_strain: float = 0
 
-    def print_results(self, fmt: str = "8.6e"):
+    def print_results(
+        self,
+        fmt: Optional[str] = "8.6e",
+    ):
         """Prints the gross concrete section properties to the terminal.
 
-        :param string fmt: Number format
+        :param fmt: Number format
+        :type fmt: Optional[str]
         """
 
         table = Table(title="Gross Concrete Section Properties")
@@ -191,10 +195,14 @@ class TransformedConcreteProperties:
         self.z22_plus = self.concrete_properties.e_z22_plus / self.elastic_modulus
         self.z22_minus = self.concrete_properties.e_z22_minus / self.elastic_modulus
 
-    def print_results(self, fmt: str = "8.6e"):
+    def print_results(
+        self,
+        fmt: Optional[str] = "8.6e",
+    ):
         """Prints the transformed gross concrete section properties to the terminal.
 
-        :param string fmt: Number format
+        :param fmt: Number format
+        :type fmt: Optional[str]
         """
 
         table = Table(title="Transformed Gross Concrete Section Properties")
@@ -234,6 +242,8 @@ class CrackedResults:
     modulus. In order to obtain transformed properties, call the
     :meth:`~concreteproperties.results.CrackedResults.calculate_transformed_properties`
     method.
+
+    :param float theta: Neutral axis angle about which bending is taking place
     """
 
     theta: float
@@ -286,10 +296,14 @@ class CrackedResults:
         self.ixy_c_cr = self.e_ixy_c_cr / elastic_modulus
         self.iuu_cr = self.e_iuu_cr / elastic_modulus
 
-    def print_results(self, fmt: str = "8.6e"):
+    def print_results(
+        self,
+        fmt: Optional[str] = "8.6e",
+    ):
         """Prints the cracked concrete section properties to the terminal.
 
-        :param string fmt: Number format
+        :param fmt: Number format
+        :type fmt: Optional[str]
         """
 
         table = Table(title="Transformed Gross Concrete Section Properties")
@@ -361,12 +375,13 @@ class MomentCurvatureResults:
 
     def plot_results(
         self,
-        m_scale: float = 1e-6,
+        m_scale: Optional[float] = 1e-6,
         **kwargs,
     ) -> matplotlib.axes._subplots.AxesSubplot:
         """Plots the moment curvature results.
 
-        :param float m_scale: Scaling factor to apply to bending moment
+        :param m_scale: Scaling factor to apply to bending moment
+        :type m_scale: Optional[float]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
@@ -388,6 +403,12 @@ class MomentCurvatureResults:
 
         return ax
 
+@dataclass
+class ConcreteResult:
+    """x"""
+
+    geometry: Geometry
+
 
 @dataclass
 class UltimateBendingResults:
@@ -396,12 +417,17 @@ class UltimateBendingResults:
     :param float theta: Angle the neutral axis makes with the horizontal axis
     """
 
+    # bending angle
     theta: float
-    d_n: float = 0
-    n: float = 0
-    mx: float = 0
-    my: float = 0
-    mv: float = 0
+
+    # ultimate neutral axis depth
+    d_n: float = None
+
+    # resultant actions
+    n: float = None
+    mx: float = None
+    my: float = None
+    mv: float = None
 
 
 @dataclass
@@ -413,14 +439,16 @@ class MomentInteractionResults:
 
     def plot_diagram(
         self,
-        n_scale: float = 1e-3,
-        m_scale: float = 1e-6,
+        n_scale: Optional[float] = 1e-3,
+        m_scale: Optional[float] = 1e-6,
         **kwargs,
     ) -> matplotlib.axes._subplots.AxesSubplot:
         """Plots a moment interaction diagram.
 
-        :param float n_scale: Scaling factor to apply to axial force
-        :param float m_scale: Scaling factor to apply to bending moment
+        :param n_scale: Scaling factor to apply to axial force
+        :type n_scale: Optional[float]
+        :param n_scale: Scaling factor to apply to axial force
+        :type m_scale: Optional[float]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
@@ -448,8 +476,8 @@ class MomentInteractionResults:
     def plot_multiple_diagrams(
         moment_interaction_results: List[MomentInteractionResults],
         labels: List[str],
-        n_scale: float = 1e-3,
-        m_scale: float = 1e-6,
+        n_scale: Optional[float] = 1e-3,
+        m_scale: Optional[float] = 1e-6,
         **kwargs,
     ) -> matplotlib.axes._subplots.AxesSubplot:
         """Plots multiple moment interaction diagrams.
@@ -460,7 +488,9 @@ class MomentInteractionResults:
         :param labels: List of labels for each moment interaction diagram
         :type labels: List[str]
         :param float n_scale: Scaling factor to apply to axial force
+        :type n_scale: Optional[float]
         :param float m_scale: Scaling factor to apply to bending moment
+        :type m_scale: Optional[float]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
@@ -504,12 +534,13 @@ class BiaxialBendingResults:
 
     def plot_diagram(
         self,
-        m_scale: float = 1e-6,
+        m_scale: Optional[float] = 1e-6,
         **kwargs,
     ) -> matplotlib.axes._subplots.AxesSubplot:
         """Plots a biaxial bending diagram.
 
-        :param float m_scale: Scaling factor to apply to bending moment
+        :param m_scale: Scaling factor to apply to bending moment
+        :type m_scale: Optional[float]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object

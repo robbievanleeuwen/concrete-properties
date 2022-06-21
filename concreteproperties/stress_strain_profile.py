@@ -162,12 +162,13 @@ class StressStrainProfile:
 
     def plot_stress_strain(
         self,
-        title="Stress-Strain Profile",
+        title: Optional[str] = "Stress-Strain Profile",
         **kwargs,
     ) -> matplotlib.axes._subplots.AxesSubplot:
         """Plots the stress-strain profile.
 
-        :param str title: Plot title
+        :param title: Plot title
+        :type title: Optional[str]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object

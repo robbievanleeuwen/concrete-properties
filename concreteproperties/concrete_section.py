@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Tuple, TYPE_CHECKING
+from typing import List, Tuple, Optional, TYPE_CHECKING
 import numpy as np
 from scipy.optimize import brentq
 import matplotlib.pyplot as plt
@@ -299,11 +299,12 @@ class ConcreteSection:
 
     def calculate_cracked_properties(
         self,
-        theta: float = 0,
+        theta: Optional[float] = 0,
     ) -> res.CrackedResults:
         """Calculates cracked section properties given a neutral axis angle `theta`.
 
-        :param float theta: Neutral axis angle about which bending is taking place
+        :param theta: Neutral axis angle about which bending is taking place
+        :type theta: Optional[float]
 
         :return: Cracked results object
         :rtype: :class:`~concreteproperties.results.CrackedResults`
@@ -525,21 +526,23 @@ class ConcreteSection:
 
     def moment_curvature_diagram(
         self,
-        theta: float = 0,
-        kappa_inc: float = 1e-7,
-        delta_m_min: float = 0.15,
-        delta_m_max: float = 0.3,
+        theta: Optional[float] = 0,
+        kappa_inc: Optional[float] = 1e-7,
+        delta_m_min: Optional[float] = 0.15,
+        delta_m_max: Optional[float] = 0.3,
     ) -> res.MomentCurvatureResults:
         """Generates a moment curvature diagram given a bending angle `theta`.
 
         Analysis continues until the steel reaches fracture strain.
 
-        :param float theta: Neutral axis angle about which bending is taking place
-        :param float kappa_inc: Initial curvature increment
-        :param float delta_m_min: Relative change in moment at which to double step
-            size
-        :param float delta_m_max: Relative change in moment at which to halve step
-            size
+        :param theta: Neutral axis angle about which bending is taking place
+        :type theta: Optional[float]
+        :param kappa_inc: Initial curvature increment
+        :type kappa_inc: Optional[float]
+        :param delta_m_min: Relative change in moment at which to double step
+        :type delta_m_min: Optional[float]
+        :param delta_m_max: Relative change in moment at which to halve step
+        :type delta_m_max: Optional[float]
 
         :return: Moment curvature results object
         :rtype: :class:`~concreteproperties.results.MomentCurvatureResults`
@@ -634,7 +637,7 @@ class ConcreteSection:
         self,
         d_n: float,
         kappa: float,
-        moment_curvature: res.MomentCurvatureResults = res.MomentCurvatureResults(
+        moment_curvature: Optional[res.MomentCurvatureResults] = res.MomentCurvatureResults(
             theta=0
         ),
     ) -> res.MomentCurvatureResults:
@@ -645,7 +648,7 @@ class ConcreteSection:
         :param float kappa: Curvature
         :param moment_curvature: Moment curvature results object
         :type moment_curvature:
-            :class:`~concreteproperties.results.MomentCurvatureResults`
+            Optional[:class:`~concreteproperties.results.MomentCurvatureResults`]
 
         :return: Moment curvature results object
         :rtype: :class:`~concreteproperties.results.MomentCurvatureResults`
@@ -766,14 +769,16 @@ class ConcreteSection:
 
     def ultimate_bending_capacity(
         self,
-        theta: float = 0,
-        n: float = 0,
+        theta: Optional[float] = 0,
+        n: Optional[float] = 0,
     ) -> results.UltimateBendingResults:
         """Given a neutral axis angle `theta` and an axial force `n`, calculates the
         ultimate bending capacity.
 
-        :param float theta: Angle the neutral axis makes with the horizontal axis
-        :param float n: Net axial force
+        :param theta: Angle the neutral axis makes with the horizontal axis
+        :type theta: Optional[float]
+        :param n: Net axial force
+        :type n: Optional[float]
 
         :return: Ultimate bending results object
         :rtype: :class:`~concreteproperties.results.UltimateBendingResults`
@@ -832,7 +837,7 @@ class ConcreteSection:
     def calculate_ultimate_section_actions(
         self,
         d_n: float,
-        ultimate_results: res.UltimateBendingResults = res.UltimateBendingResults(
+        ultimate_results: Optional[res.UltimateBendingResults] = res.UltimateBendingResults(
             theta=0
         ),
     ) -> results.UltimateBendingResults:
@@ -842,7 +847,7 @@ class ConcreteSection:
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
         :param ultimate_results: Ultimate bending results object
         :type ultimate_results:
-            :class:`~concreteproperties.results.UltimateBendingResults`
+            Optional[:class:`~concreteproperties.results.UltimateBendingResults`]
 
         :return: Ultimate bending results object
         :rtype: :class:`~concreteproperties.results.UltimateBendingResults`
@@ -966,19 +971,20 @@ class ConcreteSection:
 
     def moment_interaction_diagram(
         self,
-        theta: float = 0,
-        m_neg: bool = False,
-        n_points: int = 24,
+        theta: Optional[float] = 0,
+        m_neg: Optional[bool] = False,
+        n_points: Optional[int] = 24,
     ) -> res.MomentInteractionResults:
         """Generates a moment interaction diagram given a neutral axis angle `theta`
         and `n_points` calculation points between the decompression case and the pure
         bending case.
 
-        :param float theta: Angle the neutral axis makes with the horizontal axis
-        :param bool m_neg: If set to true, also calculates the moment interaction for
-            theta = theta + pi, i.e. positive and negative bending
-        :param int n_points: Number of calculation points between the decompression
-            case and the pure bending case.
+        :param theta: Angle the neutral axis makes with the horizontal axis
+        :type theta: Optional[float]
+        :param m_neg: If set to true, also calculates the moment interaction for
+        :type m_neg: Optional[bool]
+        :param n_points: Number of calculation points between the decompression
+        :type n_points: Optional[int]
 
         :return: Moment interaction results object
         :rtype: :class:`~concreteproperties.results.MomentInteractionResults`
@@ -1067,15 +1073,16 @@ class ConcreteSection:
 
     def biaxial_bending_diagram(
         self,
-        n: float = 0,
-        n_points: int = 48,
+        n: Optional[float] = 0,
+        n_points: Optional[int] = 48,
     ) -> res.BiaxialBendingResults:
         """Generates a biaxial bending diagram given a net axial force `n` and
         `n_points` calculation points.
 
-        :param float n: Net axial force
-        :param int n_points: Number of calculation points between the decompression
-            case and the pure bending case.
+        :param n: Net axial force
+        :type n: Optional[float]
+        :param n_points: Number of calculation points between the decompression
+        :type n_points: Optional[int]
 
         :return: Biaxial bending results
         :rtype: :class:`~concreteproperties.results.BiaxialBendingResults`
@@ -1153,12 +1160,13 @@ class ConcreteSection:
 
     def plot_section(
         self,
-        title="Reinforced Concrete Section",
+        title: Optional[str] = "Reinforced Concrete Section",
         **kwargs,
     ) -> matplotlib.axes._subplots.AxesSubplot:
         """Plots the reinforced concrete section.
 
-        :param str title: Plot title
+        :param title: Plot title
+        :type title: Optional[str]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object

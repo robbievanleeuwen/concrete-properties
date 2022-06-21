@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Tuple, TYPE_CHECKING
+from typing import List, Tuple, Optional, TYPE_CHECKING
 from dataclasses import dataclass
 import numpy as np
 from matplotlib.colors import ListedColormap
@@ -152,14 +152,16 @@ class AnalysisSection:
 
     def plot_mesh(
         self,
-        alpha=0.5,
-        title="Finite Element Mesh",
+        alpha: Optional[float] = 0.5,
+        title: Optional[str] = "Finite Element Mesh",
         **kwargs,
     ) -> matplotlib.axes._subplots.AxesSubplot:
         """Plots the finite element mesh.
 
-        :param float alpha: Transparency of the mesh outlines
-        :param string title: Plot title
+        :param alpha: Transparency of the mesh outlines
+        :type alpha: Optional[float]
+        :param title: Plot title
+        :type title: Optional[str]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object

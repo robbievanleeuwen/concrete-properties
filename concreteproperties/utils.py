@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Tuple, TYPE_CHECKING
+from typing import List, Tuple, Optional, TYPE_CHECKING
 import numpy as np
 from rich.progress import Progress, BarColumn, ProgressColumn, TextColumn, SpinnerColumn
 from rich.table import Column
@@ -314,8 +314,18 @@ def calculate_local_extents(
 class CustomTimeElapsedColumn(ProgressColumn):
     """Renders time elapsed in milliseconds."""
 
-    def render(self, task: "Task") -> Text:
-        """Show time remaining."""
+    def render(
+        self,
+        task: Optional[str] = "Task",
+    ) -> Text:
+        """Show time remaining.
+
+        :param task: Task string
+        :type task: Optional[str]
+
+        :return: Rich text object
+        :rtype: :class:`rich.text.Text`
+        """
 
         elapsed = task.finished_time if task.finished else task.elapsed
 
@@ -327,8 +337,12 @@ class CustomTimeElapsedColumn(ProgressColumn):
         return Text(elapsed_string, style="progress.elapsed")
 
 
-def create_known_progress():
-    """Returns a Rich Progress class for a known number of iterations."""
+def create_known_progress() -> Progress:
+    """Returns a Rich Progress class for a known number of iterations.
+
+    :return: Rich progress object
+    :rtype: :class:`rich.progress.Progress`
+    """
 
     return Progress(
         SpinnerColumn(),
@@ -342,8 +356,12 @@ def create_known_progress():
     )
 
 
-def create_unknown_progress():
-    """Returns a Rich Progress class for a known number of iterations."""
+def create_unknown_progress() -> Progress:
+    """Returns a Rich Progress class for an unknown number of iterations.
+
+    :return: Rich progress object
+    :rtype: :class:`rich.progress.Progress`
+    """
 
     return Progress(
         SpinnerColumn(),
