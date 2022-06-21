@@ -637,9 +637,9 @@ class ConcreteSection:
         self,
         d_n: float,
         kappa: float,
-        moment_curvature: Optional[res.MomentCurvatureResults] = res.MomentCurvatureResults(
-            theta=0
-        ),
+        moment_curvature: Optional[
+            res.MomentCurvatureResults
+        ] = res.MomentCurvatureResults(theta=0),
     ) -> res.MomentCurvatureResults:
         """Given a neutral axis depth `d_n` and curvature `kappa`, calculates the
         resultant axial force and bending moment.
@@ -837,9 +837,9 @@ class ConcreteSection:
     def calculate_ultimate_section_actions(
         self,
         d_n: float,
-        ultimate_results: Optional[res.UltimateBendingResults] = res.UltimateBendingResults(
-            theta=0
-        ),
+        ultimate_results: Optional[
+            res.UltimateBendingResults
+        ] = res.UltimateBendingResults(theta=0),
     ) -> results.UltimateBendingResults:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
         the resultant bending moments `mx`, `my`, `mv` and the net axial force `n`.

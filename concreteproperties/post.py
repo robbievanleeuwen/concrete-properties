@@ -15,7 +15,7 @@ def plotting_context(
     title: Optional[str] = "",
     filename: Optional[str] = "",
     render: Optional[bool] = True,
-    axis_index: Optional[Union[None, int, Tuple[int]] = None,
+    axis_index: Optional[Union[None, int, Tuple[int]]] = None,
     **kwargs,
 ):
     """Executes code required to set up a matplotlib figure.

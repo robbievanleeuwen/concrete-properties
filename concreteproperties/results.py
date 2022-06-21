@@ -313,7 +313,9 @@ class CrackedResults:
         table.add_row("theta", "{:>{fmt}}".format(self.theta, fmt=fmt))
 
         if self.elastic_modulus_ref:
-            table.add_row("E_ref", "{:>{fmt}}".format(self.elastic_modulus_ref, fmt=fmt))
+            table.add_row(
+                "E_ref", "{:>{fmt}}".format(self.elastic_modulus_ref, fmt=fmt)
+            )
 
         table.add_row("M_cr", "{:>{fmt}}".format(self.m_cr, fmt=fmt))
         table.add_row("d_nc", "{:>{fmt}}".format(self.d_nc, fmt=fmt))
@@ -349,6 +351,7 @@ class CrackedResults:
 
         console = Console()
         console.print(table)
+
 
 @dataclass
 class MomentCurvatureResults:
@@ -402,6 +405,7 @@ class MomentCurvatureResults:
             plt.grid(True)
 
         return ax
+
 
 @dataclass
 class ConcreteResult:
