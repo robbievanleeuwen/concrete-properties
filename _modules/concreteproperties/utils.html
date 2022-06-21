@@ -188,7 +188,7 @@
   <h1>Source code for concreteproperties.utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">rich.progress</span> <span class="kn">import</span> <span class="n">Progress</span><span class="p">,</span> <span class="n">BarColumn</span><span class="p">,</span> <span class="n">ProgressColumn</span><span class="p">,</span> <span class="n">TextColumn</span><span class="p">,</span> <span class="n">SpinnerColumn</span>
 <span class="kn">from</span> <span class="nn">rich.table</span> <span class="kn">import</span> <span class="n">Column</span>
@@ -502,8 +502,18 @@
 <div class="viewcode-block" id="CustomTimeElapsedColumn"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.CustomTimeElapsedColumn.html#concreteproperties.utils.CustomTimeElapsedColumn">[docs]</a><span class="k">class</span> <span class="nc">CustomTimeElapsedColumn</span><span class="p">(</span><span class="n">ProgressColumn</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Renders time elapsed in milliseconds.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CustomTimeElapsedColumn.render"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.CustomTimeElapsedColumn.html#concreteproperties.utils.CustomTimeElapsedColumn.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="s2">&quot;Task&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Text</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Show time remaining.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CustomTimeElapsedColumn.render"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.CustomTimeElapsedColumn.html#concreteproperties.utils.CustomTimeElapsedColumn.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">task</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Task&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Text</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Show time remaining.</span>
+
+<span class="sd">        :param task: Task string</span>
+<span class="sd">        :type task: Optional[str]</span>
+
+<span class="sd">        :return: Rich text object</span>
+<span class="sd">        :rtype: :class:`rich.text.Text`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">elapsed</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">finished_time</span> <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">finished</span> <span class="k">else</span> <span class="n">task</span><span class="o">.</span><span class="n">elapsed</span>
 
@@ -515,8 +525,12 @@
         <span class="k">return</span> <span class="n">Text</span><span class="p">(</span><span class="n">elapsed_string</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;progress.elapsed&quot;</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="create_known_progress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.create_known_progress.html#concreteproperties.utils.create_known_progress">[docs]</a><span class="k">def</span> <span class="nf">create_known_progress</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Returns a Rich Progress class for a known number of iterations.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="create_known_progress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.create_known_progress.html#concreteproperties.utils.create_known_progress">[docs]</a><span class="k">def</span> <span class="nf">create_known_progress</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Progress</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Returns a Rich Progress class for a known number of iterations.</span>
+
+<span class="sd">    :return: Rich progress object</span>
+<span class="sd">    :rtype: :class:`rich.progress.Progress`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="n">Progress</span><span class="p">(</span>
         <span class="n">SpinnerColumn</span><span class="p">(),</span>
@@ -530,8 +544,12 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="create_unknown_progress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.create_unknown_progress.html#concreteproperties.utils.create_unknown_progress">[docs]</a><span class="k">def</span> <span class="nf">create_unknown_progress</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Returns a Rich Progress class for a known number of iterations.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="create_unknown_progress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.create_unknown_progress.html#concreteproperties.utils.create_unknown_progress">[docs]</a><span class="k">def</span> <span class="nf">create_unknown_progress</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Progress</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Returns a Rich Progress class for an unknown number of iterations.</span>
+
+<span class="sd">    :return: Rich progress object</span>
+<span class="sd">    :rtype: :class:`rich.progress.Progress`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="n">Progress</span><span class="p">(</span>
         <span class="n">SpinnerColumn</span><span class="p">(),</span>
