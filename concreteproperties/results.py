@@ -336,6 +336,7 @@ class MomentInteractionResults:
 
         return ax
 
+
 @dataclass
 class BiaxialBendingResults:
     """Class for storing biaxial bending results.
@@ -362,7 +363,9 @@ class BiaxialBendingResults:
         """
 
         # create plot and setup the plot
-        with plotting_context(title=f"Biaxial Bending Diagram, $N = {self.n:.3e}$", **kwargs) as (
+        with plotting_context(
+            title=f"Biaxial Bending Diagram, $N = {self.n:.3e}$", **kwargs
+        ) as (
             fig,
             ax,
         ):

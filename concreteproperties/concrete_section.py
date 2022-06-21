@@ -1083,10 +1083,10 @@ class ConcreteSection:
         bb_results = res.BiaxialBendingResults(n=n)
 
         # calculate d_theta
-        d_theta = 2*np.pi / n_points
+        d_theta = 2 * np.pi / n_points
 
         # generate list of thetas
-        theta_list = np.linspace(start=0, stop=2*np.pi-d_theta, num=n_points)
+        theta_list = np.linspace(start=0, stop=2 * np.pi - d_theta, num=n_points)
 
         # create progress bar
         with utils.create_known_progress() as progress:
