@@ -56,11 +56,10 @@ geometry = concrete_rectangular_section(
 
 conc_sec = ConcreteSection(geometry)
 
-pprint(conc_sec.gross_properties)
-pprint(conc_sec.get_transformed_gross_properties(elastic_modulus=32.8e3))
-mi_res = conc_sec.moment_interaction_diagram(m_neg=True)
-pprint(mi_res)
-mi_res.plot_diagram()
+conc_sec.gross_properties.print_results()
+conc_sec.get_transformed_gross_properties(elastic_modulus=32.8e3).print_results()
 cracked_res = conc_sec.calculate_cracked_properties()
 cracked_res.calculate_transformed_properties(elastic_modulus=32.8e3)
-pprint(cracked_res)
+cracked_res.print_results()
+mi_res = conc_sec.moment_interaction_diagram(m_neg=True)
+mi_res.plot_diagram()

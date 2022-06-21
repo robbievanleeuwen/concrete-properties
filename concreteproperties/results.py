@@ -4,6 +4,8 @@ from dataclasses import dataclass, field
 from typing import List, TYPE_CHECKING
 import numpy as np
 import matplotlib.pyplot as plt
+from rich.console import Console
+from rich.table import Table
 
 from concreteproperties.post import plotting_context
 
@@ -14,13 +16,18 @@ if TYPE_CHECKING:
 
 @dataclass
 class ConcreteProperties:
-    """Class for storing gross concrete section properties."""
+    """Class for storing gross concrete section properties.
+
+    All properties with an `e_` preceding the property are multiplied by the elastic
+    modulus. In order to obtain transformed properties, call the
+    :meth:`~concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties`
+    method.
+    """
 
     # section areas
     total_area: float = 0
     concrete_area: float = 0
     steel_area: float = 0
-    e_a: float = 0
     e_a: float = 0
 
     # section mass
@@ -44,8 +51,8 @@ class ConcreteProperties:
     e_ixx_c: float = 0
     e_iyy_c: float = 0
     e_ixy_c: float = 0
-    e_i11_c: float = 0
-    e_i22_c: float = 0
+    e_i11: float = 0
+    e_i22: float = 0
 
     # principal axis angle
     phi: float = 0
@@ -67,6 +74,59 @@ class ConcreteProperties:
     axial_pc_y: float = 0
     conc_ultimate_strain: float = 0
 
+    def print_results(self, fmt: str = "8.6e"):
+        """Prints the gross concrete section properties to the terminal.
+
+        :param string fmt: Number format
+        """
+
+        table = Table(title="Gross Concrete Section Properties")
+        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
+        table.add_column("Value", justify="right", style="green")
+
+        table.add_row("Total Area", "{:>{fmt}}".format(self.total_area, fmt=fmt))
+        table.add_row("Concrete Area", "{:>{fmt}}".format(self.concrete_area, fmt=fmt))
+        table.add_row("Steel Area", "{:>{fmt}}".format(self.steel_area, fmt=fmt))
+        table.add_row("Axial Rigidity (EA)", "{:>{fmt}}".format(self.e_a, fmt=fmt))
+        table.add_row("Mass (per unit length)", "{:>{fmt}}".format(self.mass, fmt=fmt))
+        table.add_row("Perimeter", "{:>{fmt}}".format(self.perimeter, fmt=fmt))
+        table.add_row("E.Qx", "{:>{fmt}}".format(self.e_qx, fmt=fmt))
+        table.add_row("E.Qy", "{:>{fmt}}".format(self.e_qy, fmt=fmt))
+        table.add_row("x-Centroid", "{:>{fmt}}".format(self.cx, fmt=fmt))
+        table.add_row("y-Centroid", "{:>{fmt}}".format(self.cy, fmt=fmt))
+        table.add_row("E.Ixx_g", "{:>{fmt}}".format(self.e_ixx_g, fmt=fmt))
+        table.add_row("E.Iyy_g", "{:>{fmt}}".format(self.e_iyy_g, fmt=fmt))
+        table.add_row("E.Ixy_g", "{:>{fmt}}".format(self.e_ixy_g, fmt=fmt))
+        table.add_row("E.Ixx_c", "{:>{fmt}}".format(self.e_ixx_c, fmt=fmt))
+        table.add_row("E.Iyy_c", "{:>{fmt}}".format(self.e_iyy_c, fmt=fmt))
+        table.add_row("E.Ixy_c", "{:>{fmt}}".format(self.e_ixy_c, fmt=fmt))
+        table.add_row("E.I11", "{:>{fmt}}".format(self.e_i11, fmt=fmt))
+        table.add_row("E.I22", "{:>{fmt}}".format(self.e_i22, fmt=fmt))
+        table.add_row("Principal Axis Angle", "{:>{fmt}}".format(self.phi, fmt=fmt))
+        table.add_row("E.Zxx+", "{:>{fmt}}".format(self.e_zxx_plus, fmt=fmt))
+        table.add_row("E.Zxx-", "{:>{fmt}}".format(self.e_zxx_minus, fmt=fmt))
+        table.add_row("E.Zyy+", "{:>{fmt}}".format(self.e_zyy_plus, fmt=fmt))
+        table.add_row("E.Zyy-", "{:>{fmt}}".format(self.e_zyy_minus, fmt=fmt))
+        table.add_row("E.Z11+", "{:>{fmt}}".format(self.e_z11_plus, fmt=fmt))
+        table.add_row("E.Z11-", "{:>{fmt}}".format(self.e_z11_minus, fmt=fmt))
+        table.add_row("E.Z22+", "{:>{fmt}}".format(self.e_z22_plus, fmt=fmt))
+        table.add_row("E.Z22-", "{:>{fmt}}".format(self.e_z22_minus, fmt=fmt))
+        table.add_row("Squash Load", "{:>{fmt}}".format(self.squash_load, fmt=fmt))
+        table.add_row("Tensile Load", "{:>{fmt}}".format(self.tensile_load, fmt=fmt))
+        table.add_row(
+            "x-Axial Plastic Centroid", "{:>{fmt}}".format(self.axial_pc_x, fmt=fmt)
+        )
+        table.add_row(
+            "y-Axial Plastic Centroid", "{:>{fmt}}".format(self.axial_pc_y, fmt=fmt)
+        )
+        table.add_row(
+            "Ultimate Concrete Strain",
+            "{:>{fmt}}".format(self.conc_ultimate_strain, fmt=fmt),
+        )
+
+        console = Console()
+        console.print(table)
+
 
 @dataclass
 class TransformedConcreteProperties:
@@ -81,6 +141,9 @@ class TransformedConcreteProperties:
     concrete_properties: ConcreteProperties = field(repr=False)
     elastic_modulus: float
 
+    # area
+    area: float = 0
+
     # first moments of area
     qx: float = 0
     qy: float = 0
@@ -92,8 +155,8 @@ class TransformedConcreteProperties:
     ixx_c: float = 0
     iyy_c: float = 0
     ixy_c: float = 0
-    i11_c: float = 0
-    i22_c: float = 0
+    i11: float = 0
+    i22: float = 0
 
     # section moduli
     zxx_plus: float = 0
@@ -108,7 +171,7 @@ class TransformedConcreteProperties:
     def __post_init__(
         self,
     ):
-
+        self.area = self.concrete_properties.total_area / self.elastic_modulus
         self.qx = self.concrete_properties.e_qx / self.elastic_modulus
         self.qy = self.concrete_properties.e_qy / self.elastic_modulus
         self.ixx_g = self.concrete_properties.e_ixx_g / self.elastic_modulus
@@ -117,8 +180,8 @@ class TransformedConcreteProperties:
         self.ixx_c = self.concrete_properties.e_ixx_c / self.elastic_modulus
         self.iyy_c = self.concrete_properties.e_iyy_c / self.elastic_modulus
         self.ixy_c = self.concrete_properties.e_ixy_c / self.elastic_modulus
-        self.i11_c = self.concrete_properties.e_i11_c / self.elastic_modulus
-        self.i22_c = self.concrete_properties.e_i22_c / self.elastic_modulus
+        self.i11 = self.concrete_properties.e_i11 / self.elastic_modulus
+        self.i22 = self.concrete_properties.e_i22 / self.elastic_modulus
         self.zxx_plus = self.concrete_properties.e_zxx_plus / self.elastic_modulus
         self.zxx_minus = self.concrete_properties.e_zxx_minus / self.elastic_modulus
         self.zyy_plus = self.concrete_properties.e_zyy_plus / self.elastic_modulus
@@ -128,10 +191,50 @@ class TransformedConcreteProperties:
         self.z22_plus = self.concrete_properties.e_z22_plus / self.elastic_modulus
         self.z22_minus = self.concrete_properties.e_z22_minus / self.elastic_modulus
 
+    def print_results(self, fmt: str = "8.6e"):
+        """Prints the transformed gross concrete section properties to the terminal.
+
+        :param string fmt: Number format
+        """
+
+        table = Table(title="Transformed Gross Concrete Section Properties")
+        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
+        table.add_column("Value", justify="right", style="green")
+
+        table.add_row("E_ref", "{:>{fmt}}".format(self.elastic_modulus, fmt=fmt))
+        table.add_row("Area", "{:>{fmt}}".format(self.area, fmt=fmt))
+        table.add_row("Qx", "{:>{fmt}}".format(self.qx, fmt=fmt))
+        table.add_row("Qy", "{:>{fmt}}".format(self.qy, fmt=fmt))
+        table.add_row("Ixx_g", "{:>{fmt}}".format(self.ixx_g, fmt=fmt))
+        table.add_row("Iyy_g", "{:>{fmt}}".format(self.iyy_g, fmt=fmt))
+        table.add_row("Ixy_g", "{:>{fmt}}".format(self.ixy_g, fmt=fmt))
+        table.add_row("Ixx_c", "{:>{fmt}}".format(self.ixx_c, fmt=fmt))
+        table.add_row("Iyy_c", "{:>{fmt}}".format(self.iyy_c, fmt=fmt))
+        table.add_row("Ixy_c", "{:>{fmt}}".format(self.ixy_c, fmt=fmt))
+        table.add_row("I11", "{:>{fmt}}".format(self.i11, fmt=fmt))
+        table.add_row("I22", "{:>{fmt}}".format(self.i22, fmt=fmt))
+        table.add_row("Zxx+", "{:>{fmt}}".format(self.zxx_plus, fmt=fmt))
+        table.add_row("Zxx-", "{:>{fmt}}".format(self.zxx_minus, fmt=fmt))
+        table.add_row("Zyy+", "{:>{fmt}}".format(self.zyy_plus, fmt=fmt))
+        table.add_row("Zyy-", "{:>{fmt}}".format(self.zyy_minus, fmt=fmt))
+        table.add_row("Z11+", "{:>{fmt}}".format(self.z11_plus, fmt=fmt))
+        table.add_row("Z11-", "{:>{fmt}}".format(self.z11_minus, fmt=fmt))
+        table.add_row("Z22+", "{:>{fmt}}".format(self.z22_plus, fmt=fmt))
+        table.add_row("Z22-", "{:>{fmt}}".format(self.z22_minus, fmt=fmt))
+
+        console = Console()
+        console.print(table)
+
 
 @dataclass
 class CrackedResults:
-    """Class for storing cracked concrete section properties."""
+    """Class for storing cracked concrete section properties.
+
+    All properties with an `e_` preceding the property are multiplied by the elastic
+    modulus. In order to obtain transformed properties, call the
+    :meth:`~concreteproperties.results.CrackedResults.calculate_transformed_properties`
+    method.
+    """
 
     theta: float
     m_cr: float = 0
@@ -149,16 +252,17 @@ class CrackedResults:
     e_iuu_cr: float = 0
 
     # transformed properties
-    a_cr: float = 0
-    qx_cr: float = 0
-    qy_cr: float = 0
-    ixx_g_cr: float = 0
-    iyy_g_cr: float = 0
-    ixy_g_cr: float = 0
-    ixx_c_cr: float = 0
-    iyy_c_cr: float = 0
-    ixy_c_cr: float = 0
-    iuu_cr: float = 0
+    elastic_modulus_ref: float = None
+    a_cr: float = None
+    qx_cr: float = None
+    qy_cr: float = None
+    ixx_g_cr: float = None
+    iyy_g_cr: float = None
+    ixy_g_cr: float = None
+    ixx_c_cr: float = None
+    iyy_c_cr: float = None
+    ixy_c_cr: float = None
+    iuu_cr: float = None
 
     def calculate_transformed_properties(
         self,
@@ -170,6 +274,7 @@ class CrackedResults:
         :param float elastic_modulus: Reference elastic modulus
         """
 
+        self.elastic_modulus_ref = elastic_modulus
         self.a_cr = self.e_a_cr / elastic_modulus
         self.qx_cr = self.e_qx_cr / elastic_modulus
         self.qy_cr = self.e_qy_cr / elastic_modulus
@@ -181,6 +286,55 @@ class CrackedResults:
         self.ixy_c_cr = self.e_ixy_c_cr / elastic_modulus
         self.iuu_cr = self.e_iuu_cr / elastic_modulus
 
+    def print_results(self, fmt: str = "8.6e"):
+        """Prints the cracked concrete section properties to the terminal.
+
+        :param string fmt: Number format
+        """
+
+        table = Table(title="Transformed Gross Concrete Section Properties")
+        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
+        table.add_column("Value", justify="right", style="green")
+
+        table.add_row("theta", "{:>{fmt}}".format(self.theta, fmt=fmt))
+
+        if self.elastic_modulus_ref:
+            table.add_row("E_ref", "{:>{fmt}}".format(self.elastic_modulus_ref, fmt=fmt))
+
+        table.add_row("M_cr", "{:>{fmt}}".format(self.m_cr, fmt=fmt))
+        table.add_row("d_nc", "{:>{fmt}}".format(self.d_nc, fmt=fmt))
+
+        if self.a_cr:
+            table.add_row("A_cr", "{:>{fmt}}".format(self.a_cr, fmt=fmt))
+
+        table.add_row("E.A_cr", "{:>{fmt}}".format(self.e_a_cr, fmt=fmt))
+
+        if self.qx_cr:
+            table.add_row("Qx_cr", "{:>{fmt}}".format(self.qx_cr, fmt=fmt))
+            table.add_row("Qy_cr", "{:>{fmt}}".format(self.qy_cr, fmt=fmt))
+
+        table.add_row("E.Qx_cr", "{:>{fmt}}".format(self.e_qx_cr, fmt=fmt))
+        table.add_row("E.Qy_cr", "{:>{fmt}}".format(self.e_qy_cr, fmt=fmt))
+
+        if self.ixx_g_cr:
+            table.add_row("Ixx_g_cr", "{:>{fmt}}".format(self.ixx_g_cr, fmt=fmt))
+            table.add_row("Iyy_g_cr", "{:>{fmt}}".format(self.iyy_g_cr, fmt=fmt))
+            table.add_row("Ixy_g_cr", "{:>{fmt}}".format(self.ixy_g_cr, fmt=fmt))
+            table.add_row("Ixx_c_cr", "{:>{fmt}}".format(self.ixx_c_cr, fmt=fmt))
+            table.add_row("Iyy_c_cr", "{:>{fmt}}".format(self.iyy_c_cr, fmt=fmt))
+            table.add_row("Ixy_c_cr", "{:>{fmt}}".format(self.ixy_c_cr, fmt=fmt))
+            table.add_row("Iuu_cr", "{:>{fmt}}".format(self.iuu_cr, fmt=fmt))
+
+        table.add_row("E.Ixx_g_cr", "{:>{fmt}}".format(self.e_ixx_g_cr, fmt=fmt))
+        table.add_row("E.Iyy_g_cr", "{:>{fmt}}".format(self.e_iyy_g_cr, fmt=fmt))
+        table.add_row("E.Ixy_g_cr", "{:>{fmt}}".format(self.e_ixy_g_cr, fmt=fmt))
+        table.add_row("E.Ixx_c_cr", "{:>{fmt}}".format(self.e_ixx_c_cr, fmt=fmt))
+        table.add_row("E.Iyy_c_cr", "{:>{fmt}}".format(self.e_iyy_c_cr, fmt=fmt))
+        table.add_row("E.Ixy_c_cr", "{:>{fmt}}".format(self.e_ixy_c_cr, fmt=fmt))
+        table.add_row("E.Iuu_cr", "{:>{fmt}}".format(self.e_iuu_cr, fmt=fmt))
+
+        console = Console()
+        console.print(table)
 
 @dataclass
 class MomentCurvatureResults:

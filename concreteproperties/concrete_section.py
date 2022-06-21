@@ -62,69 +62,6 @@ class ConcreteSection:
         # calculate gross plastic properties
         self.calculate_gross_plastic_properties()
 
-    def plot_section(
-        self,
-        title="Reinforced Concrete Section",
-        **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
-        """Plots the reinforced concrete section.
-
-        :param str title: Plot title
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
-
-        :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
-        """
-
-        with plotting_context(title=title, **kwargs) as (fig, ax):
-            # create list of already plotted materials
-            plotted_materials = []
-            legend_labels = []
-
-            # plot concrete geometries
-            for conc_geom in self.concrete_geometries:
-                if conc_geom.material not in plotted_materials:
-                    patch = mpatches.Patch(
-                        color=conc_geom.material.colour, label=conc_geom.material.name
-                    )
-                    legend_labels.append(patch)
-                    plotted_materials.append(conc_geom.material)
-
-                # TODO - when shapely implements polygon plotting, fix this up
-                sec = AnalysisSection(geometry=conc_geom)
-                sec.plot_shape(ax=ax)
-
-                # plot the points and facets
-                for f in conc_geom.facets:
-                    ax.plot(
-                        [conc_geom.points[f[0]][0], conc_geom.points[f[1]][0]],
-                        [conc_geom.points[f[0]][1], conc_geom.points[f[1]][1]],
-                        "ko-",
-                        markersize=2,
-                        linewidth=1.5,
-                    )
-
-            # plot steel geometries
-            for steel_geom in self.steel_geometries:
-                if steel_geom.material not in plotted_materials:
-                    patch = mpatches.Patch(
-                        color=steel_geom.material.colour, label=steel_geom.material.name
-                    )
-                    legend_labels.append(patch)
-                    plotted_materials.append(steel_geom.material)
-
-                # plot the points and facets
-                coords = list(steel_geom.geom.exterior.coords)
-                bar = mpatches.Polygon(
-                    xy=coords, closed=False, color=steel_geom.material.colour
-                )
-                ax.add_patch(bar)
-
-            ax.legend(loc="center left", bbox_to_anchor=(1, 0.5), handles=legend_labels)
-            ax.set_aspect("equal", anchor="C")
-
-        return ax
-
     def calculate_gross_area_properties(
         self,
     ):
@@ -227,23 +164,23 @@ class ConcreteSection:
             ((self.gross_properties.e_ixx_c - self.gross_properties.e_iyy_c) / 2) ** 2
             + self.gross_properties.e_ixy_c**2
         ) ** 0.5
-        self.gross_properties.e_i11_c = (
+        self.gross_properties.e_i11 = (
             self.gross_properties.e_ixx_c + self.gross_properties.e_iyy_c
         ) / 2 + Delta
-        self.gross_properties.e_i22_c = (
+        self.gross_properties.e_i22 = (
             self.gross_properties.e_ixx_c + self.gross_properties.e_iyy_c
         ) / 2 - Delta
 
         # principal axis angle
         if (
-            abs(self.gross_properties.e_ixx_c - self.gross_properties.e_i11_c)
-            < 1e-12 * self.gross_properties.e_i11_c
+            abs(self.gross_properties.e_ixx_c - self.gross_properties.e_i11)
+            < 1e-12 * self.gross_properties.e_i11
         ):
             self.gross_properties.phi = 0
         else:
             self.gross_properties.phi = (
                 np.arctan2(
-                    self.gross_properties.e_ixx_c - self.gross_properties.e_i11_c,
+                    self.gross_properties.e_ixx_c - self.gross_properties.e_i11,
                     self.gross_properties.e_ixy_c,
                 )
                 * 180
@@ -274,10 +211,10 @@ class ConcreteSection:
         )
 
         # evaluate principal section moduli
-        self.gross_properties.e_z11_plus = self.gross_properties.e_i11_c / abs(y22_max)
-        self.gross_properties.e_z11_minus = self.gross_properties.e_i11_c / abs(y22_min)
-        self.gross_properties.e_z22_plus = self.gross_properties.e_i22_c / abs(x11_max)
-        self.gross_properties.e_z22_minus = self.gross_properties.e_i22_c / abs(x11_min)
+        self.gross_properties.e_z11_plus = self.gross_properties.e_i11 / abs(y22_max)
+        self.gross_properties.e_z11_minus = self.gross_properties.e_i11 / abs(y22_min)
+        self.gross_properties.e_z22_plus = self.gross_properties.e_i22 / abs(x11_max)
+        self.gross_properties.e_z22_minus = self.gross_properties.e_i22 / abs(x11_min)
 
     def get_transformed_gross_properties(
         self,
@@ -1213,3 +1150,66 @@ class ConcreteSection:
             x=self.gross_properties.axial_pc_x,
             y=self.gross_properties.axial_pc_y,
         )
+
+    def plot_section(
+        self,
+        title="Reinforced Concrete Section",
+        **kwargs,
+    ) -> matplotlib.axes._subplots.AxesSubplot:
+        """Plots the reinforced concrete section.
+
+        :param str title: Plot title
+        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        """
+
+        with plotting_context(title=title, **kwargs) as (fig, ax):
+            # create list of already plotted materials
+            plotted_materials = []
+            legend_labels = []
+
+            # plot concrete geometries
+            for conc_geom in self.concrete_geometries:
+                if conc_geom.material not in plotted_materials:
+                    patch = mpatches.Patch(
+                        color=conc_geom.material.colour, label=conc_geom.material.name
+                    )
+                    legend_labels.append(patch)
+                    plotted_materials.append(conc_geom.material)
+
+                # TODO - when shapely implements polygon plotting, fix this up
+                sec = AnalysisSection(geometry=conc_geom)
+                sec.plot_shape(ax=ax)
+
+                # plot the points and facets
+                for f in conc_geom.facets:
+                    ax.plot(
+                        [conc_geom.points[f[0]][0], conc_geom.points[f[1]][0]],
+                        [conc_geom.points[f[0]][1], conc_geom.points[f[1]][1]],
+                        "ko-",
+                        markersize=2,
+                        linewidth=1.5,
+                    )
+
+            # plot steel geometries
+            for steel_geom in self.steel_geometries:
+                if steel_geom.material not in plotted_materials:
+                    patch = mpatches.Patch(
+                        color=steel_geom.material.colour, label=steel_geom.material.name
+                    )
+                    legend_labels.append(patch)
+                    plotted_materials.append(steel_geom.material)
+
+                # plot the points and facets
+                coords = list(steel_geom.geom.exterior.coords)
+                bar = mpatches.Polygon(
+                    xy=coords, closed=False, color=steel_geom.material.colour
+                )
+                ax.add_patch(bar)
+
+            ax.legend(loc="center left", bbox_to_anchor=(1, 0.5), handles=legend_labels)
+            ax.set_aspect("equal", anchor="C")
+
+        return ax
