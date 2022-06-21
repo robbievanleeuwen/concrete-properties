@@ -372,10 +372,13 @@
 
 <div class="viewcode-block" id="MomentCurvatureResults"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">MomentCurvatureResults</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Class for storing moment curvature results.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Class for storing moment curvature results.</span>
+
+<span class="sd">    :param float theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># results</span>
-    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">kappa</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
     <span class="n">moment</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
 
@@ -422,9 +425,12 @@
 
 <div class="viewcode-block" id="UltimateBendingResults"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">UltimateBendingResults</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Class for storing ultimate bending results.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Class for storing ultimate bending results.</span>
 
-    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="sd">    :param float theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">mx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
@@ -515,6 +521,48 @@
             <span class="c1"># if there is more than one curve show legend</span>
             <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div></div>
+
+<div class="viewcode-block" id="BiaxialBendingResults"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">BiaxialBendingResults</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for storing biaxial bending results.</span>
+
+<span class="sd">    :param float n: Net axial force</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">mx</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">my</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BiaxialBendingResults.plot_diagram"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults.plot_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">plot_diagram</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Plots a biaxial bending diagram.</span>
+
+<span class="sd">        :param float m_scale: Scaling factor to apply to bending moment</span>
+<span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
+
+<span class="sd">        :return: Matplotlib axes object</span>
+<span class="sd">        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># create plot and setup the plot</span>
+        <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Biaxial Bending Diagram, $N = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span>
+            <span class="n">fig</span><span class="p">,</span>
+            <span class="n">ax</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="c1"># scale results</span>
+            <span class="n">mx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mx</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+            <span class="n">my</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_x$&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_y$&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">ax</span></div></div>
 </pre></div>

@@ -279,6 +279,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.results.BiaxialBendingResults.html">
+     concreteproperties.results.BiaxialBendingResults
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.results.ConcreteProperties.html">
      concreteproperties.results.ConcreteProperties
     </a>
@@ -465,50 +470,53 @@ reinforced concrete section</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_cracked_properties</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.biaxial_bending_diagram" title="concreteproperties.concrete_section.ConcreteSection.biaxial_bending_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">biaxial_bending_diagram</span></code></a></p></td>
+<td><p>Generates a biaxial bending diagram given a net axial force <cite>n</cite> and <cite>n_points</cite> calculation points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_cracked_properties</span></code></a></p></td>
 <td><p>Calculates cracked section properties given a neutral axis angle <cite>theta</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_cracking_moment</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_cracking_moment</span></code></a></p></td>
 <td><p>Calculates the cracking moment given a bending angle <cite>theta</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_gross_area_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_gross_area_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_gross_area_properties</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_gross_area_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_gross_area_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_gross_area_properties</span></code></a></p></td>
 <td><p>Calculates and stores gross section area properties.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_gross_plastic_properties</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_gross_plastic_properties</span></code></a></p></td>
 <td><p>Calculates and stores gross section plastic properties.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_service_section_actions" title="concreteproperties.concrete_section.ConcreteSection.calculate_service_section_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_service_section_actions</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_service_section_actions" title="concreteproperties.concrete_section.ConcreteSection.calculate_service_section_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_service_section_actions</span></code></a></p></td>
 <td><p>Given a neutral axis depth <cite>d_n</cite> and curvature <cite>kappa</cite>, calculates the resultant axial force and bending moment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions" title="concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_ultimate_section_actions</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions" title="concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_ultimate_section_actions</span></code></a></p></td>
 <td><p>Given a neutral axis depth <cite>d_n</cite> and neutral axis angle <cite>theta</cite>, calculates the resultant bending moments <cite>mx</cite>, <cite>my</cite>, <cite>mv</cite> and the net axial force <cite>n</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence" title="concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cracked_neutral_axis_convergence</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence" title="concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cracked_neutral_axis_convergence</span></code></a></p></td>
 <td><p>Given a trial cracked neutral axis depth <cite>d_nc</cite>, determines the difference between the first moments of area above and below the trial axis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_c_local" title="concreteproperties.concrete_section.ConcreteSection.get_c_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_c_local</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_c_local" title="concreteproperties.concrete_section.ConcreteSection.get_c_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_c_local</span></code></a></p></td>
 <td><p>Returns the elastic centroid location in local coordinates.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_pc_local" title="concreteproperties.concrete_section.ConcreteSection.get_pc_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pc_local</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_pc_local" title="concreteproperties.concrete_section.ConcreteSection.get_pc_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pc_local</span></code></a></p></td>
 <td><p>Returns the plastic centroid location in local coordinates.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_transformed_gross_properties</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_transformed_gross_properties</span></code></a></p></td>
 <td><p>Transforms gross section properties given a reference elastic modulus.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_curvature_diagram" title="concreteproperties.concrete_section.ConcreteSection.moment_curvature_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_curvature_diagram</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_curvature_diagram" title="concreteproperties.concrete_section.ConcreteSection.moment_curvature_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_curvature_diagram</span></code></a></p></td>
 <td><p>Generates a moment curvature diagram given a bending angle <cite>theta</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_interaction_diagram</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_interaction_diagram</span></code></a></p></td>
 <td><p>Generates a moment interaction diagram given a neutral axis angle <cite>theta</cite> and <cite>n_points</cite> calculation points between the decompression case and the pure bending case.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_normal_force_convergence</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_normal_force_convergence</span></code></a></p></td>
 <td><p>Given a trial neutral axis depth <cite>d_n</cite> and curvature <cite>kappa</cite>, determines the difference between the net axial force and the desired axial force.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_bending_capacity</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_bending_capacity</span></code></a></p></td>
 <td><p>Given a neutral axis angle <cite>theta</cite> and an axial force <cite>n</cite>, calculates the ultimate bending capacity.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_normal_force_convergence</span></code></a></p></td>
-<td><p>Given a neutral axis depth <cite>d_n</cite> and neutral axis angle <cite>theta</cite>, calculates the difference between the target net axial force <cite>n</cite> and the axial force given <cite>d_n</cite> &amp; <cite>theta</cite>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_normal_force_convergence</span></code></a></p></td>
+<td><p>Given a neutral axis depth <cite>d_n</cite> and neutral axis angle <cite>theta</cite>, calculates the difference between the target net axial force <cite>n</cite> and the axial force.</p></td>
 </tr>
 </tbody>
 </table>
@@ -694,8 +702,7 @@ ultimate bending capacity.</p>
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence">
 <span class="sig-name descname"><span class="pre">ultimate_normal_force_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">results.UltimateBendingResults</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.ultimate_normal_force_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a neutral axis depth <cite>d_n</cite> and neutral axis angle <cite>theta</cite>, calculates
-the difference between the target net axial force <cite>n</cite> and the axial force
-given <cite>d_n</cite> &amp; <cite>theta</cite>.</p>
+the difference between the target net axial force <cite>n</cite> and the axial force.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -715,7 +722,7 @@ given <cite>d_n</cite> &amp; <cite>theta</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions">
-<span class="sig-name descname"><span class="pre">calculate_ultimate_section_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">results.UltimateBendingResults</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">results.UltimateBendingResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_ultimate_section_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_ultimate_section_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">res.UltimateBendingResults</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">UltimateBendingResults(theta=0,</span> <span class="pre">d_n=0,</span> <span class="pre">n=0,</span> <span class="pre">mx=0,</span> <span class="pre">my=0,</span> <span class="pre">mv=0)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">results.UltimateBendingResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_ultimate_section_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a neutral axis depth <cite>d_n</cite> and neutral axis angle <cite>theta</cite>, calculates
 the resultant bending moments <cite>mx</cite>, <cite>my</cite>, <cite>mv</cite> and the net axial force <cite>n</cite>.</p>
 <dl class="field-list simple">
@@ -736,7 +743,7 @@ the resultant bending moments <cite>mx</cite>, <cite>my</cite>, <cite>mv</cite> 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram">
-<span class="sig-name descname"><span class="pre">moment_interaction_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">24</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><span class="pre">MomentInteractionResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.moment_interaction_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">moment_interaction_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_neg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">24</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><span class="pre">MomentInteractionResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.moment_interaction_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="Permalink to this definition">#</a></dt>
 <dd><p>Generates a moment interaction diagram given a neutral axis angle <cite>theta</cite>
 and <cite>n_points</cite> calculation points between the decompression case and the pure
 bending case.</p>
@@ -744,6 +751,8 @@ bending case.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p></li>
+<li><p><strong>m_neg</strong> (<em>bool</em>) – If set to true, also calculates the moment interaction for
+theta = theta + pi, i.e. positive and negative bending</p></li>
 <li><p><strong>n_points</strong> (<em>int</em>) – Number of calculation points between the decompression
 case and the pure bending case.</p></li>
 </ul>
@@ -753,6 +762,28 @@ case and the pure bending case.</p></li>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.biaxial_bending_diagram">
+<span class="sig-name descname"><span class="pre">biaxial_bending_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">48</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><span class="pre">BiaxialBendingResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.biaxial_bending_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.biaxial_bending_diagram" title="Permalink to this definition">#</a></dt>
+<dd><p>Generates a biaxial bending diagram given a net axial force <cite>n</cite> and
+<cite>n_points</cite> calculation points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>float</em>) – Net axial force</p></li>
+<li><p><strong>n_points</strong> (<em>int</em>) – Number of calculation points between the decompression
+case and the pure bending case.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Biaxial bending results</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
