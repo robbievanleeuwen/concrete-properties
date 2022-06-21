@@ -25,8 +25,8 @@ concreteproperties.concrete\_section.TransformedConcreteProperties
 
    .. autosummary::
    
-      ~TransformedConcreteProperties.i11_c
-      ~TransformedConcreteProperties.i22_c
+      ~TransformedConcreteProperties.i11
+      ~TransformedConcreteProperties.i22
       ~TransformedConcreteProperties.ixx_c
       ~TransformedConcreteProperties.ixx_g
       ~TransformedConcreteProperties.ixy_c

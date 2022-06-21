@@ -250,69 +250,6 @@
         <span class="c1"># calculate gross plastic properties</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_gross_plastic_properties</span><span class="p">()</span>
 
-<div class="viewcode-block" id="ConcreteSection.plot_section"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.plot_section">[docs]</a>    <span class="k">def</span> <span class="nf">plot_section</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Reinforced Concrete Section&quot;</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Plots the reinforced concrete section.</span>
-
-<span class="sd">        :param str title: Plot title</span>
-<span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
-
-<span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-            <span class="c1"># create list of already plotted materials</span>
-            <span class="n">plotted_materials</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">legend_labels</span> <span class="o">=</span> <span class="p">[]</span>
-
-            <span class="c1"># plot concrete geometries</span>
-            <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_geometries</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">plotted_materials</span><span class="p">:</span>
-                    <span class="n">patch</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span>
-                        <span class="n">color</span><span class="o">=</span><span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">colour</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">name</span>
-                    <span class="p">)</span>
-                    <span class="n">legend_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>
-                    <span class="n">plotted_materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="p">)</span>
-
-                <span class="c1"># TODO - when shapely implements polygon plotting, fix this up</span>
-                <span class="n">sec</span> <span class="o">=</span> <span class="n">AnalysisSection</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">conc_geom</span><span class="p">)</span>
-                <span class="n">sec</span><span class="o">.</span><span class="n">plot_shape</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-
-                <span class="c1"># plot the points and facets</span>
-                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">facets</span><span class="p">:</span>
-                    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-                        <span class="p">[</span><span class="n">conc_geom</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">],</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">]],</span>
-                        <span class="p">[</span><span class="n">conc_geom</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">1</span><span class="p">],</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">1</span><span class="p">]],</span>
-                        <span class="s2">&quot;ko-&quot;</span><span class="p">,</span>
-                        <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                        <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-                    <span class="p">)</span>
-
-            <span class="c1"># plot steel geometries</span>
-            <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">plotted_materials</span><span class="p">:</span>
-                    <span class="n">patch</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span>
-                        <span class="n">color</span><span class="o">=</span><span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">colour</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">name</span>
-                    <span class="p">)</span>
-                    <span class="n">legend_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>
-                    <span class="n">plotted_materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="p">)</span>
-
-                <span class="c1"># plot the points and facets</span>
-                <span class="n">coords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">steel_geom</span><span class="o">.</span><span class="n">geom</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
-                <span class="n">bar</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span>
-                    <span class="n">xy</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">colour</span>
-                <span class="p">)</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>
-
-            <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">handles</span><span class="o">=</span><span class="n">legend_labels</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">ax</span></div>
-
 <div class="viewcode-block" id="ConcreteSection.calculate_gross_area_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_gross_area_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_gross_area_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">):</span>
@@ -415,23 +352,23 @@
             <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixx_c</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_iyy_c</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixy_c</span><span class="o">**</span><span class="mi">2</span>
         <span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11_c</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixx_c</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_iyy_c</span>
         <span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">Delta</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i22_c</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i22</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixx_c</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_iyy_c</span>
         <span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">Delta</span>
 
         <span class="c1"># principal axis angle</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixx_c</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11_c</span><span class="p">)</span>
-            <span class="o">&lt;</span> <span class="mf">1e-12</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11_c</span>
+            <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixx_c</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11</span><span class="p">)</span>
+            <span class="o">&lt;</span> <span class="mf">1e-12</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11</span>
         <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixx_c</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11_c</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixx_c</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixy_c</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="o">*</span> <span class="mi">180</span>
@@ -462,10 +399,10 @@
         <span class="p">)</span>
 
         <span class="c1"># evaluate principal section moduli</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z11_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11_c</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y22_max</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z11_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11_c</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y22_min</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z22_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i22_c</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x11_max</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z22_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i22_c</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x11_min</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z11_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y22_max</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z11_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y22_min</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z22_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i22</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x11_max</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z22_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i22</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x11_min</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.get_transformed_gross_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties">[docs]</a>    <span class="k">def</span> <span class="nf">get_transformed_gross_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1400,7 +1337,70 @@
             <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
             <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_x</span><span class="p">,</span>
             <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_y</span><span class="p">,</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ConcreteSection.plot_section"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.plot_section">[docs]</a>    <span class="k">def</span> <span class="nf">plot_section</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Reinforced Concrete Section&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Plots the reinforced concrete section.</span>
+
+<span class="sd">        :param str title: Plot title</span>
+<span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
+
+<span class="sd">        :return: Matplotlib axes object</span>
+<span class="sd">        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+            <span class="c1"># create list of already plotted materials</span>
+            <span class="n">plotted_materials</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">legend_labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># plot concrete geometries</span>
+            <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_geometries</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">plotted_materials</span><span class="p">:</span>
+                    <span class="n">patch</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span>
+                        <span class="n">color</span><span class="o">=</span><span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">colour</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">name</span>
+                    <span class="p">)</span>
+                    <span class="n">legend_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>
+                    <span class="n">plotted_materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="p">)</span>
+
+                <span class="c1"># TODO - when shapely implements polygon plotting, fix this up</span>
+                <span class="n">sec</span> <span class="o">=</span> <span class="n">AnalysisSection</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">conc_geom</span><span class="p">)</span>
+                <span class="n">sec</span><span class="o">.</span><span class="n">plot_shape</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+                <span class="c1"># plot the points and facets</span>
+                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">facets</span><span class="p">:</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                        <span class="p">[</span><span class="n">conc_geom</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">],</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">]],</span>
+                        <span class="p">[</span><span class="n">conc_geom</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">1</span><span class="p">],</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">1</span><span class="p">]],</span>
+                        <span class="s2">&quot;ko-&quot;</span><span class="p">,</span>
+                        <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                        <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+            <span class="c1"># plot steel geometries</span>
+            <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">plotted_materials</span><span class="p">:</span>
+                    <span class="n">patch</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span>
+                        <span class="n">color</span><span class="o">=</span><span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">colour</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">name</span>
+                    <span class="p">)</span>
+                    <span class="n">legend_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>
+                    <span class="n">plotted_materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="p">)</span>
+
+                <span class="c1"># plot the points and facets</span>
+                <span class="n">coords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">steel_geom</span><span class="o">.</span><span class="n">geom</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+                <span class="n">bar</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span>
+                    <span class="n">xy</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">colour</span>
+                <span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">handles</span><span class="o">=</span><span class="n">legend_labels</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div></div>
 </pre></div>
 
               </article>

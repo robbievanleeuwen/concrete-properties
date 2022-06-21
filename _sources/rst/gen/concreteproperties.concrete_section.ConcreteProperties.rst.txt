@@ -32,8 +32,8 @@ concreteproperties.concrete\_section.ConcreteProperties
       ~ConcreteProperties.cx
       ~ConcreteProperties.cy
       ~ConcreteProperties.ea
-      ~ConcreteProperties.e_i11_c
-      ~ConcreteProperties.e_i22_c
+      ~ConcreteProperties.e_i11
+      ~ConcreteProperties.e_i22
       ~ConcreteProperties.e_ixx_c
       ~ConcreteProperties.e_ixx_g
       ~ConcreteProperties.e_ixy_c
