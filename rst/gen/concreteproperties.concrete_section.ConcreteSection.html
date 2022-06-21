@@ -509,17 +509,40 @@ reinforced concrete section</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_interaction_diagram</span></code></a></p></td>
 <td><p>Generates a moment interaction diagram given a neutral axis angle <cite>theta</cite> and <cite>n_points</cite> calculation points between the decompression case and the pure bending case.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_normal_force_convergence</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.plot_section" title="concreteproperties.concrete_section.ConcreteSection.plot_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_section</span></code></a></p></td>
+<td><p>Plots the reinforced concrete section.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_normal_force_convergence</span></code></a></p></td>
 <td><p>Given a trial neutral axis depth <cite>d_n</cite> and curvature <cite>kappa</cite>, determines the difference between the net axial force and the desired axial force.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_bending_capacity</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_bending_capacity</span></code></a></p></td>
 <td><p>Given a neutral axis angle <cite>theta</cite> and an axial force <cite>n</cite>, calculates the ultimate bending capacity.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_normal_force_convergence</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_normal_force_convergence</span></code></a></p></td>
 <td><p>Given a neutral axis depth <cite>d_n</cite> and neutral axis angle <cite>theta</cite>, calculates the difference between the target net axial force <cite>n</cite> and the axial force.</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.plot_section">
+<span class="sig-name descname"><span class="pre">plot_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Reinforced</span> <span class="pre">Concrete</span> <span class="pre">Section'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.plot_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.plot_section" title="Permalink to this definition">#</a></dt>
+<dd><p>Plots the reinforced concrete section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em>) – Plot title</p></li>
+<li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.calculate_gross_area_properties">
 <span class="sig-name descname"><span class="pre">calculate_gross_area_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_gross_area_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_gross_area_properties" title="Permalink to this definition">#</a></dt>
