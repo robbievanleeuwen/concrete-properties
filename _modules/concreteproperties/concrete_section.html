@@ -1271,10 +1271,10 @@
         <span class="n">bb_results</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">BiaxialBendingResults</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
 
         <span class="c1"># calculate d_theta</span>
-        <span class="n">d_theta</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n_points</span>
+        <span class="n">d_theta</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n_points</span>
 
         <span class="c1"># generate list of thetas</span>
-        <span class="n">theta_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="n">d_theta</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
+        <span class="n">theta_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">d_theta</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
 
         <span class="c1"># create progress bar</span>
         <span class="k">with</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span> <span class="k">as</span> <span class="n">progress</span><span class="p">:</span>

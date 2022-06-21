@@ -524,6 +524,7 @@
 
         <span class="k">return</span> <span class="n">ax</span></div></div>
 
+
 <div class="viewcode-block" id="BiaxialBendingResults"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">BiaxialBendingResults</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for storing biaxial bending results.</span>
@@ -550,7 +551,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># create plot and setup the plot</span>
-        <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Biaxial Bending Diagram, $N = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span>
+        <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Biaxial Bending Diagram, $N = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="p">(</span>
             <span class="n">fig</span><span class="p">,</span>
             <span class="n">ax</span><span class="p">,</span>
         <span class="p">):</span>
