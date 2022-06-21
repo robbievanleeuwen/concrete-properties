@@ -9,7 +9,7 @@ from concreteproperties.post import plotting_context
 
 if TYPE_CHECKING:
     from sectionproperties.pre.geometry import Geometry
-    import matplotlib.axes
+    import matplotlib
 
 
 @dataclass

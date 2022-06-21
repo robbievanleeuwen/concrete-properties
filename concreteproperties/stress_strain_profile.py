@@ -10,7 +10,7 @@ from scipy.interpolate import interp1d
 from concreteproperties.post import plotting_context
 
 if TYPE_CHECKING:
-    import matplotlib.axes
+    import matplotlib
 
 
 class StressStrainProfile:

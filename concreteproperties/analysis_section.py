@@ -12,7 +12,7 @@ from concreteproperties.post import plotting_context
 import sectionproperties.analysis.fea as sp_fea
 
 if TYPE_CHECKING:
-    import matplotlib.axes
+    import matplotlib
     from concreteproperties.material import Concrete
     from sectionproperties.pre.geometry import Geometry
 
@@ -178,7 +178,7 @@ class AnalysisSection:
             cmap = ListedColormap(colour_array)  # custom colourmap
 
             # plot the mesh colours
-            ax.tripcolour(
+            ax.tripcolor(
                 self.mesh_nodes[:, 0],
                 self.mesh_nodes[:, 1],
                 self.mesh_elements[:, 0:3],
@@ -199,6 +199,35 @@ class AnalysisSection:
             ax.set_aspect("equal", anchor="C")
 
         return ax
+
+    def plot_shape(
+        self,
+        ax: matplotlib.axes._subplots.AxesSubplot,
+    ):
+        """Plots the coloured shape of the mesh with no outlines on `ax`.
+
+        :param ax: Matplotlib axes object
+        :type ax: :class:`matplotlib.axes._subplots.AxesSubplot`
+        """
+
+        colour_array = []
+        c = []  # Indices of elements for mapping colours
+
+        # create an array of finite element colours
+        for idx, element in enumerate(self.elements):
+            colour_array.append(element.conc_material.colour)
+            c.append(idx)
+
+        cmap = ListedColormap(colour_array)  # custom colourmap
+
+        # plot the mesh colours
+        ax.tripcolor(
+            self.mesh_nodes[:, 0],
+            self.mesh_nodes[:, 1],
+            self.mesh_elements[:, 0:3],
+            c,
+            cmap=cmap,
+        )
 
 
 @dataclass

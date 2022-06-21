@@ -4,6 +4,7 @@ from typing import List, Tuple, TYPE_CHECKING
 import numpy as np
 from scipy.optimize import brentq
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.analysis_section import AnalysisSection
@@ -15,7 +16,7 @@ from sectionproperties.pre.geometry import CompoundGeometry
 from sectionproperties.analysis.fea import principal_coordinate, global_coordinate
 
 if TYPE_CHECKING:
-    import matplotlib.axes
+    import matplotlib
 
 from rich.pretty import pprint
 
@@ -60,6 +61,69 @@ class ConcreteSection:
 
         # calculate gross plastic properties
         self.calculate_gross_plastic_properties()
+
+    def plot_section(
+        self,
+        title="Reinforced Concrete Section",
+        **kwargs,
+    ) -> matplotlib.axes._subplots.AxesSubplot:
+        """Plots the reinforced concrete section.
+
+        :param str title: Plot title
+        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        """
+
+        with plotting_context(title=title, **kwargs) as (fig, ax):
+            # create list of already plotted materials
+            plotted_materials = []
+            legend_labels = []
+
+            # plot concrete geometries
+            for conc_geom in self.concrete_geometries:
+                if conc_geom.material not in plotted_materials:
+                    patch = mpatches.Patch(
+                        color=conc_geom.material.colour, label=conc_geom.material.name
+                    )
+                    legend_labels.append(patch)
+                    plotted_materials.append(conc_geom.material)
+
+                # TODO - when shapely implements polygon plotting, fix this up
+                sec = AnalysisSection(geometry=conc_geom)
+                sec.plot_shape(ax=ax)
+
+                # plot the points and facets
+                for f in conc_geom.facets:
+                    ax.plot(
+                        [conc_geom.points[f[0]][0], conc_geom.points[f[1]][0]],
+                        [conc_geom.points[f[0]][1], conc_geom.points[f[1]][1]],
+                        "ko-",
+                        markersize=2,
+                        linewidth=1.5,
+                    )
+
+            # plot steel geometries
+            for steel_geom in self.steel_geometries:
+                if steel_geom.material not in plotted_materials:
+                    patch = mpatches.Patch(
+                        color=steel_geom.material.colour, label=steel_geom.material.name
+                    )
+                    legend_labels.append(patch)
+                    plotted_materials.append(steel_geom.material)
+
+                # plot the points and facets
+                coords = list(steel_geom.geom.exterior.coords)
+                bar = mpatches.Polygon(
+                    xy=coords, closed=False, color=steel_geom.material.colour
+                )
+                ax.add_patch(bar)
+
+            ax.legend(loc="center left", bbox_to_anchor=(1, 0.5), handles=legend_labels)
+            ax.set_aspect("equal", anchor="C")
+
+        return ax
 
     def calculate_gross_area_properties(
         self,
@@ -589,6 +653,7 @@ class ConcreteSection:
                 )
                 text_update = "[red]Generating M-K diagram: "
                 text_update += f"M={moment_curvature._m_i:.3e}"
+                # TODO: make percentage maximum ratio of steel strain/failure strain
 
                 progress.update(task, description=text_update)
 
