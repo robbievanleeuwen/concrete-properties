@@ -632,7 +632,9 @@ class ConcreteSection:
         self,
         d_n: float,
         kappa: float,
-        moment_curvature: res.MomentCurvatureResults = res.MomentCurvatureResults(),
+        moment_curvature: res.MomentCurvatureResults = res.MomentCurvatureResults(
+            theta=0
+        ),
     ) -> res.MomentCurvatureResults:
         """Given a neutral axis depth `d_n` and curvature `kappa`, calculates the
         resultant axial force and bending moment.
@@ -782,7 +784,7 @@ class ConcreteSection:
         b = d_t  # neutral axis at extreme tensile fibre
 
         # initialise ultimate bending results
-        ultimate_results = res.UltimateBendingResults()
+        ultimate_results = res.UltimateBendingResults(theta=theta)
 
         # find neutral axis that gives convergence of the axial force
         (d_n, r) = brentq(
@@ -805,8 +807,7 @@ class ConcreteSection:
         ultimate_results: results.UltimateBendingResults,
     ) -> float:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
-        the difference between the target net axial force `n` and the axial force
-        given `d_n` & `theta`.
+        the difference between the target net axial force `n` and the axial force.
 
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
         :param float n: Net axial force
@@ -829,7 +830,9 @@ class ConcreteSection:
     def calculate_ultimate_section_actions(
         self,
         d_n: float,
-        ultimate_results: results.UltimateBendingResults,
+        ultimate_results: res.UltimateBendingResults = res.UltimateBendingResults(
+            theta=0
+        ),
     ) -> results.UltimateBendingResults:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
         the resultant bending moments `mx`, `my`, `mv` and the net axial force `n`.
@@ -962,6 +965,7 @@ class ConcreteSection:
     def moment_interaction_diagram(
         self,
         theta: float = 0,
+        m_neg: bool = False,
         n_points: int = 24,
     ) -> res.MomentInteractionResults:
         """Generates a moment interaction diagram given a neutral axis angle `theta`
@@ -969,6 +973,8 @@ class ConcreteSection:
         bending case.
 
         :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param bool m_neg: If set to true, also calculates the moment interaction for
+            theta = theta + pi, i.e. positive and negative bending
         :param int n_points: Number of calculation points between the decompression
             case and the pure bending case.
 
@@ -994,9 +1000,14 @@ class ConcreteSection:
 
         # create progress bar
         with utils.create_known_progress() as progress:
+            progress_length = n_points
+
+            if m_neg:
+                progress_length *= 2
+
             task = progress.add_task(
                 description="[red]Generating M-N diagram",
-                total=n_points,
+                total=progress_length,
             )
 
             for d_n in d_n_list:
@@ -1007,16 +1018,100 @@ class ConcreteSection:
                 mi_results.m.append(ultimate_results.mv)
                 progress.update(task, advance=1)
 
-            progress.update(
-                task,
-                description="[bold green]:white_check_mark: M-N diagram generated",
-            )
+            if not m_neg:
+                progress.update(
+                    task,
+                    description="[bold green]:white_check_mark: M-N diagram generated",
+                )
 
-        # add tensile load
-        mi_results.n.append(self.gross_properties.tensile_load)
-        mi_results.m.append(0)
+            # add tensile load
+            mi_results.n.append(self.gross_properties.tensile_load)
+            mi_results.m.append(0)
+
+            # if calculating negative bending
+            if m_neg:
+                theta += np.pi
+                # compute extreme tensile fibre
+                _, d_t = utils.calculate_extreme_fibre(
+                    points=self.geometry.points, theta=theta
+                )
+
+                # compute neutral axis depth for pure bending case
+                ultimate_results = self.ultimate_bending_capacity(theta=theta, n=0)
+
+                # generate list of neutral axes
+                d_n_list = np.linspace(
+                    start=d_t, stop=ultimate_results.d_n, num=n_points
+                )
+
+                for d_n in reversed(d_n_list):
+                    ultimate_results = self.calculate_ultimate_section_actions(
+                        d_n=d_n, ultimate_results=ultimate_results
+                    )
+                    mi_results.n.append(ultimate_results.n)
+                    mi_results.m.append(-ultimate_results.mv)
+                    progress.update(task, advance=1)
+
+                progress.update(
+                    task,
+                    description="[bold green]:white_check_mark: M-N diagram generated",
+                )
+
+                # add squash load
+                mi_results.n.append(self.gross_properties.squash_load)
+                mi_results.m.append(0)
 
         return mi_results
+
+    def biaxial_bending_diagram(
+        self,
+        n: float = 0,
+        n_points: int = 48,
+    ) -> res.BiaxialBendingResults:
+        """Generates a biaxial bending diagram given a net axial force `n` and
+        `n_points` calculation points.
+
+        :param float n: Net axial force
+        :param int n_points: Number of calculation points between the decompression
+            case and the pure bending case.
+
+        :return: Biaxial bending results
+        :rtype: :class:`~concreteproperties.results.BiaxialBendingResults`
+        """
+
+        # initialise results
+        bb_results = res.BiaxialBendingResults(n=n)
+
+        # calculate d_theta
+        d_theta = 2*np.pi / n_points
+
+        # generate list of thetas
+        theta_list = np.linspace(start=0, stop=2*np.pi-d_theta, num=n_points)
+
+        # create progress bar
+        with utils.create_known_progress() as progress:
+            task = progress.add_task(
+                description="[red]Generating biaxial bending diagram",
+                total=n_points,
+            )
+
+            # loop through thetas
+            for theta in theta_list:
+                ultimate_results = self.ultimate_bending_capacity(theta=theta, n=n)
+                bb_results.mx.append(ultimate_results.mx)
+                bb_results.my.append(ultimate_results.my)
+                progress.update(task, advance=1)
+
+            # add first result to end of list top
+            bb_results.mx.append(bb_results.mx[0])
+            bb_results.my.append(bb_results.my[0])
+
+            progress.update(
+                task,
+                description="[bold green]:white_check_mark: Biaxial bending diagram generated",
+            )
+
+        return bb_results
 
     def get_c_local(
         self,

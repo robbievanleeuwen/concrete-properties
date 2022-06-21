@@ -61,9 +61,8 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
 - [x] Squash load
 - [x] Tensile load
 - [x] Moment interaction diagrams
-  - [x] Basic M-N curve
-  - [ ] Combined M-N curve (sagging & hogging)
-  - [ ] Biaxial bending curve
+  - [x] M-N curves
+  - [x] Biaxial bending curve
 
 ### Stress Analysis
 - [ ] Uncracked stresses

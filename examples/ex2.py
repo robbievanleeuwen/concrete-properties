@@ -43,13 +43,13 @@ geometry = concrete_rectangular_section(
     b=400,
     d=600,
     dia_top=16,
-    n_top=6,
-    dia_bot=16,
-    n_bot=6,
+    n_top=3,
+    dia_bot=24,
+    n_bot=3,
     n_circle=4,
-    cover=66,
+    cover=30,
     area_top=200,
-    area_bot=200,
+    area_bot=450,
     conc_mat=concrete,
     steel_mat=steel,
 )
@@ -58,7 +58,7 @@ conc_sec = ConcreteSection(geometry)
 
 pprint(conc_sec.gross_properties)
 pprint(conc_sec.get_transformed_gross_properties(elastic_modulus=32.8e3))
-mi_res = conc_sec.moment_interaction_diagram()
+mi_res = conc_sec.moment_interaction_diagram(m_neg=True)
 pprint(mi_res)
 mi_res.plot_diagram()
 cracked_res = conc_sec.calculate_cracked_properties()

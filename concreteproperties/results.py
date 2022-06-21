@@ -184,10 +184,13 @@ class CrackedResults:
 
 @dataclass
 class MomentCurvatureResults:
-    """Class for storing moment curvature results."""
+    """Class for storing moment curvature results.
+
+    :param float theta: Angle the neutral axis makes with the horizontal axis
+    """
 
     # results
-    theta: float = 0
+    theta: float
     kappa: List[float] = field(default_factory=list)
     moment: List[float] = field(default_factory=list)
 
@@ -234,9 +237,12 @@ class MomentCurvatureResults:
 
 @dataclass
 class UltimateBendingResults:
-    """Class for storing ultimate bending results."""
+    """Class for storing ultimate bending results.
 
-    theta: float = 0
+    :param float theta: Angle the neutral axis makes with the horizontal axis
+    """
+
+    theta: float
     d_n: float = 0
     n: float = 0
     mx: float = 0
@@ -327,5 +333,47 @@ class MomentInteractionResults:
             # if there is more than one curve show legend
             if idx > 0:
                 ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+
+        return ax
+
+@dataclass
+class BiaxialBendingResults:
+    """Class for storing biaxial bending results.
+
+    :param float n: Net axial force
+    """
+
+    n: float
+    mx: List[float] = field(default_factory=list)
+    my: List[float] = field(default_factory=list)
+
+    def plot_diagram(
+        self,
+        m_scale: float = 1e-6,
+        **kwargs,
+    ) -> matplotlib.axes._subplots.AxesSubplot:
+        """Plots a biaxial bending diagram.
+
+        :param float m_scale: Scaling factor to apply to bending moment
+        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        """
+
+        # create plot and setup the plot
+        with plotting_context(title=f"Biaxial Bending Diagram, $N = {self.n:.3e}$", **kwargs) as (
+            fig,
+            ax,
+        ):
+            # scale results
+            mx = np.array(self.mx) * m_scale
+            my = np.array(self.my) * m_scale
+
+            ax.plot(mx, my, "o-", markersize=3)
+
+            plt.xlabel("Bending Moment $M_x$")
+            plt.ylabel("Bending Moment $M_y$")
+            plt.grid(True)
 
         return ax

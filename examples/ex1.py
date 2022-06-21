@@ -41,7 +41,7 @@ geometry = concrete_circular_section(
     d=600,
     n=32,
     dia=20,
-    n_bar=6,
+    n_bar=7,
     n_circle=4,
     area_conc=np.pi * 600 * 600 / 4,
     area_bar=310,
@@ -51,6 +51,6 @@ geometry = concrete_circular_section(
 )
 
 conc_sec = ConcreteSection(geometry)
-
 print(conc_sec.ultimate_bending_capacity())
 conc_sec.moment_interaction_diagram().plot_diagram()
+conc_sec.biaxial_bending_diagram(n=4000e3).plot_diagram()
