@@ -289,11 +289,6 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.ConcreteResult.html">
-     concreteproperties.results.ConcreteResult
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
      concreteproperties.results.CrackedResults
     </a>
@@ -514,8 +509,14 @@ reinforced concrete section</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_interaction_diagram</span></code></a></p></td>
 <td><p>Generates a moment interaction diagram given a neutral axis angle <cite>theta</cite> and <cite>n_points</cite> calculation points between the decompression case and the pure bending case.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.plot_section" title="concreteproperties.concrete_section.ConcreteSection.plot_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_section</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.plot_cracked_stress" title="concreteproperties.concrete_section.ConcreteSection.plot_cracked_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_cracked_stress</span></code></a></p></td>
+<td><p>Plots stresses within the reinforced concrete section assuming an cracked section.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.plot_section" title="concreteproperties.concrete_section.ConcreteSection.plot_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_section</span></code></a></p></td>
 <td><p>Plots the reinforced concrete section.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.plot_uncracked_stress" title="concreteproperties.concrete_section.ConcreteSection.plot_uncracked_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_uncracked_stress</span></code></a></p></td>
+<td><p>Plots stresses within the reinforced concrete section assuming an uncracked section.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_normal_force_convergence</span></code></a></p></td>
 <td><p>Given a trial neutral axis depth <cite>d_n</cite> and curvature <cite>kappa</cite>, determines the difference between the net axial force and the desired axial force.</p></td>
@@ -827,13 +828,66 @@ bending case.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.plot_section">
-<span class="sig-name descname"><span class="pre">plot_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Reinforced</span> <span class="pre">Concrete</span> <span class="pre">Section'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.plot_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.plot_section" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Reinforced</span> <span class="pre">Concrete</span> <span class="pre">Section'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.plot_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.plot_section" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots the reinforced concrete section.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot title</p></li>
+<li><p><strong>background</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – If set to True, uses the plot as a background plot</p></li>
 <li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.plot_uncracked_stress">
+<span class="sig-name descname"><span class="pre">plot_uncracked_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Uncracked</span> <span class="pre">Stress'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.plot_uncracked_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.plot_uncracked_stress" title="Permalink to this definition">#</a></dt>
+<dd><p>Plots stresses within the reinforced concrete section assuming an uncracked
+section.</p>
+<p>Uses gross area section properties to determine concrete and steel stresses
+given an axial force <cite>n</cite>, and bending moments <cite>mx</cite> and <cite>my</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Axial force</p></li>
+<li><p><strong>mx</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Bending moment about the x-axis</p></li>
+<li><p><strong>my</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Bending moment about the y-axis</p></li>
+<li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot title</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.plot_cracked_stress">
+<span class="sig-name descname"><span class="pre">plot_cracked_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cracked_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">res.CrackedResults</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Cracked</span> <span class="pre">Stress'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.plot_cracked_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.plot_cracked_stress" title="Permalink to this definition">#</a></dt>
+<dd><p>Plots stresses within the reinforced concrete section assuming an cracked
+section.</p>
+<p>Uses cracked area section properties to determine concrete and steel stresses
+given an axial force <cite>n</cite> and bending moment <cite>m</cite> about the bending axis stored
+in <cite>cracked_results</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cracked_results</strong> (<a class="reference internal" href="concreteproperties.results.CrackedResults.html#concreteproperties.results.CrackedResults" title="concreteproperties.results.CrackedResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrackedResults</span></code></a>) – Cracked results objects</p></li>
+<li><p><strong>n</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Axial force</p></li>
+<li><p><strong>mx</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Bending moment about the x-axis</p></li>
+<li><p><strong>my</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Bending moment about the y-axis</p></li>
+<li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot title</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

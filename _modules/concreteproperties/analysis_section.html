@@ -260,6 +260,42 @@
                 <span class="p">)</span>
             <span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">calculate_stress</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">mx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">my</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">e_a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">cx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">cy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">e_ixx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">e_iyy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">e_ixy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">):</span>
+
+        <span class="c1"># intialise stress results</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">))</span>
+
+        <span class="c1"># loop through nodes</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cx</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cy</span>
+
+            <span class="c1"># axial stress</span>
+            <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">/</span> <span class="n">e_a</span>
+
+            <span class="c1"># bending moment</span>
+            <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="o">-</span><span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">mx</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                <span class="o">+</span> <span class="p">(</span><span class="n">e_iyy</span> <span class="o">*</span> <span class="n">mx</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+            <span class="p">)</span>
+            <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sig</span>
+
 <div class="viewcode-block" id="AnalysisSection.service_stress_analysis"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.service_stress_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">service_stress_analysis</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
@@ -382,7 +418,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mesh_elements</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span>
                 <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
                 <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
             <span class="p">)</span>
 
