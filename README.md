@@ -65,8 +65,8 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
   - [x] Biaxial bending curve
 
 ### Stress Analysis
-- [ ] Uncracked stresses
-- [ ] Cracked stresses
+- [x] Uncracked stresses
+- [x] Cracked stresses
 - [ ] Ultimate stresses
 
 ### Design Codes

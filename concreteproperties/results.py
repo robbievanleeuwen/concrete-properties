@@ -10,8 +10,9 @@ from rich.table import Table
 from concreteproperties.post import plotting_context
 
 if TYPE_CHECKING:
-    from sectionproperties.pre.geometry import Geometry
     import matplotlib
+    from concreteproperties.analysis_section import AnalysisSection
+    from sectionproperties.pre.geometry import Geometry
 
 
 @dataclass
@@ -253,6 +254,8 @@ class CrackedResults:
     e_a_cr: float = 0
     e_qx_cr: float = 0
     e_qy_cr: float = 0
+    cx: float = 0
+    cy: float = 0
     e_ixx_g_cr: float = 0
     e_iyy_g_cr: float = 0
     e_ixy_g_cr: float = 0
@@ -331,6 +334,8 @@ class CrackedResults:
 
         table.add_row("E.Qx_cr", "{:>{fmt}}".format(self.e_qx_cr, fmt=fmt))
         table.add_row("E.Qy_cr", "{:>{fmt}}".format(self.e_qy_cr, fmt=fmt))
+        table.add_row("x-Centroid", "{:>{fmt}}".format(self.cx, fmt=fmt))
+        table.add_row("y-Centroid", "{:>{fmt}}".format(self.cy, fmt=fmt))
 
         if self.ixx_g_cr:
             table.add_row("Ixx_g_cr", "{:>{fmt}}".format(self.ixx_g_cr, fmt=fmt))
@@ -408,13 +413,6 @@ class MomentCurvatureResults:
 
 
 @dataclass
-class ConcreteResult:
-    """x"""
-
-    geometry: Geometry
-
-
-@dataclass
 class UltimateBendingResults:
     """Class for storing ultimate bending results.
 
@@ -432,6 +430,30 @@ class UltimateBendingResults:
     mx: float = None
     my: float = None
     mv: float = None
+
+    def print_results(
+        self,
+        fmt: Optional[str] = "8.6e",
+    ):
+        """Prints the ultimate bending results to the terminal.
+
+        :param fmt: Number format
+        :type fmt: Optional[str]
+        """
+
+        table = Table(title="Ultimate Bending Results")
+        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
+        table.add_column("Value", justify="right", style="green")
+
+        table.add_row("Bending Analge - theta", "{:>{fmt}}".format(self.theta, fmt=fmt))
+        table.add_row("Neutral Axis Depth - d_n", "{:>{fmt}}".format(self.d_n, fmt=fmt))
+        table.add_row("Axial Force", "{:>{fmt}}".format(self.n, fmt=fmt))
+        table.add_row("Bending Capacity - mx", "{:>{fmt}}".format(self.mx, fmt=fmt))
+        table.add_row("Bending Capacity - my", "{:>{fmt}}".format(self.my, fmt=fmt))
+        table.add_row("Bending Capacity - mv", "{:>{fmt}}".format(self.mv, fmt=fmt))
+
+        console = Console()
+        console.print(table)
 
 
 @dataclass

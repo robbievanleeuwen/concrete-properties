@@ -55,11 +55,14 @@ geometry = concrete_rectangular_section(
 )
 
 conc_sec = ConcreteSection(geometry)
+conc_sec.plot_section()
 
 conc_sec.gross_properties.print_results()
 conc_sec.get_transformed_gross_properties(elastic_modulus=32.8e3).print_results()
 cracked_res = conc_sec.calculate_cracked_properties()
 cracked_res.calculate_transformed_properties(elastic_modulus=32.8e3)
 cracked_res.print_results()
+conc_sec.plot_uncracked_stress(mx=80e6, pause=False)
+conc_sec.plot_cracked_stress(cracked_results=cracked_res, m=120e6)
 mi_res = conc_sec.moment_interaction_diagram(m_neg=True)
 mi_res.plot_diagram()

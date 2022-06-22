@@ -68,5 +68,7 @@ geom = concrete_rectangular_section(
 )
 
 conc_sec = ConcreteSection(geom)
+conc_sec.plot_section()
+
 mcr = conc_sec.moment_curvature_diagram()
 mcr.plot_results()

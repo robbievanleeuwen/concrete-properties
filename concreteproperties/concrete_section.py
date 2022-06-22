@@ -5,6 +5,11 @@ import numpy as np
 from scipy.optimize import brentq
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+import matplotlib.tri as tri
+import matplotlib.cm as cm
+from matplotlib.colors import CenteredNorm
+from matplotlib.collections import PatchCollection
+from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
 
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.analysis_section import AnalysisSection
@@ -345,6 +350,10 @@ class ConcreteSection:
                 area * geom.material.elastic_modulus * centroid[0]
             )
 
+        # centroids
+        cracked_results.cx = cracked_results.e_qy_cr / cracked_results.e_a_cr
+        cracked_results.cy = cracked_results.e_qx_cr / cracked_results.e_a_cr
+
         # global second moments of area
         for geom in cracked_results.cracked_geometries:
             # if concrete
@@ -548,7 +557,7 @@ class ConcreteSection:
         :rtype: :class:`~concreteproperties.results.MomentCurvatureResults`
         """
 
-        # initiliase variables
+        # initialise variables
         moment_curvature = res.MomentCurvatureResults(theta=theta)
         iter = 0
 
@@ -1161,12 +1170,15 @@ class ConcreteSection:
     def plot_section(
         self,
         title: Optional[str] = "Reinforced Concrete Section",
+        background: Optional[bool] = False,
         **kwargs,
     ) -> matplotlib.axes._subplots.AxesSubplot:
         """Plots the reinforced concrete section.
 
         :param title: Plot title
         :type title: Optional[str]
+        :param background: If set to True, uses the plot as a background plot
+        :type background: Optional[bool]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
@@ -1189,14 +1201,21 @@ class ConcreteSection:
 
                 # TODO - when shapely implements polygon plotting, fix this up
                 sec = AnalysisSection(geometry=conc_geom)
-                sec.plot_shape(ax=ax)
+
+                if not background:
+                    sec.plot_shape(ax=ax)
 
                 # plot the points and facets
                 for f in conc_geom.facets:
+                    if background:
+                        fmt = "k-"
+                    else:
+                        fmt = "ko-"
+
                     ax.plot(
                         [conc_geom.points[f[0]][0], conc_geom.points[f[1]][0]],
                         [conc_geom.points[f[0]][1], conc_geom.points[f[1]][1]],
-                        "ko-",
+                        fmt,
                         markersize=2,
                         linewidth=1.5,
                     )
@@ -1217,7 +1236,360 @@ class ConcreteSection:
                 )
                 ax.add_patch(bar)
 
-            ax.legend(loc="center left", bbox_to_anchor=(1, 0.5), handles=legend_labels)
+            if not background:
+                ax.legend(
+                    loc="center left", bbox_to_anchor=(1, 0.5), handles=legend_labels
+                )
+
             ax.set_aspect("equal", anchor="C")
 
         return ax
+
+    def plot_uncracked_stress(
+        self,
+        n: Optional[float] = 0,
+        mx: Optional[float] = 0,
+        my: Optional[float] = 0,
+        title: Optional[str] = "Uncracked Stress",
+        **kwargs,
+    ) -> matplotlib.axes._subplots.AxesSubplot:
+        """Plots stresses within the reinforced concrete section assuming an uncracked
+        section.
+
+        Uses gross area section properties to determine concrete and steel stresses
+        given an axial force `n`, and bending moments `mx` and `my`.
+
+        :param n: Axial force
+        :type n: Optional[float]
+        :param mx: Bending moment about the x-axis
+        :type mx: Optional[float]
+        :param my: Bending moment about the y-axis
+        :type my: Optional[float]
+        :param title: Plot title
+        :type title: Optional[str]
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        """
+
+        # initialise stress results for each concrete geometry
+        conc_sigs = []
+        steel_sigs = []
+        analysis_sections = []
+
+        # get uncracked section properties
+        e_a = self.gross_properties.e_a
+        cx = self.gross_properties.cx
+        cy = self.gross_properties.cy
+        e_ixx = self.gross_properties.e_ixx_c
+        e_iyy = self.gross_properties.e_iyy_c
+        e_ixy = self.gross_properties.e_ixy_c
+
+        # loop through all concrete geometries and calculate stress
+        for conc_geom in self.concrete_geometries:
+            analysis_section = AnalysisSection(geometry=conc_geom)
+
+            # calculate stress
+            conc_sigs.append(
+                analysis_section.calculate_stress(
+                    n=n,
+                    mx=mx,
+                    my=my,
+                    e_a=e_a,
+                    cx=cx,
+                    cy=cy,
+                    e_ixx=e_ixx,
+                    e_iyy=e_iyy,
+                    e_ixy=e_ixy,
+                )
+            )
+
+            # save analysis section
+            analysis_sections.append(analysis_section)
+
+        # loop through all steel geometries and calculate stress
+        for steel_geom in self.steel_geometries:
+            # initialise stress and position of bar
+            sig = 0
+            centroid = steel_geom.calculate_centroid()
+            x = centroid[0] - cx
+            y = centroid[1] - cy
+
+            # axial stress
+            sig += n * steel_geom.material.elastic_modulus / e_a
+
+            # bending moment
+            sig += steel_geom.material.elastic_modulus * (
+                -(e_ixy * mx) / (e_ixx * e_iyy - e_ixy**2) * x
+                + (e_iyy * mx) / (e_ixx * e_iyy - e_ixy**2) * y
+            )
+            sig += steel_geom.material.elastic_modulus * (
+                +(e_ixx * my) / (e_ixx * e_iyy - e_ixy**2) * x
+                - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
+            )
+
+            steel_sigs.append(sig)
+
+        # set up the colormaps
+        cmap_conc = cm.get_cmap(name="RdGy")
+        cmap_steel = cm.get_cmap(name="bwr")
+
+        # determine minimum and maximum stress values for the contour list
+        conc_sig_min = min([min(x) for x in conc_sigs])
+        conc_sig_max = max([max(x) for x in conc_sigs])
+        steel_sig_min = min(steel_sigs)
+        steel_sig_max = max(steel_sigs)
+
+        # set up ticks
+        v_conc = np.linspace(conc_sig_min, conc_sig_max, 15, endpoint=True)
+        v_steel = np.linspace(steel_sig_min, steel_sig_max, 15, endpoint=True)
+
+        if np.isclose(v_conc[0], v_conc[-1], atol=1e-12):
+            v_conc = 15
+            ticks_conc = None
+        else:
+            ticks_conc = v_conc
+
+        if np.isclose(v_steel[0], v_steel[-1], atol=1e-12):
+            v_steel = 15
+            ticks_steel = None
+        else:
+            ticks_steel = v_steel
+
+        # create plot and setup the plot
+        with plotting_context(
+            title=title,
+            **dict(
+                kwargs, nrows=1, ncols=3, gridspec_kw={"width_ratios": [1, 0.08, 0.08]}
+            ),
+        ) as (fig, ax):
+            # plot background
+            self.plot_section(background=True, **dict(kwargs, ax=fig.axes[0]))
+
+            # plot the concrete stresses
+            for idx, sig in enumerate(conc_sigs):
+                # create triangulation
+                triang = tri.Triangulation(
+                    analysis_sections[idx].mesh_nodes[:, 0],
+                    analysis_sections[idx].mesh_nodes[:, 1],
+                    analysis_sections[idx].mesh_elements[:, 0:3],
+                )
+
+                # plot the filled contour
+                trictr = fig.axes[0].tricontourf(
+                    triang, sig, v_conc, cmap=cmap_conc, norm=CenteredNorm()
+                )
+
+            # plot the steel stresses
+            steel_patches = []
+            colours = []
+
+            for idx, sig in enumerate(steel_sigs):
+                steel_patches.append(
+                    mpatches.Polygon(
+                        xy=list(self.steel_geometries[idx].geom.exterior.coords)
+                    )
+                )
+                colours.append(sig)
+
+            patch = PatchCollection(steel_patches, cmap=cmap_steel)
+            patch.set_array(colours)
+            fig.axes[0].add_collection(patch)
+
+            # add the colour bars
+            fig.colorbar(
+                trictr,
+                label="Concrete Stress",
+                format="%.2e",
+                ticks=ticks_conc,
+                cax=fig.axes[1],
+            )
+            fig.colorbar(
+                patch,
+                label="Steel Stress",
+                format="%.2e",
+                ticks=ticks_steel,
+                cax=fig.axes[2],
+            )
+
+            ax.set_aspect("equal", anchor="C")
+
+        return ax
+
+    def plot_cracked_stress(
+        self,
+        cracked_results: res.CrackedResults,
+        n: Optional[float] = 0,
+        m: Optional[float] = 0,
+        title: Optional[str] = "Cracked Stress",
+        **kwargs,
+    ) -> matplotlib.axes._subplots.AxesSubplot:
+        """Plots stresses within the reinforced concrete section assuming an cracked
+        section.
+
+        Uses cracked area section properties to determine concrete and steel stresses
+        given an axial force `n` and bending moment `m` about the bending axis stored
+        in `cracked_results`.
+
+        :param cracked_results: Cracked results objects
+        :type cracked_results: :class:`~concreteproperties.results.CrackedResults`
+        :param n: Axial force
+        :type n: Optional[float]
+        :param mx: Bending moment about the x-axis
+        :type mx: Optional[float]
+        :param my: Bending moment about the y-axis
+        :type my: Optional[float]
+        :param title: Plot title
+        :type title: Optional[str]
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        """
+
+        # initialise stress results for each concrete geometry
+        conc_sigs = []
+        steel_sigs = []
+        analysis_sections = []
+
+        # get cracked section properties
+        e_a = cracked_results.e_a_cr
+        cx = cracked_results.cx
+        cy = cracked_results.cy
+        e_ixx = cracked_results.e_ixx_c_cr
+        e_iyy = cracked_results.e_iyy_c_cr
+        e_ixy = cracked_results.e_ixy_c_cr
+
+        # calculate moment about bending angle theta
+        theta = cracked_results.theta
+        mx = m * np.cos(theta)
+        my = -m * np.sin(theta)
+
+        # loop through all concrete geometries and calculate stress
+        for geom in cracked_results.cracked_geometries:
+            if isinstance(geom.material, Concrete):
+                analysis_section = AnalysisSection(geometry=geom)
+
+                # calculate stress
+                conc_sigs.append(
+                    analysis_section.calculate_stress(
+                        n=n,
+                        mx=mx,
+                        my=my,
+                        e_a=e_a,
+                        cx=cx,
+                        cy=cy,
+                        e_ixx=e_ixx,
+                        e_iyy=e_iyy,
+                        e_ixy=e_ixy,
+                    )
+                )
+
+            # save analysis section
+            analysis_sections.append(analysis_section)
+
+        # loop through all steel geometries and calculate stress
+        for steel_geom in self.steel_geometries:
+            # initialise stress and position of bar
+            sig = 0
+            centroid = steel_geom.calculate_centroid()
+            x = centroid[0] - cx
+            y = centroid[1] - cy
+
+            # axial stress
+            sig += n * steel_geom.material.elastic_modulus / e_a
+
+            # bending moment
+            sig += steel_geom.material.elastic_modulus * (
+                -(e_ixy * mx) / (e_ixx * e_iyy - e_ixy**2) * x
+                + (e_iyy * mx) / (e_ixx * e_iyy - e_ixy**2) * y
+            )
+            sig += steel_geom.material.elastic_modulus * (
+                +(e_ixx * my) / (e_ixx * e_iyy - e_ixy**2) * x
+                - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
+            )
+
+            steel_sigs.append(sig)
+
+        # set up the colormaps
+        cmap_conc = cm.get_cmap(name="RdGy")
+        cmap_steel = cm.get_cmap(name="bwr")
+
+        # determine minimum and maximum stress values for the contour list
+        conc_sig_min = min([min(x) for x in conc_sigs])
+        conc_sig_max = max([max(x) for x in conc_sigs])
+        steel_sig_min = min(steel_sigs)
+        steel_sig_max = max(steel_sigs)
+
+        # set up ticks
+        v_conc = np.linspace(conc_sig_min, conc_sig_max, 15, endpoint=True)
+        v_steel = np.linspace(steel_sig_min, steel_sig_max, 15, endpoint=True)
+
+        if np.isclose(v_conc[0], v_conc[-1], atol=1e-12):
+            v_conc = 15
+            ticks_conc = None
+        else:
+            ticks_conc = v_conc
+
+        if np.isclose(v_steel[0], v_steel[-1], atol=1e-12):
+            v_steel = 15
+            ticks_steel = None
+        else:
+            ticks_steel = v_steel
+
+        # create plot and setup the plot
+        with plotting_context(
+            title=title,
+            **dict(
+                kwargs, nrows=1, ncols=3, gridspec_kw={"width_ratios": [1, 0.08, 0.08]}
+            ),
+        ) as (fig, ax):
+            # plot background
+            self.plot_section(background=True, **dict(kwargs, ax=fig.axes[0]))
+
+            # plot the concrete stresses
+            for idx, sig in enumerate(conc_sigs):
+                # create triangulation
+                triang = tri.Triangulation(
+                    analysis_sections[idx].mesh_nodes[:, 0],
+                    analysis_sections[idx].mesh_nodes[:, 1],
+                    analysis_sections[idx].mesh_elements[:, 0:3],
+                )
+
+                # plot the filled contour
+                trictr = fig.axes[0].tricontourf(
+                    triang, sig, v_conc, cmap=cmap_conc, norm=CenteredNorm()
+                )
+
+            # plot the steel stresses
+            steel_patches = []
+            colours = []
+
+            for idx, sig in enumerate(steel_sigs):
+                steel_patches.append(
+                    mpatches.Polygon(
+                        xy=list(self.steel_geometries[idx].geom.exterior.coords)
+                    )
+                )
+                colours.append(sig)
+
+            patch = PatchCollection(steel_patches, cmap=cmap_steel)
+            patch.set_array(colours)
+            fig.axes[0].add_collection(patch)
+
+            # add the colour bars
+            fig.colorbar(
+                trictr,
+                label="Concrete Stress",
+                format="%.2e",
+                ticks=ticks_conc,
+                cax=fig.axes[1],
+            )
+            fig.colorbar(
+                patch,
+                label="Steel Stress",
+                format="%.2e",
+                ticks=ticks_steel,
+                cax=fig.axes[2],
+            )
+
+            ax.set_aspect("equal", anchor="C")

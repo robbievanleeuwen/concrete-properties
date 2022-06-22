@@ -72,6 +72,42 @@ class AnalysisSection:
                 )
             )
 
+    def calculate_stress(
+        self,
+        n: float,
+        mx: float,
+        my: float,
+        e_a: float,
+        cx: float,
+        cy: float,
+        e_ixx: float,
+        e_iyy: float,
+        e_ixy: float,
+    ):
+
+        # intialise stress results
+        sig = np.zeros(len(self.mesh_nodes))
+
+        # loop through nodes
+        for idx, node in enumerate(self.mesh_nodes):
+            x = node[0] - cx
+            y = node[1] - cy
+
+            # axial stress
+            sig[idx] += n * self.geometry.material.elastic_modulus / e_a
+
+            # bending moment
+            sig[idx] += self.geometry.material.elastic_modulus * (
+                -(e_ixy * mx) / (e_ixx * e_iyy - e_ixy**2) * x
+                + (e_iyy * mx) / (e_ixx * e_iyy - e_ixy**2) * y
+            )
+            sig[idx] += self.geometry.material.elastic_modulus * (
+                +(e_ixx * my) / (e_ixx * e_iyy - e_ixy**2) * x
+                - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
+            )
+
+        return sig
+
     def service_stress_analysis(
         self,
         point_na: Tuple[float],
@@ -194,7 +230,7 @@ class AnalysisSection:
                 self.mesh_nodes[:, 1],
                 self.mesh_elements[:, 0:3],
                 lw=0.5,
-                colour="black",
+                color="black",
                 alpha=alpha,
             )
 
