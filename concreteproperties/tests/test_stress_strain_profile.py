@@ -12,8 +12,8 @@ def test_whitney():
     assert pytest.approx(profile.get_stress(-0.001)) == 0
     assert pytest.approx(profile.get_stress(-0.003)) == 0
     assert pytest.approx(profile.get_stress(-0.1)) == 0
-    assert pytest.approx(profile.get_stress(0.00069)) == 0
-    assert pytest.approx(profile.get_stress(0.0007)) == 0.85 * 40
+    assert pytest.approx(profile.get_stress(0.00068999)) == 0
+    assert pytest.approx(profile.get_stress(0.00069)) == 0.85 * 40
     assert pytest.approx(profile.get_stress(0.001)) == 0.85 * 40
 
 
@@ -23,6 +23,9 @@ def test_piecewise_linear():
 
     with pytest.raises(ValueError):
         profile = StressStrainProfile([-1, 0, 1], [0, 2])
+
+    with pytest.raises(ValueError):
+        profile = StressStrainProfile([-1, 0, 0, 1], [0, 2, 3, 4])
 
     with pytest.raises(ValueError):
         profile = StressStrainProfile([0, 1, 0.5], [0, 3, 5])

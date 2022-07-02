@@ -7,9 +7,10 @@ from rich.table import Column
 from rich.text import Text
 
 from sectionproperties.analysis.fea import principal_coordinate, global_coordinate
+from sectionproperties.pre.geometry import CompoundGeometry
 
 if TYPE_CHECKING:
-    from sectionproperties.pre.geometry import Geometry, CompoundGeometry
+    from sectionproperties.pre.geometry import Geometry
 
 
 def get_service_strain(
@@ -109,6 +110,75 @@ def point_on_neutral_axis(
 
     # convert point back to global coordinates
     return global_coordinate(phi=theta * 180 / np.pi, x11=u, y22=v)
+
+
+def split_section_at_strains(
+    concrete_geometries: List[Geometry],
+    theta: float,
+    point_na: Tuple[float],
+    ultimate: bool,
+    ultimate_strain: float = None,
+    d_n: float = None,
+    kappa: float = None,
+) -> List[Geometry]:
+    """Splits concrete geometries at discontinuities in its stress-strain profile.
+
+    :param concrete_geometries: List of concrete geometries
+    :type concrete_geometries: List[Geometry]
+    :param float theta: Angle the neutral axis makes with the horizontal axis
+    :param point_na: Point on the neutral axis
+    :type point_na: Tuple[float]
+    :param bool ultimate: If set to True, uses ultimate stress-strain profile
+    :param float ultimate_strain: Strain at the extreme compression fibre
+    :param float d_n: Depth of the neutral axis from the extreme compression fibre
+    :param float kappa: Curvature
+
+    :return: List of split geometries
+    :rtype: List[:class:`sectionproperties.pre.geometry.Geometry`]
+    """
+
+    # create splits in concrete geometries at points in stress strain profiles
+    concrete_split_geoms = []
+
+    for conc_geom in concrete_geometries:
+        if ultimate:
+            strains = (
+                conc_geom.material.ultimate_stress_strain_profile.get_unique_strains()
+            )
+        else:
+            strains = conc_geom.material.stress_strain_profile.get_unique_strains()
+
+        # loop through intermediate points on stress strain profile
+        for idx, strain in enumerate(strains[1:-1]):
+            # depth to point with `strain` from NA
+            if ultimate:
+                d = strain / ultimate_strain * d_n
+            else:
+                d = strain / kappa
+
+            # convert depth to global coordinates
+            dx, dy = global_coordinate(phi=theta * 180 / np.pi, x11=0, y22=d)
+
+            # calculate location of point with `strain`
+            pt = point_na[0] + dx, point_na[1] + dy
+
+            # split concrete geometry (from bottom up)
+            top_geoms, bot_geoms = split_section(
+                geometry=conc_geom,
+                point=pt,
+                theta=theta,
+            )
+
+            # save bottom geoms
+            concrete_split_geoms.extend(bot_geoms)
+
+            # continue to split top geoms
+            conc_geom = CompoundGeometry(geoms=top_geoms)
+
+        # save final top geoms
+        concrete_split_geoms.extend(top_geoms)
+
+    return concrete_split_geoms
 
 
 def split_section(

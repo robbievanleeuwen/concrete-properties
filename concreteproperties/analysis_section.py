@@ -72,7 +72,7 @@ class AnalysisSection:
                 )
             )
 
-    def calculate_stress(
+    def get_elastic_stress(
         self,
         n: float,
         mx: float,
@@ -83,7 +83,22 @@ class AnalysisSection:
         e_ixx: float,
         e_iyy: float,
         e_ixy: float,
-    ):
+    ) -> np.ndarray:
+        """Given section actions and section propreties, calculates elastic stresses.
+
+        :param float n: Axial force
+        :param float mx: Bending moment about the x-axis
+        :param float my: Bending moment about the y-axis
+        :param float e_a: Axial rigidity
+        :param float cx: x-Centroid
+        :param float cy: y-Centroid
+        :param float e_ixx: Flexural rigidity about the x-axis
+        :param float e_iyy: Flexural rigidity about the y-axis
+        :param float e_ixy: Flexural rigidity about the xy-axis
+
+        :return: Elastic stresses
+        :rtype: :class:`numpy.ndarray`
+        """
 
         # intialise stress results
         sig = np.zeros(len(self.mesh_nodes))
@@ -116,7 +131,7 @@ class AnalysisSection:
         kappa: float,
         na_local: float,
     ) -> Tuple[float]:
-        """Performs an ultimate stress analysis on the section.
+        """Performs a service stress analysis on the section.
 
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
@@ -146,6 +161,46 @@ class AnalysisSection:
             mv += el_mv
 
         return n, mv
+
+    def get_service_stress(
+        self,
+        d_n: float,
+        kappa: float,
+        point_na: Tuple[float],
+        theta: float,
+    ) -> np.ndarray:
+        """Given the neutral axis depth `d_n` and curvature `kappa` determines the
+        service stresses within the section.
+
+        :param float d_n: Neutral axis depth
+        :param float kappa: Curvature
+        :param point_na: Point on the neutral axis
+        :type point_na: Tuple[float]
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+
+        :return: Service stresses
+        :rtype: :class:`numpy.ndarray`
+        """
+
+        # intialise stress results
+        sig = np.zeros(len(self.mesh_nodes))
+
+        # loop through nodes
+        for idx, node in enumerate(self.mesh_nodes):
+            # get strain at node
+            strain = utils.get_service_strain(
+                point=(node[0], node[1]),
+                point_na=point_na,
+                theta=theta,
+                kappa=kappa,
+            )
+
+            # get stress at gauss point
+            sig[idx] = self.geometry.material.stress_strain_profile.get_stress(
+                strain=strain
+            )
+
+        return sig
 
     def ultimate_stress_analysis(
         self,
@@ -185,6 +240,47 @@ class AnalysisSection:
             mv += el_mv
 
         return n, mv
+
+    def get_ultimate_stress(
+        self,
+        d_n: float,
+        point_na: Tuple[float],
+        theta: float,
+        ultimate_strain: float,
+    ) -> np.ndarray:
+        """Given the neutral axis depth `d_n` and ultimate strain, determines the
+        ultimate stresses with the section.
+
+        :param float d_n: Neutral axis depth
+        :param point_na: Point on the neutral axis
+        :type point_na: Tuple[float]
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float ultimate_strain: Strain at the extreme compression fibre
+
+        :return: Ultimate stresses
+        :rtype: :class:`numpy.ndarray`
+        """
+
+        # intialise stress results
+        sig = np.zeros(len(self.mesh_nodes))
+
+        # loop through nodes
+        for idx, node in enumerate(self.mesh_nodes):
+            # get strain at node
+            strain = utils.get_ultimate_strain(
+                point=(node[0], node[1]),
+                point_na=point_na,
+                d_n=d_n,
+                theta=theta,
+                ultimate_strain=ultimate_strain,
+            )
+
+            # get stress at gauss point
+            sig[idx] = self.geometry.material.ultimate_stress_strain_profile.get_stress(
+                strain=strain
+            )
+
+        return sig
 
     def plot_mesh(
         self,
@@ -338,7 +434,7 @@ class Tri3:
         kappa: float,
         na_local: float,
     ) -> Tuple[float]:
-        """Calculates ultimate actions for the current finite element.
+        """Calculates service actions for the current finite element.
 
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]

@@ -47,7 +47,7 @@ class StressStrainProfile:
 
         for idx in range(len(strains)):
             if idx != 0:
-                if strains[idx] < prev_strain:
+                if strains[idx] <= prev_strain:
                     msg = "strains must contain increasing values."
                     raise ValueError(msg)
 
@@ -251,7 +251,7 @@ class WhitneyStressBlock(StressStrainProfile):
         super().__init__(
             strains=[
                 0,
-                ultimate_strain * (1 - gamma),
+                ultimate_strain * (1 - gamma) - 1e-12,
                 ultimate_strain * (1 - gamma),
                 ultimate_strain,
             ],

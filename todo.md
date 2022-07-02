@@ -1,5 +1,6 @@
-- [ ] Obtain ultimate stresses (using d_n to work out strains at nodes, then get stress)
-- [ ] Do the same thing for service stresses
+- [x] Obtain ultimate stresses (using d_n to work out strains at nodes, then get stress)
+- [x] Do the same thing for service stresses
+- [x] Stress plot - add tricontour for zero stress only?
 - [ ] Is there a neat way to display ultimate forces?
 - [ ] Clean up profiles - maybe require that certain profiles may only be used for each material?
 - [ ] Documentation!

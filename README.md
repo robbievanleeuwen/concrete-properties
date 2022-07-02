@@ -67,7 +67,8 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
 ### Stress Analysis
 - [x] Uncracked stresses
 - [x] Cracked stresses
-- [ ] Ultimate stresses
+- [x] Service stresses
+- [x] Ultimate stresses
 
 ### Design Codes
 - [ ] Design code modules

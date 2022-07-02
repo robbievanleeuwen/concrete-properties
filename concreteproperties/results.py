@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from typing import List, Optional, TYPE_CHECKING
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.interpolate import interp1d
 from rich.console import Console
 from rich.table import Table
 
@@ -410,6 +411,29 @@ class MomentCurvatureResults:
             plt.grid(True)
 
         return ax
+
+    def get_curvature(
+        self,
+        moment: float,
+    ) -> float:
+        """Given a moment, uses the moment-curvature results to interpolate a curvature.
+
+        Raises a ValueError if supplied moment is outside bounds of moment-curvature
+        results.
+
+        :param float moment: Bending moment at which to obtain curvature
+
+        :return: Curvature
+        :rtype: float
+        """
+
+        f_kappa = interp1d(
+            x=self.moment,
+            y=self.kappa,
+            kind="linear",
+        )
+
+        return f_kappa(moment)
 
 
 @dataclass
