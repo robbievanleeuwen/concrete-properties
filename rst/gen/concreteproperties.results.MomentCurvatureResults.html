@@ -326,6 +326,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.post.plot_stress.html">
+     concreteproperties.post.plot_stress
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.post.plotting_context.html">
      concreteproperties.post.plotting_context
     </a>
@@ -395,6 +400,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.utils.split_section.html">
      concreteproperties.utils.split_section
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.utils.split_section_at_strains.html">
+     concreteproperties.utils.split_section_at_strains
     </a>
    </li>
    <li class="toctree-l2">
@@ -468,7 +478,10 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.results.MomentCurvatureResults.plot_results" title="concreteproperties.results.MomentCurvatureResults.plot_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_results</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.results.MomentCurvatureResults.get_curvature" title="concreteproperties.results.MomentCurvatureResults.get_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_curvature</span></code></a></p></td>
+<td><p>Given a moment, uses the moment-curvature results to interpolate a curvature.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.results.MomentCurvatureResults.plot_results" title="concreteproperties.results.MomentCurvatureResults.plot_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_results</span></code></a></p></td>
 <td><p>Plots the moment curvature results.</p></td>
 </tr>
 </tbody>
@@ -507,6 +520,25 @@
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.results.MomentCurvatureResults.get_curvature">
+<span class="sig-name descname"><span class="pre">get_curvature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults.get_curvature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults.get_curvature" title="Permalink to this definition">#</a></dt>
+<dd><p>Given a moment, uses the moment-curvature results to interpolate a curvature.</p>
+<p>Raises a ValueError if supplied moment is outside bounds of moment-curvature
+results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>moment</strong> (<em>float</em>) – Bending moment at which to obtain curvature</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Curvature</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>

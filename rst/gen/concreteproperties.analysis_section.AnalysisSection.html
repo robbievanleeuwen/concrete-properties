@@ -326,6 +326,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.post.plot_stress.html">
+     concreteproperties.post.plot_stress
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.post.plotting_context.html">
      concreteproperties.post.plotting_context
     </a>
@@ -395,6 +400,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.utils.split_section.html">
      concreteproperties.utils.split_section
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.utils.split_section_at_strains.html">
+     concreteproperties.utils.split_section_at_strains
     </a>
    </li>
    <li class="toctree-l2">
@@ -469,8 +479,14 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_stress</span></code></p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.get_elastic_stress" title="concreteproperties.analysis_section.AnalysisSection.get_elastic_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_elastic_stress</span></code></a></p></td>
+<td><p>Given section actions and section propreties, calculates elastic stresses.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.get_service_stress" title="concreteproperties.analysis_section.AnalysisSection.get_service_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_service_stress</span></code></a></p></td>
+<td><p>Given the neutral axis depth <cite>d_n</cite> and curvature <cite>kappa</cite> determines the service stresses within the section.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress" title="concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_stress</span></code></a></p></td>
+<td><p>Given the neutral axis depth <cite>d_n</cite> and ultimate strain, determines the ultimate stresses with the section.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.plot_mesh" title="concreteproperties.analysis_section.AnalysisSection.plot_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_mesh</span></code></a></p></td>
 <td><p>Plots the finite element mesh.</p></td>
@@ -479,7 +495,7 @@
 <td><p>Plots the coloured shape of the mesh with no outlines on <cite>ax</cite>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.service_stress_analysis" title="concreteproperties.analysis_section.AnalysisSection.service_stress_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_stress_analysis</span></code></a></p></td>
-<td><p>Performs an ultimate stress analysis on the section.</p></td>
+<td><p>Performs a service stress analysis on the section.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.ultimate_stress_analysis" title="concreteproperties.analysis_section.AnalysisSection.ultimate_stress_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_stress_analysis</span></code></a></p></td>
 <td><p>Performs an ultimate stress analysis on the section.</p></td>
@@ -487,9 +503,36 @@
 </tbody>
 </table>
 <dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection.get_elastic_stress">
+<span class="sig-name descname"><span class="pre">get_elastic_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_ixx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_iyy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_ixy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.get_elastic_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.get_elastic_stress" title="Permalink to this definition">#</a></dt>
+<dd><p>Given section actions and section propreties, calculates elastic stresses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>float</em>) – Axial force</p></li>
+<li><p><strong>mx</strong> (<em>float</em>) – Bending moment about the x-axis</p></li>
+<li><p><strong>my</strong> (<em>float</em>) – Bending moment about the y-axis</p></li>
+<li><p><strong>e_a</strong> (<em>float</em>) – Axial rigidity</p></li>
+<li><p><strong>cx</strong> (<em>float</em>) – x-Centroid</p></li>
+<li><p><strong>cy</strong> (<em>float</em>) – y-Centroid</p></li>
+<li><p><strong>e_ixx</strong> (<em>float</em>) – Flexural rigidity about the x-axis</p></li>
+<li><p><strong>e_iyy</strong> (<em>float</em>) – Flexural rigidity about the y-axis</p></li>
+<li><p><strong>e_ixy</strong> (<em>float</em>) – Flexural rigidity about the xy-axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Elastic stresses</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection.service_stress_analysis">
 <span class="sig-name descname"><span class="pre">service_stress_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">na_local</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.service_stress_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.service_stress_analysis" title="Permalink to this definition">#</a></dt>
-<dd><p>Performs an ultimate stress analysis on the section.</p>
+<dd><p>Performs a service stress analysis on the section.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -505,6 +548,29 @@
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Tuple[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection.get_service_stress">
+<span class="sig-name descname"><span class="pre">get_service_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.get_service_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.get_service_stress" title="Permalink to this definition">#</a></dt>
+<dd><p>Given the neutral axis depth <cite>d_n</cite> and curvature <cite>kappa</cite> determines the
+service stresses within the section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_n</strong> (<em>float</em>) – Neutral axis depth</p></li>
+<li><p><strong>kappa</strong> (<em>float</em>) – Curvature</p></li>
+<li><p><strong>point_na</strong> (<em>Tuple</em><em>[</em><em>float</em><em>]</em>) – Point on the neutral axis</p></li>
+<li><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Service stresses</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -528,6 +594,29 @@
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Tuple[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress">
+<span class="sig-name descname"><span class="pre">get_ultimate_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.get_ultimate_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress" title="Permalink to this definition">#</a></dt>
+<dd><p>Given the neutral axis depth <cite>d_n</cite> and ultimate strain, determines the
+ultimate stresses with the section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_n</strong> (<em>float</em>) – Neutral axis depth</p></li>
+<li><p><strong>point_na</strong> (<em>Tuple</em><em>[</em><em>float</em><em>]</em>) – Point on the neutral axis</p></li>
+<li><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p></li>
+<li><p><strong>ultimate_strain</strong> (<em>float</em>) – Strain at the extreme compression fibre</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Ultimate stresses</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>

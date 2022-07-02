@@ -260,7 +260,7 @@
                 <span class="p">)</span>
             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">calculate_stress</span><span class="p">(</span>
+<div class="viewcode-block" id="AnalysisSection.get_elastic_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.get_elastic_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_elastic_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">mx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -271,7 +271,22 @@
         <span class="n">e_ixx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">e_iyy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">e_ixy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Given section actions and section propreties, calculates elastic stresses.</span>
+
+<span class="sd">        :param float n: Axial force</span>
+<span class="sd">        :param float mx: Bending moment about the x-axis</span>
+<span class="sd">        :param float my: Bending moment about the y-axis</span>
+<span class="sd">        :param float e_a: Axial rigidity</span>
+<span class="sd">        :param float cx: x-Centroid</span>
+<span class="sd">        :param float cy: y-Centroid</span>
+<span class="sd">        :param float e_ixx: Flexural rigidity about the x-axis</span>
+<span class="sd">        :param float e_iyy: Flexural rigidity about the y-axis</span>
+<span class="sd">        :param float e_ixy: Flexural rigidity about the xy-axis</span>
+
+<span class="sd">        :return: Elastic stresses</span>
+<span class="sd">        :rtype: :class:`numpy.ndarray`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># intialise stress results</span>
         <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">))</span>
@@ -294,7 +309,7 @@
                 <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
             <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">sig</span>
+        <span class="k">return</span> <span class="n">sig</span></div>
 
 <div class="viewcode-block" id="AnalysisSection.service_stress_analysis"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.service_stress_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">service_stress_analysis</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -304,7 +319,7 @@
         <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">na_local</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Performs an ultimate stress analysis on the section.</span>
+        <span class="sd">&quot;&quot;&quot;Performs a service stress analysis on the section.</span>
 
 <span class="sd">        :param point_na: Point on the neutral axis</span>
 <span class="sd">        :type point_na: Tuple[float]</span>
@@ -334,6 +349,46 @@
             <span class="n">mv</span> <span class="o">+=</span> <span class="n">el_mv</span>
 
         <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">mv</span></div>
+
+<div class="viewcode-block" id="AnalysisSection.get_service_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.get_service_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_service_stress</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Given the neutral axis depth `d_n` and curvature `kappa` determines the</span>
+<span class="sd">        service stresses within the section.</span>
+
+<span class="sd">        :param float d_n: Neutral axis depth</span>
+<span class="sd">        :param float kappa: Curvature</span>
+<span class="sd">        :param point_na: Point on the neutral axis</span>
+<span class="sd">        :type point_na: Tuple[float]</span>
+<span class="sd">        :param float theta: Angle the neutral axis makes with the horizontal axis</span>
+
+<span class="sd">        :return: Service stresses</span>
+<span class="sd">        :rtype: :class:`numpy.ndarray`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># intialise stress results</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">))</span>
+
+        <span class="c1"># loop through nodes</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">):</span>
+            <span class="c1"># get strain at node</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_service_strain</span><span class="p">(</span>
+                <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># get stress at gauss point</span>
+            <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span>
+                <span class="n">strain</span><span class="o">=</span><span class="n">strain</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sig</span></div>
 
 <div class="viewcode-block" id="AnalysisSection.ultimate_stress_analysis"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.ultimate_stress_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_stress_analysis</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -373,6 +428,47 @@
             <span class="n">mv</span> <span class="o">+=</span> <span class="n">el_mv</span>
 
         <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">mv</span></div>
+
+<div class="viewcode-block" id="AnalysisSection.get_ultimate_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_ultimate_stress</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Given the neutral axis depth `d_n` and ultimate strain, determines the</span>
+<span class="sd">        ultimate stresses with the section.</span>
+
+<span class="sd">        :param float d_n: Neutral axis depth</span>
+<span class="sd">        :param point_na: Point on the neutral axis</span>
+<span class="sd">        :type point_na: Tuple[float]</span>
+<span class="sd">        :param float theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">        :param float ultimate_strain: Strain at the extreme compression fibre</span>
+
+<span class="sd">        :return: Ultimate stresses</span>
+<span class="sd">        :rtype: :class:`numpy.ndarray`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># intialise stress results</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">))</span>
+
+        <span class="c1"># loop through nodes</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">):</span>
+            <span class="c1"># get strain at node</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(</span>
+                <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">ultimate_strain</span><span class="o">=</span><span class="n">ultimate_strain</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># get stress at gauss point</span>
+            <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span>
+                <span class="n">strain</span><span class="o">=</span><span class="n">strain</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sig</span></div>
 
 <div class="viewcode-block" id="AnalysisSection.plot_mesh"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.plot_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">plot_mesh</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -526,7 +622,7 @@
         <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">na_local</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Calculates ultimate actions for the current finite element.</span>
+        <span class="sd">&quot;&quot;&quot;Calculates service actions for the current finite element.</span>
 
 <span class="sd">        :param point_na: Point on the neutral axis</span>
 <span class="sd">        :type point_na: Tuple[float]</span>
