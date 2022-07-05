@@ -120,6 +120,7 @@ def split_section_at_strains(
     ultimate_strain: float = None,
     d_n: float = None,
     kappa: float = None,
+    top_only: bool = False,
 ) -> List[Geometry]:
     """Splits concrete geometries at discontinuities in its stress-strain profile.
 
@@ -132,6 +133,7 @@ def split_section_at_strains(
     :param float ultimate_strain: Strain at the extreme compression fibre
     :param float d_n: Depth of the neutral axis from the extreme compression fibre
     :param float kappa: Curvature
+    :param bool top_only: If set to True, only returns the top geometries
 
     :return: List of split geometries
     :rtype: List[:class:`sectionproperties.pre.geometry.Geometry`]
@@ -178,7 +180,10 @@ def split_section_at_strains(
         # save final top geoms
         concrete_split_geoms.extend(top_geoms)
 
-    return concrete_split_geoms
+    if top_only:
+        return top_geoms
+    else:
+        return concrete_split_geoms
 
 
 def split_section(
@@ -201,7 +206,7 @@ def split_section(
 
     # split the section using the sectionproperties method
     top_geoms, bot_geoms = geometry.split_section(
-        point_i=point, vector=(np.cos(theta), np.sin(theta))
+        point_i=np.round(point, 8), vector=(np.cos(theta), np.sin(theta))
     )
 
     # ensure top geoms is in compression

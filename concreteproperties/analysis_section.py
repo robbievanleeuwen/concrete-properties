@@ -46,7 +46,11 @@ class AnalysisSection:
 
         # extract mesh data
         self.mesh_nodes = np.array(self.mesh["vertices"], dtype=np.dtype(float))
-        self.mesh_elements = np.array(self.mesh["triangles"], dtype=np.dtype(int))
+        try:
+            self.mesh_elements = np.array(self.mesh["triangles"], dtype=np.dtype(int))
+        except KeyError:
+            # if there are no triangles
+            self.mesh_elements = []
 
         # build elements
         self.elements = []
@@ -83,7 +87,8 @@ class AnalysisSection:
         e_ixx: float,
         e_iyy: float,
         e_ixy: float,
-    ) -> np.ndarray:
+        theta: float,
+    ) -> Tuple[np.ndarray, float, float]:
         """Given section actions and section propreties, calculates elastic stresses.
 
         :param float n: Axial force
@@ -95,9 +100,11 @@ class AnalysisSection:
         :param float e_ixx: Flexural rigidity about the x-axis
         :param float e_iyy: Flexural rigidity about the y-axis
         :param float e_ixy: Flexural rigidity about the xy-axis
+        :param float theta: Angle the neutral axis makes with the horizontal axis
 
-        :return: Elastic stresses
-        :rtype: :class:`numpy.ndarray`
+        :return: Elastic stresses, net force and distance from neutral axis to point of
+            force action
+        :rtype: Tuple[np.ndarray, float, float]
         """
 
         # intialise stress results
@@ -121,7 +128,34 @@ class AnalysisSection:
                 - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
             )
 
-        return sig
+        # initialise section actions
+        n_conc = 0
+        mv = 0
+
+        for el in self.elements:
+            el_n, el_mv = el.calculate_elastic_actions(
+                n=n,
+                mx=mx,
+                my=my,
+                e_a=e_a,
+                cx=cx,
+                cy=cy,
+                e_ixx=e_ixx,
+                e_iyy=e_iyy,
+                e_ixy=e_ixy,
+                theta=theta,
+            )
+
+            n_conc += el_n
+            mv += el_mv
+
+        # calculate point of action
+        if n_conc == 0:
+            d = 0
+        else:
+            d = mv / n_conc
+
+        return sig, n_conc, d
 
     def service_stress_analysis(
         self,
@@ -168,7 +202,8 @@ class AnalysisSection:
         kappa: float,
         point_na: Tuple[float],
         theta: float,
-    ) -> np.ndarray:
+        na_local: float,
+    ) -> Tuple[np.ndarray, float, float]:
         """Given the neutral axis depth `d_n` and curvature `kappa` determines the
         service stresses within the section.
 
@@ -177,15 +212,17 @@ class AnalysisSection:
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
         :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float na_local: y-location of the neutral axis in local coordinates
 
-        :return: Service stresses
-        :rtype: :class:`numpy.ndarray`
+        :return: Service stresses, net force and distance from neutral axis to point of
+            force action
+        :rtype: Tuple[np.ndarray, float, float]
         """
 
         # intialise stress results
         sig = np.zeros(len(self.mesh_nodes))
 
-        # loop through nodes
+        # loop through nodes and calculate stress at nodes
         for idx, node in enumerate(self.mesh_nodes):
             # get strain at node
             strain = utils.get_service_strain(
@@ -200,7 +237,22 @@ class AnalysisSection:
                 strain=strain
             )
 
-        return sig
+        # calculate total force
+        n, mv = self.service_stress_analysis(
+            point_na=point_na,
+            d_n=d_n,
+            theta=theta,
+            kappa=kappa,
+            na_local=na_local,
+        )
+
+        # calculate point of action
+        if n == 0:
+            d = 0
+        else:
+            d = mv / n
+
+        return sig, n, d
 
     def ultimate_stress_analysis(
         self,
@@ -247,7 +299,8 @@ class AnalysisSection:
         point_na: Tuple[float],
         theta: float,
         ultimate_strain: float,
-    ) -> np.ndarray:
+        pc_local: float,
+    ) -> Tuple[np.ndarray, float, float]:
         """Given the neutral axis depth `d_n` and ultimate strain, determines the
         ultimate stresses with the section.
 
@@ -256,9 +309,11 @@ class AnalysisSection:
         :type point_na: Tuple[float]
         :param float theta: Angle the neutral axis makes with the horizontal axis
         :param float ultimate_strain: Strain at the extreme compression fibre
+        :param float pc_local: y-location of the plastic centroid in local coordinates
 
-        :return: Ultimate stresses
-        :rtype: :class:`numpy.ndarray`
+        :return: Ultimate stresses net force and distance from neutral axis to point of
+            force action
+        :rtype: Tuple[np.ndarray, float, float]
         """
 
         # intialise stress results
@@ -280,7 +335,22 @@ class AnalysisSection:
                 strain=strain
             )
 
-        return sig
+        # calculate total force
+        n, mv = self.ultimate_stress_analysis(
+            point_na=point_na,
+            d_n=d_n,
+            theta=theta,
+            ultimate_strain=ultimate_strain,
+            pc_local=pc_local,
+        )
+
+        # calculate point of action
+        if n == 0:
+            d = 0
+        else:
+            d = mv / n - pc_local - point_na[1]
+
+        return sig, n, d
 
     def plot_mesh(
         self,
@@ -425,6 +495,93 @@ class Tri3:
             )
 
         return e_ixx, e_iyy, e_ixy
+
+    def calculate_elastic_actions(
+        self,
+        n: float,
+        mx: float,
+        my: float,
+        e_a: float,
+        cx: float,
+        cy: float,
+        e_ixx: float,
+        e_iyy: float,
+        e_ixy: float,
+        theta: float,
+    ) -> Tuple[float]:
+        """Calculates elastic actions for the current finite element.
+
+        :param float n: Axial force
+        :param float mx: Bending moment about the x-axis
+        :param float my: Bending moment about the y-axis
+        :param float e_a: Axial rigidity
+        :param float cx: x-Centroid
+        :param float cy: y-Centroid
+        :param float e_ixx: Flexural rigidity about the x-axis
+        :param float e_iyy: Flexural rigidity about the y-axis
+        :param float e_ixy: Flexural rigidity about the xy-axis
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+
+        :return: Elastic force and resultant moment
+        :rtype: Tuple[float]
+        """
+
+        # initialise element results
+        area_e = 0
+        qx_e = 0
+        qy_e = 0
+        force_e = 0
+        mv_e = 0
+
+        # get points for 1 point Gaussian integration
+        gps = utils.gauss_points(n=3)
+
+        # loop through each gauss point
+        for gp in gps:
+            # determine shape function and jacobian
+            N, j = utils.shape_function(coords=self.coords, gauss_point=gp)
+
+            # get coordinates (wrt NA) of the gauss point
+            x = np.dot(N, np.transpose(self.coords[0, :])) - cx
+            y = np.dot(N, np.transpose(self.coords[1, :])) - cy
+
+            # calculate area properties
+            area_e += gp[0] * j
+            qx_e += gp[0] * y * j
+            qy_e += gp[0] * x * j
+
+            # axial force
+            force_gp = 0
+            force_gp += gp[0] * n * self.conc_material.elastic_modulus / e_a * j
+
+            # bending moment
+            force_gp += (
+                gp[0]
+                * self.conc_material.elastic_modulus
+                * (
+                    -(e_ixy * mx) / (e_ixx * e_iyy - e_ixy**2) * x
+                    + (e_iyy * mx) / (e_ixx * e_iyy - e_ixy**2) * y
+                )
+                * j
+            )
+            force_gp += (
+                gp[0]
+                * self.conc_material.elastic_modulus
+                * (
+                    +(e_ixx * my) / (e_ixx * e_iyy - e_ixy**2) * x
+                    - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
+                )
+                * j
+            )
+
+            # convert gauss point to local coordinates
+            _, c_v = sp_fea.principal_coordinate(phi=theta * 180 / np.pi, x=x, y=y)
+
+            # add force and moment
+            force_e += force_gp
+            mv_e += force_gp * c_v
+
+        return force_e, mv_e
 
     def calculate_service_actions(
         self,

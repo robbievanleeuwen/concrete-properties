@@ -42,13 +42,13 @@ steel = Steel(
 geometry = concrete_rectangular_section(
     b=400,
     d=600,
-    dia_top=16,
+    dia_top=20,
     n_top=3,
     dia_bot=24,
     n_bot=3,
     n_circle=4,
     cover=30,
-    area_top=200,
+    area_top=310,
     area_bot=450,
     conc_mat=concrete,
     steel_mat=steel,
@@ -57,12 +57,24 @@ geometry = concrete_rectangular_section(
 conc_sec = ConcreteSection(geometry)
 conc_sec.plot_section()
 
+# CALCULATE GROSS PROPERTIES
 conc_sec.gross_properties.print_results()
 conc_sec.get_transformed_gross_properties(elastic_modulus=32.8e3).print_results()
+
+# CALCULATE CRACKED PROPERTIES
 cracked_res = conc_sec.calculate_cracked_properties()
 cracked_res.calculate_transformed_properties(elastic_modulus=32.8e3)
 cracked_res.print_results()
-conc_sec.plot_uncracked_stress(mx=80e6, pause=False)
-conc_sec.plot_cracked_stress(cracked_results=cracked_res, m=120e6)
+
+# CALCULATE MOMENT INTERACTION DIAGRAM
 mi_res = conc_sec.moment_interaction_diagram(m_neg=True)
 mi_res.plot_diagram()
+
+# CALCULATE UNCRACKED AND CRACKED STRESSES
+uncr_stress_res = conc_sec.calculate_uncracked_stress(mx=80e6, my=0e6)
+pprint(uncr_stress_res)
+uncr_stress_res.plot_stress(title="Uncracked Stress", pause=False)
+
+cr_stress_res = conc_sec.calculate_cracked_stress(cracked_results=cracked_res, m=100e6)
+pprint(cr_stress_res)
+cr_stress_res.plot_stress(title="Cracked Stress")

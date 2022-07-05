@@ -9,14 +9,14 @@ import matplotlib.patches as mpatches
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.analysis_section import AnalysisSection
 import concreteproperties.utils as utils
-from concreteproperties.post import plotting_context, plot_stress
+from concreteproperties.post import plotting_context
 import concreteproperties.results as res
 
+from sectionproperties.pre.geometry import CompoundGeometry
 from sectionproperties.analysis.fea import principal_coordinate, global_coordinate
 
 if TYPE_CHECKING:
     import matplotlib
-    from sectionproperties.pre.geometry import CompoundGeometry
 
 from rich.pretty import pprint
 
@@ -1187,18 +1187,14 @@ class ConcreteSection:
 
         return ax
 
-    def plot_uncracked_stress(
+    def calculate_uncracked_stress(
         self,
         n: Optional[float] = 0,
         mx: Optional[float] = 0,
         my: Optional[float] = 0,
-        title: Optional[str] = "Uncracked Stress",
-        conc_cmap: Optional[str] = "RdGy",
-        steel_cmap: Optional[str] = "bwr",
-        **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
-        """Plots stresses within the reinforced concrete section assuming an uncracked
-        section.
+    ) -> res.CrackedResults:
+        """Calculates stresses within the reinforced concrete section assuming an
+        uncracked section.
 
         Uses gross area section properties to determine concrete and steel stresses
         given an axial force `n`, and bending moments `mx` and `my`.
@@ -1209,22 +1205,17 @@ class ConcreteSection:
         :type mx: Optional[float]
         :param my: Bending moment about the y-axis
         :type my: Optional[float]
-        :param title: Plot title
-        :type title: Optional[str]
-        :param conc_cmap: Colour map for the concrete stress
-        :type conc_cmap: Optional[str]
-        :param steel_cmap: Colour map for the steel stress
-        :type steel_cmap: Optional[str]
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        :return: Stress results object
+        :rtype: :class:`~concreteproperties.results.StressResult`
         """
 
-        # initialise stress results for each concrete geometry
-        conc_sigs = []
-        steel_sigs = []
+        # initialise stress results
         analysis_sections = []
+        conc_sigs = []
+        conc_forces = []
+        steel_sigs = []
+        steel_forces = []
 
         # get uncracked section properties
         e_a = self.gross_properties.e_a
@@ -1234,24 +1225,49 @@ class ConcreteSection:
         e_iyy = self.gross_properties.e_iyy_c
         e_ixy = self.gross_properties.e_ixy_c
 
-        # loop through all concrete geometries and calculate stress
+        # calculate neutral axis rotation
+        theta = np.arctan2(my, mx)
+
+        # point on neutral axis is centroid
+        point_na = (cx, cy)
+
+        # get principal coordinates of neutral axis
+        na_local = principal_coordinate(
+            phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+        )
+
+        # split concrete geometries above and below neutral axis
+        split_conc_geoms = []
+
         for conc_geom in self.concrete_geometries:
+            top_geoms, bot_geoms = utils.split_section(
+                geometry=conc_geom,
+                point=point_na,
+                theta=theta,
+            )
+
+            split_conc_geoms.extend(top_geoms)
+            split_conc_geoms.extend(bot_geoms)
+
+        # loop through all concrete geometries and calculate stress
+        for conc_geom in split_conc_geoms:
             analysis_section = AnalysisSection(geometry=conc_geom)
 
-            # calculate stress
-            conc_sigs.append(
-                analysis_section.get_elastic_stress(
-                    n=n,
-                    mx=mx,
-                    my=my,
-                    e_a=e_a,
-                    cx=cx,
-                    cy=cy,
-                    e_ixx=e_ixx,
-                    e_iyy=e_iyy,
-                    e_ixy=e_ixy,
-                )
+            # calculate stress, force and point of action
+            sig, n_conc, d = analysis_section.get_elastic_stress(
+                n=n,
+                mx=mx,
+                my=my,
+                e_a=e_a,
+                cx=cx,
+                cy=cy,
+                e_ixx=e_ixx,
+                e_iyy=e_iyy,
+                e_ixy=e_ixy,
+                theta=theta,
             )
+            conc_sigs.append(sig)
+            conc_forces.append((n_conc, d))
 
             # save analysis section
             analysis_sections.append(analysis_section)
@@ -1267,7 +1283,7 @@ class ConcreteSection:
             # axial stress
             sig += n * steel_geom.material.elastic_modulus / e_a
 
-            # bending moment
+            # bending moment stress
             sig += steel_geom.material.elastic_modulus * (
                 -(e_ixy * mx) / (e_ixx * e_iyy - e_ixy**2) * x
                 + (e_iyy * mx) / (e_ixx * e_iyy - e_ixy**2) * y
@@ -1277,30 +1293,33 @@ class ConcreteSection:
                 - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
             )
 
-            steel_sigs.append(sig)
+            # net force and point of action
+            n_steel = sig * steel_geom.calculate_area()
+            _, c_v = principal_coordinate(
+                phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
+            )
+            d = c_v - na_local[1]
 
-        return plot_stress(
+            steel_sigs.append(sig)
+            steel_forces.append((n_steel, d))
+
+        return res.StressResult(
             concrete_section=self,
-            analysis_sections=analysis_sections,
-            conc_sigs=conc_sigs,
-            steel_sigs=steel_sigs,
-            title=title,
-            conc_cmap=conc_cmap,
-            steel_cmap=steel_cmap,
-            **kwargs,
+            concrete_analysis_sections=analysis_sections,
+            concrete_stresses=conc_sigs,
+            concrete_forces=conc_forces,
+            steel_geometries=self.steel_geometries,
+            steel_stresses=steel_sigs,
+            steel_forces=steel_forces,
         )
 
-    def plot_cracked_stress(
+    def calculate_cracked_stress(
         self,
         cracked_results: res.CrackedResults,
         n: Optional[float] = 0,
         m: Optional[float] = 0,
-        title: Optional[str] = "Cracked Stress",
-        conc_cmap: Optional[str] = "RdGy",
-        steel_cmap: Optional[str] = "bwr",
-        **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
-        """Plots stresses within the reinforced concrete section assuming an cracked
+    ) -> res.StressResult:
+        """Calculates stresses within the reinforced concrete section assuming a cracked
         section.
 
         Uses cracked area section properties to determine concrete and steel stresses
@@ -1313,22 +1332,17 @@ class ConcreteSection:
         :type n: Optional[float]
         :param m: Bending moment
         :type m: Optional[float]
-        :param title: Plot title
-        :type title: Optional[str]
-        :param conc_cmap: Colour map for the concrete stress
-        :type conc_cmap: Optional[str]
-        :param steel_cmap: Colour map for the steel stress
-        :type steel_cmap: Optional[str]
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        :return: Stress results object
+        :rtype: :class:`~concreteproperties.results.StressResult`
         """
 
-        # initialise stress results for each concrete geometry
-        conc_sigs = []
-        steel_sigs = []
+        # initialise stress results
         analysis_sections = []
+        conc_sigs = []
+        conc_forces = []
+        steel_sigs = []
+        steel_forces = []
 
         # get cracked section properties
         e_a = cracked_results.e_a_cr
@@ -1343,28 +1357,44 @@ class ConcreteSection:
         mx = m * np.cos(theta)
         my = -m * np.sin(theta)
 
+        # depth of neutral axis at extreme tensile fibre
+        extreme_fibre, d_t = utils.calculate_extreme_fibre(
+            points=self.geometry.points, theta=theta
+        )
+
+        # find point on neutral axis by shifting by d_n
+        point_na = utils.point_on_neutral_axis(
+            extreme_fibre=extreme_fibre, d_n=cracked_results.d_nc, theta=theta
+        )
+
+        # get principal coordinates of neutral axis
+        na_local = principal_coordinate(
+            phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+        )
+
         # loop through all concrete geometries and calculate stress
         for geom in cracked_results.cracked_geometries:
             if isinstance(geom.material, Concrete):
                 analysis_section = AnalysisSection(geometry=geom)
 
-                # calculate stress
-                conc_sigs.append(
-                    analysis_section.get_elastic_stress(
-                        n=n,
-                        mx=mx,
-                        my=my,
-                        e_a=e_a,
-                        cx=cx,
-                        cy=cy,
-                        e_ixx=e_ixx,
-                        e_iyy=e_iyy,
-                        e_ixy=e_ixy,
-                    )
+                # calculate stress, force and point of action
+                sig, n_conc, d = analysis_section.get_elastic_stress(
+                    n=n,
+                    mx=mx,
+                    my=my,
+                    e_a=e_a,
+                    cx=cx,
+                    cy=cy,
+                    e_ixx=e_ixx,
+                    e_iyy=e_iyy,
+                    e_ixy=e_ixy,
+                    theta=theta,
                 )
+                conc_sigs.append(sig)
+                conc_forces.append((n_conc, d))
 
-            # save analysis section
-            analysis_sections.append(analysis_section)
+                # save analysis section
+                analysis_sections.append(analysis_section)
 
         # loop through all steel geometries and calculate stress
         for steel_geom in self.steel_geometries:
@@ -1377,7 +1407,7 @@ class ConcreteSection:
             # axial stress
             sig += n * steel_geom.material.elastic_modulus / e_a
 
-            # bending moment
+            # bending moment stress
             sig += steel_geom.material.elastic_modulus * (
                 -(e_ixy * mx) / (e_ixx * e_iyy - e_ixy**2) * x
                 + (e_iyy * mx) / (e_ixx * e_iyy - e_ixy**2) * y
@@ -1387,29 +1417,32 @@ class ConcreteSection:
                 - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
             )
 
-            steel_sigs.append(sig)
+            # net force and point of action
+            n_steel = sig * steel_geom.calculate_area()
+            _, c_v = principal_coordinate(
+                phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
+            )
+            d = c_v - na_local[1]
 
-        return plot_stress(
+            steel_sigs.append(sig)
+            steel_forces.append((n_steel, d))
+
+        return res.StressResult(
             concrete_section=self,
-            analysis_sections=analysis_sections,
-            conc_sigs=conc_sigs,
-            steel_sigs=steel_sigs,
-            title=title,
-            conc_cmap=conc_cmap,
-            steel_cmap=steel_cmap,
-            **kwargs,
+            concrete_analysis_sections=analysis_sections,
+            concrete_stresses=conc_sigs,
+            concrete_forces=conc_forces,
+            steel_geometries=self.steel_geometries,
+            steel_stresses=steel_sigs,
+            steel_forces=steel_forces,
         )
 
-    def plot_service_stress(
+    def calculate_service_stress(
         self,
         moment_curvature_results: res.MomentCurvatureResults,
         m: float,
-        title: Optional[str] = "Service Stress",
-        conc_cmap: Optional[str] = "RdGy",
-        steel_cmap: Optional[str] = "bwr",
-        **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
-        """Plots service stresses within the reinforced concrete section.
+    ) -> res.StressResult:
+        """Calculates service stresses within the reinforced concrete section.
 
         Uses linear interpolation of the moment-curvature results to determine the
         curvature of the section given the user supplied moment, and thus the stresses
@@ -1418,18 +1451,10 @@ class ConcreteSection:
         :param moment_curvature_results: Moment-curvature results objects
         :type moment_curvature_results:
             :class:`~concreteproperties.results.MomentCurvatureResults`
-        :param m: Bending moment
-        :type m: float
-        :param title: Plot title
-        :type title: Optional[str]
-        :param conc_cmap: Colour map for the concrete stress
-        :type conc_cmap: Optional[str]
-        :param steel_cmap: Colour map for the steel stress
-        :type steel_cmap: Optional[str]
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+        :param float m: Bending moment
 
-        :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        :return: Stress results object
+        :rtype: :class:`~concreteproperties.results.StressResult`
         """
 
         # get curvature & theta
@@ -1464,10 +1489,17 @@ class ConcreteSection:
             extreme_fibre=extreme_fibre, d_n=d_n, theta=theta
         )
 
-        # initialise stress results for each concrete geometry
-        conc_sigs = []
-        steel_sigs = []
+        # get principal coordinates of neutral axis
+        na_local = principal_coordinate(
+            phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+        )
+
+        # initialise stress results
         analysis_sections = []
+        conc_sigs = []
+        conc_forces = []
+        steel_sigs = []
+        steel_forces = []
 
         # create splits in concrete geometries at points in stress strain profiles
         concrete_split_geoms = utils.split_section_at_strains(
@@ -1482,12 +1514,16 @@ class ConcreteSection:
         for geom in concrete_split_geoms:
             analysis_section = AnalysisSection(geometry=geom)
 
-            # calculate stress
-            conc_sigs.append(
-                analysis_section.get_service_stress(
-                    d_n=d_n, kappa=kappa, point_na=point_na, theta=theta
-                )
+            # calculate stress, force and point of action
+            sig, n_conc, d = analysis_section.get_service_stress(
+                d_n=d_n,
+                kappa=kappa,
+                point_na=point_na,
+                theta=theta,
+                na_local=na_local[1],
             )
+            conc_sigs.append(sig)
+            conc_forces.append((n_conc, d))
 
             # save analysis section
             analysis_sections.append(analysis_section)
@@ -1505,44 +1541,39 @@ class ConcreteSection:
                 kappa=kappa,
             )
 
-            steel_sigs.append(
-                steel_geom.material.stress_strain_profile.get_stress(strain=strain)
+            # calculate stress, force and point of action
+            sig = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
+            n_steel = sig * steel_geom.calculate_area()
+            _, c_v = principal_coordinate(
+                phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
             )
+            d = c_v - na_local[1]
 
-        return plot_stress(
+            steel_sigs.append(sig)
+            steel_forces.append((n_steel, d))
+
+        return res.StressResult(
             concrete_section=self,
-            analysis_sections=analysis_sections,
-            conc_sigs=conc_sigs,
-            steel_sigs=steel_sigs,
-            title=title,
-            conc_cmap=conc_cmap,
-            steel_cmap=steel_cmap,
-            **kwargs,
+            concrete_analysis_sections=analysis_sections,
+            concrete_stresses=conc_sigs,
+            concrete_forces=conc_forces,
+            steel_geometries=self.steel_geometries,
+            steel_stresses=steel_sigs,
+            steel_forces=steel_forces,
         )
 
-    def plot_ultimate_stress(
+    def calculate_ultimate_stress(
         self,
         ultimate_results: res.UltimateBendingResults,
-        title: Optional[str] = "Ultimate Stress",
-        conc_cmap: Optional[str] = "RdGy",
-        steel_cmap: Optional[str] = "bwr",
-        **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
-        """Plots ultimate stresses within the reinforced concrete section.
+    ) -> res.StressResult:
+        """Calculates ultimate stresses within the reinforced concrete section.
 
         :param ultimate_results: Ultimate bending results objects
         :type ultimate_results:
             :class:`~concreteproperties.results.UltimateBendingResults`
-        :param title: Plot title
-        :type title: Optional[str]
-        :param conc_cmap: Colour map for the concrete stress
-        :type conc_cmap: Optional[str]
-        :param steel_cmap: Colour map for the steel stress
-        :type steel_cmap: Optional[str]
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        :return: Stress results object
+        :rtype: :class:`~concreteproperties.results.StressResult`
         """
 
         # depth of neutral axis at extreme tensile fibre
@@ -1557,10 +1588,20 @@ class ConcreteSection:
             theta=ultimate_results.theta,
         )
 
+        # get principal coordinates of neutral axis
+        na_local = principal_coordinate(
+            phi=ultimate_results.theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+        )
+
+        # get principal coordinates of plastic centroid
+        pc_local = self.get_pc_local(theta=ultimate_results.theta)
+
         # initialise stress results for each concrete geometry
-        conc_sigs = []
-        steel_sigs = []
         analysis_sections = []
+        conc_sigs = []
+        conc_forces = []
+        steel_sigs = []
+        steel_forces = []
 
         # create splits in concrete geometries at points in stress strain profiles
         concrete_split_geoms = utils.split_section_at_strains(
@@ -1570,21 +1611,23 @@ class ConcreteSection:
             ultimate=True,
             ultimate_strain=self.gross_properties.conc_ultimate_strain,
             d_n=ultimate_results.d_n,
+            top_only=True,
         )
 
         # loop through all concrete geometries and calculate stress
         for geom in concrete_split_geoms:
             analysis_section = AnalysisSection(geometry=geom)
 
-            # calculate stress
-            conc_sigs.append(
-                analysis_section.get_ultimate_stress(
-                    d_n=ultimate_results.d_n,
-                    point_na=point_na,
-                    theta=ultimate_results.theta,
-                    ultimate_strain=self.gross_properties.conc_ultimate_strain,
-                )
+            # calculate stress, force and point of action
+            sig, n_conc, d = analysis_section.get_ultimate_stress(
+                d_n=ultimate_results.d_n,
+                point_na=point_na,
+                theta=ultimate_results.theta,
+                ultimate_strain=self.gross_properties.conc_ultimate_strain,
+                pc_local=pc_local[1],
             )
+            conc_sigs.append(sig)
+            conc_forces.append((n_conc, d))
 
             # save analysis section
             analysis_sections.append(analysis_section)
@@ -1603,17 +1646,23 @@ class ConcreteSection:
                 ultimate_strain=self.gross_properties.conc_ultimate_strain,
             )
 
-            steel_sigs.append(
-                steel_geom.material.stress_strain_profile.get_stress(strain=strain)
+            # calculate stress, force and point of action
+            sig = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
+            n_steel = sig * steel_geom.calculate_area()
+            _, c_v = principal_coordinate(
+                phi=ultimate_results.theta * 180 / np.pi, x=centroid[0], y=centroid[1]
             )
+            d = c_v - na_local[1]
 
-        return plot_stress(
+            steel_sigs.append(sig)
+            steel_forces.append((n_steel, d))
+
+        return res.StressResult(
             concrete_section=self,
-            analysis_sections=analysis_sections,
-            conc_sigs=conc_sigs,
-            steel_sigs=steel_sigs,
-            title=title,
-            conc_cmap=conc_cmap,
-            steel_cmap=steel_cmap,
-            **kwargs,
+            concrete_analysis_sections=analysis_sections,
+            concrete_stresses=conc_sigs,
+            concrete_forces=conc_forces,
+            steel_geometries=self.steel_geometries,
+            steel_stresses=steel_sigs,
+            steel_forces=steel_forces,
         )

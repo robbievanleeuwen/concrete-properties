@@ -47,7 +47,8 @@ class StressStrainProfile:
 
         for idx in range(len(strains)):
             if idx != 0:
-                if strains[idx] <= prev_strain:
+                if strains[idx] < prev_strain:
+                # if strains[idx] <= prev_strain:
                     msg = "strains must contain increasing values."
                     raise ValueError(msg)
 
@@ -251,7 +252,8 @@ class WhitneyStressBlock(StressStrainProfile):
         super().__init__(
             strains=[
                 0,
-                ultimate_strain * (1 - gamma) - 1e-12,
+                ultimate_strain * (1 - gamma),
+                # ultimate_strain * (1 - gamma) - 1e-12,
                 ultimate_strain * (1 - gamma),
                 ultimate_strain,
             ],
@@ -265,6 +267,25 @@ class WhitneyStressBlock(StressStrainProfile):
 
         self.compressive_strength = compressive_strength
 
+    def get_stress(
+        self,
+        strain: float,
+    ) -> float:
+        """Returns a stress given a strain.
+
+        Overrides parent method with small tolerance to aid ultimate stress generation
+        at nodes.
+
+        :param float strain: Strain at which to return a stress.
+
+        :return: Stress
+        :rtype: float
+        """
+
+        if strain >= self.strains[1] - 1e-12:
+            return self.stresses[2]
+        else:
+            return 0
 
 # class ParabolicStressBlock(StressStrainProfile):
 #     pass

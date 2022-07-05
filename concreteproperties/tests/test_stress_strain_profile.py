@@ -25,9 +25,6 @@ def test_piecewise_linear():
         profile = StressStrainProfile([-1, 0, 1], [0, 2])
 
     with pytest.raises(ValueError):
-        profile = StressStrainProfile([-1, 0, 0, 1], [0, 2, 3, 4])
-
-    with pytest.raises(ValueError):
         profile = StressStrainProfile([0, 1, 0.5], [0, 3, 5])
 
     profile = StressStrainProfile([-0.05, 0, 0.0025, 0.05], [0, 0, 500, 600])

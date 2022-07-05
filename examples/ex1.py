@@ -8,6 +8,8 @@ from concreteproperties.stress_strain_profile import (
     SteelElasticPlastic,
 )
 
+from rich.pretty import pprint
+
 
 concrete = Concrete(
     name="40 MPa Concrete",
@@ -53,12 +55,25 @@ geometry = concrete_circular_section(
 conc_sec = ConcreteSection(geometry)
 conc_sec.plot_section()
 
+# ULTIMATE CAPACITY
 ultimate_res = conc_sec.ultimate_bending_capacity()
 ultimate_res.print_results()
 conc_sec.moment_interaction_diagram().plot_diagram()
 conc_sec.biaxial_bending_diagram(n=4000e3).plot_diagram()
-conc_sec.plot_uncracked_stress(mx=50e6, pause=False)
+
+# CRACKED PROPERTIES
 cracked_res = conc_sec.calculate_cracked_properties()
 cracked_res.print_results()
-conc_sec.plot_cracked_stress(cracked_results=cracked_res, m=100e6, pause=False)
-conc_sec.plot_ultimate_stress(ultimate_results=ultimate_res)
+
+# PLOT STRESSES
+uncr_stress_res = conc_sec.calculate_uncracked_stress(mx=50e6)
+pprint(uncr_stress_res)
+uncr_stress_res.plot_stress(title="Uncracked Stress")
+cracked_stress_res = conc_sec.calculate_cracked_stress(
+    cracked_results=cracked_res, m=100e6
+)
+pprint(cracked_stress_res)
+cracked_stress_res.plot_stress(title="Cracked Stress")
+ult_stress_res = conc_sec.calculate_ultimate_stress(ultimate_results=ultimate_res)
+pprint(ult_stress_res)
+ult_stress_res.plot_stress(title="Ultimate Stress")

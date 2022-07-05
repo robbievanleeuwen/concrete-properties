@@ -17,7 +17,7 @@ concrete_profile = StressStrainProfile(
     strains=[-41 / 32.8e3, -40 / 32.8e3, -3.8 / 32.8e3, 0, 40 / 32.8e3],
     stresses=[0, 0, -3.8, 0, 40],
 )
-concrete_profile.plot_stress_strain(title="Concrete Stress-Strain Profile")
+# concrete_profile.plot_stress_strain(title="Concrete Stress-Strain Profile")
 
 steel_profile = BilinearProfile(
     strain1=500 / 200e3,
@@ -25,7 +25,7 @@ steel_profile = BilinearProfile(
     stress1=500,
     stress2=595,
 )
-steel_profile.plot_stress_strain(title="Steel Stress-Strain Profile")
+# steel_profile.plot_stress_strain(title="Steel Stress-Strain Profile")
 
 concrete = Concrete(
     name="40 MPa Concrete",
@@ -76,4 +76,5 @@ mcr.plot_results()
 moments = [50e6, 100e6, 150e6, 200e6, 250e6, 275e6]
 
 for m in moments:
-    d_n = conc_sec.plot_service_stress(moment_curvature_results=mcr, m=m)
+    stress_res = conc_sec.calculate_service_stress(moment_curvature_results=mcr, m=m)
+    stress_res.plot_stress()

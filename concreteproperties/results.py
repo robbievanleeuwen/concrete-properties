@@ -2,8 +2,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import List, Optional, TYPE_CHECKING
+import warnings
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import matplotlib.tri as tri
+import matplotlib.cm as cm
+from matplotlib.colors import CenteredNorm
+from matplotlib.collections import PatchCollection
+from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
 from scipy.interpolate import interp1d
 from rich.console import Console
 from rich.table import Table
@@ -12,6 +19,7 @@ from concreteproperties.post import plotting_context
 
 if TYPE_CHECKING:
     import matplotlib
+    from concreteproperties.concrete_section import ConcreteSection
     from concreteproperties.analysis_section import AnalysisSection
     from sectionproperties.pre.geometry import Geometry
 
@@ -433,7 +441,7 @@ class MomentCurvatureResults:
             kind="linear",
         )
 
-        return f_kappa(moment)
+        return float(f_kappa(moment))
 
 
 @dataclass
@@ -613,5 +621,161 @@ class BiaxialBendingResults:
             plt.xlabel("Bending Moment $M_x$")
             plt.ylabel("Bending Moment $M_y$")
             plt.grid(True)
+
+        return ax
+
+
+@dataclass
+class StressResult:
+    """Class for storing stress results."""
+
+    concrete_section: ConcreteSection
+    concrete_analysis_sections: List[AnalysisSection]
+    concrete_stresses: List[np.ndarray]
+    concrete_forces: List[Tuple[float]]
+    steel_geometries: List[Geometry]
+    steel_stresses: List[float]
+    steel_forces: List[Tuple[float]]
+
+    def plot_stress(
+        self,
+        title: Optional[str] = "Stress",
+        conc_cmap: Optional[str] = "RdGy",
+        steel_cmap: Optional[str] = "bwr",
+        **kwargs,
+    ) -> matplotlib.axes._subplots.AxesSubplot:
+        """Plots concrete and steel stresses on a concrete section.
+
+        :param title: Plot title
+        :type title: Optional[str]
+        :param conc_cmap: Colour map for the concrete stress
+        :type conc_cmap: Optional[str]
+        :param steel_cmap: Colour map for the steel stress
+        :type steel_cmap: Optional[str]
+        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        """
+
+        with plotting_context(
+            title=title,
+            **dict(
+                kwargs, nrows=1, ncols=3, gridspec_kw={"width_ratios": [1, 0.08, 0.08]}
+            ),
+        ) as (fig, ax):
+            # plot background
+            self.concrete_section.plot_section(
+                background=True, **dict(kwargs, ax=fig.axes[0])
+            )
+
+            # set up the colormaps
+            cmap_conc = cm.get_cmap(name=conc_cmap)
+            cmap_steel = cm.get_cmap(name=steel_cmap)
+
+            # determine minimum and maximum stress values for the contour list
+            conc_sig_min = min([min(x) for x in self.concrete_stresses])
+            conc_sig_max = max([max(x) for x in self.concrete_stresses])
+            steel_sig_min = min(self.steel_stresses)
+            steel_sig_max = max(self.steel_stresses)
+
+            # set up ticks
+            v_conc = np.linspace(conc_sig_min, conc_sig_max, 15, endpoint=True)
+            v_steel = np.linspace(steel_sig_min, steel_sig_max, 15, endpoint=True)
+
+            if np.isclose(v_conc[0], v_conc[-1], atol=1e-12):
+                v_conc = 15
+                ticks_conc = None
+            else:
+                ticks_conc = v_conc
+
+            if np.isclose(v_steel[0], v_steel[-1], atol=1e-12):
+                ticks_steel = None
+                steel_tick_same = True
+            else:
+                ticks_steel = v_steel
+                steel_tick_same = False
+
+            # plot the concrete stresses
+            for idx, sig in enumerate(self.concrete_stresses):
+                # create triangulation
+                triang = tri.Triangulation(
+                    self.concrete_analysis_sections[idx].mesh_nodes[:, 0],
+                    self.concrete_analysis_sections[idx].mesh_nodes[:, 1],
+                    self.concrete_analysis_sections[idx].mesh_elements[:, 0:3],
+                )
+
+                # plot the filled contour
+                trictr = fig.axes[0].tricontourf(
+                    triang, sig, v_conc, cmap=cmap_conc, norm=CenteredNorm()
+                )
+
+                # plot a zero stress contour, supressing warning
+                with warnings.catch_warnings():
+                    warnings.filterwarnings(
+                        "ignore",
+                        message="No contour levels were found within the data range.",
+                    )
+
+                    # set zero stress for neutral axis contour
+                    zero_level = 0
+
+                    if min(sig) > 0:
+                        if min(sig) < 1e-3:
+                            zero_level = min(sig) + 1e-12
+
+                    if max(sig) < 0:
+                        if max(sig) > -1e-3:
+                            zero_level = max(sig) - 1e-12
+
+                    if min(sig) == 0:
+                        zero_level = 1e-12
+
+                    if max(sig) == 0:
+                        zero_level = -1e-12
+
+                    CS = fig.axes[0].tricontour(
+                        triang, sig, [zero_level], linewidths=1, linestyles="dashed"
+                    )
+
+            # plot the steel stresses
+            steel_patches = []
+            colours = []
+
+            for idx, sig in enumerate(self.steel_stresses):
+                steel_patches.append(
+                    mpatches.Polygon(
+                        xy=list(
+                            self.concrete_section.steel_geometries[
+                                idx
+                            ].geom.exterior.coords
+                        )
+                    )
+                )
+                colours.append(sig)
+
+            patch = PatchCollection(steel_patches, cmap=cmap_steel)
+            patch.set_array(colours)
+            if steel_tick_same:
+                patch.set_clim([0.99 * v_steel[0], 1.01 * v_steel[-1]])
+            fig.axes[0].add_collection(patch)
+
+            # add the colour bars
+            fig.colorbar(
+                trictr,
+                label="Concrete Stress",
+                format="%.2e",
+                ticks=ticks_conc,
+                cax=fig.axes[1],
+            )
+            fig.colorbar(
+                patch,
+                label="Steel Stress",
+                format="%.2e",
+                ticks=ticks_steel,
+                cax=fig.axes[2],
+            )
+
+            ax.set_aspect("equal", anchor="C")
 
         return ax

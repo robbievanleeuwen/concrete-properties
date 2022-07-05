@@ -1,7 +1,10 @@
 - [x] Obtain ultimate stresses (using d_n to work out strains at nodes, then get stress)
 - [x] Do the same thing for service stresses
 - [x] Stress plot - add tricontour for zero stress only?
-- [ ] Is there a neat way to display ultimate forces?
+- [x] Add testing
+  - [ ] Stresses for RCB tests
+  - [ ] Rotation tests - rotate geometry & theta and check results are constant
+  - [ ] Stress forces - check force equilibrium and desired moments
 - [ ] Clean up profiles - maybe require that certain profiles may only be used for each material?
 - [ ] Documentation!
   - [ ] Is there a way to generate output within a docstring??
