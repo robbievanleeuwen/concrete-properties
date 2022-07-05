@@ -304,6 +304,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.results.StressResult.html">
+     concreteproperties.results.StressResult
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.results.TransformedConcreteProperties.html">
      concreteproperties.results.TransformedConcreteProperties
     </a>
@@ -325,11 +330,6 @@
    </i>
   </label>
   <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.post.plot_stress.html">
-     concreteproperties.post.plot_stress
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.post.plotting_context.html">
      concreteproperties.post.plotting_context
@@ -508,6 +508,25 @@
 </tbody>
 </table>
 <dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.WhitneyStressBlock.get_stress">
+<span class="sig-name descname"><span class="pre">get_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#WhitneyStressBlock.get_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.WhitneyStressBlock.get_stress" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a stress given a strain.</p>
+<p>Overrides parent method with small tolerance to aid ultimate stress generation
+at nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>strain</strong> (<em>float</em>) – Strain at which to return a stress.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Stress</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.WhitneyStressBlock.get_compressive_strength">
 <span class="sig-name descname"><span class="pre">get_compressive_strength</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#concreteproperties.stress_strain_profile.WhitneyStressBlock.get_compressive_strength" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the most positive stress.</p>
@@ -531,23 +550,6 @@
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.WhitneyStressBlock.get_stress">
-<span class="sig-name descname"><span class="pre">get_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#concreteproperties.stress_strain_profile.WhitneyStressBlock.get_stress" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a stress given a strain.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>strain</strong> (<em>float</em>) – Strain at which to return a stress.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Stress</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>

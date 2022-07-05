@@ -308,6 +308,7 @@
     <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">top_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Splits concrete geometries at discontinuities in its stress-strain profile.</span>
 
@@ -320,6 +321,7 @@
 <span class="sd">    :param float ultimate_strain: Strain at the extreme compression fibre</span>
 <span class="sd">    :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
 <span class="sd">    :param float kappa: Curvature</span>
+<span class="sd">    :param bool top_only: If set to True, only returns the top geometries</span>
 
 <span class="sd">    :return: List of split geometries</span>
 <span class="sd">    :rtype: List[:class:`sectionproperties.pre.geometry.Geometry`]</span>
@@ -366,7 +368,10 @@
         <span class="c1"># save final top geoms</span>
         <span class="n">concrete_split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">top_geoms</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">concrete_split_geoms</span></div>
+    <span class="k">if</span> <span class="n">top_only</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">top_geoms</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">concrete_split_geoms</span></div>
 
 
 <div class="viewcode-block" id="split_section"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.split_section.html#concreteproperties.utils.split_section">[docs]</a><span class="k">def</span> <span class="nf">split_section</span><span class="p">(</span>
@@ -389,7 +394,7 @@
 
     <span class="c1"># split the section using the sectionproperties method</span>
     <span class="n">top_geoms</span><span class="p">,</span> <span class="n">bot_geoms</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">split_section</span><span class="p">(</span>
-        <span class="n">point_i</span><span class="o">=</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+        <span class="n">point_i</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">vector</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
     <span class="p">)</span>
 
     <span class="c1"># ensure top geoms is in compression</span>
