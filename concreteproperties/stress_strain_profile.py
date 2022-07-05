@@ -48,7 +48,7 @@ class StressStrainProfile:
         for idx in range(len(strains)):
             if idx != 0:
                 if strains[idx] < prev_strain:
-                # if strains[idx] <= prev_strain:
+                    # if strains[idx] <= prev_strain:
                     msg = "strains must contain increasing values."
                     raise ValueError(msg)
 
@@ -286,6 +286,7 @@ class WhitneyStressBlock(StressStrainProfile):
             return self.stresses[2]
         else:
             return 0
+
 
 # class ParabolicStressBlock(StressStrainProfile):
 #     pass
