@@ -1073,120 +1073,6 @@ class ConcreteSection:
 
         return bb_results
 
-    def get_c_local(
-        self,
-        theta: float,
-    ) -> Tuple[float]:
-        """Returns the elastic centroid location in local coordinates.
-
-        :param float theta: Angle the neutral axis makes with the horizontal axis
-
-        :return: Elastic centroid in local coordinates `(c_u, c_v)`
-        :rtype: Tuple[float]
-        """
-
-        return principal_coordinate(
-            phi=theta * 180 / np.pi,
-            x=self.gross_properties.cx,
-            y=self.gross_properties.cy,
-        )
-
-    def get_pc_local(
-        self,
-        theta: float,
-    ) -> Tuple[float]:
-        """Returns the plastic centroid location in local coordinates.
-
-        :param float theta: Angle the neutral axis makes with the horizontal axis
-
-        :return: Plastic centroid in local coordinates `(pc_u, pc_v)`
-        :rtype: Tuple[float]
-        """
-
-        return principal_coordinate(
-            phi=theta * 180 / np.pi,
-            x=self.gross_properties.axial_pc_x,
-            y=self.gross_properties.axial_pc_y,
-        )
-
-    def plot_section(
-        self,
-        title: Optional[str] = "Reinforced Concrete Section",
-        background: Optional[bool] = False,
-        **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
-        """Plots the reinforced concrete section.
-
-        :param title: Plot title
-        :type title: Optional[str]
-        :param background: If set to True, uses the plot as a background plot
-        :type background: Optional[bool]
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
-
-        :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
-        """
-
-        with plotting_context(title=title, **kwargs) as (fig, ax):
-            # create list of already plotted materials
-            plotted_materials = []
-            legend_labels = []
-
-            # plot concrete geometries
-            for conc_geom in self.concrete_geometries:
-                if conc_geom.material not in plotted_materials:
-                    patch = mpatches.Patch(
-                        color=conc_geom.material.colour, label=conc_geom.material.name
-                    )
-                    legend_labels.append(patch)
-                    plotted_materials.append(conc_geom.material)
-
-                # TODO - when shapely implements polygon plotting, fix this up
-                sec = AnalysisSection(geometry=conc_geom)
-
-                if not background:
-                    sec.plot_shape(ax=ax)
-
-                # plot the points and facets
-                for f in conc_geom.facets:
-                    if background:
-                        fmt = "k-"
-                    else:
-                        fmt = "ko-"
-
-                    ax.plot(
-                        [conc_geom.points[f[0]][0], conc_geom.points[f[1]][0]],
-                        [conc_geom.points[f[0]][1], conc_geom.points[f[1]][1]],
-                        fmt,
-                        markersize=2,
-                        linewidth=1.5,
-                    )
-
-            # plot steel geometries
-            for steel_geom in self.steel_geometries:
-                if steel_geom.material not in plotted_materials:
-                    patch = mpatches.Patch(
-                        color=steel_geom.material.colour, label=steel_geom.material.name
-                    )
-                    legend_labels.append(patch)
-                    plotted_materials.append(steel_geom.material)
-
-                # plot the points and facets
-                coords = list(steel_geom.geom.exterior.coords)
-                bar = mpatches.Polygon(
-                    xy=coords, closed=False, color=steel_geom.material.colour
-                )
-                ax.add_patch(bar)
-
-            if not background:
-                ax.legend(
-                    loc="center left", bbox_to_anchor=(1, 0.5), handles=legend_labels
-                )
-
-            ax.set_aspect("equal", anchor="C")
-
-        return ax
-
     def calculate_uncracked_stress(
         self,
         n: Optional[float] = 0,
@@ -1226,7 +1112,7 @@ class ConcreteSection:
         e_ixy = self.gross_properties.e_ixy_c
 
         # calculate neutral axis rotation
-        theta = np.arctan2(my, mx)
+        theta = np.arctan2(-my, mx)
 
         # point on neutral axis is centroid
         point_na = (cx, cy)
@@ -1666,3 +1552,117 @@ class ConcreteSection:
             steel_stresses=steel_sigs,
             steel_forces=steel_forces,
         )
+
+    def get_c_local(
+        self,
+        theta: float,
+    ) -> Tuple[float]:
+        """Returns the elastic centroid location in local coordinates.
+
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+
+        :return: Elastic centroid in local coordinates `(c_u, c_v)`
+        :rtype: Tuple[float]
+        """
+
+        return principal_coordinate(
+            phi=theta * 180 / np.pi,
+            x=self.gross_properties.cx,
+            y=self.gross_properties.cy,
+        )
+
+    def get_pc_local(
+        self,
+        theta: float,
+    ) -> Tuple[float]:
+        """Returns the plastic centroid location in local coordinates.
+
+        :param float theta: Angle the neutral axis makes with the horizontal axis
+
+        :return: Plastic centroid in local coordinates `(pc_u, pc_v)`
+        :rtype: Tuple[float]
+        """
+
+        return principal_coordinate(
+            phi=theta * 180 / np.pi,
+            x=self.gross_properties.axial_pc_x,
+            y=self.gross_properties.axial_pc_y,
+        )
+
+    def plot_section(
+        self,
+        title: Optional[str] = "Reinforced Concrete Section",
+        background: Optional[bool] = False,
+        **kwargs,
+    ) -> matplotlib.axes._subplots.AxesSubplot:
+        """Plots the reinforced concrete section.
+
+        :param title: Plot title
+        :type title: Optional[str]
+        :param background: If set to True, uses the plot as a background plot
+        :type background: Optional[bool]
+        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        """
+
+        with plotting_context(title=title, **kwargs) as (fig, ax):
+            # create list of already plotted materials
+            plotted_materials = []
+            legend_labels = []
+
+            # plot concrete geometries
+            for conc_geom in self.concrete_geometries:
+                if conc_geom.material not in plotted_materials:
+                    patch = mpatches.Patch(
+                        color=conc_geom.material.colour, label=conc_geom.material.name
+                    )
+                    legend_labels.append(patch)
+                    plotted_materials.append(conc_geom.material)
+
+                # TODO - when shapely implements polygon plotting, fix this up
+                sec = AnalysisSection(geometry=conc_geom)
+
+                if not background:
+                    sec.plot_shape(ax=ax)
+
+                # plot the points and facets
+                for f in conc_geom.facets:
+                    if background:
+                        fmt = "k-"
+                    else:
+                        fmt = "ko-"
+
+                    ax.plot(
+                        [conc_geom.points[f[0]][0], conc_geom.points[f[1]][0]],
+                        [conc_geom.points[f[0]][1], conc_geom.points[f[1]][1]],
+                        fmt,
+                        markersize=2,
+                        linewidth=1.5,
+                    )
+
+            # plot steel geometries
+            for steel_geom in self.steel_geometries:
+                if steel_geom.material not in plotted_materials:
+                    patch = mpatches.Patch(
+                        color=steel_geom.material.colour, label=steel_geom.material.name
+                    )
+                    legend_labels.append(patch)
+                    plotted_materials.append(steel_geom.material)
+
+                # plot the points and facets
+                coords = list(steel_geom.geom.exterior.coords)
+                bar = mpatches.Polygon(
+                    xy=coords, closed=False, color=steel_geom.material.colour
+                )
+                ax.add_patch(bar)
+
+            if not background:
+                ax.legend(
+                    loc="center left", bbox_to_anchor=(1, 0.5), handles=legend_labels
+                )
+
+            ax.set_aspect("equal", anchor="C")
+
+        return ax

@@ -3,8 +3,10 @@
 - [x] Stress plot - add tricontour for zero stress only?
 - [x] Add testing
   - [ ] Stresses for RCB tests
-  - [ ] Rotation tests - rotate geometry & theta and check results are constant
+  - [x] Rotation tests - rotate geometry & theta and check results are constant
   - [ ] Stress forces - check force equilibrium and desired moments
+- [ ] FORCE THETA -pi to pi
+- [ ] Clean up all the na_local, points_na etc. etc.
 - [ ] Clean up profiles - maybe require that certain profiles may only be used for each material?
 - [ ] Documentation!
   - [ ] Is there a way to generate output within a docstring??

@@ -70,11 +70,11 @@ geom = concrete_rectangular_section(
 conc_sec = ConcreteSection(geom)
 conc_sec.plot_section()
 
-mcr = conc_sec.moment_curvature_diagram()
-mcr.plot_results()
+mc = conc_sec.moment_curvature_diagram()
+mc.plot_results()
 
 moments = [50e6, 100e6, 150e6, 200e6, 250e6, 275e6]
 
 for m in moments:
-    stress_res = conc_sec.calculate_service_stress(moment_curvature_results=mcr, m=m)
+    stress_res = conc_sec.calculate_service_stress(moment_curvature_results=mc, m=m)
     stress_res.plot_stress()

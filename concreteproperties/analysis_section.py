@@ -348,7 +348,12 @@ class AnalysisSection:
         if n == 0:
             d = 0
         else:
-            d = mv / n - pc_local - point_na[1]
+            # get principal coordinates of neutral axis
+            na_local = utils.principal_coordinate(
+                phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+            )
+
+            d = mv / n + pc_local - na_local[1]
 
         return sig, n, d
 
@@ -527,13 +532,10 @@ class Tri3:
         """
 
         # initialise element results
-        area_e = 0
-        qx_e = 0
-        qy_e = 0
         force_e = 0
         mv_e = 0
 
-        # get points for 1 point Gaussian integration
+        # get points for 3 point Gaussian integration
         gps = utils.gauss_points(n=3)
 
         # loop through each gauss point
@@ -544,11 +546,6 @@ class Tri3:
             # get coordinates (wrt NA) of the gauss point
             x = np.dot(N, np.transpose(self.coords[0, :])) - cx
             y = np.dot(N, np.transpose(self.coords[1, :])) - cy
-
-            # calculate area properties
-            area_e += gp[0] * j
-            qx_e += gp[0] * y * j
-            qy_e += gp[0] * x * j
 
             # axial force
             force_gp = 0
@@ -605,10 +602,8 @@ class Tri3:
         """
 
         # initialise element results
-        area_e = 0
-        qx_e = 0
-        qy_e = 0
         force_e = 0
+        mv_e = 0
 
         # get points for 1 point Gaussian integration
         gps = utils.gauss_points(n=1)
@@ -622,11 +617,6 @@ class Tri3:
             x = np.dot(N, np.transpose(self.coords[0, :]))
             y = np.dot(N, np.transpose(self.coords[1, :]))
 
-            # calculate area properties
-            area_e += gp[0] * j
-            qx_e += gp[0] * y * j
-            qy_e += gp[0] * x * j
-
             # get strain at gauss point
             strain = utils.get_service_strain(
                 point=(x, y),
@@ -639,18 +629,16 @@ class Tri3:
             stress = self.conc_material.stress_strain_profile.get_stress(strain=strain)
 
             # calculate force (stress * area)
-            force_e += gp[0] * stress * j
+            force_gp = gp[0] * stress * j
 
-        # calculate element centroid
-        cx_e, cy_e = qy_e / area_e, qx_e / area_e
+            # convert gauss point to local coordinates
+            _, c_v = sp_fea.principal_coordinate(phi=theta * 180 / np.pi, x=x, y=y)
 
-        # convert centroid to local coordinates
-        _, c_v = sp_fea.principal_coordinate(phi=theta * 180 / np.pi, x=cx_e, y=cy_e)
+            # add force and moment
+            force_e += force_gp
+            mv_e += force_gp * (c_v - na_local)
 
-        # calculate moment
-        mv = force_e * (c_v - na_local)
-
-        return force_e, mv
+        return force_e, mv_e
 
     def calculate_ultimate_actions(
         self,
@@ -674,10 +662,8 @@ class Tri3:
         """
 
         # initialise element results
-        area_e = 0
-        qx_e = 0
-        qy_e = 0
         force_e = 0
+        mv_e = 0
 
         # get points for 1 point Gaussian integration
         gps = utils.gauss_points(n=1)
@@ -690,11 +676,6 @@ class Tri3:
             # get coordinates of the gauss point
             x = np.dot(N, np.transpose(self.coords[0, :]))
             y = np.dot(N, np.transpose(self.coords[1, :]))
-
-            # calculate area properties
-            area_e += gp[0] * j
-            qx_e += gp[0] * y * j
-            qy_e += gp[0] * x * j
 
             # get strain at gauss point
             strain = utils.get_ultimate_strain(
@@ -711,15 +692,13 @@ class Tri3:
             )
 
             # calculate force (stress * area)
-            force_e += gp[0] * stress * j
+            force_gp = gp[0] * stress * j
 
-        # calculate element centroid
-        cx_e, cy_e = qy_e / area_e, qx_e / area_e
+            # convert gauss point to local coordinates
+            _, c_v = sp_fea.principal_coordinate(phi=theta * 180 / np.pi, x=x, y=y)
 
-        # convert centroid to local coordinates
-        _, c_v = sp_fea.principal_coordinate(phi=theta * 180 / np.pi, x=cx_e, y=cy_e)
+            # add force and moment
+            force_e += force_gp
+            mv_e += force_gp * (c_v - pc_local)
 
-        # calculate moment
-        mv = force_e * (c_v - pc_local)
-
-        return force_e, mv
+        return force_e, mv_e

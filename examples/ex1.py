@@ -55,15 +55,15 @@ geometry = concrete_circular_section(
 conc_sec = ConcreteSection(geometry)
 conc_sec.plot_section()
 
+# CRACKED PROPERTIES
+cracked_res = conc_sec.calculate_cracked_properties()
+cracked_res.print_results()
+
 # ULTIMATE CAPACITY
 ultimate_res = conc_sec.ultimate_bending_capacity()
 ultimate_res.print_results()
 conc_sec.moment_interaction_diagram().plot_diagram()
 conc_sec.biaxial_bending_diagram(n=4000e3).plot_diagram()
-
-# CRACKED PROPERTIES
-cracked_res = conc_sec.calculate_cracked_properties()
-cracked_res.print_results()
 
 # PLOT STRESSES
 uncr_stress_res = conc_sec.calculate_uncracked_stress(mx=50e6)
