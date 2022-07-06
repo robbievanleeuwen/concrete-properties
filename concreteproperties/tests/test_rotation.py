@@ -65,6 +65,7 @@ ref_sec = ConcreteSection(ref_geom)
 ref_gross_results = ref_sec.gross_properties
 ref_cracked = ref_sec.calculate_cracked_properties()
 
+
 @pytest.mark.parametrize("theta", thetas)
 def test_rotated_gross_properties(theta):
     # rotate reference geometry
@@ -115,6 +116,7 @@ def test_rotated_cracked_properties(theta):
 # list of normal forces
 normal_forces = [-1e3, 0, 1e3, 1e5]
 
+
 @pytest.mark.parametrize("theta", thetas)
 def test_rotated_ultimate_properties(theta):
     # rotate reference geometry
@@ -131,6 +133,7 @@ def test_rotated_ultimate_properties(theta):
 
 # list of normal forces
 normal_forces = [-1e3, 0, 1e3, 1e5]
+
 
 @pytest.mark.parametrize("theta", thetas)
 def test_rotated_uncracked_stress(theta):
@@ -159,6 +162,7 @@ def test_rotated_uncracked_stress(theta):
 # list of normal forces
 normal_forces = [-1e3, 0, 1e3, 1e5]
 
+
 @pytest.mark.parametrize("theta", thetas)
 def test_rotated_cracked_stress(theta):
     # rotate reference geometry
@@ -170,8 +174,12 @@ def test_rotated_cracked_stress(theta):
     m = 100e6
 
     for nf in normal_forces:
-        ref_cr_stress = ref_sec.calculate_cracked_stress(cracked_results=ref_cracked, n=nf, m=m)
-        new_cr_stress = new_sec.calculate_cracked_stress(cracked_results=new_cracked, n=nf, m=m)
+        ref_cr_stress = ref_sec.calculate_cracked_stress(
+            cracked_results=ref_cracked, n=nf, m=m
+        )
+        new_cr_stress = new_sec.calculate_cracked_stress(
+            cracked_results=new_cracked, n=nf, m=m
+        )
 
         for idx, cf in enumerate(new_cr_stress.concrete_forces):
             assert pytest.approx(cf[0]) == ref_cr_stress.concrete_forces[idx][0]
@@ -185,6 +193,7 @@ def test_rotated_cracked_stress(theta):
 # list of normal forces
 normal_forces = [-1e3, 0, 1e3, 1e5]
 
+
 @pytest.mark.parametrize("theta", thetas)
 def test_rotated_ultimate_stress(theta):
     # rotate reference geometry
@@ -195,9 +204,12 @@ def test_rotated_ultimate_stress(theta):
         ref_ultimate = ref_sec.ultimate_bending_capacity(n=nf)
         new_ultimate = new_sec.ultimate_bending_capacity(theta=theta, n=nf)
 
-
-        ref_ult_stress = ref_sec.calculate_ultimate_stress(ultimate_results=ref_ultimate)
-        new_ult_stress = new_sec.calculate_ultimate_stress(ultimate_results=new_ultimate)
+        ref_ult_stress = ref_sec.calculate_ultimate_stress(
+            ultimate_results=ref_ultimate
+        )
+        new_ult_stress = new_sec.calculate_ultimate_stress(
+            ultimate_results=new_ultimate
+        )
 
         for idx, cf in enumerate(new_ult_stress.concrete_forces):
             assert pytest.approx(cf[0]) == ref_ult_stress.concrete_forces[idx][0]
