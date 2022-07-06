@@ -809,61 +809,6 @@ bending case.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.get_c_local">
-<span class="sig-name descname"><span class="pre">get_c_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_c_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.get_c_local" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the elastic centroid location in local coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Elastic centroid in local coordinates <cite>(c_u, c_v)</cite></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[float]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.get_pc_local">
-<span class="sig-name descname"><span class="pre">get_pc_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_pc_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.get_pc_local" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the plastic centroid location in local coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Plastic centroid in local coordinates <cite>(pc_u, pc_v)</cite></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[float]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.plot_section">
-<span class="sig-name descname"><span class="pre">plot_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Reinforced</span> <span class="pre">Concrete</span> <span class="pre">Section'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.plot_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.plot_section" title="Permalink to this definition">#</a></dt>
-<dd><p>Plots the reinforced concrete section.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot title</p></li>
-<li><p><strong>background</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – If set to True, uses the plot as a background plot</p></li>
-<li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Matplotlib axes object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.calculate_uncracked_stress">
 <span class="sig-name descname"><span class="pre">calculate_uncracked_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.CrackedResults.html#concreteproperties.results.CrackedResults" title="concreteproperties.results.CrackedResults"><span class="pre">CrackedResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_uncracked_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_uncracked_stress" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates stresses within the reinforced concrete section assuming an
@@ -948,6 +893,61 @@ within the section.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.get_c_local">
+<span class="sig-name descname"><span class="pre">get_c_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_c_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.get_c_local" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the elastic centroid location in local coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Elastic centroid in local coordinates <cite>(c_u, c_v)</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.get_pc_local">
+<span class="sig-name descname"><span class="pre">get_pc_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_pc_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.get_pc_local" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the plastic centroid location in local coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Plastic centroid in local coordinates <cite>(pc_u, pc_v)</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.plot_section">
+<span class="sig-name descname"><span class="pre">plot_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Reinforced</span> <span class="pre">Concrete</span> <span class="pre">Section'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.plot_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.plot_section" title="Permalink to this definition">#</a></dt>
+<dd><p>Plots the reinforced concrete section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot title</p></li>
+<li><p><strong>background</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – If set to True, uses the plot as a background plot</p></li>
+<li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></code></p>
 </dd>
 </dl>
 </dd></dl>

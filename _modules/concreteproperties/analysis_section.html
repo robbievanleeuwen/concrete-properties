@@ -536,7 +536,12 @@
         <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="n">mv</span> <span class="o">/</span> <span class="n">n</span> <span class="o">-</span> <span class="n">pc_local</span> <span class="o">-</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># get principal coordinates of neutral axis</span>
+            <span class="n">na_local</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">principal_coordinate</span><span class="p">(</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="n">d</span> <span class="o">=</span> <span class="n">mv</span> <span class="o">/</span> <span class="n">n</span> <span class="o">+</span> <span class="n">pc_local</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">sig</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span></div>
 
@@ -715,13 +720,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># initialise element results</span>
-        <span class="n">area_e</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">qx_e</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">qy_e</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">force_e</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">mv_e</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="c1"># get points for 1 point Gaussian integration</span>
+        <span class="c1"># get points for 3 point Gaussian integration</span>
         <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
         <span class="c1"># loop through each gauss point</span>
@@ -732,11 +734,6 @@
             <span class="c1"># get coordinates (wrt NA) of the gauss point</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))</span> <span class="o">-</span> <span class="n">cx</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]))</span> <span class="o">-</span> <span class="n">cy</span>
-
-            <span class="c1"># calculate area properties</span>
-            <span class="n">area_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">j</span>
-            <span class="n">qx_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">j</span>
-            <span class="n">qy_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">j</span>
 
             <span class="c1"># axial force</span>
             <span class="n">force_gp</span> <span class="o">=</span> <span class="mi">0</span>
@@ -793,10 +790,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># initialise element results</span>
-        <span class="n">area_e</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">qx_e</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">qy_e</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">force_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mv_e</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># get points for 1 point Gaussian integration</span>
         <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -810,11 +805,6 @@
             <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]))</span>
 
-            <span class="c1"># calculate area properties</span>
-            <span class="n">area_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">j</span>
-            <span class="n">qx_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">j</span>
-            <span class="n">qy_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">j</span>
-
             <span class="c1"># get strain at gauss point</span>
             <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_service_strain</span><span class="p">(</span>
                 <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
@@ -827,18 +817,16 @@
             <span class="n">stress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">)</span>
 
             <span class="c1"># calculate force (stress * area)</span>
-            <span class="n">force_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">stress</span> <span class="o">*</span> <span class="n">j</span>
+            <span class="n">force_gp</span> <span class="o">=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">stress</span> <span class="o">*</span> <span class="n">j</span>
 
-        <span class="c1"># calculate element centroid</span>
-        <span class="n">cx_e</span><span class="p">,</span> <span class="n">cy_e</span> <span class="o">=</span> <span class="n">qy_e</span> <span class="o">/</span> <span class="n">area_e</span><span class="p">,</span> <span class="n">qx_e</span> <span class="o">/</span> <span class="n">area_e</span>
+            <span class="c1"># convert gauss point to local coordinates</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">sp_fea</span><span class="o">.</span><span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
-        <span class="c1"># convert centroid to local coordinates</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">sp_fea</span><span class="o">.</span><span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">cx_e</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">cy_e</span><span class="p">)</span>
+            <span class="c1"># add force and moment</span>
+            <span class="n">force_e</span> <span class="o">+=</span> <span class="n">force_gp</span>
+            <span class="n">mv_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">)</span>
 
-        <span class="c1"># calculate moment</span>
-        <span class="n">mv</span> <span class="o">=</span> <span class="n">force_e</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">mv</span></div>
+        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">mv_e</span></div>
 
 <div class="viewcode-block" id="Tri3.calculate_ultimate_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_ultimate_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ultimate_actions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -862,10 +850,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># initialise element results</span>
-        <span class="n">area_e</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">qx_e</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">qy_e</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">force_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mv_e</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># get points for 1 point Gaussian integration</span>
         <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -878,11 +864,6 @@
             <span class="c1"># get coordinates of the gauss point</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]))</span>
-
-            <span class="c1"># calculate area properties</span>
-            <span class="n">area_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">j</span>
-            <span class="n">qx_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">j</span>
-            <span class="n">qy_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">j</span>
 
             <span class="c1"># get strain at gauss point</span>
             <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(</span>
@@ -899,18 +880,16 @@
             <span class="p">)</span>
 
             <span class="c1"># calculate force (stress * area)</span>
-            <span class="n">force_e</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">stress</span> <span class="o">*</span> <span class="n">j</span>
+            <span class="n">force_gp</span> <span class="o">=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">stress</span> <span class="o">*</span> <span class="n">j</span>
 
-        <span class="c1"># calculate element centroid</span>
-        <span class="n">cx_e</span><span class="p">,</span> <span class="n">cy_e</span> <span class="o">=</span> <span class="n">qy_e</span> <span class="o">/</span> <span class="n">area_e</span><span class="p">,</span> <span class="n">qx_e</span> <span class="o">/</span> <span class="n">area_e</span>
+            <span class="c1"># convert gauss point to local coordinates</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">sp_fea</span><span class="o">.</span><span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
-        <span class="c1"># convert centroid to local coordinates</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">sp_fea</span><span class="o">.</span><span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">cx_e</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">cy_e</span><span class="p">)</span>
+            <span class="c1"># add force and moment</span>
+            <span class="n">force_e</span> <span class="o">+=</span> <span class="n">force_gp</span>
+            <span class="n">mv_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">pc_local</span><span class="p">)</span>
 
-        <span class="c1"># calculate moment</span>
-        <span class="n">mv</span> <span class="o">=</span> <span class="n">force_e</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">pc_local</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">mv</span></div></div>
+        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">mv_e</span></div></div>
 </pre></div>
 
               </article>
