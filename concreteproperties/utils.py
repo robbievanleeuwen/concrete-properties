@@ -12,6 +12,8 @@ from sectionproperties.pre.geometry import CompoundGeometry
 if TYPE_CHECKING:
     from sectionproperties.pre.geometry import Geometry
 
+from rich.pretty import pprint
+
 
 def get_service_strain(
     point: Tuple[float],
@@ -141,6 +143,7 @@ def split_section_at_strains(
 
     # create splits in concrete geometries at points in stress strain profiles
     concrete_split_geoms = []
+    top_only_geoms = []
 
     for conc_geom in concrete_geometries:
         if ultimate:
@@ -179,9 +182,10 @@ def split_section_at_strains(
 
         # save final top geoms
         concrete_split_geoms.extend(top_geoms)
+        top_only_geoms.extend(top_geoms)
 
     if top_only:
-        return top_geoms
+        return top_only_geoms
     else:
         return concrete_split_geoms
 

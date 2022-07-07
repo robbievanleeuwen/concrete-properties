@@ -1,6 +1,5 @@
 import pytest
 import numpy as np
-from rich.pretty import pprint
 
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
