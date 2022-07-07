@@ -909,7 +909,11 @@ class ConcreteSection:
             mv += force * (c_v - pc_local[1])
 
             # calculate k_u
-            _, ef_v = principal_coordinate(phi=ultimate_results.theta * 180 / np.pi, x=extreme_fibre[0], y=extreme_fibre[1])
+            _, ef_v = principal_coordinate(
+                phi=ultimate_results.theta * 180 / np.pi,
+                x=extreme_fibre[0],
+                y=extreme_fibre[1],
+            )
             d = ef_v - c_v
             k_u.append(d_n / d)
 

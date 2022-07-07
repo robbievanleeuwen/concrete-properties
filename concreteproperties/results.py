@@ -480,7 +480,9 @@ class UltimateBendingResults:
 
         table.add_row("Bending Angle - theta", "{:>{fmt}}".format(self.theta, fmt=fmt))
         table.add_row("Neutral Axis Depth - d_n", "{:>{fmt}}".format(self.d_n, fmt=fmt))
-        table.add_row("Neutral Axis Parameter- k_u", "{:>{fmt}}".format(self.k_u, fmt=fmt))
+        table.add_row(
+            "Neutral Axis Parameter- k_u", "{:>{fmt}}".format(self.k_u, fmt=fmt)
+        )
         table.add_row("Axial Force", "{:>{fmt}}".format(self.n, fmt=fmt))
         table.add_row("Bending Capacity - mx", "{:>{fmt}}".format(self.mx, fmt=fmt))
         table.add_row("Bending Capacity - my", "{:>{fmt}}".format(self.my, fmt=fmt))
