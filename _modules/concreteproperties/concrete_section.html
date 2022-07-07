@@ -85,14 +85,14 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../rst/materials.html">
-  Materials
+ <a class="reference internal nav-link" href="../../rst/geometry.html">
+  Geometry
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../rst/concrete_section.html">
-  Concrete Section
+ <a class="reference internal nav-link" href="../../rst/materials.html">
+  Materials
  </a>
 </li>
 
@@ -1052,6 +1052,7 @@
         <span class="c1"># initialise results</span>
         <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">mv</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">k_u</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># calculate concrete actions</span>
         <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="n">concrete_split_geoms</span><span class="p">:</span>
@@ -1095,6 +1096,11 @@
             <span class="c1"># calculate moment</span>
             <span class="n">mv</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">pc_local</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
+            <span class="c1"># calculate k_u</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">ef_v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">ef_v</span> <span class="o">-</span> <span class="n">c_v</span>
+            <span class="n">k_u</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d_n</span> <span class="o">/</span> <span class="n">d</span><span class="p">)</span>
+
         <span class="c1"># convert mv to mx &amp; my</span>
         <span class="p">(</span><span class="n">my</span><span class="p">,</span> <span class="n">mx</span><span class="p">)</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span>
             <span class="n">phi</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">mv</span>
@@ -1102,6 +1108,7 @@
 
         <span class="c1"># save results</span>
         <span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span> <span class="o">=</span> <span class="n">d_n</span>
+        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">k_u</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">k_u</span><span class="p">)</span>
         <span class="n">ultimate_results</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
         <span class="n">ultimate_results</span><span class="o">.</span><span class="n">mx</span> <span class="o">=</span> <span class="n">mx</span>
         <span class="n">ultimate_results</span><span class="o">.</span><span class="n">my</span> <span class="o">=</span> <span class="n">my</span>
@@ -1271,7 +1278,7 @@
         <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">mx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">my</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">StressResult</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Calculates stresses within the reinforced concrete section assuming an</span>
 <span class="sd">        uncracked section.</span>
 
@@ -1294,6 +1301,7 @@
         <span class="n">conc_sigs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">conc_forces</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">steel_sigs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">steel_strains</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">steel_forces</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># get uncracked section properties</span>
@@ -1371,6 +1379,7 @@
                 <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
                 <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
             <span class="p">)</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">/</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
 
             <span class="c1"># net force and point of action</span>
             <span class="n">n_steel</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
@@ -1380,6 +1389,7 @@
             <span class="n">d</span> <span class="o">=</span> <span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="n">steel_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
+            <span class="n">steel_strains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span>
             <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">StressResult</span><span class="p">(</span>
@@ -1389,6 +1399,7 @@
             <span class="n">concrete_forces</span><span class="o">=</span><span class="n">conc_forces</span><span class="p">,</span>
             <span class="n">steel_geometries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">,</span>
             <span class="n">steel_stresses</span><span class="o">=</span><span class="n">steel_sigs</span><span class="p">,</span>
+            <span class="n">steel_strains</span><span class="o">=</span><span class="n">steel_strains</span><span class="p">,</span>
             <span class="n">steel_forces</span><span class="o">=</span><span class="n">steel_forces</span><span class="p">,</span>
         <span class="p">)</span></div>
 
@@ -1421,6 +1432,7 @@
         <span class="n">conc_sigs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">conc_forces</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">steel_sigs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">steel_strains</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">steel_forces</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># get cracked section properties</span>
@@ -1495,6 +1507,7 @@
                 <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
                 <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
             <span class="p">)</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">/</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
 
             <span class="c1"># net force and point of action</span>
             <span class="n">n_steel</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
@@ -1504,6 +1517,7 @@
             <span class="n">d</span> <span class="o">=</span> <span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="n">steel_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
+            <span class="n">steel_strains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span>
             <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">StressResult</span><span class="p">(</span>
@@ -1513,6 +1527,7 @@
             <span class="n">concrete_forces</span><span class="o">=</span><span class="n">conc_forces</span><span class="p">,</span>
             <span class="n">steel_geometries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">,</span>
             <span class="n">steel_stresses</span><span class="o">=</span><span class="n">steel_sigs</span><span class="p">,</span>
+            <span class="n">steel_strains</span><span class="o">=</span><span class="n">steel_strains</span><span class="p">,</span>
             <span class="n">steel_forces</span><span class="o">=</span><span class="n">steel_forces</span><span class="p">,</span>
         <span class="p">)</span></div>
 
@@ -1578,6 +1593,7 @@
         <span class="n">conc_sigs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">conc_forces</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">steel_sigs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">steel_strains</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">steel_forces</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># create splits in concrete geometries at points in stress strain profiles</span>
@@ -1629,6 +1645,7 @@
             <span class="n">d</span> <span class="o">=</span> <span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="n">steel_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
+            <span class="n">steel_strains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span>
             <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">StressResult</span><span class="p">(</span>
@@ -1638,6 +1655,7 @@
             <span class="n">concrete_forces</span><span class="o">=</span><span class="n">conc_forces</span><span class="p">,</span>
             <span class="n">steel_geometries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">,</span>
             <span class="n">steel_stresses</span><span class="o">=</span><span class="n">steel_sigs</span><span class="p">,</span>
+            <span class="n">steel_strains</span><span class="o">=</span><span class="n">steel_strains</span><span class="p">,</span>
             <span class="n">steel_forces</span><span class="o">=</span><span class="n">steel_forces</span><span class="p">,</span>
         <span class="p">)</span></div>
 
@@ -1680,6 +1698,7 @@
         <span class="n">conc_sigs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">conc_forces</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">steel_sigs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">steel_strains</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">steel_forces</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># create splits in concrete geometries at points in stress strain profiles</span>
@@ -1734,6 +1753,7 @@
             <span class="n">d</span> <span class="o">=</span> <span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="n">steel_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
+            <span class="n">steel_strains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span>
             <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">StressResult</span><span class="p">(</span>
@@ -1743,6 +1763,7 @@
             <span class="n">concrete_forces</span><span class="o">=</span><span class="n">conc_forces</span><span class="p">,</span>
             <span class="n">steel_geometries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">,</span>
             <span class="n">steel_stresses</span><span class="o">=</span><span class="n">steel_sigs</span><span class="p">,</span>
+            <span class="n">steel_strains</span><span class="o">=</span><span class="n">steel_strains</span><span class="p">,</span>
             <span class="n">steel_forces</span><span class="o">=</span><span class="n">steel_forces</span><span class="p">,</span>
         <span class="p">)</span></div>
 
