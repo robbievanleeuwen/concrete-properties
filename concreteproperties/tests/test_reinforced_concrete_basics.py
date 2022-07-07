@@ -280,6 +280,7 @@ def test_example_3_8():
     conc_sec = ConcreteSection(geometry)
     ultimate_results = conc_sec.ultimate_bending_capacity()
     assert pytest.approx(ultimate_results.d_n, abs=1) == 133
+    assert pytest.approx(ultimate_results.k_u, rel=0.01) == 133/390
     assert pytest.approx(ultimate_results.mx, rel=0.01) == 302e6
 
 
@@ -330,6 +331,7 @@ def test_example_3_9():
     conc_sec = ConcreteSection(geometry)
     ultimate_results = conc_sec.ultimate_bending_capacity()
     assert pytest.approx(ultimate_results.d_n, rel=0.03) == 100.7
+    assert pytest.approx(ultimate_results.k_u, rel=0.03) == 100.7 / 390
     assert pytest.approx(ultimate_results.mx, rel=0.01) == 309e6
 
 
@@ -383,6 +385,7 @@ def test_example_3_11():
     conc_sec = ConcreteSection(geom)
     ultimate_results = conc_sec.ultimate_bending_capacity()
     assert pytest.approx(ultimate_results.d_n, abs=1) == 196
+    assert pytest.approx(ultimate_results.k_u, rel=0.01) == 196 / (726 - 46)
     assert pytest.approx(ultimate_results.mx, rel=0.01) == 1860e6
 
 

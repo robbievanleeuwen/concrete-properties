@@ -864,6 +864,7 @@ class ConcreteSection:
         # initialise results
         n = 0
         mv = 0
+        k_u = []
 
         # calculate concrete actions
         for conc_geom in concrete_split_geoms:
@@ -907,6 +908,11 @@ class ConcreteSection:
             # calculate moment
             mv += force * (c_v - pc_local[1])
 
+            # calculate k_u
+            _, ef_v = principal_coordinate(phi=ultimate_results.theta * 180 / np.pi, x=extreme_fibre[0], y=extreme_fibre[1])
+            d = ef_v - c_v
+            k_u.append(d_n / d)
+
         # convert mv to mx & my
         (my, mx) = global_coordinate(
             phi=ultimate_results.theta * 180 / np.pi, x11=0, y22=mv
@@ -914,6 +920,7 @@ class ConcreteSection:
 
         # save results
         ultimate_results.d_n = d_n
+        ultimate_results.k_u = min(k_u)
         ultimate_results.n = n
         ultimate_results.mx = mx
         ultimate_results.my = my
@@ -1083,7 +1090,7 @@ class ConcreteSection:
         n: Optional[float] = 0,
         mx: Optional[float] = 0,
         my: Optional[float] = 0,
-    ) -> res.CrackedResults:
+    ) -> res.StressResult:
         """Calculates stresses within the reinforced concrete section assuming an
         uncracked section.
 
@@ -1106,6 +1113,7 @@ class ConcreteSection:
         conc_sigs = []
         conc_forces = []
         steel_sigs = []
+        steel_strains = []
         steel_forces = []
 
         # get uncracked section properties
@@ -1183,6 +1191,7 @@ class ConcreteSection:
                 +(e_ixx * my) / (e_ixx * e_iyy - e_ixy**2) * x
                 - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
             )
+            strain = sig / steel_geom.material.elastic_modulus
 
             # net force and point of action
             n_steel = sig * steel_geom.calculate_area()
@@ -1192,6 +1201,7 @@ class ConcreteSection:
             d = c_v - na_local[1]
 
             steel_sigs.append(sig)
+            steel_strains.append(strain)
             steel_forces.append((n_steel, d))
 
         return res.StressResult(
@@ -1201,6 +1211,7 @@ class ConcreteSection:
             concrete_forces=conc_forces,
             steel_geometries=self.steel_geometries,
             steel_stresses=steel_sigs,
+            steel_strains=steel_strains,
             steel_forces=steel_forces,
         )
 
@@ -1233,6 +1244,7 @@ class ConcreteSection:
         conc_sigs = []
         conc_forces = []
         steel_sigs = []
+        steel_strains = []
         steel_forces = []
 
         # get cracked section properties
@@ -1307,6 +1319,7 @@ class ConcreteSection:
                 +(e_ixx * my) / (e_ixx * e_iyy - e_ixy**2) * x
                 - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
             )
+            strain = sig / steel_geom.material.elastic_modulus
 
             # net force and point of action
             n_steel = sig * steel_geom.calculate_area()
@@ -1316,6 +1329,7 @@ class ConcreteSection:
             d = c_v - na_local[1]
 
             steel_sigs.append(sig)
+            steel_strains.append(strain)
             steel_forces.append((n_steel, d))
 
         return res.StressResult(
@@ -1325,6 +1339,7 @@ class ConcreteSection:
             concrete_forces=conc_forces,
             steel_geometries=self.steel_geometries,
             steel_stresses=steel_sigs,
+            steel_strains=steel_strains,
             steel_forces=steel_forces,
         )
 
@@ -1390,6 +1405,7 @@ class ConcreteSection:
         conc_sigs = []
         conc_forces = []
         steel_sigs = []
+        steel_strains = []
         steel_forces = []
 
         # create splits in concrete geometries at points in stress strain profiles
@@ -1441,6 +1457,7 @@ class ConcreteSection:
             d = c_v - na_local[1]
 
             steel_sigs.append(sig)
+            steel_strains.append(strain)
             steel_forces.append((n_steel, d))
 
         return res.StressResult(
@@ -1450,6 +1467,7 @@ class ConcreteSection:
             concrete_forces=conc_forces,
             steel_geometries=self.steel_geometries,
             steel_stresses=steel_sigs,
+            steel_strains=steel_strains,
             steel_forces=steel_forces,
         )
 
@@ -1492,6 +1510,7 @@ class ConcreteSection:
         conc_sigs = []
         conc_forces = []
         steel_sigs = []
+        steel_strains = []
         steel_forces = []
 
         # create splits in concrete geometries at points in stress strain profiles
@@ -1546,6 +1565,7 @@ class ConcreteSection:
             d = c_v - na_local[1]
 
             steel_sigs.append(sig)
+            steel_strains.append(strain)
             steel_forces.append((n_steel, d))
 
         return res.StressResult(
@@ -1555,6 +1575,7 @@ class ConcreteSection:
             concrete_forces=conc_forces,
             steel_geometries=self.steel_geometries,
             steel_stresses=steel_sigs,
+            steel_strains=steel_strains,
             steel_forces=steel_forces,
         )
 

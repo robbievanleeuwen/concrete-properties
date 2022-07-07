@@ -27,8 +27,8 @@ What is *concreteproperties*???
    :caption: Contents:
 
    rst/installation
+   rst/geometry
    rst/materials
-   rst/concrete_section
    rst/analysis
    rst/results
    rst/examples

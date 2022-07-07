@@ -7,10 +7,10 @@
   - [x] Stress forces - check force equilibrium and desired moments
 - [x] FORCE THETA -pi to pi
 - [ ] Clean up all the na_local, points_na etc. etc.
-- [ ] Add steel strain to StressResult
+- [x] Add steel strain to StressResult & ku to UltimateResult (=dn/d)
 - [ ] Clean up profiles - maybe require that certain profiles may only be used for each material?
 - [x] Finish pre.py
-- [ ] Start to add codes
+- [ ] Start to add design codes
 - [ ] Documentation!
   - [ ] Is there a way to generate output within a docstring??
   - [ ] gif of progressive service stress plot?

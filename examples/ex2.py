@@ -66,6 +66,10 @@ cracked_res = conc_sec.calculate_cracked_properties()
 cracked_res.calculate_transformed_properties(elastic_modulus=32.8e3)
 cracked_res.print_results()
 
+# ULTIMATE CAPACITY
+ultimate_res = conc_sec.ultimate_bending_capacity()
+ultimate_res.print_results()
+
 # CALCULATE MOMENT INTERACTION DIAGRAM
 mi_res = conc_sec.moment_interaction_diagram(m_neg=True)
 mi_res.plot_diagram()
