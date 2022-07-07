@@ -2,12 +2,15 @@
 - [x] Do the same thing for service stresses
 - [x] Stress plot - add tricontour for zero stress only?
 - [x] Add testing
-  - [ ] Stresses for RCB tests
+  - [x] Stresses for RCB tests
   - [x] Rotation tests - rotate geometry & theta and check results are constant
   - [x] Stress forces - check force equilibrium and desired moments
-- [ ] FORCE THETA -pi to pi
+- [x] FORCE THETA -pi to pi
 - [ ] Clean up all the na_local, points_na etc. etc.
 - [ ] Add steel strain to StressResult
 - [ ] Clean up profiles - maybe require that certain profiles may only be used for each material?
+- [x] Finish pre.py
+- [ ] Start to add codes
 - [ ] Documentation!
   - [ ] Is there a way to generate output within a docstring??
+  - [ ] gif of progressive service stress plot?

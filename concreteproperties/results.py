@@ -253,7 +253,7 @@ class CrackedResults:
     :meth:`~concreteproperties.results.CrackedResults.calculate_transformed_properties`
     method.
 
-    :param float theta: Neutral axis angle about which bending is taking place
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
     """
 
     theta: float
@@ -371,7 +371,7 @@ class CrackedResults:
 class MomentCurvatureResults:
     """Class for storing moment curvature results.
 
-    :param float theta: Angle the neutral axis makes with the horizontal axis
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
     """
 
     # results
@@ -448,7 +448,7 @@ class MomentCurvatureResults:
 class UltimateBendingResults:
     """Class for storing ultimate bending results.
 
-    :param float theta: Angle the neutral axis makes with the horizontal axis
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
     """
 
     # bending angle

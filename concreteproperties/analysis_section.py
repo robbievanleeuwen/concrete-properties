@@ -100,7 +100,7 @@ class AnalysisSection:
         :param float e_ixx: Flexural rigidity about the x-axis
         :param float e_iyy: Flexural rigidity about the y-axis
         :param float e_ixy: Flexural rigidity about the xy-axis
-        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
 
         :return: Elastic stresses, net force and distance from neutral axis to point of
             force action
@@ -170,7 +170,7 @@ class AnalysisSection:
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
         :param float kappa: Curvature
         :param float na_local: y-location of the neutral axis in local coordinates
 
@@ -211,7 +211,7 @@ class AnalysisSection:
         :param float kappa: Curvature
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
-        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
         :param float na_local: y-location of the neutral axis in local coordinates
 
         :return: Service stresses, net force and distance from neutral axis to point of
@@ -267,7 +267,7 @@ class AnalysisSection:
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
         :param float ultimate_strain: Strain at the extreme compression fibre
         :param float pc_local: y-location of the plastic centroid in local coordinates
 
@@ -307,7 +307,7 @@ class AnalysisSection:
         :param float d_n: Neutral axis depth
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
-        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
         :param float ultimate_strain: Strain at the extreme compression fibre
         :param float pc_local: y-location of the plastic centroid in local coordinates
 
@@ -525,7 +525,7 @@ class Tri3:
         :param float e_ixx: Flexural rigidity about the x-axis
         :param float e_iyy: Flexural rigidity about the y-axis
         :param float e_ixy: Flexural rigidity about the xy-axis
-        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
 
         :return: Elastic force and resultant moment
         :rtype: Tuple[float]
@@ -593,7 +593,7 @@ class Tri3:
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
         :param float kappa: Curvature
         :param float na_local: y-location of the neutral axis in local coordinates
 
@@ -653,7 +653,7 @@ class Tri3:
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
         :param float ultimate_strain: Strain at the extreme compression fibre
         :param float pc_local: y-location of the plastic centroid in local coordinates
 

@@ -303,7 +303,7 @@ class ConcreteSection:
     ) -> res.CrackedResults:
         """Calculates cracked section properties given a neutral axis angle `theta`.
 
-        :param theta: Neutral axis angle about which bending is taking place
+        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
         :type theta: Optional[float]
 
         :return: Cracked results object
@@ -408,7 +408,7 @@ class ConcreteSection:
     ) -> float:
         """Calculates the cracking moment given a bending angle `theta`.
 
-        :param float theta: Neutral axis angle about which bending is taking place
+        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
 
         :return: Cracking moment
         :rtype: float
@@ -539,7 +539,7 @@ class ConcreteSection:
 
         Analysis continues until the steel reaches fracture strain.
 
-        :param theta: Neutral axis angle about which bending is taking place
+        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
         :type theta: Optional[float]
         :param kappa_inc: Initial curvature increment
         :type kappa_inc: Optional[float]
@@ -753,7 +753,7 @@ class ConcreteSection:
         """Given a neutral axis angle `theta` and an axial force `n`, calculates the
         ultimate bending capacity.
 
-        :param theta: Angle the neutral axis makes with the horizontal axis
+        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
         :type theta: Optional[float]
         :param n: Net axial force
         :type n: Optional[float]
@@ -815,9 +815,7 @@ class ConcreteSection:
     def calculate_ultimate_section_actions(
         self,
         d_n: float,
-        ultimate_results: Optional[
-            res.UltimateBendingResults
-        ] = res.UltimateBendingResults(theta=0),
+        ultimate_results: Optional[res.UltimateBendingResults] = None,
     ) -> results.UltimateBendingResults:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
         the resultant bending moments `mx`, `my`, `mv` and the net axial force `n`.
@@ -830,6 +828,9 @@ class ConcreteSection:
         :return: Ultimate bending results object
         :rtype: :class:`~concreteproperties.results.UltimateBendingResults`
         """
+
+        if ultimate_results is None:
+            ultimate_results = res.UltimateBendingResults(theta=0)
 
         # calculate extreme fibre in global coordinates
         extreme_fibre, d_t = utils.calculate_extreme_fibre(
@@ -930,7 +931,7 @@ class ConcreteSection:
         and `n_points` calculation points between the decompression case and the pure
         bending case.
 
-        :param theta: Angle the neutral axis makes with the horizontal axis
+        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
         :type theta: Optional[float]
         :param m_neg: If set to true, also calculates the moment interaction for
         :type m_neg: Optional[bool]
@@ -990,6 +991,10 @@ class ConcreteSection:
             # if calculating negative bending
             if m_neg:
                 theta += np.pi
+
+                if theta > np.pi:
+                    theta -= 2 * np.pi
+
                 # compute extreme tensile fibre
                 _, d_t = utils.calculate_extreme_fibre(
                     points=self.geometry.points, theta=theta
@@ -1046,7 +1051,7 @@ class ConcreteSection:
         d_theta = 2 * np.pi / n_points
 
         # generate list of thetas
-        theta_list = np.linspace(start=0, stop=2 * np.pi - d_theta, num=n_points)
+        theta_list = np.linspace(start=-np.pi, stop=np.pi - d_theta, num=n_points)
 
         # create progress bar
         with utils.create_known_progress() as progress:
@@ -1559,7 +1564,7 @@ class ConcreteSection:
     ) -> Tuple[float]:
         """Returns the elastic centroid location in local coordinates.
 
-        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
 
         :return: Elastic centroid in local coordinates `(c_u, c_v)`
         :rtype: Tuple[float]
@@ -1577,7 +1582,7 @@ class ConcreteSection:
     ) -> Tuple[float]:
         """Returns the plastic centroid location in local coordinates.
 
-        :param float theta: Angle the neutral axis makes with the horizontal axis
+        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
 
         :return: Plastic centroid in local coordinates `(pc_u, pc_v)`
         :rtype: Tuple[float]

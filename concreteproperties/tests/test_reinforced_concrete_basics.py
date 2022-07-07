@@ -1,20 +1,20 @@
 import pytest
 import numpy as np
 
+from concreteproperties.pre import add_bar, add_bar_rectangular_array
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
+import concreteproperties.results as res
 from concreteproperties.stress_strain_profile import (
     LinearProfile,
     WhitneyStressBlock,
     SteelElasticPlastic,
 )
 
+import sectionproperties.pre.library.primitive_sections as sp_ps
+from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
 
-from sectionproperties.pre.library.concrete_sections import (
-    concrete_rectangular_section,
-    concrete_tee_section,
-)
-from sectionproperties.pre.library.primitive_sections import circular_section_by_area
+from rich.pretty import pprint
 
 # All examples come from:
 # Warner, R. F., Foster, S. J., & Kilpatrick, A. E. (2007). Reinforced Concrete Basics (1st ed.). Pearson Australia.
@@ -68,6 +68,9 @@ def test_example_3_1():
     props = conc_sec.get_transformed_gross_properties(elastic_modulus=30.1e3)
     cracked_results = conc_sec.calculate_cracked_properties()
     cracked_results.calculate_transformed_properties(elastic_modulus=30.1e3)
+    cracked_stress = conc_sec.calculate_cracked_stress(
+        cracked_results=cracked_results, m=100e6
+    )
 
     assert pytest.approx(conc_sec.gross_properties.cy, abs=1) == 450 - 234
     assert pytest.approx(props.ixx_c, rel=0.01) == 2.47e9
@@ -75,8 +78,8 @@ def test_example_3_1():
     assert pytest.approx(cracked_results.d_nc, rel=0.01) == 125
     assert pytest.approx(cracked_results.ixx_c_cr, rel=0.01) == 821e6
     assert pytest.approx(cracked_results.iuu_cr, rel=0.01) == 821e6
-
-    # TODO: stresses
+    assert pytest.approx(max(cracked_stress.concrete_stresses[0]), rel=0.01) == 15.3
+    assert pytest.approx(min(cracked_stress.steel_stresses), rel=0.01) == -213
 
 
 def test_example_3_2():
@@ -108,49 +111,43 @@ def test_example_3_2():
         colour="grey",
     )
 
-    geom = concrete_tee_section(
-        b=300,
-        d=800,
-        b_f=1000,
-        d_f=120,
-        dia_top=20,
-        n_top=0,
-        dia_bot=28,
-        n_bot=0,
-        n_circle=4,
-        cover=30,
-        conc_mat=concrete,
-        steel_mat=steel,
+    beam = sp_ps.rectangular_section(
+        d=800 - 120, b=300, material=concrete
     ).shift_section(x_offset=350)
+    slab = sp_ps.rectangular_section(d=120, b=1000, material=concrete).align_to(
+        other=beam, on="top"
+    )
+    geom = beam + slab
 
     # top bars
-    for idx in range(7):
-        bar = circular_section_by_area(area=310, n=4, material=steel).shift_section(
-            x_offset=40 + idx * 920 / 6, y_offset=740
-        )
+    geom = add_bar_rectangular_array(
+        geometry=geom,
+        area=310,
+        material=steel,
+        n_x=7,
+        x_s=920 / 6,
+        anchor=(40, 740),
+    )
 
-        geom = (geom - bar) + bar
-
-    # bot bars 1
-    for idx in range(3):
-        bar = circular_section_by_area(area=620, n=4, material=steel).shift_section(
-            x_offset=394 + idx * 212 / 2, y_offset=60
-        )
-
-        geom = (geom - bar) + bar
-
-    # bot bars 2
-    for idx in range(3):
-        bar = circular_section_by_area(area=620, n=4, material=steel).shift_section(
-            x_offset=394 + idx * 212 / 2, y_offset=120
-        )
-
-        geom = (geom - bar) + bar
+    # bot bars
+    geom = add_bar_rectangular_array(
+        geometry=geom,
+        area=620,
+        material=steel,
+        n_x=3,
+        x_s=212 / 2,
+        n_y=2,
+        y_s=60,
+        anchor=(394, 60),
+    )
 
     conc_sec = ConcreteSection(geom)
     props = conc_sec.get_transformed_gross_properties(elastic_modulus=30.1e3)
     cracked_results = conc_sec.calculate_cracked_properties()
     cracked_results.calculate_transformed_properties(elastic_modulus=30.1e3)
+    cracked_stress = conc_sec.calculate_cracked_stress(
+        cracked_results=cracked_results, m=450e6
+    )
 
     assert pytest.approx(conc_sec.gross_properties.cy, abs=1) == 800 - 327
     assert pytest.approx(props.ixx_c, rel=0.01) == 24.1e9
@@ -159,7 +156,15 @@ def test_example_3_2():
     assert pytest.approx(cracked_results.ixx_c_cr, rel=0.01) == 8.9e9
     assert pytest.approx(cracked_results.iuu_cr, rel=0.01) == 8.9e9
 
-    # TODO: stresses
+    # combine concrete stresses
+    conc_stresses = []
+    for cs in cracked_stress.concrete_stresses:
+        conc_stresses.extend(cs)
+
+    assert pytest.approx(max(conc_stresses), rel=0.01) == 8.1
+    assert pytest.approx(max(cracked_stress.steel_stresses), rel=0.02) == 33
+    assert pytest.approx(min(cracked_stress.steel_stresses), rel=0.01) == -193
+    assert pytest.approx(cracked_stress.steel_stresses[-1], rel=0.01) == -173
 
 
 def test_example_3_4():
@@ -191,36 +196,33 @@ def test_example_3_4():
         colour="grey",
     )
 
-    geom = concrete_tee_section(
-        b=300,
-        d=800,
-        b_f=1000,
-        d_f=120,
-        dia_top=20,
-        n_top=0,
-        dia_bot=28,
-        n_bot=0,
-        n_circle=4,
-        cover=30,
-        conc_mat=concrete,
-        steel_mat=steel,
+    beam = sp_ps.rectangular_section(
+        d=800 - 120, b=300, material=concrete
     ).shift_section(x_offset=350)
+    slab = sp_ps.rectangular_section(d=120, b=1000, material=concrete).align_to(
+        other=beam, on="top"
+    )
+    geom = beam + slab
 
     # top bars
-    for idx in range(7):
-        bar = circular_section_by_area(area=800, n=4, material=steel).shift_section(
-            x_offset=46 + idx * 908 / 6, y_offset=740
-        )
-
-        geom = (geom - bar) + bar
+    geom = add_bar_rectangular_array(
+        geometry=geom,
+        area=800,
+        material=steel,
+        n_x=7,
+        x_s=908 / 6,
+        anchor=(46, 740),
+    )
 
     # bot bars
-    for idx in range(3):
-        bar = circular_section_by_area(area=620, n=4, material=steel).shift_section(
-            x_offset=394 + idx * 212 / 2, y_offset=60
-        )
-
-        geom = (geom - bar) + bar
+    geom = add_bar_rectangular_array(
+        geometry=geom,
+        area=620,
+        material=steel,
+        n_x=3,
+        x_s=212 / 2,
+        anchor=(394, 60),
+    )
 
     conc_sec = ConcreteSection(geom)
     cracked_results = conc_sec.calculate_cracked_properties(theta=np.pi)
@@ -360,36 +362,23 @@ def test_example_3_11():
         colour="grey",
     )
 
-    geom = concrete_tee_section(
-        b=400,
-        d=726,
-        b_f=1100,
-        d_f=120,
-        dia_top=20,
-        n_top=0,
-        dia_bot=28,
-        n_bot=0,
-        n_circle=4,
-        cover=30,
-        conc_mat=concrete,
-        steel_mat=steel,
+    beam = sp_ps.rectangular_section(d=726 - 120, b=400, material=concrete)
+    slab = sp_ps.rectangular_section(d=120, b=1100, material=concrete).align_to(
+        other=beam, on="top"
     )
+    geom = beam + slab
 
-    # bot bars 1
-    for idx in range(4):
-        bar = circular_section_by_area(area=800, n=4, material=steel).shift_section(
-            x_offset=46 + idx * 308 / 3, y_offset=46
-        )
-
-        geom = (geom - bar) + bar
-
-    # bot bars 2
-    for idx in range(4):
-        bar = circular_section_by_area(area=800, n=4, material=steel).shift_section(
-            x_offset=46 + idx * 308 / 3, y_offset=106
-        )
-
-        geom = (geom - bar) + bar
+    # bot bars
+    geom = add_bar_rectangular_array(
+        geometry=geom,
+        area=800,
+        material=steel,
+        n_x=4,
+        x_s=308 / 3,
+        n_y=2,
+        y_s=60,
+        anchor=(46, 46),
+    )
 
     conc_sec = ConcreteSection(geom)
     ultimate_results = conc_sec.ultimate_bending_capacity()
@@ -397,6 +386,113 @@ def test_example_3_11():
     assert pytest.approx(ultimate_results.mx, rel=0.01) == 1860e6
 
 
-def test_example_3_14():
-    pass
-    # TODO: implement!
+def test_example_5_1():
+    concrete = Concrete(
+        name="40 MPa Concrete",
+        density=2.4e-6,
+        stress_strain_profile=LinearProfile(elastic_modulus=32.8e3),
+        ultimate_stress_strain_profile=WhitneyStressBlock(
+            alpha_2=0.85,
+            gamma=0.77,
+            compressive_strength=40,
+            ultimate_strain=0.003,
+        ),
+        alpha_1=0.85,
+        flexural_tensile_strength=3.4,
+        residual_shrinkage_stress=0,
+        colour="lightgrey",
+    )
+
+    steel = Steel(
+        name="500 MPa Steel",
+        density=7.85e-6,
+        yield_strength=500,
+        stress_strain_profile=SteelElasticPlastic(
+            yield_strength=500,
+            elastic_modulus=200e3,
+            fracture_strain=0.05,
+        ),
+        colour="grey",
+    )
+
+    geom = sp_ps.rectangular_section(d=800, b=600, material=concrete)
+    void = sp_ps.circular_section_by_area(area=np.pi * 75 * 75, n=16).shift_section(
+        x_offset=300, y_offset=300
+    )
+    geom -= void
+
+    geom = add_bar_rectangular_array(
+        geometry=geom,
+        area=800,
+        material=steel,
+        n_x=3,
+        x_s=234,
+        n_y=3,
+        y_s=334,
+        anchor=(66, 66),
+        exterior_only=True,
+    )
+
+    conc_sec = ConcreteSection(geom)
+
+    assert pytest.approx(conc_sec.gross_properties.axial_pc_y, rel=0.01) == 800 - 397
+
+
+def test_example_5_2():
+    concrete = Concrete(
+        name="40 MPa Concrete",
+        density=2.4e-6,
+        stress_strain_profile=LinearProfile(elastic_modulus=32.8e3),
+        ultimate_stress_strain_profile=WhitneyStressBlock(
+            alpha_2=0.85,
+            gamma=0.77,
+            compressive_strength=40,
+            ultimate_strain=0.003,
+        ),
+        alpha_1=0.85,
+        flexural_tensile_strength=3.4,
+        residual_shrinkage_stress=0,
+        colour="lightgrey",
+    )
+
+    steel = Steel(
+        name="500 MPa Steel",
+        density=7.85e-6,
+        yield_strength=500,
+        stress_strain_profile=SteelElasticPlastic(
+            yield_strength=500,
+            elastic_modulus=200e3,
+            fracture_strain=0.05,
+        ),
+        colour="grey",
+    )
+
+    geom = sp_ps.rectangular_section(d=600, b=400, material=concrete)
+    geom = add_bar(
+        geometry=geom,
+        area=1200,
+        material=steel,
+        x=200,
+        y=74,
+    )
+    geom = add_bar(
+        geometry=geom,
+        area=1200,
+        material=steel,
+        x=200,
+        y=600 - 74,
+    )
+
+    conc_sec = ConcreteSection(geom)
+    decomp = conc_sec.calculate_ultimate_section_actions(d_n=526)
+    balanced = conc_sec.calculate_ultimate_section_actions(d_n=287)
+    pure = conc_sec.ultimate_bending_capacity()
+
+    assert pytest.approx(conc_sec.gross_properties.squash_load, rel=0.01) == 9278e3
+    assert pytest.approx(decomp.n, rel=0.015) == 6108e3
+    assert pytest.approx(decomp.mv, rel=0.015) == 672e6
+    assert pytest.approx(balanced.n, rel=0.015) == 2939e3
+    assert pytest.approx(balanced.mv, rel=0.015) == 826e6
+    assert pytest.approx(pure.n, abs=20) == 0
+    assert pytest.approx(pure.mv, rel=0.015) == 306e6
+    assert pytest.approx(conc_sec.gross_properties.tensile_load, rel=0.01) == -1200e3
