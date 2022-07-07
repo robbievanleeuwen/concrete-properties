@@ -200,6 +200,8 @@
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span>
 
+<span class="kn">from</span> <span class="nn">rich.pretty</span> <span class="kn">import</span> <span class="n">pprint</span>
+
 
 <div class="viewcode-block" id="get_service_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.get_service_strain.html#concreteproperties.utils.get_service_strain">[docs]</a><span class="k">def</span> <span class="nf">get_service_strain</span><span class="p">(</span>
     <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
@@ -329,6 +331,7 @@
 
     <span class="c1"># create splits in concrete geometries at points in stress strain profiles</span>
     <span class="n">concrete_split_geoms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">top_only_geoms</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="n">concrete_geometries</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">ultimate</span><span class="p">:</span>
@@ -367,9 +370,10 @@
 
         <span class="c1"># save final top geoms</span>
         <span class="n">concrete_split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">top_geoms</span><span class="p">)</span>
+        <span class="n">top_only_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">top_geoms</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">top_only</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">top_geoms</span>
+        <span class="k">return</span> <span class="n">top_only_geoms</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">concrete_split_geoms</span></div>
 
