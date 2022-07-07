@@ -491,7 +491,7 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Calculates cracked section properties given a neutral axis angle `theta`.</span>
 
-<span class="sd">        :param theta: Neutral axis angle about which bending is taking place</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
 <span class="sd">        :type theta: Optional[float]</span>
 
 <span class="sd">        :return: Cracked results object</span>
@@ -596,7 +596,7 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Calculates the cracking moment given a bending angle `theta`.</span>
 
-<span class="sd">        :param float theta: Neutral axis angle about which bending is taking place</span>
+<span class="sd">        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
 
 <span class="sd">        :return: Cracking moment</span>
 <span class="sd">        :rtype: float</span>
@@ -727,7 +727,7 @@
 
 <span class="sd">        Analysis continues until the steel reaches fracture strain.</span>
 
-<span class="sd">        :param theta: Neutral axis angle about which bending is taking place</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
 <span class="sd">        :type theta: Optional[float]</span>
 <span class="sd">        :param kappa_inc: Initial curvature increment</span>
 <span class="sd">        :type kappa_inc: Optional[float]</span>
@@ -941,7 +941,7 @@
         <span class="sd">&quot;&quot;&quot;Given a neutral axis angle `theta` and an axial force `n`, calculates the</span>
 <span class="sd">        ultimate bending capacity.</span>
 
-<span class="sd">        :param theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
 <span class="sd">        :type theta: Optional[float]</span>
 <span class="sd">        :param n: Net axial force</span>
 <span class="sd">        :type n: Optional[float]</span>
@@ -1003,9 +1003,7 @@
 <div class="viewcode-block" id="ConcreteSection.calculate_ultimate_section_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ultimate_section_actions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">ultimate_results</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="n">ultimate_results</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates</span>
 <span class="sd">        the resultant bending moments `mx`, `my`, `mv` and the net axial force `n`.</span>
@@ -1018,6 +1016,9 @@
 <span class="sd">        :return: Ultimate bending results object</span>
 <span class="sd">        :rtype: :class:`~concreteproperties.results.UltimateBendingResults`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">ultimate_results</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ultimate_results</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># calculate extreme fibre in global coordinates</span>
         <span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
@@ -1118,7 +1119,7 @@
 <span class="sd">        and `n_points` calculation points between the decompression case and the pure</span>
 <span class="sd">        bending case.</span>
 
-<span class="sd">        :param theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
 <span class="sd">        :type theta: Optional[float]</span>
 <span class="sd">        :param m_neg: If set to true, also calculates the moment interaction for</span>
 <span class="sd">        :type m_neg: Optional[bool]</span>
@@ -1178,6 +1179,10 @@
             <span class="c1"># if calculating negative bending</span>
             <span class="k">if</span> <span class="n">m_neg</span><span class="p">:</span>
                 <span class="n">theta</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+                <span class="k">if</span> <span class="n">theta</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
+                    <span class="n">theta</span> <span class="o">-=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
                 <span class="c1"># compute extreme tensile fibre</span>
                 <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
                     <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
@@ -1234,7 +1239,7 @@
         <span class="n">d_theta</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n_points</span>
 
         <span class="c1"># generate list of thetas</span>
-        <span class="n">theta_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">d_theta</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
+        <span class="n">theta_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">d_theta</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
 
         <span class="c1"># create progress bar</span>
         <span class="k">with</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span> <span class="k">as</span> <span class="n">progress</span><span class="p">:</span>
@@ -1747,7 +1752,7 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Returns the elastic centroid location in local coordinates.</span>
 
-<span class="sd">        :param float theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
 
 <span class="sd">        :return: Elastic centroid in local coordinates `(c_u, c_v)`</span>
 <span class="sd">        :rtype: Tuple[float]</span>
@@ -1765,7 +1770,7 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Returns the plastic centroid location in local coordinates.</span>
 
-<span class="sd">        :param float theta: Angle the neutral axis makes with the horizontal axis</span>
+<span class="sd">        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
 
 <span class="sd">        :return: Plastic centroid in local coordinates `(pc_u, pc_v)`</span>
 <span class="sd">        :rtype: Tuple[float]</span>

@@ -171,11 +171,38 @@
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="concreteproperties.material.html">
-   concreteproperties.material
+  <a class="reference internal" href="concreteproperties.pre.html">
+   concreteproperties.pre
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.add_bar.html">
+     concreteproperties.pre.add_bar
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.add_bar_circular_array.html">
+     concreteproperties.pre.add_bar_circular_array
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.add_bar_rectangular_array.html">
+     concreteproperties.pre.add_bar_rectangular_array
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="concreteproperties.material.html">
+   concreteproperties.material
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -196,8 +223,8 @@
   <a class="reference internal" href="concreteproperties.stress_strain_profile.html">
    concreteproperties.stress_strain_profile
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -233,8 +260,8 @@
   <a class="reference internal" href="concreteproperties.concrete_section.html">
    concreteproperties.concrete_section
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -250,8 +277,8 @@
   <a class="reference internal" href="concreteproperties.analysis_section.html">
    concreteproperties.analysis_section
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -272,8 +299,8 @@
   <a class="reference internal" href="concreteproperties.results.html">
    concreteproperties.results
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -324,8 +351,8 @@
   <a class="reference internal" href="concreteproperties.post.html">
    concreteproperties.post
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -341,8 +368,8 @@
   <a class="reference internal" href="concreteproperties.utils.html">
    concreteproperties.utils
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -584,7 +611,7 @@ entirely cracked.</p>
 <dd><p>Calculates cracked section properties given a neutral axis angle <cite>theta</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>theta</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Neutral axis angle about which bending is taking place</p>
+<dd class="field-odd"><p><strong>theta</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Cracked results object</p>
@@ -601,7 +628,7 @@ entirely cracked.</p>
 <dd><p>Calculates the cracking moment given a bending angle <cite>theta</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Neutral axis angle about which bending is taking place</p>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Cracking moment</p>
@@ -641,7 +668,7 @@ between the first moments of area above and below the trial axis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>theta</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Neutral axis angle about which bending is taking place</p></li>
+<li><p><strong>theta</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</p></li>
 <li><p><strong>kappa_inc</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Initial curvature increment</p></li>
 <li><p><strong>delta_m_min</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Relative change in moment at which to double step</p></li>
 <li><p><strong>delta_m_max</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Relative change in moment at which to halve step</p></li>
@@ -708,7 +735,7 @@ ultimate bending capacity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>theta</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Angle the neutral axis makes with the horizontal axis</p></li>
+<li><p><strong>theta</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</p></li>
 <li><p><strong>n</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Net axial force</p></li>
 </ul>
 </dd>
@@ -745,7 +772,7 @@ the difference between the target net axial force <cite>n</cite> and the axial f
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions">
-<span class="sig-name descname"><span class="pre">calculate_ultimate_section_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">res.UltimateBendingResults</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">UltimateBendingResults(theta=0,</span> <span class="pre">d_n=None,</span> <span class="pre">n=None,</span> <span class="pre">mx=None,</span> <span class="pre">my=None,</span> <span class="pre">mv=None)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">results.UltimateBendingResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_ultimate_section_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_ultimate_section_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">res.UltimateBendingResults</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">results.UltimateBendingResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_ultimate_section_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a neutral axis depth <cite>d_n</cite> and neutral axis angle <cite>theta</cite>, calculates
 the resultant bending moments <cite>mx</cite>, <cite>my</cite>, <cite>mv</cite> and the net axial force <cite>n</cite>.</p>
 <dl class="field-list simple">
@@ -773,7 +800,7 @@ bending case.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>theta</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Angle the neutral axis makes with the horizontal axis</p></li>
+<li><p><strong>theta</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</p></li>
 <li><p><strong>m_neg</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – If set to true, also calculates the moment interaction for</p></li>
 <li><p><strong>n_points</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Number of calculation points between the decompression</p></li>
 </ul>
@@ -903,7 +930,7 @@ within the section.</p>
 <dd><p>Returns the elastic centroid location in local coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Elastic centroid in local coordinates <cite>(c_u, c_v)</cite></p>
@@ -920,7 +947,7 @@ within the section.</p>
 <dd><p>Returns the plastic centroid location in local coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle the neutral axis makes with the horizontal axis</p>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Plastic centroid in local coordinates <cite>(pc_u, pc_v)</cite></p>

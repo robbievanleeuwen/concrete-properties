@@ -10,6 +10,7 @@ Package Modules
     :template: custom-module-template.rst
     :recursive:
 
+    concreteproperties.pre
     concreteproperties.material
     concreteproperties.stress_strain_profile
     concreteproperties.concrete_section
