@@ -4,7 +4,7 @@ import numpy as np
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.stress_strain_profile import (
-    LinearProfile,
+    ConcreteLinearProfile,
     WhitneyStressBlock,
     SteelElasticPlastic,
 )
@@ -18,16 +18,15 @@ thetas = np.linspace(start=-np.pi, stop=np.pi, num=31)
 concrete = Concrete(
     name="40 MPa Concrete",
     density=2.4e-6,
-    stress_strain_profile=LinearProfile(elastic_modulus=32.8e3),
+    stress_strain_profile=ConcreteLinearProfile(elastic_modulus=32.8e3),
     ultimate_stress_strain_profile=WhitneyStressBlock(
+        compressive_strength=40,
         alpha_2=0.85,
         gamma=0.77,
-        compressive_strength=40,
         ultimate_strain=0.003,
     ),
     alpha_1=0.85,
     flexural_tensile_strength=0.6 * np.sqrt(40),
-    residual_shrinkage_stress=0,
     colour="lightgrey",
 )
 

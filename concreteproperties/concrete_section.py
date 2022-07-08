@@ -440,10 +440,7 @@ class ConcreteSection:
                 continue
 
             # cracking moment for this geometry
-            f_t = (
-                conc_geom.material.flexural_tensile_strength
-                - conc_geom.material.residual_shrinkage_stress
-            )
+            f_t = conc_geom.material.flexural_tensile_strength
             m_c_geom = (f_t / conc_geom.material.elastic_modulus) * (e_iuu / d)
 
             # if first geometry, initialise cracking moment

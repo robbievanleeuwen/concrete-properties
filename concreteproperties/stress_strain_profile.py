@@ -2,10 +2,13 @@ from __future__ import annotations
 
 from typing import List, TYPE_CHECKING
 import warnings
+from dataclasses import dataclass, field
 
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
+from rich.console import Console
+from rich.table import Table
 
 from concreteproperties.post import plotting_context
 
@@ -13,49 +16,43 @@ if TYPE_CHECKING:
     import matplotlib
 
 
+@dataclass
 class StressStrainProfile:
     """Abstract base class for a material stress-strain profile.
 
-    Implements a piecewise linear stress-strain profile.
+    Implements a piecewise linear stress-strain profile. Positive stresses & strains are
+    compression.
 
-    Positive stresses & strains are compression.
+    :param strains: List of strains (must be increasing or equal)
+    :type strains: List[float]
+    :param stresses: List of stresses
+    :type stresses: List[float]
     """
 
-    def __init__(
+    strains: List[float]
+    stresses: List[float]
+
+    def __post_init__(
         self,
-        strains: List[float],
-        stresses: List[float],
     ):
-        """Inits the StressStrainProfile class.
-
-        :param strains: List of strains (must be increasing or equal)
-        :type strains: List[float]
-        :param stresses: List of stresses (must be increasing or equal)
-        :type stresses: List[float]
-        """
-
         # validate input - same length lists
-        if len(strains) != len(stresses):
+        if len(self.strains) != len(self.stresses):
             raise ValueError("Length of strains must equal length of stresses")
 
         # validate input - length > 1
-        if len(strains) < 2:
+        if len(self.strains) < 2:
             raise ValueError("Length of strains and stresses must be greater than 1")
 
         # validate input - increasing values
-        prev_strain = strains[0]
+        prev_strain = self.strains[0]
 
-        for idx in range(len(strains)):
+        for idx in range(len(self.strains)):
             if idx != 0:
-                if strains[idx] < prev_strain:
-                    # if strains[idx] <= prev_strain:
+                if self.strains[idx] < prev_strain:
                     msg = "strains must contain increasing values."
                     raise ValueError(msg)
 
-                prev_strain = strains[idx]
-
-        self.strains = strains
-        self.stresses = stresses
+                prev_strain = self.strains[idx]
 
     def get_stress(
         self,
@@ -121,10 +118,7 @@ class StressStrainProfile:
         :rtype: float
         """
 
-        try:
-            return self.compressive_strength
-        except AttributeError:
-            return max(self.stresses)
+        return max(self.stresses)
 
     def get_tensile_strength(
         self,
@@ -161,6 +155,38 @@ class StressStrainProfile:
 
         return unique_strains
 
+    def print_properties(
+        self,
+        fmt: Optional[str] = "8.6e",
+    ):
+        """Prints the stress-strain profile properties to the terminal.
+
+        :param fmt: Number format
+        :type fmt: Optional[str]
+        """
+
+        table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
+        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
+        table.add_column("Value", justify="right", style="green")
+
+        table.add_row(
+            "Elastic Modulus", "{:>{fmt}}".format(self.get_elastic_modulus(), fmt=fmt)
+        )
+        table.add_row(
+            "Compressive Strength",
+            "{:>{fmt}}".format(self.get_compressive_strength(), fmt=fmt),
+        )
+        table.add_row(
+            "Tensile Strength",
+            "{:>{fmt}}".format(-self.get_tensile_strength(), fmt=fmt),
+        )
+        table.add_row(
+            "Ultimate Strain", "{:>{fmt}}".format(self.get_ultimate_strain(), fmt=fmt)
+        )
+
+        console = Console()
+        console.print(table)
+
     def plot_stress_strain(
         self,
         title: Optional[str] = "Stress-Strain Profile",
@@ -189,83 +215,290 @@ class StressStrainProfile:
         return ax
 
 
-class LinearProfile(StressStrainProfile):
-    """Class for a symmetric linear stress-strain profile."""
+@dataclass
+class SteelProfile(StressStrainProfile):
+    """Abstract class for a steel stress-strain profile.
 
-    def __init__(
+    :param strains: List of strains (must be increasing or equal)
+    :type strains: List[float]
+    :param stresses: List of stresses
+    :type stresses: List[float]
+    :param float yield_strength: Steel yield strength
+    :param float elastic_modulus: Steel elastic modulus
+    :param float fracture_strain: Steel fracture strain
+    """
+
+    yield_strength: float
+    elastic_modulus: float
+    fracture_strain: float
+
+    def print_properties(
         self,
-        elastic_modulus: float,
+        fmt: Optional[str] = "8.6e",
     ):
-        """Inits the BilinearProfile class.
+        """Prints the stress-strain profile properties to the terminal.
 
-        :param float elastic_modulus: Elastic modulus of the stress-strain profile
+        :param fmt: Number format
+        :type fmt: Optional[str]
         """
 
-        super().__init__(
-            strains=[-0.001, 0, 0.001],
-            stresses=[-0.001 * elastic_modulus, 0, 0.001 * elastic_modulus],
+        table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
+        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
+        table.add_column("Value", justify="right", style="green")
+
+        table.add_row(
+            "Elastic Modulus", "{:>{fmt}}".format(self.get_elastic_modulus(), fmt=fmt)
+        )
+        table.add_row(
+            "Yield Strength", "{:>{fmt}}".format(self.yield_strength, fmt=fmt)
+        )
+        table.add_row(
+            "Tensile Strength",
+            "{:>{fmt}}".format(-self.get_tensile_strength(), fmt=fmt),
+        )
+        table.add_row(
+            "Fracture Strain", "{:>{fmt}}".format(self.get_ultimate_strain(), fmt=fmt)
         )
 
+        console = Console()
+        console.print(table)
 
-class BilinearProfile(StressStrainProfile):
-    """Class for a symmetric bilinear stress-strain profile."""
 
-    def __init__(
+@dataclass
+class SteelElasticPlastic(SteelProfile):
+    """Class for a perfectly elastic-plastic steel stress-strain profile.
+
+    :param float yield_strength: Steel yield strength
+    :param float elastic_modulus: Steel elastic modulus
+    :param float fracture_strain: Steel fracture strain
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    yield_strength: float
+    elastic_modulus: float
+    fracture_strain: float
+
+    def __post_init__(
         self,
-        strain1: float,
-        strain2: float,
-        stress1: float,
-        stress2: float,
     ):
-        """Inits the BilinearProfile class.
+        yield_strain = self.yield_strength / self.elastic_modulus
+        self.strains = [
+            -self.fracture_strain,
+            -yield_strain,
+            0,
+            yield_strain,
+            self.fracture_strain,
+        ]
+        self.stresses = [
+            -self.yield_strength,
+            -self.yield_strength,
+            0,
+            self.yield_strength,
+            self.yield_strength,
+        ]
 
-        :param float strain1: Strain at kink in bilinear curve
-        :param float strain2: Strain at end of bilinear curve
-        :param float stress1: Stress at kink in bilinear curve
-        :param float stress2: Stress at end of bilinear curve
+
+@dataclass
+class SteelHardening(SteelProfile):
+    """Class for a steel stress-strain profile with strain hardening.
+
+    :param float yield_strength: Steel yield strength
+    :param float elastic_modulus: Steel elastic modulus
+    :param float fracture_strain: Steel fracture strain
+    :param float ultimate_strength: Steel ultaimte strength
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    yield_strength: float
+    elastic_modulus: float
+    fracture_strain: float
+    ultimate_strength: float
+
+    def __post_init__(
+        self,
+    ):
+        yield_strain = self.yield_strength / self.elastic_modulus
+        self.strains = [
+            -self.fracture_strain,
+            -yield_strain,
+            0,
+            yield_strain,
+            self.fracture_strain,
+        ]
+        self.stresses = [
+            -self.ultimate_strength,
+            -self.yield_strength,
+            0,
+            self.yield_strength,
+            self.ultimate_strength,
+        ]
+
+
+@dataclass
+class ConcreteServiceProfile(StressStrainProfile):
+    """Abstract class for a concrete service stress-strain profile.
+
+    :param strains: List of strains (must be increasing or equal)
+    :type strains: List[float]
+    :param stresses: List of stresses
+    :type stresses: List[float]
+    """
+
+    def print_properties(
+        self,
+        fmt: Optional[str] = "8.6e",
+    ):
+        """Prints the stress-strain profile properties to the terminal.
+
+        :param fmt: Number format
+        :type fmt: Optional[str]
         """
 
-        super().__init__(
-            strains=[-strain2, -strain1, 0, strain1, strain2],
-            stresses=[-stress2, -stress1, 0, stress1, stress2],
+        table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
+        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
+        table.add_column("Value", justify="right", style="green")
+
+        table.add_row(
+            "Elastic Modulus", "{:>{fmt}}".format(self.get_elastic_modulus(), fmt=fmt)
         )
 
+        console = Console()
+        console.print(table)
 
-class WhitneyStressBlock(StressStrainProfile):
-    """Class for a Whitney (rectangular) stress block."""
-
-    def __init__(
+    def get_compressive_strength(
         self,
-        alpha_2: float,
-        gamma: float,
-        compressive_strength: float,
-        ultimate_strain: float,
-    ):
-        """Inits the WhitneyStressBlock class.
+    ) -> float:
+        """Returns the most positive stress.
 
-        :param float alpha_2: Factor that modifies the concrete compressive strength
-        :param float gamma: Factor that modifies the depth of the stress block
-        :param float compressive_strength: Concrete compressive strength
-        :param float ultimate_strain: Strain at the extreme compression fibre
+        :return: Compressive strength
+        :rtype: float
         """
 
-        super().__init__(
-            strains=[
-                0,
-                ultimate_strain * (1 - gamma),
-                # ultimate_strain * (1 - gamma) - 1e-12,
-                ultimate_strain * (1 - gamma),
-                ultimate_strain,
-            ],
-            stresses=[
-                0,
-                0,
-                alpha_2 * compressive_strength,
-                alpha_2 * compressive_strength,
-            ],
-        )
+        return None
 
-        self.compressive_strength = compressive_strength
+    def get_tensile_strength(
+        self,
+    ) -> float:
+        """Returns the most negative stress.
+
+        :return: Tensile strength
+        :rtype: float
+        """
+
+        return None
+
+    def get_ultimate_strain(
+        self,
+    ) -> float:
+        """Returns the largest strain.
+
+        :return: Ultimate strain
+        :rtype: float
+        """
+
+        return None
+
+
+@dataclass
+class ConcreteLinearProfile(ConcreteServiceProfile):
+    """Class for a symmetric linear stress-strain profile.
+
+    :param float elastic_modulus: Elastic modulus of the stress-strain profile
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    elastic_modulus: float
+
+    def __post_init__(
+        self,
+    ):
+        self.strains = [-0.001, 0, 0.001]
+        self.stresses = [-0.001 * self.elastic_modulus, 0, 0.001 * self.elastic_modulus]
+
+
+@dataclass
+class ConcreteUltimateProfile(StressStrainProfile):
+    """Abstract class for a concrete ultimate stress-strain profile.
+
+    :param strains: List of strains (must be increasing or equal)
+    :type strains: List[float]
+    :param stresses: List of stresses
+    :type stresses: List[float]
+    :param float compressive_strength: Concrete compressive strength
+    """
+
+    compressive_strength: float
+
+    def get_compressive_strength(
+        self,
+    ) -> float:
+        """Returns the most positive stress.
+
+        :return: Compressive strength
+        :rtype: float
+        """
+
+        return self.compressive_strength
+
+    def print_properties(
+        self,
+        fmt: Optional[str] = "8.6e",
+    ):
+        """Prints the stress-strain profile properties to the terminal.
+
+        :param fmt: Number format
+        :type fmt: Optional[str]
+        """
+
+        table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
+        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
+        table.add_column("Value", justify="right", style="green")
+
+        table.add_row(
+            "Compressive Strength",
+            "{:>{fmt}}".format(self.get_compressive_strength(), fmt=fmt),
+        )
+        table.add_row(
+            "Ultimate Strain", "{:>{fmt}}".format(self.get_ultimate_strain(), fmt=fmt)
+        )
+        console = Console()
+        console.print(table)
+
+
+@dataclass
+class WhitneyStressBlock(ConcreteUltimateProfile):
+    """Class for a Whitney (rectangular) stress block.
+
+    :param float compressive_strength: Concrete compressive strength
+    :param float alpha_2: Factor that modifies the concrete compressive strength
+    :param float gamma: Factor that modifies the depth of the stress block
+    :param float ultimate_strain: Strain at the extreme compression fibre
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    alpha_2: float
+    gamma: float
+    ultimate_strain: float
+
+    def __post_init__(
+        self,
+    ):
+        self.strains = [
+            0,
+            self.ultimate_strain * (1 - self.gamma),
+            self.ultimate_strain * (1 - self.gamma),
+            self.ultimate_strain,
+        ]
+        self.stresses = [
+            0,
+            0,
+            self.alpha_2 * self.compressive_strength,
+            self.alpha_2 * self.compressive_strength,
+        ]
 
     def get_stress(
         self,
@@ -286,39 +519,3 @@ class WhitneyStressBlock(StressStrainProfile):
             return self.stresses[2]
         else:
             return 0
-
-
-# class ParabolicStressBlock(StressStrainProfile):
-#     pass
-#
-#
-# class PCAStressProfile(StressStrainProfile):
-#     pass
-
-
-class SteelElasticPlastic(BilinearProfile):
-    """Class for a perfectly elastic-plastic steel stress-strain profile."""
-
-    def __init__(
-        self,
-        yield_strength: float,
-        elastic_modulus: float,
-        fracture_strain: float,
-    ):
-        """Inits the SteelElasticPlastic class.
-
-        :param float yield_strength: Steel yield stress
-        :param float elastic_modulus: Steel elastic modulus
-        :param float fracture_strain: Steel fracture strain
-        """
-
-        self.yield_strength = yield_strength
-        self.elastic_modulus = elastic_modulus
-        self.fracture_strain = fracture_strain
-
-        super().__init__(
-            strain1=yield_strength / elastic_modulus,
-            strain2=fracture_strain,
-            stress1=yield_strength,
-            stress2=yield_strength,
-        )

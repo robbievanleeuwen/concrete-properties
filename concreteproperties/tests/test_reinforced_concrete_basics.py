@@ -6,7 +6,7 @@ from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
 import concreteproperties.results as res
 from concreteproperties.stress_strain_profile import (
-    LinearProfile,
+    ConcreteLinearProfile,
     WhitneyStressBlock,
     SteelElasticPlastic,
 )
@@ -24,16 +24,15 @@ def test_example_3_1():
     concrete = Concrete(
         name="32 MPa Concrete",
         density=2.4e-6,
-        stress_strain_profile=LinearProfile(elastic_modulus=30.1e3),
+        stress_strain_profile=ConcreteLinearProfile(elastic_modulus=30.1e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
+            compressive_strength=32,
             alpha_2=0.85,
             gamma=0.83,
-            compressive_strength=32,
             ultimate_strain=0.003,
         ),
         alpha_1=0.85,
-        flexural_tensile_strength=3.4,
-        residual_shrinkage_stress=2.4,
+        flexural_tensile_strength=1.0,
         colour="lightgrey",
     )
 
@@ -86,16 +85,15 @@ def test_example_3_2():
     concrete = Concrete(
         name="32 MPa Concrete",
         density=2.4e-6,
-        stress_strain_profile=LinearProfile(elastic_modulus=30.1e3),
+        stress_strain_profile=ConcreteLinearProfile(elastic_modulus=30.1e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
+            compressive_strength=32,
             alpha_2=0.85,
             gamma=0.83,
-            compressive_strength=32,
             ultimate_strain=0.003,
         ),
         alpha_1=0.85,
-        flexural_tensile_strength=3.4,
-        residual_shrinkage_stress=2.8,
+        flexural_tensile_strength=0.6,
         colour="lightgrey",
     )
 
@@ -171,16 +169,15 @@ def test_example_3_4():
     concrete = Concrete(
         name="32 MPa Concrete",
         density=2.4e-6,
-        stress_strain_profile=LinearProfile(elastic_modulus=30.1e3),
+        stress_strain_profile=ConcreteLinearProfile(elastic_modulus=30.1e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
+            compressive_strength=32,
             alpha_2=0.85,
             gamma=0.83,
-            compressive_strength=32,
             ultimate_strain=0.003,
         ),
         alpha_1=0.85,
-        flexural_tensile_strength=3.4,
-        residual_shrinkage_stress=2.8,
+        flexural_tensile_strength=0.6,
         colour="lightgrey",
     )
 
@@ -237,16 +234,15 @@ def test_example_3_8():
     concrete = Concrete(
         name="32 MPa Concrete",
         density=2.4e-6,
-        stress_strain_profile=LinearProfile(elastic_modulus=30.1e3),
+        stress_strain_profile=ConcreteLinearProfile(elastic_modulus=30.1e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
+            compressive_strength=32,
             alpha_2=0.85,
             gamma=0.83,
-            compressive_strength=32,
             ultimate_strain=0.003,
         ),
         alpha_1=0.85,
-        flexural_tensile_strength=3.4,
-        residual_shrinkage_stress=2.4,
+        flexural_tensile_strength=1.0,
         colour="lightgrey",
     )
 
@@ -288,16 +284,15 @@ def test_example_3_9():
     concrete = Concrete(
         name="32 MPa Concrete",
         density=2.4e-6,
-        stress_strain_profile=LinearProfile(elastic_modulus=30.1e3),
+        stress_strain_profile=ConcreteLinearProfile(elastic_modulus=30.1e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
+            compressive_strength=32,
             alpha_2=0.85,
             gamma=0.83,
-            compressive_strength=32,
             ultimate_strain=0.003,
         ),
         alpha_1=0.85,
-        flexural_tensile_strength=3.4,
-        residual_shrinkage_stress=2.4,
+        flexural_tensile_strength=1.0,
         colour="lightgrey",
     )
 
@@ -339,16 +334,15 @@ def test_example_3_11():
     concrete = Concrete(
         name="25 MPa Concrete",
         density=2.4e-6,
-        stress_strain_profile=LinearProfile(elastic_modulus=26.7e3),
+        stress_strain_profile=ConcreteLinearProfile(elastic_modulus=26.7e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
+            compressive_strength=25,
             alpha_2=0.85,
             gamma=0.85,
-            compressive_strength=25,
             ultimate_strain=0.003,
         ),
         alpha_1=0.85,
         flexural_tensile_strength=0,
-        residual_shrinkage_stress=0,
         colour="lightgrey",
     )
 
@@ -393,16 +387,15 @@ def test_example_5_1():
     concrete = Concrete(
         name="40 MPa Concrete",
         density=2.4e-6,
-        stress_strain_profile=LinearProfile(elastic_modulus=32.8e3),
+        stress_strain_profile=ConcreteLinearProfile(elastic_modulus=32.8e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
+            compressive_strength=40,
             alpha_2=0.85,
             gamma=0.77,
-            compressive_strength=40,
             ultimate_strain=0.003,
         ),
         alpha_1=0.85,
         flexural_tensile_strength=3.4,
-        residual_shrinkage_stress=0,
         colour="lightgrey",
     )
 
@@ -445,16 +438,15 @@ def test_example_5_2():
     concrete = Concrete(
         name="40 MPa Concrete",
         density=2.4e-6,
-        stress_strain_profile=LinearProfile(elastic_modulus=32.8e3),
+        stress_strain_profile=ConcreteLinearProfile(elastic_modulus=32.8e3),
         ultimate_stress_strain_profile=WhitneyStressBlock(
+            compressive_strength=40,
             alpha_2=0.85,
             gamma=0.77,
-            compressive_strength=40,
             ultimate_strain=0.003,
         ),
         alpha_1=0.85,
         flexural_tensile_strength=3.4,
-        residual_shrinkage_stress=0,
         colour="lightgrey",
     )
 

@@ -3,8 +3,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from dataclasses import dataclass, field
 
-if TYPE_CHECKING:
-    from concreteproperties.stress_strain_profile import StressStrainProfile
+from concreteproperties.stress_strain_profile import (
+    ConcreteServiceProfile,
+    ConcreteUltimateProfile,
+    SteelProfile,
+)
 
 
 @dataclass(eq=True)
@@ -13,30 +16,38 @@ class Concrete:
 
     :param string name: Concrete material name
     :param float density: Concrete density (mass per unit volume)
-    :param stress_strain_profile: Ultimate concrete stress-strain profile
+    :param stress_strain_profile: Service concrete stress-strain profile
     :type stress_strain_profile:
-        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`
+        :class:`~concreteproperties.stress_strain_profile.float`
     :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile
     :type ultimate_stress_strain_profile:
-        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`
+        :class:`~concreteproperties.stress_strain_profile.ConcreteUltimateProfile`
     :param float alpha_1: Factor that modifies the concrete compressive strength at
         squash load
     :param float flexural_tensile_strength: Concrete flexural tensile strength
-    :param float residual_shrinkage_stress: Concrete residual shrinkage stress
     :param str colour: Colour of the material for rendering
     """
 
     name: str
     density: float
-    stress_strain_profile: StressStrainProfile
-    ultimate_stress_strain_profile: StressStrainProfile
+    stress_strain_profile: ConcreteServiceProfile
+    ultimate_stress_strain_profile: ConcreteUltimateProfile
     alpha_1: float
     flexural_tensile_strength: float
-    residual_shrinkage_stress: float
     colour: str
 
     def __post_init__(self):
         self.elastic_modulus = self.stress_strain_profile.get_elastic_modulus()
+
+        if not isinstance(self.stress_strain_profile, ConcreteServiceProfile):
+            raise ValueError(
+                "Concrete stress_strain_profile must be a ConcreteServiceProfile object"
+            )
+
+        if not isinstance(self.ultimate_stress_strain_profile, ConcreteUltimateProfile):
+            raise ValueError(
+                "Concrete ultimate_stress_strain_profile must be a ConcreteUltimateProfile object"
+            )
 
 
 @dataclass(eq=True)
@@ -45,18 +56,23 @@ class Steel:
 
     :param string name: Steel material name
     :param float density: Steel density (mass per unit volume)
-    :param float yield_strength: Steel yield stress
+    :param float yield_strength: Steel yield strength
     :param stress_strain_profile: Ultimate steel stress-strain profile
     :type ultimate_stress_strain_profile:
-        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`
+        :class:`~concreteproperties.stress_strain_profile.SteelProfile`
     :param str colour: Colour of the material for rendering
     """
 
     name: str
     density: float
     yield_strength: float
-    stress_strain_profile: StressStrainProfile
+    stress_strain_profile: SteelProfile
     colour: str
 
     def __post_init__(self):
         self.elastic_modulus = self.stress_strain_profile.get_elastic_modulus()
+
+        if not isinstance(self.stress_strain_profile, SteelProfile):
+            raise ValueError(
+                "Steel stress_strain_profile must be a SteelProfile object"
+            )

@@ -4,42 +4,38 @@ from sectionproperties.pre.library.concrete_sections import concrete_rectangular
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.stress_strain_profile import (
-    StressStrainProfile,
-    BilinearProfile,
+    ConcreteServiceProfile,
     WhitneyStressBlock,
+    SteelHardening,
 )
 
-# concrete_profile = StressStrainProfile(
-#     strains=[-40 / 32.8e3, 0, 40 / 32.8e3],
-#     stresses=[0, 0, 40],
-# )
-concrete_profile = StressStrainProfile(
-    strains=[-41 / 32.8e3, -40 / 32.8e3, -3.8 / 32.8e3, 0, 40 / 32.8e3],
-    stresses=[0, 0, -3.8, 0, 40],
-)
-# concrete_profile.plot_stress_strain(title="Concrete Stress-Strain Profile")
 
-steel_profile = BilinearProfile(
-    strain1=500 / 200e3,
-    strain2=0.025,
-    stress1=500,
-    stress2=595,
+concrete_profile = ConcreteServiceProfile(
+    strains=[-41 / 32.8e3, -40 / 32.8e3, -3.8 / 32.8e3, 0, 40 / 32.8e3, 0.003],
+    stresses=[0, 0, -3.8, 0, 40, 40],
 )
-# steel_profile.plot_stress_strain(title="Steel Stress-Strain Profile")
+concrete_profile.plot_stress_strain(title="Concrete Stress-Strain Profile")
+
+steel_profile = SteelHardening(
+    yield_strength=500,
+    elastic_modulus=200e3,
+    fracture_strain=0.025,
+    ultimate_strength=595,
+)
+steel_profile.plot_stress_strain(title="Steel Stress-Strain Profile")
 
 concrete = Concrete(
     name="40 MPa Concrete",
     density=2.4e-6,
     stress_strain_profile=concrete_profile,
     ultimate_stress_strain_profile=WhitneyStressBlock(
+        compressive_strength=40,
         alpha_2=0.85,
         gamma=0.77,
-        compressive_strength=40,
         ultimate_strain=0.003,
     ),
     alpha_1=0.85,
     flexural_tensile_strength=3.8,
-    residual_shrinkage_stress=0,
     colour="lightgrey",
 )
 
@@ -55,13 +51,13 @@ steel = Steel(
 geom = concrete_rectangular_section(
     b=300,
     d=600,
-    dia_top=20,
+    dia_top=16,
     n_top=3,
     dia_bot=20,
     n_bot=3,
     n_circle=4,
     cover=30,
-    area_top=310,
+    area_top=200,
     area_bot=310,
     conc_mat=concrete,
     steel_mat=steel,
