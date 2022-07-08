@@ -35,7 +35,7 @@
     <script src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="concreteproperties.stress_strain_profile.BilinearProfile" href="concreteproperties.stress_strain_profile.BilinearProfile.html" />
+    <link rel="next" title="concreteproperties.stress_strain_profile.ConcreteLinearProfile" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html" />
     <link rel="prev" title="concreteproperties.material.Steel" href="concreteproperties.material.Steel.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -230,18 +230,33 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearProfile.html">
-     concreteproperties.stress_strain_profile.BilinearProfile
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html">
+     concreteproperties.stress_strain_profile.ConcreteLinearProfile
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.LinearProfile.html">
-     concreteproperties.stress_strain_profile.LinearProfile
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html">
+     concreteproperties.stress_strain_profile.ConcreteServiceProfile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">
+     concreteproperties.stress_strain_profile.ConcreteUltimateProfile
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelElasticPlastic.html">
      concreteproperties.stress_strain_profile.SteelElasticPlastic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelHardening.html">
+     concreteproperties.stress_strain_profile.SteelHardening
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelProfile.html">
+     concreteproperties.stress_strain_profile.SteelProfile
     </a>
    </li>
    <li class="toctree-l2">
@@ -495,19 +510,28 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearProfile.html#concreteproperties.stress_strain_profile.BilinearProfile" title="concreteproperties.stress_strain_profile.BilinearProfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BilinearProfile</span></code></a></p></td>
-<td><p>Class for a symmetric bilinear stress-strain profile.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.LinearProfile.html#concreteproperties.stress_strain_profile.LinearProfile" title="concreteproperties.stress_strain_profile.LinearProfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LinearProfile</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html#concreteproperties.stress_strain_profile.ConcreteLinearProfile" title="concreteproperties.stress_strain_profile.ConcreteLinearProfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConcreteLinearProfile</span></code></a></p></td>
 <td><p>Class for a symmetric linear stress-strain profile.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelElasticPlastic.html#concreteproperties.stress_strain_profile.SteelElasticPlastic" title="concreteproperties.stress_strain_profile.SteelElasticPlastic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SteelElasticPlastic</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile" title="concreteproperties.stress_strain_profile.ConcreteServiceProfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConcreteServiceProfile</span></code></a></p></td>
+<td><p>Abstract class for a concrete service stress-strain profile.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile" title="concreteproperties.stress_strain_profile.ConcreteUltimateProfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConcreteUltimateProfile</span></code></a></p></td>
+<td><p>Abstract class for a concrete ultimate stress-strain profile.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelElasticPlastic.html#concreteproperties.stress_strain_profile.SteelElasticPlastic" title="concreteproperties.stress_strain_profile.SteelElasticPlastic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SteelElasticPlastic</span></code></a></p></td>
 <td><p>Class for a perfectly elastic-plastic steel stress-strain profile.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelHardening.html#concreteproperties.stress_strain_profile.SteelHardening" title="concreteproperties.stress_strain_profile.SteelHardening"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SteelHardening</span></code></a></p></td>
+<td><p>Class for a steel stress-strain profile with strain hardening.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile" title="concreteproperties.stress_strain_profile.SteelProfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SteelProfile</span></code></a></p></td>
+<td><p>Abstract class for a steel stress-strain profile.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a></p></td>
 <td><p>Abstract base class for a material stress-strain profile.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.WhitneyStressBlock.html#concreteproperties.stress_strain_profile.WhitneyStressBlock" title="concreteproperties.stress_strain_profile.WhitneyStressBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WhitneyStressBlock</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="concreteproperties.stress_strain_profile.WhitneyStressBlock.html#concreteproperties.stress_strain_profile.WhitneyStressBlock" title="concreteproperties.stress_strain_profile.WhitneyStressBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WhitneyStressBlock</span></code></a></p></td>
 <td><p>Class for a Whitney (rectangular) stress block.</p></td>
 </tr>
 </tbody>
@@ -529,10 +553,10 @@
           <p class="prev-next-title">concreteproperties.material.Steel</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="concreteproperties.stress_strain_profile.BilinearProfile.html" title="next page">
+  <a class='right-next' id="next-link" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">concreteproperties.stress_strain_profile.BilinearProfile</p>
+      <p class="prev-next-title">concreteproperties.stress_strain_profile.ConcreteLinearProfile</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

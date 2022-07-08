@@ -190,10 +190,13 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">from</span> <span class="nn">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span> <span class="nn">rich.table</span> <span class="kn">import</span> <span class="n">Table</span>
 
 <span class="kn">from</span> <span class="nn">concreteproperties.post</span> <span class="kn">import</span> <span class="n">plotting_context</span>
 
@@ -201,49 +204,43 @@
     <span class="kn">import</span> <span class="nn">matplotlib</span>
 
 
-<div class="viewcode-block" id="StressStrainProfile"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile">[docs]</a><span class="k">class</span> <span class="nc">StressStrainProfile</span><span class="p">:</span>
+<div class="viewcode-block" id="StressStrainProfile"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">StressStrainProfile</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Abstract base class for a material stress-strain profile.</span>
 
-<span class="sd">    Implements a piecewise linear stress-strain profile.</span>
+<span class="sd">    Implements a piecewise linear stress-strain profile. Positive stresses &amp; strains are</span>
+<span class="sd">    compression.</span>
 
-<span class="sd">    Positive stresses &amp; strains are compression.</span>
+<span class="sd">    :param strains: List of strains (must be increasing or equal)</span>
+<span class="sd">    :type strains: List[float]</span>
+<span class="sd">    :param stresses: List of stresses</span>
+<span class="sd">    :type stresses: List[float]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="n">strains</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+    <span class="n">stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">strains</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-        <span class="n">stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Inits the StressStrainProfile class.</span>
-
-<span class="sd">        :param strains: List of strains (must be increasing or equal)</span>
-<span class="sd">        :type strains: List[float]</span>
-<span class="sd">        :param stresses: List of stresses (must be increasing or equal)</span>
-<span class="sd">        :type stresses: List[float]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c1"># validate input - same length lists</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">strains</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stresses</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of strains must equal length of stresses&quot;</span><span class="p">)</span>
 
         <span class="c1"># validate input - length &gt; 1</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">strains</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of strains and stresses must be greater than 1&quot;</span><span class="p">)</span>
 
         <span class="c1"># validate input - increasing values</span>
-        <span class="n">prev_strain</span> <span class="o">=</span> <span class="n">strains</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">prev_strain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">strains</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">strains</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">prev_strain</span><span class="p">:</span>
-                    <span class="c1"># if strains[idx] &lt;= prev_strain:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">prev_strain</span><span class="p">:</span>
                     <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;strains must contain increasing values.&quot;</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-                <span class="n">prev_strain</span> <span class="o">=</span> <span class="n">strains</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="n">strains</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span> <span class="o">=</span> <span class="n">stresses</span>
+                <span class="n">prev_strain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
 <div class="viewcode-block" id="StressStrainProfile.get_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -309,10 +306,7 @@
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="StressStrainProfile.get_tensile_strength"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_tensile_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_tensile_strength</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -349,6 +343,38 @@
 
         <span class="k">return</span> <span class="n">unique_strains</span></div>
 
+<div class="viewcode-block" id="StressStrainProfile.print_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prints the stress-strain profile properties to the terminal.</span>
+
+<span class="sd">        :param fmt: Number format</span>
+<span class="sd">        :type fmt: Optional[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Stress-Strain Profile - </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Property&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">no_wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Elastic Modulus&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Compressive Strength&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_compressive_strength</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Tensile Strength&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">get_tensile_strength</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Ultimate Strain&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="StressStrainProfile.plot_stress_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.plot_stress_strain">[docs]</a>    <span class="k">def</span> <span class="nf">plot_stress_strain</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Stress-Strain Profile&quot;</span><span class="p">,</span>
@@ -377,83 +403,290 @@
         <span class="k">return</span> <span class="n">ax</span></div></div>
 
 
-<div class="viewcode-block" id="LinearProfile"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.LinearProfile.html#concreteproperties.stress_strain_profile.LinearProfile">[docs]</a><span class="k">class</span> <span class="nc">LinearProfile</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Class for a symmetric linear stress-strain profile.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SteelProfile"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SteelProfile</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Abstract class for a steel stress-strain profile.</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="sd">    :param strains: List of strains (must be increasing or equal)</span>
+<span class="sd">    :type strains: List[float]</span>
+<span class="sd">    :param stresses: List of stresses</span>
+<span class="sd">    :type stresses: List[float]</span>
+<span class="sd">    :param float yield_strength: Steel yield strength</span>
+<span class="sd">    :param float elastic_modulus: Steel elastic modulus</span>
+<span class="sd">    :param float fracture_strain: Steel fracture strain</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">fracture_strain</span><span class="p">:</span> <span class="nb">float</span>
+
+<div class="viewcode-block" id="SteelProfile.print_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Inits the BilinearProfile class.</span>
+        <span class="sd">&quot;&quot;&quot;Prints the stress-strain profile properties to the terminal.</span>
 
-<span class="sd">        :param float elastic_modulus: Elastic modulus of the stress-strain profile</span>
+<span class="sd">        :param fmt: Number format</span>
+<span class="sd">        :type fmt: Optional[str]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">strains</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">],</span>
-            <span class="n">stresses</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.001</span> <span class="o">*</span> <span class="n">elastic_modulus</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.001</span> <span class="o">*</span> <span class="n">elastic_modulus</span><span class="p">],</span>
-        <span class="p">)</span></div>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Stress-Strain Profile - </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Property&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">no_wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="BilinearProfile"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.BilinearProfile.html#concreteproperties.stress_strain_profile.BilinearProfile">[docs]</a><span class="k">class</span> <span class="nc">BilinearProfile</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Class for a symmetric bilinear stress-strain profile.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">strain1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">strain2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">stress1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">stress2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Inits the BilinearProfile class.</span>
-
-<span class="sd">        :param float strain1: Strain at kink in bilinear curve</span>
-<span class="sd">        :param float strain2: Strain at end of bilinear curve</span>
-<span class="sd">        :param float stress1: Stress at kink in bilinear curve</span>
-<span class="sd">        :param float stress2: Stress at end of bilinear curve</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">strains</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="n">strain2</span><span class="p">,</span> <span class="o">-</span><span class="n">strain1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">strain1</span><span class="p">,</span> <span class="n">strain2</span><span class="p">],</span>
-            <span class="n">stresses</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="n">stress2</span><span class="p">,</span> <span class="o">-</span><span class="n">stress1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">stress1</span><span class="p">,</span> <span class="n">stress2</span><span class="p">],</span>
-        <span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="WhitneyStressBlock"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.WhitneyStressBlock.html#concreteproperties.stress_strain_profile.WhitneyStressBlock">[docs]</a><span class="k">class</span> <span class="nc">WhitneyStressBlock</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Class for a Whitney (rectangular) stress block.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">alpha_2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">compressive_strength</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Inits the WhitneyStressBlock class.</span>
-
-<span class="sd">        :param float alpha_2: Factor that modifies the concrete compressive strength</span>
-<span class="sd">        :param float gamma: Factor that modifies the depth of the stress block</span>
-<span class="sd">        :param float compressive_strength: Concrete compressive strength</span>
-<span class="sd">        :param float ultimate_strain: Strain at the extreme compression fibre</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">strains</span><span class="o">=</span><span class="p">[</span>
-                <span class="mi">0</span><span class="p">,</span>
-                <span class="n">ultimate_strain</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">gamma</span><span class="p">),</span>
-                <span class="c1"># ultimate_strain * (1 - gamma) - 1e-12,</span>
-                <span class="n">ultimate_strain</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">gamma</span><span class="p">),</span>
-                <span class="n">ultimate_strain</span><span class="p">,</span>
-            <span class="p">],</span>
-            <span class="n">stresses</span><span class="o">=</span><span class="p">[</span>
-                <span class="mi">0</span><span class="p">,</span>
-                <span class="mi">0</span><span class="p">,</span>
-                <span class="n">alpha_2</span> <span class="o">*</span> <span class="n">compressive_strength</span><span class="p">,</span>
-                <span class="n">alpha_2</span> <span class="o">*</span> <span class="n">compressive_strength</span><span class="p">,</span>
-            <span class="p">],</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Elastic Modulus&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Yield Strength&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Tensile Strength&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">get_tensile_strength</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Fracture Strain&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span> <span class="o">=</span> <span class="n">compressive_strength</span>
+        <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="SteelElasticPlastic"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.SteelElasticPlastic.html#concreteproperties.stress_strain_profile.SteelElasticPlastic">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SteelElasticPlastic</span><span class="p">(</span><span class="n">SteelProfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for a perfectly elastic-plastic steel stress-strain profile.</span>
+
+<span class="sd">    :param float yield_strength: Steel yield strength</span>
+<span class="sd">    :param float elastic_modulus: Steel elastic modulus</span>
+<span class="sd">    :param float fracture_strain: Steel fracture strain</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">strains</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">fracture_strain</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">yield_strain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">fracture_strain</span><span class="p">,</span>
+            <span class="o">-</span><span class="n">yield_strain</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">yield_strain</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fracture_strain</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span><span class="p">,</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span><span class="p">,</span>
+        <span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="SteelHardening"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.SteelHardening.html#concreteproperties.stress_strain_profile.SteelHardening">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SteelHardening</span><span class="p">(</span><span class="n">SteelProfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for a steel stress-strain profile with strain hardening.</span>
+
+<span class="sd">    :param float yield_strength: Steel yield strength</span>
+<span class="sd">    :param float elastic_modulus: Steel elastic modulus</span>
+<span class="sd">    :param float fracture_strain: Steel fracture strain</span>
+<span class="sd">    :param float ultimate_strength: Steel ultaimte strength</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">strains</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">fracture_strain</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">ultimate_strength</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">yield_strain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">fracture_strain</span><span class="p">,</span>
+            <span class="o">-</span><span class="n">yield_strain</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">yield_strain</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fracture_strain</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">ultimate_strength</span><span class="p">,</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_strength</span><span class="p">,</span>
+        <span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ConcreteServiceProfile"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ConcreteServiceProfile</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Abstract class for a concrete service stress-strain profile.</span>
+
+<span class="sd">    :param strains: List of strains (must be increasing or equal)</span>
+<span class="sd">    :type strains: List[float]</span>
+<span class="sd">    :param stresses: List of stresses</span>
+<span class="sd">    :type stresses: List[float]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConcreteServiceProfile.print_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prints the stress-strain profile properties to the terminal.</span>
+
+<span class="sd">        :param fmt: Number format</span>
+<span class="sd">        :type fmt: Optional[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Stress-Strain Profile - </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Property&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">no_wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Elastic Modulus&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ConcreteServiceProfile.get_compressive_strength"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_compressive_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_compressive_strength</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the most positive stress.</span>
+
+<span class="sd">        :return: Compressive strength</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ConcreteServiceProfile.get_tensile_strength"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_tensile_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_tensile_strength</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the most negative stress.</span>
+
+<span class="sd">        :return: Tensile strength</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ConcreteServiceProfile.get_ultimate_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_ultimate_strain">[docs]</a>    <span class="k">def</span> <span class="nf">get_ultimate_strain</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the largest strain.</span>
+
+<span class="sd">        :return: Ultimate strain</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+
+
+<div class="viewcode-block" id="ConcreteLinearProfile"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteLinearProfile.html#concreteproperties.stress_strain_profile.ConcreteLinearProfile">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ConcreteLinearProfile</span><span class="p">(</span><span class="n">ConcreteServiceProfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for a symmetric linear stress-strain profile.</span>
+
+<span class="sd">    :param float elastic_modulus: Elastic modulus of the stress-strain profile</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">strains</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.001</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.001</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ConcreteUltimateProfile"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ConcreteUltimateProfile</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Abstract class for a concrete ultimate stress-strain profile.</span>
+
+<span class="sd">    :param strains: List of strains (must be increasing or equal)</span>
+<span class="sd">    :type strains: List[float]</span>
+<span class="sd">    :param stresses: List of stresses</span>
+<span class="sd">    :type stresses: List[float]</span>
+<span class="sd">    :param float compressive_strength: Concrete compressive strength</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">compressive_strength</span><span class="p">:</span> <span class="nb">float</span>
+
+<div class="viewcode-block" id="ConcreteUltimateProfile.get_compressive_strength"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile.get_compressive_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_compressive_strength</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the most positive stress.</span>
+
+<span class="sd">        :return: Compressive strength</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span></div>
+
+<div class="viewcode-block" id="ConcreteUltimateProfile.print_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prints the stress-strain profile properties to the terminal.</span>
+
+<span class="sd">        :param fmt: Number format</span>
+<span class="sd">        :type fmt: Optional[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Stress-Strain Profile - </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Property&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">no_wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Compressive Strength&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_compressive_strength</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Ultimate Strain&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="WhitneyStressBlock"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.WhitneyStressBlock.html#concreteproperties.stress_strain_profile.WhitneyStressBlock">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">WhitneyStressBlock</span><span class="p">(</span><span class="n">ConcreteUltimateProfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for a Whitney (rectangular) stress block.</span>
+
+<span class="sd">    :param float compressive_strength: Concrete compressive strength</span>
+<span class="sd">    :param float alpha_2: Factor that modifies the concrete compressive strength</span>
+<span class="sd">    :param float gamma: Factor that modifies the depth of the stress block</span>
+<span class="sd">    :param float ultimate_strain: Strain at the extreme compression fibre</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">strains</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">alpha_2</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_strain</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_strain</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_strain</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha_2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha_2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span><span class="p">,</span>
+        <span class="p">]</span>
 
 <div class="viewcode-block" id="WhitneyStressBlock.get_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.WhitneyStressBlock.html#concreteproperties.stress_strain_profile.WhitneyStressBlock.get_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -474,42 +707,6 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span></div></div>
-
-
-<span class="c1"># class ParabolicStressBlock(StressStrainProfile):</span>
-<span class="c1">#     pass</span>
-<span class="c1">#</span>
-<span class="c1">#</span>
-<span class="c1"># class PCAStressProfile(StressStrainProfile):</span>
-<span class="c1">#     pass</span>
-
-
-<div class="viewcode-block" id="SteelElasticPlastic"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.SteelElasticPlastic.html#concreteproperties.stress_strain_profile.SteelElasticPlastic">[docs]</a><span class="k">class</span> <span class="nc">SteelElasticPlastic</span><span class="p">(</span><span class="n">BilinearProfile</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Class for a perfectly elastic-plastic steel stress-strain profile.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">fracture_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Inits the SteelElasticPlastic class.</span>
-
-<span class="sd">        :param float yield_strength: Steel yield stress</span>
-<span class="sd">        :param float elastic_modulus: Steel elastic modulus</span>
-<span class="sd">        :param float fracture_strain: Steel fracture strain</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span> <span class="o">=</span> <span class="n">yield_strength</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">=</span> <span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fracture_strain</span> <span class="o">=</span> <span class="n">fracture_strain</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">strain1</span><span class="o">=</span><span class="n">yield_strength</span> <span class="o">/</span> <span class="n">elastic_modulus</span><span class="p">,</span>
-            <span class="n">strain2</span><span class="o">=</span><span class="n">fracture_strain</span><span class="p">,</span>
-            <span class="n">stress1</span><span class="o">=</span><span class="n">yield_strength</span><span class="p">,</span>
-            <span class="n">stress2</span><span class="o">=</span><span class="n">yield_strength</span><span class="p">,</span>
-        <span class="p">)</span></div>
 </pre></div>
 
               </article>

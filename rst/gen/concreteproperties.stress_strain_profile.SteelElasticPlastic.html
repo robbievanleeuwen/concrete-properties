@@ -35,8 +35,8 @@
     <script src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="concreteproperties.stress_strain_profile.StressStrainProfile" href="concreteproperties.stress_strain_profile.StressStrainProfile.html" />
-    <link rel="prev" title="concreteproperties.stress_strain_profile.LinearProfile" href="concreteproperties.stress_strain_profile.LinearProfile.html" />
+    <link rel="next" title="concreteproperties.stress_strain_profile.SteelHardening" href="concreteproperties.stress_strain_profile.SteelHardening.html" />
+    <link rel="prev" title="concreteproperties.stress_strain_profile.ConcreteUltimateProfile" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -230,18 +230,33 @@
   </label>
   <ul class="current">
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearProfile.html">
-     concreteproperties.stress_strain_profile.BilinearProfile
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html">
+     concreteproperties.stress_strain_profile.ConcreteLinearProfile
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.LinearProfile.html">
-     concreteproperties.stress_strain_profile.LinearProfile
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html">
+     concreteproperties.stress_strain_profile.ConcreteServiceProfile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">
+     concreteproperties.stress_strain_profile.ConcreteUltimateProfile
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      concreteproperties.stress_strain_profile.SteelElasticPlastic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelHardening.html">
+     concreteproperties.stress_strain_profile.SteelHardening
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelProfile.html">
+     concreteproperties.stress_strain_profile.SteelProfile
     </a>
    </li>
    <li class="toctree-l2">
@@ -491,13 +506,12 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.SteelElasticPlastic">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteelElasticPlastic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracture_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#SteelElasticPlastic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearProfile.html#concreteproperties.stress_strain_profile.BilinearProfile" title="concreteproperties.stress_strain_profile.BilinearProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">BilinearProfile</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile" title="concreteproperties.stress_strain_profile.SteelProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelProfile</span></code></a></p>
 <p>Class for a perfectly elastic-plastic steel stress-strain profile.</p>
-<p>Inits the SteelElasticPlastic class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>yield_strength</strong> (<em>float</em>) – Steel yield stress</p></li>
+<li><p><strong>yield_strength</strong> (<em>float</em>) – Steel yield strength</p></li>
 <li><p><strong>elastic_modulus</strong> (<em>float</em>) – Steel elastic modulus</p></li>
 <li><p><strong>fracture_strain</strong> (<em>float</em>) – Steel fracture strain</p></li>
 </ul>
@@ -530,6 +544,33 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.plot_stress_strain" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.plot_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_stress_strain</span></code></a></p></td>
 <td><p>Plots the stress-strain profile.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.print_properties" title="concreteproperties.stress_strain_profile.SteelElasticPlastic.print_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_properties</span></code></a></p></td>
+<td><p>Prints the stress-strain profile properties to the terminal.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">strains</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">stresses</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">yield_strength</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">elastic_modulus</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fracture_strain</span></code></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -637,6 +678,17 @@
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.SteelElasticPlastic.print_properties">
+<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'8.6e'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.SteelElasticPlastic.print_properties" title="Permalink to this definition">#</a></dt>
+<dd><p>Prints the stress-strain profile properties to the terminal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Number format</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -649,17 +701,17 @@
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="concreteproperties.stress_strain_profile.LinearProfile.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">concreteproperties.stress_strain_profile.LinearProfile</p>
+          <p class="prev-next-title">concreteproperties.stress_strain_profile.ConcreteUltimateProfile</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="concreteproperties.stress_strain_profile.StressStrainProfile.html" title="next page">
+  <a class='right-next' id="next-link" href="concreteproperties.stress_strain_profile.SteelHardening.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">concreteproperties.stress_strain_profile.StressStrainProfile</p>
+      <p class="prev-next-title">concreteproperties.stress_strain_profile.SteelHardening</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

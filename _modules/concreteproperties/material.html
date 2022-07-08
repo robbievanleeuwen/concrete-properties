@@ -191,8 +191,11 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 
-<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="n">StressStrainProfile</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConcreteServiceProfile</span><span class="p">,</span>
+    <span class="n">ConcreteUltimateProfile</span><span class="p">,</span>
+    <span class="n">SteelProfile</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="Concrete"><a class="viewcode-back" href="../../rst/gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -201,30 +204,38 @@
 
 <span class="sd">    :param string name: Concrete material name</span>
 <span class="sd">    :param float density: Concrete density (mass per unit volume)</span>
-<span class="sd">    :param stress_strain_profile: Ultimate concrete stress-strain profile</span>
+<span class="sd">    :param stress_strain_profile: Service concrete stress-strain profile</span>
 <span class="sd">    :type stress_strain_profile:</span>
-<span class="sd">        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`</span>
+<span class="sd">        :class:`~concreteproperties.stress_strain_profile.float`</span>
 <span class="sd">    :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile</span>
 <span class="sd">    :type ultimate_stress_strain_profile:</span>
-<span class="sd">        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`</span>
+<span class="sd">        :class:`~concreteproperties.stress_strain_profile.ConcreteUltimateProfile`</span>
 <span class="sd">    :param float alpha_1: Factor that modifies the concrete compressive strength at</span>
 <span class="sd">        squash load</span>
 <span class="sd">    :param float flexural_tensile_strength: Concrete flexural tensile strength</span>
-<span class="sd">    :param float residual_shrinkage_stress: Concrete residual shrinkage stress</span>
 <span class="sd">    :param str colour: Colour of the material for rendering</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">StressStrainProfile</span>
-    <span class="n">ultimate_stress_strain_profile</span><span class="p">:</span> <span class="n">StressStrainProfile</span>
+    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">ConcreteServiceProfile</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="p">:</span> <span class="n">ConcreteUltimateProfile</span>
     <span class="n">alpha_1</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">flexural_tensile_strength</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">residual_shrinkage_stress</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="p">,</span> <span class="n">ConcreteServiceProfile</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Concrete stress_strain_profile must be a ConcreteServiceProfile object&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="p">,</span> <span class="n">ConcreteUltimateProfile</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Concrete ultimate_stress_strain_profile must be a ConcreteUltimateProfile object&quot;</span>
+            <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Steel"><a class="viewcode-back" href="../../rst/gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -233,21 +244,26 @@
 
 <span class="sd">    :param string name: Steel material name</span>
 <span class="sd">    :param float density: Steel density (mass per unit volume)</span>
-<span class="sd">    :param float yield_strength: Steel yield stress</span>
+<span class="sd">    :param float yield_strength: Steel yield strength</span>
 <span class="sd">    :param stress_strain_profile: Ultimate steel stress-strain profile</span>
 <span class="sd">    :type ultimate_stress_strain_profile:</span>
-<span class="sd">        :class:`~concreteproperties.stress_strain_profile.StressStrainProfile`</span>
+<span class="sd">        :class:`~concreteproperties.stress_strain_profile.SteelProfile`</span>
 <span class="sd">    :param str colour: Colour of the material for rendering</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">StressStrainProfile</span>
+    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">SteelProfile</span>
     <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="p">,</span> <span class="n">SteelProfile</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Steel stress_strain_profile must be a SteelProfile object&quot;</span>
+            <span class="p">)</span></div>
 </pre></div>
 
               </article>

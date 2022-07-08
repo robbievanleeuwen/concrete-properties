@@ -230,18 +230,33 @@
   </label>
   <ul class="current">
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearProfile.html">
-     concreteproperties.stress_strain_profile.BilinearProfile
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html">
+     concreteproperties.stress_strain_profile.ConcreteLinearProfile
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.LinearProfile.html">
-     concreteproperties.stress_strain_profile.LinearProfile
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html">
+     concreteproperties.stress_strain_profile.ConcreteServiceProfile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">
+     concreteproperties.stress_strain_profile.ConcreteUltimateProfile
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelElasticPlastic.html">
      concreteproperties.stress_strain_profile.SteelElasticPlastic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelHardening.html">
+     concreteproperties.stress_strain_profile.SteelHardening
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelProfile.html">
+     concreteproperties.stress_strain_profile.SteelProfile
     </a>
    </li>
    <li class="toctree-l2">
@@ -490,16 +505,15 @@
 <h1>concreteproperties.stress_strain_profile.WhitneyStressBlock<a class="headerlink" href="#concreteproperties-stress-strain-profile-whitneystressblock" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.WhitneyStressBlock">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WhitneyStressBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#WhitneyStressBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.WhitneyStressBlock" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WhitneyStressBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#WhitneyStressBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.WhitneyStressBlock" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile" title="concreteproperties.stress_strain_profile.ConcreteUltimateProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteUltimateProfile</span></code></a></p>
 <p>Class for a Whitney (rectangular) stress block.</p>
-<p>Inits the WhitneyStressBlock class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>compressive_strength</strong> (<em>float</em>) – Concrete compressive strength</p></li>
 <li><p><strong>alpha_2</strong> (<em>float</em>) – Factor that modifies the concrete compressive strength</p></li>
 <li><p><strong>gamma</strong> (<em>float</em>) – Factor that modifies the depth of the stress block</p></li>
-<li><p><strong>compressive_strength</strong> (<em>float</em>) – Concrete compressive strength</p></li>
 <li><p><strong>ultimate_strain</strong> (<em>float</em>) – Strain at the extreme compression fibre</p></li>
 </ul>
 </dd>
@@ -531,6 +545,33 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.WhitneyStressBlock.plot_stress_strain" title="concreteproperties.stress_strain_profile.WhitneyStressBlock.plot_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_stress_strain</span></code></a></p></td>
 <td><p>Plots the stress-strain profile.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.WhitneyStressBlock.print_properties" title="concreteproperties.stress_strain_profile.WhitneyStressBlock.print_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_properties</span></code></a></p></td>
+<td><p>Prints the stress-strain profile properties to the terminal.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">strains</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">stresses</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha_2</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gamma</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_strain</span></code></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -636,6 +677,17 @@ at nodes.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.WhitneyStressBlock.print_properties">
+<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'8.6e'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.WhitneyStressBlock.print_properties" title="Permalink to this definition">#</a></dt>
+<dd><p>Prints the stress-strain profile properties to the terminal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Number format</p>
 </dd>
 </dl>
 </dd></dl>

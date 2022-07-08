@@ -230,18 +230,33 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearProfile.html">
-     concreteproperties.stress_strain_profile.BilinearProfile
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html">
+     concreteproperties.stress_strain_profile.ConcreteLinearProfile
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.LinearProfile.html">
-     concreteproperties.stress_strain_profile.LinearProfile
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html">
+     concreteproperties.stress_strain_profile.ConcreteServiceProfile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">
+     concreteproperties.stress_strain_profile.ConcreteUltimateProfile
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelElasticPlastic.html">
      concreteproperties.stress_strain_profile.SteelElasticPlastic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelHardening.html">
+     concreteproperties.stress_strain_profile.SteelHardening
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelProfile.html">
+     concreteproperties.stress_strain_profile.SteelProfile
     </a>
    </li>
    <li class="toctree-l2">
@@ -490,7 +505,7 @@
 <h1>concreteproperties.material.Concrete<a class="headerlink" href="#concreteproperties-material-concrete" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.material.Concrete">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Concrete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><span class="pre">StressStrainProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_stress_strain_profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><span class="pre">StressStrainProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flexural_tensile_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual_shrinkage_stress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/material.html#Concrete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.material.Concrete" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Concrete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile" title="concreteproperties.stress_strain_profile.ConcreteServiceProfile"><span class="pre">ConcreteServiceProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_stress_strain_profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile" title="concreteproperties.stress_strain_profile.ConcreteUltimateProfile"><span class="pre">ConcreteUltimateProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flexural_tensile_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/material.html#Concrete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.material.Concrete" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for a concrete material.</p>
 <dl class="field-list simple">
@@ -498,12 +513,11 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>string</em>) – Concrete material name</p></li>
 <li><p><strong>density</strong> (<em>float</em>) – Concrete density (mass per unit volume)</p></li>
-<li><p><strong>stress_strain_profile</strong> (<a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a>) – Ultimate concrete stress-strain profile</p></li>
-<li><p><strong>ultimate_stress_strain_profile</strong> (<a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a>) – Ultimate concrete stress-strain profile</p></li>
+<li><p><strong>stress_strain_profile</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Service concrete stress-strain profile</p></li>
+<li><p><strong>ultimate_stress_strain_profile</strong> (<a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile" title="concreteproperties.stress_strain_profile.ConcreteUltimateProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteUltimateProfile</span></code></a>) – Ultimate concrete stress-strain profile</p></li>
 <li><p><strong>alpha_1</strong> (<em>float</em>) – Factor that modifies the concrete compressive strength at
 squash load</p></li>
 <li><p><strong>flexural_tensile_strength</strong> (<em>float</em>) – Concrete flexural tensile strength</p></li>
-<li><p><strong>residual_shrinkage_stress</strong> (<em>float</em>) – Concrete residual shrinkage stress</p></li>
 <li><p><strong>colour</strong> (<em>str</em>) – Colour of the material for rendering</p></li>
 </ul>
 </dd>
@@ -542,10 +556,7 @@ squash load</p></li>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">flexural_tensile_strength</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">residual_shrinkage_stress</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">colour</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">colour</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
