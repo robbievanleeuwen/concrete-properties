@@ -10,12 +10,12 @@
 - [x] Add steel strain to StressResult & ku to UltimateResult (=dn/d)
 - [x] Clean up profiles - maybe require that certain profiles may only be used for each material?
 - [x] Finish pre.py
-- [ ] Start to add design codes
 - [ ] Documentation!
-  - [ ] Is there a way to generate output within a docstring??
+  - [x] Is there a way to generate output within a docstring??
   - [ ] gif of progressive service stress plot?
 
 # POST-RELEASE ITEMS
 - [ ] Speed up
   - [ ] Profiling
   - [ ] Clean up all the na_local, points_na etc. etc.
+- [ ] Start to add design codes

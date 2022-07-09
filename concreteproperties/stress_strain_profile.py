@@ -522,7 +522,7 @@ class EurocodeNonLinear(ConcreteServiceProfile):
             - self.tensile_strength / self.tension_softening_stiffness
         )
 
-        self.strains.append(1.1 * strain_zero_tension)
+        self.strains.append(1.01 * strain_zero_tension)
         self.stresses.append(0)
         self.strains.append(strain_zero_tension)
         self.stresses.append(0)

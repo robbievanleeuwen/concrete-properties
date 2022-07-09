@@ -23,19 +23,19 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
 
 ### Material Properties
 - [x] Concrete material
-  - [x] Service stress-strain profile
-  - [x] Ultimate stress-strain profile
+  - [x] Service stress-strain profiles
+    - [x] Linear profile
+    - [x] Linear profile (no tension)
+    - [x] Eurocode Non-Linear
+  - [x] Ultimate stress-strain profiles
+    - [x] Rectangular stress block
+    - [x] Bilinear stress-strain profile
+    - [x] Eurocode parabolic
   - [x] Flexural tensile strength
 - [x] Steel material
-  - [x] Stress-strain profile
-- [x] Built-in stress-strain profiles
-  - [x] Piecewise linear profile
-  - [x] Linear profile
-  - [x] Bilinear profile
-  - [x] Whitney stress block (AS stress block)
-  - [ ] Parabolic stress profile
-  - [ ] PCA stress profile
-  - [x] Steel elastic-plastic profile
+  - [x] Stress-strain profiles
+    - [x] Elastic-plastic
+    - [x] Elastic-plastic (with hardening)
 
 ### Gross Section Properties
 - [x] Cross-sectional areas (total, concrete, steel)

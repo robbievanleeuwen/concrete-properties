@@ -1,4 +1,5 @@
 """
-xxx
+A python package to calculate the section properties of arbitrary reinforced concrete
+sections.
 """
-__version__ = "0.0.5"
+__version__ = "0.0.6"

@@ -9,7 +9,14 @@ from concreteproperties.stress_strain_profile import (
     EurocodeNonLinear,
 )
 
-concrete_profile = EurocodeNonLinear(35e3, 0.0035, 40, 0.0023, 3.5, 7e3)
+concrete_profile = EurocodeNonLinear(
+    elastic_modulus=35e3,
+    ultimate_strain=0.0035,
+    compressive_strength=40,
+    compressive_strain=0.0023,
+    tensile_strength=3.5,
+    tension_softening_stiffness=7e3,
+)
 concrete_profile.plot_stress_strain(title="Concrete Stress-Strain Profile")
 
 steel_profile = SteelHardening(
