@@ -26,7 +26,7 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
   - [x] Service stress-strain profiles
     - [x] Linear profile
     - [x] Linear profile (no tension)
-    - [x] Eurocode Non-Linear
+    - [x] Eurocode non-linear
   - [x] Ultimate stress-strain profiles
     - [x] Rectangular stress block
     - [x] Bilinear stress-strain profile

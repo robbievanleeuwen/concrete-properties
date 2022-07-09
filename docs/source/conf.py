@@ -83,6 +83,12 @@ html_theme_options = {
             "icon": "fab fa-github-square",
             "type": "fontawesome",
         },
+        {
+            "name": "PyPI",
+            "url": "https://pypi.org/project/concreteproperties/",
+            "icon": "fas fa-box",
+            "type": "fontawesome",
+        },
     ],
     "use_edit_page_button": True,
     "logo": {

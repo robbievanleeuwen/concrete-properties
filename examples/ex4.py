@@ -45,7 +45,6 @@ concrete = Concrete(
 steel = Steel(
     name="500 MPa Steel",
     density=7.85e-6,
-    yield_strength=500,
     stress_strain_profile=steel_profile,
     colour="grey",
 )

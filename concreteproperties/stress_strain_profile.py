@@ -216,140 +216,6 @@ class StressStrainProfile:
 
 
 @dataclass
-class SteelProfile(StressStrainProfile):
-    """Abstract class for a steel stress-strain profile.
-
-    :param strains: List of strains (must be increasing or equal)
-    :type strains: List[float]
-    :param stresses: List of stresses
-    :type stresses: List[float]
-    :param float yield_strength: Steel yield strength
-    :param float elastic_modulus: Steel elastic modulus
-    :param float fracture_strain: Steel fracture strain
-    """
-
-    strains: List[float]
-    stresses: List[float]
-    yield_strength: float
-    elastic_modulus: float
-    fracture_strain: float
-
-    def get_elastic_modulus(
-        self,
-    ) -> float:
-        """Returns the elastic modulus of the stress-strain profile.
-
-        :return: Elastic modulus
-        :rtype: float
-        """
-
-        return self.elastic_modulus
-
-    def print_properties(
-        self,
-        fmt: Optional[str] = "8.6e",
-    ):
-        """Prints the stress-strain profile properties to the terminal.
-
-        :param fmt: Number format
-        :type fmt: Optional[str]
-        """
-
-        table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
-        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
-        table.add_column("Value", justify="right", style="green")
-
-        table.add_row(
-            "Elastic Modulus", "{:>{fmt}}".format(self.get_elastic_modulus(), fmt=fmt)
-        )
-        table.add_row(
-            "Yield Strength", "{:>{fmt}}".format(self.yield_strength, fmt=fmt)
-        )
-        table.add_row(
-            "Tensile Strength",
-            "{:>{fmt}}".format(-self.get_tensile_strength(), fmt=fmt),
-        )
-        table.add_row(
-            "Fracture Strain", "{:>{fmt}}".format(self.get_ultimate_strain(), fmt=fmt)
-        )
-
-        console = Console()
-        console.print(table)
-
-
-@dataclass
-class SteelElasticPlastic(SteelProfile):
-    """Class for a perfectly elastic-plastic steel stress-strain profile.
-
-    :param float yield_strength: Steel yield strength
-    :param float elastic_modulus: Steel elastic modulus
-    :param float fracture_strain: Steel fracture strain
-    """
-
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
-    yield_strength: float
-    elastic_modulus: float
-    fracture_strain: float
-
-    def __post_init__(
-        self,
-    ):
-        yield_strain = self.yield_strength / self.elastic_modulus
-        self.strains = [
-            -self.fracture_strain,
-            -yield_strain,
-            0,
-            yield_strain,
-            self.fracture_strain,
-        ]
-        self.stresses = [
-            -self.yield_strength,
-            -self.yield_strength,
-            0,
-            self.yield_strength,
-            self.yield_strength,
-        ]
-
-
-@dataclass
-class SteelHardening(SteelProfile):
-    """Class for a steel stress-strain profile with strain hardening.
-
-    :param float yield_strength: Steel yield strength
-    :param float elastic_modulus: Steel elastic modulus
-    :param float fracture_strain: Steel fracture strain
-    :param float ultimate_strength: Steel ultaimte strength
-    """
-
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
-    yield_strength: float
-    elastic_modulus: float
-    fracture_strain: float
-    ultimate_strength: float
-
-    def __post_init__(
-        self,
-    ):
-        yield_strain = self.yield_strength / self.elastic_modulus
-        self.strains = [
-            -self.fracture_strain,
-            -yield_strain,
-            0,
-            yield_strain,
-            self.fracture_strain,
-        ]
-        self.stresses = [
-            -self.ultimate_strength,
-            -self.yield_strength,
-            0,
-            self.yield_strength,
-            self.ultimate_strength,
-        ]
-
-
-@dataclass
 class ConcreteServiceProfile(StressStrainProfile):
     """Abstract class for a concrete service stress-strain profile.
 
@@ -484,11 +350,11 @@ class EurocodeNonLinear(ConcreteServiceProfile):
     ``tensile_strength``, after which the tensile stress reduces according to the
     ``tension_softening_stiffness``.
 
-    :param float elastic_modulus: Concrete elastic modulus
-    :param float ultimate_strain: Concrete strain at failure
-    :param float compressive_strength: Concrete compressive strength
+    :param float elastic_modulus: Concrete elastic modulus (:math:`E_{cm}`)
+    :param float ultimate_strain: Concrete strain at failure (:math:`\epsilon_{cu1}`)
+    :param float compressive_strength: Concrete compressive strength (:math:`f_{cm}`)
     :param float compressive_strain: Strain at which the concrete stress equals the
-        compressive strength
+        compressive strength (:math:`\epsilon_{c1}`)
     :param float tensile_strength:  Concrete tensile strength
     :param float tension_softening_stiffness: Slope of the linear tension softening
         branch
@@ -522,7 +388,7 @@ class EurocodeNonLinear(ConcreteServiceProfile):
             - self.tensile_strength / self.tension_softening_stiffness
         )
 
-        self.strains.append(1.01 * strain_zero_tension)
+        self.strains.append(1.1 * strain_zero_tension)
         self.stresses.append(0)
         self.strains.append(strain_zero_tension)
         self.stresses.append(0)
@@ -764,3 +630,137 @@ class EurocodeParabolicUltimate(ConcreteUltimateProfile):
         # compressive plateau
         self.strains.append(self.ultimate_strain)
         self.stresses.append(self.compressive_strength)
+
+
+@dataclass
+class SteelProfile(StressStrainProfile):
+    """Abstract class for a steel stress-strain profile.
+
+    :param strains: List of strains (must be increasing or equal)
+    :type strains: List[float]
+    :param stresses: List of stresses
+    :type stresses: List[float]
+    :param float yield_strength: Steel yield strength
+    :param float elastic_modulus: Steel elastic modulus
+    :param float fracture_strain: Steel fracture strain
+    """
+
+    strains: List[float]
+    stresses: List[float]
+    yield_strength: float
+    elastic_modulus: float
+    fracture_strain: float
+
+    def get_elastic_modulus(
+        self,
+    ) -> float:
+        """Returns the elastic modulus of the stress-strain profile.
+
+        :return: Elastic modulus
+        :rtype: float
+        """
+
+        return self.elastic_modulus
+
+    def print_properties(
+        self,
+        fmt: Optional[str] = "8.6e",
+    ):
+        """Prints the stress-strain profile properties to the terminal.
+
+        :param fmt: Number format
+        :type fmt: Optional[str]
+        """
+
+        table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
+        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
+        table.add_column("Value", justify="right", style="green")
+
+        table.add_row(
+            "Elastic Modulus", "{:>{fmt}}".format(self.get_elastic_modulus(), fmt=fmt)
+        )
+        table.add_row(
+            "Yield Strength", "{:>{fmt}}".format(self.yield_strength, fmt=fmt)
+        )
+        table.add_row(
+            "Tensile Strength",
+            "{:>{fmt}}".format(-self.get_tensile_strength(), fmt=fmt),
+        )
+        table.add_row(
+            "Fracture Strain", "{:>{fmt}}".format(self.get_ultimate_strain(), fmt=fmt)
+        )
+
+        console = Console()
+        console.print(table)
+
+
+@dataclass
+class SteelElasticPlastic(SteelProfile):
+    """Class for a perfectly elastic-plastic steel stress-strain profile.
+
+    :param float yield_strength: Steel yield strength
+    :param float elastic_modulus: Steel elastic modulus
+    :param float fracture_strain: Steel fracture strain
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    yield_strength: float
+    elastic_modulus: float
+    fracture_strain: float
+
+    def __post_init__(
+        self,
+    ):
+        yield_strain = self.yield_strength / self.elastic_modulus
+        self.strains = [
+            -self.fracture_strain,
+            -yield_strain,
+            0,
+            yield_strain,
+            self.fracture_strain,
+        ]
+        self.stresses = [
+            -self.yield_strength,
+            -self.yield_strength,
+            0,
+            self.yield_strength,
+            self.yield_strength,
+        ]
+
+
+@dataclass
+class SteelHardening(SteelProfile):
+    """Class for a steel stress-strain profile with strain hardening.
+
+    :param float yield_strength: Steel yield strength
+    :param float elastic_modulus: Steel elastic modulus
+    :param float fracture_strain: Steel fracture strain
+    :param float ultimate_strength: Steel ultaimte strength
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    yield_strength: float
+    elastic_modulus: float
+    fracture_strain: float
+    ultimate_strength: float
+
+    def __post_init__(
+        self,
+    ):
+        yield_strain = self.yield_strength / self.elastic_modulus
+        self.strains = [
+            -self.fracture_strain,
+            -yield_strain,
+            0,
+            yield_strain,
+            self.fracture_strain,
+        ]
+        self.stresses = [
+            -self.ultimate_strength,
+            -self.yield_strength,
+            0,
+            self.yield_strength,
+            self.ultimate_strength,
+        ]

@@ -275,7 +275,7 @@ class ConcreteSection:
             centroid = steel_geom.calculate_centroid()
 
             # calculate compressive and tensile force
-            force_c = area * steel_geom.material.yield_strength
+            force_c = area * steel_geom.material.stress_strain_profile.yield_strength
             force_t = -force_c
 
             # add to totals

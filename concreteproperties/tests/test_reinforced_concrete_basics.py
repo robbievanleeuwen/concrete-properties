@@ -14,8 +14,6 @@ from concreteproperties.stress_strain_profile import (
 import sectionproperties.pre.library.primitive_sections as sp_ps
 from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
 
-from rich.pretty import pprint
-
 # All examples come from:
 # Warner, R. F., Foster, S. J., & Kilpatrick, A. E. (2007). Reinforced Concrete Basics (1st ed.). Pearson Australia.
 
@@ -39,7 +37,6 @@ def test_example_3_1():
     steel = Steel(
         name="500 MPa Steel",
         density=7.85e-6,
-        yield_strength=500,
         stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
@@ -100,7 +97,6 @@ def test_example_3_2():
     steel = Steel(
         name="500 MPa Steel",
         density=7.85e-6,
-        yield_strength=500,
         stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
@@ -184,7 +180,6 @@ def test_example_3_4():
     steel = Steel(
         name="500 MPa Steel",
         density=7.85e-6,
-        yield_strength=500,
         stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
@@ -249,7 +244,6 @@ def test_example_3_8():
     steel = Steel(
         name="500 MPa Steel",
         density=7.85e-6,
-        yield_strength=500,
         stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
@@ -299,7 +293,6 @@ def test_example_3_9():
     steel = Steel(
         name="500 MPa Steel",
         density=7.85e-6,
-        yield_strength=500,
         stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
@@ -349,7 +342,6 @@ def test_example_3_11():
     steel = Steel(
         name="500 MPa Steel",
         density=7.85e-6,
-        yield_strength=500,
         stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
@@ -402,7 +394,6 @@ def test_example_5_1():
     steel = Steel(
         name="500 MPa Steel",
         density=7.85e-6,
-        yield_strength=500,
         stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,
@@ -453,7 +444,6 @@ def test_example_5_2():
     steel = Steel(
         name="500 MPa Steel",
         density=7.85e-6,
-        yield_strength=500,
         stress_strain_profile=SteelElasticPlastic(
             yield_strength=500,
             elastic_modulus=200e3,

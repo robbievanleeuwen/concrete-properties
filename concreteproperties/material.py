@@ -14,11 +14,11 @@ from concreteproperties.stress_strain_profile import (
 class Concrete:
     """Class for a concrete material.
 
-    :param string name: Concrete material name
+    :param str name: Concrete material name
     :param float density: Concrete density (mass per unit volume)
     :param stress_strain_profile: Service concrete stress-strain profile
     :type stress_strain_profile:
-        :class:`~concreteproperties.stress_strain_profile.float`
+        :class:`~concreteproperties.stress_strain_profile.ConcreteServiceProfile`
     :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile
     :type ultimate_stress_strain_profile:
         :class:`~concreteproperties.stress_strain_profile.ConcreteUltimateProfile`
@@ -54,9 +54,8 @@ class Concrete:
 class Steel:
     """Class for a steel material.
 
-    :param string name: Steel material name
+    :param str name: Steel material name
     :param float density: Steel density (mass per unit volume)
-    :param float yield_strength: Steel yield strength
     :param stress_strain_profile: Ultimate steel stress-strain profile
     :type ultimate_stress_strain_profile:
         :class:`~concreteproperties.stress_strain_profile.SteelProfile`
@@ -65,7 +64,6 @@ class Steel:
 
     name: str
     density: float
-    yield_strength: float
     stress_strain_profile: SteelProfile
     colour: str
 
