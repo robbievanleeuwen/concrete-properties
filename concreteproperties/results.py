@@ -427,7 +427,7 @@ class MomentCurvatureResults:
         """Given a moment, uses the moment-curvature results to interpolate a curvature.
 
         Raises a ValueError if supplied moment is outside bounds of moment-curvature
-        results.
+        results. (TODO)
 
         :param float moment: Bending moment at which to obtain curvature
 
@@ -679,8 +679,9 @@ class StressResult:
             cmap_steel = cm.get_cmap(name=steel_cmap)
 
             # determine minimum and maximum stress values for the contour list
-            conc_sig_min = min([min(x) for x in self.concrete_stresses])
-            conc_sig_max = max([max(x) for x in self.concrete_stresses])
+            # add tolerance for plotting stress blocks
+            conc_sig_min = min([min(x) for x in self.concrete_stresses]) - 1e-12
+            conc_sig_max = max([max(x) for x in self.concrete_stresses]) + 1e-12
             steel_sig_min = min(self.steel_stresses)
             steel_sig_max = max(self.steel_stresses)
 
@@ -703,45 +704,47 @@ class StressResult:
 
             # plot the concrete stresses
             for idx, sig in enumerate(self.concrete_stresses):
-                # create triangulation
-                triang = tri.Triangulation(
-                    self.concrete_analysis_sections[idx].mesh_nodes[:, 0],
-                    self.concrete_analysis_sections[idx].mesh_nodes[:, 1],
-                    self.concrete_analysis_sections[idx].mesh_elements[:, 0:3],
-                )
-
-                # plot the filled contour
-                trictr = fig.axes[0].tricontourf(
-                    triang, sig, v_conc, cmap=cmap_conc, norm=CenteredNorm()
-                )
-
-                # plot a zero stress contour, supressing warning
-                with warnings.catch_warnings():
-                    warnings.filterwarnings(
-                        "ignore",
-                        message="No contour levels were found within the data range.",
+                # check region has a force
+                if abs(self.concrete_forces[idx][0]) > 1e-8:
+                    # create triangulation
+                    triang = tri.Triangulation(
+                        self.concrete_analysis_sections[idx].mesh_nodes[:, 0],
+                        self.concrete_analysis_sections[idx].mesh_nodes[:, 1],
+                        self.concrete_analysis_sections[idx].mesh_elements[:, 0:3],
                     )
 
-                    # set zero stress for neutral axis contour
-                    zero_level = 0
-
-                    if min(sig) > 0:
-                        if min(sig) < 1e-3:
-                            zero_level = min(sig) + 1e-12
-
-                    if max(sig) < 0:
-                        if max(sig) > -1e-3:
-                            zero_level = max(sig) - 1e-12
-
-                    if min(sig) == 0:
-                        zero_level = 1e-12
-
-                    if max(sig) == 0:
-                        zero_level = -1e-12
-
-                    CS = fig.axes[0].tricontour(
-                        triang, sig, [zero_level], linewidths=1, linestyles="dashed"
+                    # plot the filled contour
+                    trictr = fig.axes[0].tricontourf(
+                        triang, sig, v_conc, cmap=cmap_conc, norm=CenteredNorm()
                     )
+
+                    # plot a zero stress contour, supressing warning
+                    with warnings.catch_warnings():
+                        warnings.filterwarnings(
+                            "ignore",
+                            message="No contour levels were found within the data range.",
+                        )
+
+                        # set zero stress for neutral axis contour
+                        zero_level = 0
+
+                        if min(sig) > 0:
+                            if min(sig) < 1e-3:
+                                zero_level = min(sig) + 1e-12
+
+                        if max(sig) < 0:
+                            if max(sig) > -1e-3:
+                                zero_level = max(sig) - 1e-12
+
+                        if min(sig) == 0:
+                            zero_level = 1e-12
+
+                        if max(sig) == 0:
+                            zero_level = -1e-12
+
+                        CS = fig.axes[0].tricontour(
+                            triang, sig, [zero_level], linewidths=1, linestyles="dashed"
+                        )
 
             # plot the steel stresses
             steel_patches = []

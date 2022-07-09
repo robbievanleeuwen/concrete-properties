@@ -228,9 +228,22 @@ class SteelProfile(StressStrainProfile):
     :param float fracture_strain: Steel fracture strain
     """
 
+    strains: List[float]
+    stresses: List[float]
     yield_strength: float
     elastic_modulus: float
     fracture_strain: float
+
+    def get_elastic_modulus(
+        self,
+    ) -> float:
+        """Returns the elastic modulus of the stress-strain profile.
+
+        :return: Elastic modulus
+        :rtype: float
+        """
+
+        return self.elastic_modulus
 
     def print_properties(
         self,
@@ -344,7 +357,13 @@ class ConcreteServiceProfile(StressStrainProfile):
     :type strains: List[float]
     :param stresses: List of stresses
     :type stresses: List[float]
+    :param float ultimate_strain: Concrete strain at failure
     """
+
+    strains: List[float]
+    stresses: List[float]
+    elastic_modulus: float = field(init=False)
+    ultimate_strain: float
 
     def print_properties(
         self,
@@ -362,6 +381,9 @@ class ConcreteServiceProfile(StressStrainProfile):
 
         table.add_row(
             "Elastic Modulus", "{:>{fmt}}".format(self.get_elastic_modulus(), fmt=fmt)
+        )
+        table.add_row(
+            "Ultimate Strain", "{:>{fmt}}".format(self.get_ultimate_strain(), fmt=fmt)
         )
 
         console = Console()
@@ -398,25 +420,164 @@ class ConcreteServiceProfile(StressStrainProfile):
         :rtype: float
         """
 
-        return None
+        return self.ultimate_strain
 
 
 @dataclass
-class ConcreteLinearProfile(ConcreteServiceProfile):
+class ConcreteLinear(ConcreteServiceProfile):
     """Class for a symmetric linear stress-strain profile.
 
     :param float elastic_modulus: Elastic modulus of the stress-strain profile
+    :param ultimate_strain: Concrete strain at failure
+    :type ultimate_strain: Optional[float]
     """
 
     strains: List[float] = field(init=False)
     stresses: List[float] = field(init=False)
     elastic_modulus: float
+    ultimate_strain: float = field(default=1)
 
     def __post_init__(
         self,
     ):
         self.strains = [-0.001, 0, 0.001]
         self.stresses = [-0.001 * self.elastic_modulus, 0, 0.001 * self.elastic_modulus]
+
+    def get_elastic_modulus(
+        self,
+    ) -> float:
+        """Returns the elastic modulus of the stress-strain profile.
+
+        :return: Elastic modulus
+        :rtype: float
+        """
+
+        return self.elastic_modulus
+
+
+@dataclass
+class ConcreteLinearNoTension(ConcreteLinear):
+    """Class for a linear stress-strain profile with no tensile strength.
+
+    :param float elastic_modulus: Elastic modulus of the stress-strain profile
+    :param ultimate_strain: Concrete strain at failure
+    :type ultimate_strain: Optional[float]
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    elastic_modulus: float
+    ultimate_strain: float = field(default=1)
+
+    def __post_init__(
+        self,
+    ):
+        self.strains = [-0.001, 0, 0.001]
+        self.stresses = [0, 0, 0.001 * self.elastic_modulus]
+
+
+@dataclass
+class EurocodeNonLinear(ConcreteServiceProfile):
+    """Class for a non-linear stress-strain relationship to EC2.
+
+    Tension is modelled with a symmetric ``elastic_modulus`` until failure at
+    ``tensile_strength``, after which the tensile stress reduces according to the
+    ``tension_softening_stiffness``.
+
+    :param float elastic_modulus: Concrete elastic modulus
+    :param float ultimate_strain: Concrete strain at failure
+    :param float compressive_strength: Concrete compressive strength
+    :param float compressive_strain: Strain at which the concrete stress equals the
+        compressive strength
+    :param float tensile_strength:  Concrete tensile strength
+    :param float tension_softening_stiffness: Slope of the linear tension softening
+        branch
+    :param n_points_1: Number of points to discretise the curve prior to the peak stress
+    :type n_points_1: Optional[int]
+    :param n_points_2: Number of points to discretise the curve after the peak stress
+    :type n_points_2: Optional[int]
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    elastic_modulus: float
+    ultimate_strain: float
+    compressive_strength: float
+    compressive_strain: float
+    tensile_strength: float
+    tension_softening_stiffness: float
+    n_points_1: Optional[int] = field(default=10)
+    n_points_2: Optional[int] = field(default=3)
+
+    def __post_init__(
+        self,
+    ):
+        self.strains = []
+        self.stresses = []
+
+        # tensile portion of curve
+        strain_tension_strength = -self.tensile_strength / self.elastic_modulus
+        strain_zero_tension = (
+            strain_tension_strength
+            - self.tensile_strength / self.tension_softening_stiffness
+        )
+
+        self.strains.append(1.1 * strain_zero_tension)
+        self.stresses.append(0)
+        self.strains.append(strain_zero_tension)
+        self.stresses.append(0)
+        self.strains.append(strain_tension_strength)
+        self.stresses.append(-self.tensile_strength)
+        self.strains.append(0)
+        self.stresses.append(0)
+
+        # constants
+        k = (
+            1.05
+            * self.elastic_modulus
+            * self.compressive_strain
+            / self.compressive_strength
+        )
+
+        # prior to peak stress
+        for idx in range(self.n_points_1):
+            conc_strain = self.compressive_strain / self.n_points_1 * (idx + 1)
+            eta = conc_strain / self.compressive_strain
+            conc_stress = (
+                self.compressive_strength * (k * eta - eta * eta) / (1 + eta * (k - 2))
+            )
+
+            self.strains.append(conc_strain)
+            self.stresses.append(conc_stress)
+
+        # after peak stress
+        for idx in range(self.n_points_2):
+            remaining_strain = self.ultimate_strain - self.compressive_strain
+            conc_strain = (
+                self.compressive_strain + remaining_strain / self.n_points_2 * (idx + 1)
+            )
+            eta = conc_strain / self.compressive_strain
+            conc_stress = (
+                self.compressive_strength * (k * eta - eta * eta) / (1 + eta * (k - 2))
+            )
+
+            self.strains.append(conc_strain)
+            self.stresses.append(conc_stress)
+
+        # close off final stress
+        self.strains.append(1.01 * conc_strain)
+        self.stresses.append(conc_stress)
+
+    def get_elastic_modulus(
+        self,
+    ) -> float:
+        """Returns the elastic modulus of the stress-strain profile.
+
+        :return: Elastic modulus
+        :rtype: float
+        """
+
+        return self.elastic_modulus
 
 
 @dataclass
@@ -430,6 +591,8 @@ class ConcreteUltimateProfile(StressStrainProfile):
     :param float compressive_strength: Concrete compressive strength
     """
 
+    strains: List[float]
+    stresses: List[float]
     compressive_strength: float
 
     def get_compressive_strength(
@@ -469,18 +632,19 @@ class ConcreteUltimateProfile(StressStrainProfile):
 
 
 @dataclass
-class WhitneyStressBlock(ConcreteUltimateProfile):
-    """Class for a Whitney (rectangular) stress block.
+class RectangularStressBlock(ConcreteUltimateProfile):
+    """Class for a rectangular stress block.
 
     :param float compressive_strength: Concrete compressive strength
-    :param float alpha_2: Factor that modifies the concrete compressive strength
+    :param float alpha: Factor that modifies the concrete compressive strength
     :param float gamma: Factor that modifies the depth of the stress block
-    :param float ultimate_strain: Strain at the extreme compression fibre
+    :param float ultimate_strain: Concrete strain at failure
     """
 
     strains: List[float] = field(init=False)
     stresses: List[float] = field(init=False)
-    alpha_2: float
+    compressive_strength: float
+    alpha: float
     gamma: float
     ultimate_strain: float
 
@@ -496,8 +660,8 @@ class WhitneyStressBlock(ConcreteUltimateProfile):
         self.stresses = [
             0,
             0,
-            self.alpha_2 * self.compressive_strength,
-            self.alpha_2 * self.compressive_strength,
+            self.alpha * self.compressive_strength,
+            self.alpha * self.compressive_strength,
         ]
 
     def get_stress(
@@ -519,3 +683,84 @@ class WhitneyStressBlock(ConcreteUltimateProfile):
             return self.stresses[2]
         else:
             return 0
+
+
+@dataclass
+class BilinearStressStrain(ConcreteUltimateProfile):
+    """Class for a bilinear stress-strain relationship.
+
+    :param float compressive_strength: Concrete compressive strength
+    :param float compressive_strain: Strain at which the concrete stress equals the
+        compressive strength
+    :param float ultimate_strain: Concrete strain at failure
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    compressive_strength: float
+    compressive_strain: float
+    ultimate_strain: float
+
+    def __post_init__(
+        self,
+    ):
+        self.strains = [
+            -self.compressive_strain,
+            0,
+            self.compressive_strain,
+            self.ultimate_strain,
+        ]
+        self.stresses = [
+            0,
+            0,
+            self.compressive_strength,
+            self.compressive_strength,
+        ]
+
+
+@dataclass
+class EurocodeParabolicUltimate(ConcreteUltimateProfile):
+    """Class for an ultimate parabolic stress-strain relationship to EC2.
+
+    :param float compressive_strength: Concrete compressive strength
+    :param float compressive_strain: Strain at which the concrete stress equals the
+        compressive strength
+    :param float ultimate_strain: Concrete strain at failure
+    :param float n: Parabolic curve exponent
+    :param n_points: Number of points to discretise the parabolic segment of the curve
+    :type n_points: Optional[int]
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    compressive_strength: float
+    compressive_strain: float
+    ultimate_strain: float
+    n: float
+    n_points: Optional[int] = field(default=10)
+
+    def __post_init__(
+        self,
+    ):
+        self.strains = []
+        self.stresses = []
+
+        # tensile portion of curve
+        self.strains.append(-self.compressive_strain)
+        self.stresses.append(0)
+        self.strains.append(0)
+        self.stresses.append(0)
+
+        # parabolic portion of curve
+        for idx in range(self.n_points):
+            conc_strain = self.compressive_strain / self.n_points * (idx + 1)
+            conc_stress = self.compressive_strength * (
+                1 - np.power(1 - (conc_strain / self.compressive_strain), self.n)
+            )
+
+            self.strains.append(conc_strain)
+            self.stresses.append(conc_stress)
+
+        # compressive plateau
+        self.strains.append(self.ultimate_strain)
+        self.stresses.append(self.compressive_strength)

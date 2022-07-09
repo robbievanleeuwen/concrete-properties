@@ -40,6 +40,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.viewcode",
     "sphinx.ext.mathjax",
+    "matplotlib.sphinxext.plot_directive",
 ]
 
 autodoc_member_order = "bysource"
@@ -95,4 +96,5 @@ html_context = {
     "github_repo": "concrete-properties",
     "github_version": "master",
     "doc_path": "docs/source/",
+    "default_mode": "light",
 }

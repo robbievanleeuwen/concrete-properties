@@ -4,16 +4,12 @@ from sectionproperties.pre.library.concrete_sections import concrete_rectangular
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.stress_strain_profile import (
-    ConcreteServiceProfile,
-    WhitneyStressBlock,
+    RectangularStressBlock,
     SteelHardening,
+    EurocodeNonLinear,
 )
 
-
-concrete_profile = ConcreteServiceProfile(
-    strains=[-41 / 32.8e3, -40 / 32.8e3, -3.8 / 32.8e3, 0, 40 / 32.8e3, 0.003],
-    stresses=[0, 0, -3.8, 0, 40, 40],
-)
+concrete_profile = EurocodeNonLinear(35e3, 0.0035, 40, 0.0023, 3.5, 7e3)
 concrete_profile.plot_stress_strain(title="Concrete Stress-Strain Profile")
 
 steel_profile = SteelHardening(
@@ -28,13 +24,13 @@ concrete = Concrete(
     name="40 MPa Concrete",
     density=2.4e-6,
     stress_strain_profile=concrete_profile,
-    ultimate_stress_strain_profile=WhitneyStressBlock(
+    ultimate_stress_strain_profile=RectangularStressBlock(
         compressive_strength=40,
-        alpha_2=0.85,
+        alpha=0.85,
         gamma=0.77,
         ultimate_strain=0.003,
     ),
-    alpha_1=0.85,
+    alpha_squash=0.85,
     flexural_tensile_strength=3.8,
     colour="lightgrey",
 )
@@ -46,7 +42,6 @@ steel = Steel(
     stress_strain_profile=steel_profile,
     colour="grey",
 )
-
 
 geom = concrete_rectangular_section(
     b=300,
@@ -66,11 +61,13 @@ geom = concrete_rectangular_section(
 conc_sec = ConcreteSection(geom)
 conc_sec.plot_section()
 
-mc = conc_sec.moment_curvature_diagram()
+ultimate_res = conc_sec.ultimate_bending_capacity()
+ultimate_res.print_results()
+mc = conc_sec.moment_curvature_analysis()
 mc.plot_results()
 
-moments = [50e6, 100e6, 150e6, 200e6, 250e6, 275e6]
+moments = [50e6, 114e6, 120e6, 200e6, 230e6, 250e6, 294e6]
 
 for m in moments:
     stress_res = conc_sec.calculate_service_stress(moment_curvature_results=mc, m=m)
-    stress_res.plot_stress()
+    stress_res.plot_stress(title=f"Moment = {m / 1e6:.0f} kN.m")

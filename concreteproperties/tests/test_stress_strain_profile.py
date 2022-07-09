@@ -4,7 +4,7 @@ from concreteproperties.stress_strain_profile import *
 
 
 def test_whitney():
-    profile = WhitneyStressBlock(40, 0.85, 0.77, 0.003)
+    profile = RectangularStressBlock(40, 0.85, 0.77, 0.003)
 
     assert pytest.approx(profile.get_stress(0)) == 0
     assert pytest.approx(profile.get_stress(0.003)) == 0.85 * 40

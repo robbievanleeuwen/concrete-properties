@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import List, Tuple, Optional, TYPE_CHECKING
+import warnings
 import numpy as np
 from scipy.optimize import brentq
 import matplotlib.pyplot as plt
@@ -17,8 +18,6 @@ from sectionproperties.analysis.fea import principal_coordinate, global_coordina
 
 if TYPE_CHECKING:
     import matplotlib
-
-from rich.pretty import pprint
 
 
 class ConcreteSection:
@@ -239,7 +238,7 @@ class ConcreteSection:
         """Calculates and stores gross section plastic properties.
 
         Calculates the plastic centroid and squash load assuming all steel is at yield
-        and the concrete experiences a stress of alpha_1 * f'c.
+        and the concrete experiences a stress of alpha_squash * f'c.
 
         Calculates tensile load assuming all steel is at yield and the concrete is
         entirely cracked.
@@ -260,7 +259,7 @@ class ConcreteSection:
             # calculate compressive force
             force_c = (
                 area
-                * conc_geom.material.alpha_1
+                * conc_geom.material.alpha_squash
                 * conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
             )
 
@@ -320,16 +319,19 @@ class ConcreteSection:
         b = d_t  # neutral axis at extreme tensile fibre
 
         # find neutral axis that gives convergence of the the cracked neutral axis
-        (cracked_results.d_nc, r) = brentq(
-            f=self.cracked_neutral_axis_convergence,
-            a=a,
-            b=b,
-            args=(cracked_results),
-            xtol=1e-3,
-            rtol=1e-6,
-            full_output=True,
-            disp=False,
-        )
+        try:
+            (cracked_results.d_nc, r) = brentq(
+                f=self.cracked_neutral_axis_convergence,
+                a=a,
+                b=b,
+                args=(cracked_results),
+                xtol=1e-3,
+                rtol=1e-6,
+                full_output=True,
+                disp=False,
+            )
+        except ValueError:
+            warnings.warn("brentq algorithm failed.")
 
         # calculate cracked section properties
         # axial rigidity & first moments of area
@@ -525,18 +527,20 @@ class ConcreteSection:
 
         return e_qu
 
-    def moment_curvature_diagram(
+    def moment_curvature_analysis(
         self,
         theta: Optional[float] = 0,
         kappa_inc: Optional[float] = 1e-7,
         delta_m_min: Optional[float] = 0.15,
         delta_m_max: Optional[float] = 0.3,
     ) -> res.MomentCurvatureResults:
-        """Generates a moment curvature diagram given a bending angle `theta`.
+        """Performs a moment curvature analysis given a bending angle `theta`.
 
-        Analysis continues until the steel reaches fracture strain.
+        Analysis continues until the steel reaches fracture strain or the concrete
+        reaches its ultimate strain.
 
-        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
+            (-pi <= theta <= pi)
         :type theta: Optional[float]
         :param kappa_inc: Initial curvature increment
         :type kappa_inc: Optional[float]
@@ -582,16 +586,20 @@ class ConcreteSection:
                 kappa = moment_curvature.kappa[-1] + kappa_inc
 
                 # find neutral axis that gives convergence of the axial force
-                (d_n, r) = brentq(
-                    f=self.service_normal_force_convergence,
-                    a=a,
-                    b=b,
-                    args=(kappa, moment_curvature),
-                    xtol=1e-3,
-                    rtol=1e-6,
-                    full_output=True,
-                    disp=False,
-                )
+                try:
+                    (d_n, r) = brentq(
+                        f=self.service_normal_force_convergence,
+                        a=a,
+                        b=b,
+                        args=(kappa, moment_curvature),
+                        xtol=1e-3,
+                        rtol=1e-6,
+                        full_output=True,
+                        disp=False,
+                    )
+                except ValueError:
+                    print("OH NO!")
+
                 text_update = "[red]Generating M-K diagram: "
                 text_update += f"M={moment_curvature._m_i:.3e}"
                 # TODO: make percentage maximum ratio of steel strain/failure strain
@@ -599,9 +607,10 @@ class ConcreteSection:
                 progress.update(task, description=text_update)
 
                 # save results
-                moment_curvature.kappa.append(kappa)
-                moment_curvature.moment.append(moment_curvature._m_i)
-                iter += 1
+                if not moment_curvature._failure:
+                    moment_curvature.kappa.append(kappa)
+                    moment_curvature.moment.append(moment_curvature._m_i)
+                    iter += 1
 
             progress.update(
                 task,
@@ -655,6 +664,9 @@ class ConcreteSection:
         :rtype: :class:`~concreteproperties.results.MomentCurvatureResults`
         """
 
+        # reset failure
+        moment_curvature._failure = False
+
         # calculate extreme fibre in global coordinates
         extreme_fibre, d_t = utils.calculate_extreme_fibre(
             points=self.geometry.points, theta=moment_curvature.theta
@@ -692,7 +704,7 @@ class ConcreteSection:
         # calculate concrete actions
         for conc_geom in concrete_split_geoms:
             sec = AnalysisSection(geometry=conc_geom)
-            n_sec, mv_sec = sec.service_stress_analysis(
+            n_sec, mv_sec, max_strain = sec.service_stress_analysis(
                 point_na=point_na,
                 d_n=d_n,
                 theta=moment_curvature.theta,
@@ -702,6 +714,13 @@ class ConcreteSection:
 
             n += n_sec
             mv += mv_sec
+
+            # check for concrete failure
+            if (
+                max_strain
+                > conc_geom.material.stress_strain_profile.get_ultimate_strain()
+            ):
+                moment_curvature._failure = True
 
         # calculate steel actions
         for steel_geom in self.steel_geometries:
@@ -769,16 +788,19 @@ class ConcreteSection:
         ultimate_results = res.UltimateBendingResults(theta=theta)
 
         # find neutral axis that gives convergence of the axial force
-        (d_n, r) = brentq(
-            f=self.ultimate_normal_force_convergence,
-            a=a,
-            b=b,
-            args=(n, ultimate_results),
-            xtol=1e-3,
-            rtol=1e-6,
-            full_output=True,
-            disp=False,
-        )
+        try:
+            (d_n, r) = brentq(
+                f=self.ultimate_normal_force_convergence,
+                a=a,
+                b=b,
+                args=(n, ultimate_results),
+                xtol=1e-3,
+                rtol=1e-6,
+                full_output=True,
+                disp=False,
+            )
+        except ValueError:
+            warnings.warn("brentq algorithm failed.")
 
         return ultimate_results
 
@@ -1380,16 +1402,19 @@ class ConcreteSection:
         b = d_t  # neutral axis at extreme tensile fibre
 
         # find neutral axis that gives convergence of the axial force
-        (d_n, r) = brentq(
-            f=self.service_normal_force_convergence,
-            a=a,
-            b=b,
-            args=(kappa, mk),
-            xtol=1e-3,
-            rtol=1e-6,
-            full_output=True,
-            disp=False,
-        )
+        try:
+            (d_n, r) = brentq(
+                f=self.service_normal_force_convergence,
+                a=a,
+                b=b,
+                args=(kappa, mk),
+                xtol=1e-3,
+                rtol=1e-6,
+                full_output=True,
+                disp=False,
+            )
+        except ValueError:
+            warnings.warn("brentq algorithm failed.")
 
         # find point on neutral axis by shifting by d_n
         point_na = utils.point_on_neutral_axis(
@@ -1522,7 +1547,6 @@ class ConcreteSection:
             ultimate=True,
             ultimate_strain=self.gross_properties.conc_ultimate_strain,
             d_n=ultimate_results.d_n,
-            top_only=True,
         )
 
         # loop through all concrete geometries and calculate stress

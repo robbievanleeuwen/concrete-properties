@@ -12,8 +12,6 @@ from sectionproperties.pre.geometry import CompoundGeometry
 if TYPE_CHECKING:
     from sectionproperties.pre.geometry import Geometry
 
-from rich.pretty import pprint
-
 
 def get_service_strain(
     point: Tuple[float],
@@ -65,7 +63,7 @@ def get_ultimate_strain(
     :type point_na: Tuple[float]
     :param float d_n: Depth of the neutral axis from the extreme compression fibre
     :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
-    :param float ultimate_strain: Strain at the extreme compression fibre
+    :param float ultimate_strain: Concrete strain at failure
 
     :return: Strain
     :rtype: float
@@ -122,7 +120,6 @@ def split_section_at_strains(
     ultimate_strain: float = None,
     d_n: float = None,
     kappa: float = None,
-    top_only: bool = False,
 ) -> List[Geometry]:
     """Splits concrete geometries at discontinuities in its stress-strain profile.
 
@@ -132,10 +129,9 @@ def split_section_at_strains(
     :param point_na: Point on the neutral axis
     :type point_na: Tuple[float]
     :param bool ultimate: If set to True, uses ultimate stress-strain profile
-    :param float ultimate_strain: Strain at the extreme compression fibre
+    :param float ultimate_strain: Concrete strain at failure
     :param float d_n: Depth of the neutral axis from the extreme compression fibre
     :param float kappa: Curvature
-    :param bool top_only: If set to True, only returns the top geometries
 
     :return: List of split geometries
     :rtype: List[:class:`sectionproperties.pre.geometry.Geometry`]
@@ -143,7 +139,6 @@ def split_section_at_strains(
 
     # create splits in concrete geometries at points in stress strain profiles
     concrete_split_geoms = []
-    top_only_geoms = []
 
     for conc_geom in concrete_geometries:
         if ultimate:
@@ -182,12 +177,8 @@ def split_section_at_strains(
 
         # save final top geoms
         concrete_split_geoms.extend(top_geoms)
-        top_only_geoms.extend(top_geoms)
 
-    if top_only:
-        return top_only_geoms
-    else:
-        return concrete_split_geoms
+    return concrete_split_geoms
 
 
 def split_section(

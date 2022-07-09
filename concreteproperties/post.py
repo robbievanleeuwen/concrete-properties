@@ -5,8 +5,6 @@ import contextlib
 import numpy as np
 import matplotlib.pyplot as plt
 
-from rich.pretty import pprint
-
 if TYPE_CHECKING:
     import matplotlib
     from concreteproperties.concrete_section import ConcreteSection

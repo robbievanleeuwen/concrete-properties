@@ -16,8 +16,6 @@ if TYPE_CHECKING:
     from concreteproperties.material import Concrete
     from sectionproperties.pre.geometry import Geometry
 
-from rich.pretty import pprint
-
 
 class AnalysisSection:
     """Class for an analysis section to perform a fast analysis on concrete sections."""
@@ -174,27 +172,29 @@ class AnalysisSection:
         :param float kappa: Curvature
         :param float na_local: y-location of the neutral axis in local coordinates
 
-        :return: Axial force and resultant moment
+        :return: Axial force, resultant moment and max strain
         :rtype: Tuple[float]
         """
 
         # initialise section actions
         n = 0
         mv = 0
+        max_strain = 0
 
         for el in self.elements:
-            el_n, el_mv = el.calculate_service_actions(
+            el_n, el_mv, el_max_strain = el.calculate_service_actions(
                 point_na=point_na,
                 d_n=d_n,
                 theta=theta,
                 kappa=kappa,
                 na_local=na_local,
             )
+            max_strain = max(max_strain, el_max_strain)
 
             n += el_n
             mv += el_mv
 
-        return n, mv
+        return n, mv, max_strain
 
     def get_service_stress(
         self,
@@ -238,7 +238,7 @@ class AnalysisSection:
             )
 
         # calculate total force
-        n, mv = self.service_stress_analysis(
+        n, mv, _ = self.service_stress_analysis(
             point_na=point_na,
             d_n=d_n,
             theta=theta,
@@ -268,7 +268,7 @@ class AnalysisSection:
         :type point_na: Tuple[float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
         :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
-        :param float ultimate_strain: Strain at the extreme compression fibre
+        :param float ultimate_strain: Concrete strain at failure
         :param float pc_local: y-location of the plastic centroid in local coordinates
 
         :return: Axial force and resultant moment
@@ -308,7 +308,7 @@ class AnalysisSection:
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
         :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
-        :param float ultimate_strain: Strain at the extreme compression fibre
+        :param float ultimate_strain: Concrete strain at failure
         :param float pc_local: y-location of the plastic centroid in local coordinates
 
         :return: Ultimate stresses net force and distance from neutral axis to point of
@@ -597,13 +597,14 @@ class Tri3:
         :param float kappa: Curvature
         :param float na_local: y-location of the neutral axis in local coordinates
 
-        :return: Axial force and resultant moment
+        :return: Axial force, resultant moment and maximum strain
         :rtype: Tuple[float]
         """
 
         # initialise element results
         force_e = 0
         mv_e = 0
+        max_strain_e = 0
 
         # get points for 1 point Gaussian integration
         gps = utils.gauss_points(n=1)
@@ -624,6 +625,7 @@ class Tri3:
                 theta=theta,
                 kappa=kappa,
             )
+            max_strain_e = max(max_strain_e, strain)
 
             # get stress at gauss point
             stress = self.conc_material.stress_strain_profile.get_stress(strain=strain)
@@ -638,7 +640,7 @@ class Tri3:
             force_e += force_gp
             mv_e += force_gp * (c_v - na_local)
 
-        return force_e, mv_e
+        return force_e, mv_e, max_strain_e
 
     def calculate_ultimate_actions(
         self,
@@ -654,7 +656,7 @@ class Tri3:
         :type point_na: Tuple[float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
         :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
-        :param float ultimate_strain: Strain at the extreme compression fibre
+        :param float ultimate_strain: Concrete strain at failure
         :param float pc_local: y-location of the plastic centroid in local coordinates
 
         :return: Axial force and resultant moment

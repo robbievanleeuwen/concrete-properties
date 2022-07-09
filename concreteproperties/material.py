@@ -22,7 +22,7 @@ class Concrete:
     :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile
     :type ultimate_stress_strain_profile:
         :class:`~concreteproperties.stress_strain_profile.ConcreteUltimateProfile`
-    :param float alpha_1: Factor that modifies the concrete compressive strength at
+    :param float alpha_squash: Factor that modifies the concrete compressive strength at
         squash load
     :param float flexural_tensile_strength: Concrete flexural tensile strength
     :param str colour: Colour of the material for rendering
@@ -32,7 +32,7 @@ class Concrete:
     density: float
     stress_strain_profile: ConcreteServiceProfile
     ultimate_stress_strain_profile: ConcreteUltimateProfile
-    alpha_1: float
+    alpha_squash: float
     flexural_tensile_strength: float
     colour: str
 
