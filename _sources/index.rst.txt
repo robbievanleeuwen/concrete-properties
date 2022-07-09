@@ -18,9 +18,8 @@
 Documentation
 =============
 
-What is *concreteproperties*???
-
-- Can only have only value of ultimate concrete strain
+A python package to calculate the section properties of arbitrary reinforced concrete
+sections.
 
 .. toctree::
    :maxdepth: 1
