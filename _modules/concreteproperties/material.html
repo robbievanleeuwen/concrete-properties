@@ -86,14 +86,14 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../rst/geometry.html">
-  Geometry
+ <a class="reference internal nav-link" href="../../rst/materials.html">
+  Materials
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../rst/materials.html">
-  Materials
+ <a class="reference internal nav-link" href="../../rst/geometry.html">
+  Geometry
  </a>
 </li>
 
@@ -142,6 +142,10 @@
         <li class="nav-item">
           <a class="nav-link" href="https://github.com/robbievanleeuwen/concrete-properties" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/concreteproperties/" rel="noopener" target="_blank" title="PyPI"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
         </li>
       </ul>
       </div>
@@ -199,15 +203,15 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="Concrete"><a class="viewcode-back" href="../../rst/gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="Concrete"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.material.Concrete">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Concrete</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for a concrete material.</span>
 
-<span class="sd">    :param string name: Concrete material name</span>
+<span class="sd">    :param str name: Concrete material name</span>
 <span class="sd">    :param float density: Concrete density (mass per unit volume)</span>
 <span class="sd">    :param stress_strain_profile: Service concrete stress-strain profile</span>
 <span class="sd">    :type stress_strain_profile:</span>
-<span class="sd">        :class:`~concreteproperties.stress_strain_profile.float`</span>
+<span class="sd">        :class:`~concreteproperties.stress_strain_profile.ConcreteServiceProfile`</span>
 <span class="sd">    :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile</span>
 <span class="sd">    :type ultimate_stress_strain_profile:</span>
 <span class="sd">        :class:`~concreteproperties.stress_strain_profile.ConcreteUltimateProfile`</span>
@@ -239,13 +243,12 @@
             <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Steel"><a class="viewcode-back" href="../../rst/gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="Steel"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.material.Steel">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Steel</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for a steel material.</span>
 
-<span class="sd">    :param string name: Steel material name</span>
+<span class="sd">    :param str name: Steel material name</span>
 <span class="sd">    :param float density: Steel density (mass per unit volume)</span>
-<span class="sd">    :param float yield_strength: Steel yield strength</span>
 <span class="sd">    :param stress_strain_profile: Ultimate steel stress-strain profile</span>
 <span class="sd">    :type ultimate_stress_strain_profile:</span>
 <span class="sd">        :class:`~concreteproperties.stress_strain_profile.SteelProfile`</span>
@@ -254,7 +257,6 @@
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">SteelProfile</span>
     <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span>
 

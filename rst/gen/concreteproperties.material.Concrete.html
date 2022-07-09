@@ -88,14 +88,14 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../geometry.html">
-  Geometry
+ <a class="reference internal nav-link" href="../materials.html">
+  Materials
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../materials.html">
-  Materials
+ <a class="reference internal nav-link" href="../geometry.html">
+  Geometry
  </a>
 </li>
 
@@ -144,6 +144,10 @@
         <li class="nav-item">
           <a class="nav-link" href="https://github.com/robbievanleeuwen/concrete-properties" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/concreteproperties/" rel="noopener" target="_blank" title="PyPI"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
         </li>
       </ul>
       </div>
@@ -532,9 +536,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>string</em>) – Concrete material name</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Concrete material name</p></li>
 <li><p><strong>density</strong> (<em>float</em>) – Concrete density (mass per unit volume)</p></li>
-<li><p><strong>stress_strain_profile</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Service concrete stress-strain profile</p></li>
+<li><p><strong>stress_strain_profile</strong> (<a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile" title="concreteproperties.stress_strain_profile.ConcreteServiceProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteServiceProfile</span></code></a>) – Service concrete stress-strain profile</p></li>
 <li><p><strong>ultimate_stress_strain_profile</strong> (<a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile" title="concreteproperties.stress_strain_profile.ConcreteUltimateProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteUltimateProfile</span></code></a>) – Ultimate concrete stress-strain profile</p></li>
 <li><p><strong>alpha_squash</strong> (<em>float</em>) – Factor that modifies the concrete compressive strength at
 squash load</p></li>

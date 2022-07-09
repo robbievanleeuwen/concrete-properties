@@ -3,20 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. image:: _static/cp_logo.png
+.. image:: _static/cp_logo_page.png
  :width: 100 %
  :alt: concreteproperties
  :align: left
  :class: only-light
 
-.. image:: _static/cp_logo_dark.png
+.. image:: _static/cp_logo_page_dark.png
  :width: 100 %
  :alt: concreteproperties
  :align: left
  :class: only-dark
-
-Documentation
-=============
 
 A python package to calculate the section properties of arbitrary reinforced concrete
 sections.
@@ -26,8 +23,8 @@ sections.
    :caption: Contents:
 
    rst/installation
-   rst/geometry
    rst/materials
+   rst/geometry
    rst/analysis
    rst/results
    rst/examples

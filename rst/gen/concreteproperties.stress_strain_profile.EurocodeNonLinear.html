@@ -34,6 +34,7 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="concreteproperties.stress_strain_profile.EurocodeParabolicUltimate" href="concreteproperties.stress_strain_profile.EurocodeParabolicUltimate.html" />
@@ -88,14 +89,14 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../geometry.html">
-  Geometry
+ <a class="reference internal nav-link" href="../materials.html">
+  Materials
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../materials.html">
-  Materials
+ <a class="reference internal nav-link" href="../geometry.html">
+  Geometry
  </a>
 </li>
 
@@ -144,6 +145,10 @@
         <li class="nav-item">
           <a class="nav-link" href="https://github.com/robbievanleeuwen/concrete-properties" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/concreteproperties/" rel="noopener" target="_blank" title="PyPI"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
         </li>
       </ul>
       </div>
@@ -535,11 +540,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>elastic_modulus</strong> (<em>float</em>) – Concrete elastic modulus</p></li>
-<li><p><strong>ultimate_strain</strong> (<em>float</em>) – Concrete strain at failure</p></li>
-<li><p><strong>compressive_strength</strong> (<em>float</em>) – Concrete compressive strength</p></li>
+<li><p><strong>elastic_modulus</strong> (<em>float</em>) – Concrete elastic modulus (<span class="math notranslate nohighlight">\(E_{cm}\)</span>)</p></li>
+<li><p><strong>ultimate_strain</strong> (<em>float</em>) – Concrete strain at failure (<span class="math notranslate nohighlight">\(\epsilon_{cu1}\)</span>)</p></li>
+<li><p><strong>compressive_strength</strong> (<em>float</em>) – Concrete compressive strength (<span class="math notranslate nohighlight">\(f_{cm}\)</span>)</p></li>
 <li><p><strong>compressive_strain</strong> (<em>float</em>) – Strain at which the concrete stress equals the
-compressive strength</p></li>
+compressive strength (<span class="math notranslate nohighlight">\(\epsilon_{c1}\)</span>)</p></li>
 <li><p><strong>tensile_strength</strong> (<em>float</em>) – Concrete tensile strength</p></li>
 <li><p><strong>tension_softening_stiffness</strong> (<em>float</em>) – Slope of the linear tension softening
 branch</p></li>
