@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>concreteproperties.stress_strain_profile.ConcreteServiceProfile &#8212; concreteproperties 0.0.5 documentation</title>
 <script>
-  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
 </script>
 
@@ -24,6 +24,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -36,13 +37,13 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="concreteproperties.stress_strain_profile.ConcreteUltimateProfile" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html" />
-    <link rel="prev" title="concreteproperties.stress_strain_profile.ConcreteLinearProfile" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html" />
+    <link rel="prev" title="concreteproperties.stress_strain_profile.ConcreteLinearNoTension" href="concreteproperties.stress_strain_profile.ConcreteLinearNoTension.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
     <div class="bd-header-announcement container-fluid" id="banner">
       
 
@@ -230,8 +231,18 @@
   </label>
   <ul class="current">
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html">
-     concreteproperties.stress_strain_profile.ConcreteLinearProfile
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearStressStrain.html">
+     concreteproperties.stress_strain_profile.BilinearStressStrain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinear.html">
+     concreteproperties.stress_strain_profile.ConcreteLinear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearNoTension.html">
+     concreteproperties.stress_strain_profile.ConcreteLinearNoTension
     </a>
    </li>
    <li class="toctree-l2 current active">
@@ -242,6 +253,21 @@
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">
      concreteproperties.stress_strain_profile.ConcreteUltimateProfile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeNonLinear.html">
+     concreteproperties.stress_strain_profile.EurocodeNonLinear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeParabolicUltimate.html">
+     concreteproperties.stress_strain_profile.EurocodeParabolicUltimate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.RectangularStressBlock.html">
+     concreteproperties.stress_strain_profile.RectangularStressBlock
     </a>
    </li>
    <li class="toctree-l2">
@@ -262,11 +288,6 @@
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html">
      concreteproperties.stress_strain_profile.StressStrainProfile
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.WhitneyStressBlock.html">
-     concreteproperties.stress_strain_profile.WhitneyStressBlock
     </a>
    </li>
   </ul>
@@ -505,7 +526,7 @@
 <h1>concreteproperties.stress_strain_profile.ConcreteServiceProfile<a class="headerlink" href="#concreteproperties-stress-strain-profile-concreteserviceprofile" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.ConcreteServiceProfile">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteServiceProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strains</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stresses</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteServiceProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strains</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stresses</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a></p>
 <p>Abstract class for a concrete service stress-strain profile.</p>
 <dl class="field-list simple">
@@ -513,6 +534,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>strains</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of strains (must be increasing or equal)</p></li>
 <li><p><strong>stresses</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of stresses</p></li>
+<li><p><strong>ultimate_strain</strong> (<em>float</em>) – Concrete strain at failure</p></li>
 </ul>
 </dd>
 </dl>
@@ -556,6 +578,18 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">strains</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">stresses</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">elastic_modulus</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_strain</span></code></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py method">
@@ -685,11 +719,11 @@
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="concreteproperties.stress_strain_profile.ConcreteLinearNoTension.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">concreteproperties.stress_strain_profile.ConcreteLinearProfile</p>
+          <p class="prev-next-title">concreteproperties.stress_strain_profile.ConcreteLinearNoTension</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html" title="next page">

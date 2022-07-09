@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>concreteproperties.utils.split_section_at_strains &#8212; concreteproperties 0.0.5 documentation</title>
 <script>
-  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
 </script>
 
@@ -24,6 +24,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -42,7 +43,7 @@
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
     <div class="bd-header-announcement container-fluid" id="banner">
       
 
@@ -230,8 +231,18 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html">
-     concreteproperties.stress_strain_profile.ConcreteLinearProfile
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearStressStrain.html">
+     concreteproperties.stress_strain_profile.BilinearStressStrain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinear.html">
+     concreteproperties.stress_strain_profile.ConcreteLinear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearNoTension.html">
+     concreteproperties.stress_strain_profile.ConcreteLinearNoTension
     </a>
    </li>
    <li class="toctree-l2">
@@ -242,6 +253,21 @@
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">
      concreteproperties.stress_strain_profile.ConcreteUltimateProfile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeNonLinear.html">
+     concreteproperties.stress_strain_profile.EurocodeNonLinear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeParabolicUltimate.html">
+     concreteproperties.stress_strain_profile.EurocodeParabolicUltimate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.RectangularStressBlock.html">
+     concreteproperties.stress_strain_profile.RectangularStressBlock
     </a>
    </li>
    <li class="toctree-l2">
@@ -262,11 +288,6 @@
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html">
      concreteproperties.stress_strain_profile.StressStrainProfile
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.WhitneyStressBlock.html">
-     concreteproperties.stress_strain_profile.WhitneyStressBlock
     </a>
    </li>
   </ul>
@@ -505,7 +526,7 @@
 <h1>concreteproperties.utils.split_section_at_strains<a class="headerlink" href="#concreteproperties-utils-split-section-at-strains" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="concreteproperties.utils.split_section_at_strains">
-<span class="sig-name descname"><span class="pre">split_section_at_strains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concrete_geometries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Geometry</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Geometry</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/utils.html#split_section_at_strains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.utils.split_section_at_strains" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">split_section_at_strains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concrete_geometries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Geometry</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Geometry</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/utils.html#split_section_at_strains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.utils.split_section_at_strains" title="Permalink to this definition">#</a></dt>
 <dd><p>Splits concrete geometries at discontinuities in its stress-strain profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -514,10 +535,9 @@
 <li><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</p></li>
 <li><p><strong>point_na</strong> (<em>Tuple</em><em>[</em><em>float</em><em>]</em>) – Point on the neutral axis</p></li>
 <li><p><strong>ultimate</strong> (<em>bool</em>) – If set to True, uses ultimate stress-strain profile</p></li>
-<li><p><strong>ultimate_strain</strong> (<em>float</em>) – Strain at the extreme compression fibre</p></li>
+<li><p><strong>ultimate_strain</strong> (<em>float</em>) – Concrete strain at failure</p></li>
 <li><p><strong>d_n</strong> (<em>float</em>) – Depth of the neutral axis from the extreme compression fibre</p></li>
 <li><p><strong>kappa</strong> (<em>float</em>) – Curvature</p></li>
-<li><p><strong>top_only</strong> (<em>bool</em>) – If set to True, only returns the top geometries</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

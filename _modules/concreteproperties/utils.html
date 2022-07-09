@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>concreteproperties.utils &#8212; concreteproperties 0.0.5 documentation</title>
 <script>
-  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
 </script>
 
@@ -24,6 +24,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -40,7 +41,7 @@
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
     <div class="bd-header-announcement container-fluid" id="banner">
       
 
@@ -200,8 +201,6 @@
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span>
 
-<span class="kn">from</span> <span class="nn">rich.pretty</span> <span class="kn">import</span> <span class="n">pprint</span>
-
 
 <div class="viewcode-block" id="get_service_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.get_service_strain.html#concreteproperties.utils.get_service_strain">[docs]</a><span class="k">def</span> <span class="nf">get_service_strain</span><span class="p">(</span>
     <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
@@ -253,7 +252,7 @@
 <span class="sd">    :type point_na: Tuple[float]</span>
 <span class="sd">    :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
 <span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
-<span class="sd">    :param float ultimate_strain: Strain at the extreme compression fibre</span>
+<span class="sd">    :param float ultimate_strain: Concrete strain at failure</span>
 
 <span class="sd">    :return: Strain</span>
 <span class="sd">    :rtype: float</span>
@@ -310,7 +309,6 @@
     <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">top_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Splits concrete geometries at discontinuities in its stress-strain profile.</span>
 
@@ -320,10 +318,9 @@
 <span class="sd">    :param point_na: Point on the neutral axis</span>
 <span class="sd">    :type point_na: Tuple[float]</span>
 <span class="sd">    :param bool ultimate: If set to True, uses ultimate stress-strain profile</span>
-<span class="sd">    :param float ultimate_strain: Strain at the extreme compression fibre</span>
+<span class="sd">    :param float ultimate_strain: Concrete strain at failure</span>
 <span class="sd">    :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
 <span class="sd">    :param float kappa: Curvature</span>
-<span class="sd">    :param bool top_only: If set to True, only returns the top geometries</span>
 
 <span class="sd">    :return: List of split geometries</span>
 <span class="sd">    :rtype: List[:class:`sectionproperties.pre.geometry.Geometry`]</span>
@@ -331,7 +328,6 @@
 
     <span class="c1"># create splits in concrete geometries at points in stress strain profiles</span>
     <span class="n">concrete_split_geoms</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">top_only_geoms</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="n">concrete_geometries</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">ultimate</span><span class="p">:</span>
@@ -370,12 +366,8 @@
 
         <span class="c1"># save final top geoms</span>
         <span class="n">concrete_split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">top_geoms</span><span class="p">)</span>
-        <span class="n">top_only_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">top_geoms</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">top_only</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">top_only_geoms</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">concrete_split_geoms</span></div>
+    <span class="k">return</span> <span class="n">concrete_split_geoms</span></div>
 
 
 <div class="viewcode-block" id="split_section"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.split_section.html#concreteproperties.utils.split_section">[docs]</a><span class="k">def</span> <span class="nf">split_section</span><span class="p">(</span>

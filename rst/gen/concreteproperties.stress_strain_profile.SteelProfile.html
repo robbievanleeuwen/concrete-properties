@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>concreteproperties.stress_strain_profile.SteelProfile &#8212; concreteproperties 0.0.5 documentation</title>
 <script>
-  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
 </script>
 
@@ -24,6 +24,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -42,7 +43,7 @@
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
     <div class="bd-header-announcement container-fluid" id="banner">
       
 
@@ -230,8 +231,18 @@
   </label>
   <ul class="current">
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html">
-     concreteproperties.stress_strain_profile.ConcreteLinearProfile
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearStressStrain.html">
+     concreteproperties.stress_strain_profile.BilinearStressStrain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinear.html">
+     concreteproperties.stress_strain_profile.ConcreteLinear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearNoTension.html">
+     concreteproperties.stress_strain_profile.ConcreteLinearNoTension
     </a>
    </li>
    <li class="toctree-l2">
@@ -242,6 +253,21 @@
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">
      concreteproperties.stress_strain_profile.ConcreteUltimateProfile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeNonLinear.html">
+     concreteproperties.stress_strain_profile.EurocodeNonLinear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeParabolicUltimate.html">
+     concreteproperties.stress_strain_profile.EurocodeParabolicUltimate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.RectangularStressBlock.html">
+     concreteproperties.stress_strain_profile.RectangularStressBlock
     </a>
    </li>
    <li class="toctree-l2">
@@ -262,11 +288,6 @@
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html">
      concreteproperties.stress_strain_profile.StressStrainProfile
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.WhitneyStressBlock.html">
-     concreteproperties.stress_strain_profile.WhitneyStressBlock
     </a>
    </li>
   </ul>
@@ -559,6 +580,12 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">strains</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">stresses</span></code></p></td>
+<td><p></p></td>
+</tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">yield_strength</span></code></p></td>
 <td><p></p></td>
 </tr>
@@ -570,6 +597,20 @@
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.SteelProfile.get_elastic_modulus">
+<span class="sig-name descname"><span class="pre">get_elastic_modulus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#SteelProfile.get_elastic_modulus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.SteelProfile.get_elastic_modulus" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the elastic modulus of the stress-strain profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Elastic modulus</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.SteelProfile.print_properties">
 <span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'8.6e'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#SteelProfile.print_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.SteelProfile.print_properties" title="Permalink to this definition">#</a></dt>
@@ -588,20 +629,6 @@
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Compressive strength</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.SteelProfile.get_elastic_modulus">
-<span class="sig-name descname"><span class="pre">get_elastic_modulus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#concreteproperties.stress_strain_profile.SteelProfile.get_elastic_modulus" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the elastic modulus of the stress-strain profile.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Elastic modulus</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>float</p>

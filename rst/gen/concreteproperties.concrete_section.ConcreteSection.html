@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>concreteproperties.concrete_section.ConcreteSection &#8212; concreteproperties 0.0.5 documentation</title>
 <script>
-  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
 </script>
 
@@ -24,6 +24,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -42,7 +43,7 @@
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
     <div class="bd-header-announcement container-fluid" id="banner">
       
 
@@ -230,8 +231,18 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearProfile.html">
-     concreteproperties.stress_strain_profile.ConcreteLinearProfile
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearStressStrain.html">
+     concreteproperties.stress_strain_profile.BilinearStressStrain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinear.html">
+     concreteproperties.stress_strain_profile.ConcreteLinear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearNoTension.html">
+     concreteproperties.stress_strain_profile.ConcreteLinearNoTension
     </a>
    </li>
    <li class="toctree-l2">
@@ -242,6 +253,21 @@
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">
      concreteproperties.stress_strain_profile.ConcreteUltimateProfile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeNonLinear.html">
+     concreteproperties.stress_strain_profile.EurocodeNonLinear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeParabolicUltimate.html">
+     concreteproperties.stress_strain_profile.EurocodeParabolicUltimate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.stress_strain_profile.RectangularStressBlock.html">
+     concreteproperties.stress_strain_profile.RectangularStressBlock
     </a>
    </li>
    <li class="toctree-l2">
@@ -262,11 +288,6 @@
    <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html">
      concreteproperties.stress_strain_profile.StressStrainProfile
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.WhitneyStressBlock.html">
-     concreteproperties.stress_strain_profile.WhitneyStressBlock
     </a>
    </li>
   </ul>
@@ -567,8 +588,8 @@ reinforced concrete section</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_transformed_gross_properties</span></code></a></p></td>
 <td><p>Transforms gross section properties given a reference elastic modulus.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_curvature_diagram" title="concreteproperties.concrete_section.ConcreteSection.moment_curvature_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_curvature_diagram</span></code></a></p></td>
-<td><p>Generates a moment curvature diagram given a bending angle <cite>theta</cite>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis" title="concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_curvature_analysis</span></code></a></p></td>
+<td><p>Performs a moment curvature analysis given a bending angle <cite>theta</cite>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_interaction_diagram</span></code></a></p></td>
 <td><p>Generates a moment interaction diagram given a neutral axis angle <cite>theta</cite> and <cite>n_points</cite> calculation points between the decompression case and the pure bending case.</p></td>
@@ -615,7 +636,7 @@ reinforced concrete section</p>
 <span class="sig-name descname"><span class="pre">calculate_gross_plastic_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_gross_plastic_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates and stores gross section plastic properties.</p>
 <p>Calculates the plastic centroid and squash load assuming all steel is at yield
-and the concrete experiences a stress of alpha_1 * f’c.</p>
+and the concrete experiences a stress of alpha_squash * f’c.</p>
 <p>Calculates tensile load assuming all steel is at yield and the concrete is
 entirely cracked.</p>
 </dd></dl>
@@ -676,14 +697,16 @@ between the first moments of area above and below the trial axis.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.moment_curvature_diagram">
-<span class="sig-name descname"><span class="pre">moment_curvature_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_inc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><span class="pre">MomentCurvatureResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.moment_curvature_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.moment_curvature_diagram" title="Permalink to this definition">#</a></dt>
-<dd><p>Generates a moment curvature diagram given a bending angle <cite>theta</cite>.</p>
-<p>Analysis continues until the steel reaches fracture strain.</p>
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis">
+<span class="sig-name descname"><span class="pre">moment_curvature_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_inc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><span class="pre">MomentCurvatureResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.moment_curvature_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs a moment curvature analysis given a bending angle <cite>theta</cite>.</p>
+<p>Analysis continues until the steel reaches fracture strain or the concrete
+reaches its ultimate strain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>theta</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</p></li>
+<li><p><strong>theta</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Angle (in radians) the neutral axis makes with the horizontal axis
+(-pi &lt;= theta &lt;= pi)</p></li>
 <li><p><strong>kappa_inc</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Initial curvature increment</p></li>
 <li><p><strong>delta_m_min</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Relative change in moment at which to double step</p></li>
 <li><p><strong>delta_m_max</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Relative change in moment at which to halve step</p></li>

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>concreteproperties.analysis_section &#8212; concreteproperties 0.0.5 documentation</title>
 <script>
-  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
 </script>
 
@@ -24,6 +24,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -40,7 +41,7 @@
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
     <div class="bd-header-announcement container-fluid" id="banner">
       
 
@@ -204,8 +205,6 @@
     <span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span>
     <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span>
 
-<span class="kn">from</span> <span class="nn">rich.pretty</span> <span class="kn">import</span> <span class="n">pprint</span>
-
 
 <div class="viewcode-block" id="AnalysisSection"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection">[docs]</a><span class="k">class</span> <span class="nc">AnalysisSection</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for an analysis section to perform a fast analysis on concrete sections.&quot;&quot;&quot;</span>
@@ -362,27 +361,29 @@
 <span class="sd">        :param float kappa: Curvature</span>
 <span class="sd">        :param float na_local: y-location of the neutral axis in local coordinates</span>
 
-<span class="sd">        :return: Axial force and resultant moment</span>
+<span class="sd">        :return: Axial force, resultant moment and max strain</span>
 <span class="sd">        :rtype: Tuple[float]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># initialise section actions</span>
         <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">mv</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_strain</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
-            <span class="n">el_n</span><span class="p">,</span> <span class="n">el_mv</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_service_actions</span><span class="p">(</span>
+            <span class="n">el_n</span><span class="p">,</span> <span class="n">el_mv</span><span class="p">,</span> <span class="n">el_max_strain</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_service_actions</span><span class="p">(</span>
                 <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
                 <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
                 <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
                 <span class="n">na_local</span><span class="o">=</span><span class="n">na_local</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="n">max_strain</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_strain</span><span class="p">,</span> <span class="n">el_max_strain</span><span class="p">)</span>
 
             <span class="n">n</span> <span class="o">+=</span> <span class="n">el_n</span>
             <span class="n">mv</span> <span class="o">+=</span> <span class="n">el_mv</span>
 
-        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">mv</span></div>
+        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">mv</span><span class="p">,</span> <span class="n">max_strain</span></div>
 
 <div class="viewcode-block" id="AnalysisSection.get_service_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.get_service_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_service_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -426,7 +427,7 @@
             <span class="p">)</span>
 
         <span class="c1"># calculate total force</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">mv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_stress_analysis</span><span class="p">(</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">mv</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_stress_analysis</span><span class="p">(</span>
             <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
             <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
             <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
@@ -456,7 +457,7 @@
 <span class="sd">        :type point_na: Tuple[float]</span>
 <span class="sd">        :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
 <span class="sd">        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
-<span class="sd">        :param float ultimate_strain: Strain at the extreme compression fibre</span>
+<span class="sd">        :param float ultimate_strain: Concrete strain at failure</span>
 <span class="sd">        :param float pc_local: y-location of the plastic centroid in local coordinates</span>
 
 <span class="sd">        :return: Axial force and resultant moment</span>
@@ -496,7 +497,7 @@
 <span class="sd">        :param point_na: Point on the neutral axis</span>
 <span class="sd">        :type point_na: Tuple[float]</span>
 <span class="sd">        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
-<span class="sd">        :param float ultimate_strain: Strain at the extreme compression fibre</span>
+<span class="sd">        :param float ultimate_strain: Concrete strain at failure</span>
 <span class="sd">        :param float pc_local: y-location of the plastic centroid in local coordinates</span>
 
 <span class="sd">        :return: Ultimate stresses net force and distance from neutral axis to point of</span>
@@ -785,13 +786,14 @@
 <span class="sd">        :param float kappa: Curvature</span>
 <span class="sd">        :param float na_local: y-location of the neutral axis in local coordinates</span>
 
-<span class="sd">        :return: Axial force and resultant moment</span>
+<span class="sd">        :return: Axial force, resultant moment and maximum strain</span>
 <span class="sd">        :rtype: Tuple[float]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># initialise element results</span>
         <span class="n">force_e</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">mv_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_strain_e</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># get points for 1 point Gaussian integration</span>
         <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -812,6 +814,7 @@
                 <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
                 <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="n">max_strain_e</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_strain_e</span><span class="p">,</span> <span class="n">strain</span><span class="p">)</span>
 
             <span class="c1"># get stress at gauss point</span>
             <span class="n">stress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">)</span>
@@ -826,7 +829,7 @@
             <span class="n">force_e</span> <span class="o">+=</span> <span class="n">force_gp</span>
             <span class="n">mv_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">mv_e</span></div>
+        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">mv_e</span><span class="p">,</span> <span class="n">max_strain_e</span></div>
 
 <div class="viewcode-block" id="Tri3.calculate_ultimate_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_ultimate_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ultimate_actions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -842,7 +845,7 @@
 <span class="sd">        :type point_na: Tuple[float]</span>
 <span class="sd">        :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
 <span class="sd">        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
-<span class="sd">        :param float ultimate_strain: Strain at the extreme compression fibre</span>
+<span class="sd">        :param float ultimate_strain: Concrete strain at failure</span>
 <span class="sd">        :param float pc_local: y-location of the plastic centroid in local coordinates</span>
 
 <span class="sd">        :return: Axial force and resultant moment</span>

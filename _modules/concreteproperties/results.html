@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>concreteproperties.results &#8212; concreteproperties 0.0.5 documentation</title>
 <script>
-  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
 </script>
 
@@ -24,6 +24,7 @@
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -40,7 +41,7 @@
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
     <div class="bd-header-announcement container-fluid" id="banner">
       
 
@@ -615,7 +616,7 @@
         <span class="sd">&quot;&quot;&quot;Given a moment, uses the moment-curvature results to interpolate a curvature.</span>
 
 <span class="sd">        Raises a ValueError if supplied moment is outside bounds of moment-curvature</span>
-<span class="sd">        results.</span>
+<span class="sd">        results. (TODO)</span>
 
 <span class="sd">        :param float moment: Bending moment at which to obtain curvature</span>
 
@@ -867,8 +868,9 @@
             <span class="n">cmap_steel</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">steel_cmap</span><span class="p">)</span>
 
             <span class="c1"># determine minimum and maximum stress values for the contour list</span>
-            <span class="n">conc_sig_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_stresses</span><span class="p">])</span>
-            <span class="n">conc_sig_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_stresses</span><span class="p">])</span>
+            <span class="c1"># add tolerance for plotting stress blocks</span>
+            <span class="n">conc_sig_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_stresses</span><span class="p">])</span> <span class="o">-</span> <span class="mf">1e-12</span>
+            <span class="n">conc_sig_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_stresses</span><span class="p">])</span> <span class="o">+</span> <span class="mf">1e-12</span>
             <span class="n">steel_sig_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steel_stresses</span><span class="p">)</span>
             <span class="n">steel_sig_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steel_stresses</span><span class="p">)</span>
 
@@ -891,45 +893,47 @@
 
             <span class="c1"># plot the concrete stresses</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">sig</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_stresses</span><span class="p">):</span>
-                <span class="c1"># create triangulation</span>
-                <span class="n">triang</span> <span class="o">=</span> <span class="n">tri</span><span class="o">.</span><span class="n">Triangulation</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">concrete_analysis_sections</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">concrete_analysis_sections</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">concrete_analysis_sections</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">mesh_elements</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span>
-                <span class="p">)</span>
-
-                <span class="c1"># plot the filled contour</span>
-                <span class="n">trictr</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tricontourf</span><span class="p">(</span>
-                    <span class="n">triang</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">v_conc</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_conc</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">CenteredNorm</span><span class="p">()</span>
-                <span class="p">)</span>
-
-                <span class="c1"># plot a zero stress contour, supressing warning</span>
-                <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
-                    <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
-                        <span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
-                        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;No contour levels were found within the data range.&quot;</span><span class="p">,</span>
+                <span class="c1"># check region has a force</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_forces</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+                    <span class="c1"># create triangulation</span>
+                    <span class="n">triang</span> <span class="o">=</span> <span class="n">tri</span><span class="o">.</span><span class="n">Triangulation</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">concrete_analysis_sections</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">concrete_analysis_sections</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">concrete_analysis_sections</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">mesh_elements</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span>
                     <span class="p">)</span>
 
-                    <span class="c1"># set zero stress for neutral axis contour</span>
-                    <span class="n">zero_level</span> <span class="o">=</span> <span class="mi">0</span>
-
-                    <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-3</span><span class="p">:</span>
-                            <span class="n">zero_level</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-12</span>
-
-                    <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">1e-3</span><span class="p">:</span>
-                            <span class="n">zero_level</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1e-12</span>
-
-                    <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                        <span class="n">zero_level</span> <span class="o">=</span> <span class="mf">1e-12</span>
-
-                    <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                        <span class="n">zero_level</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e-12</span>
-
-                    <span class="n">CS</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tricontour</span><span class="p">(</span>
-                        <span class="n">triang</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="p">[</span><span class="n">zero_level</span><span class="p">],</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span>
+                    <span class="c1"># plot the filled contour</span>
+                    <span class="n">trictr</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tricontourf</span><span class="p">(</span>
+                        <span class="n">triang</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">v_conc</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_conc</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">CenteredNorm</span><span class="p">()</span>
                     <span class="p">)</span>
+
+                    <span class="c1"># plot a zero stress contour, supressing warning</span>
+                    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+                        <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
+                            <span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
+                            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;No contour levels were found within the data range.&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+
+                        <span class="c1"># set zero stress for neutral axis contour</span>
+                        <span class="n">zero_level</span> <span class="o">=</span> <span class="mi">0</span>
+
+                        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-3</span><span class="p">:</span>
+                                <span class="n">zero_level</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-12</span>
+
+                        <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">1e-3</span><span class="p">:</span>
+                                <span class="n">zero_level</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1e-12</span>
+
+                        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">zero_level</span> <span class="o">=</span> <span class="mf">1e-12</span>
+
+                        <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">zero_level</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e-12</span>
+
+                        <span class="n">CS</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tricontour</span><span class="p">(</span>
+                            <span class="n">triang</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="p">[</span><span class="n">zero_level</span><span class="p">],</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span>
+                        <span class="p">)</span>
 
             <span class="c1"># plot the steel stresses</span>
             <span class="n">steel_patches</span> <span class="o">=</span> <span class="p">[]</span>
