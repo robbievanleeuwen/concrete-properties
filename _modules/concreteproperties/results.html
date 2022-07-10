@@ -587,7 +587,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">m_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Plots the moment curvature results.</span>
 
 <span class="sd">        :param m_scale: Scaling factor to apply to bending moment</span>
@@ -595,7 +595,7 @@
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`</span>
+<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># scale moments</span>
@@ -697,7 +697,7 @@
         <span class="n">n_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
         <span class="n">m_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Plots a moment interaction diagram.</span>
 
 <span class="sd">        :param n_scale: Scaling factor to apply to axial force</span>
@@ -707,7 +707,7 @@
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`</span>
+<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># create plot and setup the plot</span>
@@ -734,7 +734,7 @@
         <span class="n">n_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
         <span class="n">m_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Plots multiple moment interaction diagrams.</span>
 
 <span class="sd">        :param moment_interaction_results: List of moment interaction results objects</span>
@@ -749,7 +749,7 @@
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`</span>
+<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># create plot and setup the plot</span>
@@ -791,7 +791,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">m_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Plots a biaxial bending diagram.</span>
 
 <span class="sd">        :param m_scale: Scaling factor to apply to bending moment</span>
@@ -799,7 +799,7 @@
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`</span>
+<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># create plot and setup the plot</span>
@@ -841,7 +841,7 @@
         <span class="n">conc_cmap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;RdGy&quot;</span><span class="p">,</span>
         <span class="n">steel_cmap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;bwr&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Plots concrete and steel stresses on a concrete section.</span>
 
 <span class="sd">        :param title: Plot title</span>
@@ -853,7 +853,7 @@
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`</span>
+<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span>
