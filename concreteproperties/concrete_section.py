@@ -294,7 +294,9 @@ class ConcreteSection:
         conc_ult_strain = 0
 
         for idx, conc_geom in enumerate(self.concrete_geometries):
-            ult_strain = conc_geom.material.ultimate_stress_strain_profile.get_ultimate_strain()
+            ult_strain = (
+                conc_geom.material.ultimate_stress_strain_profile.get_ultimate_strain()
+            )
             if idx == 0:
                 conc_ult_strain = ult_strain
             else:
