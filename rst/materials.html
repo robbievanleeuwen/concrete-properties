@@ -245,6 +245,43 @@
        Generic Concrete Ultimate Profile
       </a>
      </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#rectangular-stress-block">
+       Rectangular Stress Block
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#bilinear-ultimate-profile">
+       Bilinear Ultimate Profile
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#eurocode-parabolic-ultimate-profile">
+       Eurocode Parabolic Ultimate Profile
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#steel-stress-strain-profiles">
+     Steel Stress-Strain Profiles
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#generic-steel-profile">
+       Generic Steel Profile
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#elastic-plastic-steel-profile">
+       Elastic-Plastic Steel Profile
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id2">
+       Elastic-Plastic Steel Profile
+      </a>
+     </li>
     </ul>
    </li>
   </ul>
@@ -284,6 +321,11 @@ sections can be topped with lower grade in-situ slabs, and high tensile steel ca
 used in combination with normal grade reinforcing steel.</p>
 <p>The structural behaviour of both concrete and steel materials are described by
 <a class="reference internal" href="#stress-strain-profiles"><span class="std std-ref">Stress-Strain Profiles</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In <em>concreteproperties</em>, a positive sign is given to compressive forces, stresses and
+strains, while a negative sign is given to tensile forces, stresses and strains.</p>
+</div>
 <div class="section" id="concrete">
 <h2>Concrete<a class="headerlink" href="#concrete" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
@@ -330,8 +372,8 @@ squash load</p></li>
 <span id="id1"></span><h2>Stress-Strain Profiles<a class="headerlink" href="#stress-strain-profiles" title="Permalink to this heading">#</a></h2>
 <p><em>concreteproperties</em> uses stress-strain profiles to define material behaviour for both
 service and ultimate analyses. A <a class="reference internal" href="gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> object
-requires both a service stress-strain profile (calculation of area properties,
-moment-curvature analysis, elastic and service stress analysis) and an ultimate
+requires both a <strong>service</strong> stress-strain profile (calculation of area properties,
+moment-curvature analysis, elastic and service stress analysis) and an <strong>ultimate</strong>
 stress-strain profile (ultimate bending capacity, moment interaction diagram, biaxial
 bending diagram, ultimate stress analysis). A
 <a class="reference internal" href="gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> object only requires one stress-strain
@@ -340,7 +382,7 @@ profile which is used for both service and ultimate analyses.</p>
 <p class="admonition-title">Note</p>
 <p>Stress values are interpolated from stresses and strains supplied to the profile. If
 the strain is outside of the range of the stress-strain profile, the stress is
-extrapolated based off the closest exterior two points of the stress-strain profile.</p>
+extrapolated based off the closest two points of the stress-strain profile.</p>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py">
@@ -391,12 +433,20 @@ compression.</p>
 
 <div class="section" id="concrete-service-stress-strain-profiles">
 <h3>Concrete Service Stress-Strain Profiles<a class="headerlink" href="#concrete-service-stress-strain-profiles" title="Permalink to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unless assigned in the class constructor, the <code class="docutils literal notranslate"><span class="pre">elastic_modulus</span></code> of the concrete is
+determined by the initial compressive slope of the stress-strain profile. This
+<code class="docutils literal notranslate"><span class="pre">elastic_modulus</span></code> is used in the calculation of area properties and elastic stress
+analysis.</p>
+</div>
 <div class="section" id="generic-concrete-service-profile">
 <h4>Generic Concrete Service Profile<a class="headerlink" href="#generic-concrete-service-profile" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteServiceProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strains</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stresses</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Abstract class for a concrete service stress-strain profile.</p>
+<dd><p>Bases: <a class="reference internal" href="gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a></p>
+<p>Abstract class for a concrete service stress-strain profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -418,9 +468,9 @@ compression.</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href="../rst/materials-1.py">Source code</a>, <a class="reference external" href="../rst/materials-1.png">png</a>, <a class="reference external" href="../rst/materials-1.hires.png">hires.png</a>, <a class="reference external" href="../rst/materials-1.pdf">pdf</a>)</p>
-<div class="figure align-default" id="id2">
+<div class="figure align-default" id="id3">
 <img alt="../_images/materials-1.png" class="plot-directive" src="../_images/materials-1.png" />
-<p class="caption"><span class="caption-text">ConcreteServiceProfile Stress-Strain Profile</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+<p class="caption"><span class="caption-text">ConcreteServiceProfile Stress-Strain Profile</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="linear-concrete-service-profile">
@@ -428,7 +478,8 @@ compression.</p>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteLinear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#ConcreteLinear"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Class for a symmetric linear stress-strain profile.</p>
+<dd><p>Bases: <a class="reference internal" href="gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile" title="concreteproperties.stress_strain_profile.ConcreteServiceProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteServiceProfile</span></code></a></p>
+<p>Class for a symmetric linear stress-strain profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -445,9 +496,9 @@ compression.</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href="../rst/materials-2.py">Source code</a>, <a class="reference external" href="../rst/materials-2.png">png</a>, <a class="reference external" href="../rst/materials-2.hires.png">hires.png</a>, <a class="reference external" href="../rst/materials-2.pdf">pdf</a>)</p>
-<div class="figure align-default" id="id4">
+<div class="figure align-default" id="id5">
 <img alt="../_images/materials-2.png" class="plot-directive" src="../_images/materials-2.png" />
-<p class="caption"><span class="caption-text">ConcreteLinear Stress-Strain Profile</span><a class="headerlink" href="#id4" title="Permalink to this image">#</a></p>
+<p class="caption"><span class="caption-text">ConcreteLinear Stress-Strain Profile</span><a class="headerlink" href="#id5" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="linear-concrete-no-tension-service-profile">
@@ -455,7 +506,8 @@ compression.</p>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteLinearNoTension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#ConcreteLinearNoTension"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Class for a linear stress-strain profile with no tensile strength.</p>
+<dd><p>Bases: <a class="reference internal" href="gen/concreteproperties.stress_strain_profile.ConcreteLinear.html#concreteproperties.stress_strain_profile.ConcreteLinear" title="concreteproperties.stress_strain_profile.ConcreteLinear"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteLinear</span></code></a></p>
+<p>Class for a linear stress-strain profile with no tensile strength.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -472,9 +524,9 @@ compression.</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href="../rst/materials-3.py">Source code</a>, <a class="reference external" href="../rst/materials-3.png">png</a>, <a class="reference external" href="../rst/materials-3.hires.png">hires.png</a>, <a class="reference external" href="../rst/materials-3.pdf">pdf</a>)</p>
-<div class="figure align-default" id="id6">
+<div class="figure align-default" id="id7">
 <img alt="../_images/materials-3.png" class="plot-directive" src="../_images/materials-3.png" />
-<p class="caption"><span class="caption-text">ConcreteLinearNoTension Stress-Strain Profile</span><a class="headerlink" href="#id6" title="Permalink to this image">#</a></p>
+<p class="caption"><span class="caption-text">ConcreteLinearNoTension Stress-Strain Profile</span><a class="headerlink" href="#id7" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="eurocode-non-linear-concrete-service-profile">
@@ -482,7 +534,8 @@ compression.</p>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EurocodeNonLinear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressive_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tensile_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tension_softening_stiffness</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#EurocodeNonLinear"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Class for a non-linear stress-strain relationship to EC2.</p>
+<dd><p>Bases: <a class="reference internal" href="gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile" title="concreteproperties.stress_strain_profile.ConcreteServiceProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteServiceProfile</span></code></a></p>
+<p>Class for a non-linear stress-strain relationship to EC2.</p>
 <p>Tension is modelled with a symmetric <code class="docutils literal notranslate"><span class="pre">elastic_modulus</span></code> until failure at
 <code class="docutils literal notranslate"><span class="pre">tensile_strength</span></code>, after which the tensile stress reduces according to the
 <code class="docutils literal notranslate"><span class="pre">tension_softening_stiffness</span></code>.</p>
@@ -517,17 +570,276 @@ branch</p></li>
 </pre></div>
 </div>
 <p>(<a class="reference external" href="../rst/materials-4.py">Source code</a>, <a class="reference external" href="../rst/materials-4.png">png</a>, <a class="reference external" href="../rst/materials-4.hires.png">hires.png</a>, <a class="reference external" href="../rst/materials-4.pdf">pdf</a>)</p>
-<div class="figure align-default" id="id8">
+<div class="figure align-default" id="id9">
 <img alt="../_images/materials-4.png" class="plot-directive" src="../_images/materials-4.png" />
-<p class="caption"><span class="caption-text">EurocodeNonLinear Stress-Strain Profile</span><a class="headerlink" href="#id8" title="Permalink to this image">#</a></p>
+<p class="caption"><span class="caption-text">EurocodeNonLinear Stress-Strain Profile</span><a class="headerlink" href="#id9" title="Permalink to this image">#</a></p>
 </div>
 </div>
 </div>
 <div class="section" id="concrete-ultimate-stress-strain-profiles">
 <h3>Concrete Ultimate Stress-Strain Profiles<a class="headerlink" href="#concrete-ultimate-stress-strain-profiles" title="Permalink to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unless assigned in the class constructor, the <code class="docutils literal notranslate"><span class="pre">ultimate_strain</span></code> of the concrete is
+taken as the largest compressive strain in the stress-strain profile. This
+<code class="docutils literal notranslate"><span class="pre">ultimate_strain</span></code> defines the curvature and strain profile used in ultimate
+analyses.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><em>concreteproperties</em> currently only supports a single unique <code class="docutils literal notranslate"><span class="pre">ultimate_strain</span></code> to be
+used for a given <a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a>. While
+multiple concrete materials, with differing stress-strain profiles, can be
+used within a given <a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a>, the
+ultimate analysis will use the smallest value of the <code class="docutils literal notranslate"><span class="pre">ultimate_strain</span></code> amongst the
+various concrete materials to define the strain profile at ultimate.</p>
+</div>
 <div class="section" id="generic-concrete-ultimate-profile">
 <h4>Generic Concrete Ultimate Profile<a class="headerlink" href="#generic-concrete-ultimate-profile" title="Permalink to this heading">#</a></h4>
-<p>xxxx</p>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteUltimateProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strains</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stresses</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#ConcreteUltimateProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a></p>
+<p>Abstract class for a concrete ultimate stress-strain profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strains</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of strains (must be increasing or equal)</p></li>
+<li><p><strong>stresses</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of stresses</p></li>
+<li><p><strong>compressive_strength</strong> (<em>float</em>) – Concrete compressive strength</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="n">ConcreteUltimateProfile</span>
+
+<span class="n">ConcreteUltimateProfile</span><span class="p">(</span>
+  <span class="n">strains</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span> <span class="o">/</span> <span class="mf">30e3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span> <span class="o">/</span> <span class="mf">30e3</span><span class="p">,</span> <span class="mi">30</span> <span class="o">/</span> <span class="mf">25e3</span><span class="p">,</span> <span class="mi">40</span> <span class="o">/</span> <span class="mf">20e3</span><span class="p">,</span> <span class="mf">0.003</span><span class="p">],</span>
+  <span class="n">stresses</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+  <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../rst/materials-5.py">Source code</a>, <a class="reference external" href="../rst/materials-5.png">png</a>, <a class="reference external" href="../rst/materials-5.hires.png">hires.png</a>, <a class="reference external" href="../rst/materials-5.pdf">pdf</a>)</p>
+<div class="figure align-default" id="id11">
+<img alt="../_images/materials-5.png" class="plot-directive" src="../_images/materials-5.png" />
+<p class="caption"><span class="caption-text">ConcreteUltimateProfile Stress-Strain Profile</span><a class="headerlink" href="#id11" title="Permalink to this image">#</a></p>
+</div>
+</div>
+<div class="section" id="rectangular-stress-block">
+<h4>Rectangular Stress Block<a class="headerlink" href="#rectangular-stress-block" title="Permalink to this heading">#</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RectangularStressBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#RectangularStressBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen/concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile" title="concreteproperties.stress_strain_profile.ConcreteUltimateProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteUltimateProfile</span></code></a></p>
+<p>Class for a rectangular stress block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compressive_strength</strong> (<em>float</em>) – Concrete compressive strength</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – Factor that modifies the concrete compressive strength</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Factor that modifies the depth of the stress block</p></li>
+<li><p><strong>ultimate_strain</strong> (<em>float</em>) – Concrete strain at failure</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="n">RectangularStressBlock</span>
+
+<span class="n">RectangularStressBlock</span><span class="p">(</span>
+    <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="o">=</span><span class="mf">0.77</span><span class="p">,</span>
+    <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../rst/materials-6.py">Source code</a>, <a class="reference external" href="../rst/materials-6.png">png</a>, <a class="reference external" href="../rst/materials-6.hires.png">hires.png</a>, <a class="reference external" href="../rst/materials-6.pdf">pdf</a>)</p>
+<div class="figure align-default" id="id13">
+<img alt="../_images/materials-6.png" class="plot-directive" src="../_images/materials-6.png" />
+<p class="caption"><span class="caption-text">RectangularStressBlock Stress-Strain Profile</span><a class="headerlink" href="#id13" title="Permalink to this image">#</a></p>
+</div>
+</div>
+<div class="section" id="bilinear-ultimate-profile">
+<h4>Bilinear Ultimate Profile<a class="headerlink" href="#bilinear-ultimate-profile" title="Permalink to this heading">#</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BilinearStressStrain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressive_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#BilinearStressStrain"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen/concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile" title="concreteproperties.stress_strain_profile.ConcreteUltimateProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteUltimateProfile</span></code></a></p>
+<p>Class for a bilinear stress-strain relationship.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compressive_strength</strong> (<em>float</em>) – Concrete compressive strength</p></li>
+<li><p><strong>compressive_strain</strong> (<em>float</em>) – Strain at which the concrete stress equals the
+compressive strength</p></li>
+<li><p><strong>ultimate_strain</strong> (<em>float</em>) – Concrete strain at failure</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="n">BilinearStressStrain</span>
+
+<span class="n">BilinearStressStrain</span><span class="p">(</span>
+    <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+    <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.00175</span><span class="p">,</span>
+    <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../rst/materials-7.py">Source code</a>, <a class="reference external" href="../rst/materials-7.png">png</a>, <a class="reference external" href="../rst/materials-7.hires.png">hires.png</a>, <a class="reference external" href="../rst/materials-7.pdf">pdf</a>)</p>
+<div class="figure align-default" id="id15">
+<img alt="../_images/materials-7.png" class="plot-directive" src="../_images/materials-7.png" />
+<p class="caption"><span class="caption-text">BilinearStressStrain Stress-Strain Profile</span><a class="headerlink" href="#id15" title="Permalink to this image">#</a></p>
+</div>
+</div>
+<div class="section" id="eurocode-parabolic-ultimate-profile">
+<h4>Eurocode Parabolic Ultimate Profile<a class="headerlink" href="#eurocode-parabolic-ultimate-profile" title="Permalink to this heading">#</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EurocodeParabolicUltimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressive_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#EurocodeParabolicUltimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen/concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile" title="concreteproperties.stress_strain_profile.ConcreteUltimateProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteUltimateProfile</span></code></a></p>
+<p>Class for an ultimate parabolic stress-strain relationship to EC2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compressive_strength</strong> (<em>float</em>) – Concrete compressive strength</p></li>
+<li><p><strong>compressive_strain</strong> (<em>float</em>) – Strain at which the concrete stress equals the
+compressive strength</p></li>
+<li><p><strong>ultimate_strain</strong> (<em>float</em>) – Concrete strain at failure</p></li>
+<li><p><strong>n</strong> (<em>float</em>) – Parabolic curve exponent</p></li>
+<li><p><strong>n_points</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Number of points to discretise the parabolic segment of the curve</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="n">EurocodeParabolicUltimate</span>
+
+<span class="n">EurocodeParabolicUltimate</span><span class="p">(</span>
+    <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+    <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.00175</span><span class="p">,</span>
+    <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+    <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../rst/materials-8.py">Source code</a>, <a class="reference external" href="../rst/materials-8.png">png</a>, <a class="reference external" href="../rst/materials-8.hires.png">hires.png</a>, <a class="reference external" href="../rst/materials-8.pdf">pdf</a>)</p>
+<div class="figure align-default" id="id17">
+<img alt="../_images/materials-8.png" class="plot-directive" src="../_images/materials-8.png" />
+<p class="caption"><span class="caption-text">EurocodeParabolicUltimate Stress-Strain Profile</span><a class="headerlink" href="#id17" title="Permalink to this image">#</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="steel-stress-strain-profiles">
+<h3>Steel Stress-Strain Profiles<a class="headerlink" href="#steel-stress-strain-profiles" title="Permalink to this heading">#</a></h3>
+<div class="section" id="generic-steel-profile">
+<h4>Generic Steel Profile<a class="headerlink" href="#generic-steel-profile" title="Permalink to this heading">#</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteelProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strains</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stresses</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracture_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#SteelProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a></p>
+<p>Abstract class for a steel stress-strain profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strains</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of strains (must be increasing or equal)</p></li>
+<li><p><strong>stresses</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of stresses</p></li>
+<li><p><strong>yield_strength</strong> (<em>float</em>) – Steel yield strength</p></li>
+<li><p><strong>elastic_modulus</strong> (<em>float</em>) – Steel elastic modulus</p></li>
+<li><p><strong>fracture_strain</strong> (<em>float</em>) – Steel fracture strain</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="n">SteelProfile</span>
+
+<span class="n">SteelProfile</span><span class="p">(</span>
+  <span class="n">strains</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.03</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="o">-</span><span class="mi">500</span> <span class="o">/</span> <span class="mf">200e3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">500</span> <span class="o">/</span> <span class="mf">200e3</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span>
+  <span class="n">stresses</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">600</span><span class="p">,</span> <span class="o">-</span><span class="mi">600</span><span class="p">,</span> <span class="o">-</span><span class="mi">500</span><span class="p">,</span> <span class="o">-</span><span class="mi">500</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">600</span><span class="p">],</span>
+  <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+  <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
+  <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../rst/materials-9.py">Source code</a>, <a class="reference external" href="../rst/materials-9.png">png</a>, <a class="reference external" href="../rst/materials-9.hires.png">hires.png</a>, <a class="reference external" href="../rst/materials-9.pdf">pdf</a>)</p>
+<div class="figure align-default" id="id19">
+<img alt="../_images/materials-9.png" class="plot-directive" src="../_images/materials-9.png" />
+<p class="caption"><span class="caption-text">SteelProfile Stress-Strain Profile</span><a class="headerlink" href="#id19" title="Permalink to this image">#</a></p>
+</div>
+</div>
+<div class="section" id="elastic-plastic-steel-profile">
+<h4>Elastic-Plastic Steel Profile<a class="headerlink" href="#elastic-plastic-steel-profile" title="Permalink to this heading">#</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteelElasticPlastic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracture_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#SteelElasticPlastic"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen/concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile" title="concreteproperties.stress_strain_profile.SteelProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelProfile</span></code></a></p>
+<p>Class for a perfectly elastic-plastic steel stress-strain profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>yield_strength</strong> (<em>float</em>) – Steel yield strength</p></li>
+<li><p><strong>elastic_modulus</strong> (<em>float</em>) – Steel elastic modulus</p></li>
+<li><p><strong>fracture_strain</strong> (<em>float</em>) – Steel fracture strain</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="n">SteelElasticPlastic</span>
+
+<span class="n">SteelElasticPlastic</span><span class="p">(</span>
+  <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+  <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
+  <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../rst/materials-10.py">Source code</a>, <a class="reference external" href="../rst/materials-10.png">png</a>, <a class="reference external" href="../rst/materials-10.hires.png">hires.png</a>, <a class="reference external" href="../rst/materials-10.pdf">pdf</a>)</p>
+<div class="figure align-default" id="id21">
+<img alt="../_images/materials-10.png" class="plot-directive" src="../_images/materials-10.png" />
+<p class="caption"><span class="caption-text">SteelElasticPlastic Stress-Strain Profile</span><a class="headerlink" href="#id21" title="Permalink to this image">#</a></p>
+</div>
+</div>
+<div class="section" id="id2">
+<h4>Elastic-Plastic Steel Profile<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteelHardening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracture_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#SteelHardening"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="gen/concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile" title="concreteproperties.stress_strain_profile.SteelProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelProfile</span></code></a></p>
+<p>Class for a steel stress-strain profile with strain hardening.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>yield_strength</strong> (<em>float</em>) – Steel yield strength</p></li>
+<li><p><strong>elastic_modulus</strong> (<em>float</em>) – Steel elastic modulus</p></li>
+<li><p><strong>fracture_strain</strong> (<em>float</em>) – Steel fracture strain</p></li>
+<li><p><strong>ultimate_strength</strong> (<em>float</em>) – Steel ultaimte strength</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="n">SteelHardening</span>
+
+<span class="n">SteelHardening</span><span class="p">(</span>
+  <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+  <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
+  <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+  <span class="n">ultimate_strength</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="../rst/materials-11.py">Source code</a>, <a class="reference external" href="../rst/materials-11.png">png</a>, <a class="reference external" href="../rst/materials-11.hires.png">hires.png</a>, <a class="reference external" href="../rst/materials-11.pdf">pdf</a>)</p>
+<div class="figure align-default" id="id23">
+<img alt="../_images/materials-11.png" class="plot-directive" src="../_images/materials-11.png" />
+<p class="caption"><span class="caption-text">SteelHardening Stress-Strain Profile</span><a class="headerlink" href="#id23" title="Permalink to this image">#</a></p>
+</div>
 </div>
 </div>
 </div>
