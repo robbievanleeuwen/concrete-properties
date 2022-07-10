@@ -290,11 +290,17 @@ class ConcreteSection:
         self.gross_properties.axial_pc_x = squash_moment_x / squash_load
         self.gross_properties.axial_pc_y = squash_moment_y / squash_load
 
-        # store ultimate concrete strain (get from first concrete geometry)
-        # note this MUST not vary between different concrete materials
-        self.gross_properties.conc_ultimate_strain = self.concrete_geometries[
-            0
-        ].material.ultimate_stress_strain_profile.get_ultimate_strain()
+        # store ultimate concrete strain (get smallest from all concrete geometries)
+        conc_ult_strain = 0
+
+        for idx, conc_geom in enumerate(self.concrete_geometries):
+            ult_strain = conc_geom.material.ultimate_stress_strain_profile.get_ultimate_strain()
+            if idx == 0:
+                conc_ult_strain = ult_strain
+            else:
+                conc_ult_strain = min(conc_ult_strain, ult_strain)
+
+        self.gross_properties.conc_ultimate_strain = conc_ult_strain
 
     def calculate_cracked_properties(
         self,

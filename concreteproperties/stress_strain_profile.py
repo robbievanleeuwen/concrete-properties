@@ -255,6 +255,20 @@ class ConcreteServiceProfile(StressStrainProfile):
         console = Console()
         console.print(table)
 
+    def get_elastic_modulus(
+        self,
+    ) -> float:
+        """Returns the elastic modulus of the stress-strain profile.
+
+        :return: Elastic modulus
+        :rtype: float
+        """
+
+        try:
+            return self.elastic_modulus
+        except AttributeError:
+            return super().get_elastic_modulus()
+
     def get_compressive_strength(
         self,
     ) -> float:
@@ -308,17 +322,6 @@ class ConcreteLinear(ConcreteServiceProfile):
     ):
         self.strains = [-0.001, 0, 0.001]
         self.stresses = [-0.001 * self.elastic_modulus, 0, 0.001 * self.elastic_modulus]
-
-    def get_elastic_modulus(
-        self,
-    ) -> float:
-        """Returns the elastic modulus of the stress-strain profile.
-
-        :return: Elastic modulus
-        :rtype: float
-        """
-
-        return self.elastic_modulus
 
 
 @dataclass
@@ -434,17 +437,6 @@ class EurocodeNonLinear(ConcreteServiceProfile):
         self.strains.append(1.01 * conc_strain)
         self.stresses.append(conc_stress)
 
-    def get_elastic_modulus(
-        self,
-    ) -> float:
-        """Returns the elastic modulus of the stress-strain profile.
-
-        :return: Elastic modulus
-        :rtype: float
-        """
-
-        return self.elastic_modulus
-
 
 @dataclass
 class ConcreteUltimateProfile(StressStrainProfile):
@@ -471,6 +463,20 @@ class ConcreteUltimateProfile(StressStrainProfile):
         """
 
         return self.compressive_strength
+
+    def get_ultimate_strain(
+        self,
+    ) -> float:
+        """Returns the ultimate strain, or largest compressive strain.
+
+        :return: Ultimate strain
+        :rtype: float
+        """
+
+        try:
+            return self.ultimate_strain
+        except AttributeError:
+            return super().get_ultimate_strain()
 
     def print_properties(
         self,
