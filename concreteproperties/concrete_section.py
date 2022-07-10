@@ -13,7 +13,7 @@ import concreteproperties.utils as utils
 from concreteproperties.post import plotting_context
 import concreteproperties.results as res
 
-from sectionproperties.pre.geometry import CompoundGeometry
+import sectionproperties.pre.geometry as sp_geom
 from sectionproperties.analysis.fea import principal_coordinate, global_coordinate
 
 if TYPE_CHECKING:
@@ -25,7 +25,7 @@ class ConcreteSection:
 
     def __init__(
         self,
-        geometry: CompoundGeometry,
+        geometry: sp_geom.CompoundGeometry,
     ):
         """Inits the ConcreteSection class.
 
@@ -50,6 +50,14 @@ class ConcreteSection:
         if len(self.concrete_geometries) == 0 or len(self.steel_geometries) == 0:
             raise ValueError(
                 "geometry must contain both Concrete and Steel geometries."
+            )
+
+        # check overlapping regions
+        polygons = [sec_geom.geom for sec_geom in self.geometry.geoms]
+        overlapped_regions = sp_geom.check_geometry_overlaps(polygons)
+        if overlapped_regions:
+            warnings.warn(
+                "The provided geometry contains overlapping regions, results may be incorrect."
             )
 
         # initialise gross properties results class

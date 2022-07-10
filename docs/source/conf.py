@@ -41,6 +41,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.mathjax",
     "sphinx.ext.intersphinx",
+    "sphinx_autorun",
     "matplotlib.sphinxext.plot_directive",
 ]
 
@@ -64,9 +65,9 @@ exclude_patterns = []
 
 # intersphinx mapping
 intersphinx_mapping = {
-    'sectionproperties': ("https://sectionproperties.readthedocs.io/en/latest/", None),
-    'numpy': ('https://numpy.org/doc/stable/', None),
-    'matplotlib': ('https://matplotlib.org/stable/', None),
+    "sectionproperties": ("https://sectionproperties.readthedocs.io/en/latest/", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
+    "matplotlib": ("https://matplotlib.org/stable/", None),
 }
 
 
