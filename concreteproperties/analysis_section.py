@@ -102,7 +102,7 @@ class AnalysisSection:
 
         :return: Elastic stresses, net force and distance from neutral axis to point of
             force action
-        :rtype: Tuple[np.ndarray, float, float]
+        :rtype: Tuple[:class:`numpy.ndarray`, float, float]
         """
 
         # intialise stress results
@@ -216,7 +216,7 @@ class AnalysisSection:
 
         :return: Service stresses, net force and distance from neutral axis to point of
             force action
-        :rtype: Tuple[np.ndarray, float, float]
+        :rtype: Tuple[:class:`numpy.ndarray`, float, float]
         """
 
         # intialise stress results
@@ -313,7 +313,7 @@ class AnalysisSection:
 
         :return: Ultimate stresses net force and distance from neutral axis to point of
             force action
-        :rtype: Tuple[np.ndarray, float, float]
+        :rtype: Tuple[:class:`numpy.ndarray`, float, float]
         """
 
         # intialise stress results
@@ -362,7 +362,7 @@ class AnalysisSection:
         alpha: Optional[float] = 0.5,
         title: Optional[str] = "Finite Element Mesh",
         **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
+    ) -> matplotlib.axes.Axes:
         """Plots the finite element mesh.
 
         :param alpha: Transparency of the mesh outlines
@@ -372,7 +372,7 @@ class AnalysisSection:
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        :rtype: :class:`matplotlib.axes.Axes`
         """
 
         with plotting_context(title=title, **kwargs) as (fig, ax):
@@ -411,12 +411,12 @@ class AnalysisSection:
 
     def plot_shape(
         self,
-        ax: matplotlib.axes._subplots.AxesSubplot,
+        ax: matplotlib.axes.Axes,
     ):
         """Plots the coloured shape of the mesh with no outlines on `ax`.
 
         :param ax: Matplotlib axes object
-        :type ax: :class:`matplotlib.axes._subplots.AxesSubplot`
+        :type ax: :class:`matplotlib.axes.Axes`
         """
 
         colour_array = []

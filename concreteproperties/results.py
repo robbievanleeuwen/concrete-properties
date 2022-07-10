@@ -394,7 +394,7 @@ class MomentCurvatureResults:
         self,
         m_scale: Optional[float] = 1e-6,
         **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
+    ) -> matplotlib.axes.Axes:
         """Plots the moment curvature results.
 
         :param m_scale: Scaling factor to apply to bending moment
@@ -402,7 +402,7 @@ class MomentCurvatureResults:
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        :rtype: :class:`matplotlib.axes.Axes`
         """
 
         # scale moments
@@ -504,7 +504,7 @@ class MomentInteractionResults:
         n_scale: Optional[float] = 1e-3,
         m_scale: Optional[float] = 1e-6,
         **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
+    ) -> matplotlib.axes.Axes:
         """Plots a moment interaction diagram.
 
         :param n_scale: Scaling factor to apply to axial force
@@ -514,7 +514,7 @@ class MomentInteractionResults:
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        :rtype: :class:`matplotlib.axes.Axes`
         """
 
         # create plot and setup the plot
@@ -541,7 +541,7 @@ class MomentInteractionResults:
         n_scale: Optional[float] = 1e-3,
         m_scale: Optional[float] = 1e-6,
         **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
+    ) -> matplotlib.axes.Axes:
         """Plots multiple moment interaction diagrams.
 
         :param moment_interaction_results: List of moment interaction results objects
@@ -556,7 +556,7 @@ class MomentInteractionResults:
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        :rtype: :class:`matplotlib.axes.Axes`
         """
 
         # create plot and setup the plot
@@ -598,7 +598,7 @@ class BiaxialBendingResults:
         self,
         m_scale: Optional[float] = 1e-6,
         **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
+    ) -> matplotlib.axes.Axes:
         """Plots a biaxial bending diagram.
 
         :param m_scale: Scaling factor to apply to bending moment
@@ -606,7 +606,7 @@ class BiaxialBendingResults:
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        :rtype: :class:`matplotlib.axes.Axes`
         """
 
         # create plot and setup the plot
@@ -648,7 +648,7 @@ class StressResult:
         conc_cmap: Optional[str] = "RdGy",
         steel_cmap: Optional[str] = "bwr",
         **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
+    ) -> matplotlib.axes.Axes:
         """Plots concrete and steel stresses on a concrete section.
 
         :param title: Plot title
@@ -660,7 +660,7 @@ class StressResult:
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        :rtype: :class:`matplotlib.axes.Axes`
         """
 
         with plotting_context(

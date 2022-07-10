@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 @contextlib.contextmanager
 def plotting_context(
-    ax: Optional[matplotlib.axes._subplots.AxesSubplot] = None,
+    ax: Optional[matplotlib.axes.Axes] = None,
     pause: Optional[bool] = True,
     title: Optional[str] = "",
     filename: Optional[str] = "",
@@ -24,7 +24,7 @@ def plotting_context(
     """Executes code required to set up a matplotlib figure.
 
     :param ax: Axes object on which to plot
-    :type ax: Optional[matplotlib.axes._subplots.AxesSubplot]
+    :type ax: Optional[matplotlib.axes.Axes]
     :param pause: If set to true, the figure pauses the script until the window is
         closed. If set to false, the script continues immediately after the window is
         rendered.

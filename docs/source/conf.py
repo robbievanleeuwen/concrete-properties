@@ -40,6 +40,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.viewcode",
     "sphinx.ext.mathjax",
+    "sphinx.ext.intersphinx",
     "matplotlib.sphinxext.plot_directive",
 ]
 
@@ -60,6 +61,13 @@ templates_path = ["_templates"]
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
+
+# intersphinx mapping
+intersphinx_mapping = {
+    'sectionproperties': ("https://sectionproperties.readthedocs.io/en/latest/", None),
+    'numpy': ('https://numpy.org/doc/stable/', None),
+    'matplotlib': ('https://matplotlib.org/stable/', None),
+}
 
 
 # -- Options for HTML output -------------------------------------------------

@@ -1653,7 +1653,7 @@ class ConcreteSection:
         title: Optional[str] = "Reinforced Concrete Section",
         background: Optional[bool] = False,
         **kwargs,
-    ) -> matplotlib.axes._subplots.AxesSubplot:
+    ) -> matplotlib.axes.Axes:
         """Plots the reinforced concrete section.
 
         :param title: Plot title
@@ -1663,7 +1663,7 @@ class ConcreteSection:
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes._subplots.AxesSubplot`
+        :rtype: :class:`matplotlib.axes.Axes`
         """
 
         with plotting_context(title=title, **kwargs) as (fig, ax):
