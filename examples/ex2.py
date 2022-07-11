@@ -1,4 +1,3 @@
-import numpy as np
 from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.concrete_section import ConcreteSection
@@ -22,7 +21,7 @@ concrete = Concrete(
         ultimate_strain=0.003,
     ),
     alpha_squash=0.85,
-    flexural_tensile_strength=0.6 * np.sqrt(40),
+    flexural_tensile_strength=3.8,
     colour="lightgrey",
 )
 
