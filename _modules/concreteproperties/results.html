@@ -204,6 +204,7 @@
 <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">CenteredNorm</span>
 <span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">PatchCollection</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.axes_divider</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits</span> <span class="kn">import</span> <span class="n">mplot3d</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
 <span class="kn">from</span> <span class="nn">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
 <span class="kn">from</span> <span class="nn">rich.table</span> <span class="kn">import</span> <span class="n">Table</span>
@@ -439,14 +440,15 @@
 
 <div class="viewcode-block" id="CrackedResults"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.CrackedResults.html#concreteproperties.results.CrackedResults">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">CrackedResults</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Class for storing cracked concrete section properties.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class for storing cracked concrete section properties.</span>
 
 <span class="sd">    All properties with an `e_` preceding the property are multiplied by the elastic</span>
 <span class="sd">    modulus. In order to obtain transformed properties, call the</span>
 <span class="sd">    :meth:`~concreteproperties.results.CrackedResults.calculate_transformed_properties`</span>
 <span class="sd">    method.</span>
 
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span>
@@ -562,9 +564,10 @@
 
 <div class="viewcode-block" id="MomentCurvatureResults"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">MomentCurvatureResults</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Class for storing moment curvature results.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class for storing moment curvature results.</span>
 
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># results</span>
@@ -639,9 +642,10 @@
 
 <div class="viewcode-block" id="UltimateBendingResults"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">UltimateBendingResults</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Class for storing ultimate bending results.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class for storing ultimate bending results.</span>
 
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># bending angle</span>
@@ -818,6 +822,46 @@
             <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_x$&quot;</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_y$&quot;</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="BiaxialBendingResults.plot_multiple_diagrams"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">plot_multiple_diagrams</span><span class="p">(</span>
+        <span class="n">biaxial_bending_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BiaxialBendingResults</span><span class="p">],</span>
+        <span class="n">n_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+        <span class="n">m_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Plots multiple biaxial bending diagrams in a 3D plot.</span>
+
+<span class="sd">        :param biaxial_bending_results: List of biaxial bending results objects</span>
+<span class="sd">        :type biaxial_bending_results:</span>
+<span class="sd">            List[:class:`~concreteproperties.results.BiaxialBendingResults`]</span>
+<span class="sd">        :param float n_scale: Scaling factor to apply to axial force</span>
+<span class="sd">        :type n_scale: Optional[float]</span>
+<span class="sd">        :param float m_scale: Scaling factor to apply to bending moment</span>
+<span class="sd">        :type m_scale: Optional[float]</span>
+
+<span class="sd">        :return: Matplotlib axes object</span>
+<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># make 3d plot</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+
+        <span class="c1"># for each curve</span>
+        <span class="k">for</span> <span class="n">bb_result</span> <span class="ow">in</span> <span class="n">biaxial_bending_results</span><span class="p">:</span>
+            <span class="c1"># scale results</span>
+            <span class="n">n_list</span> <span class="o">=</span> <span class="n">bb_result</span><span class="o">.</span><span class="n">n</span> <span class="o">*</span> <span class="n">n_scale</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bb_result</span><span class="o">.</span><span class="n">mx</span><span class="p">))</span>
+            <span class="n">mx_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bb_result</span><span class="o">.</span><span class="n">mx</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+            <span class="n">my_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bb_result</span><span class="o">.</span><span class="n">my</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot3D</span><span class="p">(</span><span class="n">mx_list</span><span class="p">,</span> <span class="n">my_list</span><span class="p">,</span> <span class="n">n_list</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_x$&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_y$&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Axial Force $N$&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">ax</span></div></div>
 

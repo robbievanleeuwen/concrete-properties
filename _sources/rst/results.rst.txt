@@ -1,3 +1,5 @@
+.. _label-results:
+
 Results
 =======
 

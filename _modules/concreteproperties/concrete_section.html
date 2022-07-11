@@ -416,23 +416,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z22_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i22</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x11_max</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z22_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i22</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x11_min</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ConcreteSection.get_transformed_gross_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties">[docs]</a>    <span class="k">def</span> <span class="nf">get_transformed_gross_properties</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">TransformedConcreteProperties</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Transforms gross section properties given a reference elastic modulus.</span>
-
-<span class="sd">        :param float elastic_modulus: Reference elastic modulus</span>
-
-<span class="sd">        :return: Transformed concrete properties object</span>
-<span class="sd">        :rtype:</span>
-<span class="sd">            :class:`~concreteproperties.results.TransformedConcreteProperties`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">TransformedConcreteProperties</span><span class="p">(</span>
-            <span class="n">concrete_properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="p">,</span> <span class="n">elastic_modulus</span><span class="o">=</span><span class="n">elastic_modulus</span>
-        <span class="p">)</span></div>
-
 <div class="viewcode-block" id="ConcreteSection.calculate_gross_plastic_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_gross_plastic_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">):</span>
@@ -505,13 +488,42 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span> <span class="o">=</span> <span class="n">conc_ult_strain</span></div>
 
+<div class="viewcode-block" id="ConcreteSection.get_gross_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties">[docs]</a>    <span class="k">def</span> <span class="nf">get_gross_properties</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">ConcreteProperties</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the gross section properties of the reinforced concrete section.</span>
+
+<span class="sd">        :return: Concrete properties object</span>
+<span class="sd">        :rtype: :class:`~concreteproperties.results.TConcreteProperties`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span></div>
+
+<div class="viewcode-block" id="ConcreteSection.get_transformed_gross_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties">[docs]</a>    <span class="k">def</span> <span class="nf">get_transformed_gross_properties</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">TransformedConcreteProperties</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Transforms gross section properties given a reference elastic modulus.</span>
+
+<span class="sd">        :param float elastic_modulus: Reference elastic modulus</span>
+
+<span class="sd">        :return: Transformed concrete properties object</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            :class:`~concreteproperties.results.TransformedConcreteProperties`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">TransformedConcreteProperties</span><span class="p">(</span>
+            <span class="n">concrete_properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="p">,</span> <span class="n">elastic_modulus</span><span class="o">=</span><span class="n">elastic_modulus</span>
+        <span class="p">)</span></div>
+
 <div class="viewcode-block" id="ConcreteSection.calculate_cracked_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_cracked_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">CrackedResults</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Calculates cracked section properties given a neutral axis angle `theta`.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates cracked section properties given a neutral axis angle `theta`.</span>
 
-<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
+<span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">        :type theta: Optional[float]</span>
 
 <span class="sd">        :return: Cracked results object</span>
@@ -617,9 +629,10 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Calculates the cracking moment given a bending angle `theta`.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the cracking moment given a bending angle `theta`.</span>
 
-<span class="sd">        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">        :param float theta: Angle (in radians) the neutral axis makes with the</span>
+<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">        :return: Cracking moment</span>
 <span class="sd">        :rtype: float</span>
@@ -743,13 +756,13 @@
         <span class="n">delta_m_min</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span>
         <span class="n">delta_m_max</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Performs a moment curvature analysis given a bending angle `theta`.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Performs a moment curvature analysis given a bending angle `theta`.</span>
 
 <span class="sd">        Analysis continues until the steel reaches fracture strain or the concrete</span>
 <span class="sd">        reaches its ultimate strain.</span>
 
 <span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
-<span class="sd">            (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">        :type theta: Optional[float]</span>
 <span class="sd">        :param kappa_inc: Initial curvature increment</span>
 <span class="sd">        :type kappa_inc: Optional[float]</span>
@@ -975,10 +988,11 @@
         <span class="n">theta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Given a neutral axis angle `theta` and an axial force `n`, calculates the</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Given a neutral axis angle `theta` and an axial force `n`, calculates the</span>
 <span class="sd">        ultimate bending capacity.</span>
 
-<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
+<span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">        :type theta: Optional[float]</span>
 <span class="sd">        :param n: Net axial force</span>
 <span class="sd">        :type n: Optional[float]</span>
@@ -1166,15 +1180,18 @@
         <span class="n">m_neg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">n_points</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram given a neutral axis angle `theta`</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram given a neutral axis angle `theta`</span>
 <span class="sd">        and `n_points` calculation points between the decompression case and the pure</span>
 <span class="sd">        bending case.</span>
 
-<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
+<span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">        :type theta: Optional[float]</span>
 <span class="sd">        :param m_neg: If set to true, also calculates the moment interaction for</span>
+<span class="sd">            :math:`\theta = \theta + \pi`, i.e. sagging and hogging</span>
 <span class="sd">        :type m_neg: Optional[bool]</span>
-<span class="sd">        :param n_points: Number of calculation points between the decompression</span>
+<span class="sd">        :param n_points: Number of calculation points between the decompression point</span>
+<span class="sd">            and the pure bending point</span>
 <span class="sd">        :type n_points: Optional[int]</span>
 
 <span class="sd">        :return: Moment interaction results object</span>
@@ -1817,9 +1834,10 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Returns the elastic centroid location in local coordinates.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the elastic centroid location in local coordinates.</span>
 
-<span class="sd">        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">        :param float theta: Angle (in radians) the neutral axis makes with the</span>
+<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">        :return: Elastic centroid in local coordinates `(c_u, c_v)`</span>
 <span class="sd">        :rtype: Tuple[float]</span>
@@ -1835,9 +1853,10 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Returns the plastic centroid location in local coordinates.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the plastic centroid location in local coordinates.</span>
 
-<span class="sd">        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">        :param float theta: Angle (in radians) the neutral axis makes with the</span>
+<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">        :return: Plastic centroid in local coordinates `(pc_u, pc_v)`</span>
 <span class="sd">        :rtype: Tuple[float]</span>

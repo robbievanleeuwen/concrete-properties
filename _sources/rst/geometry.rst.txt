@@ -284,6 +284,11 @@ functions:
 - :func:`~concreteproperties.pre.add_bar_circular_array` - adds a circular array of bars
   to the geometry
 
+.. plot:: _plot_directive/add_bar_context.py
+  :context:
+  :nofigs:
+  :include-source: False
+
 
 add_bar()
 ^^^^^^^^^
@@ -293,8 +298,14 @@ add_bar()
 
 The following code adds an 80 mm bar to a T5 Super-T section::
 
-  from sectionproperties.pre.library.bridge_sections import super_t_girder_section
   from concreteproperties.pre import add_bar
+
+.. plot::
+  :context: close-figs
+  :include-source: True
+  :caption: T5 Super-T with an 80 mm bar
+
+  from sectionproperties.pre.library.bridge_sections import super_t_girder_section
 
   concrete = None  # define your concrete material properties here
   steel = None  # define your steel material properties here
@@ -302,11 +313,6 @@ The following code adds an 80 mm bar to a T5 Super-T section::
   geom = add_bar(geometry=beam, area=5000, material=steel, x=0, y=-1550)
   geom.plot_geometry(labels=[], cp=False, legend=False)
 
-..  figure:: ../_static/images/add_bar.png
-  :align: center
-  :scale: 50 %
-
-  T5 Super-T with an 80 mm bar
 
 add_bar_rectangular_array()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -316,8 +322,14 @@ add_bar_rectangular_array()
 
 The following code adds top and bottom reinforcement to a rectangular beam::
 
-  from sectionproperties.pre.library.primitive_sections import rectangular_section
   from concreteproperties.pre import add_bar_rectangular_array
+
+.. plot::
+  :context: close-figs
+  :include-source: True
+  :caption: Rectangular beam with top and bottom reinforcement
+
+  from sectionproperties.pre.library.primitive_sections import rectangular_section
 
   concrete = None  # define your concrete material properties here
   steel = None  # define your steel material properties here
@@ -328,12 +340,6 @@ The following code adds top and bottom reinforcement to a rectangular beam::
   )
   geom.plot_geometry(labels=[], cp=False, legend=False)
 
-..  figure:: ../_static/images/add_bar_rectangular_array.png
-  :align: center
-  :scale: 50 %
-
-  Rectangular beam with top and bottom reinforcement
-
 
 add_bar_circular_array()
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -343,8 +349,14 @@ add_bar_circular_array()
 
 The following code adds a circular array of bars to a concrete column::
 
-  from sectionproperties.pre.library.primitive_sections import circular_section_by_area
   from concreteproperties.pre import add_bar_circular_array
+
+.. plot::
+  :context: close-figs
+  :include-source: True
+  :caption: Concrete column with circular bar array
+
+  from sectionproperties.pre.library.primitive_sections import circular_section_by_area
 
   concrete = None  # define your concrete material properties here
   steel = None  # define your steel material properties here
@@ -353,12 +365,6 @@ The following code adds a circular array of bars to a concrete column::
     geometry=circle, area=310, material=steel, n_bar=7, r_array=250
   )
   geom.plot_geometry(labels=[], cp=False, legend=False)
-
-..  figure:: ../_static/images/add_bar_circular_array.png
-  :align: center
-  :scale: 50 %
-
-  Concrete column with circular bar array
 
 
 Overlapping Geometry

@@ -212,14 +212,15 @@
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Determines the strain at point `point` given curvcature `kappa` and neutral axis</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Determines the strain at point `point` given curvcature `kappa` and neutral axis</span>
 <span class="sd">    angle `theta`. Positive strain is compression.</span>
 
 <span class="sd">    :param point: Point at which to evaluate the strain</span>
 <span class="sd">    :type point: Tuple[float]</span>
 <span class="sd">    :param point_na: Point on the neutral axis</span>
 <span class="sd">    :type point_na: Tuple[float]</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">    :param float kappa: Curvature</span>
 
 <span class="sd">    :return: Strain</span>
@@ -247,7 +248,7 @@
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Determines the strain at point `point` given neutral axis depth `d_n` and</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Determines the strain at point `point` given neutral axis depth `d_n` and</span>
 <span class="sd">    neutral axis angle `theta`. Positive strain is compression.</span>
 
 <span class="sd">    :param point: Point at which to evaluate the strain</span>
@@ -255,7 +256,8 @@
 <span class="sd">    :param point_na: Point on the neutral axis</span>
 <span class="sd">    :type point_na: Tuple[float]</span>
 <span class="sd">    :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">    :param float ultimate_strain: Concrete strain at failure</span>
 
 <span class="sd">    :return: Strain</span>
@@ -281,13 +283,14 @@
     <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Returns a point on the neutral axis given an extreme fibre, a depth to the</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a point on the neutral axis given an extreme fibre, a depth to the</span>
 <span class="sd">    neutral axis and a neutral axis angle.</span>
 
 <span class="sd">    :param extreme_fibre: Global coordinate of the extreme compression fibre</span>
 <span class="sd">    :type extreme_fibre: Tuple[float]</span>
 <span class="sd">    :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">    :return: Point on the neutral axis in global coordinates `(x, y)`</span>
 <span class="sd">    :rtype: Tuple[float]</span>
@@ -314,11 +317,12 @@
     <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Splits concrete geometries at discontinuities in its stress-strain profile.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Splits concrete geometries at discontinuities in its stress-strain profile.</span>
 
 <span class="sd">    :param concrete_geometries: List of concrete geometries</span>
 <span class="sd">    :type concrete_geometries: List[Geometry]</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">    :param point_na: Point on the neutral axis</span>
 <span class="sd">    :type point_na: Tuple[float]</span>
 <span class="sd">    :param bool ultimate: If set to True, uses ultimate stress-strain profile</span>
@@ -379,14 +383,15 @@
     <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Splits the geometry along a line defined by a `point` and rotation angle</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Splits the geometry along a line defined by a `point` and rotation angle</span>
 <span class="sd">    `theta`.</span>
 
 <span class="sd">    :param geometry: Geometry to split</span>
 <span class="sd">    :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`</span>
 <span class="sd">    :param point: Point at which to split the geometry `(x, y)`</span>
 <span class="sd">    :type point: Tuple[float]</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">    :return: Split geometry above and below the line</span>
 <span class="sd">    :rtype: Tuple[List[:class:`sectionproperties.pre.geometry.Geometry`]]</span>
@@ -409,12 +414,13 @@
     <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Calculates the locations of the extreme compression fibre in global</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the locations of the extreme compression fibre in global</span>
 <span class="sd">    coordinates given a neutral axis angle `theta`.</span>
 
 <span class="sd">    :param points: Points over which to search for an extreme fibre</span>
 <span class="sd">    :type points: List[List[float]]</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">    :return: Global coordinate of the extreme compression fibre `(x, y)` and the</span>
 <span class="sd">        neutral axis depth at the extreme tensile fibre</span>
@@ -453,13 +459,14 @@
     <span class="n">c_local_v</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Calculates the maximum distance from the centroid to an extreme fibre when</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the maximum distance from the centroid to an extreme fibre when</span>
 <span class="sd">    bending about an axis `theta`.</span>
 
 <span class="sd">    :param points: Points over which to search for a bending depth</span>
 <span class="sd">    :type points: List[List[float]]</span>
 <span class="sd">    :param float c_local_v: Centroid coordinate in the local v-direction</span>
-<span class="sd">    :param float theta: Angle (in radians) the bending axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">    :param float theta: Angle (in radians) the bending axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">    :return: Maximum bending depth</span>
 <span class="sd">    :rtype: float</span>
@@ -538,13 +545,14 @@
     <span class="n">cy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Calculates the local extents of a geometry given a centroid and axis angle.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the local extents of a geometry given a centroid and axis angle.</span>
 
 <span class="sd">    :param geometry: Geometry over which to calculate extents</span>
 <span class="sd">    :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`</span>
 <span class="sd">    :param float cx: x-location of the centroid</span>
 <span class="sd">    :param float cy: y-location of the centroid</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi &lt;= theta &lt;= pi)</span>
+<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">    :return: Local extents *(x11_max, x11_min, y22_max, y22_min)*</span>
 <span class="sd">    :rtype: Tuple[float]</span>

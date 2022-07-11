@@ -549,6 +549,7 @@ of bars to the geometry</p></li>
 <li><p><a class="reference internal" href="gen/concreteproperties.pre.add_bar_circular_array.html#concreteproperties.pre.add_bar_circular_array" title="concreteproperties.pre.add_bar_circular_array"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_bar_circular_array()</span></code></a> - adds a circular array of bars
 to the geometry</p></li>
 </ul>
+<p>(<a class="reference external" href="../_plot_directive/add_bar_context.py">Source code</a>)</p>
 <div class="section" id="add-bar">
 <h3>add_bar()<a class="headerlink" href="#add-bar" title="Permalink to this heading">#</a></h3>
 <dl class="py function">
@@ -578,8 +579,10 @@ to the geometry</p></li>
 </dd></dl>
 
 <p>The following code adds an 80 mm bar to a T5 Super-T section:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sectionproperties.pre.library.bridge_sections</span> <span class="kn">import</span> <span class="n">super_t_girder_section</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">add_bar</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">add_bar</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sectionproperties.pre.library.bridge_sections</span> <span class="kn">import</span> <span class="n">super_t_girder_section</span>
 
 <span class="n">concrete</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># define your concrete material properties here</span>
 <span class="n">steel</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># define your steel material properties here</span>
@@ -588,8 +591,9 @@ to the geometry</p></li>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="figure align-center" id="id21">
-<a class="reference internal image-reference" href="../_images/add_bar.png"><img alt="../_images/add_bar.png" src="../_images/add_bar.png" style="width: 539.0px; height: 459.0px;" /></a>
+<p>(<a class="reference external" href="../rst/geometry-11.py">Source code</a>, <a class="reference external" href="../rst/geometry-11.png">png</a>, <a class="reference external" href="../rst/geometry-11.hires.png">hires.png</a>, <a class="reference external" href="../rst/geometry-11.pdf">pdf</a>)</p>
+<div class="figure align-default" id="id21">
+<img alt="../_images/geometry-11.png" class="plot-directive" src="../_images/geometry-11.png" />
 <p class="caption"><span class="caption-text">T5 Super-T with an 80 mm bar</span><a class="headerlink" href="#id21" title="Permalink to this image">#</a></p>
 </div>
 </div>
@@ -597,7 +601,7 @@ to the geometry</p></li>
 <h3>add_bar_rectangular_array()<a class="headerlink" href="#add-bar-rectangular-array" title="Permalink to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">add_bar_rectangular_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Geometry</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">CompoundGeometry</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><span class="pre">Steel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anchor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exterior_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/pre.html#add_bar_rectangular_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">add_bar_rectangular_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Geometry</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">CompoundGeometry</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><span class="pre">Steel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anchor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exterior_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">CompoundGeometry</span></span></span><a class="reference internal" href="../_modules/concreteproperties/pre.html#add_bar_rectangular_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Adds a rectangular array of reinforcing bars to a <em>sectionproperties</em> geometry.</p>
 <p>Bars are discretised by four points by default.</p>
 <dl class="field-list simple">
@@ -626,8 +630,10 @@ to the geometry</p></li>
 </dd></dl>
 
 <p>The following code adds top and bottom reinforcement to a rectangular beam:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sectionproperties.pre.library.primitive_sections</span> <span class="kn">import</span> <span class="n">rectangular_section</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">add_bar_rectangular_array</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">add_bar_rectangular_array</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sectionproperties.pre.library.primitive_sections</span> <span class="kn">import</span> <span class="n">rectangular_section</span>
 
 <span class="n">concrete</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># define your concrete material properties here</span>
 <span class="n">steel</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># define your steel material properties here</span>
@@ -639,9 +645,10 @@ to the geometry</p></li>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="figure align-center" id="id22">
-<a class="reference internal image-reference" href="../_images/add_bar_rectangular_array.png"><img alt="../_images/add_bar_rectangular_array.png" src="../_images/add_bar_rectangular_array.png" style="width: 292.0px; height: 457.0px;" /></a>
-<p class="caption"><span class="caption-text">Rectangular beam with top and bottom reinforcement</span><a class="headerlink" href="#id22" title="Permalink to this image">#</a></p>
+<p>(<a class="reference external" href="../rst/geometry-12.py">Source code</a>, <a class="reference external" href="../rst/geometry-12.png">png</a>, <a class="reference external" href="../rst/geometry-12.hires.png">hires.png</a>, <a class="reference external" href="../rst/geometry-12.pdf">pdf</a>)</p>
+<div class="figure align-default" id="id23">
+<img alt="../_images/geometry-12.png" class="plot-directive" src="../_images/geometry-12.png" />
+<p class="caption"><span class="caption-text">Rectangular beam with top and bottom reinforcement</span><a class="headerlink" href="#id23" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="add-bar-circular-array">
@@ -676,8 +683,10 @@ horizontal axis in the circular array</p></li>
 </dd></dl>
 
 <p>The following code adds a circular array of bars to a concrete column:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sectionproperties.pre.library.primitive_sections</span> <span class="kn">import</span> <span class="n">circular_section_by_area</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">add_bar_circular_array</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">add_bar_circular_array</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sectionproperties.pre.library.primitive_sections</span> <span class="kn">import</span> <span class="n">circular_section_by_area</span>
 
 <span class="n">concrete</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># define your concrete material properties here</span>
 <span class="n">steel</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># define your steel material properties here</span>
@@ -688,9 +697,10 @@ horizontal axis in the circular array</p></li>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="figure align-center" id="id23">
-<a class="reference internal image-reference" href="../_images/add_bar_circular_array.png"><img alt="../_images/add_bar_circular_array.png" src="../_images/add_bar_circular_array.png" style="width: 469.0px; height: 463.0px;" /></a>
-<p class="caption"><span class="caption-text">Concrete column with circular bar array</span><a class="headerlink" href="#id23" title="Permalink to this image">#</a></p>
+<p>(<a class="reference external" href="../rst/geometry-13.py">Source code</a>, <a class="reference external" href="../rst/geometry-13.png">png</a>, <a class="reference external" href="../rst/geometry-13.hires.png">hires.png</a>, <a class="reference external" href="../rst/geometry-13.pdf">pdf</a>)</p>
+<div class="figure align-default" id="id25">
+<img alt="../_images/geometry-13.png" class="plot-directive" src="../_images/geometry-13.png" />
+<p class="caption"><span class="caption-text">Concrete column with circular bar array</span><a class="headerlink" href="#id25" title="Permalink to this image">#</a></p>
 </div>
 </div>
 <div class="section" id="overlapping-geometry">

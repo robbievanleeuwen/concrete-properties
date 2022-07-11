@@ -139,6 +139,8 @@ Eurocode Non-Linear Concrete Service Profile
   ).plot_stress_strain()
 
 
+.. _label-conc-ult-profile:
+
 Concrete Ultimate Stress-Strain Profiles
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
