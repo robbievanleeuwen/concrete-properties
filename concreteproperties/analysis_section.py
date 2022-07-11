@@ -87,7 +87,7 @@ class AnalysisSection:
         e_ixy: float,
         theta: float,
     ) -> Tuple[np.ndarray, float, float]:
-        """Given section actions and section propreties, calculates elastic stresses.
+        r"""Given section actions and section propreties, calculates elastic stresses.
 
         :param float n: Axial force
         :param float mx: Bending moment about the x-axis
@@ -98,7 +98,8 @@ class AnalysisSection:
         :param float e_ixx: Flexural rigidity about the x-axis
         :param float e_iyy: Flexural rigidity about the y-axis
         :param float e_ixy: Flexural rigidity about the xy-axis
-        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+        :param float theta: Angle (in radians) the neutral axis makes with the
+            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
 
         :return: Elastic stresses, net force and distance from neutral axis to point of
             force action
@@ -163,12 +164,13 @@ class AnalysisSection:
         kappa: float,
         na_local: float,
     ) -> Tuple[float]:
-        """Performs a service stress analysis on the section.
+        r"""Performs a service stress analysis on the section.
 
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+        :param float theta: Angle (in radians) the neutral axis makes with the
+            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param float kappa: Curvature
         :param float na_local: y-location of the neutral axis in local coordinates
 
@@ -204,14 +206,15 @@ class AnalysisSection:
         theta: float,
         na_local: float,
     ) -> Tuple[np.ndarray, float, float]:
-        """Given the neutral axis depth `d_n` and curvature `kappa` determines the
+        r"""Given the neutral axis depth `d_n` and curvature `kappa` determines the
         service stresses within the section.
 
         :param float d_n: Neutral axis depth
         :param float kappa: Curvature
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
-        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+        :param float theta: Angle (in radians) the neutral axis makes with the
+            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param float na_local: y-location of the neutral axis in local coordinates
 
         :return: Service stresses, net force and distance from neutral axis to point of
@@ -262,12 +265,13 @@ class AnalysisSection:
         ultimate_strain: float,
         pc_local: float,
     ) -> Tuple[float]:
-        """Performs an ultimate stress analysis on the section.
+        r"""Performs an ultimate stress analysis on the section.
 
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+        :param float theta: Angle (in radians) the neutral axis makes with the
+            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param float ultimate_strain: Concrete strain at failure
         :param float pc_local: y-location of the plastic centroid in local coordinates
 
@@ -301,13 +305,14 @@ class AnalysisSection:
         ultimate_strain: float,
         pc_local: float,
     ) -> Tuple[np.ndarray, float, float]:
-        """Given the neutral axis depth `d_n` and ultimate strain, determines the
+        r"""Given the neutral axis depth `d_n` and ultimate strain, determines the
         ultimate stresses with the section.
 
         :param float d_n: Neutral axis depth
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
-        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+        :param float theta: Angle (in radians) the neutral axis makes with the
+            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param float ultimate_strain: Concrete strain at failure
         :param float pc_local: y-location of the plastic centroid in local coordinates
 
@@ -514,7 +519,7 @@ class Tri3:
         e_ixy: float,
         theta: float,
     ) -> Tuple[float]:
-        """Calculates elastic actions for the current finite element.
+        r"""Calculates elastic actions for the current finite element.
 
         :param float n: Axial force
         :param float mx: Bending moment about the x-axis
@@ -525,7 +530,8 @@ class Tri3:
         :param float e_ixx: Flexural rigidity about the x-axis
         :param float e_iyy: Flexural rigidity about the y-axis
         :param float e_ixy: Flexural rigidity about the xy-axis
-        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+        :param float theta: Angle (in radians) the neutral axis makes with the
+            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
 
         :return: Elastic force and resultant moment
         :rtype: Tuple[float]
@@ -588,12 +594,13 @@ class Tri3:
         kappa: float,
         na_local: float,
     ) -> Tuple[float]:
-        """Calculates service actions for the current finite element.
+        r"""Calculates service actions for the current finite element.
 
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+        :param float theta: Angle (in radians) the neutral axis makes with the
+            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param float kappa: Curvature
         :param float na_local: y-location of the neutral axis in local coordinates
 
@@ -650,12 +657,13 @@ class Tri3:
         ultimate_strain: float,
         pc_local: float,
     ) -> Tuple[float]:
-        """Calculates ultimate actions for the current finite element.
+        r"""Calculates ultimate actions for the current finite element.
 
         :param point_na: Point on the neutral axis
         :type point_na: Tuple[float]
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+        :param float theta: Angle (in radians) the neutral axis makes with the
+            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param float ultimate_strain: Concrete strain at failure
         :param float pc_local: y-location of the plastic centroid in local coordinates
 

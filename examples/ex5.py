@@ -7,7 +7,7 @@ from concreteproperties.stress_strain_profile import (
     RectangularStressBlock,
     SteelElasticPlastic,
 )
-from concreteproperties.results import MomentInteractionResults
+from concreteproperties.results import BiaxialBendingResults
 
 
 concrete = Concrete(
@@ -36,29 +36,28 @@ steel = Steel(
     colour="grey",
 )
 
-mi_results = []
-labels = []
-
-for idx in range(4):
-    geometry = concrete_rectangular_section(
-        b=400,
-        d=600,
-        dia_top=16,
-        n_top=6,
-        dia_bot=16,
-        n_bot=6,
-        n_circle=4,
-        cover=66,
-        area_top=200 * (idx + 1),
-        area_bot=200 * (idx + 1),
-        conc_mat=concrete,
-        steel_mat=steel,
-    )
-
-    conc_sec = ConcreteSection(geometry)
-    mi_results.append(conc_sec.moment_interaction_diagram())
-    labels.append("p = {0}".format(0.01 * (idx + 1)))
-
-MomentInteractionResults.plot_multiple_diagrams(
-    moment_interaction_results=mi_results, labels=labels
+geometry = concrete_rectangular_section(
+    b=400,
+    d=600,
+    dia_top=16,
+    n_top=3,
+    dia_bot=16,
+    n_bot=3,
+    n_circle=4,
+    cover=30,
+    area_top=200,
+    area_bot=200,
+    conc_mat=concrete,
+    steel_mat=steel,
 )
+
+conc_sec = ConcreteSection(geometry)
+conc_sec.moment_interaction_diagram().plot_diagram()
+
+n_list = np.linspace(0, 6585e3, 11)
+biaxial_results = []
+
+for n in n_list:
+    biaxial_results.append(conc_sec.biaxial_bending_diagram(n=n))
+
+BiaxialBendingResults.plot_multiple_diagrams(biaxial_results)

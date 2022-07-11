@@ -55,7 +55,7 @@ def add_bar_rectangular_array(
     anchor: Optional[Tuple[float]] = (0, 0),
     exterior_only: Optional[bool] = False,
     n: Optional[int] = 4,
-):
+) -> CompoundGeometry:
     """Adds a rectangular array of reinforcing bars to a *sectionproperties* geometry.
 
     Bars are discretised by four points by default.

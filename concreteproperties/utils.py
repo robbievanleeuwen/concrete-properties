@@ -19,14 +19,15 @@ def get_service_strain(
     theta: float,
     kappa: float,
 ) -> float:
-    """Determines the strain at point `point` given curvcature `kappa` and neutral axis
+    r"""Determines the strain at point `point` given curvcature `kappa` and neutral axis
     angle `theta`. Positive strain is compression.
 
     :param point: Point at which to evaluate the strain
     :type point: Tuple[float]
     :param point_na: Point on the neutral axis
     :type point_na: Tuple[float]
-    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal
+        axis (:math:`-\pi \leq \theta \leq \pi`)
     :param float kappa: Curvature
 
     :return: Strain
@@ -54,7 +55,7 @@ def get_ultimate_strain(
     theta: float,
     ultimate_strain: float,
 ) -> float:
-    """Determines the strain at point `point` given neutral axis depth `d_n` and
+    r"""Determines the strain at point `point` given neutral axis depth `d_n` and
     neutral axis angle `theta`. Positive strain is compression.
 
     :param point: Point at which to evaluate the strain
@@ -62,7 +63,8 @@ def get_ultimate_strain(
     :param point_na: Point on the neutral axis
     :type point_na: Tuple[float]
     :param float d_n: Depth of the neutral axis from the extreme compression fibre
-    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal
+        axis (:math:`-\pi \leq \theta \leq \pi`)
     :param float ultimate_strain: Concrete strain at failure
 
     :return: Strain
@@ -88,13 +90,14 @@ def point_on_neutral_axis(
     d_n: float,
     theta: float,
 ) -> Tuple[float]:
-    """Returns a point on the neutral axis given an extreme fibre, a depth to the
+    r"""Returns a point on the neutral axis given an extreme fibre, a depth to the
     neutral axis and a neutral axis angle.
 
     :param extreme_fibre: Global coordinate of the extreme compression fibre
     :type extreme_fibre: Tuple[float]
     :param float d_n: Depth of the neutral axis from the extreme compression fibre
-    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal
+        axis (:math:`-\pi \leq \theta \leq \pi`)
 
     :return: Point on the neutral axis in global coordinates `(x, y)`
     :rtype: Tuple[float]
@@ -121,11 +124,12 @@ def split_section_at_strains(
     d_n: float = None,
     kappa: float = None,
 ) -> List[Geometry]:
-    """Splits concrete geometries at discontinuities in its stress-strain profile.
+    r"""Splits concrete geometries at discontinuities in its stress-strain profile.
 
     :param concrete_geometries: List of concrete geometries
     :type concrete_geometries: List[Geometry]
-    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal
+        axis (:math:`-\pi \leq \theta \leq \pi`)
     :param point_na: Point on the neutral axis
     :type point_na: Tuple[float]
     :param bool ultimate: If set to True, uses ultimate stress-strain profile
@@ -186,14 +190,15 @@ def split_section(
     point: Tuple[float],
     theta: float,
 ) -> Tuple[List[Geometry]]:
-    """Splits the geometry along a line defined by a `point` and rotation angle
+    r"""Splits the geometry along a line defined by a `point` and rotation angle
     `theta`.
 
     :param geometry: Geometry to split
     :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`
     :param point: Point at which to split the geometry `(x, y)`
     :type point: Tuple[float]
-    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal
+        axis (:math:`-\pi \leq \theta \leq \pi`)
 
     :return: Split geometry above and below the line
     :rtype: Tuple[List[:class:`sectionproperties.pre.geometry.Geometry`]]
@@ -216,12 +221,13 @@ def calculate_extreme_fibre(
     points: List[List[float]],
     theta: float,
 ) -> Tuple[Tuple[float], float]:
-    """Calculates the locations of the extreme compression fibre in global
+    r"""Calculates the locations of the extreme compression fibre in global
     coordinates given a neutral axis angle `theta`.
 
     :param points: Points over which to search for an extreme fibre
     :type points: List[List[float]]
-    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal
+        axis (:math:`-\pi \leq \theta \leq \pi`)
 
     :return: Global coordinate of the extreme compression fibre `(x, y)` and the
         neutral axis depth at the extreme tensile fibre
@@ -260,13 +266,14 @@ def calculate_max_bending_depth(
     c_local_v: float,
     theta: float,
 ) -> float:
-    """Calculates the maximum distance from the centroid to an extreme fibre when
+    r"""Calculates the maximum distance from the centroid to an extreme fibre when
     bending about an axis `theta`.
 
     :param points: Points over which to search for a bending depth
     :type points: List[List[float]]
     :param float c_local_v: Centroid coordinate in the local v-direction
-    :param float theta: Angle (in radians) the bending axis makes with the horizontal axis (-pi <= theta <= pi)
+    :param float theta: Angle (in radians) the bending axis makes with the horizontal
+        axis (:math:`-\pi \leq \theta \leq \pi`)
 
     :return: Maximum bending depth
     :rtype: float
@@ -345,13 +352,14 @@ def calculate_local_extents(
     cy: float,
     theta: float,
 ) -> Tuple[float]:
-    """Calculates the local extents of a geometry given a centroid and axis angle.
+    r"""Calculates the local extents of a geometry given a centroid and axis angle.
 
     :param geometry: Geometry over which to calculate extents
     :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`
     :param float cx: x-location of the centroid
     :param float cy: y-location of the centroid
-    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal
+        axis (:math:`-\pi \leq \theta \leq \pi`)
 
     :return: Local extents *(x11_max, x11_min, y22_max, y22_min)*
     :rtype: Tuple[float]

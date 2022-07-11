@@ -11,6 +11,7 @@ import matplotlib.cm as cm
 from matplotlib.colors import CenteredNorm
 from matplotlib.collections import PatchCollection
 from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
+from mpl_toolkits import mplot3d
 from scipy.interpolate import interp1d
 from rich.console import Console
 from rich.table import Table
@@ -246,14 +247,15 @@ class TransformedConcreteProperties:
 
 @dataclass
 class CrackedResults:
-    """Class for storing cracked concrete section properties.
+    r"""Class for storing cracked concrete section properties.
 
     All properties with an `e_` preceding the property are multiplied by the elastic
     modulus. In order to obtain transformed properties, call the
     :meth:`~concreteproperties.results.CrackedResults.calculate_transformed_properties`
     method.
 
-    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal
+        axis (:math:`-\pi \leq \theta \leq \pi`)
     """
 
     theta: float
@@ -369,9 +371,10 @@ class CrackedResults:
 
 @dataclass
 class MomentCurvatureResults:
-    """Class for storing moment curvature results.
+    r"""Class for storing moment curvature results.
 
-    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal
+        axis (:math:`-\pi \leq \theta \leq \pi`)
     """
 
     # results
@@ -446,9 +449,10 @@ class MomentCurvatureResults:
 
 @dataclass
 class UltimateBendingResults:
-    """Class for storing ultimate bending results.
+    r"""Class for storing ultimate bending results.
 
-    :param float theta: Angle (in radians) the neutral axis makes with the horizontal axis (-pi <= theta <= pi)
+    :param float theta: Angle (in radians) the neutral axis makes with the horizontal
+        axis (:math:`-\pi \leq \theta \leq \pi`)
     """
 
     # bending angle
@@ -625,6 +629,46 @@ class BiaxialBendingResults:
             plt.xlabel("Bending Moment $M_x$")
             plt.ylabel("Bending Moment $M_y$")
             plt.grid(True)
+
+        return ax
+
+    @staticmethod
+    def plot_multiple_diagrams(
+        biaxial_bending_results: List[BiaxialBendingResults],
+        n_scale: Optional[float] = 1e-3,
+        m_scale: Optional[float] = 1e-6,
+    ) -> matplotlib.axes.Axes:
+        """Plots multiple biaxial bending diagrams in a 3D plot.
+
+        :param biaxial_bending_results: List of biaxial bending results objects
+        :type biaxial_bending_results:
+            List[:class:`~concreteproperties.results.BiaxialBendingResults`]
+        :param float n_scale: Scaling factor to apply to axial force
+        :type n_scale: Optional[float]
+        :param float m_scale: Scaling factor to apply to bending moment
+        :type m_scale: Optional[float]
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes.Axes`
+        """
+
+        # make 3d plot
+        fig = plt.figure()
+        ax = plt.axes(projection="3d")
+
+        # for each curve
+        for bb_result in biaxial_bending_results:
+            # scale results
+            n_list = bb_result.n * n_scale * np.ones(len(bb_result.mx))
+            mx_list = np.array(bb_result.mx) * m_scale
+            my_list = np.array(bb_result.my) * m_scale
+
+            ax.plot3D(mx_list, my_list, n_list, "-")
+
+        ax.set_xlabel("Bending Moment $M_x$")
+        ax.set_ylabel("Bending Moment $M_y$")
+        ax.set_zlabel("Axial Force $N$")
+        plt.show()
 
         return ax
 
