@@ -482,7 +482,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="01---Calculating-Area-Properties">
 <h1>01 - Calculating Area Properties<a class="headerlink" href="#01---Calculating-Area-Properties" title="Permalink to this heading">#</a></h1>
 <p>This example demonstrates how to create a simple reinforced concrete cross-section and obtain the gross area properties. We start by importing the necessary modules.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -497,28 +497,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
-Input <span class="ansi-green-fg">In [1]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 2&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">sectionproperties</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">pre</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">library</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">concrete_sections</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> concrete_rectangular_section
-<span class="ansi-green-fg">----&gt; 2</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">concreteproperties</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">material</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> Concrete, Steel
-<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">concreteproperties</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">concrete_section</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> ConcreteSection
-<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">concreteproperties</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">stress_strain_profile</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> (
-<span class="ansi-green-intense-fg ansi-bold">      5</span>     ConcreteLinear,
-<span class="ansi-green-intense-fg ansi-bold">      6</span>     RectangularStressBlock,
-<span class="ansi-green-intense-fg ansi-bold">      7</span>     SteelElasticPlastic,
-<span class="ansi-green-intense-fg ansi-bold">      8</span> )
-
-<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named &#39;concreteproperties&#39;
-</pre></div></div>
-</div>
 <p>The materials used in this example will be 32 MPa concrete and 500 MPa steel, specified in accordance with AS 3600:2018.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
@@ -550,38 +530,6 @@ Input <span class="ansi-green-fg">In [1]</span>, in <span class="ansi-cyan-fg">&
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-Input <span class="ansi-green-fg">In [2]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 1&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span> concrete <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">Concrete</span>(
-<span class="ansi-green-intense-fg ansi-bold">      2</span>     name<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">32 MPa Concrete</span><span style="color: rgb(175,0,0)">&#34;</span>,
-<span class="ansi-green-intense-fg ansi-bold">      3</span>     density<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">2.4e-6</span>,
-<span class="ansi-green-intense-fg ansi-bold">      4</span>     stress_strain_profile<span style="color: rgb(98,98,98)">=</span>ConcreteLinear(elastic_modulus<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">30.1e3</span>),
-<span class="ansi-green-intense-fg ansi-bold">      5</span>     ultimate_stress_strain_profile<span style="color: rgb(98,98,98)">=</span>RectangularStressBlock(
-<span class="ansi-green-intense-fg ansi-bold">      6</span>         compressive_strength<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">32</span>,
-<span class="ansi-green-intense-fg ansi-bold">      7</span>         alpha<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">0.802</span>,
-<span class="ansi-green-intense-fg ansi-bold">      8</span>         gamma<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">0.89</span>,
-<span class="ansi-green-intense-fg ansi-bold">      9</span>         ultimate_strain<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">0.003</span>,
-<span class="ansi-green-intense-fg ansi-bold">     10</span>     ),
-<span class="ansi-green-intense-fg ansi-bold">     11</span>     alpha_squash<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">0.85</span>,
-<span class="ansi-green-intense-fg ansi-bold">     12</span>     flexural_tensile_strength<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">3.4</span>,
-<span class="ansi-green-intense-fg ansi-bold">     13</span>     colour<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">lightgrey</span><span style="color: rgb(175,0,0)">&#34;</span>,
-<span class="ansi-green-intense-fg ansi-bold">     14</span> )
-<span class="ansi-green-intense-fg ansi-bold">     16</span> steel <span style="color: rgb(98,98,98)">=</span> Steel(
-<span class="ansi-green-intense-fg ansi-bold">     17</span>     name<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">500 MPa Steel</span><span style="color: rgb(175,0,0)">&#34;</span>,
-<span class="ansi-green-intense-fg ansi-bold">     18</span>     density<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">7.85e-6</span>,
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-intense-fg ansi-bold">     24</span>     colour<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">grey</span><span style="color: rgb(175,0,0)">&#34;</span>,
-<span class="ansi-green-intense-fg ansi-bold">     25</span> )
-
-<span class="ansi-red-fg">NameError</span>: name &#39;Concrete&#39; is not defined
-</pre></div></div>
-</div>
 <p>The section being analysed in this example is a 600D x 400W rectangular beam. The reinforcement detailed is 3N20 top bars and 3N24 bottom bars, with 30 mm of clear cover. The geometry is generated using the <em>sectionproperties</em> concrete sections library.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -607,32 +555,19 @@ Input <span class="ansi-green-fg">In [2]</span>, in <span class="ansi-cyan-fg">&
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
+<img alt="../_images/notebooks_01_area_properties_6_0.svg" src="../_images/notebooks_01_area_properties_6_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-Input <span class="ansi-green-fg">In [3]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 1&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> geom <span style="color: rgb(98,98,98)">=</span> concrete_rectangular_section(
-<span class="ansi-green-intense-fg ansi-bold">      2</span>     b<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">400</span>,
-<span class="ansi-green-intense-fg ansi-bold">      3</span>     d<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">600</span>,
-<span class="ansi-green-intense-fg ansi-bold">      4</span>     dia_top<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">20</span>,
-<span class="ansi-green-intense-fg ansi-bold">      5</span>     n_top<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">3</span>,
-<span class="ansi-green-intense-fg ansi-bold">      6</span>     dia_bot<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">24</span>,
-<span class="ansi-green-intense-fg ansi-bold">      7</span>     n_bot<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">3</span>,
-<span class="ansi-green-intense-fg ansi-bold">      8</span>     n_circle<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">4</span>,
-<span class="ansi-green-intense-fg ansi-bold">      9</span>     cover<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">30</span>,
-<span class="ansi-green-intense-fg ansi-bold">     10</span>     area_top<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">310</span>,
-<span class="ansi-green-intense-fg ansi-bold">     11</span>     area_bot<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">450</span>,
-<span class="ansi-green-fg">---&gt; 12</span>     conc_mat<span style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">concrete</span>,
-<span class="ansi-green-intense-fg ansi-bold">     13</span>     steel_mat<span style="color: rgb(98,98,98)">=</span>steel,
-<span class="ansi-green-intense-fg ansi-bold">     14</span> )
-<span class="ansi-green-intense-fg ansi-bold">     16</span> conc_sec <span style="color: rgb(98,98,98)">=</span> ConcreteSection(geom)
-<span class="ansi-green-intense-fg ansi-bold">     17</span> conc_sec<span style="color: rgb(98,98,98)">.</span>plot_section()
-
-<span class="ansi-red-fg">NameError</span>: name &#39;concrete&#39; is not defined
+&lt;AxesSubplot:title={&#39;center&#39;:&#39;Reinforced Concrete Section&#39;}&gt;
 </pre></div></div>
 </div>
 <p>Creating a <code class="docutils literal notranslate"><span class="pre">ConcreteSection</span></code> object automatically calculates the gross area properties of the reinforced concrete cross-section. These can be obtained by using the <code class="docutils literal notranslate"><span class="pre">get_gross_properties()</span></code> method. The section properties can be printed by calling the <code class="docutils literal notranslate"><span class="pre">print_results()</span></code> method.</p>
@@ -648,16 +583,45 @@ Input <span class="ansi-green-fg">In [3]</span>, in <span class="ansi-cyan-fg">&
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-Input <span class="ansi-green-fg">In [4]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 1&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span> gross_props <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">conc_sec</span><span style="color: rgb(98,98,98)">.</span>get_gross_properties()
-<span class="ansi-green-intense-fg ansi-bold">      2</span> gross_props<span style="color: rgb(98,98,98)">.</span>print_results(fmt<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">.3e</span><span style="color: rgb(175,0,0)">&#34;</span>)
-
-<span class="ansi-red-fg">NameError</span>: name &#39;conc_sec&#39; is not defined
-</pre></div></div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">    Gross Concrete Section Properties    </span>
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃<span style="font-weight: bold"> Property                 </span>┃<span style="font-weight: bold">      Value </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│<span style="color: #008080; text-decoration-color: #008080"> Total Area               </span>│<span style="color: #008000; text-decoration-color: #008000">  2.400e+05 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Concrete Area            </span>│<span style="color: #008000; text-decoration-color: #008000">  2.377e+05 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Steel Area               </span>│<span style="color: #008000; text-decoration-color: #008000">  2.280e+03 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Axial Rigidity (EA)      </span>│<span style="color: #008000; text-decoration-color: #008000">  7.611e+09 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Mass (per unit length)   </span>│<span style="color: #008000; text-decoration-color: #008000">  5.884e-01 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Perimeter                </span>│<span style="color: #008000; text-decoration-color: #008000">  2.000e+03 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Qx                     </span>│<span style="color: #008000; text-decoration-color: #008000">  2.265e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Qy                     </span>│<span style="color: #008000; text-decoration-color: #008000">  1.522e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> x-Centroid               </span>│<span style="color: #008000; text-decoration-color: #008000">  2.000e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> y-Centroid               </span>│<span style="color: #008000; text-decoration-color: #008000">  2.976e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_g                  </span>│<span style="color: #008000; text-decoration-color: #008000">  9.168e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_g                  </span>│<span style="color: #008000; text-decoration-color: #008000">  4.073e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g                  </span>│<span style="color: #008000; text-decoration-color: #008000">  4.531e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_c                  </span>│<span style="color: #008000; text-decoration-color: #008000">  2.426e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_c                  </span>│<span style="color: #008000; text-decoration-color: #008000">  1.028e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c                  </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.I11                    </span>│<span style="color: #008000; text-decoration-color: #008000">  2.426e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.I22                    </span>│<span style="color: #008000; text-decoration-color: #008000">  1.028e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Principal Axis Angle     </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Zxx+                   </span>│<span style="color: #008000; text-decoration-color: #008000">  8.024e+11 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Zxx-                   </span>│<span style="color: #008000; text-decoration-color: #008000">  8.153e+11 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Zyy+                   </span>│<span style="color: #008000; text-decoration-color: #008000">  5.142e+11 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Zyy-                   </span>│<span style="color: #008000; text-decoration-color: #008000">  5.142e+11 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Z11+                   </span>│<span style="color: #008000; text-decoration-color: #008000">  8.024e+11 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Z11-                   </span>│<span style="color: #008000; text-decoration-color: #008000">  8.153e+11 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Z22+                   </span>│<span style="color: #008000; text-decoration-color: #008000">  5.142e+11 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Z22-                   </span>│<span style="color: #008000; text-decoration-color: #008000">  5.142e+11 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Squash Load              </span>│<span style="color: #008000; text-decoration-color: #008000">  7.606e+06 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Tensile Load             </span>│<span style="color: #008000; text-decoration-color: #008000"> -1.140e+06 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> x-Axial Plastic Centroid </span>│<span style="color: #008000; text-decoration-color: #008000">  2.000e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> y-Axial Plastic Centroid </span>│<span style="color: #008000; text-decoration-color: #008000">  2.934e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Ultimate Concrete Strain </span>│<span style="color: #008000; text-decoration-color: #008000">  3.000e-03 </span>│
+└──────────────────────────┴────────────┘
+</pre></div>
 </div>
 <p>The above section properties are multiplied by the elastic moduli, e.g. axial rigidity (<code class="docutils literal notranslate"><span class="pre">EA</span></code>) and flexural rigidity (<code class="docutils literal notranslate"><span class="pre">EI</span></code>). Transformed section properties can be obtained using <code class="docutils literal notranslate"><span class="pre">get_transformed_gross_properties()</span></code> and providing a reference <code class="docutils literal notranslate"><span class="pre">elastic_modulus</span></code>.</p>
 <div class="nbinput docutils container">
@@ -672,16 +636,35 @@ Input <span class="ansi-green-fg">In [4]</span>, in <span class="ansi-cyan-fg">&
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-Input <span class="ansi-green-fg">In [5]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 1&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span> transformed_props <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">conc_sec</span><span style="color: rgb(98,98,98)">.</span>get_transformed_gross_properties(elastic_modulus<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">30.1e3</span>)
-<span class="ansi-green-intense-fg ansi-bold">      2</span> transformed_props<span style="color: rgb(98,98,98)">.</span>print_results(fmt<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">.3e</span><span style="color: rgb(175,0,0)">&#34;</span>)
-
-<span class="ansi-red-fg">NameError</span>: name &#39;conc_sec&#39; is not defined
-</pre></div></div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">   Transformed Gross    </span>
+<span style="font-style: italic">    Concrete Section    </span>
+<span style="font-style: italic">       Properties       </span>
+┏━━━━━━━━━━┳━━━━━━━━━━━┓
+┃<span style="font-weight: bold"> Property </span>┃<span style="font-weight: bold">     Value </span>┃
+┡━━━━━━━━━━╇━━━━━━━━━━━┩
+│<span style="color: #008080; text-decoration-color: #008080"> E_ref    </span>│<span style="color: #008000; text-decoration-color: #008000"> 3.010e+04 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Area     </span>│<span style="color: #008000; text-decoration-color: #008000"> 7.973e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Qx       </span>│<span style="color: #008000; text-decoration-color: #008000"> 7.526e+07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Qy       </span>│<span style="color: #008000; text-decoration-color: #008000"> 5.057e+07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Ixx_g    </span>│<span style="color: #008000; text-decoration-color: #008000"> 3.046e+10 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Iyy_g    </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.353e+10 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Ixy_g    </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.505e+10 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Ixx_c    </span>│<span style="color: #008000; text-decoration-color: #008000"> 8.061e+09 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Iyy_c    </span>│<span style="color: #008000; text-decoration-color: #008000"> 3.417e+09 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Ixy_c    </span>│<span style="color: #008000; text-decoration-color: #008000"> 0.000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> I11      </span>│<span style="color: #008000; text-decoration-color: #008000"> 8.061e+09 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> I22      </span>│<span style="color: #008000; text-decoration-color: #008000"> 3.417e+09 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Zxx+     </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.666e+07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Zxx-     </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.708e+07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Zyy+     </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.708e+07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Zyy-     </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.708e+07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Z11+     </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.666e+07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Z11-     </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.708e+07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Z22+     </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.708e+07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Z22-     </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.708e+07 </span>│
+└──────────┴───────────┘
+</pre></div>
 </div>
 </div>
 
