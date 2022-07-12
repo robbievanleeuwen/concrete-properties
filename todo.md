@@ -13,6 +13,7 @@
 - [ ] Documentation!
   - [x] Is there a way to generate output within a docstring??
   - [ ] gif of progressive service stress plot?
+  - [ ] Fix mv!!!
 
 # POST-RELEASE ITEMS
 - [ ] Speed up

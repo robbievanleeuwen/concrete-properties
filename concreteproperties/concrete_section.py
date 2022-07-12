@@ -6,6 +6,7 @@ import numpy as np
 from scipy.optimize import brentq
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from rich.live import Live
 
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.analysis_section import AnalysisSection
@@ -593,7 +594,9 @@ class ConcreteSection:
         b = d_t  # neutral axis at extreme tensile fibre
 
         # create progress bar
-        with utils.create_unknown_progress() as progress:
+        progress = utils.create_unknown_progress()
+
+        with Live(progress, refresh_per_second=10) as live:
             task = progress.add_task(
                 description="[red]Generating M-K diagram",
                 total=None,
@@ -627,11 +630,10 @@ class ConcreteSection:
                         disp=False,
                     )
                 except ValueError:
-                    print("OH NO!")
+                    warnings.warn("brentq algorithm failed.")
 
                 text_update = "[red]Generating M-K diagram: "
                 text_update += f"M={moment_curvature._m_i:.3e}"
-                # TODO: make percentage maximum ratio of steel strain/failure strain
 
                 progress.update(task, description=text_update)
 
@@ -645,6 +647,7 @@ class ConcreteSection:
                 task,
                 description="[bold green]:white_check_mark: M-K diagram generated",
             )
+            live.refresh()
 
         return moment_curvature
 
@@ -717,7 +720,7 @@ class ConcreteSection:
             phi=moment_curvature.theta * 180 / np.pi, x=point_na[0], y=point_na[1]
         )
 
-        # create splits in concrete geometries at points in stress strain profiles
+        # create splits in concrete geometries at points in stress-strain profiles
         concrete_split_geoms = utils.split_section_at_strains(
             concrete_geometries=self.concrete_geometries,
             theta=moment_curvature.theta,
@@ -750,6 +753,7 @@ class ConcreteSection:
                 > conc_geom.material.stress_strain_profile.get_ultimate_strain()
             ):
                 moment_curvature._failure = True
+                moment_curvature.failure_geometry = conc_geom
 
         # calculate steel actions
         for steel_geom in self.steel_geometries:
@@ -771,6 +775,7 @@ class ConcreteSection:
                 > steel_geom.material.stress_strain_profile.get_ultimate_strain()
             ):
                 moment_curvature._failure = True
+                moment_curvature.failure_geometry = steel_geom
 
             # calculate stress and force
             stress = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
@@ -900,7 +905,7 @@ class ConcreteSection:
         # get principal coordinates of plastic centroid
         pc_local = self.get_pc_local(theta=ultimate_results.theta)
 
-        # create splits in concrete geometries at points in stress strain profiles
+        # create splits in concrete geometries at points in stress-strain profiles
         concrete_split_geoms = utils.split_section_at_strains(
             concrete_geometries=self.concrete_geometries,
             theta=ultimate_results.theta,
@@ -1022,7 +1027,9 @@ class ConcreteSection:
         d_n_list = np.linspace(start=d_t, stop=ultimate_results.d_n, num=n_points)
 
         # create progress bar
-        with utils.create_known_progress() as progress:
+        progress = utils.create_unknown_progress()
+
+        with Live(progress, refresh_per_second=10) as live:
             progress_length = n_points
 
             if m_neg:
@@ -1046,6 +1053,7 @@ class ConcreteSection:
                     task,
                     description="[bold green]:white_check_mark: M-N diagram generated",
                 )
+                live.refresh()
 
             # add tensile load
             mi_results.n.append(self.gross_properties.tensile_load)
@@ -1083,6 +1091,7 @@ class ConcreteSection:
                     task,
                     description="[bold green]:white_check_mark: M-N diagram generated",
                 )
+                live.refresh()
 
                 # add squash load
                 mi_results.n.append(self.gross_properties.squash_load)
@@ -1117,7 +1126,9 @@ class ConcreteSection:
         theta_list = np.linspace(start=-np.pi, stop=np.pi - d_theta, num=n_points)
 
         # create progress bar
-        with utils.create_known_progress() as progress:
+        progress = utils.create_unknown_progress()
+
+        with Live(progress, refresh_per_second=10) as live:
             task = progress.add_task(
                 description="[red]Generating biaxial bending diagram",
                 total=n_points,
@@ -1138,6 +1149,7 @@ class ConcreteSection:
                 task,
                 description="[bold green]:white_check_mark: Biaxial bending diagram generated",
             )
+            live.refresh()
 
         return bb_results
 
@@ -1467,7 +1479,7 @@ class ConcreteSection:
         steel_strains = []
         steel_forces = []
 
-        # create splits in concrete geometries at points in stress strain profiles
+        # create splits in concrete geometries at points in stress-strain profiles
         concrete_split_geoms = utils.split_section_at_strains(
             concrete_geometries=self.concrete_geometries,
             theta=theta,
@@ -1572,7 +1584,7 @@ class ConcreteSection:
         steel_strains = []
         steel_forces = []
 
-        # create splits in concrete geometries at points in stress strain profiles
+        # create splits in concrete geometries at points in stress-strain profiles
         concrete_split_geoms = utils.split_section_at_strains(
             concrete_geometries=self.concrete_geometries,
             theta=ultimate_results.theta,

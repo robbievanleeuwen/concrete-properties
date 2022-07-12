@@ -742,7 +742,7 @@ class SteelHardening(SteelProfile):
     :param float yield_strength: Steel yield strength
     :param float elastic_modulus: Steel elastic modulus
     :param float fracture_strain: Steel fracture strain
-    :param float ultimate_strength: Steel ultaimte strength
+    :param float ultimate_strength: Steel ultimate strength
     """
 
     strains: List[float] = field(init=False)

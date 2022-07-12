@@ -141,7 +141,7 @@ def split_section_at_strains(
     :rtype: List[:class:`sectionproperties.pre.geometry.Geometry`]
     """
 
-    # create splits in concrete geometries at points in stress strain profiles
+    # create splits in concrete geometries at points in stress-strain profiles
     concrete_split_geoms = []
 
     for conc_geom in concrete_geometries:
@@ -152,7 +152,7 @@ def split_section_at_strains(
         else:
             strains = conc_geom.material.stress_strain_profile.get_unique_strains()
 
-        # loop through intermediate points on stress strain profile
+        # loop through intermediate points on stress-strain profile
         for idx, strain in enumerate(strains[1:-1]):
             # depth to point with `strain` from NA
             if ultimate:

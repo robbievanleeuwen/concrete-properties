@@ -17,6 +17,7 @@ from rich.console import Console
 from rich.table import Table
 
 from concreteproperties.post import plotting_context
+from sectionproperties.pre.geometry import CompoundGeometry
 
 if TYPE_CHECKING:
     import matplotlib
@@ -310,6 +311,27 @@ class CrackedResults:
         self.ixy_c_cr = self.e_ixy_c_cr / elastic_modulus
         self.iuu_cr = self.e_iuu_cr / elastic_modulus
 
+    def plot_cracked_geometries(
+        self,
+        title: Optional[str] = "Cracked Geometries",
+        **kwargs,
+    ) -> matplotlib.axes.Axes:
+        """Plots the geometries that remain (are in compression or are steel) after a
+        cracked analysis.
+
+        :param title: Plot title
+        :type title: Optional[str]
+        :param kwargs: Passed to
+            :meth:`~sectionproperties.pre.geometry.CompoundGeometry.plot_geometry`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes.Axes`
+        """
+
+        return CompoundGeometry(self.cracked_geometries).plot_geometry(
+            title=title, **kwargs
+        )
+
     def print_results(
         self,
         fmt: Optional[str] = "8.6e",
@@ -381,6 +403,7 @@ class MomentCurvatureResults:
     theta: float
     kappa: List[float] = field(default_factory=list)
     moment: List[float] = field(default_factory=list)
+    failure_geometry: Geometry = field(init=False)
 
     # for analysis
     _n_i: float = field(default=0, repr=False)
@@ -422,6 +445,69 @@ class MomentCurvatureResults:
             plt.grid(True)
 
         return ax
+
+    @staticmethod
+    def plot_multiple_results(
+        moment_curvature_results: List[MomentCurvatureResults],
+        labels: List[str],
+        m_scale: Optional[float] = 1e-6,
+        **kwargs,
+    ) -> matplotlib.axes.Axes:
+        """Plots multiple moment curvature results.
+
+        :param moment_curvature_results: List of moment curvature results objects
+        :type moment_interaction_results:
+            List[:class:`~concreteproperties.results.MomentCurvatureResults`]
+        :param labels: List of labels for each moment curvature diagram
+        :type labels: List[str]
+        :param float m_scale: Scaling factor to apply to bending moment
+        :type m_scale: Optional[float]
+        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes.Axes`
+        """
+
+        # create plot and setup the plot
+        with plotting_context(title="Moment-Curvature", **kwargs) as (
+            fig,
+            ax,
+        ):
+            # for each M-k curve
+            for idx, mk_result in enumerate(moment_curvature_results):
+                # scale results
+                kappas = np.array(mk_result.kappa)
+                moments = np.array(mk_result.moment) * m_scale
+
+                ax.plot(kappas, moments, "o-", label=labels[idx], markersize=3)
+
+            plt.xlabel("Curvature")
+            plt.ylabel("Moment")
+            plt.grid(True)
+
+            # if there is more than one curve show legend
+            if idx > 0:
+                ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+
+        return ax
+
+    def plot_failure_geometry(
+        self,
+        title: Optional[str] = "Failure Geometry",
+        **kwargs,
+    ) -> matplotlib.axes.Axes:
+        """Plots the geometry that fails in the moment curvature analysis.
+
+        :param title: Plot title
+        :type title: Optional[str]
+        :param kwargs: Passed to
+            :meth:`~sectionproperties.pre.geometry.CompoundGeometry.plot_geometry`
+
+        :return: Matplotlib axes object
+        :rtype: :class:`matplotlib.axes.Axes`
+        """
+
+        return self.failure_geometry.plot_geometry(title=title, **kwargs)
 
     def get_curvature(
         self,
