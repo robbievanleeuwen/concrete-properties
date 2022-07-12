@@ -397,6 +397,13 @@ class MomentCurvatureResults:
 
     :param float theta: Angle (in radians) the neutral axis makes with the horizontal
         axis (:math:`-\pi \leq \theta \leq \pi`)
+    :var kappa: List of curvatures
+    :vartype kappa: List[float]
+    :var moment: List of bending moments
+    :vartype moment: List[float]
+    :var failure_geometry: Geometry object of the region of the cross-section that
+        failed, ending the moment curvature analysis
+    :vartype failure_geometry: :class:`sectionproperties.pre.geometry.Geometry`
     """
 
     # results
@@ -539,6 +546,12 @@ class UltimateBendingResults:
 
     :param float theta: Angle (in radians) the neutral axis makes with the horizontal
         axis (:math:`-\pi \leq \theta \leq \pi`)
+    :var float d_n: Ultimate neutral axis depth
+    :var float k_u: Neutral axis parameter *(d_n / d)*
+    :var float n: Resultant axial force
+    :var float mx: Resultant bending moment about the x-axis
+    :var float my: Resultant bending moment about the y-axis
+    :var float mv: Resultant bending moment about the v-axis
     """
 
     # bending angle
@@ -584,7 +597,13 @@ class UltimateBendingResults:
 
 @dataclass
 class MomentInteractionResults:
-    """Class for storing moment interaction results."""
+    """Class for storing moment interaction results.
+
+    :var n: List of axial forces
+    :vartype n: List[float]
+    :var m: List of bending moments
+    :vartype m: List[float]
+    """
 
     n: List[float] = field(default_factory=list)
     m: List[float] = field(default_factory=list)
@@ -678,6 +697,10 @@ class BiaxialBendingResults:
     """Class for storing biaxial bending results.
 
     :param float n: Net axial force
+    :var mx: List of bending moments about the x-axis
+    :vartype mx: List[float]
+    :var my: List of bending moments about the y-axis
+    :vartype my: List[float]
     """
 
     n: float
@@ -761,7 +784,30 @@ class BiaxialBendingResults:
 
 @dataclass
 class StressResult:
-    """Class for storing stress results."""
+    """Class for storing stress results.
+
+    :var concrete_analysis_sections: List of concrete analysis section objects
+        present in the stress analysis, which can be visualised by calling the
+        :meth:`~concreteproperties.analysis_section.AnalysisSection.plot_mesh` or
+        :meth:`~concreteproperties.analysis_section.AnalysisSection.plot_shape`
+    :vartype concrete_analysis_sections:
+        List[:class:`~concreteproperties.analysis_section.AnalysisSection`]
+    :var concrete_stresses: List of concrete stresses at the nodes of each concrete
+        analysis section
+    :vartype concrete_stresses: List[:class:`numpy.ndarray`]
+    :var concrete_forces: List of net forces for each concrete analysis section and its
+        lever arm to the neutral axis (``force``, ``lever_arm``)
+    :vartype concrete_forces: List[Tuple[float]]
+    :var steel_geometries: List of steel geometry objects present in the stress analysis
+    :vartype steel_geometries: List[:class:`sectionproperties.pre.geometry.Geometry`]
+    :var steel_stresses: List of steel stresses for each steel geometry
+    :vartype steel_stresses: List[float]
+    :var steel_strains: List of steel strains for each steel geometry
+    :vartype steel_strains: List[float]
+    :var steel_forces: List of net forces for each steel geometry and its lever arm to
+        the neutral axis (``force``, ``lever_arm``)
+    :vartype steel_forces: List[Tuple[float]]
+    """
 
     concrete_section: ConcreteSection
     concrete_analysis_sections: List[AnalysisSection]

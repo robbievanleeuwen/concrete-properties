@@ -302,7 +302,7 @@ class ConcreteSection:
         """Returns the gross section properties of the reinforced concrete section.
 
         :return: Concrete properties object
-        :rtype: :class:`~concreteproperties.results.TConcreteProperties`
+        :rtype: :class:`~concreteproperties.results.ConcreteProperties`
         """
 
         return self.gross_properties

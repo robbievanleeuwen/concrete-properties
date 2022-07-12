@@ -19,7 +19,7 @@ method.
   :noindex:
 
 This method returns a :class:`~concreteproperties.results.ConcreteProperties` object,
-which stores all the calculated section properties as class attributes. The gross area
+which stores all the calculated section properties as attributes. The gross area
 properties can be printed to the terminal by calling the
 :meth:`~concreteproperties.results.ConcreteProperties.print_results` method.
 
@@ -73,7 +73,8 @@ cracked properties as attributes within the current object.
 Moment Curvature Analysis
 -------------------------
 
-A :meth:`~concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis`
+Running a
+:meth:`~concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis`
 returns a :class:`~concreteproperties.results.MomentCurvatureResults` object. This
 object can be used to plot moment curvature results.
 
@@ -84,3 +85,78 @@ object can be used to plot moment curvature results.
 .. seealso::
   For an application of the above, see the example
   :ref:`/notebooks/moment_curvature.ipynb`.
+
+
+Ultimate Bending Capacity
+-------------------------
+
+The
+:meth:`~concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity`
+method returns an :class:`~concreteproperties.results.UltimateBendingResults` object.
+This object stores results relating to the analysis and allows the results to be printed
+to the terminal by calling the
+:meth:`~concreteproperties.results.UltimateBendingResults.print_results` method.
+
+..  autoclass:: concreteproperties.results.UltimateBendingResults()
+  :noindex:
+  :members:
+
+.. seealso::
+  For an application of the above, see the example
+  :ref:`/notebooks/ultimate_bending.ipynb`.
+
+
+Moment Interaction Diagram
+--------------------------
+
+Calling the
+:meth:`~concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram`
+method returns a :class:`~concreteproperties.results.MomentInteractionResults` object.
+This object can be used to plot moment interaction results.
+
+..  autoclass:: concreteproperties.results.MomentInteractionResults()
+  :noindex:
+  :members:
+
+.. seealso::
+  For an application of the above, see the example
+  :ref:`/notebooks/moment_interaction.ipynb`.
+
+
+Biaxial Bending Diagram
+-----------------------
+
+The
+:meth:`~concreteproperties.concrete_section.ConcreteSection.biaxial_bending_diagram`
+method returns a :class:`~concreteproperties.results.BiaxialBendingResults` object.
+This object can be used to plot biaxial bending results.
+
+..  autoclass:: concreteproperties.results.BiaxialBendingResults()
+  :noindex:
+  :members:
+
+.. seealso::
+  For an application of the above, see the example
+  :ref:`/notebooks/biaxial_bending.ipynb`.
+
+
+Stress Analysis
+---------------
+
+Stress analyses can be performed by calling any of the following methods:
+:meth:`~concreteproperties.concrete_section.ConcreteSection.calculate_uncracked_stress`,
+:meth:`~concreteproperties.concrete_section.ConcreteSection.calculate_cracked_stress`,
+:meth:`~concreteproperties.concrete_section.ConcreteSection.calculate_service_stress`
+and
+:meth:`~concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_stress`.
+All these methods return a :class:`~concreteproperties.results.StressResult` object.
+This object stores results relating to the stress analysis and can also be used to plot
+stress results.
+
+..  autoclass:: concreteproperties.results.StressResult()
+  :noindex:
+  :members:
+
+.. seealso::
+  For an application of the above, see the example
+  :ref:`/notebooks/stress_analysis.ipynb`.
