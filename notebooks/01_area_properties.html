@@ -482,7 +482,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="01---Calculating-Area-Properties">
 <h1>01 - Calculating Area Properties<a class="headerlink" href="#01---Calculating-Area-Properties" title="Permalink to this heading">#</a></h1>
 <p>This example demonstrates how to create a simple reinforced concrete cross-section and obtain the gross area properties. We start by importing the necessary modules.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -496,6 +496,26 @@ div.rendered_html tbody tr:hover {
 <span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
+Input <span class="ansi-green-fg">In [1]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 2&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">sectionproperties</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">pre</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">library</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">concrete_sections</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> concrete_rectangular_section
+<span class="ansi-green-fg">----&gt; 2</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">concreteproperties</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">material</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> Concrete, Steel
+<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">concreteproperties</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">concrete_section</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> ConcreteSection
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">concreteproperties</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">stress_strain_profile</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> (
+<span class="ansi-green-intense-fg ansi-bold">      5</span>     ConcreteLinear,
+<span class="ansi-green-intense-fg ansi-bold">      6</span>     RectangularStressBlock,
+<span class="ansi-green-intense-fg ansi-bold">      7</span>     SteelElasticPlastic,
+<span class="ansi-green-intense-fg ansi-bold">      8</span> )
+
+<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named &#39;concreteproperties&#39;
+</pre></div></div>
 </div>
 <p>The materials used in this example will be 32 MPa concrete and 500 MPa steel, specified in accordance with AS 3600:2018.</p>
 <div class="nbinput docutils container">
@@ -536,26 +556,30 @@ div.rendered_html tbody tr:hover {
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-Input <span class="ansi-green-fg">In [2]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 16&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> concrete <span style="color: rgb(98,98,98)">=</span> Concrete(
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+Input <span class="ansi-green-fg">In [2]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 1&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span> concrete <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">Concrete</span>(
 <span class="ansi-green-intense-fg ansi-bold">      2</span>     name<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">32 MPa Concrete</span><span style="color: rgb(175,0,0)">&#34;</span>,
 <span class="ansi-green-intense-fg ansi-bold">      3</span>     density<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">2.4e-6</span>,
-<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span>     stress_strain_profile<span style="color: rgb(98,98,98)">=</span>ConcreteLinear(elastic_modulus<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">30.1e3</span>),
+<span class="ansi-green-intense-fg ansi-bold">      5</span>     ultimate_stress_strain_profile<span style="color: rgb(98,98,98)">=</span>RectangularStressBlock(
+<span class="ansi-green-intense-fg ansi-bold">      6</span>         compressive_strength<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">32</span>,
+<span class="ansi-green-intense-fg ansi-bold">      7</span>         alpha<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">0.802</span>,
+<span class="ansi-green-intense-fg ansi-bold">      8</span>         gamma<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">0.89</span>,
+<span class="ansi-green-intense-fg ansi-bold">      9</span>         ultimate_strain<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">0.003</span>,
+<span class="ansi-green-intense-fg ansi-bold">     10</span>     ),
+<span class="ansi-green-intense-fg ansi-bold">     11</span>     alpha_squash<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">0.85</span>,
+<span class="ansi-green-intense-fg ansi-bold">     12</span>     flexural_tensile_strength<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">3.4</span>,
 <span class="ansi-green-intense-fg ansi-bold">     13</span>     colour<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">lightgrey</span><span style="color: rgb(175,0,0)">&#34;</span>,
 <span class="ansi-green-intense-fg ansi-bold">     14</span> )
-<span class="ansi-green-fg">---&gt; 16</span> steel <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">Steel</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">     17</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">name</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#34;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">500 MPa Steel</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#34;</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     18</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">density</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">7.85e-6</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     19</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">stress_strain_profile</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">SteelElasticPlastic</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">     20</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">yield_strength</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">500</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     21</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">elastic_modulus</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">200e3</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     22</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">fracture_strain</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">0.05</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     23</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     24</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">colour</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#34;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">grey</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#34;</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     25</span> <span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     16</span> steel <span style="color: rgb(98,98,98)">=</span> Steel(
+<span class="ansi-green-intense-fg ansi-bold">     17</span>     name<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">500 MPa Steel</span><span style="color: rgb(175,0,0)">&#34;</span>,
+<span class="ansi-green-intense-fg ansi-bold">     18</span>     density<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">7.85e-6</span>,
+<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-intense-fg ansi-bold">     24</span>     colour<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">grey</span><span style="color: rgb(175,0,0)">&#34;</span>,
+<span class="ansi-green-intense-fg ansi-bold">     25</span> )
 
-<span class="ansi-red-fg">TypeError</span>: __init__() missing 1 required positional argument: &#39;yield_strength&#39;
+<span class="ansi-red-fg">NameError</span>: name &#39;Concrete&#39; is not defined
 </pre></div></div>
 </div>
 <p>The section being analysed in this example is a 600D x 400W rectangular beam. The reinforcement detailed is 3N20 top bars and 3N24 bottom bars, with 30 mm of clear cover. The geometry is generated using the <em>sectionproperties</em> concrete sections library.</p>
@@ -602,13 +626,13 @@ Input <span class="ansi-green-fg">In [3]</span>, in <span class="ansi-cyan-fg">&
 <span class="ansi-green-intense-fg ansi-bold">      9</span>     cover<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">30</span>,
 <span class="ansi-green-intense-fg ansi-bold">     10</span>     area_top<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">310</span>,
 <span class="ansi-green-intense-fg ansi-bold">     11</span>     area_bot<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">450</span>,
-<span class="ansi-green-intense-fg ansi-bold">     12</span>     conc_mat<span style="color: rgb(98,98,98)">=</span>concrete,
-<span class="ansi-green-fg">---&gt; 13</span>     steel_mat<span style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">steel</span>,
+<span class="ansi-green-fg">---&gt; 12</span>     conc_mat<span style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">concrete</span>,
+<span class="ansi-green-intense-fg ansi-bold">     13</span>     steel_mat<span style="color: rgb(98,98,98)">=</span>steel,
 <span class="ansi-green-intense-fg ansi-bold">     14</span> )
 <span class="ansi-green-intense-fg ansi-bold">     16</span> conc_sec <span style="color: rgb(98,98,98)">=</span> ConcreteSection(geom)
 <span class="ansi-green-intense-fg ansi-bold">     17</span> conc_sec<span style="color: rgb(98,98,98)">.</span>plot_section()
 
-<span class="ansi-red-fg">NameError</span>: name &#39;steel&#39; is not defined
+<span class="ansi-red-fg">NameError</span>: name &#39;concrete&#39; is not defined
 </pre></div></div>
 </div>
 <p>Creating a <code class="docutils literal notranslate"><span class="pre">ConcreteSection</span></code> object automatically calculates the gross area properties of the reinforced concrete cross-section. These can be obtained by using the <code class="docutils literal notranslate"><span class="pre">get_gross_properties()</span></code> method. The section properties can be printed by calling the <code class="docutils literal notranslate"><span class="pre">print_results()</span></code> method.</p>
