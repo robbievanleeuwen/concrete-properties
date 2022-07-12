@@ -10,3 +10,7 @@ The following examples complement the structured documentation presented thus fa
    ../notebooks/area_properties
    ../notebooks/cracked_properties
    ../notebooks/moment_curvature
+   ../notebooks/ultimate_bending
+   ../notebooks/moment_interaction
+   ../notebooks/biaxial_bending
+   ../notebooks/stress_analysis

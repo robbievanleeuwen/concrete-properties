@@ -210,6 +210,26 @@
    Moment Curvature Analysis
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ultimate-bending-capacity">
+   Ultimate Bending Capacity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#moment-interaction-diagram">
+   Moment Interaction Diagram
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#biaxial-bending-diagram">
+   Biaxial Bending Diagram
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stress-analysis">
+   Stress Analysis
+  </a>
+ </li>
 </ul>
 
 </nav>
@@ -256,13 +276,13 @@ method.</p>
 <dd class="field-odd"><p>Concrete properties object</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">TConcreteProperties</span></code></p>
+<dd class="field-even"><p><a class="reference internal" href="gen/concreteproperties.results.ConcreteProperties.html#concreteproperties.results.ConcreteProperties" title="concreteproperties.results.ConcreteProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteProperties</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <p>This method returns a <a class="reference internal" href="gen/concreteproperties.results.ConcreteProperties.html#concreteproperties.results.ConcreteProperties" title="concreteproperties.results.ConcreteProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteProperties</span></code></a> object,
-which stores all the calculated section properties as class attributes. The gross area
+which stores all the calculated section properties as attributes. The gross area
 properties can be printed to the terminal by calling the
 <a class="reference internal" href="gen/concreteproperties.results.ConcreteProperties.html#concreteproperties.results.ConcreteProperties.print_results" title="concreteproperties.results.ConcreteProperties.print_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print_results()</span></code></a> method.</p>
 <dl class="py class">
@@ -420,7 +440,8 @@ cracked properties as attributes within the current object.</p>
 </div>
 <div class="section" id="moment-curvature-analysis">
 <h2>Moment Curvature Analysis<a class="headerlink" href="#moment-curvature-analysis" title="Permalink to this heading">#</a></h2>
-<p>A <a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis" title="concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">moment_curvature_analysis()</span></code></a>
+<p>Running a
+<a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis" title="concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">moment_curvature_analysis()</span></code></a>
 returns a <a class="reference internal" href="gen/concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentCurvatureResults</span></code></a> object. This
 object can be used to plot moment curvature results.</p>
 <dl class="py class">
@@ -431,6 +452,14 @@ object can be used to plot moment curvature results.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the horizontal
 axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p>
+</dd>
+<dt class="field-even">Variables</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>kappa</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of curvatures</p></li>
+<li><p><strong>moment</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of bending moments</p></li>
+<li><p><strong>failure_geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.Geometry</span></code></a>) – Geometry object of the region of the cross-section that
+failed, ending the moment curvature analysis</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py method">
@@ -481,6 +510,257 @@ axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</
 <p class="admonition-title">See also</p>
 <p>For an application of the above, see the example
 <a class="reference internal" href="../notebooks/moment_curvature.html"><span class="std std-ref">Moment Curvature Analysis</span></a>.</p>
+</div>
+</div>
+<div class="section" id="ultimate-bending-capacity">
+<h2>Ultimate Bending Capacity<a class="headerlink" href="#ultimate-bending-capacity" title="Permalink to this heading">#</a></h2>
+<p>The
+<a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ultimate_bending_capacity()</span></code></a>
+method returns an <a class="reference internal" href="gen/concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code></a> object.
+This object stores results relating to the analysis and allows the results to be printed
+to the terminal by calling the
+<a class="reference internal" href="gen/concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults.print_results" title="concreteproperties.results.UltimateBendingResults.print_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print_results()</span></code></a> method.</p>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UltimateBendingResults</span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#UltimateBendingResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Class for storing ultimate bending results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the horizontal
+axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p>
+</dd>
+<dt class="field-even">Variables</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_n</strong> (<em>float</em>) – Ultimate neutral axis depth</p></li>
+<li><p><strong>k_u</strong> (<em>float</em>) – Neutral axis parameter <em>(d_n / d)</em></p></li>
+<li><p><strong>n</strong> (<em>float</em>) – Resultant axial force</p></li>
+<li><p><strong>mx</strong> (<em>float</em>) – Resultant bending moment about the x-axis</p></li>
+<li><p><strong>my</strong> (<em>float</em>) – Resultant bending moment about the y-axis</p></li>
+<li><p><strong>mv</strong> (<em>float</em>) – Resultant bending moment about the v-axis</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">print_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'8.6e'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/results.html#UltimateBendingResults.print_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Prints the ultimate bending results to the terminal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Number format</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For an application of the above, see the example
+<a class="reference internal" href="../notebooks/ultimate_bending.html"><span class="std std-ref">Ultimate Bending Capacity</span></a>.</p>
+</div>
+</div>
+<div class="section" id="moment-interaction-diagram">
+<h2>Moment Interaction Diagram<a class="headerlink" href="#moment-interaction-diagram" title="Permalink to this heading">#</a></h2>
+<p>Calling the
+<a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">moment_interaction_diagram()</span></code></a>
+method returns a <a class="reference internal" href="gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code></a> object.
+This object can be used to plot moment interaction results.</p>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MomentInteractionResults</span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentInteractionResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Class for storing moment interaction results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of axial forces</p></li>
+<li><p><strong>m</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of bending moments</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">plot_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentInteractionResults.plot_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Plots a moment interaction diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to axial force</p></li>
+<li><p><strong>n_scale</strong> – Scaling factor to apply to axial force</p></li>
+<li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="gen/concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment_interaction_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><span class="pre">MomentInteractionResults</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentInteractionResults.plot_multiple_diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Plots multiple moment interaction diagrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>moment_interaction_results</strong> (List[<a class="reference internal" href="gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code></a>]) – List of moment interaction results objects</p></li>
+<li><p><strong>labels</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of labels for each moment interaction diagram</p></li>
+<li><p><strong>n_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to axial force</p></li>
+<li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="gen/concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For an application of the above, see the example
+<a class="reference internal" href="../notebooks/moment_interaction.html"><span class="std std-ref">Moment Interaction Diagram</span></a>.</p>
+</div>
+</div>
+<div class="section" id="biaxial-bending-diagram">
+<h2>Biaxial Bending Diagram<a class="headerlink" href="#biaxial-bending-diagram" title="Permalink to this heading">#</a></h2>
+<p>The
+<a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.biaxial_bending_diagram" title="concreteproperties.concrete_section.ConcreteSection.biaxial_bending_diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">biaxial_bending_diagram()</span></code></a>
+method returns a <a class="reference internal" href="gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code></a> object.
+This object can be used to plot biaxial bending results.</p>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BiaxialBendingResults</span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#BiaxialBendingResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Class for storing biaxial bending results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>float</em>) – Net axial force</p>
+</dd>
+<dt class="field-even">Variables</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mx</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of bending moments about the x-axis</p></li>
+<li><p><strong>my</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of bending moments about the y-axis</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">plot_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Plots a biaxial bending diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="gen/concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">biaxial_bending_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><span class="pre">BiaxialBendingResults</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_multiple_diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Plots multiple biaxial bending diagrams in a 3D plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>biaxial_bending_results</strong> (List[<a class="reference internal" href="gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code></a>]) – List of biaxial bending results objects</p></li>
+<li><p><strong>n_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to axial force</p></li>
+<li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For an application of the above, see the example
+<a class="reference internal" href="../notebooks/biaxial_bending.html"><span class="std std-ref">Biaxial Bending Diagram</span></a>.</p>
+</div>
+</div>
+<div class="section" id="stress-analysis">
+<h2>Stress Analysis<a class="headerlink" href="#stress-analysis" title="Permalink to this heading">#</a></h2>
+<p>Stress analyses can be performed by calling any of the following methods:
+<a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_uncracked_stress" title="concreteproperties.concrete_section.ConcreteSection.calculate_uncracked_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_uncracked_stress()</span></code></a>,
+<a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_stress" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracked_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_cracked_stress()</span></code></a>,
+<a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_service_stress" title="concreteproperties.concrete_section.ConcreteSection.calculate_service_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_service_stress()</span></code></a>
+and
+<a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_stress" title="concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_ultimate_stress()</span></code></a>.
+All these methods return a <a class="reference internal" href="gen/concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a> object.
+This object stores results relating to the stress analysis and can also be used to plot
+stress results.</p>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StressResult</span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#StressResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Class for storing stress results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>concrete_analysis_sections</strong> (List[<a class="reference internal" href="gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection" title="concreteproperties.analysis_section.AnalysisSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnalysisSection</span></code></a>]) – List of concrete analysis section objects
+present in the stress analysis, which can be visualised by calling the
+<a class="reference internal" href="gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.plot_mesh" title="concreteproperties.analysis_section.AnalysisSection.plot_mesh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_mesh()</span></code></a> or
+<a class="reference internal" href="gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.plot_shape" title="concreteproperties.analysis_section.AnalysisSection.plot_shape"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_shape()</span></code></a></p></li>
+<li><p><strong>concrete_stresses</strong> (List[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>]) – List of concrete stresses at the nodes of each concrete
+analysis section</p></li>
+<li><p><strong>concrete_forces</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>]</em><em>]</em>) – List of net forces for each concrete analysis section and its
+lever arm to the neutral axis (<code class="docutils literal notranslate"><span class="pre">force</span></code>, <code class="docutils literal notranslate"><span class="pre">lever_arm</span></code>)</p></li>
+<li><p><strong>steel_geometries</strong> (List[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.Geometry</span></code></a>]) – List of steel geometry objects present in the stress analysis</p></li>
+<li><p><strong>steel_stresses</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of steel stresses for each steel geometry</p></li>
+<li><p><strong>steel_strains</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of steel strains for each steel geometry</p></li>
+<li><p><strong>steel_forces</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>]</em><em>]</em>) – List of net forces for each steel geometry and its lever arm to
+the neutral axis (<code class="docutils literal notranslate"><span class="pre">force</span></code>, <code class="docutils literal notranslate"><span class="pre">lever_arm</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">plot_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Stress'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conc_cmap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'RdGy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steel_cmap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bwr'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#StressResult.plot_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Plots concrete and steel stresses on a concrete section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot title</p></li>
+<li><p><strong>conc_cmap</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Colour map for the concrete stress</p></li>
+<li><p><strong>steel_cmap</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Colour map for the steel stress</p></li>
+<li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="gen/concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For an application of the above, see the example
+<a class="reference internal" href="../notebooks/stress_analysis.html"><span class="std std-ref">Stress Analysis</span></a>.</p>
 </div>
 </div>
 </div>

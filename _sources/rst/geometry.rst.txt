@@ -29,7 +29,7 @@ in the *sectionproperties* |sp_docs_link|.
 Axis Conventions
 ----------------
 
-TODO
+TODO - also include mx, my, mu, Ixx, Iyy, Ixy, Iuu etc
 
 
 Primitive Sections
