@@ -290,8 +290,8 @@ Elastic-Plastic Steel Profile
   ).plot_stress_strain()
 
 
-Elastic-Plastic Steel Profile
-"""""""""""""""""""""""""""""
+Elastic-Plastic Hardening Steel Profile
+"""""""""""""""""""""""""""""""""""""""
 
 ..  autoclass:: concreteproperties.stress_strain_profile.SteelHardening
   :noindex:

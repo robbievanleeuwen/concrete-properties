@@ -1,3 +1,5 @@
+.. _label-analysis:
+
 Analysis
 ========
 
@@ -82,7 +84,7 @@ angle ``theta`` and axial force ``n``.
 ..  automethod:: concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity
   :noindex:
 
-This analysis uses the ``ultaimte_stress_strain_profile`` given to the
+This analysis uses the ``ultimate_stress_strain_profile`` given to the
 :class:`~concreteproperties.material.Concrete` materials and the
 ``stress_strain_profile`` given to the :class:`~concreteproperties.material.Steel`
 materials. The ultimate strain profile is determined by setting the strain at the

@@ -26,6 +26,12 @@ geometries to be used by *concreteproperties*. A more exhaustive overview can be
 in the *sectionproperties* |sp_docs_link|.
 
 
+Axis Conventions
+----------------
+
+TODO
+
+
 Primitive Sections
 ------------------
 

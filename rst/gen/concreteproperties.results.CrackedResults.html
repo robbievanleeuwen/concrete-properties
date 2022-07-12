@@ -556,7 +556,10 @@ axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.results.CrackedResults.calculate_transformed_properties" title="concreteproperties.results.CrackedResults.calculate_transformed_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_transformed_properties</span></code></a></p></td>
 <td><p>Calculates and stores transformed cracked properties using a reference elastic modulus.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.results.CrackedResults.print_results" title="concreteproperties.results.CrackedResults.print_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_results</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.results.CrackedResults.plot_cracked_geometries" title="concreteproperties.results.CrackedResults.plot_cracked_geometries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_cracked_geometries</span></code></a></p></td>
+<td><p>Plots the geometries that remain (are in compression or are steel) after a cracked analysis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.results.CrackedResults.print_results" title="concreteproperties.results.CrackedResults.print_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_results</span></code></a></p></td>
 <td><p>Prints the cracked concrete section properties to the terminal.</p></td>
 </tr>
 </tbody>
@@ -659,6 +662,28 @@ elastic modulus.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>elastic_modulus</strong> (<em>float</em>) – Reference elastic modulus</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.results.CrackedResults.plot_cracked_geometries">
+<span class="sig-name descname"><span class="pre">plot_cracked_geometries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Cracked</span> <span class="pre">Geometries'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/results.html#CrackedResults.plot_cracked_geometries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.CrackedResults.plot_cracked_geometries" title="Permalink to this definition">#</a></dt>
+<dd><p>Plots the geometries that remain (are in compression or are steel) after a
+cracked analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot title</p></li>
+<li><p><strong>kwargs</strong> – Passed to
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_geometry()</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>

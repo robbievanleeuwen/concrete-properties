@@ -35,6 +35,8 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Examples" href="examples.html" />
@@ -187,9 +189,29 @@
     
     <div class="toc-item">
       
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gross-area-properties">
+   Gross Area Properties
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cracked-area-properties">
+   Cracked Area Properties
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#moment-curvature-analysis">
+   Moment Curvature Analysis
+  </a>
+ </li>
+</ul>
+
 </nav>
     </div>
     
@@ -216,7 +238,251 @@
                 
   <div class="section" id="results">
 <span id="label-results"></span><h1>Results<a class="headerlink" href="#results" title="Permalink to this heading">#</a></h1>
-<p>blah blah blah</p>
+<p>After performing an analysis on a reinforced concrete cross-section (see
+<a class="reference internal" href="analysis.html#label-analysis"><span class="std std-ref">Analysis</span></a>), <em>concreteproperties</em> provides the user with a results object
+specific to the conducted analysis. These results objects have methods tailored for the
+post-processing of analysis results.</p>
+<div class="section" id="gross-area-properties">
+<h2>Gross Area Properties<a class="headerlink" href="#gross-area-properties" title="Permalink to this heading">#</a></h2>
+<p>Gross area properties can be retrieved by calling the
+<a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a>
+method.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">ConcreteSection.</span></span><span class="sig-name descname"><span class="pre">get_gross_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="gen/concreteproperties.results.ConcreteProperties.html#concreteproperties.results.ConcreteProperties" title="concreteproperties.results.ConcreteProperties"><span class="pre">ConcreteProperties</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_gross_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Returns the gross section properties of the reinforced concrete section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Concrete properties object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">TConcreteProperties</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>This method returns a <a class="reference internal" href="gen/concreteproperties.results.ConcreteProperties.html#concreteproperties.results.ConcreteProperties" title="concreteproperties.results.ConcreteProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteProperties</span></code></a> object,
+which stores all the calculated section properties as class attributes. The gross area
+properties can be printed to the terminal by calling the
+<a class="reference internal" href="gen/concreteproperties.results.ConcreteProperties.html#concreteproperties.results.ConcreteProperties.print_results" title="concreteproperties.results.ConcreteProperties.print_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print_results()</span></code></a> method.</p>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteProperties</span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#ConcreteProperties"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Class for storing gross concrete section properties.</p>
+<p>All properties with an <cite>e_</cite> preceding the property are multiplied by the elastic
+modulus. In order to obtain transformed properties, call the
+<a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_transformed_gross_properties()</span></code></a>
+method.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">print_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'8.6e'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/results.html#ConcreteProperties.print_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Prints the gross concrete section properties to the terminal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Number format</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>Transformed gross area properties can be obtained by calling the
+<a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_transformed_gross_properties()</span></code></a>
+method.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">ConcreteSection.</span></span><span class="sig-name descname"><span class="pre">get_transformed_gross_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="gen/concreteproperties.results.TransformedConcreteProperties.html#concreteproperties.results.TransformedConcreteProperties" title="concreteproperties.results.TransformedConcreteProperties"><span class="pre">TransformedConcreteProperties</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_transformed_gross_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Transforms gross section properties given a reference elastic modulus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>elastic_modulus</strong> (<em>float</em>) – Reference elastic modulus</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Transformed concrete properties object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="gen/concreteproperties.results.TransformedConcreteProperties.html#concreteproperties.results.TransformedConcreteProperties" title="concreteproperties.results.TransformedConcreteProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformedConcreteProperties</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>This method returns a <a class="reference internal" href="gen/concreteproperties.results.TransformedConcreteProperties.html#concreteproperties.results.TransformedConcreteProperties" title="concreteproperties.results.TransformedConcreteProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformedConcreteProperties</span></code></a>
+object, which stores all the calculated transformed section properties as class
+attributes. The transformed gross area properties can be printed to the terminal by
+calling the
+<a class="reference internal" href="gen/concreteproperties.results.TransformedConcreteProperties.html#concreteproperties.results.TransformedConcreteProperties.print_results" title="concreteproperties.results.TransformedConcreteProperties.print_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print_results()</span></code></a> method.</p>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TransformedConcreteProperties</span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#TransformedConcreteProperties"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Class for storing transformed gross concrete section properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>concrete_properties</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteProperties</span></code>) – Concrete properties object</p></li>
+<li><p><strong>elastic_modulus</strong> (<em>float</em>) – Reference elastic modulus</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">print_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'8.6e'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/results.html#TransformedConcreteProperties.print_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Prints the transformed gross concrete section properties to the terminal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Number format</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For an application of the above, see the example
+<a class="reference internal" href="../notebooks/area_properties.html"><span class="std std-ref">Calculating Area Properties</span></a>.</p>
+</div>
+</div>
+<div class="section" id="cracked-area-properties">
+<h2>Cracked Area Properties<a class="headerlink" href="#cracked-area-properties" title="Permalink to this heading">#</a></h2>
+<p>Performing a cracked analysis with
+<a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_cracked_properties()</span></code></a>
+returns a <a class="reference internal" href="gen/concreteproperties.results.CrackedResults.html#concreteproperties.results.CrackedResults" title="concreteproperties.results.CrackedResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrackedResults</span></code></a> object.</p>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CrackedResults</span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#CrackedResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Class for storing cracked concrete section properties.</p>
+<p>All properties with an <cite>e_</cite> preceding the property are multiplied by the elastic
+modulus. In order to obtain transformed properties, call the
+<a class="reference internal" href="gen/concreteproperties.results.CrackedResults.html#concreteproperties.results.CrackedResults.calculate_transformed_properties" title="concreteproperties.results.CrackedResults.calculate_transformed_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_transformed_properties()</span></code></a>
+method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the horizontal
+axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">calculate_transformed_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/results.html#CrackedResults.calculate_transformed_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Calculates and stores transformed cracked properties using a reference
+elastic modulus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>elastic_modulus</strong> (<em>float</em>) – Reference elastic modulus</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">plot_cracked_geometries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Cracked</span> <span class="pre">Geometries'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#CrackedResults.plot_cracked_geometries"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Plots the geometries that remain (are in compression or are steel) after a
+cracked analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot title</p></li>
+<li><p><strong>kwargs</strong> – Passed to
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_geometry()</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">print_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'8.6e'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/results.html#CrackedResults.print_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Prints the cracked concrete section properties to the terminal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Number format</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>Calling
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_transformed_properties()</span></code>
+on a <a class="reference internal" href="gen/concreteproperties.results.CrackedResults.html#concreteproperties.results.CrackedResults" title="concreteproperties.results.CrackedResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrackedResults</span></code></a> object stores the transformed
+cracked properties as attributes within the current object.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For an application of the above, see the example
+<a class="reference internal" href="../notebooks/cracked_properties.html"><span class="std std-ref">Calculating Cracked Properties</span></a>.</p>
+</div>
+</div>
+<div class="section" id="moment-curvature-analysis">
+<h2>Moment Curvature Analysis<a class="headerlink" href="#moment-curvature-analysis" title="Permalink to this heading">#</a></h2>
+<p>A <a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis" title="concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">moment_curvature_analysis()</span></code></a>
+returns a <a class="reference internal" href="gen/concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentCurvatureResults</span></code></a> object. This
+object can be used to plot moment curvature results.</p>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MomentCurvatureResults</span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentCurvatureResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Class for storing moment curvature results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the horizontal
+axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">plot_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentCurvatureResults.plot_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Plots the moment curvature results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="gen/concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment_curvature_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen/concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><span class="pre">MomentCurvatureResults</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentCurvatureResults.plot_multiple_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Plots multiple moment curvature results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>moment_curvature_results</strong> – List of moment curvature results objects</p></li>
+<li><p><strong>labels</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of labels for each moment curvature diagram</p></li>
+<li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="gen/concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matplotlib axes object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For an application of the above, see the example
+<a class="reference internal" href="../notebooks/moment_curvature.html"><span class="std std-ref">Moment Curvature Analysis</span></a>.</p>
+</div>
+</div>
 </div>
 
 

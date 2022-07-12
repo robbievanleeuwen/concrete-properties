@@ -5,5 +5,8 @@ The following examples complement the structured documentation presented thus fa
 
 .. toctree::
    :maxdepth: 1
+   :numbered:
 
-   ../notebooks/01_area_properties
+   ../notebooks/area_properties
+   ../notebooks/cracked_properties
+   ../notebooks/moment_curvature
