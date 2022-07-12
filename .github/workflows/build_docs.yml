@@ -17,7 +17,7 @@ jobs:
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
-        pre-build-command: "apt-get install -y pandoc"
+        pre-build-command: "apt-get install -y pandoc && python -m pip install nbsphinx"
 
     # Publish built docs to gh-pages branch.
     # ===============================

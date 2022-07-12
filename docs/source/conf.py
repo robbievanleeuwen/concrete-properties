@@ -48,7 +48,7 @@ extensions = [
 
 autodoc_member_order = "bysource"
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
-autosummary_mock_imports = ["sectionproperties"]
+autosummary_mock_imports = []
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
 html_show_sourcelink = (
     False  # Remove 'view source code' from top of page (for html, not python)
