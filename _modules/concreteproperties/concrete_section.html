@@ -35,6 +35,7 @@
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -1609,24 +1610,32 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">moment_curvature_results</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">,</span>
         <span class="n">m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">kappa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">StressResult</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Calculates service stresses within the reinforced concrete section.</span>
 
 <span class="sd">        Uses linear interpolation of the moment-curvature results to determine the</span>
 <span class="sd">        curvature of the section given the user supplied moment, and thus the stresses</span>
-<span class="sd">        within the section.</span>
+<span class="sd">        within the section. Otherwise, can provided a curvature which overrides the</span>
+<span class="sd">        supplied moment.</span>
 
 <span class="sd">        :param moment_curvature_results: Moment-curvature results objects</span>
 <span class="sd">        :type moment_curvature_results:</span>
 <span class="sd">            :class:`~concreteproperties.results.MomentCurvatureResults`</span>
 <span class="sd">        :param float m: Bending moment</span>
+<span class="sd">        :param kappa: Curvature, if provided overrides the supplied bending moment and</span>
+<span class="sd">            plots the stress at the given curvature</span>
+<span class="sd">        :type kappa: Optional[float]</span>
 
 <span class="sd">        :return: Stress results object</span>
 <span class="sd">        :rtype: :class:`~concreteproperties.results.StressResult`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># get curvature &amp; theta</span>
-        <span class="n">kappa</span> <span class="o">=</span> <span class="n">moment_curvature_results</span><span class="o">.</span><span class="n">get_curvature</span><span class="p">(</span><span class="n">moment</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kappa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># get curvature</span>
+            <span class="n">kappa</span> <span class="o">=</span> <span class="n">moment_curvature_results</span><span class="o">.</span><span class="n">get_curvature</span><span class="p">(</span><span class="n">moment</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
+
+        <span class="c1"># get theta</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="n">moment_curvature_results</span><span class="o">.</span><span class="n">theta</span>
 
         <span class="c1"># initialise variables</span>

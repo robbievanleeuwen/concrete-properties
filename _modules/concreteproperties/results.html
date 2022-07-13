@@ -35,6 +35,7 @@
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -1156,7 +1157,49 @@
 
             <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">ax</span></div></div>
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="StressResult.sum_forces"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.StressResult.sum_forces">[docs]</a>    <span class="k">def</span> <span class="nf">sum_forces</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the sum of the internal forces.</span>
+
+<span class="sd">        :return: Sum of internal forces</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">force_sum</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># sum concrete forces</span>
+        <span class="k">for</span> <span class="n">conc_force</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_forces</span><span class="p">:</span>
+            <span class="n">force_sum</span> <span class="o">+=</span> <span class="n">conc_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># sum steel forces</span>
+        <span class="k">for</span> <span class="n">steel_force</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steel_forces</span><span class="p">:</span>
+            <span class="n">force_sum</span> <span class="o">+=</span> <span class="n">steel_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">force_sum</span></div>
+
+<div class="viewcode-block" id="StressResult.sum_moments"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.StressResult.sum_moments">[docs]</a>    <span class="k">def</span> <span class="nf">sum_moments</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the sum of the internal moments.</span>
+
+<span class="sd">        :return: Sum of internal moments</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">moment_sum</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># sum concrete forces</span>
+        <span class="k">for</span> <span class="n">conc_force</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_forces</span><span class="p">:</span>
+            <span class="n">moment_sum</span> <span class="o">+=</span> <span class="n">conc_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">conc_force</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># sum steel forces</span>
+        <span class="k">for</span> <span class="n">steel_force</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steel_forces</span><span class="p">:</span>
+            <span class="n">moment_sum</span> <span class="o">+=</span> <span class="n">steel_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">steel_force</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">moment_sum</span></div></div>
 </pre></div>
 
               </article>
