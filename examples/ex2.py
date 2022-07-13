@@ -72,7 +72,7 @@ mi_res = conc_sec.moment_interaction_diagram(m_neg=True)
 mi_res.plot_diagram()
 
 # CALCULATE UNCRACKED AND CRACKED STRESSES
-uncr_stress_res = conc_sec.calculate_uncracked_stress(mx=80e6, my=0e6)
+uncr_stress_res = conc_sec.calculate_uncracked_stress(m_x=80e6, m_y=0e6)
 pprint(uncr_stress_res)
 uncr_stress_res.plot_stress(title="Uncracked Stress", pause=False)
 

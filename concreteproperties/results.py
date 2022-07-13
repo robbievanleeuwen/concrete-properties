@@ -549,9 +549,9 @@ class UltimateBendingResults:
     :var float d_n: Ultimate neutral axis depth
     :var float k_u: Neutral axis parameter *(d_n / d)*
     :var float n: Resultant axial force
-    :var float mx: Resultant bending moment about the x-axis
-    :var float my: Resultant bending moment about the y-axis
-    :var float mv: Resultant bending moment about the v-axis
+    :var float m_x: Resultant bending moment about the x-axis
+    :var float m_y: Resultant bending moment about the y-axis
+    :var float m_u: Resultant bending moment about the u-axis
     """
 
     # bending angle
@@ -563,9 +563,9 @@ class UltimateBendingResults:
 
     # resultant actions
     n: float = None
-    mx: float = None
-    my: float = None
-    mv: float = None
+    m_x: float = None
+    m_y: float = None
+    m_u: float = None
 
     def print_results(
         self,
@@ -587,9 +587,9 @@ class UltimateBendingResults:
             "Neutral Axis Parameter- k_u", "{:>{fmt}}".format(self.k_u, fmt=fmt)
         )
         table.add_row("Axial Force", "{:>{fmt}}".format(self.n, fmt=fmt))
-        table.add_row("Bending Capacity - mx", "{:>{fmt}}".format(self.mx, fmt=fmt))
-        table.add_row("Bending Capacity - my", "{:>{fmt}}".format(self.my, fmt=fmt))
-        table.add_row("Bending Capacity - mv", "{:>{fmt}}".format(self.mv, fmt=fmt))
+        table.add_row("Bending Capacity - m_x", "{:>{fmt}}".format(self.m_x, fmt=fmt))
+        table.add_row("Bending Capacity - m_y", "{:>{fmt}}".format(self.m_y, fmt=fmt))
+        table.add_row("Bending Capacity - m_u", "{:>{fmt}}".format(self.m_u, fmt=fmt))
 
         console = Console()
         console.print(table)
@@ -697,15 +697,15 @@ class BiaxialBendingResults:
     """Class for storing biaxial bending results.
 
     :param float n: Net axial force
-    :var mx: List of bending moments about the x-axis
-    :vartype mx: List[float]
-    :var my: List of bending moments about the y-axis
-    :vartype my: List[float]
+    :var m_x: List of bending moments about the x-axis
+    :vartype m_x: List[float]
+    :var m_y: List of bending moments about the y-axis
+    :vartype m_y: List[float]
     """
 
     n: float
-    mx: List[float] = field(default_factory=list)
-    my: List[float] = field(default_factory=list)
+    m_x: List[float] = field(default_factory=list)
+    m_y: List[float] = field(default_factory=list)
 
     def plot_diagram(
         self,
@@ -730,10 +730,10 @@ class BiaxialBendingResults:
             ax,
         ):
             # scale results
-            mx = np.array(self.mx) * m_scale
-            my = np.array(self.my) * m_scale
+            m_x = np.array(self.m_x) * m_scale
+            m_y = np.array(self.m_y) * m_scale
 
-            ax.plot(mx, my, "o-", markersize=3)
+            ax.plot(m_x, m_y, "o-", markersize=3)
 
             plt.xlabel("Bending Moment $M_x$")
             plt.ylabel("Bending Moment $M_y$")
@@ -768,11 +768,11 @@ class BiaxialBendingResults:
         # for each curve
         for bb_result in biaxial_bending_results:
             # scale results
-            n_list = bb_result.n * n_scale * np.ones(len(bb_result.mx))
-            mx_list = np.array(bb_result.mx) * m_scale
-            my_list = np.array(bb_result.my) * m_scale
+            n_list = bb_result.n * n_scale * np.ones(len(bb_result.m_x))
+            m_x_list = np.array(bb_result.m_x) * m_scale
+            m_y_list = np.array(bb_result.m_y) * m_scale
 
-            ax.plot3D(mx_list, my_list, n_list, "-")
+            ax.plot3D(m_x_list, m_y_list, n_list, "-")
 
         ax.set_xlabel("Bending Moment $M_x$")
         ax.set_ylabel("Bending Moment $M_y$")

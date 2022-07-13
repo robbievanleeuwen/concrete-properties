@@ -731,12 +731,12 @@ class ConcreteSection:
 
         # initialise results
         n = 0
-        mv = 0
+        m_u = 0
 
         # calculate concrete actions
         for conc_geom in concrete_split_geoms:
             sec = AnalysisSection(geometry=conc_geom)
-            n_sec, mv_sec, max_strain = sec.service_stress_analysis(
+            n_sec, m_u_sec, max_strain = sec.service_stress_analysis(
                 point_na=point_na,
                 d_n=d_n,
                 theta=moment_curvature.theta,
@@ -745,7 +745,7 @@ class ConcreteSection:
             )
 
             n += n_sec
-            mv += mv_sec
+            m_u += m_u_sec
 
             # check for concrete failure
             if (
@@ -788,10 +788,10 @@ class ConcreteSection:
             )
 
             # calculate moment
-            mv += force * (c_v - na_local[1])
+            m_u += force * (c_v - na_local[1])
 
         moment_curvature._n_i = n
-        moment_curvature._m_i = mv
+        moment_curvature._m_i = m_u
 
         return moment_curvature
 
@@ -872,7 +872,7 @@ class ConcreteSection:
         ultimate_results: Optional[res.UltimateBendingResults] = None,
     ) -> results.UltimateBendingResults:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
-        the resultant bending moments `mx`, `my`, `mv` and the net axial force `n`.
+        the resultant bending moments `m_x`, `m_y`, `m_u` and the net axial force `n`.
 
         :param float d_n: Depth of the neutral axis from the extreme compression fibre
         :param ultimate_results: Ultimate bending results object
@@ -917,13 +917,13 @@ class ConcreteSection:
 
         # initialise results
         n = 0
-        mv = 0
+        m_u = 0
         k_u = []
 
         # calculate concrete actions
         for conc_geom in concrete_split_geoms:
             sec = AnalysisSection(geometry=conc_geom)
-            n_sec, mv_sec = sec.ultimate_stress_analysis(
+            n_sec, m_u_sec = sec.ultimate_stress_analysis(
                 point_na=point_na,
                 d_n=d_n,
                 theta=ultimate_results.theta,
@@ -932,7 +932,7 @@ class ConcreteSection:
             )
 
             n += n_sec
-            mv += mv_sec
+            m_u += m_u_sec
 
         # calculate steel actions
         for steel_geom in self.steel_geometries:
@@ -960,7 +960,7 @@ class ConcreteSection:
             )
 
             # calculate moment
-            mv += force * (c_v - pc_local[1])
+            m_u += force * (c_v - pc_local[1])
 
             # calculate k_u
             _, ef_v = principal_coordinate(
@@ -971,18 +971,18 @@ class ConcreteSection:
             d = ef_v - c_v
             k_u.append(d_n / d)
 
-        # convert mv to mx & my
-        (my, mx) = global_coordinate(
-            phi=ultimate_results.theta * 180 / np.pi, x11=0, y22=mv
+        # convert m_u to m_x & m_y
+        (m_y, m_x) = global_coordinate(
+            phi=ultimate_results.theta * 180 / np.pi, x11=0, y22=m_u
         )
 
         # save results
         ultimate_results.d_n = d_n
         ultimate_results.k_u = min(k_u)
         ultimate_results.n = n
-        ultimate_results.mx = mx
-        ultimate_results.my = my
-        ultimate_results.mv = mv
+        ultimate_results.m_x = m_x
+        ultimate_results.m_y = m_y
+        ultimate_results.m_u = m_u
 
         return ultimate_results
 
@@ -1045,7 +1045,7 @@ class ConcreteSection:
                     d_n=d_n, ultimate_results=ultimate_results
                 )
                 mi_results.n.append(ultimate_results.n)
-                mi_results.m.append(ultimate_results.mv)
+                mi_results.m.append(ultimate_results.m_u)
                 progress.update(task, advance=1)
 
             if not m_neg:
@@ -1084,7 +1084,7 @@ class ConcreteSection:
                         d_n=d_n, ultimate_results=ultimate_results
                     )
                     mi_results.n.append(ultimate_results.n)
-                    mi_results.m.append(-ultimate_results.mv)
+                    mi_results.m.append(-ultimate_results.m_u)
                     progress.update(task, advance=1)
 
                 progress.update(
@@ -1137,13 +1137,13 @@ class ConcreteSection:
             # loop through thetas
             for theta in theta_list:
                 ultimate_results = self.ultimate_bending_capacity(theta=theta, n=n)
-                bb_results.mx.append(ultimate_results.mx)
-                bb_results.my.append(ultimate_results.my)
+                bb_results.m_x.append(ultimate_results.m_x)
+                bb_results.m_y.append(ultimate_results.m_y)
                 progress.update(task, advance=1)
 
             # add first result to end of list top
-            bb_results.mx.append(bb_results.mx[0])
-            bb_results.my.append(bb_results.my[0])
+            bb_results.m_x.append(bb_results.m_x[0])
+            bb_results.m_y.append(bb_results.m_y[0])
 
             progress.update(
                 task,
@@ -1156,21 +1156,21 @@ class ConcreteSection:
     def calculate_uncracked_stress(
         self,
         n: Optional[float] = 0,
-        mx: Optional[float] = 0,
-        my: Optional[float] = 0,
+        m_x: Optional[float] = 0,
+        m_y: Optional[float] = 0,
     ) -> res.StressResult:
         """Calculates stresses within the reinforced concrete section assuming an
         uncracked section.
 
         Uses gross area section properties to determine concrete and steel stresses
-        given an axial force `n`, and bending moments `mx` and `my`.
+        given an axial force `n`, and bending moments `m_x` and `m_y`.
 
         :param n: Axial force
         :type n: Optional[float]
-        :param mx: Bending moment about the x-axis
-        :type mx: Optional[float]
-        :param my: Bending moment about the y-axis
-        :type my: Optional[float]
+        :param m_x: Bending moment about the x-axis
+        :type m_x: Optional[float]
+        :param m_y: Bending moment about the y-axis
+        :type m_y: Optional[float]
 
         :return: Stress results object
         :rtype: :class:`~concreteproperties.results.StressResult`
@@ -1193,7 +1193,7 @@ class ConcreteSection:
         e_ixy = self.gross_properties.e_ixy_c
 
         # calculate neutral axis rotation
-        theta = np.arctan2(-my, mx)
+        theta = np.arctan2(-m_y, m_x)
 
         # point on neutral axis is centroid
         point_na = (cx, cy)
@@ -1223,8 +1223,8 @@ class ConcreteSection:
             # calculate stress, force and point of action
             sig, n_conc, d = analysis_section.get_elastic_stress(
                 n=n,
-                mx=mx,
-                my=my,
+                m_x=m_x,
+                m_y=m_y,
                 e_a=e_a,
                 cx=cx,
                 cy=cy,
@@ -1252,12 +1252,12 @@ class ConcreteSection:
 
             # bending moment stress
             sig += steel_geom.material.elastic_modulus * (
-                -(e_ixy * mx) / (e_ixx * e_iyy - e_ixy**2) * x
-                + (e_iyy * mx) / (e_ixx * e_iyy - e_ixy**2) * y
+                -(e_ixy * m_x) / (e_ixx * e_iyy - e_ixy**2) * x
+                + (e_iyy * m_x) / (e_ixx * e_iyy - e_ixy**2) * y
             )
             sig += steel_geom.material.elastic_modulus * (
-                +(e_ixx * my) / (e_ixx * e_iyy - e_ixy**2) * x
-                - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
+                +(e_ixx * m_y) / (e_ixx * e_iyy - e_ixy**2) * x
+                - (e_ixy * m_y) / (e_ixx * e_iyy - e_ixy**2) * y
             )
             strain = sig / steel_geom.material.elastic_modulus
 
@@ -1325,8 +1325,8 @@ class ConcreteSection:
 
         # calculate moment about bending angle theta
         theta = cracked_results.theta
-        mx = m * np.cos(theta)
-        my = -m * np.sin(theta)
+        m_x = m * np.cos(theta)
+        m_y = -m * np.sin(theta)
 
         # depth of neutral axis at extreme tensile fibre
         extreme_fibre, d_t = utils.calculate_extreme_fibre(
@@ -1351,8 +1351,8 @@ class ConcreteSection:
                 # calculate stress, force and point of action
                 sig, n_conc, d = analysis_section.get_elastic_stress(
                     n=n,
-                    mx=mx,
-                    my=my,
+                    m_x=m_x,
+                    m_y=m_y,
                     e_a=e_a,
                     cx=cx,
                     cy=cy,
@@ -1380,12 +1380,12 @@ class ConcreteSection:
 
             # bending moment stress
             sig += steel_geom.material.elastic_modulus * (
-                -(e_ixy * mx) / (e_ixx * e_iyy - e_ixy**2) * x
-                + (e_iyy * mx) / (e_ixx * e_iyy - e_ixy**2) * y
+                -(e_ixy * m_x) / (e_ixx * e_iyy - e_ixy**2) * x
+                + (e_iyy * m_x) / (e_ixx * e_iyy - e_ixy**2) * y
             )
             sig += steel_geom.material.elastic_modulus * (
-                +(e_ixx * my) / (e_ixx * e_iyy - e_ixy**2) * x
-                - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
+                +(e_ixx * m_y) / (e_ixx * e_iyy - e_ixy**2) * x
+                - (e_ixy * m_y) / (e_ixx * e_iyy - e_ixy**2) * y
             )
             strain = sig / steel_geom.material.elastic_modulus
 

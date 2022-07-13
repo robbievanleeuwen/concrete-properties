@@ -125,7 +125,7 @@ def test_rotated_ultimate_properties(theta):
         new_ultimate = new_sec.ultimate_bending_capacity(theta=theta, n=nf)
 
         assert pytest.approx(new_ultimate.d_n) == ref_ultimate.d_n
-        assert pytest.approx(new_ultimate.mv) == ref_ultimate.mv
+        assert pytest.approx(new_ultimate.m_u) == ref_ultimate.m_u
 
 
 # list of normal forces
@@ -140,12 +140,12 @@ def test_rotated_uncracked_stress(theta):
 
     # determine moments
     m = 10e6
-    mx = m * np.cos(theta)
-    my = -m * np.sin(theta)
+    m_x = m * np.cos(theta)
+    m_y = -m * np.sin(theta)
 
     for nf in normal_forces:
-        ref_uncr_stress = ref_sec.calculate_uncracked_stress(n=nf, mx=m)
-        new_uncr_stress = new_sec.calculate_uncracked_stress(n=nf, mx=mx, my=my)
+        ref_uncr_stress = ref_sec.calculate_uncracked_stress(n=nf, m_x=m)
+        new_uncr_stress = new_sec.calculate_uncracked_stress(n=nf, m_x=m_x, m_y=m_y)
 
         for idx, cf in enumerate(new_uncr_stress.concrete_forces):
             assert pytest.approx(cf[0]) == ref_uncr_stress.concrete_forces[idx][0]

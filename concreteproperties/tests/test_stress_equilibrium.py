@@ -69,7 +69,7 @@ def test_stress_equilibrium_rectangle(theta):
 
     for nf in normal_forces:
         # check section equilibirum for uncracked stress
-        uncr_stress = sec.calculate_uncracked_stress(n=nf, mx=m_star)
+        uncr_stress = sec.calculate_uncracked_stress(n=nf, m_x=m_star)
         force = 0
         moment = 0
 
@@ -117,7 +117,7 @@ def test_stress_equilibrium_rectangle(theta):
         moment += sf[0] * sf[1]
 
     assert pytest.approx(force, abs=20) == 0
-    assert pytest.approx(moment, rel=1e-4) == ultimate.mv
+    assert pytest.approx(moment, rel=1e-4) == ultimate.m_u
 
 
 # list of normal forces
@@ -145,7 +145,7 @@ def test_stress_equilibrium_circular(nf):
     m_star = 100e6
 
     # check section equilibirum for uncracked stress
-    uncr_stress = sec.calculate_uncracked_stress(n=nf, mx=m_star)
+    uncr_stress = sec.calculate_uncracked_stress(n=nf, m_x=m_star)
     force = 0
     moment = 0
 
@@ -191,7 +191,7 @@ def test_stress_equilibrium_circular(nf):
         moment += sf[0] * sf[1]
 
     # assert pytest.approx(force, abs=20) == 0
-    assert pytest.approx(moment, rel=1e-4) == ultimate.mv
+    assert pytest.approx(moment, rel=1e-4) == ultimate.m_u
 
 
 @pytest.mark.parametrize("theta", thetas)
@@ -223,7 +223,7 @@ def test_stress_equilibrium_tee(theta):
 
     for nf in normal_forces:
         # check section equilibirum for uncracked stress
-        uncr_stress = sec.calculate_uncracked_stress(n=nf, mx=m_star)
+        uncr_stress = sec.calculate_uncracked_stress(n=nf, m_x=m_star)
         force = 0
         moment = 0
 
@@ -271,4 +271,4 @@ def test_stress_equilibrium_tee(theta):
         moment += sf[0] * sf[1]
 
     assert pytest.approx(force, abs=20) == 0
-    assert pytest.approx(moment, rel=1e-4) == ultimate.mv
+    assert pytest.approx(moment, rel=1e-4) == ultimate.m_u

@@ -64,7 +64,7 @@ conc_sec.moment_interaction_diagram().plot_diagram()
 conc_sec.biaxial_bending_diagram(n=4000e3).plot_diagram()
 
 # PLOT STRESSES
-uncr_stress_res = conc_sec.calculate_uncracked_stress(mx=50e6)
+uncr_stress_res = conc_sec.calculate_uncracked_stress(m_x=50e6)
 pprint(uncr_stress_res)
 uncr_stress_res.plot_stress(title="Uncracked Stress")
 cracked_stress_res = conc_sec.calculate_cracked_stress(

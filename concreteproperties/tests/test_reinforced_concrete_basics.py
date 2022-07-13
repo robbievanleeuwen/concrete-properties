@@ -271,7 +271,7 @@ def test_example_3_8():
     ultimate_results = conc_sec.ultimate_bending_capacity()
     assert pytest.approx(ultimate_results.d_n, abs=1) == 133
     assert pytest.approx(ultimate_results.k_u, rel=0.01) == 133 / 390
-    assert pytest.approx(ultimate_results.mx, rel=0.01) == 302e6
+    assert pytest.approx(ultimate_results.m_x, rel=0.01) == 302e6
 
 
 def test_example_3_9():
@@ -320,7 +320,7 @@ def test_example_3_9():
     ultimate_results = conc_sec.ultimate_bending_capacity()
     assert pytest.approx(ultimate_results.d_n, rel=0.03) == 100.7
     assert pytest.approx(ultimate_results.k_u, rel=0.03) == 100.7 / 390
-    assert pytest.approx(ultimate_results.mx, rel=0.01) == 309e6
+    assert pytest.approx(ultimate_results.m_x, rel=0.01) == 309e6
 
 
 def test_example_3_11():
@@ -372,7 +372,7 @@ def test_example_3_11():
     ultimate_results = conc_sec.ultimate_bending_capacity()
     assert pytest.approx(ultimate_results.d_n, abs=1) == 196
     assert pytest.approx(ultimate_results.k_u, rel=0.01) == 196 / (726 - 46)
-    assert pytest.approx(ultimate_results.mx, rel=0.01) == 1860e6
+    assert pytest.approx(ultimate_results.m_x, rel=0.01) == 1860e6
 
 
 def test_example_5_1():
@@ -475,9 +475,9 @@ def test_example_5_2():
 
     assert pytest.approx(conc_sec.gross_properties.squash_load, rel=0.01) == 9278e3
     assert pytest.approx(decomp.n, rel=0.015) == 6108e3
-    assert pytest.approx(decomp.mv, rel=0.015) == 672e6
+    assert pytest.approx(decomp.m_u, rel=0.015) == 672e6
     assert pytest.approx(balanced.n, rel=0.015) == 2939e3
-    assert pytest.approx(balanced.mv, rel=0.015) == 826e6
+    assert pytest.approx(balanced.m_u, rel=0.015) == 826e6
     assert pytest.approx(pure.n, abs=20) == 0
-    assert pytest.approx(pure.mv, rel=0.015) == 306e6
+    assert pytest.approx(pure.m_u, rel=0.015) == 306e6
     assert pytest.approx(conc_sec.gross_properties.tensile_load, rel=0.01) == -1200e3

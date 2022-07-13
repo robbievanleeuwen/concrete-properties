@@ -77,8 +77,8 @@ class AnalysisSection:
     def get_elastic_stress(
         self,
         n: float,
-        mx: float,
-        my: float,
+        m_x: float,
+        m_y: float,
         e_a: float,
         cx: float,
         cy: float,
@@ -90,8 +90,8 @@ class AnalysisSection:
         r"""Given section actions and section propreties, calculates elastic stresses.
 
         :param float n: Axial force
-        :param float mx: Bending moment about the x-axis
-        :param float my: Bending moment about the y-axis
+        :param float m_x: Bending moment about the x-axis
+        :param float m_y: Bending moment about the y-axis
         :param float e_a: Axial rigidity
         :param float cx: x-Centroid
         :param float cy: y-Centroid
@@ -119,23 +119,23 @@ class AnalysisSection:
 
             # bending moment
             sig[idx] += self.geometry.material.elastic_modulus * (
-                -(e_ixy * mx) / (e_ixx * e_iyy - e_ixy**2) * x
-                + (e_iyy * mx) / (e_ixx * e_iyy - e_ixy**2) * y
+                -(e_ixy * m_x) / (e_ixx * e_iyy - e_ixy**2) * x
+                + (e_iyy * m_x) / (e_ixx * e_iyy - e_ixy**2) * y
             )
             sig[idx] += self.geometry.material.elastic_modulus * (
-                +(e_ixx * my) / (e_ixx * e_iyy - e_ixy**2) * x
-                - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
+                +(e_ixx * m_y) / (e_ixx * e_iyy - e_ixy**2) * x
+                - (e_ixy * m_y) / (e_ixx * e_iyy - e_ixy**2) * y
             )
 
         # initialise section actions
         n_conc = 0
-        mv = 0
+        m_u = 0
 
         for el in self.elements:
-            el_n, el_mv = el.calculate_elastic_actions(
+            el_n, el_m_u = el.calculate_elastic_actions(
                 n=n,
-                mx=mx,
-                my=my,
+                m_x=m_x,
+                m_y=m_y,
                 e_a=e_a,
                 cx=cx,
                 cy=cy,
@@ -146,13 +146,13 @@ class AnalysisSection:
             )
 
             n_conc += el_n
-            mv += el_mv
+            m_u += el_m_u
 
         # calculate point of action
         if n_conc == 0:
             d = 0
         else:
-            d = mv / n_conc
+            d = m_u / n_conc
 
         return sig, n_conc, d
 
@@ -180,11 +180,11 @@ class AnalysisSection:
 
         # initialise section actions
         n = 0
-        mv = 0
+        m_u = 0
         max_strain = 0
 
         for el in self.elements:
-            el_n, el_mv, el_max_strain = el.calculate_service_actions(
+            el_n, el_m_u, el_max_strain = el.calculate_service_actions(
                 point_na=point_na,
                 d_n=d_n,
                 theta=theta,
@@ -194,9 +194,9 @@ class AnalysisSection:
             max_strain = max(max_strain, el_max_strain)
 
             n += el_n
-            mv += el_mv
+            m_u += el_m_u
 
-        return n, mv, max_strain
+        return n, m_u, max_strain
 
     def get_service_stress(
         self,
@@ -241,7 +241,7 @@ class AnalysisSection:
             )
 
         # calculate total force
-        n, mv, _ = self.service_stress_analysis(
+        n, m_u, _ = self.service_stress_analysis(
             point_na=point_na,
             d_n=d_n,
             theta=theta,
@@ -253,7 +253,7 @@ class AnalysisSection:
         if n == 0:
             d = 0
         else:
-            d = mv / n
+            d = m_u / n
 
         return sig, n, d
 
@@ -281,10 +281,10 @@ class AnalysisSection:
 
         # initialise section actions
         n = 0
-        mv = 0
+        m_u = 0
 
         for el in self.elements:
-            el_n, el_mv = el.calculate_ultimate_actions(
+            el_n, el_m_u = el.calculate_ultimate_actions(
                 point_na=point_na,
                 d_n=d_n,
                 theta=theta,
@@ -293,9 +293,9 @@ class AnalysisSection:
             )
 
             n += el_n
-            mv += el_mv
+            m_u += el_m_u
 
-        return n, mv
+        return n, m_u
 
     def get_ultimate_stress(
         self,
@@ -341,7 +341,7 @@ class AnalysisSection:
             )
 
         # calculate total force
-        n, mv = self.ultimate_stress_analysis(
+        n, m_u = self.ultimate_stress_analysis(
             point_na=point_na,
             d_n=d_n,
             theta=theta,
@@ -358,7 +358,7 @@ class AnalysisSection:
                 phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
             )
 
-            d = mv / n + pc_local - na_local[1]
+            d = m_u / n + pc_local - na_local[1]
 
         return sig, n, d
 
@@ -509,8 +509,8 @@ class Tri3:
     def calculate_elastic_actions(
         self,
         n: float,
-        mx: float,
-        my: float,
+        m_x: float,
+        m_y: float,
         e_a: float,
         cx: float,
         cy: float,
@@ -522,8 +522,8 @@ class Tri3:
         r"""Calculates elastic actions for the current finite element.
 
         :param float n: Axial force
-        :param float mx: Bending moment about the x-axis
-        :param float my: Bending moment about the y-axis
+        :param float m_x: Bending moment about the x-axis
+        :param float m_y: Bending moment about the y-axis
         :param float e_a: Axial rigidity
         :param float cx: x-Centroid
         :param float cy: y-Centroid
@@ -539,7 +539,7 @@ class Tri3:
 
         # initialise element results
         force_e = 0
-        mv_e = 0
+        m_u_e = 0
 
         # get points for 3 point Gaussian integration
         gps = utils.gauss_points(n=3)
@@ -562,8 +562,8 @@ class Tri3:
                 gp[0]
                 * self.conc_material.elastic_modulus
                 * (
-                    -(e_ixy * mx) / (e_ixx * e_iyy - e_ixy**2) * x
-                    + (e_iyy * mx) / (e_ixx * e_iyy - e_ixy**2) * y
+                    -(e_ixy * m_x) / (e_ixx * e_iyy - e_ixy**2) * x
+                    + (e_iyy * m_x) / (e_ixx * e_iyy - e_ixy**2) * y
                 )
                 * j
             )
@@ -571,8 +571,8 @@ class Tri3:
                 gp[0]
                 * self.conc_material.elastic_modulus
                 * (
-                    +(e_ixx * my) / (e_ixx * e_iyy - e_ixy**2) * x
-                    - (e_ixy * my) / (e_ixx * e_iyy - e_ixy**2) * y
+                    +(e_ixx * m_y) / (e_ixx * e_iyy - e_ixy**2) * x
+                    - (e_ixy * m_y) / (e_ixx * e_iyy - e_ixy**2) * y
                 )
                 * j
             )
@@ -582,9 +582,9 @@ class Tri3:
 
             # add force and moment
             force_e += force_gp
-            mv_e += force_gp * c_v
+            m_u_e += force_gp * c_v
 
-        return force_e, mv_e
+        return force_e, m_u_e
 
     def calculate_service_actions(
         self,
@@ -610,7 +610,7 @@ class Tri3:
 
         # initialise element results
         force_e = 0
-        mv_e = 0
+        m_u_e = 0
         max_strain_e = 0
 
         # get points for 1 point Gaussian integration
@@ -645,9 +645,9 @@ class Tri3:
 
             # add force and moment
             force_e += force_gp
-            mv_e += force_gp * (c_v - na_local)
+            m_u_e += force_gp * (c_v - na_local)
 
-        return force_e, mv_e, max_strain_e
+        return force_e, m_u_e, max_strain_e
 
     def calculate_ultimate_actions(
         self,
@@ -673,7 +673,7 @@ class Tri3:
 
         # initialise element results
         force_e = 0
-        mv_e = 0
+        m_u_e = 0
 
         # get points for 1 point Gaussian integration
         gps = utils.gauss_points(n=1)
@@ -709,6 +709,6 @@ class Tri3:
 
             # add force and moment
             force_e += force_gp
-            mv_e += force_gp * (c_v - pc_local)
+            m_u_e += force_gp * (c_v - pc_local)
 
-        return force_e, mv_e
+        return force_e, m_u_e

@@ -13,10 +13,12 @@
 - [ ] Documentation!
   - [x] Is there a way to generate output within a docstring??
   - [ ] gif of progressive service stress plot?
-  - [ ] Fix mv!!!
+  - [ ] RTDs features? e.g. version control?
+- [ ] Start to add design codes
+- [x] Fix mv!!!
 
 # POST-RELEASE ITEMS
 - [ ] Speed up
   - [ ] Profiling
   - [ ] Clean up all the na_local, points_na etc. etc.
-- [ ] Start to add design codes
+- [ ] Add prestressing
