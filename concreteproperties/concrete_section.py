@@ -1415,24 +1415,32 @@ class ConcreteSection:
         self,
         moment_curvature_results: res.MomentCurvatureResults,
         m: float,
+        kappa: Optional[float] = None,
     ) -> res.StressResult:
         """Calculates service stresses within the reinforced concrete section.
 
         Uses linear interpolation of the moment-curvature results to determine the
         curvature of the section given the user supplied moment, and thus the stresses
-        within the section.
+        within the section. Otherwise, can provided a curvature which overrides the
+        supplied moment.
 
         :param moment_curvature_results: Moment-curvature results objects
         :type moment_curvature_results:
             :class:`~concreteproperties.results.MomentCurvatureResults`
         :param float m: Bending moment
+        :param kappa: Curvature, if provided overrides the supplied bending moment and
+            plots the stress at the given curvature
+        :type kappa: Optional[float]
 
         :return: Stress results object
         :rtype: :class:`~concreteproperties.results.StressResult`
         """
 
-        # get curvature & theta
-        kappa = moment_curvature_results.get_curvature(moment=m)
+        if kappa is None:
+            # get curvature
+            kappa = moment_curvature_results.get_curvature(moment=m)
+
+        # get theta
         theta = moment_curvature_results.theta
 
         # initialise variables

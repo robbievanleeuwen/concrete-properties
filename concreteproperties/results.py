@@ -963,3 +963,45 @@ class StressResult:
             ax.set_aspect("equal", anchor="C")
 
         return ax
+
+    def sum_forces(
+        self,
+    ) -> float:
+        """Returns the sum of the internal forces.
+
+        :return: Sum of internal forces
+        :rtype: float
+        """
+
+        force_sum = 0
+
+        # sum concrete forces
+        for conc_force in self.concrete_forces:
+            force_sum += conc_force[0]
+
+        # sum steel forces
+        for steel_force in self.steel_forces:
+            force_sum += steel_force[0]
+
+        return force_sum
+
+    def sum_moments(
+        self,
+    ) -> float:
+        """Returns the sum of the internal moments.
+
+        :return: Sum of internal moments
+        :rtype: float
+        """
+
+        moment_sum = 0
+
+        # sum concrete forces
+        for conc_force in self.concrete_forces:
+            moment_sum += conc_force[0] * conc_force[1]
+
+        # sum steel forces
+        for steel_force in self.steel_forces:
+            moment_sum += steel_force[0] * steel_force[1]
+
+        return moment_sum
