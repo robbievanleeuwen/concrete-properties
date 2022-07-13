@@ -24,14 +24,14 @@
    "outputs": [],
    "source": [
     "import numpy as np\n",
+    "from concreteproperties.material import Concrete, Steel\n",
+    "import concreteproperties.stress_strain_profile as ssp\n",
     "from sectionproperties.pre.library.primitive_sections import (\n",
     "    rectangular_section,\n",
     "    circular_section,\n",
     ")\n",
     "from concreteproperties.pre import add_bar_rectangular_array\n",
-    "from concreteproperties.material import Concrete, Steel\n",
     "from concreteproperties.concrete_section import ConcreteSection\n",
-    "import concreteproperties.stress_strain_profile as ssp\n",
     "from concreteproperties.results import MomentCurvatureResults"
    ]
   },

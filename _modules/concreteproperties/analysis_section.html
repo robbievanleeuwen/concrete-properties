@@ -271,8 +271,8 @@
 <div class="viewcode-block" id="AnalysisSection.get_elastic_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.get_elastic_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_elastic_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">mx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">my</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">m_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">m_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">e_a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">cx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">cy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -284,8 +284,8 @@
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Given section actions and section propreties, calculates elastic stresses.</span>
 
 <span class="sd">        :param float n: Axial force</span>
-<span class="sd">        :param float mx: Bending moment about the x-axis</span>
-<span class="sd">        :param float my: Bending moment about the y-axis</span>
+<span class="sd">        :param float m_x: Bending moment about the x-axis</span>
+<span class="sd">        :param float m_y: Bending moment about the y-axis</span>
 <span class="sd">        :param float e_a: Axial rigidity</span>
 <span class="sd">        :param float cx: x-Centroid</span>
 <span class="sd">        :param float cy: y-Centroid</span>
@@ -313,23 +313,23 @@
 
             <span class="c1"># bending moment</span>
             <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
-                <span class="o">-</span><span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">mx</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
-                <span class="o">+</span> <span class="p">(</span><span class="n">e_iyy</span> <span class="o">*</span> <span class="n">mx</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+                <span class="o">-</span><span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                <span class="o">+</span> <span class="p">(</span><span class="n">e_iyy</span> <span class="o">*</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
             <span class="p">)</span>
             <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
-                <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
-                <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+                <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
             <span class="p">)</span>
 
         <span class="c1"># initialise section actions</span>
         <span class="n">n_conc</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">mv</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_u</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
-            <span class="n">el_n</span><span class="p">,</span> <span class="n">el_mv</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_elastic_actions</span><span class="p">(</span>
+            <span class="n">el_n</span><span class="p">,</span> <span class="n">el_m_u</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_elastic_actions</span><span class="p">(</span>
                 <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
-                <span class="n">mx</span><span class="o">=</span><span class="n">mx</span><span class="p">,</span>
-                <span class="n">my</span><span class="o">=</span><span class="n">my</span><span class="p">,</span>
+                <span class="n">m_x</span><span class="o">=</span><span class="n">m_x</span><span class="p">,</span>
+                <span class="n">m_y</span><span class="o">=</span><span class="n">m_y</span><span class="p">,</span>
                 <span class="n">e_a</span><span class="o">=</span><span class="n">e_a</span><span class="p">,</span>
                 <span class="n">cx</span><span class="o">=</span><span class="n">cx</span><span class="p">,</span>
                 <span class="n">cy</span><span class="o">=</span><span class="n">cy</span><span class="p">,</span>
@@ -340,13 +340,13 @@
             <span class="p">)</span>
 
             <span class="n">n_conc</span> <span class="o">+=</span> <span class="n">el_n</span>
-            <span class="n">mv</span> <span class="o">+=</span> <span class="n">el_mv</span>
+            <span class="n">m_u</span> <span class="o">+=</span> <span class="n">el_m_u</span>
 
         <span class="c1"># calculate point of action</span>
         <span class="k">if</span> <span class="n">n_conc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="n">mv</span> <span class="o">/</span> <span class="n">n_conc</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">m_u</span> <span class="o">/</span> <span class="n">n_conc</span>
 
         <span class="k">return</span> <span class="n">sig</span><span class="p">,</span> <span class="n">n_conc</span><span class="p">,</span> <span class="n">d</span></div>
 
@@ -374,11 +374,11 @@
 
         <span class="c1"># initialise section actions</span>
         <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">mv</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_u</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">max_strain</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
-            <span class="n">el_n</span><span class="p">,</span> <span class="n">el_mv</span><span class="p">,</span> <span class="n">el_max_strain</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_service_actions</span><span class="p">(</span>
+            <span class="n">el_n</span><span class="p">,</span> <span class="n">el_m_u</span><span class="p">,</span> <span class="n">el_max_strain</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_service_actions</span><span class="p">(</span>
                 <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
                 <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
@@ -388,9 +388,9 @@
             <span class="n">max_strain</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_strain</span><span class="p">,</span> <span class="n">el_max_strain</span><span class="p">)</span>
 
             <span class="n">n</span> <span class="o">+=</span> <span class="n">el_n</span>
-            <span class="n">mv</span> <span class="o">+=</span> <span class="n">el_mv</span>
+            <span class="n">m_u</span> <span class="o">+=</span> <span class="n">el_m_u</span>
 
-        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">mv</span><span class="p">,</span> <span class="n">max_strain</span></div>
+        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">m_u</span><span class="p">,</span> <span class="n">max_strain</span></div>
 
 <div class="viewcode-block" id="AnalysisSection.get_service_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.get_service_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_service_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -435,7 +435,7 @@
             <span class="p">)</span>
 
         <span class="c1"># calculate total force</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">mv</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_stress_analysis</span><span class="p">(</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">m_u</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_stress_analysis</span><span class="p">(</span>
             <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
             <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
             <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
@@ -447,7 +447,7 @@
         <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="n">mv</span> <span class="o">/</span> <span class="n">n</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">m_u</span> <span class="o">/</span> <span class="n">n</span>
 
         <span class="k">return</span> <span class="n">sig</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span></div>
 
@@ -475,10 +475,10 @@
 
         <span class="c1"># initialise section actions</span>
         <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">mv</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_u</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
-            <span class="n">el_n</span><span class="p">,</span> <span class="n">el_mv</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_ultimate_actions</span><span class="p">(</span>
+            <span class="n">el_n</span><span class="p">,</span> <span class="n">el_m_u</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_ultimate_actions</span><span class="p">(</span>
                 <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
                 <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
@@ -487,9 +487,9 @@
             <span class="p">)</span>
 
             <span class="n">n</span> <span class="o">+=</span> <span class="n">el_n</span>
-            <span class="n">mv</span> <span class="o">+=</span> <span class="n">el_mv</span>
+            <span class="n">m_u</span> <span class="o">+=</span> <span class="n">el_m_u</span>
 
-        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">mv</span></div>
+        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">m_u</span></div>
 
 <div class="viewcode-block" id="AnalysisSection.get_ultimate_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_ultimate_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -535,7 +535,7 @@
             <span class="p">)</span>
 
         <span class="c1"># calculate total force</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">mv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_stress_analysis</span><span class="p">(</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">m_u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_stress_analysis</span><span class="p">(</span>
             <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
             <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
             <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
@@ -552,7 +552,7 @@
                 <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="p">)</span>
 
-            <span class="n">d</span> <span class="o">=</span> <span class="n">mv</span> <span class="o">/</span> <span class="n">n</span> <span class="o">+</span> <span class="n">pc_local</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">m_u</span> <span class="o">/</span> <span class="n">n</span> <span class="o">+</span> <span class="n">pc_local</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">sig</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span></div>
 
@@ -703,8 +703,8 @@
 <div class="viewcode-block" id="Tri3.calculate_elastic_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_elastic_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_elastic_actions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">mx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">my</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">m_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">m_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">e_a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">cx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">cy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -716,8 +716,8 @@
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates elastic actions for the current finite element.</span>
 
 <span class="sd">        :param float n: Axial force</span>
-<span class="sd">        :param float mx: Bending moment about the x-axis</span>
-<span class="sd">        :param float my: Bending moment about the y-axis</span>
+<span class="sd">        :param float m_x: Bending moment about the x-axis</span>
+<span class="sd">        :param float m_y: Bending moment about the y-axis</span>
 <span class="sd">        :param float e_a: Axial rigidity</span>
 <span class="sd">        :param float cx: x-Centroid</span>
 <span class="sd">        :param float cy: y-Centroid</span>
@@ -733,7 +733,7 @@
 
         <span class="c1"># initialise element results</span>
         <span class="n">force_e</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">mv_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_u_e</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># get points for 3 point Gaussian integration</span>
         <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
@@ -756,8 +756,8 @@
                 <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_material</span><span class="o">.</span><span class="n">elastic_modulus</span>
                 <span class="o">*</span> <span class="p">(</span>
-                    <span class="o">-</span><span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">mx</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
-                    <span class="o">+</span> <span class="p">(</span><span class="n">e_iyy</span> <span class="o">*</span> <span class="n">mx</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+                    <span class="o">-</span><span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                    <span class="o">+</span> <span class="p">(</span><span class="n">e_iyy</span> <span class="o">*</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
                 <span class="p">)</span>
                 <span class="o">*</span> <span class="n">j</span>
             <span class="p">)</span>
@@ -765,8 +765,8 @@
                 <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_material</span><span class="o">.</span><span class="n">elastic_modulus</span>
                 <span class="o">*</span> <span class="p">(</span>
-                    <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
-                    <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+                    <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                    <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
                 <span class="p">)</span>
                 <span class="o">*</span> <span class="n">j</span>
             <span class="p">)</span>
@@ -776,9 +776,9 @@
 
             <span class="c1"># add force and moment</span>
             <span class="n">force_e</span> <span class="o">+=</span> <span class="n">force_gp</span>
-            <span class="n">mv_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="n">c_v</span>
+            <span class="n">m_u_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="n">c_v</span>
 
-        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">mv_e</span></div>
+        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">m_u_e</span></div>
 
 <div class="viewcode-block" id="Tri3.calculate_service_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_service_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_service_actions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -804,7 +804,7 @@
 
         <span class="c1"># initialise element results</span>
         <span class="n">force_e</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">mv_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_u_e</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">max_strain_e</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># get points for 1 point Gaussian integration</span>
@@ -839,9 +839,9 @@
 
             <span class="c1"># add force and moment</span>
             <span class="n">force_e</span> <span class="o">+=</span> <span class="n">force_gp</span>
-            <span class="n">mv_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">)</span>
+            <span class="n">m_u_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">mv_e</span><span class="p">,</span> <span class="n">max_strain_e</span></div>
+        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">m_u_e</span><span class="p">,</span> <span class="n">max_strain_e</span></div>
 
 <div class="viewcode-block" id="Tri3.calculate_ultimate_actions"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_ultimate_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ultimate_actions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -867,7 +867,7 @@
 
         <span class="c1"># initialise element results</span>
         <span class="n">force_e</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">mv_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_u_e</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># get points for 1 point Gaussian integration</span>
         <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -903,9 +903,9 @@
 
             <span class="c1"># add force and moment</span>
             <span class="n">force_e</span> <span class="o">+=</span> <span class="n">force_gp</span>
-            <span class="n">mv_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">pc_local</span><span class="p">)</span>
+            <span class="n">m_u_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">pc_local</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">mv_e</span></div></div>
+        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">m_u_e</span></div></div>
 </pre></div>
 
               </article>

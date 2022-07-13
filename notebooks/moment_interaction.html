@@ -226,9 +226,34 @@
     
     <div class="toc-item">
       
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Assign-Materials">
+   5.1. Assign Materials
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Create-Geometry-and-Concrete-Section">
+   5.2. Create Geometry and Concrete Section
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   5.3. Moment Interaction Diagram
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Plotting-Multiple-Diagrams">
+   5.4. Plotting Multiple Diagrams
+  </a>
+ </li>
+</ul>
+
 </nav>
     </div>
     
@@ -511,12 +536,324 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="Moment-Interaction-Diagram">
 <h1><span class="section-number">5. </span>Moment Interaction Diagram<a class="headerlink" href="#Moment-Interaction-Diagram" title="Permalink to this heading">#</a></h1>
+<p>This example demonstrates how to generate moment interaction diagrams. We start by importing the necessary modules.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">Steel</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConcreteLinear</span><span class="p">,</span>
+    <span class="n">RectangularStressBlock</span><span class="p">,</span>
+    <span class="n">SteelElasticPlastic</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sectionproperties.pre.library.concrete_sections</span> <span class="kn">import</span> <span class="n">concrete_rectangular_section</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.results</span> <span class="kn">import</span> <span class="n">MomentInteractionResults</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="Assign-Materials">
+<h2><span class="section-number">5.1. </span>Assign Materials<a class="headerlink" href="#Assign-Materials" title="Permalink to this heading">#</a></h2>
+<p>The materials used in this example will be 32 MPa concrete and 500 MPa steel, specified in accordance with AS 3600:2018.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concrete</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;32 MPa Concrete&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ConcreteLinear</span><span class="p">(</span><span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">30.1e3</span><span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">RectangularStressBlock</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.802</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.89</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">alpha_squash</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.4</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">steel</span> <span class="o">=</span> <span class="n">Steel</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;500 MPa Steel&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
+        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
+        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Create-Geometry-and-Concrete-Section">
+<h2><span class="section-number">5.2. </span>Create Geometry and Concrete Section<a class="headerlink" href="#Create-Geometry-and-Concrete-Section" title="Permalink to this heading">#</a></h2>
+<p>The geometry used in this example is identical to that used in <a class="reference internal" href="area_properties.html#Create-Geometry-and-Concrete-Section"><span class="std std-ref">Calculating Area Properties</span></a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">geom</span> <span class="o">=</span> <span class="n">concrete_rectangular_section</span><span class="p">(</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">dia_top</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">n_top</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">dia_bot</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">n_bot</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">n_circle</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">cover</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">area_top</span><span class="o">=</span><span class="mi">310</span><span class="p">,</span>
+    <span class="n">area_bot</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+    <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete</span><span class="p">,</span>
+    <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_moment_interaction_6_0.svg" src="../_images/notebooks_moment_interaction_6_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot:title={&#39;center&#39;:&#39;Reinforced Concrete Section&#39;}&gt;
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2><span class="section-number">5.3. </span>Moment Interaction Diagram<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>We perform a moment interaction analysis by calling the <code class="docutils literal notranslate"><span class="pre">moment_interaction_diagram()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">/usr/local/lib/python3.8/site-packages/rich/live.py:229: UserWarning: install "ipywidgets" for Jupyter support
+  warnings.warn('install "ipywidgets" for Jupyter support')
+</pre></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
+</div>
+<p>We can plot the moment interaction diagram by calling the <code class="docutils literal notranslate"><span class="pre">plot_diagram()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_moment_interaction_10_0.svg" src="../_images/notebooks_moment_interaction_10_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot:title={&#39;center&#39;:&#39;Moment Interaction Diagram&#39;}, xlabel=&#39;Bending Moment&#39;, ylabel=&#39;Axial Force&#39;&gt;
+</pre></div></div>
+</div>
+<p>What if we knew that we had equal bending moments about the <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> axis? In this case the neutral axis angle would be <span class="math notranslate nohighlight">\(\theta = \pi / 2\)</span>. Let’s generate a moment interaction diagram for this case.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">mi_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">/usr/local/lib/python3.8/site-packages/rich/live.py:229: UserWarning: install "ipywidgets" for Jupyter support
+  warnings.warn('install "ipywidgets" for Jupyter support')
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_moment_interaction_12_2.svg" src="../_images/notebooks_moment_interaction_12_2.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot:title={&#39;center&#39;:&#39;Moment Interaction Diagram&#39;}, xlabel=&#39;Bending Moment&#39;, ylabel=&#39;Axial Force&#39;&gt;
+</pre></div></div>
+</div>
+<p>It’s also possible to plot a diagram for positive and negative bending (sagging and hogging). We do this by setting the parameter <code class="docutils literal notranslate"><span class="pre">m_neg=True</span></code>. We can control the number of points between the pure bending point and decompression point by modifying the parameter <code class="docutils literal notranslate"><span class="pre">n_points</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">m_neg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n_points</span><span class="o">=</span><span class="mi">48</span><span class="p">)</span>
+<span class="n">mi_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">/usr/local/lib/python3.8/site-packages/rich/live.py:229: UserWarning: install "ipywidgets" for Jupyter support
+  warnings.warn('install "ipywidgets" for Jupyter support')
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_moment_interaction_14_2.svg" src="../_images/notebooks_moment_interaction_14_2.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot:title={&#39;center&#39;:&#39;Moment Interaction Diagram&#39;}, xlabel=&#39;Bending Moment&#39;, ylabel=&#39;Axial Force&#39;&gt;
+</pre></div></div>
+</div>
+<p>In the above plot the bending capacity is higher for positive bending and not symmetric. This is because the bottom bars (3N24) provide more area than the top bars (3N20).</p>
+</div>
+<div class="section" id="Plotting-Multiple-Diagrams">
+<h2><span class="section-number">5.4. </span>Plotting Multiple Diagrams<a class="headerlink" href="#Plotting-Multiple-Diagrams" title="Permalink to this heading">#</a></h2>
+<p>We can also plot multiple diagrams at once by using the <code class="docutils literal notranslate"><span class="pre">MomentInteractionResults.plot_multiple_diagrams()</span></code> class method. In this example we’ll create four different reinforced concrete cross-sections with different reinforcement ratios.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create lists to hold results and labels</span>
+<span class="n">mi_results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># create four different sections with increasing reinforcement</span>
+<span class="c1"># and peform a moment interaction analysis</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">concrete_rectangular_section</span><span class="p">(</span>
+        <span class="n">b</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+        <span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+        <span class="n">dia_top</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+        <span class="n">n_top</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">dia_bot</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+        <span class="n">n_bot</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">n_circle</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">cover</span><span class="o">=</span><span class="mi">66</span><span class="p">,</span>
+        <span class="n">area_top</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="p">(</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">area_bot</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="p">(</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete</span><span class="p">,</span>
+        <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+    <span class="n">mi_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">())</span>
+    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;p = </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mf">0.01</span> <span class="o">*</span> <span class="p">(</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">/usr/local/lib/python3.8/site-packages/rich/live.py:229: UserWarning: install "ipywidgets" for Jupyter support
+  warnings.warn('install "ipywidgets" for Jupyter support')
+</pre></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot all the diagrams on one image</span>
+<span class="n">MomentInteractionResults</span><span class="o">.</span><span class="n">plot_multiple_diagrams</span><span class="p">(</span>
+    <span class="n">moment_interaction_results</span><span class="o">=</span><span class="n">mi_results</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_moment_interaction_18_0.svg" src="../_images/notebooks_moment_interaction_18_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot:title={&#39;center&#39;:&#39;Moment Interaction Diagram&#39;}, xlabel=&#39;Bending Moment&#39;, ylabel=&#39;Axial Force&#39;&gt;
+</pre></div></div>
 </div>
 </div>
 </div>

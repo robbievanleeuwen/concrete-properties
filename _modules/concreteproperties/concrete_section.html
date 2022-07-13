@@ -925,12 +925,12 @@
 
         <span class="c1"># initialise results</span>
         <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">mv</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_u</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># calculate concrete actions</span>
         <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="n">concrete_split_geoms</span><span class="p">:</span>
             <span class="n">sec</span> <span class="o">=</span> <span class="n">AnalysisSection</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">conc_geom</span><span class="p">)</span>
-            <span class="n">n_sec</span><span class="p">,</span> <span class="n">mv_sec</span><span class="p">,</span> <span class="n">max_strain</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">service_stress_analysis</span><span class="p">(</span>
+            <span class="n">n_sec</span><span class="p">,</span> <span class="n">m_u_sec</span><span class="p">,</span> <span class="n">max_strain</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">service_stress_analysis</span><span class="p">(</span>
                 <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
                 <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
@@ -939,7 +939,7 @@
             <span class="p">)</span>
 
             <span class="n">n</span> <span class="o">+=</span> <span class="n">n_sec</span>
-            <span class="n">mv</span> <span class="o">+=</span> <span class="n">mv_sec</span>
+            <span class="n">m_u</span> <span class="o">+=</span> <span class="n">m_u_sec</span>
 
             <span class="c1"># check for concrete failure</span>
             <span class="k">if</span> <span class="p">(</span>
@@ -982,10 +982,10 @@
             <span class="p">)</span>
 
             <span class="c1"># calculate moment</span>
-            <span class="n">mv</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">m_u</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_n_i</span> <span class="o">=</span> <span class="n">n</span>
-        <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_i</span> <span class="o">=</span> <span class="n">mv</span>
+        <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_i</span> <span class="o">=</span> <span class="n">m_u</span>
 
         <span class="k">return</span> <span class="n">moment_curvature</span></div>
 
@@ -1066,7 +1066,7 @@
         <span class="n">ultimate_results</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates</span>
-<span class="sd">        the resultant bending moments `mx`, `my`, `mv` and the net axial force `n`.</span>
+<span class="sd">        the resultant bending moments `m_x`, `m_y`, `m_u` and the net axial force `n`.</span>
 
 <span class="sd">        :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
 <span class="sd">        :param ultimate_results: Ultimate bending results object</span>
@@ -1111,13 +1111,13 @@
 
         <span class="c1"># initialise results</span>
         <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">mv</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_u</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">k_u</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># calculate concrete actions</span>
         <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="n">concrete_split_geoms</span><span class="p">:</span>
             <span class="n">sec</span> <span class="o">=</span> <span class="n">AnalysisSection</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">conc_geom</span><span class="p">)</span>
-            <span class="n">n_sec</span><span class="p">,</span> <span class="n">mv_sec</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">ultimate_stress_analysis</span><span class="p">(</span>
+            <span class="n">n_sec</span><span class="p">,</span> <span class="n">m_u_sec</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">ultimate_stress_analysis</span><span class="p">(</span>
                 <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
                 <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
@@ -1126,7 +1126,7 @@
             <span class="p">)</span>
 
             <span class="n">n</span> <span class="o">+=</span> <span class="n">n_sec</span>
-            <span class="n">mv</span> <span class="o">+=</span> <span class="n">mv_sec</span>
+            <span class="n">m_u</span> <span class="o">+=</span> <span class="n">m_u_sec</span>
 
         <span class="c1"># calculate steel actions</span>
         <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">:</span>
@@ -1154,7 +1154,7 @@
             <span class="p">)</span>
 
             <span class="c1"># calculate moment</span>
-            <span class="n">mv</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">pc_local</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">m_u</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_v</span> <span class="o">-</span> <span class="n">pc_local</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
             <span class="c1"># calculate k_u</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">ef_v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
@@ -1165,18 +1165,18 @@
             <span class="n">d</span> <span class="o">=</span> <span class="n">ef_v</span> <span class="o">-</span> <span class="n">c_v</span>
             <span class="n">k_u</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d_n</span> <span class="o">/</span> <span class="n">d</span><span class="p">)</span>
 
-        <span class="c1"># convert mv to mx &amp; my</span>
-        <span class="p">(</span><span class="n">my</span><span class="p">,</span> <span class="n">mx</span><span class="p">)</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span>
-            <span class="n">phi</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">mv</span>
+        <span class="c1"># convert m_u to m_x &amp; m_y</span>
+        <span class="p">(</span><span class="n">m_y</span><span class="p">,</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span>
+            <span class="n">phi</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">m_u</span>
         <span class="p">)</span>
 
         <span class="c1"># save results</span>
         <span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span> <span class="o">=</span> <span class="n">d_n</span>
         <span class="n">ultimate_results</span><span class="o">.</span><span class="n">k_u</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">k_u</span><span class="p">)</span>
         <span class="n">ultimate_results</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
-        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">mx</span> <span class="o">=</span> <span class="n">mx</span>
-        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">my</span> <span class="o">=</span> <span class="n">my</span>
-        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">mv</span> <span class="o">=</span> <span class="n">mv</span>
+        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_x</span> <span class="o">=</span> <span class="n">m_x</span>
+        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_y</span> <span class="o">=</span> <span class="n">m_y</span>
+        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_u</span> <span class="o">=</span> <span class="n">m_u</span>
 
         <span class="k">return</span> <span class="n">ultimate_results</span></div>
 
@@ -1239,7 +1239,7 @@
                     <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">ultimate_results</span><span class="o">=</span><span class="n">ultimate_results</span>
                 <span class="p">)</span>
                 <span class="n">mi_results</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
-                <span class="n">mi_results</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">mv</span><span class="p">)</span>
+                <span class="n">mi_results</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_u</span><span class="p">)</span>
                 <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">m_neg</span><span class="p">:</span>
@@ -1278,7 +1278,7 @@
                         <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">ultimate_results</span><span class="o">=</span><span class="n">ultimate_results</span>
                     <span class="p">)</span>
                     <span class="n">mi_results</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
-                    <span class="n">mi_results</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">mv</span><span class="p">)</span>
+                    <span class="n">mi_results</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_u</span><span class="p">)</span>
                     <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
                 <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
@@ -1331,13 +1331,13 @@
             <span class="c1"># loop through thetas</span>
             <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">theta_list</span><span class="p">:</span>
                 <span class="n">ultimate_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
-                <span class="n">bb_results</span><span class="o">.</span><span class="n">mx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">mx</span><span class="p">)</span>
-                <span class="n">bb_results</span><span class="o">.</span><span class="n">my</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">my</span><span class="p">)</span>
+                <span class="n">bb_results</span><span class="o">.</span><span class="n">m_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_x</span><span class="p">)</span>
+                <span class="n">bb_results</span><span class="o">.</span><span class="n">m_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_y</span><span class="p">)</span>
                 <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
             <span class="c1"># add first result to end of list top</span>
-            <span class="n">bb_results</span><span class="o">.</span><span class="n">mx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bb_results</span><span class="o">.</span><span class="n">mx</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">bb_results</span><span class="o">.</span><span class="n">my</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bb_results</span><span class="o">.</span><span class="n">my</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">bb_results</span><span class="o">.</span><span class="n">m_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bb_results</span><span class="o">.</span><span class="n">m_x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">bb_results</span><span class="o">.</span><span class="n">m_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bb_results</span><span class="o">.</span><span class="n">m_y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
             <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                 <span class="n">task</span><span class="p">,</span>
@@ -1350,21 +1350,21 @@
 <div class="viewcode-block" id="ConcreteSection.calculate_uncracked_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_uncracked_stress">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_uncracked_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">mx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">my</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">m_x</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">m_y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">StressResult</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Calculates stresses within the reinforced concrete section assuming an</span>
 <span class="sd">        uncracked section.</span>
 
 <span class="sd">        Uses gross area section properties to determine concrete and steel stresses</span>
-<span class="sd">        given an axial force `n`, and bending moments `mx` and `my`.</span>
+<span class="sd">        given an axial force `n`, and bending moments `m_x` and `m_y`.</span>
 
 <span class="sd">        :param n: Axial force</span>
 <span class="sd">        :type n: Optional[float]</span>
-<span class="sd">        :param mx: Bending moment about the x-axis</span>
-<span class="sd">        :type mx: Optional[float]</span>
-<span class="sd">        :param my: Bending moment about the y-axis</span>
-<span class="sd">        :type my: Optional[float]</span>
+<span class="sd">        :param m_x: Bending moment about the x-axis</span>
+<span class="sd">        :type m_x: Optional[float]</span>
+<span class="sd">        :param m_y: Bending moment about the y-axis</span>
+<span class="sd">        :type m_y: Optional[float]</span>
 
 <span class="sd">        :return: Stress results object</span>
 <span class="sd">        :rtype: :class:`~concreteproperties.results.StressResult`</span>
@@ -1387,7 +1387,7 @@
         <span class="n">e_ixy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixy_c</span>
 
         <span class="c1"># calculate neutral axis rotation</span>
-        <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="o">-</span><span class="n">my</span><span class="p">,</span> <span class="n">mx</span><span class="p">)</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="o">-</span><span class="n">m_y</span><span class="p">,</span> <span class="n">m_x</span><span class="p">)</span>
 
         <span class="c1"># point on neutral axis is centroid</span>
         <span class="n">point_na</span> <span class="o">=</span> <span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">)</span>
@@ -1417,8 +1417,8 @@
             <span class="c1"># calculate stress, force and point of action</span>
             <span class="n">sig</span><span class="p">,</span> <span class="n">n_conc</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">analysis_section</span><span class="o">.</span><span class="n">get_elastic_stress</span><span class="p">(</span>
                 <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
-                <span class="n">mx</span><span class="o">=</span><span class="n">mx</span><span class="p">,</span>
-                <span class="n">my</span><span class="o">=</span><span class="n">my</span><span class="p">,</span>
+                <span class="n">m_x</span><span class="o">=</span><span class="n">m_x</span><span class="p">,</span>
+                <span class="n">m_y</span><span class="o">=</span><span class="n">m_y</span><span class="p">,</span>
                 <span class="n">e_a</span><span class="o">=</span><span class="n">e_a</span><span class="p">,</span>
                 <span class="n">cx</span><span class="o">=</span><span class="n">cx</span><span class="p">,</span>
                 <span class="n">cy</span><span class="o">=</span><span class="n">cy</span><span class="p">,</span>
@@ -1446,12 +1446,12 @@
 
             <span class="c1"># bending moment stress</span>
             <span class="n">sig</span> <span class="o">+=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
-                <span class="o">-</span><span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">mx</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
-                <span class="o">+</span> <span class="p">(</span><span class="n">e_iyy</span> <span class="o">*</span> <span class="n">mx</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+                <span class="o">-</span><span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                <span class="o">+</span> <span class="p">(</span><span class="n">e_iyy</span> <span class="o">*</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
             <span class="p">)</span>
             <span class="n">sig</span> <span class="o">+=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
-                <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
-                <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+                <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
             <span class="p">)</span>
             <span class="n">strain</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">/</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
 
@@ -1519,8 +1519,8 @@
 
         <span class="c1"># calculate moment about bending angle theta</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">theta</span>
-        <span class="n">mx</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-        <span class="n">my</span> <span class="o">=</span> <span class="o">-</span><span class="n">m</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">m_x</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">m_y</span> <span class="o">=</span> <span class="o">-</span><span class="n">m</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
 
         <span class="c1"># depth of neutral axis at extreme tensile fibre</span>
         <span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
@@ -1545,8 +1545,8 @@
                 <span class="c1"># calculate stress, force and point of action</span>
                 <span class="n">sig</span><span class="p">,</span> <span class="n">n_conc</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">analysis_section</span><span class="o">.</span><span class="n">get_elastic_stress</span><span class="p">(</span>
                     <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
-                    <span class="n">mx</span><span class="o">=</span><span class="n">mx</span><span class="p">,</span>
-                    <span class="n">my</span><span class="o">=</span><span class="n">my</span><span class="p">,</span>
+                    <span class="n">m_x</span><span class="o">=</span><span class="n">m_x</span><span class="p">,</span>
+                    <span class="n">m_y</span><span class="o">=</span><span class="n">m_y</span><span class="p">,</span>
                     <span class="n">e_a</span><span class="o">=</span><span class="n">e_a</span><span class="p">,</span>
                     <span class="n">cx</span><span class="o">=</span><span class="n">cx</span><span class="p">,</span>
                     <span class="n">cy</span><span class="o">=</span><span class="n">cy</span><span class="p">,</span>
@@ -1574,12 +1574,12 @@
 
             <span class="c1"># bending moment stress</span>
             <span class="n">sig</span> <span class="o">+=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
-                <span class="o">-</span><span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">mx</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
-                <span class="o">+</span> <span class="p">(</span><span class="n">e_iyy</span> <span class="o">*</span> <span class="n">mx</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+                <span class="o">-</span><span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                <span class="o">+</span> <span class="p">(</span><span class="n">e_iyy</span> <span class="o">*</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
             <span class="p">)</span>
             <span class="n">sig</span> <span class="o">+=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
-                <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
-                <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">my</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+                <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
             <span class="p">)</span>
             <span class="n">strain</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">/</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
 

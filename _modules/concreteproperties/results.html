@@ -743,9 +743,9 @@
 <span class="sd">    :var float d_n: Ultimate neutral axis depth</span>
 <span class="sd">    :var float k_u: Neutral axis parameter *(d_n / d)*</span>
 <span class="sd">    :var float n: Resultant axial force</span>
-<span class="sd">    :var float mx: Resultant bending moment about the x-axis</span>
-<span class="sd">    :var float my: Resultant bending moment about the y-axis</span>
-<span class="sd">    :var float mv: Resultant bending moment about the v-axis</span>
+<span class="sd">    :var float m_x: Resultant bending moment about the x-axis</span>
+<span class="sd">    :var float m_y: Resultant bending moment about the y-axis</span>
+<span class="sd">    :var float m_u: Resultant bending moment about the u-axis</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># bending angle</span>
@@ -757,9 +757,9 @@
 
     <span class="c1"># resultant actions</span>
     <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">mx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">my</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">mv</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">m_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">m_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">m_u</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="UltimateBendingResults.print_results"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.UltimateBendingResults.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -781,9 +781,9 @@
             <span class="s2">&quot;Neutral Axis Parameter- k_u&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_u</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Axial Force&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
-        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Bending Capacity - mx&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mx</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
-        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Bending Capacity - my&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
-        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Bending Capacity - mv&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mv</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Bending Capacity - m_x&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_x</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Bending Capacity - m_y&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_y</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Bending Capacity - m_u&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_u</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
 
         <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div></div>
@@ -891,15 +891,15 @@
     <span class="sd">&quot;&quot;&quot;Class for storing biaxial bending results.</span>
 
 <span class="sd">    :param float n: Net axial force</span>
-<span class="sd">    :var mx: List of bending moments about the x-axis</span>
-<span class="sd">    :vartype mx: List[float]</span>
-<span class="sd">    :var my: List of bending moments about the y-axis</span>
-<span class="sd">    :vartype my: List[float]</span>
+<span class="sd">    :var m_x: List of bending moments about the x-axis</span>
+<span class="sd">    :vartype m_x: List[float]</span>
+<span class="sd">    :var m_y: List of bending moments about the y-axis</span>
+<span class="sd">    :vartype m_y: List[float]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">n</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">mx</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
-    <span class="n">my</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">m_x</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">m_y</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BiaxialBendingResults.plot_diagram"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.BiaxialBendingResults.plot_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">plot_diagram</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -924,10 +924,10 @@
             <span class="n">ax</span><span class="p">,</span>
         <span class="p">):</span>
             <span class="c1"># scale results</span>
-            <span class="n">mx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mx</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
-            <span class="n">my</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+            <span class="n">m_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_x</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+            <span class="n">m_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_y</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
 
-            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m_x</span><span class="p">,</span> <span class="n">m_y</span><span class="p">,</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
             <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_x$&quot;</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_y$&quot;</span><span class="p">)</span>
@@ -962,11 +962,11 @@
         <span class="c1"># for each curve</span>
         <span class="k">for</span> <span class="n">bb_result</span> <span class="ow">in</span> <span class="n">biaxial_bending_results</span><span class="p">:</span>
             <span class="c1"># scale results</span>
-            <span class="n">n_list</span> <span class="o">=</span> <span class="n">bb_result</span><span class="o">.</span><span class="n">n</span> <span class="o">*</span> <span class="n">n_scale</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bb_result</span><span class="o">.</span><span class="n">mx</span><span class="p">))</span>
-            <span class="n">mx_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bb_result</span><span class="o">.</span><span class="n">mx</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
-            <span class="n">my_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bb_result</span><span class="o">.</span><span class="n">my</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+            <span class="n">n_list</span> <span class="o">=</span> <span class="n">bb_result</span><span class="o">.</span><span class="n">n</span> <span class="o">*</span> <span class="n">n_scale</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bb_result</span><span class="o">.</span><span class="n">m_x</span><span class="p">))</span>
+            <span class="n">m_x_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bb_result</span><span class="o">.</span><span class="n">m_x</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+            <span class="n">m_y_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bb_result</span><span class="o">.</span><span class="n">m_y</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
 
-            <span class="n">ax</span><span class="o">.</span><span class="n">plot3D</span><span class="p">(</span><span class="n">mx_list</span><span class="p">,</span> <span class="n">my_list</span><span class="p">,</span> <span class="n">n_list</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot3D</span><span class="p">(</span><span class="n">m_x_list</span><span class="p">,</span> <span class="n">m_y_list</span><span class="p">,</span> <span class="n">n_list</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
 
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_x$&quot;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_y$&quot;</span><span class="p">)</span>
