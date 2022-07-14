@@ -23,8 +23,8 @@ pip install concreteproperties
 
 ## Documentation:
 
-*concreteproperties* fully documented including examples and a fully documented API. The
-documentation can found at [https://robbievanleeuwen.github.io/concrete-properties](https://robbievanleeuwen.github.io/concrete-properties).
+*concreteproperties* is fully documented including examples and a fully documented API.
+The documentation can found at [https://robbievanleeuwen.github.io/concrete-properties](https://robbievanleeuwen.github.io/concrete-properties).
 
 ## Current Capabilities:
 
@@ -81,3 +81,11 @@ documentation can found at [https://robbievanleeuwen.github.io/concrete-properti
 - [ ] Design code modules
   - [ ] AS3600
   - [ ] AS5100
+
+## Disclaimer:
+
+*concreteproperties* is an open source engineering tool that continues to benefit from
+the collaboration of many contributors. Although efforts have been made to ensure the
+that relevant engineering theories have been correctly implemented, it remains the
+user's responsibility to confirm and accept the output. Refer to the
+[license](LICENSE.md) for clarification of the conditions of use.
