@@ -1,0 +1,480 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "4420ea1d",
+   "metadata": {},
+   "source": [
+    "# Moment Curvature Analysis"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "588b04b5",
+   "metadata": {},
+   "source": [
+    "This example demonstrates how to perform a moment curvature analysis using *concreteproperties*. We start by importing the necessary modules."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8ef72f3c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from concreteproperties.material import Concrete, Steel\n",
+    "import concreteproperties.stress_strain_profile as ssp\n",
+    "from sectionproperties.pre.library.primitive_sections import (\n",
+    "    rectangular_section,\n",
+    "    circular_section,\n",
+    ")\n",
+    "from concreteproperties.pre import add_bar_rectangular_array\n",
+    "from concreteproperties.concrete_section import ConcreteSection\n",
+    "from concreteproperties.results import MomentCurvatureResults"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f043c56c",
+   "metadata": {},
+   "source": [
+    "## Assign Materials\n",
+    "\n",
+    "Multiple material types will be used in this example to highlight different moment curvature results."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "601632bd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "conc_linear = Concrete(\n",
+    "    name=\"Linear Concrete\",\n",
+    "    density=2.4e-6,\n",
+    "    stress_strain_profile=ssp.ConcreteLinear(\n",
+    "        elastic_modulus=35e3, ultimate_strain=0.0035\n",
+    "    ),\n",
+    "    ultimate_stress_strain_profile=ssp.BilinearStressStrain(\n",
+    "        compressive_strength=40,\n",
+    "        compressive_strain=0.00175,\n",
+    "        ultimate_strain=0.0035,\n",
+    "    ),\n",
+    "    alpha_squash=0.85,\n",
+    "    flexural_tensile_strength=3.5,\n",
+    "    colour=\"lightgrey\",\n",
+    ")\n",
+    "\n",
+    "conc_linear_no_tension = Concrete(\n",
+    "    name=\"Linear Concrete (No T)\",\n",
+    "    density=2.4e-6,\n",
+    "    stress_strain_profile=ssp.ConcreteLinearNoTension(\n",
+    "        elastic_modulus=35e3, ultimate_strain=0.0035\n",
+    "    ),\n",
+    "    ultimate_stress_strain_profile=ssp.BilinearStressStrain(\n",
+    "        compressive_strength=40,\n",
+    "        compressive_strain=0.00175,\n",
+    "        ultimate_strain=0.0035,\n",
+    "    ),\n",
+    "    alpha_squash=0.85,\n",
+    "    flexural_tensile_strength=3.5,\n",
+    "    colour=\"lightgrey\",\n",
+    ")\n",
+    "\n",
+    "\n",
+    "conc_nonlinear = Concrete(\n",
+    "    name=\"Non-Linear Concrete\",\n",
+    "    density=2.4e-6,\n",
+    "    stress_strain_profile=ssp.EurocodeNonLinear(\n",
+    "        elastic_modulus=35e3,\n",
+    "        ultimate_strain=0.0035,\n",
+    "        compressive_strength=40,\n",
+    "        compressive_strain=0.0023,\n",
+    "        tensile_strength=3.5,\n",
+    "        tension_softening_stiffness=10e3,\n",
+    "    ),\n",
+    "    ultimate_stress_strain_profile=ssp.BilinearStressStrain(\n",
+    "        compressive_strength=40,\n",
+    "        compressive_strain=0.00175,\n",
+    "        ultimate_strain=0.0035,\n",
+    "    ),\n",
+    "    alpha_squash=0.85,\n",
+    "    flexural_tensile_strength=3.5,\n",
+    "    colour=\"lightgrey\",\n",
+    ")\n",
+    "\n",
+    "conc_material_list = [\n",
+    "    conc_linear,\n",
+    "    conc_linear_no_tension,\n",
+    "    conc_nonlinear,\n",
+    "]\n",
+    "\n",
+    "steel_ep = Steel(\n",
+    "    name=\"Steel - Elastic-Plastic\",\n",
+    "    density=7.85e-6,\n",
+    "    stress_strain_profile=ssp.SteelElasticPlastic(\n",
+    "        yield_strength=500,\n",
+    "        elastic_modulus=200e3,\n",
+    "        fracture_strain=0.05,\n",
+    "    ),\n",
+    "    colour=\"grey\",\n",
+    ")\n",
+    "\n",
+    "steel_hd = Steel(\n",
+    "    name=\"Steel - Hardening\",\n",
+    "    density=7.85e-6,\n",
+    "    stress_strain_profile=ssp.SteelHardening(\n",
+    "        yield_strength=500,\n",
+    "        elastic_modulus=200e3,\n",
+    "        fracture_strain=0.05,\n",
+    "        ultimate_strength=600,\n",
+    "    ),\n",
+    "    colour=\"grey\",\n",
+    ")\n",
+    "\n",
+    "steel_material_list = [\n",
+    "    steel_ep,\n",
+    "    steel_hd,\n",
+    "]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "abfba7c6",
+   "metadata": {},
+   "source": [
+    "## Plot Stress-Strain Profiles\n",
+    "\n",
+    "Let's use the ``plot_stress_strain()`` method to compare the various service stress-strain profiles:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7c04f071",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for conc in conc_material_list:\n",
+    "    conc.stress_strain_profile.plot_stress_strain(title=conc.name)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8ac8b521",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for steel in steel_material_list:\n",
+    "    steel.stress_strain_profile.plot_stress_strain(title=steel.name)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "47b6a2a8",
+   "metadata": {},
+   "source": [
+    "## Create Reinforced Concrete Geometry\n",
+    "\n",
+    "The section being analysed in this example is a 350D x 600W concrete column with a 125 mm circular void at its centre. The column is reinforced with 14N24 bars. As we will be using conducting multiple analyses with different material properties, we will assign the concrete material later."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5f88f832",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "col = rectangular_section(d=350, b=600)\n",
+    "void = circular_section(d=125, n=16).align_center(align_to=col)\n",
+    "col = col - void  # subtract void from column\n",
+    "\n",
+    "# add bars to column\n",
+    "geom = add_bar_rectangular_array(\n",
+    "    geometry=col,\n",
+    "    area=450,\n",
+    "    material=steel_ep,\n",
+    "    n_x=6,\n",
+    "    x_s=492 / 5,\n",
+    "    n_y=3,\n",
+    "    y_s=121,\n",
+    "    anchor=(54, 54),\n",
+    "    exterior_only=True,\n",
+    ")\n",
+    "\n",
+    "geom.plot_geometry(labels=[], cp=False, legend=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c4d5fa61",
+   "metadata": {},
+   "source": [
+    "## Varying Concrete Properties\n",
+    "\n",
+    "In this example we will first study the effect the concrete stress-strain profile has on the moment curvature diagram.\n",
+    "\n",
+    "### Moment Curvature Analysis\n",
+    "\n",
+    "The below code loops through each concrete material, assigning it to the concrete column geometry and performs a moment curvature analysis."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f3144e4f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# initialise list to store results and list to store labels\n",
+    "moment_curvature_results = []\n",
+    "labels = []\n",
+    "\n",
+    "# loop through each concrete material\n",
+    "for idx, conc in enumerate(conc_material_list):\n",
+    "    # assign concrete material to first geometry in CompoundGeometry object\n",
+    "    geom.geoms[0].material = conc\n",
+    "\n",
+    "    # create ConcreteSection object\n",
+    "    conc_sec = ConcreteSection(geom)\n",
+    "\n",
+    "    # plot section first time only\n",
+    "    if idx == 0:\n",
+    "        conc_sec.plot_section()\n",
+    "\n",
+    "    # perform moment curvature analysis and store results\n",
+    "    # bending about major axis so theta = pi/2\n",
+    "    res = conc_sec.moment_curvature_analysis(theta=np.pi / 2)\n",
+    "    moment_curvature_results.append(res)\n",
+    "\n",
+    "    # create plot label\n",
+    "    labels.append(conc.name)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d50cc1cc",
+   "metadata": {},
+   "source": [
+    "### Plotting Results\n",
+    "\n",
+    "We can plot the moment curvature results on a single plot by using the ``MomentCurvatureResults.plot_multiple_results()`` method. Note that individual plots can also be generated by using the ``plot_results()`` method."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "388d2ffa",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "MomentCurvatureResults.plot_multiple_results(\n",
+    "    moment_curvature_results=moment_curvature_results, labels=labels\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e7630e96",
+   "metadata": {},
+   "source": [
+    "In the above plot, the linear concrete response does not show any yielding behaviour and exhibits a much stiffer response when compared to the other two plots. This is because there is no cracking behaviour modelled into the linear concrete stress-strain profile and the concrete fails in compression before the steel reaches its yield stress. This can be confirmed by examining the ``failure_geometry`` attribute."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4437b147",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(moment_curvature_results[0].failure_geometry.material.name)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6b76a690",
+   "metadata": {},
+   "source": [
+    "Let's examine the moment curvature diagrams that do model cracking behaviour further."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "694e68d6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "MomentCurvatureResults.plot_multiple_results(\n",
+    "    moment_curvature_results=moment_curvature_results[1:], labels=labels[1:]\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5d74c7e6",
+   "metadata": {},
+   "source": [
+    "Both plots show similar behaviour with a couple of interesting differences:\n",
+    "\n",
+    "1. The non-linear concrete material is able to capture the initial uncracked behaviour and the softening that occurs after cracking. After cracking, the cracked responses are markedly similar.\n",
+    "2. The post yield behaviour for the non-linear material is softer than that of the linear material. This is because the concrete stress for the linear material can continue to increase as the curvature increases, as stresses are extrapolated in the ``ConcreteLinearNoTension`` stress-strain profile and there is no softening of the concrete stress. On the other hand, the non-linear concrete material does model this 'softening' and the resultant moment is thus lower."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "07857a87",
+   "metadata": {},
+   "source": [
+    "### Compare Cracking Moments\n",
+    "\n",
+    "Finally, we will compare the cracking moment obtained in an elastic analysis with that from the moment curvature analysis. First we compute the cracking moment using the ``calculate_cracked_properties()`` method."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "692bd7bf",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\n",
+    "    f\"M_cr = {conc_sec.calculate_cracked_properties(theta=np.pi / 2).m_cr / 1e6:.2f} kN.m\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c17e76df",
+   "metadata": {},
+   "source": [
+    "Now let's examine the non-linear concrete response in the initial elastic region."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "59b21eef",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "fix, ax = plt.subplots()\n",
+    "kappa = np.array(moment_curvature_results[-1].kappa)\n",
+    "moment = np.array(moment_curvature_results[-1].moment) / 1e6\n",
+    "ax.plot(kappa[:14], moment[:14], \"x-\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e803feb0",
+   "metadata": {},
+   "source": [
+    "It's clear in the above plot that the softening due to initial cracking occurs between 80 kN.m and 100 kN.m, which aligns well with the elastic result."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9cc5c61a",
+   "metadata": {},
+   "source": [
+    "## Varying Steel Properties\n",
+    "\n",
+    "We will now study the effect the steel stress-strain profile has on the moment curvature diagram.\n",
+    "\n",
+    "### Moment Curvature Analysis\n",
+    "\n",
+    "The below code loops through each steel material, assigning it to all the steel geometries and performs a moment curvature analysis. By not modifying the concrete material, we are using the last assigned property, i.e. non-linear concrete. Also note that we already have the results for the elastic-plastic steel as this was used in the first analysis."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "775a1f66",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# initialise list to store results and list to store labels\n",
+    "moment_curvature_results = [moment_curvature_results[-1]]\n",
+    "labels = [steel_material_list[0].name]\n",
+    "\n",
+    "# assign hardening steel material to rest of geometries in CompoundGeometry object\n",
+    "steel = steel_material_list[-1]\n",
+    "for g in geom.geoms[1:]:\n",
+    "    g.material = steel\n",
+    "\n",
+    "# create ConcreteSection object\n",
+    "conc_sec = ConcreteSection(geom)\n",
+    "\n",
+    "# perform moment curvature analysis and store results\n",
+    "# bending about major axis so theta = pi/2\n",
+    "res = conc_sec.moment_curvature_analysis(theta=np.pi / 2)\n",
+    "moment_curvature_results.append(res)\n",
+    "\n",
+    "# create plot label\n",
+    "labels.append(steel.name)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f6a5c927",
+   "metadata": {},
+   "source": [
+    "### Plotting Results\n",
+    "\n",
+    "We can plot the moment curvature results on a single plot by using the ``MomentCurvatureResults.plot_multiple_results()`` method."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2fdacc52",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "MomentCurvatureResults.plot_multiple_results(\n",
+    "    moment_curvature_results=moment_curvature_results, labels=labels\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7cbed231",
+   "metadata": {},
+   "source": [
+    "The above plot shows that the moment curvature response is identical up until the point of steel yielding, as expected. Beyond the yield point, the section with the hardening steel becomes slightly stiffer than the section with the perfectly plastic steel. This is because the stresses in the reinforcing steel continue to harden beyond the yield point, resulting in a slightly larger moment."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.12"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
