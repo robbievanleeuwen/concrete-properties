@@ -523,13 +523,20 @@ class MomentCurvatureResults:
         """Given a moment, uses the moment-curvature results to interpolate a curvature.
 
         Raises a ValueError if supplied moment is outside bounds of moment-curvature
-        results. (TODO)
+        results.
 
         :param float moment: Bending moment at which to obtain curvature
 
         :return: Curvature
         :rtype: float
         """
+
+        # check moment is within bounds of results
+        m_min = min(self.moment)
+        m_max = max(self.moment)
+
+        if moment > m_max or moment < m_min:
+            raise ValueError("moment must be within the bounds of the moment-curvature results.")
 
         f_kappa = interp1d(
             x=self.moment,

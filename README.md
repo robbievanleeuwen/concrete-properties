@@ -3,8 +3,15 @@
 
 [![Run Tests](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/tests.yml/badge.svg)](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/tests.yml) [![Lint with Black](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/black.yml/badge.svg)](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/black.yml) [![Build Documentation](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/build_docs.yml/badge.svg)](https://robbievanleeuwen.github.io/concrete-properties/) [![codecov](https://codecov.io/gh/robbievanleeuwen/concrete-properties/branch/master/graph/badge.svg?token=3WXMUQITTD)](https://codecov.io/gh/robbievanleeuwen/concrete-properties) [![PyPI version](https://badge.fury.io/py/concreteproperties.svg)](https://badge.fury.io/py/concreteproperties) [![Python versions](https://img.shields.io/badge/python-3.7%20%7C%203.8%20%7C%203.9-blue?style=flat&logo=python)](https://badge.fury.io/py/concreteproperties) [![GitHub license](https://img.shields.io/github/license/robbievanleeuwen/concrete-properties)](https://github.com/robbievanleeuwen/concrete-properties/blob/master/LICENSE.md)
 
-A python package to calculate the section properties of arbitrary reinforced concrete
-sections.
+*concreteproperties* is a python package that can be used to calculate the section
+properties of arbitrary reinforced concrete sections. *concreteproperties* can calculate
+gross, cracked and ultimate properties. It can perform moment curvature analyses
+and generate moment interaction and biaxial bending diagrams. On top of this,
+*concreteproperties* can also generate pretty stress plots!
+
+Here's an example of some of the non-linear output *concreteproperties* can generate:
+
+<img src="docs/source/_static/anim/anim_compress.gif" class="align-center" style="width:67.0%" alt="concreteproperties" />
 
 ## Installation:
 
@@ -16,7 +23,7 @@ pip install concreteproperties
 
 ## Documentation:
 
-The documentation for *concreteproperties* is currently under construction. The
+*concreteproperties* fully documented including examples and a fully documented API. The
 documentation can found at [https://robbievanleeuwen.github.io/concrete-properties](https://robbievanleeuwen.github.io/concrete-properties).
 
 ## Current Capabilities:

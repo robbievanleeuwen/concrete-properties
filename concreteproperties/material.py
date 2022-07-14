@@ -24,7 +24,8 @@ class Concrete:
         :class:`~concreteproperties.stress_strain_profile.ConcreteUltimateProfile`
     :param float alpha_squash: Factor that modifies the concrete compressive strength at
         squash load
-    :param float flexural_tensile_strength: Concrete flexural tensile strength
+    :param float flexural_tensile_strength: Absolute value of the concrete flexural
+        tensile strength
     :param str colour: Colour of the material for rendering
     """
 
