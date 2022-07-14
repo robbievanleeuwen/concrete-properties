@@ -84,6 +84,9 @@ intersphinx_mapping = {
 #
 html_theme = "pydata_sphinx_theme"
 
+# Define the json_url for our version switcher.
+json_url = "https://https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json"
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
@@ -109,6 +112,11 @@ html_theme_options = {
     "logo": {
         "image_light": "cp_logo.png",
         "image_dark": "cp_logo_dark.png",
+    },
+    "navbar_start": ["navbar-logo", "version-switcher"],
+     "switcher": {
+        "json_url": json_url,
+        "version_match": "latest",
     },
 }
 
