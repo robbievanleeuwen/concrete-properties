@@ -536,7 +536,9 @@ class MomentCurvatureResults:
         m_max = max(self.moment)
 
         if moment > m_max or moment < m_min:
-            raise ValueError("moment must be within the bounds of the moment-curvature results.")
+            raise ValueError(
+                "moment must be within the bounds of the moment-curvature results."
+            )
 
         f_kappa = interp1d(
             x=self.moment,
