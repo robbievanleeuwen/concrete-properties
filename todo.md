@@ -20,7 +20,7 @@
   - [ ] Profiling
   - [ ] Clean up all the na_local, points_na etc. etc.
 - [ ] Add prestressing
-- [ ] Docs version control
+- [x] Docs version control
 - [ ] Start to add design codes
 
 # Version Instructions
