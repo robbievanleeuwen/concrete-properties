@@ -63,7 +63,7 @@
     "        tension_softening_stiffness=10e3,\n",
     "    ),\n",
     "    ultimate_stress_strain_profile=RectangularStressBlock(\n",
-    "        compressive_strength=32,\n",
+    "        compressive_strength=40,\n",
     "        alpha=0.79,\n",
     "        gamma=0.87,\n",
     "        ultimate_strain=0.003,\n",
@@ -475,13 +475,24 @@
   {
    "cell_type": "code",
    "execution_count": null,
+   "id": "de1865a2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for i in range(len(mi_res.m)):\n",
+    "    print(f\"n={mi_res.n[i]/1e3:.2f} kN; m={mi_res.m[i] / 1e6:.2f} kN.m\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
    "id": "a7dd2099",
    "metadata": {},
    "outputs": [],
    "source": [
     "ultimate_res_pure = conc_sec.ultimate_bending_capacity()\n",
-    "ultimate_res_bal = conc_sec.ultimate_bending_capacity(n=2750e3)\n",
-    "ultimate_res_decomp = conc_sec.ultimate_bending_capacity(n=7450e3)"
+    "ultimate_res_bal = conc_sec.ultimate_bending_capacity(n=3500e3)\n",
+    "ultimate_res_decomp = conc_sec.ultimate_bending_capacity(n=9000e3)"
    ]
   },
   {

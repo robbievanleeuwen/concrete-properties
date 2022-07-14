@@ -718,13 +718,20 @@
         <span class="sd">&quot;&quot;&quot;Given a moment, uses the moment-curvature results to interpolate a curvature.</span>
 
 <span class="sd">        Raises a ValueError if supplied moment is outside bounds of moment-curvature</span>
-<span class="sd">        results. (TODO)</span>
+<span class="sd">        results.</span>
 
 <span class="sd">        :param float moment: Bending moment at which to obtain curvature</span>
 
 <span class="sd">        :return: Curvature</span>
 <span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># check moment is within bounds of results</span>
+        <span class="n">m_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moment</span><span class="p">)</span>
+        <span class="n">m_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moment</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">moment</span> <span class="o">&gt;</span> <span class="n">m_max</span> <span class="ow">or</span> <span class="n">moment</span> <span class="o">&lt;</span> <span class="n">m_min</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;moment must be within the bounds of the moment-curvature results.&quot;</span><span class="p">)</span>
 
         <span class="n">f_kappa</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span>
             <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">moment</span><span class="p">,</span>

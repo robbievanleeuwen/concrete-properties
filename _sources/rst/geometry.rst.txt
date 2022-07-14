@@ -29,7 +29,36 @@ in the *sectionproperties* |sp_docs_link|.
 Axis Conventions
 ----------------
 
-TODO - also include m_x, m_y, mu, Ixx, Iyy, Ixy, Iuu etc
+Reinforced concrete cross-sections in *concreteproperties* are constructed in the
+``x-y`` plane. A key feature of *concreteproperties* is that the analyses are not
+restricted to bending about the ``x`` or ``y`` axis. All analysis types (were relevant)
+give the user the option of performing the analysis about a rotated ``u-v`` axis,
+defined by the angle :math:`\theta` (in radians).
+
+.. image:: ../_static/axis_convention.png
+ :width: 67 %
+ :alt: axis-convention
+ :align: center
+
+Results in *concreteproperties* are labelled with consistent references to the axes.
+Below are a few examples:
+
+- ``m_x`` and ``m_y`` relate to bending moments about the ``x`` and ``y`` axes
+  respectively.
+- ``m_u`` relates to a bending moment about the rotated local ``u`` axis, defined by the
+  angle ``theta``.
+- ``ixx_g`` and ``iyy_g`` relate to the second moments of area about the global ``x``
+  and ``y`` axes respectively. The global axis refers to an axis centred at the origin
+  (0, 0).
+- ``ixx_c`` and ``iyy_c`` relate to the second moments of area about the centroidal
+  ``x`` and ``y`` axes respectively. The centroidal axis refers to an axis centred at
+  the elastic centroid (``cx``, ``cy``).
+- ``i11`` and ``i22`` relate to the second moments of area about the principal
+  centroidal ``11`` and ``22`` axes respectively. The principal centroidal axis refers
+  to an axis centred at the elastic centroid (``cx``, ``cy``), rotated by the principal
+  bending angle ``phi``.
+- ``iuu`` relates to the second moment of area about the rotated local ``u`` axis,
+  defined by the angle ``theta``.
 
 
 Primitive Sections
