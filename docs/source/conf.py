@@ -114,7 +114,7 @@ html_theme_options = {
         "image_dark": "cp_logo_dark.png",
     },
     "navbar_start": ["navbar-logo", "version-switcher"],
-     "switcher": {
+    "switcher": {
         "json_url": json_url,
         "version_match": "latest",
     },
