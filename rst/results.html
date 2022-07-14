@@ -35,7 +35,6 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -72,6 +71,86 @@
   
   
 </a>
+    
+    <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        latest  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables rst/results and {'json_url': 'https://https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json', 'version_match': 'latest'}.
+-->
+
+<script type="text/javascript">
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "rst/results.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "rst/results.html";
+        let btn = document.getElementById("version_switcher_button");
+        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
+        btn.dataset["activeVersionName"] = "";
+        btn.dataset["activeVersion"] = "";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            // Add dataset values for the version and name in case people want
+            // to apply CSS styling based on this information.
+            node.dataset["versionName"] = entry.name;
+            node.dataset["version"] = entry.version;
+
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 0.0.6 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "latest") {
+                node.classList.add("active");
+                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
+                btn.dataset["activeVersion"] = entry.version;
+            }
+        });
+    });
+})();
+</script>
     
   </div>
 
@@ -360,7 +439,7 @@ calling the
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For an application of the above, see the example
-<a class="reference internal" href="../notebooks/area_properties.html"><span class="std std-ref">Calculating Area Properties</span></a>.</p>
+<span class="xref std std-ref">/notebooks/area_properties.ipynb</span>.</p>
 </div>
 </div>
 <div class="section" id="cracked-area-properties">
@@ -436,7 +515,7 @@ cracked properties as attributes within the current object.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For an application of the above, see the example
-<a class="reference internal" href="../notebooks/cracked_properties.html"><span class="std std-ref">Calculating Cracked Properties</span></a>.</p>
+<span class="xref std std-ref">/notebooks/cracked_properties.ipynb</span>.</p>
 </div>
 </div>
 <div class="section" id="moment-curvature-analysis">
@@ -510,7 +589,7 @@ failed, ending the moment curvature analysis</p></li>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For an application of the above, see the example
-<a class="reference internal" href="../notebooks/moment_curvature.html"><span class="std std-ref">Moment Curvature Analysis</span></a>.</p>
+<span class="xref std std-ref">/notebooks/moment_curvature.ipynb</span>.</p>
 </div>
 </div>
 <div class="section" id="ultimate-bending-capacity">
@@ -557,7 +636,7 @@ axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For an application of the above, see the example
-<a class="reference internal" href="../notebooks/ultimate_bending.html"><span class="std std-ref">Ultimate Bending Capacity</span></a>.</p>
+<span class="xref std std-ref">/notebooks/ultimate_bending.ipynb</span>.</p>
 </div>
 </div>
 <div class="section" id="moment-interaction-diagram">
@@ -627,7 +706,7 @@ This object can be used to plot moment interaction results.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For an application of the above, see the example
-<a class="reference internal" href="../notebooks/moment_interaction.html"><span class="std std-ref">Moment Interaction Diagram</span></a>.</p>
+<span class="xref std std-ref">/notebooks/moment_interaction.ipynb</span>.</p>
 </div>
 </div>
 <div class="section" id="biaxial-bending-diagram">
@@ -697,7 +776,7 @@ This object can be used to plot biaxial bending results.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For an application of the above, see the example
-<a class="reference internal" href="../notebooks/biaxial_bending.html"><span class="std std-ref">Biaxial Bending Diagram</span></a>.</p>
+<span class="xref std std-ref">/notebooks/biaxial_bending.ipynb</span>.</p>
 </div>
 </div>
 <div class="section" id="stress-analysis">
@@ -789,7 +868,7 @@ the neutral axis (<code class="docutils literal notranslate"><span class="pre">f
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For an application of the above, see the example
-<a class="reference internal" href="../notebooks/stress_analysis.html"><span class="std std-ref">Stress Analysis</span></a>.</p>
+<span class="xref std std-ref">/notebooks/stress_analysis.ipynb</span>.</p>
 </div>
 </div>
 </div>
