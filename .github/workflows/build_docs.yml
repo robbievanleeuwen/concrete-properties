@@ -24,6 +24,7 @@ jobs:
     - name: Commit documentation changes
       run: |
         git clone https://github.com/robbievanleeuwen/concrete-properties.git --branch gh-pages --single-branch gh-pages
+        mkdir 2.1.0
         cp -r docs/build/html/* gh-pages/2.1.0
         cd gh-pages
         touch .nojekyll

@@ -11,7 +11,7 @@ and generate moment interaction and biaxial bending diagrams. On top of this,
 
 Here's an example of some of the non-linear output *concreteproperties* can generate:
 
-<img src="docs/source/_static/anim/anim_compress.gif" class="align-center" style="width:67.0%" alt="concreteproperties" />
+<img src="docs/source/_static/anim/anim_compress.gif" width="300"/>
 
 ## Installation:
 
