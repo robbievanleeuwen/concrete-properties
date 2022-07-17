@@ -16,5 +16,6 @@ Package Modules
     concreteproperties.concrete_section
     concreteproperties.analysis_section
     concreteproperties.results
+    concreteproperties.design_codes
     concreteproperties.post
     concreteproperties.utils

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List, Optional, TYPE_CHECKING
+from typing import List, Tuple, Optional, TYPE_CHECKING
 import warnings
 import numpy as np
 import matplotlib.pyplot as plt
@@ -426,12 +426,15 @@ class MomentCurvatureResults:
     def plot_results(
         self,
         m_scale: Optional[float] = 1e-6,
+        fmt: Optional[str] = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots the moment curvature results.
 
         :param m_scale: Scaling factor to apply to bending moment
         :type m_scale: Optional[float]
+        :param fmt: Plot format string
+        :type fmt: Optional[str]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
@@ -446,7 +449,7 @@ class MomentCurvatureResults:
             fig,
             ax,
         ):
-            ax.plot(self.kappa, moments, "o-", markersize=3)
+            ax.plot(self.kappa, moments, fmt)
             plt.xlabel("Curvature")
             plt.ylabel("Moment")
             plt.grid(True)
@@ -458,6 +461,7 @@ class MomentCurvatureResults:
         moment_curvature_results: List[MomentCurvatureResults],
         labels: List[str],
         m_scale: Optional[float] = 1e-6,
+        fmt: Optional[str] = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots multiple moment curvature results.
@@ -469,6 +473,8 @@ class MomentCurvatureResults:
         :type labels: List[str]
         :param float m_scale: Scaling factor to apply to bending moment
         :type m_scale: Optional[float]
+        :param fmt: Plot format string
+        :type fmt: Optional[str]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
@@ -486,7 +492,7 @@ class MomentCurvatureResults:
                 kappas = np.array(mk_result.kappa)
                 moments = np.array(mk_result.moment) * m_scale
 
-                ax.plot(kappas, moments, "o-", label=labels[idx], markersize=3)
+                ax.plot(kappas, moments, fmt, label=labels[idx])
 
             plt.xlabel("Curvature")
             plt.ylabel("Moment")
@@ -522,10 +528,10 @@ class MomentCurvatureResults:
     ) -> float:
         """Given a moment, uses the moment-curvature results to interpolate a curvature.
 
-        Raises a ValueError if supplied moment is outside bounds of moment-curvature
-        results.
-
         :param float moment: Bending moment at which to obtain curvature
+
+        :raises ValueError: If supplied moment is outside bounds of moment-curvature
+            results.
 
         :return: Curvature
         :rtype: float
@@ -608,19 +614,47 @@ class UltimateBendingResults:
 class MomentInteractionResults:
     """Class for storing moment interaction results.
 
-    :var n: List of axial forces
-    :vartype n: List[float]
-    :var m: List of bending moments
-    :vartype m: List[float]
+    :var results: List of ultimate bending result objects
+    :vartype results: List[:class:`~concreteproperties.results.UltimateBendingResults`]
+    :var results_neg: List of ultimate bending result objects (for negative bending)
+    :vartype results: List[:class:`~concreteproperties.results.UltimateBendingResults`]
     """
 
-    n: List[float] = field(default_factory=list)
-    m: List[float] = field(default_factory=list)
+    results: List[UltimateBendingResults] = field(default_factory=list)
+    results_neg: List[UltimateBendingResults] = field(default_factory=list)
+
+    def get_results_lists(
+        self,
+        neg=False,
+    ) -> Tuple[List[float]]:
+        """Returns a list of axial forces and moments.
+
+        :param bool neg: If True, gets the negative bending results
+
+        :return: List of axial forces and moments *(n, m)*
+        :rtype: Tuple[List[float]]
+        """
+
+        # build list of results
+        n_list = []
+        m_list = []
+
+        if neg:
+            results_list = self.results_neg
+        else:
+            results_list = self.results
+
+        for result in results_list:
+            n_list.append(result.n)
+            m_list.append(result.m_u)
+
+        return n_list, m_list
 
     def plot_diagram(
         self,
         n_scale: Optional[float] = 1e-3,
         m_scale: Optional[float] = 1e-6,
+        fmt: Optional[str] = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots a moment interaction diagram.
@@ -629,6 +663,8 @@ class MomentInteractionResults:
         :type n_scale: Optional[float]
         :param n_scale: Scaling factor to apply to axial force
         :type m_scale: Optional[float]
+        :param fmt: Plot format string
+        :type fmt: Optional[str]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
@@ -640,11 +676,23 @@ class MomentInteractionResults:
             fig,
             ax,
         ):
-            # scale results
-            forces = np.array(self.n) * n_scale
-            moments = np.array(self.m) * m_scale
+            # get results
+            n_list, m_list = self.get_results_lists()
 
-            ax.plot(moments, forces, "o-", markersize=3)
+            # scale results
+            forces = np.array(n_list) * n_scale
+            moments = np.array(m_list) * m_scale
+
+            # if negative results
+            if len(self.results_neg) > 0:
+                # get results
+                n_list, m_list = self.get_results_lists(neg=True)
+
+                # scale results
+                forces = np.hstack((forces, np.flip(np.array(n_list) * n_scale)))
+                moments = np.hstack((moments, np.flip(np.array(m_list) * m_scale)))
+
+            ax.plot(moments, forces, fmt)
 
             plt.xlabel("Bending Moment")
             plt.ylabel("Axial Force")
@@ -658,6 +706,7 @@ class MomentInteractionResults:
         labels: List[str],
         n_scale: Optional[float] = 1e-3,
         m_scale: Optional[float] = 1e-6,
+        fmt: Optional[str] = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots multiple moment interaction diagrams.
@@ -671,6 +720,8 @@ class MomentInteractionResults:
         :type n_scale: Optional[float]
         :param float m_scale: Scaling factor to apply to bending moment
         :type m_scale: Optional[float]
+        :param fmt: Plot format string
+        :type fmt: Optional[str]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
@@ -684,11 +735,22 @@ class MomentInteractionResults:
         ):
             # for each M-N curve
             for idx, mi_result in enumerate(moment_interaction_results):
-                # scale results
-                forces = np.array(mi_result.n) * n_scale
-                moments = np.array(mi_result.m) * m_scale
+                n_list, m_list = mi_result.get_results_lists()
 
-                ax.plot(moments, forces, "o-", label=labels[idx], markersize=3)
+                # scale results
+                forces = np.array(n_list) * n_scale
+                moments = np.array(m_list) * m_scale
+
+                # if negative results
+                if len(mi_result.results_neg) > 0:
+                    # get results
+                    n_list, m_list = mi_result.get_results_lists(neg=True)
+
+                    # scale results
+                    forces = np.hstack((forces, np.flip(np.array(n_list) * n_scale)))
+                    moments = np.hstack((moments, np.flip(np.array(m_list) * m_scale)))
+
+                ax.plot(moments, forces, fmt, label=labels[idx])
 
             plt.xlabel("Bending Moment")
             plt.ylabel("Axial Force")
@@ -706,30 +768,51 @@ class BiaxialBendingResults:
     """Class for storing biaxial bending results.
 
     :param float n: Net axial force
-    :var m_x: List of bending moments about the x-axis
-    :vartype m_x: List[float]
-    :var m_y: List of bending moments about the y-axis
-    :vartype m_y: List[float]
+    :var results: List of ultimate bending result objects
+    :vartype results: List[:class:`~concreteproperties.results.UltimateBendingResults`]
     """
 
     n: float
-    m_x: List[float] = field(default_factory=list)
-    m_y: List[float] = field(default_factory=list)
+    results: List[UltimateBendingResults] = field(default_factory=list)
+
+    def get_results_lists(
+        self,
+    ) -> Tuple[List[float]]:
+        """Returns a list and moments about the ``x`` and ``y`` axes.
+
+        :return: List of axial forces and moments *(mx, my)*
+        :rtype: Tuple[List[float]]
+        """
+
+        # build list of results
+        m_x_list = []
+        m_y_list = []
+
+        for result in self.results:
+            m_x_list.append(result.m_x)
+            m_y_list.append(result.m_y)
+
+        return m_x_list, m_y_list
 
     def plot_diagram(
         self,
         m_scale: Optional[float] = 1e-6,
+        fmt: Optional[str] = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots a biaxial bending diagram.
 
         :param m_scale: Scaling factor to apply to bending moment
         :type m_scale: Optional[float]
+        :param fmt: Plot format string
+        :type fmt: Optional[str]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
         :rtype: :class:`matplotlib.axes.Axes`
         """
+
+        m_x_list, m_y_list = self.get_results_lists()
 
         # create plot and setup the plot
         with plotting_context(
@@ -739,10 +822,10 @@ class BiaxialBendingResults:
             ax,
         ):
             # scale results
-            m_x = np.array(self.m_x) * m_scale
-            m_y = np.array(self.m_y) * m_scale
+            m_x = np.array(m_x_list) * m_scale
+            m_y = np.array(m_y_list) * m_scale
 
-            ax.plot(m_x, m_y, "o-", markersize=3)
+            ax.plot(m_x, m_y, fmt)
 
             plt.xlabel("Bending Moment $M_x$")
             plt.ylabel("Bending Moment $M_y$")
@@ -755,6 +838,7 @@ class BiaxialBendingResults:
         biaxial_bending_results: List[BiaxialBendingResults],
         n_scale: Optional[float] = 1e-3,
         m_scale: Optional[float] = 1e-6,
+        fmt: Optional[str] = "-",
     ) -> matplotlib.axes.Axes:
         """Plots multiple biaxial bending diagrams in a 3D plot.
 
@@ -765,6 +849,8 @@ class BiaxialBendingResults:
         :type n_scale: Optional[float]
         :param float m_scale: Scaling factor to apply to bending moment
         :type m_scale: Optional[float]
+        :param fmt: Plot format string
+        :type fmt: Optional[str]
 
         :return: Matplotlib axes object
         :rtype: :class:`matplotlib.axes.Axes`
@@ -776,12 +862,14 @@ class BiaxialBendingResults:
 
         # for each curve
         for bb_result in biaxial_bending_results:
-            # scale results
-            n_list = bb_result.n * n_scale * np.ones(len(bb_result.m_x))
-            m_x_list = np.array(bb_result.m_x) * m_scale
-            m_y_list = np.array(bb_result.m_y) * m_scale
+            m_x_list, m_y_list = bb_result.get_results_lists()
 
-            ax.plot3D(m_x_list, m_y_list, n_list, "-")
+            # scale results
+            n_list = bb_result.n * n_scale * np.ones(len(m_x_list))
+            m_x_list = np.array(m_x_list) * m_scale
+            m_y_list = np.array(m_y_list) * m_scale
+
+            ax.plot3D(m_x_list, m_y_list, n_list, fmt)
 
         ax.set_xlabel("Bending Moment $M_x$")
         ax.set_ylabel("Bending Moment $M_y$")
