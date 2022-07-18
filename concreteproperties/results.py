@@ -15,6 +15,8 @@ from mpl_toolkits import mplot3d
 from scipy.interpolate import interp1d
 from rich.console import Console
 from rich.table import Table
+from shapely.geometry import Point
+from shapely.geometry.polygon import Polygon
 
 from concreteproperties.post import plotting_context
 from sectionproperties.pre.geometry import CompoundGeometry
@@ -762,6 +764,35 @@ class MomentInteractionResults:
 
         return ax
 
+    def point_in_diagram(
+        self,
+        n: float,
+        m: float,
+    ) -> bool:
+        """Determines whether or not the combination of axial force and moment lies
+        within the moment interaction diagram.
+
+        :param float n: Axial force
+        :param float m: Bending moment
+
+        :returns: True, if combination of axial force and moment is within the diagram
+        :rtype: bool
+        """
+
+        # create a polygon from points on diagram
+        poly_points = []
+
+        for ult_res in self.results:
+            poly_points.append((ult_res.m_u, ult_res.n))
+
+        for ult_res in self.results_neg:
+            poly_points.append((ult_res.m_u, ult_res.n))
+
+        poly = Polygon(poly_points)
+        point = Point(m, n)
+
+        return poly.contains(point)
+
 
 @dataclass
 class BiaxialBendingResults:
@@ -877,6 +908,32 @@ class BiaxialBendingResults:
         plt.show()
 
         return ax
+
+    def point_in_diagram(
+        self,
+        m_x: float,
+        m_y: float,
+    ) -> bool:
+        """Determines whether or not the combination of bending moments lies within the
+        biaxial bending diagram.
+
+        :param float m_x: Bending moment about the x-axis
+        :param float m_y: Bending moment about the y-axis
+
+        :returns: True, if combination of bendings moments is within the diagram
+        :rtype: bool
+        """
+
+        # create a polygon from points on diagram
+        poly_points = []
+
+        for ult_res in self.results:
+            poly_points.append((ult_res.m_x, ult_res.m_y))
+
+        poly = Polygon(poly_points)
+        point = Point(m_x, m_y)
+
+        return poly.contains(point)
 
 
 @dataclass

@@ -521,6 +521,12 @@ class AS3600(DesignCode):
         """Calculates the ultimate bending capacity with capacity factors to
         AS 3600:2018.
 
+        Note an axial load passed to
+        :meth:`~concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity`
+        is unfactored and will not equal resultant factored axial load. Use
+        :meth:`~concreteproperties.design_codes.AS3600.moment_interaction_diagram` if
+        required.
+
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
         :type phi_0: Optional[float]
         :param kwargs: Keyword arguments passed to

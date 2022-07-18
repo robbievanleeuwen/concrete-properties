@@ -21,7 +21,7 @@
   - [ ] Clean up all the na_local, points_na etc. etc.
 - [ ] Add prestressing
 - [x] Docs version control
-- [ ] Start to add design codes
+- [x] Start to add design codes
 
 # Version Instructions
 1. Change version in __init__.py
