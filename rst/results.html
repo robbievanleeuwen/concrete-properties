@@ -40,7 +40,7 @@
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="next" title="Design Codes" href="design_codes.html" />
     <link rel="prev" title="Analysis" href="analysis.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -192,6 +192,12 @@ function checkPageExistsAndRedirect(event) {
 <li class="toctree-l1 current active nav-item">
  <a class="current reference internal nav-link" href="#">
   Results
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="design_codes.html">
+  Design Codes
  </a>
 </li>
 
@@ -538,19 +544,20 @@ axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</
 <dd class="field-even"><ul class="simple">
 <li><p><strong>kappa</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of curvatures</p></li>
 <li><p><strong>moment</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of bending moments</p></li>
-<li><p><strong>failure_geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.Geometry</span></code></a>) – Geometry object of the region of the cross-section that
+<li><p><strong>failure_geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.Geometry</span></code></a>) – Geometry object of the region of the cross-section that
 failed, ending the moment curvature analysis</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">plot_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentCurvatureResults.plot_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">plot_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentCurvatureResults.plot_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Plots the moment curvature results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot format string</p></li>
 <li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="gen/concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
 </ul>
 </dd>
@@ -565,7 +572,7 @@ failed, ending the moment curvature analysis</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment_curvature_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen/concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><span class="pre">MomentCurvatureResults</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentCurvatureResults.plot_multiple_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment_curvature_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen/concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><span class="pre">MomentCurvatureResults</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentCurvatureResults.plot_multiple_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Plots multiple moment curvature results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -573,6 +580,7 @@ failed, ending the moment curvature analysis</p></li>
 <li><p><strong>moment_curvature_results</strong> – List of moment curvature results objects</p></li>
 <li><p><strong>labels</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of labels for each moment curvature diagram</p></li>
 <li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot format string</p></li>
 <li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="gen/concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
 </ul>
 </dd>
@@ -653,20 +661,21 @@ This object can be used to plot moment interaction results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Variables</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of axial forces</p></li>
-<li><p><strong>m</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of bending moments</p></li>
+<li><p><strong>results</strong> (List[<a class="reference internal" href="gen/concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code></a>]) – List of ultimate bending result objects</p></li>
+<li><p><strong>results_neg</strong> – List of ultimate bending result objects (for negative bending)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">plot_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentInteractionResults.plot_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">plot_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentInteractionResults.plot_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Plots a moment interaction diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to axial force</p></li>
 <li><p><strong>n_scale</strong> – Scaling factor to apply to axial force</p></li>
+<li><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot format string</p></li>
 <li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="gen/concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
 </ul>
 </dd>
@@ -681,7 +690,7 @@ This object can be used to plot moment interaction results.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment_interaction_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><span class="pre">MomentInteractionResults</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentInteractionResults.plot_multiple_diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment_interaction_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><span class="pre">MomentInteractionResults</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentInteractionResults.plot_multiple_diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Plots multiple moment interaction diagrams.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -690,6 +699,7 @@ This object can be used to plot moment interaction results.</p>
 <li><p><strong>labels</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of labels for each moment interaction diagram</p></li>
 <li><p><strong>n_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to axial force</p></li>
 <li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot format string</p></li>
 <li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="gen/concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
 </ul>
 </dd>
@@ -698,6 +708,27 @@ This object can be used to plot moment interaction results.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">point_in_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#MomentInteractionResults.point_in_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Determines whether or not the combination of axial force and moment lies
+within the moment interaction diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>float</em>) – Axial force</p></li>
+<li><p><strong>m</strong> (<em>float</em>) – Bending moment</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True, if combination of axial force and moment is within the diagram</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -725,20 +756,18 @@ This object can be used to plot biaxial bending results.</p>
 <dd class="field-odd"><p><strong>n</strong> (<em>float</em>) – Net axial force</p>
 </dd>
 <dt class="field-even">Variables</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>m_x</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of bending moments about the x-axis</p></li>
-<li><p><strong>m_y</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of bending moments about the y-axis</p></li>
-</ul>
+<dd class="field-even"><p><strong>results</strong> (List[<a class="reference internal" href="gen/concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code></a>]) – List of ultimate bending result objects</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">plot_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">plot_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Plots a biaxial bending diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot format string</p></li>
 <li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="gen/concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
 </ul>
 </dd>
@@ -753,7 +782,7 @@ This object can be used to plot biaxial bending results.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">biaxial_bending_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><span class="pre">BiaxialBendingResults</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_multiple_diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">biaxial_bending_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><span class="pre">BiaxialBendingResults</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_multiple_diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Plots multiple biaxial bending diagrams in a 3D plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -761,6 +790,7 @@ This object can be used to plot biaxial bending results.</p>
 <li><p><strong>biaxial_bending_results</strong> (List[<a class="reference internal" href="gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code></a>]) – List of biaxial bending results objects</p></li>
 <li><p><strong>n_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to axial force</p></li>
 <li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot format string</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -768,6 +798,27 @@ This object can be used to plot biaxial bending results.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">point_in_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/concreteproperties/results.html#BiaxialBendingResults.point_in_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Determines whether or not the combination of bending moments lies within the
+biaxial bending diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m_x</strong> (<em>float</em>) – Bending moment about the x-axis</p></li>
+<li><p><strong>m_y</strong> (<em>float</em>) – Bending moment about the y-axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True, if combination of bendings moments is within the diagram</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -806,7 +857,7 @@ present in the stress analysis, which can be visualised by calling the
 analysis section</p></li>
 <li><p><strong>concrete_forces</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>]</em><em>]</em>) – List of net forces for each concrete analysis section and its
 lever arm to the neutral axis (<code class="docutils literal notranslate"><span class="pre">force</span></code>, <code class="docutils literal notranslate"><span class="pre">lever_arm</span></code>)</p></li>
-<li><p><strong>steel_geometries</strong> (List[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.Geometry</span></code></a>]) – List of steel geometry objects present in the stress analysis</p></li>
+<li><p><strong>steel_geometries</strong> (List[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.Geometry</span></code></a>]) – List of steel geometry objects present in the stress analysis</p></li>
 <li><p><strong>steel_stresses</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of steel stresses for each steel geometry</p></li>
 <li><p><strong>steel_strains</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of steel strains for each steel geometry</p></li>
 <li><p><strong>steel_forces</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>]</em><em>]</em>) – List of net forces for each steel geometry and its lever arm to
@@ -889,10 +940,10 @@ the neutral axis (<code class="docutils literal notranslate"><span class="pre">f
           <p class="prev-next-title">Analysis</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="examples.html" title="next page">
+  <a class='right-next' id="next-link" href="design_codes.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Examples</p>
+      <p class="prev-next-title">Design Codes</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

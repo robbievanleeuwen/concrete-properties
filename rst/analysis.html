@@ -196,6 +196,12 @@ function checkPageExistsAndRedirect(event) {
 </li>
 
 <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="design_codes.html">
+  Design Codes
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="examples.html">
   Examples
  </a>
@@ -371,16 +377,16 @@ function checkPageExistsAndRedirect(event) {
 display the results obtained from these analyses.</p>
 <p>An analysis in <em>concreteproperties</em> begins by creating a
 <a class="reference internal" href="gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> object from a
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> object with assigned
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> object with assigned
 material properties.</p>
 <dl class="py class">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteSection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.1)"><span class="pre">CompoundGeometry</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteSection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.2)"><span class="pre">CompoundGeometry</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Class for a reinforced concrete section.</p>
 <p>Inits the ConcreteSection class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.CompoundGeometry</span></code></a>) – <em>sectionproperties</em> compound geometry object describing the
+<dd class="field-odd"><p><strong>geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.CompoundGeometry</span></code></a>) – <em>sectionproperties</em> compound geometry object describing the
 reinforced concrete section</p>
 </dd>
 </dl>
@@ -511,7 +517,7 @@ method. By default the ultimate bending capacity is calculated for bending about
 angle <code class="docutils literal notranslate"><span class="pre">theta</span></code> and axial force <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">ConcreteSection.</span></span><span class="sig-name descname"><span class="pre">ultimate_bending_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="gen/concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">results.UltimateBendingResults</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.ultimate_bending_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ConcreteSection.</span></span><span class="sig-name descname"><span class="pre">ultimate_bending_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="gen/concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">UltimateBendingResults</span></a></span></span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.ultimate_bending_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Given a neutral axis angle <cite>theta</cite> and an axial force <cite>n</cite>, calculates the
 ultimate bending capacity.</p>
 <dl class="field-list simple">
@@ -569,7 +575,7 @@ bending case.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>theta</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Angle (in radians) the neutral axis makes with the horizontal axis
 (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
-<li><p><strong>m_neg</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – If set to true, also calculates the moment interaction for
+<li><p><strong>m_neg</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – If set to True, also calculates the moment interaction for
 <span class="math notranslate nohighlight">\(\theta = \theta + \pi\)</span>, i.e. sagging and hogging</p></li>
 <li><p><strong>n_points</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Number of calculation points between the decompression point
 and the pure bending point</p></li>

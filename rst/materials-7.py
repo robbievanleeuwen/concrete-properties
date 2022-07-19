@@ -1,7 +1,8 @@
-from concreteproperties.stress_strain_profile import BilinearStressStrain
+from concreteproperties.stress_strain_profile import RectangularStressBlock
 
-BilinearStressStrain(
+RectangularStressBlock(
     compressive_strength=40,
-    compressive_strain=0.00175,
-    ultimate_strain=0.0035,
+    alpha=0.85,
+    gamma=0.77,
+    ultimate_strain=0.003,
 ).plot_stress_strain()

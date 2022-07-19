@@ -116,7 +116,7 @@ This object can be used to plot moment interaction results.
 
 ..  autoclass:: concreteproperties.results.MomentInteractionResults()
   :noindex:
-  :members:
+  :members: plot_diagram, plot_multiple_diagrams, point_in_diagram
 
 .. seealso::
   For an application of the above, see the example
@@ -133,7 +133,7 @@ This object can be used to plot biaxial bending results.
 
 ..  autoclass:: concreteproperties.results.BiaxialBendingResults()
   :noindex:
-  :members:
+  :members: plot_diagram, plot_multiple_diagrams, point_in_diagram
 
 .. seealso::
   For an application of the above, see the example

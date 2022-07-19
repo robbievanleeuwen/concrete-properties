@@ -1,10 +1,7 @@
-from concreteproperties.stress_strain_profile import EurocodeNonLinear
+from concreteproperties.stress_strain_profile import ConcreteLinearNoTension
 
-EurocodeNonLinear(
-    elastic_modulus=35e3,
-    ultimate_strain=0.0035,
-    compressive_strength=40,
-    compressive_strain=0.0023,
-    tensile_strength=3.5,
-    tension_softening_stiffness=7e3,
+ConcreteLinearNoTension(
+  elastic_modulus=35e3,
+  ultimate_strain=0.003,
+  compressive_strength=40,
 ).plot_stress_strain()

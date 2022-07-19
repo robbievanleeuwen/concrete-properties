@@ -192,6 +192,12 @@ function checkPageExistsAndRedirect(event) {
 </li>
 
 <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../rst/design_codes.html">
+  Design Codes
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../rst/examples.html">
   Examples
  </a>
@@ -501,14 +507,20 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="ConcreteSection.calculate_gross_plastic_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_gross_plastic_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="n">max_compressive_strain</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculates and stores gross section plastic properties.</span>
 
 <span class="sd">        Calculates the plastic centroid and squash load assuming all steel is at yield</span>
-<span class="sd">        and the concrete experiences a stress of alpha_squash * f&#39;c.</span>
+<span class="sd">        and the concrete experiences a stress of alpha_squash * f&#39;c. Providing</span>
+<span class="sd">        max_compressive_strain limits the compressive strain in the steel.</span>
 
 <span class="sd">        Calculates tensile load assuming all steel is at yield and the concrete is</span>
 <span class="sd">        entirely cracked.</span>
+
+<span class="sd">        :param max_compressive_strain: Maximum compressive strain in the steel under</span>
+<span class="sd">            squash load</span>
+<span class="sd">        :type max_compressive_strain: Optional[float]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># initialise the squash load, tensile load and squash moment variables</span>
@@ -542,8 +554,16 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">centroid</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
 
             <span class="c1"># calculate compressive and tensile force</span>
-            <span class="n">force_c</span> <span class="o">=</span> <span class="n">area</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">yield_strength</span>
-            <span class="n">force_t</span> <span class="o">=</span> <span class="o">-</span><span class="n">force_c</span>
+            <span class="k">if</span> <span class="n">max_compressive_strain</span><span class="p">:</span>
+                <span class="n">force_c</span> <span class="o">=</span> <span class="n">area</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span>
+                    <span class="n">strain</span><span class="o">=</span><span class="n">max_compressive_strain</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">force_c</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">area</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">yield_strength</span>
+                <span class="p">)</span>
+
+            <span class="n">force_t</span> <span class="o">=</span> <span class="o">-</span><span class="n">area</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">yield_strength</span>
 
             <span class="c1"># add to totals</span>
             <span class="n">squash_load</span> <span class="o">+=</span> <span class="n">force_c</span>
@@ -1074,7 +1094,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">:</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Given a neutral axis angle `theta` and an axial force `n`, calculates the</span>
 <span class="sd">        ultimate bending capacity.</span>
 
@@ -1118,7 +1138,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">ultimate_results</span><span class="p">:</span> <span class="n">results</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">,</span>
+        <span class="n">ultimate_results</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates</span>
 <span class="sd">        the difference between the target net axial force `n` and the axial force.</span>
@@ -1145,7 +1165,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">ultimate_results</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates</span>
 <span class="sd">        the resultant bending moments `m_x`, `m_y`, `m_u` and the net axial force `n`.</span>
 
@@ -1274,7 +1294,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
 <span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">        :type theta: Optional[float]</span>
-<span class="sd">        :param m_neg: If set to true, also calculates the moment interaction for</span>
+<span class="sd">        :param m_neg: If set to True, also calculates the moment interaction for</span>
 <span class="sd">            :math:`\theta = \theta + \pi`, i.e. sagging and hogging</span>
 <span class="sd">        :type m_neg: Optional[bool]</span>
 <span class="sd">        :param n_points: Number of calculation points between the decompression point</span>
@@ -1289,20 +1309,29 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">mi_results</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">()</span>
 
         <span class="c1"># add squash load</span>
-        <span class="n">mi_results</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">squash_load</span><span class="p">)</span>
-        <span class="n">mi_results</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">k_u</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">squash_load</span><span class="p">,</span>
+                <span class="n">m_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">m_y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">m_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="c1"># compute extreme tensile fibre</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
 
         <span class="c1"># compute neutral axis depth for pure bending case</span>
-        <span class="n">ultimate_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ult_res_pure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># generate list of neutral axes</span>
-        <span class="n">d_n_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">d_t</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
+        <span class="n">d_n_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">d_t</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">ult_res_pure</span><span class="o">.</span><span class="n">d_n</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
 
         <span class="c1"># create progress bar</span>
-        <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_unknown_progress</span><span class="p">()</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span>
 
         <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">refresh_per_second</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
             <span class="n">progress_length</span> <span class="o">=</span> <span class="n">n_points</span>
@@ -1316,11 +1345,10 @@ function checkPageExistsAndRedirect(event) {
             <span class="p">)</span>
 
             <span class="k">for</span> <span class="n">d_n</span> <span class="ow">in</span> <span class="n">d_n_list</span><span class="p">:</span>
-                <span class="n">ultimate_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
-                    <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">ultimate_results</span><span class="o">=</span><span class="n">ultimate_results</span>
+                <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
+                    <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
                 <span class="p">)</span>
-                <span class="n">mi_results</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
-                <span class="n">mi_results</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_u</span><span class="p">)</span>
+                <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ult_res</span><span class="p">)</span>
                 <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">m_neg</span><span class="p">:</span>
@@ -1331,46 +1359,80 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
 
             <span class="c1"># add tensile load</span>
-            <span class="n">mi_results</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">tensile_load</span><span class="p">)</span>
-            <span class="n">mi_results</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-            <span class="c1"># if calculating negative bending</span>
-            <span class="k">if</span> <span class="n">m_neg</span><span class="p">:</span>
-                <span class="n">theta</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
-
-                <span class="k">if</span> <span class="n">theta</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
-                    <span class="n">theta</span> <span class="o">-=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
-
-                <span class="c1"># compute extreme tensile fibre</span>
-                <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
-                    <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
+            <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                    <span class="n">d_n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">k_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">tensile_load</span><span class="p">,</span>
+                    <span class="n">m_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">m_y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">m_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                 <span class="p">)</span>
+            <span class="p">)</span>
 
-                <span class="c1"># compute neutral axis depth for pure bending case</span>
-                <span class="n">ultimate_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># if not calculating negative bending</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">m_neg</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">mi_results</span>
 
-                <span class="c1"># generate list of neutral axes</span>
-                <span class="n">d_n_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
-                    <span class="n">start</span><span class="o">=</span><span class="n">d_t</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span>
+            <span class="c1"># negative bending</span>
+            <span class="n">theta</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+            <span class="k">if</span> <span class="n">theta</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
+                <span class="n">theta</span> <span class="o">-=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+            <span class="c1"># add squash load</span>
+            <span class="n">mi_results</span><span class="o">.</span><span class="n">results_neg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                    <span class="n">d_n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">k_u</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">squash_load</span><span class="p">,</span>
+                    <span class="n">m_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">m_y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">m_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                 <span class="p">)</span>
+            <span class="p">)</span>
 
-                <span class="k">for</span> <span class="n">d_n</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">d_n_list</span><span class="p">):</span>
-                    <span class="n">ultimate_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
-                        <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">ultimate_results</span><span class="o">=</span><span class="n">ultimate_results</span>
-                    <span class="p">)</span>
-                    <span class="n">mi_results</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
-                    <span class="n">mi_results</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_u</span><span class="p">)</span>
-                    <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="c1"># compute extreme tensile fibre</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
+                <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
+            <span class="p">)</span>
 
-                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                    <span class="n">task</span><span class="p">,</span>
-                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: M-N diagram generated&quot;</span><span class="p">,</span>
+            <span class="c1"># compute neutral axis depth for pure bending case</span>
+            <span class="n">ult_res_pure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="c1"># generate list of neutral axes</span>
+            <span class="n">d_n_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">d_t</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">ult_res_pure</span><span class="o">.</span><span class="n">d_n</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">d_n</span> <span class="ow">in</span> <span class="n">d_n_list</span><span class="p">:</span>
+                <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
+                    <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+                    <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">),</span>
                 <span class="p">)</span>
-                <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+                <span class="c1"># bending moment is negative</span>
+                <span class="n">ult_res</span><span class="o">.</span><span class="n">m_u</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="n">mi_results</span><span class="o">.</span><span class="n">results_neg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ult_res</span><span class="p">)</span>
+                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-                <span class="c1"># add squash load</span>
-                <span class="n">mi_results</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">squash_load</span><span class="p">)</span>
-                <span class="n">mi_results</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="n">task</span><span class="p">,</span>
+                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: M-N diagram generated&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+
+            <span class="c1"># add tensile load</span>
+            <span class="n">mi_results</span><span class="o">.</span><span class="n">results_neg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                    <span class="n">d_n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">k_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">tensile_load</span><span class="p">,</span>
+                    <span class="n">m_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">m_y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">m_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">mi_results</span></div>
 
@@ -1401,7 +1463,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">theta_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">d_theta</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
 
         <span class="c1"># create progress bar</span>
-        <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_unknown_progress</span><span class="p">()</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span>
 
         <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">refresh_per_second</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
             <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
@@ -1412,13 +1474,11 @@ function checkPageExistsAndRedirect(event) {
             <span class="c1"># loop through thetas</span>
             <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">theta_list</span><span class="p">:</span>
                 <span class="n">ultimate_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
-                <span class="n">bb_results</span><span class="o">.</span><span class="n">m_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_x</span><span class="p">)</span>
-                <span class="n">bb_results</span><span class="o">.</span><span class="n">m_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_y</span><span class="p">)</span>
+                <span class="n">bb_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="p">)</span>
                 <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
             <span class="c1"># add first result to end of list top</span>
-            <span class="n">bb_results</span><span class="o">.</span><span class="n">m_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bb_results</span><span class="o">.</span><span class="n">m_x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">bb_results</span><span class="o">.</span><span class="n">m_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bb_results</span><span class="o">.</span><span class="n">m_y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">bb_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bb_results</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
             <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                 <span class="n">task</span><span class="p">,</span>

@@ -196,6 +196,12 @@ function checkPageExistsAndRedirect(event) {
 </li>
 
 <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../design_codes.html">
+  Design Codes
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../examples.html">
   Examples
  </a>
@@ -472,11 +478,33 @@ function checkPageExistsAndRedirect(event) {
   </ul>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="concreteproperties.post.html">
-   concreteproperties.post
+  <a class="reference internal" href="concreteproperties.design_codes.html">
+   concreteproperties.design_codes
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
   <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.design_codes.AS3600.html">
+     concreteproperties.design_codes.AS3600
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.design_codes.DesignCode.html">
+     concreteproperties.design_codes.DesignCode
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="concreteproperties.post.html">
+   concreteproperties.post
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -492,8 +520,8 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal" href="concreteproperties.utils.html">
    concreteproperties.utils
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -614,13 +642,13 @@ function checkPageExistsAndRedirect(event) {
 <h1>concreteproperties.concrete_section.ConcreteSection<a class="headerlink" href="#concreteproperties-concrete-section-concretesection" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteSection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.1)"><span class="pre">CompoundGeometry</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteSection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.2)"><span class="pre">CompoundGeometry</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for a reinforced concrete section.</p>
 <p>Inits the ConcreteSection class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.CompoundGeometry</span></code></a>) – <em>sectionproperties</em> compound geometry object describing the
+<dd class="field-odd"><p><strong>geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.CompoundGeometry</span></code></a>) – <em>sectionproperties</em> compound geometry object describing the
 reinforced concrete section</p>
 </dd>
 </dl>
@@ -707,12 +735,19 @@ reinforced concrete section</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties">
-<span class="sig-name descname"><span class="pre">calculate_gross_plastic_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_gross_plastic_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_gross_plastic_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_compressive_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_gross_plastic_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates and stores gross section plastic properties.</p>
 <p>Calculates the plastic centroid and squash load assuming all steel is at yield
-and the concrete experiences a stress of alpha_squash * f’c.</p>
+and the concrete experiences a stress of alpha_squash * f’c. Providing
+max_compressive_strain limits the compressive strain in the steel.</p>
 <p>Calculates tensile load assuming all steel is at yield and the concrete is
 entirely cracked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>max_compressive_strain</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Maximum compressive strain in the steel under
+squash load</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -874,7 +909,7 @@ resultant axial force and bending moment.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity">
-<span class="sig-name descname"><span class="pre">ultimate_bending_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">results.UltimateBendingResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.ultimate_bending_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ultimate_bending_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">UltimateBendingResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.ultimate_bending_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a neutral axis angle <cite>theta</cite> and an axial force <cite>n</cite>, calculates the
 ultimate bending capacity.</p>
 <dl class="field-list simple">
@@ -896,7 +931,7 @@ ultimate bending capacity.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence">
-<span class="sig-name descname"><span class="pre">ultimate_normal_force_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">results.UltimateBendingResults</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.ultimate_normal_force_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ultimate_normal_force_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">UltimateBendingResults</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.ultimate_normal_force_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a neutral axis depth <cite>d_n</cite> and neutral axis angle <cite>theta</cite>, calculates
 the difference between the target net axial force <cite>n</cite> and the axial force.</p>
 <dl class="field-list simple">
@@ -918,7 +953,7 @@ the difference between the target net axial force <cite>n</cite> and the axial f
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions">
-<span class="sig-name descname"><span class="pre">calculate_ultimate_section_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">res.UltimateBendingResults</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">results.UltimateBendingResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_ultimate_section_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_ultimate_section_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">UltimateBendingResults</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">UltimateBendingResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.calculate_ultimate_section_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_section_actions" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a neutral axis depth <cite>d_n</cite> and neutral axis angle <cite>theta</cite>, calculates
 the resultant bending moments <cite>m_x</cite>, <cite>m_y</cite>, <cite>m_u</cite> and the net axial force <cite>n</cite>.</p>
 <dl class="field-list simple">
@@ -948,7 +983,7 @@ bending case.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>theta</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Angle (in radians) the neutral axis makes with the horizontal axis
 (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
-<li><p><strong>m_neg</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – If set to true, also calculates the moment interaction for
+<li><p><strong>m_neg</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – If set to True, also calculates the moment interaction for
 <span class="math notranslate nohighlight">\(\theta = \theta + \pi\)</span>, i.e. sagging and hogging</p></li>
 <li><p><strong>n_points</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Number of calculation points between the decompression point
 and the pure bending point</p></li>

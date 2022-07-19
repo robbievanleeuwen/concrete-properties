@@ -47,6 +47,7 @@ can be found in the README file on github.
    rst/geometry
    rst/analysis
    rst/results
+   rst/design_codes
    rst/examples
    rst/api
 
