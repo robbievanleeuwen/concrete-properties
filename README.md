@@ -28,6 +28,12 @@ pip install concreteproperties
 *concreteproperties* is fully documented including examples and a fully documented API.
 The documentation can found at [https://robbievanleeuwen.github.io/concrete-properties](https://robbievanleeuwen.github.io/concrete-properties).
 
+## Contributing
+
+We welcome anyone interested in contributing to *concreteproperties*, whether it be
+through submitting bug reports, feature requests or pull requests. Please read the
+[contributing guide](.github/CONTRIBUTING.md) prior to contributing.
+
 ## Current Capabilities:
 
 ### Material Properties
