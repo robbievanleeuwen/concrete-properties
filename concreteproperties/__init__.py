@@ -2,4 +2,4 @@
 A python package to calculate the section properties of arbitrary reinforced concrete
 sections.
 """
-__version__ = "0.1.0"
+__version__ = "0.2.0"
