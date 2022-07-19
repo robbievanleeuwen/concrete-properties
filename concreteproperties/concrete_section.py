@@ -1050,7 +1050,7 @@ class ConcreteSection:
         d_n_list = np.linspace(start=d_t, stop=ult_res_pure.d_n, num=n_points)
 
         # create progress bar
-        progress = utils.create_unknown_progress()
+        progress = utils.create_known_progress()
 
         with Live(progress, refresh_per_second=10) as live:
             progress_length = n_points
@@ -1182,7 +1182,7 @@ class ConcreteSection:
         theta_list = np.linspace(start=-np.pi, stop=np.pi - d_theta, num=n_points)
 
         # create progress bar
-        progress = utils.create_unknown_progress()
+        progress = utils.create_known_progress()
 
         with Live(progress, refresh_per_second=10) as live:
             task = progress.add_task(

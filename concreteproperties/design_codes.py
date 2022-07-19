@@ -4,6 +4,8 @@ from typing import Optional, TYPE_CHECKING
 from copy import deepcopy
 import numpy as np
 from scipy.interpolate import interp1d
+from scipy.optimize import brentq
+from rich.live import Live
 
 from concreteproperties.material import Concrete, Steel
 import concreteproperties.stress_strain_profile as ssp
@@ -289,7 +291,15 @@ class AS3600(DesignCode):
     ) -> Concrete:
         """Returns a concrete material object to AS 3600:2018.
 
-        LIST ASSUMPTIONS!
+        | **Material assumptions:**
+        | - *Density*: 2400 kg/m\ :sup:`3`
+        | - *Elastic modulus*: Interpolated from Table 3.1.2
+        | - *Service stress-strain profile*: Linear with no tension, compressive strength
+          at 0.9 * f'c
+        | - *Ultimate stress-strain profile*: Rectangular stress block, parameters from
+          Cl. 8.1.3
+        | - *Alpha squash*: From Cl. 10.6.2.2
+        | - *Flexural tensile strength*: From Cl. 3.1.1.3
 
         :param float compressive_strength: Characteristic compressive strength of
             concrete at 28 days in megapascals (MPa)
@@ -357,11 +367,14 @@ class AS3600(DesignCode):
     ) -> Steel:
         """Returns a steel material object.
 
-        List assumptions of material properties here...
+        | **Material assumptions:**
+        | - *Density*: 7850 kg/m\ :sup:`3`
+        | - *Elastic modulus*: 200,000 MPa
+        | - *Stress-strain profile:* Elastic-plastic, fracture strain from Table 3.2.1
 
-        :param  yield_strength: Steel yield strength
+        :param yield_strength: Steel yield strength
         :type yield_strength: Optional[float]
-        :param  ductility_class: Steel ductility class ("N" or "L")
+        :param ductility_class: Steel ductility class ("N" or "L")
         :type ductility_class: Optional[str]
         :param colour: Colour of the steel for rendering
         :type colour: Optional[str]
@@ -515,22 +528,20 @@ class AS3600(DesignCode):
 
     def ultimate_bending_capacity(
         self,
+        theta: Optional[float] = 0,
+        n: Optional[float] = 0,
         phi_0: Optional[float] = 0.6,
-        **kwargs,
     ) -> Tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]:
-        """Calculates the ultimate bending capacity with capacity factors to
+        r"""Calculates the ultimate bending capacity with capacity factors to
         AS 3600:2018.
 
-        Note an axial load passed to
-        :meth:`~concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity`
-        is unfactored and will not equal resultant factored axial load. Use
-        :meth:`~concreteproperties.design_codes.AS3600.moment_interaction_diagram` if
-        required.
-
+        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
+        :type theta: Optional[float]
+        :param n: Net axial force
+        :type n: Optional[float]
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
         :type phi_0: Optional[float]
-        :param kwargs: Keyword arguments passed to
-            :meth:`~concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity`
 
         :return: Factored and unfactored ultimate bending results objects, and capacity
             reduction factor *(factored_results, unfactored_results, phi)*
@@ -538,43 +549,37 @@ class AS3600(DesignCode):
             :class:`~concreteproperties.results.UltimateBendingResults`, float]
         """
 
-        # get ultimate bending result
-        ult_res = self.concrete_section.ultimate_bending_capacity(**kwargs)
+        # get parameters to determine phi
+        n_uot = self.concrete_section.gross_properties.tensile_load
+        k_uo = self.get_k_uo(theta=theta)
+        n_ub = self.get_n_ub(theta=theta)
 
-        # get supplied axial force
-        try:
-            n_in = kwargs["n"]
-        except KeyError:
-            n_in = 0
-
-        # determine capacity factor
-        # get k_uo
-        if n_in == 0:
-            k_uo = ult_res.k_u
-        else:
-            k_uo = self.get_k_uo(theta=ult_res.theta)
-
-        # compression
-        if ult_res.n > 0:
-            # find n_ub
-            n_ub = self.get_n_ub(theta=ult_res.theta)
-
+        # non-linear calculation of phi
+        def non_linear_phi(phi_guess):
             phi = self.capacity_reduction_factor(
-                n_u=ult_res.n,
+                n_u=n / phi_guess,
                 n_ub=n_ub,
-                n_uot=None,
+                n_uot=n_uot,
                 k_uo=k_uo,
                 phi_0=phi_0,
             )
-        # tension
-        else:
-            phi = self.capacity_reduction_factor(
-                n_u=ult_res.n,
-                n_ub=None,
-                n_uot=self.concrete_section.gross_properties.tensile_load,
-                k_uo=k_uo,
-                phi_0=None,
-            )
+
+            return phi - phi_guess
+
+        (phi, r) = brentq(
+            f=non_linear_phi,
+            a=phi_0,
+            b=0.85,
+            xtol=1e-3,
+            rtol=1e-6,
+            full_output=True,
+            disp=False,
+        )
+
+        # calculate ultimate bending capacity
+        ult_res = self.concrete_section.ultimate_bending_capacity(
+            theta=theta, n=n / phi
+        )
 
         # factor ultimate results
         factored_ult_res = deepcopy(ult_res)
@@ -589,7 +594,7 @@ class AS3600(DesignCode):
         self,
         phi_0: Optional[float] = 0.6,
         **kwargs,
-    ) -> Tuple[res.MomentInteractionResults]:
+    ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
         """Generates a moment interaction diagram with capacity factors to AS 3600:2018.
 
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
@@ -597,15 +602,19 @@ class AS3600(DesignCode):
         :param kwargs: Keyword arguments passed to
             :meth:`~concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram`
 
-        :return: Factored and unfactored moment interaction results objects
-            *(factored_results, unfactored_results)*
-        :rtype: Tuple[:class:`~concreteproperties.results.MomentInteractionResults`]
+        :return: Factored and unfactored moment interaction results objects, and list of
+            capacity reduction factors *(factored_results, unfactored_results, phis)*
+        :rtype: Tuple[:class:`~concreteproperties.results.MomentInteractionResults`,
+            :class:`~concreteproperties.results.MomentInteractionResults`, List[float]]
         """
 
         mi_res = self.concrete_section.moment_interaction_diagram(**kwargs)
 
         # make a copy of the results to factor
         factored_mi_res = deepcopy(mi_res)
+
+        # list to store phis
+        phis = []
 
         # get required constants
         n_uot = self.concrete_section.gross_properties.tensile_load
@@ -628,6 +637,7 @@ class AS3600(DesignCode):
             ult_res.m_x *= phi
             ult_res.m_y *= phi
             ult_res.m_u *= phi
+            phis.append(phi)
 
         # factor results for negative bending
         for ult_res in factored_mi_res.results_neg:
@@ -638,52 +648,69 @@ class AS3600(DesignCode):
             ult_res.m_x *= phi
             ult_res.m_y *= phi
             ult_res.m_u *= phi
+            phis.append(phi)
 
-        return factored_mi_res, mi_res
+        return factored_mi_res, mi_res, phis
 
     def biaxial_bending_diagram(
         self,
+        n: Optional[float] = 0,
+        n_points: Optional[int] = 48,
         phi_0: Optional[float] = 0.6,
-        **kwargs,
-    ) -> Tuple[res.BiaxialBendingResults, res.BiaxialBendingResults, float]:
+    ) -> Tuple[res.BiaxialBendingResults, List[float]]:
         """Generates a biaxial bending with capacity factors to AS 3600:2018.
 
+        :param n: Net axial force
+        :type n: Optional[float]
+        :param n_points: Number of calculation points between the decompression
+        :type n_points: Optional[int]
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
         :type phi_0: Optional[float]
-        :param kwargs: Keyword arguments passed to
-            :meth:`~concreteproperties.concrete_section.ConcreteSection.biaxial_bending_diagram`
 
-        :return: Biaxial bending results
-        :rtype: :class:`~concreteproperties.results.BiaxialBendingResults`
-
-        :return: Factored and unfactored biaxial bending results objects, and capacity
-            reduction factor *(factored_results, unfactored_results, phi)*
+        :return: Factored biaxial bending results object and list of capacity reduction
+            factors *(factored_results, phis)*
         :rtype: Tuple[:class:`~concreteproperties.results.BiaxialBendingResults`,
-            :class:`~concreteproperties.results.BiaxialBendingResults`, float]
+            List[float]]
         """
 
-        bb_res = self.concrete_section.biaxial_bending_diagram(**kwargs)
+        pass
 
-        # make a copy of the results to factor
-        factored_bb_res = deepcopy(bb_res)
+        # initialise results
+        f_bb_res = res.BiaxialBendingResults(n=n)
+        phis = []
 
-        # determine capacity factor
-        k_uo = self.get_k_uo(theta=bb_res.results[0].theta)
-        n_ub = self.get_n_ub(theta=bb_res.results[0].theta)
-        phi = self.capacity_reduction_factor(
-            n_u=bb_res.n,
-            n_ub=n_ub,
-            n_uot=self.concrete_section.gross_properties.tensile_load,
-            k_uo=k_uo,
-            phi_0=phi_0,
-        )
+        # calculate d_theta
+        d_theta = 2 * np.pi / n_points
 
-        # apply factors
-        # factor results for positive bending
-        for ult_res in factored_bb_res.results[:-1]:
-            ult_res.n *= phi
-            ult_res.m_x *= phi
-            ult_res.m_y *= phi
-            ult_res.m_u *= phi
+        # generate list of thetas
+        theta_list = np.linspace(start=-np.pi, stop=np.pi - d_theta, num=n_points)
 
-        return factored_bb_res, bb_res, phi
+        # create progress bar
+        progress = utils.create_known_progress()
+
+        with Live(progress, refresh_per_second=10) as live:
+            task = progress.add_task(
+                description="[red]Generating biaxial bending diagram",
+                total=n_points,
+            )
+
+            # loop through thetas
+            for theta in theta_list:
+                # factored capacity
+                f_ult_res, _, phi = self.ultimate_bending_capacity(theta=theta, n=n)
+                f_bb_res.results.append(f_ult_res)
+                phis.append(phi)
+
+                progress.update(task, advance=1)
+
+            # add first result to end of list top
+            f_bb_res.results.append(f_bb_res.results[0])
+            phis.append(phis[0])
+
+            progress.update(
+                task,
+                description="[bold green]:white_check_mark: Biaxial bending diagram generated",
+            )
+            live.refresh()
+
+        return f_bb_res, phis

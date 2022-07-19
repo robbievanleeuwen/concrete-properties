@@ -31,6 +31,11 @@ created it must be assigned to the design code::
 ..  automethod:: concreteproperties.design_codes.AS3600.assign_concrete_section
   :noindex:
 
+.. note::
+
+  To maintain unit consistency, the cross-section dimensions should be entered in
+  *[mm]*.
+
 
 Creating Material Properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
