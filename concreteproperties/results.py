@@ -189,7 +189,7 @@ class TransformedConcreteProperties:
     def __post_init__(
         self,
     ):
-        self.area = self.concrete_properties.total_area / self.elastic_modulus
+        self.area = self.concrete_properties.e_a / self.elastic_modulus
         self.qx = self.concrete_properties.e_qx / self.elastic_modulus
         self.qy = self.concrete_properties.e_qy / self.elastic_modulus
         self.ixx_g = self.concrete_properties.e_ixx_g / self.elastic_modulus
