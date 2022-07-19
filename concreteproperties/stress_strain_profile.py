@@ -190,12 +190,15 @@ class StressStrainProfile:
     def plot_stress_strain(
         self,
         title: Optional[str] = "Stress-Strain Profile",
+        fmt: Optional[str] = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots the stress-strain profile.
 
         :param title: Plot title
         :type title: Optional[str]
+        :param fmt: Plot format string
+        :type fmt: Optional[str]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
@@ -207,7 +210,7 @@ class StressStrainProfile:
             fig,
             ax,
         ):
-            ax.plot(self.strains, self.stresses, "o-", markersize=3)
+            ax.plot(self.strains, self.stresses, fmt)
             plt.xlabel("Strain")
             plt.ylabel("Stress")
             plt.grid(True)
@@ -325,24 +328,33 @@ class ConcreteLinear(ConcreteServiceProfile):
 
 
 @dataclass
-class ConcreteLinearNoTension(ConcreteLinear):
+class ConcreteLinearNoTension(ConcreteServiceProfile):
     """Class for a linear stress-strain profile with no tensile strength.
 
     :param float elastic_modulus: Elastic modulus of the stress-strain profile
     :param ultimate_strain: Concrete strain at failure
     :type ultimate_strain: Optional[float]
+    :param compressive_strength: Compressive strength of the concrete
+    :type compressive_strength: Optional[float]
     """
 
     strains: List[float] = field(init=False)
     stresses: List[float] = field(init=False)
     elastic_modulus: float
     ultimate_strain: float = field(default=1)
+    compressive_strength: float = field(default=None)
 
     def __post_init__(
         self,
     ):
         self.strains = [-0.001, 0, 0.001]
         self.stresses = [0, 0, 0.001 * self.elastic_modulus]
+
+        if self.compressive_strength is not None:
+            self.strains[-1] = self.compressive_strength / self.elastic_modulus
+            self.stresses[-1] = self.compressive_strength
+            self.strains.append(self.ultimate_strain)
+            self.stresses.append(self.compressive_strength)
 
 
 @dataclass

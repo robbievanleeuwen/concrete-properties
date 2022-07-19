@@ -226,14 +226,20 @@ class ConcreteSection:
 
     def calculate_gross_plastic_properties(
         self,
+        max_compressive_strain: Optional[float] = None,
     ):
         """Calculates and stores gross section plastic properties.
 
         Calculates the plastic centroid and squash load assuming all steel is at yield
-        and the concrete experiences a stress of alpha_squash * f'c.
+        and the concrete experiences a stress of alpha_squash * f'c. Providing
+        max_compressive_strain limits the compressive strain in the steel.
 
         Calculates tensile load assuming all steel is at yield and the concrete is
         entirely cracked.
+
+        :param max_compressive_strain: Maximum compressive strain in the steel under
+            squash load
+        :type max_compressive_strain: Optional[float]
         """
 
         # initialise the squash load, tensile load and squash moment variables
@@ -267,8 +273,16 @@ class ConcreteSection:
             centroid = steel_geom.calculate_centroid()
 
             # calculate compressive and tensile force
-            force_c = area * steel_geom.material.stress_strain_profile.yield_strength
-            force_t = -force_c
+            if max_compressive_strain:
+                force_c = area * steel_geom.material.stress_strain_profile.get_stress(
+                    strain=max_compressive_strain
+                )
+            else:
+                force_c = (
+                    area * steel_geom.material.stress_strain_profile.yield_strength
+                )
+
+            force_t = -area * steel_geom.material.stress_strain_profile.yield_strength
 
             # add to totals
             squash_load += force_c
@@ -799,7 +813,7 @@ class ConcreteSection:
         self,
         theta: Optional[float] = 0,
         n: Optional[float] = 0,
-    ) -> results.UltimateBendingResults:
+    ) -> res.UltimateBendingResults:
         r"""Given a neutral axis angle `theta` and an axial force `n`, calculates the
         ultimate bending capacity.
 
@@ -843,7 +857,7 @@ class ConcreteSection:
         self,
         d_n: float,
         n: float,
-        ultimate_results: results.UltimateBendingResults,
+        ultimate_results: res.UltimateBendingResults,
     ) -> float:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
         the difference between the target net axial force `n` and the axial force.
@@ -870,7 +884,7 @@ class ConcreteSection:
         self,
         d_n: float,
         ultimate_results: Optional[res.UltimateBendingResults] = None,
-    ) -> results.UltimateBendingResults:
+    ) -> res.UltimateBendingResults:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
         the resultant bending moments `m_x`, `m_y`, `m_u` and the net axial force `n`.
 
@@ -999,7 +1013,7 @@ class ConcreteSection:
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
         :type theta: Optional[float]
-        :param m_neg: If set to true, also calculates the moment interaction for
+        :param m_neg: If set to True, also calculates the moment interaction for
             :math:`\theta = \theta + \pi`, i.e. sagging and hogging
         :type m_neg: Optional[bool]
         :param n_points: Number of calculation points between the decompression point
@@ -1014,20 +1028,29 @@ class ConcreteSection:
         mi_results = res.MomentInteractionResults()
 
         # add squash load
-        mi_results.n.append(self.gross_properties.squash_load)
-        mi_results.m.append(0)
+        mi_results.results.append(
+            res.UltimateBendingResults(
+                theta=theta,
+                d_n=None,
+                k_u=None,
+                n=self.gross_properties.squash_load,
+                m_x=0,
+                m_y=0,
+                m_u=0,
+            )
+        )
 
         # compute extreme tensile fibre
         _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
 
         # compute neutral axis depth for pure bending case
-        ultimate_results = self.ultimate_bending_capacity(theta=theta, n=0)
+        ult_res_pure = self.ultimate_bending_capacity(theta=theta, n=0)
 
         # generate list of neutral axes
-        d_n_list = np.linspace(start=d_t, stop=ultimate_results.d_n, num=n_points)
+        d_n_list = np.linspace(start=d_t, stop=ult_res_pure.d_n, num=n_points)
 
         # create progress bar
-        progress = utils.create_unknown_progress()
+        progress = utils.create_known_progress()
 
         with Live(progress, refresh_per_second=10) as live:
             progress_length = n_points
@@ -1041,11 +1064,10 @@ class ConcreteSection:
             )
 
             for d_n in d_n_list:
-                ultimate_results = self.calculate_ultimate_section_actions(
-                    d_n=d_n, ultimate_results=ultimate_results
+                ult_res = self.calculate_ultimate_section_actions(
+                    d_n=d_n, ultimate_results=res.UltimateBendingResults(theta=theta)
                 )
-                mi_results.n.append(ultimate_results.n)
-                mi_results.m.append(ultimate_results.m_u)
+                mi_results.results.append(ult_res)
                 progress.update(task, advance=1)
 
             if not m_neg:
@@ -1056,46 +1078,80 @@ class ConcreteSection:
                 live.refresh()
 
             # add tensile load
-            mi_results.n.append(self.gross_properties.tensile_load)
-            mi_results.m.append(0)
-
-            # if calculating negative bending
-            if m_neg:
-                theta += np.pi
-
-                if theta > np.pi:
-                    theta -= 2 * np.pi
-
-                # compute extreme tensile fibre
-                _, d_t = utils.calculate_extreme_fibre(
-                    points=self.geometry.points, theta=theta
+            mi_results.results.append(
+                res.UltimateBendingResults(
+                    theta=theta,
+                    d_n=None,
+                    k_u=0,
+                    n=self.gross_properties.tensile_load,
+                    m_x=0,
+                    m_y=0,
+                    m_u=0,
                 )
+            )
 
-                # compute neutral axis depth for pure bending case
-                ultimate_results = self.ultimate_bending_capacity(theta=theta, n=0)
+            # if not calculating negative bending
+            if not m_neg:
+                return mi_results
 
-                # generate list of neutral axes
-                d_n_list = np.linspace(
-                    start=d_t, stop=ultimate_results.d_n, num=n_points
+            # negative bending
+            theta += np.pi
+
+            if theta > np.pi:
+                theta -= 2 * np.pi
+
+            # add squash load
+            mi_results.results_neg.append(
+                res.UltimateBendingResults(
+                    theta=theta,
+                    d_n=None,
+                    k_u=None,
+                    n=self.gross_properties.squash_load,
+                    m_x=0,
+                    m_y=0,
+                    m_u=0,
                 )
+            )
 
-                for d_n in reversed(d_n_list):
-                    ultimate_results = self.calculate_ultimate_section_actions(
-                        d_n=d_n, ultimate_results=ultimate_results
-                    )
-                    mi_results.n.append(ultimate_results.n)
-                    mi_results.m.append(-ultimate_results.m_u)
-                    progress.update(task, advance=1)
+            # compute extreme tensile fibre
+            _, d_t = utils.calculate_extreme_fibre(
+                points=self.geometry.points, theta=theta
+            )
 
-                progress.update(
-                    task,
-                    description="[bold green]:white_check_mark: M-N diagram generated",
+            # compute neutral axis depth for pure bending case
+            ult_res_pure = self.ultimate_bending_capacity(theta=theta, n=0)
+
+            # generate list of neutral axes
+            d_n_list = np.linspace(start=d_t, stop=ult_res_pure.d_n, num=n_points)
+
+            for d_n in d_n_list:
+                ult_res = self.calculate_ultimate_section_actions(
+                    d_n=d_n,
+                    ultimate_results=res.UltimateBendingResults(theta=theta),
                 )
-                live.refresh()
+                # bending moment is negative
+                ult_res.m_u *= -1
+                mi_results.results_neg.append(ult_res)
+                progress.update(task, advance=1)
 
-                # add squash load
-                mi_results.n.append(self.gross_properties.squash_load)
-                mi_results.m.append(0)
+            progress.update(
+                task,
+                description="[bold green]:white_check_mark: M-N diagram generated",
+            )
+            live.refresh()
+
+            # add tensile load
+            mi_results.results_neg.append(
+                res.UltimateBendingResults(
+                    theta=theta,
+                    d_n=None,
+                    k_u=0,
+                    n=self.gross_properties.tensile_load,
+                    m_x=0,
+                    m_y=0,
+                    m_u=0,
+                )
+            )
 
         return mi_results
 
@@ -1126,7 +1182,7 @@ class ConcreteSection:
         theta_list = np.linspace(start=-np.pi, stop=np.pi - d_theta, num=n_points)
 
         # create progress bar
-        progress = utils.create_unknown_progress()
+        progress = utils.create_known_progress()
 
         with Live(progress, refresh_per_second=10) as live:
             task = progress.add_task(
@@ -1137,13 +1193,11 @@ class ConcreteSection:
             # loop through thetas
             for theta in theta_list:
                 ultimate_results = self.ultimate_bending_capacity(theta=theta, n=n)
-                bb_results.m_x.append(ultimate_results.m_x)
-                bb_results.m_y.append(ultimate_results.m_y)
+                bb_results.results.append(ultimate_results)
                 progress.update(task, advance=1)
 
             # add first result to end of list top
-            bb_results.m_x.append(bb_results.m_x[0])
-            bb_results.m_y.append(bb_results.m_y[0])
+            bb_results.results.append(bb_results.results[0])
 
             progress.update(
                 task,

@@ -80,8 +80,8 @@ The documentation can found at [https://robbievanleeuwen.github.io/concrete-prop
 - [x] Ultimate stresses
 
 ### Design Codes
-- [ ] Design code modules
-  - [ ] AS3600
+- [x] Design code modules
+  - [x] AS3600
   - [ ] AS5100
 
 ## Disclaimer:
