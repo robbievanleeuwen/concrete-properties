@@ -85,8 +85,7 @@ class AnalysisSection:
         e_ixx: float,
         e_iyy: float,
         e_ixy: float,
-        theta: float,
-    ) -> Tuple[np.ndarray, float, float]:
+    ) -> Tuple[np.ndarray, float, float, float]:
         r"""Given section actions and section propreties, calculates elastic stresses.
 
         :param float n: Axial force
@@ -98,12 +97,10 @@ class AnalysisSection:
         :param float e_ixx: Flexural rigidity about the x-axis
         :param float e_iyy: Flexural rigidity about the y-axis
         :param float e_ixy: Flexural rigidity about the xy-axis
-        :param float theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
 
         :return: Elastic stresses, net force and distance from neutral axis to point of
             force action
-        :rtype: Tuple[:class:`numpy.ndarray`, float, float]
+        :rtype: Tuple[:class:`numpy.ndarray`, float, float, float]
         """
 
         # intialise stress results
@@ -129,10 +126,11 @@ class AnalysisSection:
 
         # initialise section actions
         n_conc = 0
-        m_u = 0
+        m_x_conc = 0
+        m_y_conc = 0
 
         for el in self.elements:
-            el_n, el_m_u = el.calculate_elastic_actions(
+            el_n, el_m_x, el_m_y = el.calculate_elastic_actions(
                 n=n,
                 m_x=m_x,
                 m_y=m_y,
@@ -142,19 +140,21 @@ class AnalysisSection:
                 e_ixx=e_ixx,
                 e_iyy=e_iyy,
                 e_ixy=e_ixy,
-                theta=theta,
             )
 
             n_conc += el_n
-            m_u += el_m_u
+            m_x_conc += el_m_x
+            m_y_conc += el_m_y
 
         # calculate point of action
         if n_conc == 0:
-            d = 0
+            d_x = 0
+            d_y = 0
         else:
-            d = m_u / n_conc
+            d_x = m_y_conc / n_conc
+            d_y = m_x_conc / n_conc
 
-        return sig, n_conc, d
+        return sig, n_conc, d_x, d_y
 
     def service_stress_analysis(
         self,
@@ -517,7 +517,6 @@ class Tri3:
         e_ixx: float,
         e_iyy: float,
         e_ixy: float,
-        theta: float,
     ) -> Tuple[float]:
         r"""Calculates elastic actions for the current finite element.
 
@@ -530,8 +529,6 @@ class Tri3:
         :param float e_ixx: Flexural rigidity about the x-axis
         :param float e_iyy: Flexural rigidity about the y-axis
         :param float e_ixy: Flexural rigidity about the xy-axis
-        :param float theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
 
         :return: Elastic force and resultant moment
         :rtype: Tuple[float]
@@ -539,7 +536,8 @@ class Tri3:
 
         # initialise element results
         force_e = 0
-        m_u_e = 0
+        m_x_e = 0
+        m_y_e = 0
 
         # get points for 3 point Gaussian integration
         gps = utils.gauss_points(n=3)
@@ -577,14 +575,12 @@ class Tri3:
                 * j
             )
 
-            # convert gauss point to local coordinates
-            _, c_v = sp_fea.principal_coordinate(phi=theta * 180 / np.pi, x=x, y=y)
-
             # add force and moment
             force_e += force_gp
-            m_u_e += force_gp * c_v
+            m_x_e += force_gp * y
+            m_y_e += force_gp * x
 
-        return force_e, m_u_e
+        return force_e, m_x_e, m_y_e
 
     def calculate_service_actions(
         self,

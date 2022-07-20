@@ -953,6 +953,9 @@ class BiaxialBendingResults:
 class StressResult:
     """Class for storing stress results.
 
+    For service and ultimate stress analyses, the lever arm is stored in the ``d_x``
+    variable and is the perpendicular distance to the neutral axis.
+
     :var concrete_analysis_sections: List of concrete analysis section objects
         present in the stress analysis, which can be visualised by calling the
         :meth:`~concreteproperties.analysis_section.AnalysisSection.plot_mesh` or
@@ -963,7 +966,7 @@ class StressResult:
         analysis section
     :vartype concrete_stresses: List[:class:`numpy.ndarray`]
     :var concrete_forces: List of net forces for each concrete analysis section and its
-        lever arm to the neutral axis (``force``, ``lever_arm``)
+        lever arm to the neutral axis (``force``, ``d_x``, ``d_y``)
     :vartype concrete_forces: List[Tuple[float]]
     :var steel_geometries: List of steel geometry objects present in the stress analysis
     :vartype steel_geometries: List[:class:`sectionproperties.pre.geometry.Geometry`]
@@ -972,7 +975,7 @@ class StressResult:
     :var steel_strains: List of steel strains for each steel geometry
     :vartype steel_strains: List[float]
     :var steel_forces: List of net forces for each steel geometry and its lever arm to
-        the neutral axis (``force``, ``lever_arm``)
+        the neutral axis (``force``, ``d_x``, ``d_y``)
     :vartype steel_forces: List[Tuple[float]]
     """
 
@@ -1154,21 +1157,27 @@ class StressResult:
 
     def sum_moments(
         self,
-    ) -> float:
+    ) -> Tuple[float]:
         """Returns the sum of the internal moments.
 
-        :return: Sum of internal moments
-        :rtype: float
+        :return: Sum of internal moments about each axis and resultant moment
+            (``m_x``, ``m_y``, ``m``)
+        :rtype: Tuple[float]
         """
 
-        moment_sum = 0
+        moment_sum_x = 0
+        moment_sum_y = 0
 
         # sum concrete forces
         for conc_force in self.concrete_forces:
-            moment_sum += conc_force[0] * conc_force[1]
+            moment_sum_x += conc_force[0] * conc_force[2]
+            moment_sum_y += conc_force[0] * conc_force[1]
 
         # sum steel forces
         for steel_force in self.steel_forces:
-            moment_sum += steel_force[0] * steel_force[1]
+            moment_sum_x += steel_force[0] * steel_force[2]
+            moment_sum_y += steel_force[0] * steel_force[1]
 
-        return moment_sum
+        moment_sum = np.sqrt(moment_sum_x * moment_sum_x + moment_sum_y * moment_sum_y)
+
+        return moment_sum_x, moment_sum_y, moment_sum

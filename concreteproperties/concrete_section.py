@@ -1275,15 +1275,14 @@ class ConcreteSection:
         e_ixy = self.gross_properties.e_ixy_c
 
         # calculate neutral axis rotation
-        theta = np.arctan2(-m_y, m_x)
+        grad = (e_ixy * m_x - e_ixx * m_y) / (e_iyy * m_x - e_ixy * m_y)
+        theta = np.arctan2(grad, 1)
+
+        if np.isclose(theta, 0):
+            theta = 0
 
         # point on neutral axis is centroid
         point_na = (cx, cy)
-
-        # get principal coordinates of neutral axis
-        na_local = principal_coordinate(
-            phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
-        )
 
         # split concrete geometries above and below neutral axis
         split_conc_geoms = []
@@ -1303,7 +1302,7 @@ class ConcreteSection:
             analysis_section = AnalysisSection(geometry=conc_geom)
 
             # calculate stress, force and point of action
-            sig, n_conc, d = analysis_section.get_elastic_stress(
+            sig, n_conc, d_x, d_y = analysis_section.get_elastic_stress(
                 n=n,
                 m_x=m_x,
                 m_y=m_y,
@@ -1313,10 +1312,9 @@ class ConcreteSection:
                 e_ixx=e_ixx,
                 e_iyy=e_iyy,
                 e_ixy=e_ixy,
-                theta=theta,
             )
             conc_sigs.append(sig)
-            conc_forces.append((n_conc, d))
+            conc_forces.append((n_conc, d_x, d_y))
 
             # save analysis section
             analysis_sections.append(analysis_section)
@@ -1345,14 +1343,10 @@ class ConcreteSection:
 
             # net force and point of action
             n_steel = sig * steel_geom.calculate_area()
-            _, c_v = principal_coordinate(
-                phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
-            )
-            d = c_v - na_local[1]
 
             steel_sigs.append(sig)
             steel_strains.append(strain)
-            steel_forces.append((n_steel, d))
+            steel_forces.append((n_steel, x, y))
 
         return res.StressResult(
             concrete_section=self,
@@ -1432,8 +1426,6 @@ class ConcreteSection:
         m_x = sign * np.sqrt(m * m / (1 + 1 / (c * c)))
         m_y = m_x / c
 
-        print(m_x/1e6, m_y/1e6)
-
         # depth of neutral axis at extreme tensile fibre
         extreme_fibre, d_t = utils.calculate_extreme_fibre(
             points=self.geometry.points, theta=theta
@@ -1455,7 +1447,7 @@ class ConcreteSection:
                 analysis_section = AnalysisSection(geometry=geom)
 
                 # calculate stress, force and point of action
-                sig, n_conc, d = analysis_section.get_elastic_stress(
+                sig, n_conc, d_x, d_y = analysis_section.get_elastic_stress(
                     n=n,
                     m_x=m_x,
                     m_y=m_y,
@@ -1465,10 +1457,9 @@ class ConcreteSection:
                     e_ixx=e_ixx,
                     e_iyy=e_iyy,
                     e_ixy=e_ixy,
-                    theta=theta,
                 )
                 conc_sigs.append(sig)
-                conc_forces.append((n_conc, d))
+                conc_forces.append((n_conc, d_x, d_y))
 
                 # save analysis section
                 analysis_sections.append(analysis_section)
@@ -1497,14 +1488,14 @@ class ConcreteSection:
 
             # net force and point of action
             n_steel = sig * steel_geom.calculate_area()
-            _, c_v = principal_coordinate(
-                phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
-            )
-            d = c_v - na_local[1]
+            # _, c_v = principal_coordinate(
+            #     phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
+            # )
+            # d = c_v - na_local[1]
 
             steel_sigs.append(sig)
             steel_strains.append(strain)
-            steel_forces.append((n_steel, d))
+            steel_forces.append((n_steel, x, y))
 
         return res.StressResult(
             concrete_section=self,
@@ -1615,7 +1606,7 @@ class ConcreteSection:
                 na_local=na_local[1],
             )
             conc_sigs.append(sig)
-            conc_forces.append((n_conc, d))
+            conc_forces.append((n_conc, d, 0))
 
             # save analysis section
             analysis_sections.append(analysis_section)
@@ -1643,7 +1634,7 @@ class ConcreteSection:
 
             steel_sigs.append(sig)
             steel_strains.append(strain)
-            steel_forces.append((n_steel, d))
+            steel_forces.append((n_steel, d, 0))
 
         return res.StressResult(
             concrete_section=self,
@@ -1721,7 +1712,7 @@ class ConcreteSection:
                 pc_local=pc_local[1],
             )
             conc_sigs.append(sig)
-            conc_forces.append((n_conc, d))
+            conc_forces.append((n_conc, d, 0))
 
             # save analysis section
             analysis_sections.append(analysis_section)
@@ -1750,7 +1741,7 @@ class ConcreteSection:
 
             steel_sigs.append(sig)
             steel_strains.append(strain)
-            steel_forces.append((n_steel, d))
+            steel_forces.append((n_steel, d, 0))
 
         return res.StressResult(
             concrete_section=self,

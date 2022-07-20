@@ -147,13 +147,17 @@ def test_rotated_uncracked_stress(theta):
         ref_uncr_stress = ref_sec.calculate_uncracked_stress(n=nf, m_x=m)
         new_uncr_stress = new_sec.calculate_uncracked_stress(n=nf, m_x=m_x, m_y=m_y)
 
+        # fix top and bottom geometries
         for idx, cf in enumerate(new_uncr_stress.concrete_forces):
-            assert pytest.approx(cf[0]) == ref_uncr_stress.concrete_forces[idx][0]
-            assert pytest.approx(cf[1]) == ref_uncr_stress.concrete_forces[idx][1]
+            if theta < -np.pi / 2 or theta > np.pi /2:
+                i = len(new_uncr_stress.concrete_forces) - idx - 1
+            else:
+                i = idx
+
+            assert pytest.approx(cf[0]) == ref_uncr_stress.concrete_forces[i][0]
 
         for idx, sf in enumerate(new_uncr_stress.steel_forces):
             assert pytest.approx(sf[0]) == ref_uncr_stress.steel_forces[idx][0]
-            assert pytest.approx(sf[1]) == ref_uncr_stress.steel_forces[idx][1]
 
 
 # list of normal forces
@@ -180,11 +184,9 @@ def test_rotated_cracked_stress(theta):
 
         for idx, cf in enumerate(new_cr_stress.concrete_forces):
             assert pytest.approx(cf[0]) == ref_cr_stress.concrete_forces[idx][0]
-            assert pytest.approx(cf[1]) == ref_cr_stress.concrete_forces[idx][1]
 
         for idx, sf in enumerate(new_cr_stress.steel_forces):
             assert pytest.approx(sf[0]) == ref_cr_stress.steel_forces[idx][0]
-            assert pytest.approx(sf[1]) == ref_cr_stress.steel_forces[idx][1]
 
 
 # list of normal forces
@@ -210,8 +212,6 @@ def test_rotated_ultimate_stress(theta):
 
         for idx, cf in enumerate(new_ult_stress.concrete_forces):
             assert pytest.approx(cf[0]) == ref_ult_stress.concrete_forces[idx][0]
-            assert pytest.approx(cf[1]) == ref_ult_stress.concrete_forces[idx][1]
 
         for idx, sf in enumerate(new_ult_stress.steel_forces):
             assert pytest.approx(sf[0]) == ref_ult_stress.steel_forces[idx][0]
-            assert pytest.approx(sf[1]) == ref_ult_stress.steel_forces[idx][1]
