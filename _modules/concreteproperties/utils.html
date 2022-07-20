@@ -492,7 +492,7 @@ function checkPageExistsAndRedirect(event) {
 
     <span class="c1"># ensure top geoms is in compression</span>
     <span class="c1"># sectionproperties definition is based on global coordinate system only</span>
-    <span class="k">if</span> <span class="n">theta</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">theta</span> <span class="o">&gt;</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">theta</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">theta</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">top_geoms</span><span class="p">,</span> <span class="n">bot_geoms</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">bot_geoms</span><span class="p">,</span> <span class="n">top_geoms</span></div>

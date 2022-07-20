@@ -726,6 +726,34 @@ function checkPageExistsAndRedirect(event) {
             <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixy_c_cr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         <span class="p">)</span>
 
+        <span class="c1"># principal 2nd moments of area about the centroidal xy axis</span>
+        <span class="n">Delta</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">((</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixx_c_cr</span> <span class="o">-</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_iyy_c_cr</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">+</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixy_c_cr</span><span class="o">**</span><span class="mi">2</span>
+        <span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+        <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_i11_cr</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixx_c_cr</span> <span class="o">+</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_iyy_c_cr</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">Delta</span>
+        <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_i22_cr</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixx_c_cr</span> <span class="o">+</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_iyy_c_cr</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">Delta</span>
+
+        <span class="c1"># principal axis angle</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">abs</span><span class="p">(</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixx_c_cr</span> <span class="o">-</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_i11_cr</span><span class="p">)</span>
+            <span class="o">&lt;</span> <span class="mf">1e-12</span> <span class="o">*</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_i11_cr</span>
+        <span class="p">):</span>
+            <span class="n">cracked_results</span><span class="o">.</span><span class="n">phi_cr</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cracked_results</span><span class="o">.</span><span class="n">phi_cr</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span>
+                    <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixx_c_cr</span> <span class="o">-</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_i11_cr</span><span class="p">,</span>
+                    <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixy_c_cr</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">*</span> <span class="mi">180</span>
+                <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+            <span class="p">)</span>
+
         <span class="k">return</span> <span class="n">cracked_results</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.calculate_cracking_moment"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracking_moment">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_cracking_moment</span><span class="p">(</span>
@@ -835,10 +863,10 @@ function checkPageExistsAndRedirect(event) {
         <span class="c1"># add steel geometries to list</span>
         <span class="n">cracked_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">)</span>
 
-        <span class="c1"># concrete</span>
-        <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="n">cracked_geoms</span><span class="p">:</span>
-            <span class="n">ea</span> <span class="o">=</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span> <span class="o">*</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
-            <span class="n">centroid</span> <span class="o">=</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
+        <span class="c1"># concrete &amp; steel</span>
+        <span class="k">for</span> <span class="n">geom</span> <span class="ow">in</span> <span class="n">cracked_geoms</span><span class="p">:</span>
+            <span class="n">ea</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span> <span class="o">*</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
+            <span class="n">centroid</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
 
             <span class="c1"># convert centroid to local coordinates</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
@@ -1528,15 +1556,14 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">e_ixy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixy_c</span>
 
         <span class="c1"># calculate neutral axis rotation</span>
-        <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="o">-</span><span class="n">m_y</span><span class="p">,</span> <span class="n">m_x</span><span class="p">)</span>
+        <span class="n">grad</span> <span class="o">=</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_x</span> <span class="o">-</span> <span class="n">e_ixx</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_iyy</span> <span class="o">*</span> <span class="n">m_x</span> <span class="o">-</span> <span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># point on neutral axis is centroid</span>
         <span class="n">point_na</span> <span class="o">=</span> <span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">)</span>
-
-        <span class="c1"># get principal coordinates of neutral axis</span>
-        <span class="n">na_local</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-            <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="p">)</span>
 
         <span class="c1"># split concrete geometries above and below neutral axis</span>
         <span class="n">split_conc_geoms</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1556,7 +1583,7 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">analysis_section</span> <span class="o">=</span> <span class="n">AnalysisSection</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">conc_geom</span><span class="p">)</span>
 
             <span class="c1"># calculate stress, force and point of action</span>
-            <span class="n">sig</span><span class="p">,</span> <span class="n">n_conc</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">analysis_section</span><span class="o">.</span><span class="n">get_elastic_stress</span><span class="p">(</span>
+            <span class="n">sig</span><span class="p">,</span> <span class="n">n_conc</span><span class="p">,</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_y</span> <span class="o">=</span> <span class="n">analysis_section</span><span class="o">.</span><span class="n">get_elastic_stress</span><span class="p">(</span>
                 <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
                 <span class="n">m_x</span><span class="o">=</span><span class="n">m_x</span><span class="p">,</span>
                 <span class="n">m_y</span><span class="o">=</span><span class="n">m_y</span><span class="p">,</span>
@@ -1566,10 +1593,9 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">e_ixx</span><span class="o">=</span><span class="n">e_ixx</span><span class="p">,</span>
                 <span class="n">e_iyy</span><span class="o">=</span><span class="n">e_iyy</span><span class="p">,</span>
                 <span class="n">e_ixy</span><span class="o">=</span><span class="n">e_ixy</span><span class="p">,</span>
-                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">conc_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
-            <span class="n">conc_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_conc</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+            <span class="n">conc_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_conc</span><span class="p">,</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_y</span><span class="p">))</span>
 
             <span class="c1"># save analysis section</span>
             <span class="n">analysis_sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">analysis_section</span><span class="p">)</span>
@@ -1598,14 +1624,10 @@ function checkPageExistsAndRedirect(event) {
 
             <span class="c1"># net force and point of action</span>
             <span class="n">n_steel</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-                <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="n">steel_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
             <span class="n">steel_strains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span>
-            <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+            <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">StressResult</span><span class="p">(</span>
             <span class="n">concrete_section</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
@@ -1658,10 +1680,32 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">e_iyy</span> <span class="o">=</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_iyy_c_cr</span>
         <span class="n">e_ixy</span> <span class="o">=</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixy_c_cr</span>
 
-        <span class="c1"># calculate moment about bending angle theta</span>
+        <span class="c1"># correct small e_ixy sign error</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e_ixy</span> <span class="o">/</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_i11_cr</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">:</span>
+            <span class="n">e_ixy</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># get bending angle</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">theta</span>
-        <span class="n">m_x</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-        <span class="n">m_y</span> <span class="o">=</span> <span class="o">-</span><span class="n">m</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+        <span class="c1"># handle cardinal points (avoid divide by zeros)</span>
+        <span class="n">tan_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">-</span> <span class="n">e_ixy</span> <span class="o">*</span> <span class="n">tan_theta</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">-</span> <span class="n">e_iyy</span> <span class="o">*</span> <span class="n">tan_theta</span><span class="p">)</span>
+
+        <span class="c1"># calculate bending moment about each axis (figure out signs)</span>
+        <span class="k">if</span> <span class="n">theta</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+                <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="n">m_x</span> <span class="o">=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">m</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">c</span><span class="p">)))</span>
+        <span class="n">m_y</span> <span class="o">=</span> <span class="n">m_x</span> <span class="o">/</span> <span class="n">c</span>
 
         <span class="c1"># depth of neutral axis at extreme tensile fibre</span>
         <span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
@@ -1684,7 +1728,7 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">analysis_section</span> <span class="o">=</span> <span class="n">AnalysisSection</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
 
                 <span class="c1"># calculate stress, force and point of action</span>
-                <span class="n">sig</span><span class="p">,</span> <span class="n">n_conc</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">analysis_section</span><span class="o">.</span><span class="n">get_elastic_stress</span><span class="p">(</span>
+                <span class="n">sig</span><span class="p">,</span> <span class="n">n_conc</span><span class="p">,</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_y</span> <span class="o">=</span> <span class="n">analysis_section</span><span class="o">.</span><span class="n">get_elastic_stress</span><span class="p">(</span>
                     <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
                     <span class="n">m_x</span><span class="o">=</span><span class="n">m_x</span><span class="p">,</span>
                     <span class="n">m_y</span><span class="o">=</span><span class="n">m_y</span><span class="p">,</span>
@@ -1694,10 +1738,9 @@ function checkPageExistsAndRedirect(event) {
                     <span class="n">e_ixx</span><span class="o">=</span><span class="n">e_ixx</span><span class="p">,</span>
                     <span class="n">e_iyy</span><span class="o">=</span><span class="n">e_iyy</span><span class="p">,</span>
                     <span class="n">e_ixy</span><span class="o">=</span><span class="n">e_ixy</span><span class="p">,</span>
-                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">conc_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
-                <span class="n">conc_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_conc</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+                <span class="n">conc_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_conc</span><span class="p">,</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_y</span><span class="p">))</span>
 
                 <span class="c1"># save analysis section</span>
                 <span class="n">analysis_sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">analysis_section</span><span class="p">)</span>
@@ -1726,14 +1769,14 @@ function checkPageExistsAndRedirect(event) {
 
             <span class="c1"># net force and point of action</span>
             <span class="n">n_steel</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-                <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="n">c_v</span> <span class="o">-</span> <span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># _, c_v = principal_coordinate(</span>
+            <span class="c1">#     phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]</span>
+            <span class="c1"># )</span>
+            <span class="c1"># d = c_v - na_local[1]</span>
 
             <span class="n">steel_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
             <span class="n">steel_strains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span>
-            <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+            <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">StressResult</span><span class="p">(</span>
             <span class="n">concrete_section</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
@@ -1844,7 +1887,7 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">na_local</span><span class="o">=</span><span class="n">na_local</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
             <span class="p">)</span>
             <span class="n">conc_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
-            <span class="n">conc_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_conc</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+            <span class="n">conc_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_conc</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
             <span class="c1"># save analysis section</span>
             <span class="n">analysis_sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">analysis_section</span><span class="p">)</span>
@@ -1872,7 +1915,7 @@ function checkPageExistsAndRedirect(event) {
 
             <span class="n">steel_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
             <span class="n">steel_strains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span>
-            <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+            <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">StressResult</span><span class="p">(</span>
             <span class="n">concrete_section</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
@@ -1950,7 +1993,7 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">pc_local</span><span class="o">=</span><span class="n">pc_local</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
             <span class="p">)</span>
             <span class="n">conc_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
-            <span class="n">conc_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_conc</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+            <span class="n">conc_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_conc</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
             <span class="c1"># save analysis section</span>
             <span class="n">analysis_sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">analysis_section</span><span class="p">)</span>
@@ -1979,7 +2022,7 @@ function checkPageExistsAndRedirect(event) {
 
             <span class="n">steel_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
             <span class="n">steel_strains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span>
-            <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+            <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">StressResult</span><span class="p">(</span>
             <span class="n">concrete_section</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>

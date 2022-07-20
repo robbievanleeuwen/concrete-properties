@@ -558,6 +558,9 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">e_iyy_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">e_ixy_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">e_iuu_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">e_i11_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">e_i22_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">phi_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="c1"># transformed properties</span>
     <span class="n">elastic_modulus_ref</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
@@ -571,6 +574,8 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">iyy_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">ixy_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">iuu_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">i11_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">i22_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="CrackedResults.calculate_transformed_properties"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.CrackedResults.calculate_transformed_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_transformed_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -592,7 +597,10 @@ function checkPageExistsAndRedirect(event) {
         <span class="bp">self</span><span class="o">.</span><span class="n">ixx_c_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_ixx_c_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iyy_c_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_iyy_c_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ixy_c_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_ixy_c_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">iuu_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_iuu_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iuu_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_iuu_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i11_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_i11_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i22_cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_i22_cr</span> <span class="o">/</span> <span class="n">elastic_modulus</span></div>
+
 
 <div class="viewcode-block" id="CrackedResults.plot_cracked_geometries"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.CrackedResults.plot_cracked_geometries">[docs]</a>    <span class="k">def</span> <span class="nf">plot_cracked_geometries</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -661,6 +669,8 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Iyy_c_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iyy_c_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
             <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Ixy_c_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ixy_c_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
             <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Iuu_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iuu_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;I11_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i11_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;I22_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i22_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
 
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;E.Ixx_g_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e_ixx_g_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;E.Iyy_g_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e_iyy_g_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
@@ -669,6 +679,9 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;E.Iyy_c_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e_iyy_c_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;E.Ixy_c_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e_ixy_c_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;E.Iuu_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e_iuu_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;E.I11_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e_i11_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;E.I22_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e_i22_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;phi_cr&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_cr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
 
         <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div></div>
@@ -1221,6 +1234,9 @@ function checkPageExistsAndRedirect(event) {
 <span class="k">class</span> <span class="nc">StressResult</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for storing stress results.</span>
 
+<span class="sd">    For service and ultimate stress analyses, the lever arm is stored in the ``d_x``</span>
+<span class="sd">    variable and is the perpendicular distance to the neutral axis.</span>
+
 <span class="sd">    :var concrete_analysis_sections: List of concrete analysis section objects</span>
 <span class="sd">        present in the stress analysis, which can be visualised by calling the</span>
 <span class="sd">        :meth:`~concreteproperties.analysis_section.AnalysisSection.plot_mesh` or</span>
@@ -1231,7 +1247,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        analysis section</span>
 <span class="sd">    :vartype concrete_stresses: List[:class:`numpy.ndarray`]</span>
 <span class="sd">    :var concrete_forces: List of net forces for each concrete analysis section and its</span>
-<span class="sd">        lever arm to the neutral axis (``force``, ``lever_arm``)</span>
+<span class="sd">        lever arm to the neutral axis (``force``, ``d_x``, ``d_y``)</span>
 <span class="sd">    :vartype concrete_forces: List[Tuple[float]]</span>
 <span class="sd">    :var steel_geometries: List of steel geometry objects present in the stress analysis</span>
 <span class="sd">    :vartype steel_geometries: List[:class:`sectionproperties.pre.geometry.Geometry`]</span>
@@ -1240,7 +1256,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    :var steel_strains: List of steel strains for each steel geometry</span>
 <span class="sd">    :vartype steel_strains: List[float]</span>
 <span class="sd">    :var steel_forces: List of net forces for each steel geometry and its lever arm to</span>
-<span class="sd">        the neutral axis (``force``, ``lever_arm``)</span>
+<span class="sd">        the neutral axis (``force``, ``d_x``, ``d_y``)</span>
 <span class="sd">    :vartype steel_forces: List[Tuple[float]]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1422,24 +1438,30 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="StressResult.sum_moments"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.StressResult.sum_moments">[docs]</a>    <span class="k">def</span> <span class="nf">sum_moments</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Returns the sum of the internal moments.</span>
 
-<span class="sd">        :return: Sum of internal moments</span>
-<span class="sd">        :rtype: float</span>
+<span class="sd">        :return: Sum of internal moments about each axis and resultant moment</span>
+<span class="sd">            (``m_x``, ``m_y``, ``m``)</span>
+<span class="sd">        :rtype: Tuple[float]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">moment_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">moment_sum_x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">moment_sum_y</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># sum concrete forces</span>
         <span class="k">for</span> <span class="n">conc_force</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_forces</span><span class="p">:</span>
-            <span class="n">moment_sum</span> <span class="o">+=</span> <span class="n">conc_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">conc_force</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">moment_sum_x</span> <span class="o">+=</span> <span class="n">conc_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">conc_force</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">moment_sum_y</span> <span class="o">+=</span> <span class="n">conc_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">conc_force</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># sum steel forces</span>
         <span class="k">for</span> <span class="n">steel_force</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steel_forces</span><span class="p">:</span>
-            <span class="n">moment_sum</span> <span class="o">+=</span> <span class="n">steel_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">steel_force</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">moment_sum_x</span> <span class="o">+=</span> <span class="n">steel_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">steel_force</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">moment_sum_y</span> <span class="o">+=</span> <span class="n">steel_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">steel_force</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">moment_sum</span></div></div>
+        <span class="n">moment_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">moment_sum_x</span> <span class="o">*</span> <span class="n">moment_sum_x</span> <span class="o">+</span> <span class="n">moment_sum_y</span> <span class="o">*</span> <span class="n">moment_sum_y</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">moment_sum_x</span><span class="p">,</span> <span class="n">moment_sum_y</span><span class="p">,</span> <span class="n">moment_sum</span></div></div>
 </pre></div>
 
               </article>
