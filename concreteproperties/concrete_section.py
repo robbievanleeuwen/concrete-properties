@@ -1488,10 +1488,6 @@ class ConcreteSection:
 
             # net force and point of action
             n_steel = sig * steel_geom.calculate_area()
-            # _, c_v = principal_coordinate(
-            #     phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
-            # )
-            # d = c_v - na_local[1]
 
             steel_sigs.append(sig)
             steel_strains.append(strain)
