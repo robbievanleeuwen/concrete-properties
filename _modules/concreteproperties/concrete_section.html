@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>concreteproperties.concrete_section &#8212; concreteproperties 0.2.0 documentation</title>
+    <title>concreteproperties.concrete_section &#8212; concreteproperties 0.2.1 documentation</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -136,7 +136,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.2.0 variable.
+            // this version, rather than using sphinx's 0.2.1 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "latest") {
@@ -1689,7 +1689,7 @@ function checkPageExistsAndRedirect(event) {
 
         <span class="c1"># handle cardinal points (avoid divide by zeros)</span>
         <span class="n">tan_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">):</span>
             <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">-</span> <span class="n">e_ixy</span> <span class="o">*</span> <span class="n">tan_theta</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">-</span> <span class="n">e_iyy</span> <span class="o">*</span> <span class="n">tan_theta</span><span class="p">)</span>
 
         <span class="c1"># calculate bending moment about each axis (figure out signs)</span>
@@ -1699,7 +1699,7 @@ function checkPageExistsAndRedirect(event) {
             <span class="k">elif</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
