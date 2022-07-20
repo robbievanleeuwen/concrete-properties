@@ -445,6 +445,34 @@ class ConcreteSection:
             - 2 * cracked_results.e_ixy_c_cr * np.sin(theta) * np.cos(theta)
         )
 
+        # principal 2nd moments of area about the centroidal xy axis
+        Delta = (
+            ((cracked_results.e_ixx_c_cr - cracked_results.e_iyy_c_cr) / 2) ** 2
+            + cracked_results.e_ixy_c_cr**2
+        ) ** 0.5
+        cracked_results.e_i11_cr = (
+            cracked_results.e_ixx_c_cr + cracked_results.e_iyy_c_cr
+        ) / 2 + Delta
+        cracked_results.e_i22_cr = (
+            cracked_results.e_ixx_c_cr + cracked_results.e_iyy_c_cr
+        ) / 2 - Delta
+
+        # principal axis angle
+        if (
+            abs(cracked_results.e_ixx_c_cr - cracked_results.e_i11_cr)
+            < 1e-12 * cracked_results.e_i11_cr
+        ):
+            cracked_results.phi_cr = 0
+        else:
+            cracked_results.phi_cr = (
+                np.arctan2(
+                    cracked_results.e_ixx_c_cr - cracked_results.e_i11_cr,
+                    cracked_results.e_ixy_c_cr,
+                )
+                * 180
+                / np.pi
+            )
+
         return cracked_results
 
     def calculate_cracking_moment(
@@ -554,10 +582,10 @@ class ConcreteSection:
         # add steel geometries to list
         cracked_geoms.extend(self.steel_geometries)
 
-        # concrete
-        for conc_geom in cracked_geoms:
-            ea = conc_geom.calculate_area() * conc_geom.material.elastic_modulus
-            centroid = conc_geom.calculate_centroid()
+        # concrete & steel
+        for geom in cracked_geoms:
+            ea = geom.calculate_area() * geom.material.elastic_modulus
+            centroid = geom.calculate_centroid()
 
             # convert centroid to local coordinates
             _, c_v = principal_coordinate(
@@ -1377,10 +1405,34 @@ class ConcreteSection:
         e_iyy = cracked_results.e_iyy_c_cr
         e_ixy = cracked_results.e_ixy_c_cr
 
-        # calculate moment about bending angle theta
+        # correct small e_ixy sign error
+        if abs(e_ixy / cracked_results.e_i11_cr) < 1e-12:
+            e_ixy = 0
+
+        # get bending angle
         theta = cracked_results.theta
-        m_x = m * np.cos(theta)
-        m_y = -m * np.sin(theta)
+
+        # handle cardinal points (avoid divide by zeros)
+        tan_theta = np.tan(theta)
+        with np.errstate(divide='ignore'):
+            c = (e_ixx - e_ixy * tan_theta) / (e_ixy - e_iyy * tan_theta)
+
+        # calculate bending moment about each axis (figure out signs)
+        if theta <= 0:
+            if c < 0:
+                sign = -1
+            elif c > 0:
+                sign = 1
+        else:
+            if c < 0 :
+                sign = 1
+            else:
+                sign = -1
+
+        m_x = sign * np.sqrt(m * m / (1 + 1 / (c * c)))
+        m_y = m_x / c
+
+        print(m_x/1e6, m_y/1e6)
 
         # depth of neutral axis at extreme tensile fibre
         extreme_fibre, d_t = utils.calculate_extreme_fibre(

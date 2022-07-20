@@ -211,7 +211,7 @@ def split_section(
 
     # ensure top geoms is in compression
     # sectionproperties definition is based on global coordinate system only
-    if theta < np.pi / 2 and theta > -np.pi / 2:
+    if theta <= np.pi / 2 and theta >= -np.pi / 2:
         return top_geoms, bot_geoms
     else:
         return bot_geoms, top_geoms

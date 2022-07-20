@@ -277,6 +277,9 @@ class CrackedResults:
     e_iyy_c_cr: float = 0
     e_ixy_c_cr: float = 0
     e_iuu_cr: float = 0
+    e_i11_cr: float = 0
+    e_i22_cr: float = 0
+    phi_cr: float = 0
 
     # transformed properties
     elastic_modulus_ref: float = None
@@ -290,6 +293,8 @@ class CrackedResults:
     iyy_c_cr: float = None
     ixy_c_cr: float = None
     iuu_cr: float = None
+    i11_cr: float = None
+    i22_cr: float = None
 
     def calculate_transformed_properties(
         self,
@@ -312,6 +317,9 @@ class CrackedResults:
         self.iyy_c_cr = self.e_iyy_c_cr / elastic_modulus
         self.ixy_c_cr = self.e_ixy_c_cr / elastic_modulus
         self.iuu_cr = self.e_iuu_cr / elastic_modulus
+        self.i11_cr = self.e_i11_cr / elastic_modulus
+        self.i22_cr = self.e_i22_cr / elastic_modulus
+
 
     def plot_cracked_geometries(
         self,
@@ -380,6 +388,8 @@ class CrackedResults:
             table.add_row("Iyy_c_cr", "{:>{fmt}}".format(self.iyy_c_cr, fmt=fmt))
             table.add_row("Ixy_c_cr", "{:>{fmt}}".format(self.ixy_c_cr, fmt=fmt))
             table.add_row("Iuu_cr", "{:>{fmt}}".format(self.iuu_cr, fmt=fmt))
+            table.add_row("I11_cr", "{:>{fmt}}".format(self.i11_cr, fmt=fmt))
+            table.add_row("I22_cr", "{:>{fmt}}".format(self.i22_cr, fmt=fmt))
 
         table.add_row("E.Ixx_g_cr", "{:>{fmt}}".format(self.e_ixx_g_cr, fmt=fmt))
         table.add_row("E.Iyy_g_cr", "{:>{fmt}}".format(self.e_iyy_g_cr, fmt=fmt))
@@ -388,6 +398,9 @@ class CrackedResults:
         table.add_row("E.Iyy_c_cr", "{:>{fmt}}".format(self.e_iyy_c_cr, fmt=fmt))
         table.add_row("E.Ixy_c_cr", "{:>{fmt}}".format(self.e_ixy_c_cr, fmt=fmt))
         table.add_row("E.Iuu_cr", "{:>{fmt}}".format(self.e_iuu_cr, fmt=fmt))
+        table.add_row("E.I11_cr", "{:>{fmt}}".format(self.e_i11_cr, fmt=fmt))
+        table.add_row("E.I22_cr", "{:>{fmt}}".format(self.e_i22_cr, fmt=fmt))
+        table.add_row("phi_cr", "{:>{fmt}}".format(self.phi_cr, fmt=fmt))
 
         console = Console()
         console.print(table)
