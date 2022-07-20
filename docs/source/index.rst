@@ -15,7 +15,7 @@
  :align: left
  :class: only-dark
 
-|Run Tests| |Lint with Black| |Build Documentation| |codecov| |PyPI version| |Python versions| |GitHub license|
+|Run Tests| |Lint with Black| |Build Documentation| |codecov| |PyPI version| |Python versions| |GitHub license| |Binder|
 
 
 Documentation
@@ -74,3 +74,5 @@ Indices and tables
    :target: https://badge.fury.io/py/concreteproperties
 .. |GitHub license| image:: https://img.shields.io/github/license/robbievanleeuwen/concrete-properties
    :target: https://github.com/robbievanleeuwen/concrete-properties/blob/master/LICENSE.md
+.. |Binder| image:: https://mybinder.org/badge_logo.svg
+   :target: https://mybinder.org/v2/gh/robbievanleeuwen/concrete-properties-examples/master
