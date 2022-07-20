@@ -1408,7 +1408,7 @@ class ConcreteSection:
 
         # handle cardinal points (avoid divide by zeros)
         tan_theta = np.tan(theta)
-        with np.errstate(divide='ignore'):
+        with np.errstate(divide="ignore"):
             c = (e_ixx - e_ixy * tan_theta) / (e_ixy - e_iyy * tan_theta)
 
         # calculate bending moment about each axis (figure out signs)
@@ -1418,7 +1418,7 @@ class ConcreteSection:
             elif c > 0:
                 sign = 1
         else:
-            if c < 0 :
+            if c < 0:
                 sign = 1
             else:
                 sign = -1

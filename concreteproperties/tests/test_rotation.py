@@ -149,7 +149,7 @@ def test_rotated_uncracked_stress(theta):
 
         # fix top and bottom geometries
         for idx, cf in enumerate(new_uncr_stress.concrete_forces):
-            if theta < -np.pi / 2 or theta > np.pi /2:
+            if theta < -np.pi / 2 or theta > np.pi / 2:
                 i = len(new_uncr_stress.concrete_forces) - idx - 1
             else:
                 i = idx

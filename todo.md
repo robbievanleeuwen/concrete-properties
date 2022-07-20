@@ -14,7 +14,7 @@
   - [x] Is there a way to generate output within a docstring??
   - [x] gif of progressive service stress plot?
 - [x] Fix mv!!!
-- [ ] CRACKED STRESS - resolve moments!
+- [x] CRACKED STRESS - resolve moments!
 
 # POST-RELEASE ITEMS
 - [ ] Speed up

@@ -320,7 +320,6 @@ class CrackedResults:
         self.i11_cr = self.e_i11_cr / elastic_modulus
         self.i22_cr = self.e_i22_cr / elastic_modulus
 
-
     def plot_cracked_geometries(
         self,
         title: Optional[str] = "Cracked Geometries",
