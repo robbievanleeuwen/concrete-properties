@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>concreteproperties.analysis_section.AnalysisSection &#8212; concreteproperties 0.2.1 documentation</title>
+    <title>concreteproperties.analysis_section.AnalysisSection &#8212; concreteproperties 0.2.2 documentation</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -140,7 +140,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.2.1 variable.
+            // this version, rather than using sphinx's 0.2.2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "latest") {
@@ -761,7 +761,7 @@ force action</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection.ultimate_stress_analysis">
-<span class="sig-name descname"><span class="pre">ultimate_stress_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc_local</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.ultimate_stress_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.ultimate_stress_analysis" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ultimate_stress_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.ultimate_stress_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.ultimate_stress_analysis" title="Permalink to this definition">#</a></dt>
 <dd><p>Performs an ultimate stress analysis on the section.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -771,11 +771,11 @@ force action</p>
 <li><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the
 horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
 <li><p><strong>ultimate_strain</strong> (<em>float</em>) – Concrete strain at failure</p></li>
-<li><p><strong>pc_local</strong> (<em>float</em>) – y-location of the plastic centroid in local coordinates</p></li>
+<li><p><strong>pc</strong> (<em>Tuple</em><em>[</em><em>float</em><em>]</em>) – Location of the plastic centroid</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Axial force and resultant moment</p>
+<dd class="field-even"><p>Axial force and resultant moments about the global axes</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Tuple[float]</p>
@@ -785,7 +785,7 @@ horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress">
-<span class="sig-name descname"><span class="pre">get_ultimate_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc_local</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.get_ultimate_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_ultimate_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.get_ultimate_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the neutral axis depth <cite>d_n</cite> and ultimate strain, determines the
 ultimate stresses with the section.</p>
 <dl class="field-list simple">
@@ -796,7 +796,7 @@ ultimate stresses with the section.</p>
 <li><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the
 horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
 <li><p><strong>ultimate_strain</strong> (<em>float</em>) – Concrete strain at failure</p></li>
-<li><p><strong>pc_local</strong> (<em>float</em>) – y-location of the plastic centroid in local coordinates</p></li>
+<li><p><strong>pc</strong> (<em>Tuple</em><em>[</em><em>float</em><em>]</em>) – Location of the plastic centroid</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -804,7 +804,7 @@ horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \
 force action</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>, float, float]</p>
+<dd class="field-odd"><p>Tuple[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>, float, float, float]</p>
 </dd>
 </dl>
 </dd></dl>
