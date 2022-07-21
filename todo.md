@@ -1,21 +1,3 @@
-# RELEASE ITEMS
-- [x] Obtain ultimate stresses (using d_n to work out strains at nodes, then get stress)
-- [x] Do the same thing for service stresses
-- [x] Stress plot - add tricontour for zero stress only?
-- [x] Add testing
-  - [x] Stresses for RCB tests
-  - [x] Rotation tests - rotate geometry & theta and check results are constant
-  - [x] Stress forces - check force equilibrium and desired moments
-- [x] FORCE THETA -pi to pi
-- [x] Add steel strain to StressResult & ku to UltimateResult (=dn/d)
-- [x] Clean up profiles - maybe require that certain profiles may only be used for each material?
-- [x] Finish pre.py
-- [x] Documentation!
-  - [x] Is there a way to generate output within a docstring??
-  - [x] gif of progressive service stress plot?
-- [x] Fix mv!!!
-- [x] CRACKED STRESS - resolve moments!
-
 # POST-RELEASE ITEMS
 - [ ] Speed up
   - [ ] Profiling
@@ -23,6 +5,7 @@
 - [ ] Add prestressing
 - [x] Docs version control
 - [x] Start to add design codes
+- [ ] Fix service moment calculation!
 
 # Version Instructions
 1. Change version in __init__.py
