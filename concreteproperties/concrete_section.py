@@ -933,6 +933,13 @@ class ConcreteSection:
             points=self.geometry.points, theta=ultimate_results.theta
         )
 
+        # extreme fibre in local coordinates
+        _, ef_v = principal_coordinate(
+            phi=ultimate_results.theta * 180 / np.pi,
+            x=extreme_fibre[0],
+            y=extreme_fibre[1],
+        )
+
         # validate d_n input
         if d_n <= 0:
             raise ValueError("d_n must be positive.")
@@ -943,9 +950,6 @@ class ConcreteSection:
         point_na = utils.point_on_neutral_axis(
             extreme_fibre=extreme_fibre, d_n=d_n, theta=ultimate_results.theta
         )
-
-        # get principal coordinates of plastic centroid
-        pc_local = self.get_pc_local(theta=ultimate_results.theta)
 
         # create splits in concrete geometries at points in stress-strain profiles
         concrete_split_geoms = utils.split_section_at_strains(
@@ -959,22 +963,24 @@ class ConcreteSection:
 
         # initialise results
         n = 0
-        m_u = 0
+        m_x = 0
+        m_y = 0
         k_u = []
 
         # calculate concrete actions
         for conc_geom in concrete_split_geoms:
             sec = AnalysisSection(geometry=conc_geom)
-            n_sec, m_u_sec = sec.ultimate_stress_analysis(
+            n_sec, m_x_sec, m_y_sec = sec.ultimate_stress_analysis(
                 point_na=point_na,
                 d_n=d_n,
                 theta=ultimate_results.theta,
                 ultimate_strain=self.gross_properties.conc_ultimate_strain,
-                pc_local=pc_local[1],
+                pc=(self.gross_properties.axial_pc_x, self.gross_properties.axial_pc_y),
             )
 
             n += n_sec
-            m_u += m_u_sec
+            m_x += m_x_sec
+            m_y += m_y_sec
 
         # calculate steel actions
         for steel_geom in self.steel_geometries:
@@ -1002,21 +1008,15 @@ class ConcreteSection:
             )
 
             # calculate moment
-            m_u += force * (c_v - pc_local[1])
+            m_x += force * (centroid[1] - self.gross_properties.axial_pc_y)
+            m_y += force * (centroid[0] - self.gross_properties.axial_pc_x)
 
             # calculate k_u
-            _, ef_v = principal_coordinate(
-                phi=ultimate_results.theta * 180 / np.pi,
-                x=extreme_fibre[0],
-                y=extreme_fibre[1],
-            )
             d = ef_v - c_v
             k_u.append(d_n / d)
 
-        # convert m_u to m_x & m_y
-        (m_y, m_x) = global_coordinate(
-            phi=ultimate_results.theta * 180 / np.pi, x11=0, y22=m_u
-        )
+        # calculate resultant moment
+        m_u = np.sqrt(m_x * m_x + m_y * m_y)
 
         # save results
         ultimate_results.d_n = d_n
@@ -1602,7 +1602,7 @@ class ConcreteSection:
                 na_local=na_local[1],
             )
             conc_sigs.append(sig)
-            conc_forces.append((n_conc, d, 0))
+            conc_forces.append((n_conc, 0, d))
 
             # save analysis section
             analysis_sections.append(analysis_section)
@@ -1630,7 +1630,7 @@ class ConcreteSection:
 
             steel_sigs.append(sig)
             steel_strains.append(strain)
-            steel_forces.append((n_steel, d, 0))
+            steel_forces.append((n_steel, 0, d))
 
         return res.StressResult(
             concrete_section=self,
@@ -1674,9 +1674,6 @@ class ConcreteSection:
             phi=ultimate_results.theta * 180 / np.pi, x=point_na[0], y=point_na[1]
         )
 
-        # get principal coordinates of plastic centroid
-        pc_local = self.get_pc_local(theta=ultimate_results.theta)
-
         # initialise stress results for each concrete geometry
         analysis_sections = []
         conc_sigs = []
@@ -1700,15 +1697,15 @@ class ConcreteSection:
             analysis_section = AnalysisSection(geometry=geom)
 
             # calculate stress, force and point of action
-            sig, n_conc, d = analysis_section.get_ultimate_stress(
+            sig, n_conc, d_x, d_y = analysis_section.get_ultimate_stress(
                 d_n=ultimate_results.d_n,
                 point_na=point_na,
                 theta=ultimate_results.theta,
                 ultimate_strain=self.gross_properties.conc_ultimate_strain,
-                pc_local=pc_local[1],
+                pc=(self.gross_properties.axial_pc_x, self.gross_properties.axial_pc_y),
             )
             conc_sigs.append(sig)
-            conc_forces.append((n_conc, d, 0))
+            conc_forces.append((n_conc, d_x, d_y))
 
             # save analysis section
             analysis_sections.append(analysis_section)
@@ -1730,14 +1727,16 @@ class ConcreteSection:
             # calculate stress, force and point of action
             sig = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
             n_steel = sig * steel_geom.calculate_area()
-            _, c_v = principal_coordinate(
-                phi=ultimate_results.theta * 180 / np.pi, x=centroid[0], y=centroid[1]
-            )
-            d = c_v - na_local[1]
 
             steel_sigs.append(sig)
             steel_strains.append(strain)
-            steel_forces.append((n_steel, d, 0))
+            steel_forces.append(
+                (
+                    n_steel,
+                    centroid[0] - self.gross_properties.axial_pc_x,
+                    centroid[1] - self.gross_properties.axial_pc_y,
+                )
+            )
 
         return res.StressResult(
             concrete_section=self,

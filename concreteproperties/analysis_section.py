@@ -263,7 +263,7 @@ class AnalysisSection:
         d_n: float,
         theta: float,
         ultimate_strain: float,
-        pc_local: float,
+        pc: Tuple[float],
     ) -> Tuple[float]:
         r"""Performs an ultimate stress analysis on the section.
 
@@ -273,29 +273,32 @@ class AnalysisSection:
         :param float theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param float ultimate_strain: Concrete strain at failure
-        :param float pc_local: y-location of the plastic centroid in local coordinates
+        :param pc: Location of the plastic centroid
+        :type pc: Tuple[float]
 
-        :return: Axial force and resultant moment
+        :return: Axial force and resultant moments about the global axes
         :rtype: Tuple[float]
         """
 
         # initialise section actions
         n = 0
-        m_u = 0
+        m_x = 0
+        m_y = 0
 
         for el in self.elements:
-            el_n, el_m_u = el.calculate_ultimate_actions(
+            el_n, el_m_x, el_m_y = el.calculate_ultimate_actions(
                 point_na=point_na,
                 d_n=d_n,
                 theta=theta,
                 ultimate_strain=ultimate_strain,
-                pc_local=pc_local,
+                pc=pc,
             )
 
             n += el_n
-            m_u += el_m_u
+            m_x += el_m_x
+            m_y += el_m_y
 
-        return n, m_u
+        return n, m_x, m_y
 
     def get_ultimate_stress(
         self,
@@ -303,7 +306,7 @@ class AnalysisSection:
         point_na: Tuple[float],
         theta: float,
         ultimate_strain: float,
-        pc_local: float,
+        pc: Tuple[float],
     ) -> Tuple[np.ndarray, float, float]:
         r"""Given the neutral axis depth `d_n` and ultimate strain, determines the
         ultimate stresses with the section.
@@ -314,11 +317,12 @@ class AnalysisSection:
         :param float theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param float ultimate_strain: Concrete strain at failure
-        :param float pc_local: y-location of the plastic centroid in local coordinates
+        :param pc: Location of the plastic centroid
+        :type pc: Tuple[float]
 
         :return: Ultimate stresses net force and distance from neutral axis to point of
             force action
-        :rtype: Tuple[:class:`numpy.ndarray`, float, float]
+        :rtype: Tuple[:class:`numpy.ndarray`, float, float, float]
         """
 
         # intialise stress results
@@ -341,26 +345,23 @@ class AnalysisSection:
             )
 
         # calculate total force
-        n, m_u = self.ultimate_stress_analysis(
+        n, m_x, m_y = self.ultimate_stress_analysis(
             point_na=point_na,
             d_n=d_n,
             theta=theta,
             ultimate_strain=ultimate_strain,
-            pc_local=pc_local,
+            pc=pc,
         )
 
         # calculate point of action
         if n == 0:
-            d = 0
+            d_x = 0
+            d_y = 0
         else:
-            # get principal coordinates of neutral axis
-            na_local = utils.principal_coordinate(
-                phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
-            )
+            d_x = m_y / n
+            d_y = m_x / n
 
-            d = m_u / n + pc_local - na_local[1]
-
-        return sig, n, d
+        return sig, n, d_x, d_y
 
     def plot_mesh(
         self,
@@ -651,7 +652,7 @@ class Tri3:
         d_n: float,
         theta: float,
         ultimate_strain: float,
-        pc_local: float,
+        pc: Tuple[float],
     ) -> Tuple[float]:
         r"""Calculates ultimate actions for the current finite element.
 
@@ -661,15 +662,17 @@ class Tri3:
         :param float theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param float ultimate_strain: Concrete strain at failure
-        :param float pc_local: y-location of the plastic centroid in local coordinates
+        :param pc: Location of the plastic centroid
+        :type pc: Tuple[float]
 
-        :return: Axial force and resultant moment
+        :return: Axial force and resultant moment about the global axes
         :rtype: Tuple[float]
         """
 
         # initialise element results
         force_e = 0
-        m_u_e = 0
+        m_x_e = 0
+        m_y_e = 0
 
         # get points for 1 point Gaussian integration
         gps = utils.gauss_points(n=1)
@@ -700,11 +703,9 @@ class Tri3:
             # calculate force (stress * area)
             force_gp = gp[0] * stress * j
 
-            # convert gauss point to local coordinates
-            _, c_v = sp_fea.principal_coordinate(phi=theta * 180 / np.pi, x=x, y=y)
-
             # add force and moment
             force_e += force_gp
-            m_u_e += force_gp * (c_v - pc_local)
+            m_x_e += force_gp * (y - pc[1])
+            m_y_e += force_gp * (x - pc[0])
 
-        return force_e, m_u_e
+        return force_e, m_x_e, m_y_e

@@ -952,8 +952,8 @@ class BiaxialBendingResults:
 class StressResult:
     """Class for storing stress results.
 
-    For service and ultimate stress analyses, the lever arm is stored in the ``d_x``
-    variable and is the perpendicular distance to the neutral axis.
+    For service stress analyses, the lever arm is stored in the ``d_y`` variable and
+    is the perpendicular distance to the neutral axis.
 
     :var concrete_analysis_sections: List of concrete analysis section objects
         present in the stress analysis, which can be visualised by calling the
