@@ -209,7 +209,7 @@ class AnalysisSection:
         kappa: float,
         point_na: Tuple[float],
         theta: float,
-        na_local: float,
+        centroid: Tuple[float],
     ) -> Tuple[np.ndarray, float, float]:
         r"""Given the neutral axis depth `d_n` and curvature `kappa` determines the
         service stresses within the section.
@@ -220,11 +220,12 @@ class AnalysisSection:
         :type point_na: Tuple[float]
         :param float theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param float na_local: y-location of the neutral axis in local coordinates
+        :param centroid: Centroid about which to take moments
+        :type centroid: Tuple[float]
 
-        :return: Service stresses, net force and distance from neutral axis to point of
+        :return: Service stresses, net force and distance from centroid to point of
             force action
-        :rtype: Tuple[:class:`numpy.ndarray`, float, float]
+        :rtype: Tuple[:class:`numpy.ndarray`, float, float, float]
         """
 
         # intialise stress results
@@ -246,21 +247,23 @@ class AnalysisSection:
             )
 
         # calculate total force
-        n, m_u, _ = self.service_stress_analysis(
+        n, m_x, m_y, _, _ = self.service_stress_analysis(
             point_na=point_na,
             d_n=d_n,
             theta=theta,
             kappa=kappa,
-            na_local=na_local,
+            centroid=centroid,
         )
 
         # calculate point of action
         if n == 0:
-            d = 0
+            d_x = 0
+            d_y = 0
         else:
-            d = m_u / n
+            d_x = m_y / n
+            d_y = m_x / n
 
-        return sig, n, d
+        return sig, n, d_x, d_y
 
     def ultimate_stress_analysis(
         self,

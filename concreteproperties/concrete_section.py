@@ -1563,15 +1563,15 @@ class ConcreteSection:
         except ValueError:
             warnings.warn("brentq algorithm failed.")
 
-        # find point on neutral axis by shifting by d_n
+        # find centroid of force action
+        u_c = mk._m_v_i / mk._n_i
         point_na = utils.point_on_neutral_axis(
             extreme_fibre=extreme_fibre, d_n=d_n, theta=theta
         )
-
-        # get principal coordinates of neutral axis
-        na_local = principal_coordinate(
+        _, v_c = principal_coordinate(
             phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
         )
+        cx, cy = global_coordinate(phi=theta * 180 / np.pi, x11=u_c, y22=v_c)
 
         # initialise stress results
         analysis_sections = []
@@ -1595,15 +1595,15 @@ class ConcreteSection:
             analysis_section = AnalysisSection(geometry=geom)
 
             # calculate stress, force and point of action
-            sig, n_conc, d = analysis_section.get_service_stress(
+            sig, n_conc, d_x, d_y = analysis_section.get_service_stress(
                 d_n=d_n,
                 kappa=kappa,
                 point_na=point_na,
                 theta=theta,
-                na_local=na_local[1],
+                centroid=(cx, cy),
             )
             conc_sigs.append(sig)
-            conc_forces.append((n_conc, 0, d))
+            conc_forces.append((n_conc, d_x, d_y))
 
             # save analysis section
             analysis_sections.append(analysis_section)
@@ -1624,14 +1624,10 @@ class ConcreteSection:
             # calculate stress, force and point of action
             sig = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
             n_steel = sig * steel_geom.calculate_area()
-            _, c_v = principal_coordinate(
-                phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
-            )
-            d = c_v - na_local[1]
 
             steel_sigs.append(sig)
             steel_strains.append(strain)
-            steel_forces.append((n_steel, 0, d))
+            steel_forces.append((n_steel, centroid[0] - cx, centroid[1] - cy))
 
         return res.StressResult(
             concrete_section=self,
