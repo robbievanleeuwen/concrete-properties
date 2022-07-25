@@ -631,7 +631,9 @@ class ConcreteSection:
 
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
-        extreme_fibre, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
+        extreme_fibre, d_t = utils.calculate_extreme_fibre(
+            points=self.geometry.points, theta=theta
+        )
         a = 1e-6 * d_t  # sufficiently small depth of compressive zone
         b = d_t  # neutral axis at extreme tensile fibre
 
@@ -692,7 +694,9 @@ class ConcreteSection:
                     centroid=(cx, cy),
                 )
 
-                moment = np.sqrt(moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2)
+                moment = np.sqrt(
+                    moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2
+                )
 
                 text_update = "[red]Generating M-K diagram: "
                 text_update += f"M={moment:.3e}"
@@ -822,7 +826,9 @@ class ConcreteSection:
 
             # convert steel centroid to local coordinates
             u_s, _ = principal_coordinate(
-                phi=moment_curvature.theta * 180 / np.pi, x=steel_centroid[0], y=steel_centroid[1]
+                phi=moment_curvature.theta * 180 / np.pi,
+                x=steel_centroid[0],
+                y=steel_centroid[1],
             )
 
             # calculate moment
