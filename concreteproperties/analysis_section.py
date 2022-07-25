@@ -162,7 +162,7 @@ class AnalysisSection:
         d_n: float,
         theta: float,
         kappa: float,
-        na_local: float,
+        centroid: Tuple[float],
     ) -> Tuple[float]:
         r"""Performs a service stress analysis on the section.
 
@@ -172,31 +172,36 @@ class AnalysisSection:
         :param float theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param float kappa: Curvature
-        :param float na_local: y-location of the neutral axis in local coordinates
+        :param centroid: Centroid about which to take moments
+        :type centroid: Tuple[float]
 
-        :return: Axial force, resultant moment and max strain
+        :return: Axial force, section moments and max strain
         :rtype: Tuple[float]
         """
 
         # initialise section actions
         n = 0
-        m_u = 0
         max_strain = 0
+        m_x = 0
+        m_y = 0
+        m_v = 0
 
         for el in self.elements:
-            el_n, el_m_u, el_max_strain = el.calculate_service_actions(
+            el_n, el_m_x, el_m_y, el_m_v, el_max_strain = el.calculate_service_actions(
                 point_na=point_na,
                 d_n=d_n,
                 theta=theta,
                 kappa=kappa,
-                na_local=na_local,
+                centroid=centroid,
             )
             max_strain = max(max_strain, el_max_strain)
 
             n += el_n
-            m_u += el_m_u
+            m_x += el_m_x
+            m_y += el_m_y
+            m_v += el_m_v
 
-        return n, m_u, max_strain
+        return n, m_x, m_y, m_v, max_strain
 
     def get_service_stress(
         self,
@@ -204,7 +209,7 @@ class AnalysisSection:
         kappa: float,
         point_na: Tuple[float],
         theta: float,
-        na_local: float,
+        centroid: Tuple[float],
     ) -> Tuple[np.ndarray, float, float]:
         r"""Given the neutral axis depth `d_n` and curvature `kappa` determines the
         service stresses within the section.
@@ -215,11 +220,12 @@ class AnalysisSection:
         :type point_na: Tuple[float]
         :param float theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param float na_local: y-location of the neutral axis in local coordinates
+        :param centroid: Centroid about which to take moments
+        :type centroid: Tuple[float]
 
-        :return: Service stresses, net force and distance from neutral axis to point of
+        :return: Service stresses, net force and distance from centroid to point of
             force action
-        :rtype: Tuple[:class:`numpy.ndarray`, float, float]
+        :rtype: Tuple[:class:`numpy.ndarray`, float, float, float]
         """
 
         # intialise stress results
@@ -241,21 +247,23 @@ class AnalysisSection:
             )
 
         # calculate total force
-        n, m_u, _ = self.service_stress_analysis(
+        n, m_x, m_y, _, _ = self.service_stress_analysis(
             point_na=point_na,
             d_n=d_n,
             theta=theta,
             kappa=kappa,
-            na_local=na_local,
+            centroid=centroid,
         )
 
         # calculate point of action
         if n == 0:
-            d = 0
+            d_x = 0
+            d_y = 0
         else:
-            d = m_u / n
+            d_x = m_y / n
+            d_y = m_x / n
 
-        return sig, n, d
+        return sig, n, d_x, d_y
 
     def ultimate_stress_analysis(
         self,
@@ -589,7 +597,7 @@ class Tri3:
         d_n: float,
         theta: float,
         kappa: float,
-        na_local: float,
+        centroid: Tuple[float],
     ) -> Tuple[float]:
         r"""Calculates service actions for the current finite element.
 
@@ -599,16 +607,19 @@ class Tri3:
         :param float theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param float kappa: Curvature
-        :param float na_local: y-location of the neutral axis in local coordinates
+        :param centroid: Centroid about which to take moments
+        :type centroid: Tuple[float]
 
-        :return: Axial force, resultant moment and maximum strain
+        :return: Axial force, moments and maximum strain
         :rtype: Tuple[float]
         """
 
         # initialise element results
         force_e = 0
-        m_u_e = 0
         max_strain_e = 0
+        m_x_e = 0
+        m_y_e = 0
+        m_v_e = 0
 
         # get points for 1 point Gaussian integration
         gps = utils.gauss_points(n=1)
@@ -638,13 +649,14 @@ class Tri3:
             force_gp = gp[0] * stress * j
 
             # convert gauss point to local coordinates
-            _, c_v = sp_fea.principal_coordinate(phi=theta * 180 / np.pi, x=x, y=y)
-
+            u, _ = sp_fea.principal_coordinate(phi=theta * 180 / np.pi, x=x, y=y)
             # add force and moment
             force_e += force_gp
-            m_u_e += force_gp * (c_v - na_local)
+            m_x_e += force_e * (y - centroid[1])
+            m_y_e += force_e * (x - centroid[0])
+            m_v_e += force_gp * u
 
-        return force_e, m_u_e, max_strain_e
+        return force_e, m_x_e, m_y_e, m_v_e, max_strain_e
 
     def calculate_ultimate_actions(
         self,

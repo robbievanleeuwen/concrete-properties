@@ -428,7 +428,9 @@ class MomentCurvatureResults:
 
     # for analysis
     _n_i: float = field(default=0, repr=False)
-    _m_i: float = field(default=0, repr=False)
+    _m_x_i: float = field(default=0, repr=False)
+    _m_y_i: float = field(default=0, repr=False)
+    _m_v_i: float = field(default=0, repr=False)
     _failure: bool = field(default=False, repr=False)
 
     def __post_init__(
@@ -952,8 +954,13 @@ class BiaxialBendingResults:
 class StressResult:
     """Class for storing stress results.
 
-    For service stress analyses, the lever arm is stored in the ``d_y`` variable and
-    is the perpendicular distance to the neutral axis.
+    For uncracked and cracked analyses, the lever arm is the distance to the elastic
+    centroid.
+
+    For service stress analyses, the lever arm is the distance to the computed centroid.
+
+    For ultimate stress analyses, the lever arm is the distance to the plastic
+    centroid.
 
     :var concrete_analysis_sections: List of concrete analysis section objects
         present in the stress analysis, which can be visualised by calling the

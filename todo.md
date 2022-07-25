@@ -2,10 +2,12 @@
 - [ ] Speed up
   - [ ] Profiling
   - [ ] Clean up all the na_local, points_na etc. etc.
+  - [ ] Double calculations etc.?
+  - [ ] General refactoring
 - [ ] Add prestressing
 - [x] Docs version control
 - [x] Start to add design codes
-- [ ] Fix service moment calculation!
+- [ ] More tests!
 
 # Version Instructions
 1. Change version in __init__.py
