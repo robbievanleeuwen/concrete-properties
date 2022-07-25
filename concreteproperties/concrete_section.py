@@ -631,7 +631,7 @@ class ConcreteSection:
 
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
-        _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
+        extreme_fibre, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
         a = 1e-6 * d_t  # sufficiently small depth of compressive zone
         b = d_t  # neutral axis at extreme tensile fibre
 
@@ -674,15 +674,35 @@ class ConcreteSection:
                 except ValueError:
                     warnings.warn("brentq algorithm failed.")
 
+                # find centroid of force action
+                u_c = moment_curvature._m_v_i / moment_curvature._n_i
+                point_na = utils.point_on_neutral_axis(
+                    extreme_fibre=extreme_fibre, d_n=d_n, theta=theta
+                )
+                _, v_c = principal_coordinate(
+                    phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+                )
+                cx, cy = global_coordinate(phi=theta * 180 / np.pi, x11=u_c, y22=v_c)
+
+                # calculate moments
+                self.service_normal_force_convergence(
+                    d_n=d_n,
+                    kappa=kappa,
+                    moment_curvature=moment_curvature,
+                    centroid=(cx, cy),
+                )
+
+                moment = np.sqrt(moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2)
+
                 text_update = "[red]Generating M-K diagram: "
-                text_update += f"M={moment_curvature._m_i:.3e}"
+                text_update += f"M={moment:.3e}"
 
                 progress.update(task, description=text_update)
 
                 # save results
                 if not moment_curvature._failure:
                     moment_curvature.kappa.append(kappa)
-                    moment_curvature.moment.append(moment_curvature._m_i)
+                    moment_curvature.moment.append(moment)
                     iter += 1
 
             progress.update(
@@ -698,44 +718,21 @@ class ConcreteSection:
         d_n: float,
         kappa: float,
         moment_curvature: res.MomentCurvatureResults,
+        centroid: Optional[Tuple[float]] = (0, 0),
     ) -> float:
-        """Given a trial neutral axis depth `d_n` and curvature `kappa`, determines the
-        difference between the net axial force and the desired axial force.
+        """Given a neutral axis depth ``d_n`` and curvature ``kappa``, returns the the
+        net axial force.
 
         :param float d_nc: Trial cracked neutral axis
         :param float kappa: Curvature
         :param moment_curvature: Moment curvature results object
         :type moment_curvature:
             :class:`~concreteproperties.results.MomentCurvatureResults`
+        :param centroid: Centroid about which to take moments
+        :type centroid: Optional[Tuple[float]]
 
-        :return: Service normal force convergence
+        :return: Net axial force
         :rtype: float
-        """
-
-        # calculate convergence
-        return self.calculate_service_section_actions(
-            d_n=d_n, kappa=kappa, moment_curvature=moment_curvature
-        )._n_i
-
-    def calculate_service_section_actions(
-        self,
-        d_n: float,
-        kappa: float,
-        moment_curvature: Optional[
-            res.MomentCurvatureResults
-        ] = res.MomentCurvatureResults(theta=0),
-    ) -> res.MomentCurvatureResults:
-        """Given a neutral axis depth `d_n` and curvature `kappa`, calculates the
-        resultant axial force and bending moment.
-
-        :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float kappa: Curvature
-        :param moment_curvature: Moment curvature results object
-        :type moment_curvature:
-            Optional[:class:`~concreteproperties.results.MomentCurvatureResults`]
-
-        :return: Moment curvature results object
-        :rtype: :class:`~concreteproperties.results.MomentCurvatureResults`
         """
 
         # reset failure
@@ -757,11 +754,6 @@ class ConcreteSection:
             extreme_fibre=extreme_fibre, d_n=d_n, theta=moment_curvature.theta
         )
 
-        # get principal coordinates of neutral axis
-        na_local = principal_coordinate(
-            phi=moment_curvature.theta * 180 / np.pi, x=point_na[0], y=point_na[1]
-        )
-
         # create splits in concrete geometries at points in stress-strain profiles
         concrete_split_geoms = utils.split_section_at_strains(
             concrete_geometries=self.concrete_geometries,
@@ -773,21 +765,25 @@ class ConcreteSection:
 
         # initialise results
         n = 0
-        m_u = 0
+        m_x = 0
+        m_y = 0
+        m_v = 0
 
         # calculate concrete actions
         for conc_geom in concrete_split_geoms:
             sec = AnalysisSection(geometry=conc_geom)
-            n_sec, m_u_sec, max_strain = sec.service_stress_analysis(
+            n_sec, m_x_sec, m_y_sec, m_v_sec, max_strain = sec.service_stress_analysis(
                 point_na=point_na,
                 d_n=d_n,
                 theta=moment_curvature.theta,
                 kappa=kappa,
-                na_local=na_local[1],
+                centroid=centroid,
             )
 
             n += n_sec
-            m_u += m_u_sec
+            m_x += m_x_sec
+            m_y += m_y_sec
+            m_v += m_v_sec
 
             # check for concrete failure
             if (
@@ -801,11 +797,11 @@ class ConcreteSection:
         for steel_geom in self.steel_geometries:
             # calculate area and centroid
             area = steel_geom.calculate_area()
-            centroid = steel_geom.calculate_centroid()
+            steel_centroid = steel_geom.calculate_centroid()
 
             # get strain at centroid of steel
             strain = utils.get_service_strain(
-                point=(centroid[0], centroid[1]),
+                point=(steel_centroid[0], steel_centroid[1]),
                 point_na=point_na,
                 theta=moment_curvature.theta,
                 kappa=kappa,
@@ -824,18 +820,23 @@ class ConcreteSection:
             force = stress * area
             n += force
 
-            # convert centroid to local coordinates
-            _, c_v = principal_coordinate(
-                phi=moment_curvature.theta * 180 / np.pi, x=centroid[0], y=centroid[1]
+            # convert steel centroid to local coordinates
+            u_s, _ = principal_coordinate(
+                phi=moment_curvature.theta * 180 / np.pi, x=steel_centroid[0], y=steel_centroid[1]
             )
 
             # calculate moment
-            m_u += force * (c_v - na_local[1])
+            m_x += force * (steel_centroid[1] - centroid[1])
+            m_y += force * (steel_centroid[0] - centroid[0])
+            m_v += force * u_s
 
         moment_curvature._n_i = n
-        moment_curvature._m_i = m_u
+        moment_curvature._m_x_i = m_x
+        moment_curvature._m_y_i = m_y
+        moment_curvature._m_v_i = m_v
 
-        return moment_curvature
+        # calculate convergence
+        return n
 
     def ultimate_bending_capacity(
         self,
