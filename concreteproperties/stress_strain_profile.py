@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, TYPE_CHECKING
+from typing import Optional, List, TYPE_CHECKING
 import warnings
 from dataclasses import dataclass, field
 

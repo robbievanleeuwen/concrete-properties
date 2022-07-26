@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, Union, Tuple, TYPE_CHECKING
 import contextlib
 import numpy as np
 import matplotlib.pyplot as plt

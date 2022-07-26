@@ -1,20 +1,21 @@
 from __future__ import annotations
 
-from typing import List, Tuple, Optional, TYPE_CHECKING
 from dataclasses import dataclass
+from typing import TYPE_CHECKING, List, Optional, Tuple
+
 import numpy as np
-from matplotlib.colors import ListedColormap
+import sectionproperties.analysis.fea as sp_fea
 import triangle
+from matplotlib.colors import ListedColormap
 
 import concreteproperties.utils as utils
 from concreteproperties.post import plotting_context
 
-import sectionproperties.analysis.fea as sp_fea
-
 if TYPE_CHECKING:
     import matplotlib
-    from concreteproperties.material import Concrete
     from sectionproperties.pre.geometry import Geometry
+
+    from concreteproperties.material import Concrete
 
 
 class AnalysisSection:
@@ -70,7 +71,7 @@ class AnalysisSection:
                     el_id=idx,
                     coords=coords,
                     node_ids=node_ids,
-                    conc_material=self.geometry.material,
+                    conc_material=self.geometry.material,  # type: ignore
                 )
             )
 
@@ -163,7 +164,7 @@ class AnalysisSection:
         theta: float,
         kappa: float,
         centroid: Tuple[float],
-    ) -> Tuple[float]:
+    ) -> Tuple[float, float, float, float, float]:
         r"""Performs a service stress analysis on the section.
 
         :param point_na: Point on the neutral axis
@@ -176,7 +177,7 @@ class AnalysisSection:
         :type centroid: Tuple[float]
 
         :return: Axial force, section moments and max strain
-        :rtype: Tuple[float]
+        :rtype: Tuple[float, float, float, float, float]
         """
 
         # initialise section actions

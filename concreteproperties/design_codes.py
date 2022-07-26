@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, TYPE_CHECKING
+from typing import Tuple, List, Optional, TYPE_CHECKING
 from copy import deepcopy
 import numpy as np
 from scipy.interpolate import interp1d
