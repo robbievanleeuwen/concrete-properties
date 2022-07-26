@@ -5,11 +5,12 @@ import sectionproperties.pre.library.primitive_sections as sp_ps
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.pre import add_bar, add_bar_rectangular_array
-from concreteproperties.stress_strain_profile import (ConcreteLinear,
-                                                      RectangularStressBlock,
-                                                      SteelElasticPlastic)
-from sectionproperties.pre.library.concrete_sections import \
-    concrete_rectangular_section
+from concreteproperties.stress_strain_profile import (
+    ConcreteLinear,
+    RectangularStressBlock,
+    SteelElasticPlastic,
+)
+from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
 
 # All examples come from:
 # Warner, R. F., Foster, S. J., & Kilpatrick, A. E. (2007). Reinforced Concrete Basics (1st ed.). Pearson Australia.

@@ -3,9 +3,11 @@ import pytest
 import sectionproperties.pre.library.concrete_sections as sp_cs
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import Concrete, Steel
-from concreteproperties.stress_strain_profile import (ConcreteLinear,
-                                                      RectangularStressBlock,
-                                                      SteelElasticPlastic)
+from concreteproperties.stress_strain_profile import (
+    ConcreteLinear,
+    RectangularStressBlock,
+    SteelElasticPlastic,
+)
 
 # generate list of angles to test
 thetas = np.linspace(start=-np.pi, stop=np.pi, num=31)

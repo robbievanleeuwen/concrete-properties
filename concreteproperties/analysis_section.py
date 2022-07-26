@@ -385,7 +385,7 @@ class AnalysisSection:
             cmap = ListedColormap(colour_array)  # custom colourmap
 
             # plot the mesh colours
-            ax.tripcolor(   # type: ignore
+            ax.tripcolor(  # type: ignore
                 self.mesh_nodes[:, 0],
                 self.mesh_nodes[:, 1],
                 self.mesh_elements[:, 0:3],  # type: ignore

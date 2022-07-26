@@ -3,12 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
 import numpy as np
-from rich.progress import (BarColumn, Progress, ProgressColumn, SpinnerColumn,
-                           TextColumn)
+from rich.progress import BarColumn, Progress, ProgressColumn, SpinnerColumn, TextColumn
 from rich.table import Column
 from rich.text import Text
-from sectionproperties.analysis.fea import (global_coordinate,
-                                            principal_coordinate)
+from sectionproperties.analysis.fea import global_coordinate, principal_coordinate
 from sectionproperties.pre.geometry import CompoundGeometry
 
 if TYPE_CHECKING:

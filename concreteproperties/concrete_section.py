@@ -10,8 +10,7 @@ import numpy as np
 import sectionproperties.pre.geometry as sp_geom
 from rich.live import Live
 from scipy.optimize import brentq
-from sectionproperties.analysis.fea import (global_coordinate,
-                                            principal_coordinate)
+from sectionproperties.analysis.fea import global_coordinate, principal_coordinate
 
 import concreteproperties.results as res
 import concreteproperties.utils as utils
@@ -597,7 +596,7 @@ class ConcreteSection:
         theta: float = 0,
         kappa_inc: float = 1e-7,
         delta_m_min: float = 0.15,
-        delta_m_max: float= 0.3,
+        delta_m_max: float = 0.3,
     ) -> res.MomentCurvatureResults:
         r"""Performs a moment curvature analysis given a bending angle `theta`.
 
