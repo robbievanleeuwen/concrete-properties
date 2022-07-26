@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from typing import Optional, Tuple, Union, TYPE_CHECKING
-import numpy as np
+from typing import TYPE_CHECKING, Optional, Tuple, Union
 
+import numpy as np
 import sectionproperties.pre.library.primitive_sections as sp_ps
 
 if TYPE_CHECKING:
-    from sectionproperties.pre.geometry import Geometry, CompoundGeometry
+    from sectionproperties.pre.geometry import CompoundGeometry, Geometry
+
     from concreteproperties.material import Steel
 
 
@@ -23,18 +24,13 @@ def add_bar(
     Bars are discretised by four points by default.
 
     :param geometry: Reinforced concrete geometry to which the new bar will be added
-    :type geometry: Union[:class:`sectionproperties.pre.geometry.Geometry`,
-        :class:`sectionproperties.pre.geometry.CompoundGeometry`]
-    :param float area: Bar cross-sectional area
+    :param area: Bar cross-sectional area
     :param material: Material object for the bar
-    :type material: :class:`~concreteproperties.material.Steel`
-    :param float x: x-position of the bar
-    :param float y: y-position of the bar
-    :param int n: Number of points to discretise the bar circle
+    :param x: x-position of the bar
+    :param y: y-position of the bar
+    :param n: Number of points to discretise the bar circle
 
     :return: Reinforced concrete geometry with added bar
-    :rtype: Union[:class:`sectionproperties.pre.geometry.Geometry`,
-        :class:`sectionproperties.pre.geometry.CompoundGeometry`]
     """
 
     bar = sp_ps.circular_section_by_area(
@@ -61,23 +57,17 @@ def add_bar_rectangular_array(
     Bars are discretised by four points by default.
 
     :param geometry: Reinforced concrete geometry to which the new bar will be added
-    :type geometry: Union[:class:`sectionproperties.pre.geometry.Geometry`,
-        :class:`sectionproperties.pre.geometry.CompoundGeometry`]
-    :param float area: Bar cross-sectional area
+    :param area: Bar cross-sectional area
     :param material: Material object for the bar
-    :type material: :class:`~concreteproperties.material.Steel`
-    :param int n_x: Number of bars in the x-direction
-    :param float x_s: Spacing in the x-direction
-    :param int n_y: Number of bars in the y-direction
-    :param float y_s: Spacing in the y-direction
+    :param n_x: Number of bars in the x-direction
+    :param x_s: Spacing in the x-direction
+    :param n_y: Number of bars in the y-direction
+    :param y_s: Spacing in the y-direction
     :param anchor: Coordinates of the bottom left hand bar in the rectangular array
-    :type anchor: Tuple[float, float]
-    :param bool exterior_only: If set to True, only returns bars on the external perimeter
-    :param int n: Number of points to discretise the bar circle
+    :param exterior_only: If set to True, only returns bars on the external perimeter
+    :param n: Number of points to discretise the bar circle
 
     :return: Reinforced concrete geometry with added bar
-    :rtype: Union[:class:`sectionproperties.pre.geometry.Geometry`,
-        :class:`sectionproperties.pre.geometry.CompoundGeometry`]
     """
 
     for j_idx in range(n_y):
@@ -116,22 +106,16 @@ def add_bar_circular_array(
     Bars are discretised by four points by default.
 
     :param geometry: Reinforced concrete geometry to which the news bar will be added
-    :type geometry: Union[:class:`sectionproperties.pre.geometry.Geometry`,
-        :class:`sectionproperties.pre.geometry.CompoundGeometry`]
-    :param float area: Bar cross-sectional area
+    :param area: Bar cross-sectional area
     :param material: Material object for the bar
-    :type material: :class:`~concreteproperties.material.Steel`
-    :param int n_bar: Number of bars in the array
-    :param float r_array: Radius of the circular array
-    :param float theta_0: Initial angle (in radians) that the first bar makes with the
+    :param n_bar: Number of bars in the array
+    :param r_array: Radius of the circular array
+    :param theta_0: Initial angle (in radians) that the first bar makes with the
         horizontal axis in the circular array
     :param ctr: Centre of the circular array
-    :type ctr: Tuple[float, float]
-    :param int n: Number of points to discretise the bar circle
+    :param n: Number of points to discretise the bar circle
 
     :return: Reinforced concrete geometry with added bar
-    :rtype: Union[:class:`sectionproperties.pre.geometry.Geometry`,
-        :class:`sectionproperties.pre.geometry.CompoundGeometry`]
     """
 
     d_theta = 2 * np.pi / n_bar

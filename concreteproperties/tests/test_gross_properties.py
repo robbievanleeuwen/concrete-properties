@@ -1,8 +1,6 @@
 import pytest
-
-from concreteproperties.analysis_section import AnalysisSection
-
 import sectionproperties.pre.library.primitive_sections as sp_ps
+from concreteproperties.analysis_section import AnalysisSection
 
 
 def test_rectangle_second_moment_of_area():

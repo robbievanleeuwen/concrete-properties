@@ -28,7 +28,6 @@ class AnalysisSection:
         """Inits the AnalysisSection class.
 
         :param geometry: Geometry object
-        :type geometry: :class:`sectionproperties.pre.geometry.Geometry`
         """
 
         self.geometry = geometry
@@ -89,19 +88,18 @@ class AnalysisSection:
     ) -> Tuple[np.ndarray, float, float, float]:
         r"""Given section actions and section propreties, calculates elastic stresses.
 
-        :param float n: Axial force
-        :param float m_x: Bending moment about the x-axis
-        :param float m_y: Bending moment about the y-axis
-        :param float e_a: Axial rigidity
-        :param float cx: x-Centroid
-        :param float cy: y-Centroid
-        :param float e_ixx: Flexural rigidity about the x-axis
-        :param float e_iyy: Flexural rigidity about the y-axis
-        :param float e_ixy: Flexural rigidity about the xy-axis
+        :param n: Axial force
+        :param m_x: Bending moment about the x-axis
+        :param m_y: Bending moment about the y-axis
+        :param e_a: Axial rigidity
+        :param cx: x-Centroid
+        :param cy: y-Centroid
+        :param e_ixx: Flexural rigidity about the x-axis
+        :param e_iyy: Flexural rigidity about the y-axis
+        :param e_ixy: Flexural rigidity about the xy-axis
 
         :return: Elastic stresses, net force and distance from neutral axis to point of
             force action
-        :rtype: Tuple[:class:`numpy.ndarray`, float, float, float]
         """
 
         # intialise stress results
@@ -159,25 +157,22 @@ class AnalysisSection:
 
     def service_stress_analysis(
         self,
-        point_na: Tuple[float],
+        point_na: Tuple[float, float],
         d_n: float,
         theta: float,
         kappa: float,
-        centroid: Tuple[float],
+        centroid: Tuple[float, float],
     ) -> Tuple[float, float, float, float, float]:
         r"""Performs a service stress analysis on the section.
 
         :param point_na: Point on the neutral axis
-        :type point_na: Tuple[float]
-        :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle (in radians) the neutral axis makes with the
+        :param d_n: Depth of the neutral axis from the extreme compression fibre
+        :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param float kappa: Curvature
+        :param kappa: Curvature
         :param centroid: Centroid about which to take moments
-        :type centroid: Tuple[float]
 
         :return: Axial force, section moments and max strain
-        :rtype: Tuple[float, float, float, float, float]
         """
 
         # initialise section actions
@@ -208,25 +203,22 @@ class AnalysisSection:
         self,
         d_n: float,
         kappa: float,
-        point_na: Tuple[float],
+        point_na: Tuple[float, float],
         theta: float,
-        centroid: Tuple[float],
-    ) -> Tuple[np.ndarray, float, float]:
+        centroid: Tuple[float, float],
+    ) -> Tuple[np.ndarray, float, float, float]:
         r"""Given the neutral axis depth `d_n` and curvature `kappa` determines the
         service stresses within the section.
 
-        :param float d_n: Neutral axis depth
-        :param float kappa: Curvature
+        :param d_n: Neutral axis depth
+        :param kappa: Curvature
         :param point_na: Point on the neutral axis
-        :type point_na: Tuple[float]
-        :param float theta: Angle (in radians) the neutral axis makes with the
+        :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param centroid: Centroid about which to take moments
-        :type centroid: Tuple[float]
 
         :return: Service stresses, net force and distance from centroid to point of
             force action
-        :rtype: Tuple[:class:`numpy.ndarray`, float, float, float]
         """
 
         # intialise stress results
@@ -243,7 +235,7 @@ class AnalysisSection:
             )
 
             # get stress at gauss point
-            sig[idx] = self.geometry.material.stress_strain_profile.get_stress(
+            sig[idx] = self.geometry.material.stress_strain_profile.get_stress(  # type: ignore
                 strain=strain
             )
 
@@ -268,25 +260,22 @@ class AnalysisSection:
 
     def ultimate_stress_analysis(
         self,
-        point_na: Tuple[float],
+        point_na: Tuple[float, float],
         d_n: float,
         theta: float,
         ultimate_strain: float,
-        pc: Tuple[float],
-    ) -> Tuple[float]:
+        pc: Tuple[float, float],
+    ) -> Tuple[float, float, float]:
         r"""Performs an ultimate stress analysis on the section.
 
         :param point_na: Point on the neutral axis
-        :type point_na: Tuple[float]
-        :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle (in radians) the neutral axis makes with the
+        :param d_n: Depth of the neutral axis from the extreme compression fibre
+        :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param float ultimate_strain: Concrete strain at failure
+        :param ultimate_strain: Concrete strain at failure
         :param pc: Location of the plastic centroid
-        :type pc: Tuple[float]
 
         :return: Axial force and resultant moments about the global axes
-        :rtype: Tuple[float]
         """
 
         # initialise section actions
@@ -312,26 +301,23 @@ class AnalysisSection:
     def get_ultimate_stress(
         self,
         d_n: float,
-        point_na: Tuple[float],
+        point_na: Tuple[float, float],
         theta: float,
         ultimate_strain: float,
-        pc: Tuple[float],
-    ) -> Tuple[np.ndarray, float, float]:
+        pc: Tuple[float, float],
+    ) -> Tuple[np.ndarray, float, float, float]:
         r"""Given the neutral axis depth `d_n` and ultimate strain, determines the
         ultimate stresses with the section.
 
-        :param float d_n: Neutral axis depth
+        :param d_n: Neutral axis depth
         :param point_na: Point on the neutral axis
-        :type point_na: Tuple[float]
-        :param float theta: Angle (in radians) the neutral axis makes with the
+        :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param float ultimate_strain: Concrete strain at failure
+        :param ultimate_strain: Concrete strain at failure
         :param pc: Location of the plastic centroid
-        :type pc: Tuple[float]
 
         :return: Ultimate stresses net force and distance from neutral axis to point of
             force action
-        :rtype: Tuple[:class:`numpy.ndarray`, float, float, float]
         """
 
         # intialise stress results
@@ -349,7 +335,7 @@ class AnalysisSection:
             )
 
             # get stress at gauss point
-            sig[idx] = self.geometry.material.ultimate_stress_strain_profile.get_stress(
+            sig[idx] = self.geometry.material.ultimate_stress_strain_profile.get_stress(  # type: ignore
                 strain=strain
             )
 
@@ -374,20 +360,17 @@ class AnalysisSection:
 
     def plot_mesh(
         self,
-        alpha: Optional[float] = 0.5,
-        title: Optional[str] = "Finite Element Mesh",
+        alpha: float = 0.5,
+        title: str = "Finite Element Mesh",
         **kwargs,
-    ) -> matplotlib.axes.Axes:
+    ) -> matplotlib.axes.Axes:  # type: ignore
         """Plots the finite element mesh.
 
         :param alpha: Transparency of the mesh outlines
-        :type alpha: Optional[float]
         :param title: Plot title
-        :type title: Optional[str]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes.Axes`
         """
 
         with plotting_context(title=title, **kwargs) as (fig, ax):
@@ -402,36 +385,35 @@ class AnalysisSection:
             cmap = ListedColormap(colour_array)  # custom colourmap
 
             # plot the mesh colours
-            ax.tripcolor(
+            ax.tripcolor(   # type: ignore
                 self.mesh_nodes[:, 0],
                 self.mesh_nodes[:, 1],
-                self.mesh_elements[:, 0:3],
+                self.mesh_elements[:, 0:3],  # type: ignore
                 c,
                 cmap=cmap,
             )
 
             # plot the mesh
-            ax.triplot(
+            ax.triplot(  # type: ignore
                 self.mesh_nodes[:, 0],
                 self.mesh_nodes[:, 1],
-                self.mesh_elements[:, 0:3],
+                self.mesh_elements[:, 0:3],  # type: ignore
                 lw=0.5,
                 color="black",
                 alpha=alpha,
             )
 
-            ax.set_aspect("equal", anchor="C")
+            ax.set_aspect("equal", anchor="C")  # type: ignore
 
         return ax
 
     def plot_shape(
         self,
-        ax: matplotlib.axes.Axes,
+        ax: matplotlib.axes.Axes,  # type: ignore
     ):
         """Plots the coloured shape of the mesh with no outlines on `ax`.
 
         :param ax: Matplotlib axes object
-        :type ax: :class:`matplotlib.axes.Axes`
         """
 
         colour_array = []
@@ -448,7 +430,7 @@ class AnalysisSection:
         ax.tripcolor(
             self.mesh_nodes[:, 0],
             self.mesh_nodes[:, 1],
-            self.mesh_elements[:, 0:3],
+            self.mesh_elements[:, 0:3],  # type: ignore
             c,
             cmap=cmap,
         )
@@ -458,13 +440,10 @@ class AnalysisSection:
 class Tri3:
     """Class for a three noded linear triangular element.
 
-    :param int el_id: Unique element id
+    :param el_id: Unique element id
     :param coords: A 2 x 3 array of the coordinates of the tri-3 nodes.
-    :type coords: :class:`numpy.ndarray`
     :param node_ids: A list of the global node ids for the current element
-    :type node_ids: List[int]
     :param conc_material: Material object for the current finite element.
-    :type conc_material: :class:`~concreteproperties.material.Concrete`
     """
 
     el_id: int
@@ -474,11 +453,10 @@ class Tri3:
 
     def second_moments_of_area(
         self,
-    ) -> Tuple[float]:
+    ) -> Tuple[float, float, float]:
         """Calculates the second moments of area for the current finite element.
 
         :return: Modulus weighted second moments of area *(e_ixx, e_iyy, e_ixy)*
-        :rtype: Tuple[float]
         """
 
         # initialise properties
@@ -527,21 +505,20 @@ class Tri3:
         e_ixx: float,
         e_iyy: float,
         e_ixy: float,
-    ) -> Tuple[float]:
-        r"""Calculates elastic actions for the current finite element.
+    ) -> Tuple[float, float, float]:
+        """Calculates elastic actions for the current finite element.
 
-        :param float n: Axial force
-        :param float m_x: Bending moment about the x-axis
-        :param float m_y: Bending moment about the y-axis
-        :param float e_a: Axial rigidity
-        :param float cx: x-Centroid
-        :param float cy: y-Centroid
-        :param float e_ixx: Flexural rigidity about the x-axis
-        :param float e_iyy: Flexural rigidity about the y-axis
-        :param float e_ixy: Flexural rigidity about the xy-axis
+        :param n: Axial force
+        :param m_x: Bending moment about the x-axis
+        :param m_y: Bending moment about the y-axis
+        :param e_a: Axial rigidity
+        :param cx: x-Centroid
+        :param cy: y-Centroid
+        :param e_ixx: Flexural rigidity about the x-axis
+        :param e_iyy: Flexural rigidity about the y-axis
+        :param e_ixy: Flexural rigidity about the xy-axis
 
-        :return: Elastic force and resultant moment
-        :rtype: Tuple[float]
+        :return: Elastic force and resultant moments
         """
 
         # initialise element results
@@ -594,25 +571,22 @@ class Tri3:
 
     def calculate_service_actions(
         self,
-        point_na: Tuple[float],
+        point_na: Tuple[float, float],
         d_n: float,
         theta: float,
         kappa: float,
-        centroid: Tuple[float],
-    ) -> Tuple[float]:
+        centroid: Tuple[float, float],
+    ) -> Tuple[float, float, float, float, float]:
         r"""Calculates service actions for the current finite element.
 
         :param point_na: Point on the neutral axis
-        :type point_na: Tuple[float]
-        :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle (in radians) the neutral axis makes with the
+        :param d_n: Depth of the neutral axis from the extreme compression fibre
+        :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param float kappa: Curvature
+        :param kappa: Curvature
         :param centroid: Centroid about which to take moments
-        :type centroid: Tuple[float]
 
         :return: Axial force, moments and maximum strain
-        :rtype: Tuple[float]
         """
 
         # initialise element results
@@ -661,25 +635,22 @@ class Tri3:
 
     def calculate_ultimate_actions(
         self,
-        point_na: Tuple[float],
+        point_na: Tuple[float, float],
         d_n: float,
         theta: float,
         ultimate_strain: float,
-        pc: Tuple[float],
-    ) -> Tuple[float]:
+        pc: Tuple[float, float],
+    ) -> Tuple[float, float, float]:
         r"""Calculates ultimate actions for the current finite element.
 
         :param point_na: Point on the neutral axis
-        :type point_na: Tuple[float]
-        :param float d_n: Depth of the neutral axis from the extreme compression fibre
-        :param float theta: Angle (in radians) the neutral axis makes with the
+        :param d_n: Depth of the neutral axis from the extreme compression fibre
+        :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param float ultimate_strain: Concrete strain at failure
+        :param ultimate_strain: Concrete strain at failure
         :param pc: Location of the plastic centroid
-        :type pc: Tuple[float]
 
-        :return: Axial force and resultant moment about the global axes
-        :rtype: Tuple[float]
+        :return: Axial force and resultant moments about the global axes
         """
 
         # initialise element results

@@ -1,47 +1,43 @@
 from __future__ import annotations
 
-from typing import Optional, Union, Tuple, TYPE_CHECKING
 import contextlib
-import numpy as np
+from typing import TYPE_CHECKING, Optional, Tuple, Union
+
 import matplotlib.pyplot as plt
+import numpy as np
 
 if TYPE_CHECKING:
     import matplotlib
-    from concreteproperties.concrete_section import ConcreteSection
+
     from concreteproperties.analysis_section import AnalysisSection
+    from concreteproperties.concrete_section import ConcreteSection
 
 
 @contextlib.contextmanager
 def plotting_context(
-    ax: Optional[matplotlib.axes.Axes] = None,
-    pause: Optional[bool] = True,
-    title: Optional[str] = "",
-    filename: Optional[str] = "",
-    render: Optional[bool] = True,
-    axis_index: Optional[Union[None, int, Tuple[int]]] = None,
+    ax: Optional[matplotlib.axes.Axes] = None,  # type: ignore
+    pause: bool = True,
+    title: str = "",
+    filename: str = "",
+    render: bool = True,
+    axis_index: Optional[Union[int, Tuple[int]]] = None,
     **kwargs,
 ):
     """Executes code required to set up a matplotlib figure.
 
     :param ax: Axes object on which to plot
-    :type ax: Optional[matplotlib.axes.Axes]
     :param pause: If set to true, the figure pauses the script until the window is
         closed. If set to false, the script continues immediately after the window is
         rendered.
-    :type pause: Optional[bool]
     :param title: Plot title
-    :type title: Optional[str]
     :param filename: Pass a non-empty string or path to save the image as. If
         this option is used, the figure is closed after the file is saved.
-    :type filename: Optional[str]
     :param render: If set to False, the image is not displayed. This may be useful
         if the figure or axes will be embedded or further edited before being
         displayed.
-    :type render: Optional[bool]
     :param axis_index: If more than 1 axes is created by subplot, then this is the axis
         to plot on. This may be a tuple if a 2D array of plots is returned.  The
         default value of None will select the top left plot.
-    :type axis_index: Optional[Union[None, int, Tuple[int]]
     :param kwargs: Passed to :func:`matplotlib.pyplot.subplots`
     """
 
@@ -62,7 +58,7 @@ def plotting_context(
         try:
             if axis_index is None:
                 axis_index = (0,) * ax.ndim
-            ax = ax[axis_index]
+            ax = ax[axis_index]  # type: ignore
         except (AttributeError, TypeError):
             pass  # only 1 axis, not an array
         except IndexError as exc:
@@ -77,7 +73,7 @@ def plotting_context(
 
     yield fig, ax
 
-    ax.set_title(title)
+    ax.set_title(title)  # type: ignore
 
     if ax_supplied:
         # if an axis was supplied, don't continue with displaying or configuring the plot
@@ -96,4 +92,4 @@ def plotting_context(
             plt.show()
         else:
             plt.draw()
-            plt.pause(0.001)
+            plt.pause(0.001)  # type: ignore

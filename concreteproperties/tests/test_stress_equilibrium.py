@@ -1,15 +1,11 @@
-import pytest
 import numpy as np
-
-from concreteproperties.material import Concrete, Steel
-from concreteproperties.concrete_section import ConcreteSection
-from concreteproperties.stress_strain_profile import (
-    ConcreteLinear,
-    RectangularStressBlock,
-    SteelElasticPlastic,
-)
-
+import pytest
 import sectionproperties.pre.library.concrete_sections as sp_cs
+from concreteproperties.concrete_section import ConcreteSection
+from concreteproperties.material import Concrete, Steel
+from concreteproperties.stress_strain_profile import (ConcreteLinear,
+                                                      RectangularStressBlock,
+                                                      SteelElasticPlastic)
 
 # generate list of angles to test
 thetas = np.linspace(start=-np.pi, stop=np.pi, num=31)
@@ -56,8 +52,8 @@ def test_stress_equilibrium_rectangle(theta):
         cover=30,
         area_top=200,
         area_bot=450,
-        conc_mat=concrete,
-        steel_mat=steel,
+        conc_mat=concrete,  # type: ignore
+        steel_mat=steel,  # type: ignore
     )
 
     sec = ConcreteSection(geom.rotate_section(angle=theta, use_radians=True))
@@ -106,8 +102,8 @@ def test_stress_equilibrium_circular(nf):
         area_conc=np.pi * 750 * 750 / 4,
         area_bar=450,
         cover=50,
-        conc_mat=concrete,
-        steel_mat=steel,
+        conc_mat=concrete,  # type: ignore
+        steel_mat=steel,  # type: ignore
     )
 
     sec = ConcreteSection(geom)
@@ -150,8 +146,8 @@ def test_stress_equilibrium_tee(theta):
         cover=30,
         area_top=200,
         area_bot=450,
-        conc_mat=concrete,
-        steel_mat=steel,
+        conc_mat=concrete,  # type: ignore
+        steel_mat=steel,  # type: ignore
     )
 
     sec = ConcreteSection(geom.rotate_section(angle=theta, use_radians=True))
