@@ -281,32 +281,34 @@ function checkPageExistsAndRedirect(event) {
   <h1>Source code for concreteproperties.results</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
-<span class="kn">import</span> <span class="nn">matplotlib.tri</span> <span class="k">as</span> <span class="nn">tri</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+
 <span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
-<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">CenteredNorm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.tri</span> <span class="k">as</span> <span class="nn">tri</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">PatchCollection</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.axes_divider</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">CenteredNorm</span>  <span class="c1"># type: ignore</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits</span> <span class="kn">import</span> <span class="n">mplot3d</span>
-<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.axes_divider</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
 <span class="kn">from</span> <span class="nn">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
 <span class="kn">from</span> <span class="nn">rich.table</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">CompoundGeometry</span>
 <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
 <span class="kn">from</span> <span class="nn">shapely.geometry.polygon</span> <span class="kn">import</span> <span class="n">Polygon</span>
 
 <span class="kn">from</span> <span class="nn">concreteproperties.post</span> <span class="kn">import</span> <span class="n">plotting_context</span>
-<span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">CompoundGeometry</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">matplotlib</span>
-    <span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
-    <span class="kn">from</span> <span class="nn">concreteproperties.analysis_section</span> <span class="kn">import</span> <span class="n">AnalysisSection</span>
     <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span>
+
+    <span class="kn">from</span> <span class="nn">concreteproperties.analysis_section</span> <span class="kn">import</span> <span class="n">AnalysisSection</span>
+    <span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
 
 
 <div class="viewcode-block" id="ConcreteProperties"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.ConcreteProperties">[docs]</a><span class="nd">@dataclass</span>
@@ -371,12 +373,11 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="ConcreteProperties.print_results"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.ConcreteProperties.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Prints the gross concrete section properties to the terminal.</span>
 
 <span class="sd">        :param fmt: Number format</span>
-<span class="sd">        :type fmt: Optional[str]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Gross Concrete Section Properties&quot;</span><span class="p">)</span>
@@ -432,9 +433,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="sd">&quot;&quot;&quot;Class for storing transformed gross concrete section properties.</span>
 
 <span class="sd">    :param concrete_properties: Concrete properties object</span>
-<span class="sd">    :type concrete_properties:</span>
-<span class="sd">        :class:`~concreteproperties.concrete_section.ConcreteProperties`</span>
-<span class="sd">    :param float elastic_modulus: Reference elastic modulus</span>
+<span class="sd">    :param elastic_modulus: Reference elastic modulus</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">concrete_properties</span><span class="p">:</span> <span class="n">ConcreteProperties</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -492,12 +491,11 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="TransformedConcreteProperties.print_results"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.TransformedConcreteProperties.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Prints the transformed gross concrete section properties to the terminal.</span>
 
 <span class="sd">        :param fmt: Number format</span>
-<span class="sd">        :type fmt: Optional[str]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Transformed Gross Concrete Section Properties&quot;</span><span class="p">)</span>
@@ -538,7 +536,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    :meth:`~concreteproperties.results.CrackedResults.calculate_transformed_properties`</span>
 <span class="sd">    method.</span>
 
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -563,19 +561,19 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">phi_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="c1"># transformed properties</span>
-    <span class="n">elastic_modulus_ref</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">a_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">qx_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">qy_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">ixx_g_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">iyy_g_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">ixy_g_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">ixx_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">iyy_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">ixy_c_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">iuu_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">i11_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">i22_cr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">elastic_modulus_ref</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">a_cr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">qx_cr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">qy_cr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ixx_g_cr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">iyy_g_cr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ixy_g_cr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ixx_c_cr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">iyy_c_cr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ixy_c_cr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">iuu_cr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">i11_cr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">i22_cr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="CrackedResults.calculate_transformed_properties"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.CrackedResults.calculate_transformed_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_transformed_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -584,7 +582,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="sd">&quot;&quot;&quot;Calculates and stores transformed cracked properties using a reference</span>
 <span class="sd">        elastic modulus.</span>
 
-<span class="sd">        :param float elastic_modulus: Reference elastic modulus</span>
+<span class="sd">        :param elastic_modulus: Reference elastic modulus</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus_ref</span> <span class="o">=</span> <span class="n">elastic_modulus</span>
@@ -603,19 +601,17 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="CrackedResults.plot_cracked_geometries"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.CrackedResults.plot_cracked_geometries">[docs]</a>    <span class="k">def</span> <span class="nf">plot_cracked_geometries</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Cracked Geometries&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Cracked Geometries&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
         <span class="sd">&quot;&quot;&quot;Plots the geometries that remain (are in compression or are steel) after a</span>
 <span class="sd">        cracked analysis.</span>
 
 <span class="sd">        :param title: Plot title</span>
-<span class="sd">        :type title: Optional[str]</span>
 <span class="sd">        :param kwargs: Passed to</span>
 <span class="sd">            :meth:`~sectionproperties.pre.geometry.CompoundGeometry.plot_geometry`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="n">CompoundGeometry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cracked_geometries</span><span class="p">)</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span>
@@ -624,12 +620,11 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="CrackedResults.print_results"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.CrackedResults.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Prints the cracked concrete section properties to the terminal.</span>
 
 <span class="sd">        :param fmt: Number format</span>
-<span class="sd">        :type fmt: Optional[str]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Cracked Concrete Section Properties&quot;</span><span class="p">)</span>
@@ -690,15 +685,12 @@ function checkPageExistsAndRedirect(event) {
 <span class="k">class</span> <span class="nc">MomentCurvatureResults</span><span class="p">:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class for storing moment curvature results.</span>
 
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
-<span class="sd">    :var kappa: List of curvatures</span>
-<span class="sd">    :vartype kappa: List[float]</span>
-<span class="sd">    :var moment: List of bending moments</span>
-<span class="sd">    :vartype moment: List[float]</span>
-<span class="sd">    :var failure_geometry: Geometry object of the region of the cross-section that</span>
+<span class="sd">    :param kappa: List of curvatures</span>
+<span class="sd">    :param moment: List of bending moments</span>
+<span class="sd">    :param failure_geometry: Geometry object of the region of the cross-section that</span>
 <span class="sd">        failed, ending the moment curvature analysis</span>
-<span class="sd">    :vartype failure_geometry: :class:`sectionproperties.pre.geometry.Geometry`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># results</span>
@@ -722,20 +714,17 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="MomentCurvatureResults.plot_results"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.MomentCurvatureResults.plot_results">[docs]</a>    <span class="k">def</span> <span class="nf">plot_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">m_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
+        <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
         <span class="sd">&quot;&quot;&quot;Plots the moment curvature results.</span>
 
 <span class="sd">        :param m_scale: Scaling factor to apply to bending moment</span>
-<span class="sd">        :type m_scale: Optional[float]</span>
 <span class="sd">        :param fmt: Plot format string</span>
-<span class="sd">        :type fmt: Optional[str]</span>
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># scale moments</span>
@@ -746,7 +735,7 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">fig</span><span class="p">,</span>
             <span class="n">ax</span><span class="p">,</span>
         <span class="p">):</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kappa</span><span class="p">,</span> <span class="n">moments</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kappa</span><span class="p">,</span> <span class="n">moments</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Curvature&quot;</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Moment&quot;</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -757,25 +746,19 @@ function checkPageExistsAndRedirect(event) {
     <span class="k">def</span> <span class="nf">plot_multiple_results</span><span class="p">(</span>
         <span class="n">moment_curvature_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MomentCurvatureResults</span><span class="p">],</span>
         <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-        <span class="n">m_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
+        <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
         <span class="sd">&quot;&quot;&quot;Plots multiple moment curvature results.</span>
 
 <span class="sd">        :param moment_curvature_results: List of moment curvature results objects</span>
-<span class="sd">        :type moment_interaction_results:</span>
-<span class="sd">            List[:class:`~concreteproperties.results.MomentCurvatureResults`]</span>
 <span class="sd">        :param labels: List of labels for each moment curvature diagram</span>
-<span class="sd">        :type labels: List[str]</span>
-<span class="sd">        :param float m_scale: Scaling factor to apply to bending moment</span>
-<span class="sd">        :type m_scale: Optional[float]</span>
+<span class="sd">        :param m_scale: Scaling factor to apply to bending moment</span>
 <span class="sd">        :param fmt: Plot format string</span>
-<span class="sd">        :type fmt: Optional[str]</span>
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># create plot and setup the plot</span>
@@ -783,13 +766,15 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">fig</span><span class="p">,</span>
             <span class="n">ax</span><span class="p">,</span>
         <span class="p">):</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+
             <span class="c1"># for each M-k curve</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">mk_result</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">moment_curvature_results</span><span class="p">):</span>
                 <span class="c1"># scale results</span>
                 <span class="n">kappas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mk_result</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span>
                 <span class="n">moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mk_result</span><span class="o">.</span><span class="n">moment</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
 
-                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kappas</span><span class="p">,</span> <span class="n">moments</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kappas</span><span class="p">,</span> <span class="n">moments</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
 
             <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Curvature&quot;</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Moment&quot;</span><span class="p">)</span>
@@ -797,24 +782,22 @@ function checkPageExistsAndRedirect(event) {
 
             <span class="c1"># if there is more than one curve show legend</span>
             <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
 
         <span class="k">return</span> <span class="n">ax</span></div>
 
 <div class="viewcode-block" id="MomentCurvatureResults.plot_failure_geometry"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults.plot_failure_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">plot_failure_geometry</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Failure Geometry&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Failure Geometry&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
         <span class="sd">&quot;&quot;&quot;Plots the geometry that fails in the moment curvature analysis.</span>
 
 <span class="sd">        :param title: Plot title</span>
-<span class="sd">        :type title: Optional[str]</span>
 <span class="sd">        :param kwargs: Passed to</span>
 <span class="sd">            :meth:`~sectionproperties.pre.geometry.CompoundGeometry.plot_geometry`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">failure_geometry</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
@@ -825,13 +808,12 @@ function checkPageExistsAndRedirect(event) {
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a moment, uses the moment-curvature results to interpolate a curvature.</span>
 
-<span class="sd">        :param float moment: Bending moment at which to obtain curvature</span>
+<span class="sd">        :param moment: Bending moment at which to obtain curvature</span>
 
 <span class="sd">        :raises ValueError: If supplied moment is outside bounds of moment-curvature</span>
 <span class="sd">            results.</span>
 
 <span class="sd">        :return: Curvature</span>
-<span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># check moment is within bounds of results</span>
@@ -856,37 +838,36 @@ function checkPageExistsAndRedirect(event) {
 <span class="k">class</span> <span class="nc">UltimateBendingResults</span><span class="p">:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class for storing ultimate bending results.</span>
 
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
-<span class="sd">    :var float d_n: Ultimate neutral axis depth</span>
-<span class="sd">    :var float k_u: Neutral axis parameter *(d_n / d)*</span>
-<span class="sd">    :var float n: Resultant axial force</span>
-<span class="sd">    :var float m_x: Resultant bending moment about the x-axis</span>
-<span class="sd">    :var float m_y: Resultant bending moment about the y-axis</span>
-<span class="sd">    :var float m_u: Resultant bending moment about the u-axis</span>
+<span class="sd">    :param d_n: Ultimate neutral axis depth</span>
+<span class="sd">    :param k_u: Neutral axis parameter *(d_n / d)*</span>
+<span class="sd">    :param n: Resultant axial force</span>
+<span class="sd">    :param m_x: Resultant bending moment about the x-axis</span>
+<span class="sd">    :param m_y: Resultant bending moment about the y-axis</span>
+<span class="sd">    :param m_u: Resultant bending moment about the u-axis</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># bending angle</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span>
 
     <span class="c1"># ultimate neutral axis depth</span>
-    <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">k_u</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">k_u</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="c1"># resultant actions</span>
-    <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">m_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">m_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">m_u</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m_u</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="UltimateBendingResults.print_results"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.UltimateBendingResults.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Prints the ultimate bending results to the terminal.</span>
 
 <span class="sd">        :param fmt: Number format</span>
-<span class="sd">        :type fmt: Optional[str]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Ultimate Bending Results&quot;</span><span class="p">)</span>
@@ -911,10 +892,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="k">class</span> <span class="nc">MomentInteractionResults</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for storing moment interaction results.</span>
 
-<span class="sd">    :var results: List of ultimate bending result objects</span>
-<span class="sd">    :vartype results: List[:class:`~concreteproperties.results.UltimateBendingResults`]</span>
-<span class="sd">    :var results_neg: List of ultimate bending result objects (for negative bending)</span>
-<span class="sd">    :vartype results: List[:class:`~concreteproperties.results.UltimateBendingResults`]</span>
+<span class="sd">    :param results: List of ultimate bending result objects</span>
+<span class="sd">    :param results_neg: List of ultimate bending result objects (for negative bending)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">UltimateBendingResults</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
@@ -923,13 +902,12 @@ function checkPageExistsAndRedirect(event) {
 <div class="viewcode-block" id="MomentInteractionResults.get_results_lists"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults.get_results_lists">[docs]</a>    <span class="k">def</span> <span class="nf">get_results_lists</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">neg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Returns a list of axial forces and moments.</span>
 
-<span class="sd">        :param bool neg: If True, gets the negative bending results</span>
+<span class="sd">        :param neg: If True, gets the negative bending results</span>
 
 <span class="sd">        :return: List of axial forces and moments *(n, m)*</span>
-<span class="sd">        :rtype: Tuple[List[float]]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># build list of results</span>
@@ -949,23 +927,19 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="MomentInteractionResults.plot_diagram"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.MomentInteractionResults.plot_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">plot_diagram</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">n_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
-        <span class="n">m_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
+        <span class="n">n_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+        <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
         <span class="sd">&quot;&quot;&quot;Plots a moment interaction diagram.</span>
 
 <span class="sd">        :param n_scale: Scaling factor to apply to axial force</span>
-<span class="sd">        :type n_scale: Optional[float]</span>
 <span class="sd">        :param n_scale: Scaling factor to apply to axial force</span>
-<span class="sd">        :type m_scale: Optional[float]</span>
 <span class="sd">        :param fmt: Plot format string</span>
-<span class="sd">        :type fmt: Optional[str]</span>
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># create plot and setup the plot</span>
@@ -989,7 +963,7 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">forces</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_scale</span><span class="p">)))</span>
                 <span class="n">moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">moments</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span><span class="p">)))</span>
 
-            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">moments</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">moments</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
             <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment&quot;</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Axial Force&quot;</span><span class="p">)</span>
@@ -1001,28 +975,21 @@ function checkPageExistsAndRedirect(event) {
     <span class="k">def</span> <span class="nf">plot_multiple_diagrams</span><span class="p">(</span>
         <span class="n">moment_interaction_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MomentInteractionResults</span><span class="p">],</span>
         <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-        <span class="n">n_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
-        <span class="n">m_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
+        <span class="n">n_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+        <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
         <span class="sd">&quot;&quot;&quot;Plots multiple moment interaction diagrams.</span>
 
 <span class="sd">        :param moment_interaction_results: List of moment interaction results objects</span>
-<span class="sd">        :type moment_interaction_results:</span>
-<span class="sd">            List[:class:`~concreteproperties.results.MomentInteractionResults`]</span>
 <span class="sd">        :param labels: List of labels for each moment interaction diagram</span>
-<span class="sd">        :type labels: List[str]</span>
-<span class="sd">        :param float n_scale: Scaling factor to apply to axial force</span>
-<span class="sd">        :type n_scale: Optional[float]</span>
-<span class="sd">        :param float m_scale: Scaling factor to apply to bending moment</span>
-<span class="sd">        :type m_scale: Optional[float]</span>
+<span class="sd">        :param n_scale: Scaling factor to apply to axial force</span>
+<span class="sd">        :param m_scale: Scaling factor to apply to bending moment</span>
 <span class="sd">        :param fmt: Plot format string</span>
-<span class="sd">        :type fmt: Optional[str]</span>
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># create plot and setup the plot</span>
@@ -1030,6 +997,8 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">fig</span><span class="p">,</span>
             <span class="n">ax</span><span class="p">,</span>
         <span class="p">):</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+
             <span class="c1"># for each M-N curve</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">mi_result</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">moment_interaction_results</span><span class="p">):</span>
                 <span class="n">n_list</span><span class="p">,</span> <span class="n">m_list</span> <span class="o">=</span> <span class="n">mi_result</span><span class="o">.</span><span class="n">get_results_lists</span><span class="p">()</span>
@@ -1047,7 +1016,7 @@ function checkPageExistsAndRedirect(event) {
                     <span class="n">forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">forces</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_scale</span><span class="p">)))</span>
                     <span class="n">moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">moments</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span><span class="p">)))</span>
 
-                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">moments</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">moments</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
 
             <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment&quot;</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Axial Force&quot;</span><span class="p">)</span>
@@ -1055,7 +1024,7 @@ function checkPageExistsAndRedirect(event) {
 
             <span class="c1"># if there is more than one curve show legend</span>
             <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
 
         <span class="k">return</span> <span class="n">ax</span></div>
 
@@ -1067,11 +1036,10 @@ function checkPageExistsAndRedirect(event) {
         <span class="sd">&quot;&quot;&quot;Determines whether or not the combination of axial force and moment lies</span>
 <span class="sd">        within the moment interaction diagram.</span>
 
-<span class="sd">        :param float n: Axial force</span>
-<span class="sd">        :param float m: Bending moment</span>
+<span class="sd">        :param n: Axial force</span>
+<span class="sd">        :param m: Bending moment</span>
 
 <span class="sd">        :returns: True, if combination of axial force and moment is within the diagram</span>
-<span class="sd">        :rtype: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># create a polygon from points on diagram</span>
@@ -1093,9 +1061,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="k">class</span> <span class="nc">BiaxialBendingResults</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for storing biaxial bending results.</span>
 
-<span class="sd">    :param float n: Net axial force</span>
-<span class="sd">    :var results: List of ultimate bending result objects</span>
-<span class="sd">    :vartype results: List[:class:`~concreteproperties.results.UltimateBendingResults`]</span>
+<span class="sd">    :param n: Net axial force</span>
+<span class="sd">    :param results: List of ultimate bending result objects</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">n</span><span class="p">:</span> <span class="nb">float</span>
@@ -1103,11 +1070,10 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="BiaxialBendingResults.get_results_lists"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults.get_results_lists">[docs]</a>    <span class="k">def</span> <span class="nf">get_results_lists</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Returns a list and moments about the ``x`` and ``y`` axes.</span>
 
 <span class="sd">        :return: List of axial forces and moments *(mx, my)*</span>
-<span class="sd">        :rtype: Tuple[List[float]]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># build list of results</span>
@@ -1122,20 +1088,17 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="BiaxialBendingResults.plot_diagram"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.BiaxialBendingResults.plot_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">plot_diagram</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">m_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
+        <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
         <span class="sd">&quot;&quot;&quot;Plots a biaxial bending diagram.</span>
 
 <span class="sd">        :param m_scale: Scaling factor to apply to bending moment</span>
-<span class="sd">        :type m_scale: Optional[float]</span>
 <span class="sd">        :param fmt: Plot format string</span>
-<span class="sd">        :type fmt: Optional[str]</span>
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">m_x_list</span><span class="p">,</span> <span class="n">m_y_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_results_lists</span><span class="p">()</span>
@@ -1151,7 +1114,7 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">m_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m_x_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
             <span class="n">m_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m_y_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
 
-            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m_x</span><span class="p">,</span> <span class="n">m_y</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m_x</span><span class="p">,</span> <span class="n">m_y</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
             <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_x$&quot;</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_y$&quot;</span><span class="p">)</span>
@@ -1162,24 +1125,18 @@ function checkPageExistsAndRedirect(event) {
 <div class="viewcode-block" id="BiaxialBendingResults.plot_multiple_diagrams"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">plot_multiple_diagrams</span><span class="p">(</span>
         <span class="n">biaxial_bending_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BiaxialBendingResults</span><span class="p">],</span>
-        <span class="n">n_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
-        <span class="n">m_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+        <span class="n">n_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+        <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
         <span class="sd">&quot;&quot;&quot;Plots multiple biaxial bending diagrams in a 3D plot.</span>
 
 <span class="sd">        :param biaxial_bending_results: List of biaxial bending results objects</span>
-<span class="sd">        :type biaxial_bending_results:</span>
-<span class="sd">            List[:class:`~concreteproperties.results.BiaxialBendingResults`]</span>
-<span class="sd">        :param float n_scale: Scaling factor to apply to axial force</span>
-<span class="sd">        :type n_scale: Optional[float]</span>
-<span class="sd">        :param float m_scale: Scaling factor to apply to bending moment</span>
-<span class="sd">        :type m_scale: Optional[float]</span>
+<span class="sd">        :param n_scale: Scaling factor to apply to axial force</span>
+<span class="sd">        :param m_scale: Scaling factor to apply to bending moment</span>
 <span class="sd">        :param fmt: Plot format string</span>
-<span class="sd">        :type fmt: Optional[str]</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># make 3d plot</span>
@@ -1212,11 +1169,10 @@ function checkPageExistsAndRedirect(event) {
         <span class="sd">&quot;&quot;&quot;Determines whether or not the combination of bending moments lies within the</span>
 <span class="sd">        biaxial bending diagram.</span>
 
-<span class="sd">        :param float m_x: Bending moment about the x-axis</span>
-<span class="sd">        :param float m_y: Bending moment about the y-axis</span>
+<span class="sd">        :param m_x: Bending moment about the x-axis</span>
+<span class="sd">        :param m_y: Bending moment about the y-axis</span>
 
 <span class="sd">        :returns: True, if combination of bendings moments is within the diagram</span>
-<span class="sd">        :rtype: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># create a polygon from points on diagram</span>
@@ -1243,57 +1199,45 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    For ultimate stress analyses, the lever arm is the distance to the plastic</span>
 <span class="sd">    centroid.</span>
 
-<span class="sd">    :var concrete_analysis_sections: List of concrete analysis section objects</span>
+<span class="sd">    :param concrete_analysis_sections: List of concrete analysis section objects</span>
 <span class="sd">        present in the stress analysis, which can be visualised by calling the</span>
 <span class="sd">        :meth:`~concreteproperties.analysis_section.AnalysisSection.plot_mesh` or</span>
 <span class="sd">        :meth:`~concreteproperties.analysis_section.AnalysisSection.plot_shape`</span>
-<span class="sd">    :vartype concrete_analysis_sections:</span>
-<span class="sd">        List[:class:`~concreteproperties.analysis_section.AnalysisSection`]</span>
-<span class="sd">    :var concrete_stresses: List of concrete stresses at the nodes of each concrete</span>
+<span class="sd">    :param concrete_stresses: List of concrete stresses at the nodes of each concrete</span>
 <span class="sd">        analysis section</span>
-<span class="sd">    :vartype concrete_stresses: List[:class:`numpy.ndarray`]</span>
-<span class="sd">    :var concrete_forces: List of net forces for each concrete analysis section and its</span>
+<span class="sd">    :param concrete_forces: List of net forces for each concrete analysis section and its</span>
 <span class="sd">        lever arm to the neutral axis (``force``, ``d_x``, ``d_y``)</span>
-<span class="sd">    :vartype concrete_forces: List[Tuple[float]]</span>
-<span class="sd">    :var steel_geometries: List of steel geometry objects present in the stress analysis</span>
-<span class="sd">    :vartype steel_geometries: List[:class:`sectionproperties.pre.geometry.Geometry`]</span>
-<span class="sd">    :var steel_stresses: List of steel stresses for each steel geometry</span>
-<span class="sd">    :vartype steel_stresses: List[float]</span>
-<span class="sd">    :var steel_strains: List of steel strains for each steel geometry</span>
-<span class="sd">    :vartype steel_strains: List[float]</span>
-<span class="sd">    :var steel_forces: List of net forces for each steel geometry and its lever arm to</span>
+<span class="sd">    :param steel_geometries: List of steel geometry objects present in the stress analysis</span>
+<span class="sd">    :param steel_stresses: List of steel stresses for each steel geometry</span>
+<span class="sd">    :param steel_strains: List of steel strains for each steel geometry</span>
+<span class="sd">    :param steel_forces: List of net forces for each steel geometry and its lever arm to</span>
 <span class="sd">        the neutral axis (``force``, ``d_x``, ``d_y``)</span>
-<span class="sd">    :vartype steel_forces: List[Tuple[float]]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">concrete_section</span><span class="p">:</span> <span class="n">ConcreteSection</span>
     <span class="n">concrete_analysis_sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">AnalysisSection</span><span class="p">]</span>
     <span class="n">concrete_stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
-    <span class="n">concrete_forces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span>
+    <span class="n">concrete_forces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
     <span class="n">steel_geometries</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">]</span>
     <span class="n">steel_stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
     <span class="n">steel_strains</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
-    <span class="n">steel_forces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span>
+    <span class="n">steel_forces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
 
 <div class="viewcode-block" id="StressResult.plot_stress"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.StressResult.plot_stress">[docs]</a>    <span class="k">def</span> <span class="nf">plot_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Stress&quot;</span><span class="p">,</span>
-        <span class="n">conc_cmap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;RdGy&quot;</span><span class="p">,</span>
-        <span class="n">steel_cmap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;bwr&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Stress&quot;</span><span class="p">,</span>
+        <span class="n">conc_cmap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RdGy&quot;</span><span class="p">,</span>
+        <span class="n">steel_cmap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bwr&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
         <span class="sd">&quot;&quot;&quot;Plots concrete and steel stresses on a concrete section.</span>
 
 <span class="sd">        :param title: Plot title</span>
-<span class="sd">        :type title: Optional[str]</span>
 <span class="sd">        :param conc_cmap: Colour map for the concrete stress</span>
-<span class="sd">        :type conc_cmap: Optional[str]</span>
 <span class="sd">        :param steel_cmap: Colour map for the steel stress</span>
-<span class="sd">        :type steel_cmap: Optional[str]</span>
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
 <span class="sd">        :return: Matplotlib axes object</span>
-<span class="sd">        :rtype: :class:`matplotlib.axes.Axes`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span>
@@ -1343,7 +1287,7 @@ function checkPageExistsAndRedirect(event) {
                     <span class="n">triang</span> <span class="o">=</span> <span class="n">tri</span><span class="o">.</span><span class="n">Triangulation</span><span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">concrete_analysis_sections</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">concrete_analysis_sections</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">concrete_analysis_sections</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">mesh_elements</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">concrete_analysis_sections</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">mesh_elements</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
                     <span class="p">)</span>
 
                     <span class="c1"># plot the filled contour</span>
@@ -1403,7 +1347,7 @@ function checkPageExistsAndRedirect(event) {
 
             <span class="c1"># add the colour bars</span>
             <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
-                <span class="n">trictr</span><span class="p">,</span>
+                <span class="n">trictr</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
                 <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Concrete Stress&quot;</span><span class="p">,</span>
                 <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%.2e</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="n">ticks</span><span class="o">=</span><span class="n">ticks_conc</span><span class="p">,</span>
@@ -1417,7 +1361,7 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">cax</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
             <span class="p">)</span>
 
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
         <span class="k">return</span> <span class="n">ax</span></div>
 
@@ -1427,7 +1371,6 @@ function checkPageExistsAndRedirect(event) {
         <span class="sd">&quot;&quot;&quot;Returns the sum of the internal forces.</span>
 
 <span class="sd">        :return: Sum of internal forces</span>
-<span class="sd">        :rtype: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">force_sum</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1444,12 +1387,11 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="StressResult.sum_moments"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.StressResult.sum_moments">[docs]</a>    <span class="k">def</span> <span class="nf">sum_moments</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Returns the sum of the internal moments.</span>
 
 <span class="sd">        :return: Sum of internal moments about each axis and resultant moment</span>
 <span class="sd">            (``m_x``, ``m_y``, ``m``)</span>
-<span class="sd">        :rtype: Tuple[float]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">moment_sum_x</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1500,7 +1442,7 @@ function checkPageExistsAndRedirect(event) {
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
   </div>
   

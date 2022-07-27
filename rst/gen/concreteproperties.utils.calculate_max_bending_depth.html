@@ -642,23 +642,20 @@ function checkPageExistsAndRedirect(event) {
 <h1>concreteproperties.utils.calculate_max_bending_depth<a class="headerlink" href="#concreteproperties-utils-calculate-max-bending-depth" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="concreteproperties.utils.calculate_max_bending_depth">
-<span class="sig-name descname"><span class="pre">calculate_max_bending_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_local_v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/utils.html#calculate_max_bending_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.utils.calculate_max_bending_depth" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_max_bending_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_local_v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/utils.html#calculate_max_bending_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.utils.calculate_max_bending_depth" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the maximum distance from the centroid to an extreme fibre when
 bending about an axis <cite>theta</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em>) – Points over which to search for a bending depth</p></li>
-<li><p><strong>c_local_v</strong> (<em>float</em>) – Centroid coordinate in the local v-direction</p></li>
-<li><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the bending axis makes with the horizontal
+<li><p><strong>points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]) – Points over which to search for a bending depth</p></li>
+<li><p><strong>c_local_v</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Centroid coordinate in the local v-direction</p></li>
+<li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Angle (in radians) the bending axis makes with the horizontal
 axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Maximum bending depth</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Maximum bending depth</p>
 </dd>
 </dl>
 </dd></dl>
@@ -710,7 +707,7 @@ axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
   </div>
   

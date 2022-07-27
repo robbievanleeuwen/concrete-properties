@@ -697,7 +697,7 @@ function checkPageExistsAndRedirect(event) {
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.assign_concrete_section">
-<span class="sig-name descname"><span class="pre">assign_concrete_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concrete_section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><span class="pre">ConcreteSection</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.assign_concrete_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.assign_concrete_section" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">assign_concrete_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concrete_section</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.assign_concrete_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.assign_concrete_section" title="Permalink to this definition">#</a></dt>
 <dd><p>Assigns a concrete section to the design code.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -708,49 +708,43 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.create_concrete_material">
-<span class="sig-name descname"><span class="pre">create_concrete_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'lightgrey'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><span class="pre">Concrete</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.create_concrete_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.create_concrete_material" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">create_concrete_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lightgrey'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.create_concrete_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.create_concrete_material" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a concrete material object.</p>
 <p>List assumptions of material properties here…</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>compressive_strength</strong> (<em>float</em>) – Concrete compressive strength</p></li>
-<li><p><strong>colour</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Colour of the concrete for rendering</p></li>
+<li><p><strong>compressive_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Concrete compressive strength</p></li>
+<li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'lightgrey'</span></code>) – Colour of the concrete for rendering</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Concrete material object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> – Concrete material object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.create_steel_material">
-<span class="sig-name descname"><span class="pre">create_steel_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'grey'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><span class="pre">Steel</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.create_steel_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.create_steel_material" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">create_steel_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'grey'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.create_steel_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.create_steel_material" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a steel material object.</p>
 <p>List assumptions of material properties here…</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>yield_strength</strong> (<em>float</em>) – Steel yield strength</p></li>
-<li><p><strong>colour</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Colour of the steel for rendering</p></li>
+<li><p><strong>yield_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Steel yield strength</p></li>
+<li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'grey'</span></code>) – Colour of the steel for rendering</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Steel material object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> – Steel material object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.get_gross_properties">
-<span class="sig-name descname"><span class="pre">get_gross_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.ConcreteProperties.html#concreteproperties.results.ConcreteProperties" title="concreteproperties.results.ConcreteProperties"><span class="pre">ConcreteProperties</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.get_gross_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.get_gross_properties" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_gross_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.get_gross_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.get_gross_properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the gross section properties of the reinforced concrete section.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -758,17 +752,14 @@ function checkPageExistsAndRedirect(event) {
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Concrete properties object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.ConcreteProperties.html#concreteproperties.results.ConcreteProperties" title="concreteproperties.results.ConcreteProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteProperties</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.ConcreteProperties.html#concreteproperties.results.ConcreteProperties" title="concreteproperties.results.ConcreteProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteProperties</span></code></a> – Concrete properties object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.get_transformed_gross_properties">
-<span class="sig-name descname"><span class="pre">get_transformed_gross_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.TransformedConcreteProperties.html#concreteproperties.results.TransformedConcreteProperties" title="concreteproperties.results.TransformedConcreteProperties"><span class="pre">TransformedConcreteProperties</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.get_transformed_gross_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.get_transformed_gross_properties" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_transformed_gross_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.get_transformed_gross_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.get_transformed_gross_properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Transforms gross section properties.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -776,17 +767,14 @@ function checkPageExistsAndRedirect(event) {
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_transformed_gross_properties()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Transformed concrete properties object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.TransformedConcreteProperties.html#concreteproperties.results.TransformedConcreteProperties" title="concreteproperties.results.TransformedConcreteProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformedConcreteProperties</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.TransformedConcreteProperties.html#concreteproperties.results.TransformedConcreteProperties" title="concreteproperties.results.TransformedConcreteProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformedConcreteProperties</span></code></a> – Transformed concrete properties object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.calculate_cracked_properties">
-<span class="sig-name descname"><span class="pre">calculate_cracked_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.CrackedResults.html#concreteproperties.results.CrackedResults" title="concreteproperties.results.CrackedResults"><span class="pre">CrackedResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.calculate_cracked_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.calculate_cracked_properties" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_cracked_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.calculate_cracked_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.calculate_cracked_properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates cracked section properties.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -794,17 +782,14 @@ function checkPageExistsAndRedirect(event) {
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_cracked_properties()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Cracked results object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.CrackedResults.html#concreteproperties.results.CrackedResults" title="concreteproperties.results.CrackedResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrackedResults</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.CrackedResults.html#concreteproperties.results.CrackedResults" title="concreteproperties.results.CrackedResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrackedResults</span></code></a> – Cracked results object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.moment_curvature_analysis">
-<span class="sig-name descname"><span class="pre">moment_curvature_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><span class="pre">MomentCurvatureResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.moment_curvature_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.moment_curvature_analysis" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">moment_curvature_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.moment_curvature_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.moment_curvature_analysis" title="Permalink to this definition">#</a></dt>
 <dd><p>Performs a moment curvature analysis. No reduction factors are applied to the
 moments.</p>
 <dl class="field-list simple">
@@ -813,17 +798,14 @@ moments.</p>
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis" title="concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">moment_curvature_analysis()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Moment curvature results object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentCurvatureResults</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentCurvatureResults</span></code></a> – Moment curvature results object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.ultimate_bending_capacity">
-<span class="sig-name descname"><span class="pre">ultimate_bending_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><span class="pre">UltimateBendingResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.ultimate_bending_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.ultimate_bending_capacity" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ultimate_bending_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.ultimate_bending_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.ultimate_bending_capacity" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the ultimate bending capacity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -831,17 +813,14 @@ moments.</p>
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ultimate_bending_capacity()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Ultimate bending results object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code></a> – Ultimate bending results object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.moment_interaction_diagram">
-<span class="sig-name descname"><span class="pre">moment_interaction_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><span class="pre">MomentInteractionResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.moment_interaction_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.moment_interaction_diagram" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">moment_interaction_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.moment_interaction_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.moment_interaction_diagram" title="Permalink to this definition">#</a></dt>
 <dd><p>Generates a moment interaction diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -849,17 +828,14 @@ moments.</p>
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">moment_interaction_diagram()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Moment interaction results object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code></a> – Moment interaction results object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.biaxial_bending_diagram">
-<span class="sig-name descname"><span class="pre">biaxial_bending_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><span class="pre">BiaxialBendingResults</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.biaxial_bending_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.biaxial_bending_diagram" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">biaxial_bending_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.biaxial_bending_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.biaxial_bending_diagram" title="Permalink to this definition">#</a></dt>
 <dd><p>Generates a biaxial bending diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -867,17 +843,14 @@ moments.</p>
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.biaxial_bending_diagram" title="concreteproperties.concrete_section.ConcreteSection.biaxial_bending_diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">biaxial_bending_diagram()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Biaxial bending results</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code></a> – Biaxial bending results</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.calculate_uncracked_stress">
-<span class="sig-name descname"><span class="pre">calculate_uncracked_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><span class="pre">StressResult</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.calculate_uncracked_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.calculate_uncracked_stress" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_uncracked_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.calculate_uncracked_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.calculate_uncracked_stress" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates stresses within the reinforced concrete section assuming an
 uncracked section.</p>
 <dl class="field-list simple">
@@ -886,17 +859,14 @@ uncracked section.</p>
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_uncracked_stress" title="concreteproperties.concrete_section.ConcreteSection.calculate_uncracked_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_uncracked_stress()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Stress results object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a> – Stress results object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.calculate_cracked_stress">
-<span class="sig-name descname"><span class="pre">calculate_cracked_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><span class="pre">StressResult</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.calculate_cracked_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.calculate_cracked_stress" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_cracked_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.calculate_cracked_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.calculate_cracked_stress" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates stresses within the reinforced concrete section assuming a cracked
 section.</p>
 <dl class="field-list simple">
@@ -905,17 +875,14 @@ section.</p>
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_stress" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracked_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_cracked_stress()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Stress results object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a> – Stress results object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.calculate_service_stress">
-<span class="sig-name descname"><span class="pre">calculate_service_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><span class="pre">StressResult</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.calculate_service_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.calculate_service_stress" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_service_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.calculate_service_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.calculate_service_stress" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates service stresses within the reinforced concrete section.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -923,17 +890,14 @@ section.</p>
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_service_stress" title="concreteproperties.concrete_section.ConcreteSection.calculate_service_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_service_stress()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Stress results object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a> – Stress results object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.calculate_ultimate_stress">
-<span class="sig-name descname"><span class="pre">calculate_ultimate_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><span class="pre">StressResult</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.calculate_ultimate_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.calculate_ultimate_stress" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_ultimate_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.calculate_ultimate_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.calculate_ultimate_stress" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates ultimate stresses within the reinforced concrete section.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -941,10 +905,7 @@ section.</p>
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_stress" title="concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_ultimate_stress()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Stress results object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a> – Stress results object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -998,7 +959,7 @@ section.</p>
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
   </div>
   

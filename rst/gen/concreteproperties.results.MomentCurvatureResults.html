@@ -642,19 +642,17 @@ function checkPageExistsAndRedirect(event) {
 <h1>concreteproperties.results.MomentCurvatureResults<a class="headerlink" href="#concreteproperties-results-momentcurvatureresults" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.results.MomentCurvatureResults">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MomentCurvatureResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa:</span> <span class="pre">~typing.List[float]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moment:</span> <span class="pre">~typing.List[float]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_n_i:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_m_x_i:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_m_y_i:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_m_v_i:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_failure:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MomentCurvatureResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moment=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_n_i=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_m_x_i=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_m_y_i=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_m_v_i=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_failure=False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for storing moment curvature results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the horizontal
-axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p>
-</dd>
-<dt class="field-even">Variables</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>kappa</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of curvatures</p></li>
-<li><p><strong>moment</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of bending moments</p></li>
-<li><p><strong>failure_geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.Geometry</span></code></a>) – Geometry object of the region of the cross-section that
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Angle (in radians) the neutral axis makes with the horizontal
+axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
+<li><p><strong>kappa</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">&lt;factory&gt;</span></code>) – List of curvatures</p></li>
+<li><p><strong>moment</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">&lt;factory&gt;</span></code>) – List of bending moments</p></li>
+<li><p><strong>failure_geometry</strong> – Geometry object of the region of the cross-section that
 failed, ending the moment curvature analysis</p></li>
 </ul>
 </dd>
@@ -703,86 +701,74 @@ failed, ending the moment curvature analysis</p></li>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.results.MomentCurvatureResults.plot_results">
-<span class="sig-name descname"><span class="pre">plot_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults.plot_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults.plot_results" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults.plot_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults.plot_results" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots the moment curvature results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
-<li><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot format string</p></li>
+<li><p><strong>m_scale</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">1e-06</span></code>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>fmt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'o-'</span></code>) – Plot format string</p></li>
 <li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Matplotlib axes object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> – Matplotlib axes object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.results.MomentCurvatureResults.plot_multiple_results">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment_curvature_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><span class="pre">MomentCurvatureResults</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults.plot_multiple_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults.plot_multiple_results" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment_curvature_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults.plot_multiple_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults.plot_multiple_results" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots multiple moment curvature results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>moment_curvature_results</strong> – List of moment curvature results objects</p></li>
-<li><p><strong>labels</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of labels for each moment curvature diagram</p></li>
-<li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
-<li><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot format string</p></li>
+<li><p><strong>moment_curvature_results</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentCurvatureResults</span></code></a>]) – List of moment curvature results objects</p></li>
+<li><p><strong>labels</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – List of labels for each moment curvature diagram</p></li>
+<li><p><strong>m_scale</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">1e-06</span></code>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>fmt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'o-'</span></code>) – Plot format string</p></li>
 <li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Matplotlib axes object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> – Matplotlib axes object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.results.MomentCurvatureResults.plot_failure_geometry">
-<span class="sig-name descname"><span class="pre">plot_failure_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Failure</span> <span class="pre">Geometry'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults.plot_failure_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults.plot_failure_geometry" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot_failure_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Failure</span> <span class="pre">Geometry'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults.plot_failure_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults.plot_failure_geometry" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots the geometry that fails in the moment curvature analysis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot title</p></li>
+<li><p><strong>title</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'Failure</span> <span class="pre">Geometry'</span></code>) – Plot title</p></li>
 <li><p><strong>kwargs</strong> – Passed to
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_geometry()</span></code></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Matplotlib axes object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> – Matplotlib axes object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.results.MomentCurvatureResults.get_curvature">
-<span class="sig-name descname"><span class="pre">get_curvature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults.get_curvature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults.get_curvature" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_curvature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults.get_curvature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults.get_curvature" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a moment, uses the moment-curvature results to interpolate a curvature.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>moment</strong> (<em>float</em>) – Bending moment at which to obtain curvature</p>
+<dd class="field-odd"><p><strong>moment</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Bending moment at which to obtain curvature</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If supplied moment is outside bounds of moment-curvature
 results.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Curvature</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Curvature</p>
 </dd>
 </dl>
 </dd></dl>
@@ -836,7 +822,7 @@ results.</p>
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
   </div>
   

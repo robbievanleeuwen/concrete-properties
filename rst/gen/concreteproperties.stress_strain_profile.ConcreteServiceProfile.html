@@ -640,15 +640,15 @@ function checkPageExistsAndRedirect(event) {
 <h1>concreteproperties.stress_strain_profile.ConcreteServiceProfile<a class="headerlink" href="#concreteproperties-stress-strain-profile-concreteserviceprofile" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.ConcreteServiceProfile">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteServiceProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strains</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stresses</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteServiceProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strains</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stresses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a></p>
 <p>Abstract class for a concrete service stress-strain profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>strains</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of strains (must be increasing or equal)</p></li>
-<li><p><strong>stresses</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – List of stresses</p></li>
-<li><p><strong>ultimate_strain</strong> (<em>float</em>) – Concrete strain at failure</p></li>
+<li><p><strong>strains</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – List of strains (must be increasing or equal)</p></li>
+<li><p><strong>stresses</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – List of stresses</p></li>
+<li><p><strong>ultimate_strain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Concrete strain at failure</p></li>
 </ul>
 </dd>
 </dl>
@@ -708,116 +708,98 @@ function checkPageExistsAndRedirect(event) {
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.ConcreteServiceProfile.print_properties">
-<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'8.6e'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile.print_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.print_properties" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'8.6e'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile.print_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.print_properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Prints the stress-strain profile properties to the terminal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Number format</p>
+<dd class="field-odd"><p><strong>fmt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'8.6e'</span></code>) – Number format</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_elastic_modulus">
-<span class="sig-name descname"><span class="pre">get_elastic_modulus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile.get_elastic_modulus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_elastic_modulus" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_elastic_modulus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile.get_elastic_modulus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_elastic_modulus" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the elastic modulus of the stress-strain profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Elastic modulus</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Elastic modulus</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_compressive_strength">
-<span class="sig-name descname"><span class="pre">get_compressive_strength</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile.get_compressive_strength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_compressive_strength" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_compressive_strength</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile.get_compressive_strength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_compressive_strength" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the most positive stress.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Compressive strength</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Compressive strength</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_tensile_strength">
-<span class="sig-name descname"><span class="pre">get_tensile_strength</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile.get_tensile_strength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_tensile_strength" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_tensile_strength</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile.get_tensile_strength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_tensile_strength" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the most negative stress.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Tensile strength</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Tensile strength</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_ultimate_strain">
-<span class="sig-name descname"><span class="pre">get_ultimate_strain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile.get_ultimate_strain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_ultimate_strain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_ultimate_strain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile.get_ultimate_strain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_ultimate_strain" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the largest strain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Ultimate strain</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>float</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Ultimate strain</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_stress">
-<span class="sig-name descname"><span class="pre">get_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_stress" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_stress" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a stress given a strain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>strain</strong> (<em>float</em>) – Strain at which to return a stress.</p>
+<dd class="field-odd"><p><strong>strain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Strain at which to return a stress.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Stress</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Stress</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_unique_strains">
-<span class="sig-name descname"><span class="pre">get_unique_strains</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_unique_strains" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_unique_strains</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_unique_strains" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns an ordered list of unique strains.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Ordered list of unique strains</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Ordered list of unique strains</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.ConcreteServiceProfile.plot_stress_strain">
-<span class="sig-name descname"><span class="pre">plot_stress_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Stress-Strain</span> <span class="pre">Profile'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.plot_stress_strain" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot_stress_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Stress-Strain</span> <span class="pre">Profile'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.ConcreteServiceProfile.plot_stress_strain" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots the stress-strain profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot title</p></li>
-<li><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot format string</p></li>
+<li><p><strong>title</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'Stress-Strain</span> <span class="pre">Profile'</span></code>) – Plot title</p></li>
+<li><p><strong>fmt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'o-'</span></code>) – Plot format string</p></li>
 <li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Matplotlib axes object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> – Matplotlib axes object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -871,7 +853,7 @@ function checkPageExistsAndRedirect(event) {
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
   </div>
   

@@ -642,23 +642,20 @@ function checkPageExistsAndRedirect(event) {
 <h1>concreteproperties.utils.calculate_local_extents<a class="headerlink" href="#concreteproperties-utils-calculate-local-extents" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="concreteproperties.utils.calculate_local_extents">
-<span class="sig-name descname"><span class="pre">calculate_local_extents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.2)"><span class="pre">CompoundGeometry</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/utils.html#calculate_local_extents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.utils.calculate_local_extents" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_local_extents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/utils.html#calculate_local_extents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.utils.calculate_local_extents" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the local extents of a geometry given a centroid and axis angle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sectionproperties.pre.geometry.CompoundGeometry</span></code></a>) – Geometry over which to calculate extents</p></li>
-<li><p><strong>cx</strong> (<em>float</em>) – x-location of the centroid</p></li>
-<li><p><strong>cy</strong> (<em>float</em>) – y-location of the centroid</p></li>
-<li><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the horizontal
+<li><p><strong>geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>) – Geometry over which to calculate extents</p></li>
+<li><p><strong>cx</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – x-location of the centroid</p></li>
+<li><p><strong>cy</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – y-location of the centroid</p></li>
+<li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Angle (in radians) the neutral axis makes with the horizontal
 axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Local extents <em>(x11_max, x11_min, y22_max, y22_min)</em></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[float]</p>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Local extents <em>(x11_max, x11_min, y22_max, y22_min)</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -710,7 +707,7 @@ axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
   </div>
   

@@ -281,8 +281,8 @@ function checkPageExistsAndRedirect(event) {
   <h1>Source code for concreteproperties.material</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">ConcreteServiceProfile</span><span class="p">,</span>
@@ -295,19 +295,15 @@ function checkPageExistsAndRedirect(event) {
 <span class="k">class</span> <span class="nc">Concrete</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for a concrete material.</span>
 
-<span class="sd">    :param str name: Concrete material name</span>
-<span class="sd">    :param float density: Concrete density (mass per unit volume)</span>
+<span class="sd">    :param name: Concrete material name</span>
+<span class="sd">    :param density: Concrete density (mass per unit volume)</span>
 <span class="sd">    :param stress_strain_profile: Service concrete stress-strain profile</span>
-<span class="sd">    :type stress_strain_profile:</span>
-<span class="sd">        :class:`~concreteproperties.stress_strain_profile.ConcreteServiceProfile`</span>
 <span class="sd">    :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile</span>
-<span class="sd">    :type ultimate_stress_strain_profile:</span>
-<span class="sd">        :class:`~concreteproperties.stress_strain_profile.ConcreteUltimateProfile`</span>
-<span class="sd">    :param float alpha_squash: Factor that modifies the concrete compressive strength at</span>
+<span class="sd">    :param alpha_squash: Factor that modifies the concrete compressive strength at</span>
 <span class="sd">        squash load</span>
-<span class="sd">    :param float flexural_tensile_strength: Absolute value of the concrete flexural</span>
+<span class="sd">    :param flexural_tensile_strength: Absolute value of the concrete flexural</span>
 <span class="sd">        tensile strength</span>
-<span class="sd">    :param str colour: Colour of the material for rendering</span>
+<span class="sd">    :param colour: Colour of the material for rendering</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
@@ -336,12 +332,10 @@ function checkPageExistsAndRedirect(event) {
 <span class="k">class</span> <span class="nc">Steel</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for a steel material.</span>
 
-<span class="sd">    :param str name: Steel material name</span>
-<span class="sd">    :param float density: Steel density (mass per unit volume)</span>
+<span class="sd">    :param name: Steel material name</span>
+<span class="sd">    :param density: Steel density (mass per unit volume)</span>
 <span class="sd">    :param stress_strain_profile: Ultimate steel stress-strain profile</span>
-<span class="sd">    :type ultimate_stress_strain_profile:</span>
-<span class="sd">        :class:`~concreteproperties.stress_strain_profile.SteelProfile`</span>
-<span class="sd">    :param str colour: Colour of the material for rendering</span>
+<span class="sd">    :param colour: Colour of the material for rendering</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
@@ -388,7 +382,7 @@ function checkPageExistsAndRedirect(event) {
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
   </div>
   

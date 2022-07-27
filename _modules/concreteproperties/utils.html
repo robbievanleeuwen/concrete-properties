@@ -281,13 +281,13 @@ function checkPageExistsAndRedirect(event) {
   <h1>Source code for concreteproperties.utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">rich.progress</span> <span class="kn">import</span> <span class="n">Progress</span><span class="p">,</span> <span class="n">BarColumn</span><span class="p">,</span> <span class="n">ProgressColumn</span><span class="p">,</span> <span class="n">TextColumn</span><span class="p">,</span> <span class="n">SpinnerColumn</span>
+<span class="kn">from</span> <span class="nn">rich.progress</span> <span class="kn">import</span> <span class="n">BarColumn</span><span class="p">,</span> <span class="n">Progress</span><span class="p">,</span> <span class="n">ProgressColumn</span><span class="p">,</span> <span class="n">SpinnerColumn</span><span class="p">,</span> <span class="n">TextColumn</span>
 <span class="kn">from</span> <span class="nn">rich.table</span> <span class="kn">import</span> <span class="n">Column</span>
 <span class="kn">from</span> <span class="nn">rich.text</span> <span class="kn">import</span> <span class="n">Text</span>
-
-<span class="kn">from</span> <span class="nn">sectionproperties.analysis.fea</span> <span class="kn">import</span> <span class="n">principal_coordinate</span><span class="p">,</span> <span class="n">global_coordinate</span>
+<span class="kn">from</span> <span class="nn">sectionproperties.analysis.fea</span> <span class="kn">import</span> <span class="n">global_coordinate</span><span class="p">,</span> <span class="n">principal_coordinate</span>
 <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">CompoundGeometry</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
@@ -295,8 +295,8 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="get_service_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.get_service_strain.html#concreteproperties.utils.get_service_strain">[docs]</a><span class="k">def</span> <span class="nf">get_service_strain</span><span class="p">(</span>
-    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -304,15 +304,12 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    angle `theta`. Positive strain is compression.</span>
 
 <span class="sd">    :param point: Point at which to evaluate the strain</span>
-<span class="sd">    :type point: Tuple[float]</span>
 <span class="sd">    :param point_na: Point on the neutral axis</span>
-<span class="sd">    :type point_na: Tuple[float]</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
-<span class="sd">    :param float kappa: Curvature</span>
+<span class="sd">    :param kappa: Curvature</span>
 
 <span class="sd">    :return: Strain</span>
-<span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># convert point to local coordinates</span>
@@ -330,8 +327,8 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="get_ultimate_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.get_ultimate_strain.html#concreteproperties.utils.get_ultimate_strain">[docs]</a><span class="k">def</span> <span class="nf">get_ultimate_strain</span><span class="p">(</span>
-    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -340,16 +337,13 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    neutral axis angle `theta`. Positive strain is compression.</span>
 
 <span class="sd">    :param point: Point at which to evaluate the strain</span>
-<span class="sd">    :type point: Tuple[float]</span>
 <span class="sd">    :param point_na: Point on the neutral axis</span>
-<span class="sd">    :type point_na: Tuple[float]</span>
-<span class="sd">    :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">    :param d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
-<span class="sd">    :param float ultimate_strain: Concrete strain at failure</span>
+<span class="sd">    :param ultimate_strain: Concrete strain at failure</span>
 
 <span class="sd">    :return: Strain</span>
-<span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># convert point to local coordinates</span>
@@ -367,21 +361,19 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="point_on_neutral_axis"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.point_on_neutral_axis.html#concreteproperties.utils.point_on_neutral_axis">[docs]</a><span class="k">def</span> <span class="nf">point_on_neutral_axis</span><span class="p">(</span>
-    <span class="n">extreme_fibre</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">extreme_fibre</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a point on the neutral axis given an extreme fibre, a depth to the</span>
 <span class="sd">    neutral axis and a neutral axis angle.</span>
 
 <span class="sd">    :param extreme_fibre: Global coordinate of the extreme compression fibre</span>
-<span class="sd">    :type extreme_fibre: Tuple[float]</span>
-<span class="sd">    :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">    :param d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">    :return: Point on the neutral axis in global coordinates `(x, y)`</span>
-<span class="sd">    :rtype: Tuple[float]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># determine the coordinate of the point wrt the local axis</span>
@@ -399,27 +391,24 @@ function checkPageExistsAndRedirect(event) {
 <div class="viewcode-block" id="split_section_at_strains"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.split_section_at_strains.html#concreteproperties.utils.split_section_at_strains">[docs]</a><span class="k">def</span> <span class="nf">split_section_at_strains</span><span class="p">(</span>
     <span class="n">concrete_geometries</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">],</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="n">ultimate</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ultimate_strain</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">d_n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">kappa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">]:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Splits concrete geometries at discontinuities in its stress-strain profile.</span>
 
 <span class="sd">    :param concrete_geometries: List of concrete geometries</span>
-<span class="sd">    :type concrete_geometries: List[Geometry]</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">    :param point_na: Point on the neutral axis</span>
-<span class="sd">    :type point_na: Tuple[float]</span>
-<span class="sd">    :param bool ultimate: If set to True, uses ultimate stress-strain profile</span>
-<span class="sd">    :param float ultimate_strain: Concrete strain at failure</span>
-<span class="sd">    :param float d_n: Depth of the neutral axis from the extreme compression fibre</span>
-<span class="sd">    :param float kappa: Curvature</span>
+<span class="sd">    :param ultimate: If set to True, uses ultimate stress-strain profile</span>
+<span class="sd">    :param ultimate_strain: Concrete strain at failure</span>
+<span class="sd">    :param d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">    :param kappa: Curvature</span>
 
 <span class="sd">    :return: List of split geometries</span>
-<span class="sd">    :rtype: List[:class:`sectionproperties.pre.geometry.Geometry`]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># create splits in concrete geometries at points in stress-strain profiles</span>
@@ -428,10 +417,13 @@ function checkPageExistsAndRedirect(event) {
     <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="n">concrete_geometries</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">ultimate</span><span class="p">:</span>
             <span class="n">strains</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>
+                <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">strains</span> <span class="o">=</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>
+            <span class="n">strains</span> <span class="o">=</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+
+        <span class="c1"># initialise top_geoms in case of two unique strains</span>
+        <span class="n">top_geoms</span> <span class="o">=</span> <span class="p">[</span><span class="n">conc_geom</span><span class="p">]</span>
 
         <span class="c1"># loop through intermediate points on stress-strain profile</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">strain</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">strains</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
@@ -467,22 +459,19 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="split_section"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.split_section.html#concreteproperties.utils.split_section">[docs]</a><span class="k">def</span> <span class="nf">split_section</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="p">:</span> <span class="n">CompoundGeometry</span><span class="p">,</span>
-    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Geometry</span><span class="p">,</span> <span class="n">CompoundGeometry</span><span class="p">],</span>
+    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Geometry</span><span class="p">]]:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Splits the geometry along a line defined by a `point` and rotation angle</span>
 <span class="sd">    `theta`.</span>
 
 <span class="sd">    :param geometry: Geometry to split</span>
-<span class="sd">    :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`</span>
 <span class="sd">    :param point: Point at which to split the geometry `(x, y)`</span>
-<span class="sd">    :type point: Tuple[float]</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">    :return: Split geometry above and below the line</span>
-<span class="sd">    :rtype: Tuple[List[:class:`sectionproperties.pre.geometry.Geometry`]]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># split the section using the sectionproperties method</span>
@@ -499,38 +488,34 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="calculate_extreme_fibre"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.calculate_extreme_fibre.html#concreteproperties.utils.calculate_extreme_fibre">[docs]</a><span class="k">def</span> <span class="nf">calculate_extreme_fibre</span><span class="p">(</span>
-    <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+    <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the locations of the extreme compression fibre in global</span>
 <span class="sd">    coordinates given a neutral axis angle `theta`.</span>
 
 <span class="sd">    :param points: Points over which to search for an extreme fibre</span>
-<span class="sd">    :type points: List[List[float]]</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">    :return: Global coordinate of the extreme compression fibre `(x, y)` and the</span>
 <span class="sd">        neutral axis depth at the extreme tensile fibre</span>
-<span class="sd">    :rtype: Tuple[Tuple[float], float]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># loop through all points</span>
-    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
-        <span class="c1"># determine the coordinate of the point wrt the local axis</span>
-        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1"># initialise min/max variable &amp; point</span>
+    <span class="n">max_pt</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">v_min</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="n">v_max</span> <span class="o">=</span> <span class="n">v</span>
 
-        <span class="c1"># initialise min/max variable &amp; point</span>
-        <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">v_min</span> <span class="o">=</span> <span class="n">v</span>
-            <span class="n">min_pt</span> <span class="o">=</span> <span class="n">point</span>
-            <span class="n">v_max</span> <span class="o">=</span> <span class="n">v</span>
-            <span class="n">max_pt</span> <span class="o">=</span> <span class="n">point</span>
+    <span class="c1"># loop through all points</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="c1"># determine the coordinate of the point wrt the local axis</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="c1"># update the min/max &amp; point where necessary</span>
         <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">v_min</span><span class="p">:</span>
             <span class="n">v_min</span> <span class="o">=</span> <span class="n">v</span>
-            <span class="n">min_pt</span> <span class="o">=</span> <span class="n">point</span>
 
         <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">v_max</span><span class="p">:</span>
             <span class="n">v_max</span> <span class="o">=</span> <span class="n">v</span>
@@ -543,7 +528,7 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="calculate_max_bending_depth"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.calculate_max_bending_depth.html#concreteproperties.utils.calculate_max_bending_depth">[docs]</a><span class="k">def</span> <span class="nf">calculate_max_bending_depth</span><span class="p">(</span>
-    <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+    <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
     <span class="n">c_local_v</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -551,13 +536,11 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    bending about an axis `theta`.</span>
 
 <span class="sd">    :param points: Points over which to search for a bending depth</span>
-<span class="sd">    :type points: List[List[float]]</span>
-<span class="sd">    :param float c_local_v: Centroid coordinate in the local v-direction</span>
-<span class="sd">    :param float theta: Angle (in radians) the bending axis makes with the horizontal</span>
+<span class="sd">    :param c_local_v: Centroid coordinate in the local v-direction</span>
+<span class="sd">    :param theta: Angle (in radians) the bending axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">    :return: Maximum bending depth</span>
-<span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">max_bending_depth</span> <span class="o">=</span> <span class="mi">0</span>
@@ -578,11 +561,10 @@ function checkPageExistsAndRedirect(event) {
     <span class="sd">&quot;&quot;&quot;Returns the Gaussian weights and locations for *n* point Gaussian integration of</span>
 <span class="sd">    a linear triangular element.</span>
 
-<span class="sd">    :param int n: Number of Gauss points (1, 3 or 6)</span>
+<span class="sd">    :param n: Number of Gauss points (1, 3 or 6)</span>
 
 <span class="sd">    :return: An *n x 3* matrix consisting of the integration weight and the xi and eta</span>
 <span class="sd">        locations for *n* Gauss points</span>
-<span class="sd">    :rtype: List[List[float]]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -600,25 +582,22 @@ function checkPageExistsAndRedirect(event) {
 <div class="viewcode-block" id="shape_function"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.shape_function.html#concreteproperties.utils.shape_function">[docs]</a><span class="k">def</span> <span class="nf">shape_function</span><span class="p">(</span>
     <span class="n">coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">gauss_point</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarry</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Computes shape functions and the determinant of the Jacobian matrix for a</span>
 <span class="sd">    linear triangular element at a given Gauss point.</span>
 
 <span class="sd">    :param coords: Global coordinates of the linear triangle vertices [2 x 3]</span>
-<span class="sd">    :type coords: :class:`numpy.ndarray`</span>
 <span class="sd">    :param gauss_point: Gaussian weight and isoparametric location of the Gauss point</span>
-<span class="sd">    :type gauss_point: List[float]</span>
 
 <span class="sd">    :return: The value of the shape functions *N(i)* at the given Gauss point [1 x 3]</span>
 <span class="sd">        and the determinant of the Jacobian matrix *j*</span>
-<span class="sd">    :rtype: Tuple[:class:`numpy.ndarray`, float]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">xi</span> <span class="o">=</span> <span class="n">gauss_point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">eta</span> <span class="o">=</span> <span class="n">gauss_point</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
     <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">-</span> <span class="n">xi</span> <span class="o">-</span> <span class="n">eta</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">eta</span><span class="p">])</span>
-    <span class="n">dN</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+    <span class="n">dN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 
     <span class="c1"># calculate jacobian</span>
     <span class="n">J_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">dN</span><span class="p">)</span>
@@ -632,34 +611,34 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">cx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">cy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the local extents of a geometry given a centroid and axis angle.</span>
 
 <span class="sd">    :param geometry: Geometry over which to calculate extents</span>
-<span class="sd">    :type geometry: :class:`sectionproperties.pre.geometry.CompoundGeometry`</span>
-<span class="sd">    :param float cx: x-location of the centroid</span>
-<span class="sd">    :param float cy: y-location of the centroid</span>
-<span class="sd">    :param float theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">    :param cx: x-location of the centroid</span>
+<span class="sd">    :param cy: y-location of the centroid</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
 <span class="sd">    :return: Local extents *(x11_max, x11_min, y22_max, y22_min)*</span>
-<span class="sd">    :rtype: Tuple[float]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="c1"># initialise min, max variables</span>
+    <span class="n">pt0</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">x11</span><span class="p">,</span> <span class="n">y22</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
+        <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">pt0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">pt0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cy</span>
+    <span class="p">)</span>
+    <span class="n">x11_max</span> <span class="o">=</span> <span class="n">x11</span>
+    <span class="n">x11_min</span> <span class="o">=</span> <span class="n">x11</span>
+    <span class="n">y22_max</span> <span class="o">=</span> <span class="n">y22</span>
+    <span class="n">y22_min</span> <span class="o">=</span> <span class="n">y22</span>
+
     <span class="c1"># loop through all points in geometry</span>
-    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cx</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cy</span>
-
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
         <span class="c1"># determine the coordinate of the point wrt the principal axis</span>
-        <span class="n">x11</span><span class="p">,</span> <span class="n">y22</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
-
-        <span class="c1"># initialise min, max variables</span>
-        <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">x11_max</span> <span class="o">=</span> <span class="n">x11</span>
-            <span class="n">x11_min</span> <span class="o">=</span> <span class="n">x11</span>
-            <span class="n">y22_max</span> <span class="o">=</span> <span class="n">y22</span>
-            <span class="n">y22_min</span> <span class="o">=</span> <span class="n">y22</span>
+        <span class="n">x11</span><span class="p">,</span> <span class="n">y22</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
+            <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cy</span>
+        <span class="p">)</span>
 
         <span class="c1"># update the mins and maxes where necessary</span>
         <span class="n">x11_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x11_max</span><span class="p">,</span> <span class="n">x11</span><span class="p">)</span>
@@ -675,18 +654,16 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="CustomTimeElapsedColumn.render"><a class="viewcode-back" href="../../rst/gen/concreteproperties.utils.CustomTimeElapsedColumn.html#concreteproperties.utils.CustomTimeElapsedColumn.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">task</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Task&quot;</span><span class="p">,</span>
+        <span class="n">task</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Task&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Text</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Show time remaining.</span>
 
 <span class="sd">        :param task: Task string</span>
-<span class="sd">        :type task: Optional[str]</span>
 
 <span class="sd">        :return: Rich text object</span>
-<span class="sd">        :rtype: :class:`rich.text.Text`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">finished_time</span> <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">finished</span> <span class="k">else</span> <span class="n">task</span><span class="o">.</span><span class="n">elapsed</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">finished_time</span> <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">finished</span> <span class="k">else</span> <span class="n">task</span><span class="o">.</span><span class="n">elapsed</span>  <span class="c1"># type: ignore</span>
 
         <span class="k">if</span> <span class="n">elapsed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;-:--:--&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;progress.elapsed&quot;</span><span class="p">)</span>
@@ -700,7 +677,6 @@ function checkPageExistsAndRedirect(event) {
     <span class="sd">&quot;&quot;&quot;Returns a Rich Progress class for a known number of iterations.</span>
 
 <span class="sd">    :return: Rich progress object</span>
-<span class="sd">    :rtype: :class:`rich.progress.Progress`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="n">Progress</span><span class="p">(</span>
@@ -719,7 +695,6 @@ function checkPageExistsAndRedirect(event) {
     <span class="sd">&quot;&quot;&quot;Returns a Rich Progress class for an unknown number of iterations.</span>
 
 <span class="sd">    :return: Rich progress object</span>
-<span class="sd">    :rtype: :class:`rich.progress.Progress`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="n">Progress</span><span class="p">(</span>
@@ -763,7 +738,7 @@ function checkPageExistsAndRedirect(event) {
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
   </div>
   

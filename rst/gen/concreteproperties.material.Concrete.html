@@ -640,21 +640,21 @@ function checkPageExistsAndRedirect(event) {
 <h1>concreteproperties.material.Concrete<a class="headerlink" href="#concreteproperties-material-concrete" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.material.Concrete">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Concrete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile" title="concreteproperties.stress_strain_profile.ConcreteServiceProfile"><span class="pre">ConcreteServiceProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_stress_strain_profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile" title="concreteproperties.stress_strain_profile.ConcreteUltimateProfile"><span class="pre">ConcreteUltimateProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_squash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flexural_tensile_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/material.html#Concrete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.material.Concrete" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Concrete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_squash</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flexural_tensile_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/material.html#Concrete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.material.Concrete" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for a concrete material.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – Concrete material name</p></li>
-<li><p><strong>density</strong> (<em>float</em>) – Concrete density (mass per unit volume)</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Concrete material name</p></li>
+<li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Concrete density (mass per unit volume)</p></li>
 <li><p><strong>stress_strain_profile</strong> (<a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile" title="concreteproperties.stress_strain_profile.ConcreteServiceProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteServiceProfile</span></code></a>) – Service concrete stress-strain profile</p></li>
 <li><p><strong>ultimate_stress_strain_profile</strong> (<a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile" title="concreteproperties.stress_strain_profile.ConcreteUltimateProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteUltimateProfile</span></code></a>) – Ultimate concrete stress-strain profile</p></li>
-<li><p><strong>alpha_squash</strong> (<em>float</em>) – Factor that modifies the concrete compressive strength at
+<li><p><strong>alpha_squash</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Factor that modifies the concrete compressive strength at
 squash load</p></li>
-<li><p><strong>flexural_tensile_strength</strong> (<em>float</em>) – Absolute value of the concrete flexural
+<li><p><strong>flexural_tensile_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Absolute value of the concrete flexural
 tensile strength</p></li>
-<li><p><strong>colour</strong> (<em>str</em>) – Colour of the material for rendering</p></li>
+<li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Colour of the material for rendering</p></li>
 </ul>
 </dd>
 </dl>
@@ -746,7 +746,7 @@ tensile strength</p></li>
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
   </div>
   

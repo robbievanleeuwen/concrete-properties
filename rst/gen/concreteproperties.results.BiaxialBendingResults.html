@@ -640,15 +640,15 @@ function checkPageExistsAndRedirect(event) {
 <h1>concreteproperties.results.BiaxialBendingResults<a class="headerlink" href="#concreteproperties-results-biaxialbendingresults" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.results.BiaxialBendingResults">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BiaxialBendingResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results:</span> <span class="pre">~typing.List[~concreteproperties.results.UltimateBendingResults]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BiaxialBendingResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results=&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for storing biaxial bending results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>n</strong> (<em>float</em>) – Net axial force</p>
-</dd>
-<dt class="field-even">Variables</dt>
-<dd class="field-even"><p><strong>results</strong> (List[<a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code></a>]) – List of ultimate bending result objects</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Net axial force</p></li>
+<li><p><strong>results</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code></a>], default: <code class="docutils literal notranslate"><span class="pre">&lt;factory&gt;</span></code>) – List of ultimate bending result objects</p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
@@ -689,78 +689,66 @@ function checkPageExistsAndRedirect(event) {
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.results.BiaxialBendingResults.get_results_lists">
-<span class="sig-name descname"><span class="pre">get_results_lists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults.get_results_lists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults.get_results_lists" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_results_lists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults.get_results_lists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults.get_results_lists" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a list and moments about the <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> axes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>List of axial forces and moments <em>(mx, my)</em></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Tuple[List[float]]</p>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]] – List of axial forces and moments <em>(mx, my)</em></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.results.BiaxialBendingResults.plot_diagram">
-<span class="sig-name descname"><span class="pre">plot_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults.plot_diagram" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults.plot_diagram" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots a biaxial bending diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
-<li><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot format string</p></li>
+<li><p><strong>m_scale</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">1e-06</span></code>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>fmt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'o-'</span></code>) – Plot format string</p></li>
 <li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Matplotlib axes object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> – Matplotlib axes object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">biaxial_bending_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><span class="pre">BiaxialBendingResults</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><span class="pre">matplotlib.axes.Axes</span></a></span></span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_multiple_diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">biaxial_bending_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_multiple_diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots multiple biaxial bending diagrams in a 3D plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>biaxial_bending_results</strong> (List[<a class="reference internal" href="#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code></a>]) – List of biaxial bending results objects</p></li>
-<li><p><strong>n_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to axial force</p></li>
-<li><p><strong>m_scale</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – Scaling factor to apply to bending moment</p></li>
-<li><p><strong>fmt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Plot format string</p></li>
+<li><p><strong>biaxial_bending_results</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code></a>]) – List of biaxial bending results objects</p></li>
+<li><p><strong>n_scale</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0.001</span></code>) – Scaling factor to apply to axial force</p></li>
+<li><p><strong>m_scale</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">1e-06</span></code>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>fmt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'-'</span></code>) – Plot format string</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Matplotlib axes object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> – Matplotlib axes object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.results.BiaxialBendingResults.point_in_diagram">
-<span class="sig-name descname"><span class="pre">point_in_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults.point_in_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults.point_in_diagram" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">point_in_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults.point_in_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults.point_in_diagram" title="Permalink to this definition">#</a></dt>
 <dd><p>Determines whether or not the combination of bending moments lies within the
 biaxial bending diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>m_x</strong> (<em>float</em>) – Bending moment about the x-axis</p></li>
-<li><p><strong>m_y</strong> (<em>float</em>) – Bending moment about the y-axis</p></li>
+<li><p><strong>m_x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Bending moment about the x-axis</p></li>
+<li><p><strong>m_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Bending moment about the y-axis</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True, if combination of bendings moments is within the diagram</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – True, if combination of bendings moments is within the diagram</p>
 </dd>
 </dl>
 </dd></dl>
@@ -814,7 +802,7 @@ biaxial bending diagram.</p>
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
   </div>
   

@@ -281,13 +281,14 @@ function checkPageExistsAndRedirect(event) {
   <h1>Source code for concreteproperties.pre</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">sectionproperties.pre.library.primitive_sections</span> <span class="k">as</span> <span class="nn">sp_ps</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span><span class="p">,</span> <span class="n">CompoundGeometry</span>
+    <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">CompoundGeometry</span><span class="p">,</span> <span class="n">Geometry</span>
+
     <span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Steel</span>
 
 
@@ -297,29 +298,24 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">material</span><span class="p">:</span> <span class="n">Steel</span><span class="p">,</span>
     <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompoundGeometry</span><span class="p">:</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Geometry</span><span class="p">,</span> <span class="n">CompoundGeometry</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Adds a reinforcing bar to a *sectionproperties* geometry.</span>
 
 <span class="sd">    Bars are discretised by four points by default.</span>
 
 <span class="sd">    :param geometry: Reinforced concrete geometry to which the new bar will be added</span>
-<span class="sd">    :type geometry: Union[:class:`sectionproperties.pre.geometry.Geometry`,</span>
-<span class="sd">        :class:`sectionproperties.pre.geometry.CompoundGeometry`]</span>
-<span class="sd">    :param float area: Bar cross-sectional area</span>
+<span class="sd">    :param area: Bar cross-sectional area</span>
 <span class="sd">    :param material: Material object for the bar</span>
-<span class="sd">    :type material: :class:`~concreteproperties.material.Steel`</span>
-<span class="sd">    :param float x: x-position of the bar</span>
-<span class="sd">    :param float y: y-position of the bar</span>
+<span class="sd">    :param x: x-position of the bar</span>
+<span class="sd">    :param y: y-position of the bar</span>
 <span class="sd">    :param n: Number of points to discretise the bar circle</span>
-<span class="sd">    :type n: Optional[int]</span>
 
 <span class="sd">    :return: Reinforced concrete geometry with added bar</span>
-<span class="sd">    :rtype: :class:`sectionproperties.pre.geometry.CompoundGeometry`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">bar</span> <span class="o">=</span> <span class="n">sp_ps</span><span class="o">.</span><span class="n">circular_section_by_area</span><span class="p">(</span>
-        <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">material</span>
+        <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">material</span>  <span class="c1"># type: ignore</span>
     <span class="p">)</span><span class="o">.</span><span class="n">shift_section</span><span class="p">(</span><span class="n">x_offset</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="p">(</span><span class="n">geometry</span> <span class="o">-</span> <span class="n">bar</span><span class="p">)</span> <span class="o">+</span> <span class="n">bar</span></div>
@@ -331,37 +327,28 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">material</span><span class="p">:</span> <span class="n">Steel</span><span class="p">,</span>
     <span class="n">n_x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">x_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">n_y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">y_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">anchor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-    <span class="n">exterior_only</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompoundGeometry</span><span class="p">:</span>
+    <span class="n">n_y</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">y_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">anchor</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">exterior_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Geometry</span><span class="p">,</span> <span class="n">CompoundGeometry</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Adds a rectangular array of reinforcing bars to a *sectionproperties* geometry.</span>
 
 <span class="sd">    Bars are discretised by four points by default.</span>
 
 <span class="sd">    :param geometry: Reinforced concrete geometry to which the new bar will be added</span>
-<span class="sd">    :type geometry: Union[:class:`sectionproperties.pre.geometry.Geometry`,</span>
-<span class="sd">        :class:`sectionproperties.pre.geometry.CompoundGeometry`]</span>
-<span class="sd">    :param float area: Bar cross-sectional area</span>
+<span class="sd">    :param area: Bar cross-sectional area</span>
 <span class="sd">    :param material: Material object for the bar</span>
-<span class="sd">    :type material: :class:`~concreteproperties.material.Steel`</span>
-<span class="sd">    :param int n_x: Number of bars in the x-direction</span>
-<span class="sd">    :param float x_s: Spacing in the x-direction</span>
+<span class="sd">    :param n_x: Number of bars in the x-direction</span>
+<span class="sd">    :param x_s: Spacing in the x-direction</span>
 <span class="sd">    :param n_y: Number of bars in the y-direction</span>
-<span class="sd">    :type n_y: Optional[int]</span>
 <span class="sd">    :param y_s: Spacing in the y-direction</span>
-<span class="sd">    :type y_s: Optional[float]</span>
 <span class="sd">    :param anchor: Coordinates of the bottom left hand bar in the rectangular array</span>
-<span class="sd">    :type anchor: Optional[Tuple[float]]</span>
 <span class="sd">    :param exterior_only: If set to True, only returns bars on the external perimeter</span>
-<span class="sd">    :type exterior_only: Optional[bool]</span>
 <span class="sd">    :param n: Number of points to discretise the bar circle</span>
-<span class="sd">    :type n: Optional[int]</span>
 
 <span class="sd">    :return: Reinforced concrete geometry with added bar</span>
-<span class="sd">    :rtype: :class:`sectionproperties.pre.geometry.CompoundGeometry`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">for</span> <span class="n">j_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_y</span><span class="p">):</span>
@@ -376,7 +363,7 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">add_bar</span> <span class="o">=</span> <span class="kc">True</span>
 
             <span class="k">if</span> <span class="n">add_bar</span><span class="p">:</span>
-                <span class="n">bar</span> <span class="o">=</span> <span class="n">sp_ps</span><span class="o">.</span><span class="n">circular_section_by_area</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">)</span>
+                <span class="n">bar</span> <span class="o">=</span> <span class="n">sp_ps</span><span class="o">.</span><span class="n">circular_section_by_area</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">anchor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">i_idx</span> <span class="o">*</span> <span class="n">x_s</span>
                 <span class="n">y</span> <span class="o">=</span> <span class="n">anchor</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">j_idx</span> <span class="o">*</span> <span class="n">y_s</span>
                 <span class="n">bar</span> <span class="o">=</span> <span class="n">bar</span><span class="o">.</span><span class="n">shift_section</span><span class="p">(</span><span class="n">x_offset</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
@@ -391,38 +378,31 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">material</span><span class="p">:</span> <span class="n">Steel</span><span class="p">,</span>
     <span class="n">n_bar</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">r_array</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">theta_0</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">ctr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-    <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompoundGeometry</span><span class="p">:</span>
+    <span class="n">theta_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">ctr</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Geometry</span><span class="p">,</span> <span class="n">CompoundGeometry</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Adds a circular array of reinforcing bars to a *sectionproperties* geometry.</span>
 
 <span class="sd">    Bars are discretised by four points by default.</span>
 
 <span class="sd">    :param geometry: Reinforced concrete geometry to which the news bar will be added</span>
-<span class="sd">    :type geometry: Union[:class:`sectionproperties.pre.geometry.Geometry`,</span>
-<span class="sd">        :class:`sectionproperties.pre.geometry.CompoundGeometry`]</span>
-<span class="sd">    :param float area: Bar cross-sectional area</span>
+<span class="sd">    :param area: Bar cross-sectional area</span>
 <span class="sd">    :param material: Material object for the bar</span>
-<span class="sd">    :type material: :class:`~concreteproperties.material.Steel`</span>
-<span class="sd">    :param int n_bar: Number of bars in the array</span>
-<span class="sd">    :param float r_array: Radius of the circular array</span>
+<span class="sd">    :param n_bar: Number of bars in the array</span>
+<span class="sd">    :param r_array: Radius of the circular array</span>
 <span class="sd">    :param theta_0: Initial angle (in radians) that the first bar makes with the</span>
 <span class="sd">        horizontal axis in the circular array</span>
-<span class="sd">    :type theta_0: Optional[float]</span>
 <span class="sd">    :param ctr: Centre of the circular array</span>
-<span class="sd">    :type ctr: Optional[Tuple[float]]</span>
 <span class="sd">    :param n: Number of points to discretise the bar circle</span>
-<span class="sd">    :type n: Optional[int]</span>
 
 <span class="sd">    :return: Reinforced concrete geometry with added bar</span>
-<span class="sd">    :rtype: :class:`sectionproperties.pre.geometry.CompoundGeometry`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">d_theta</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n_bar</span>
 
     <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_bar</span><span class="p">):</span>
-        <span class="n">bar</span> <span class="o">=</span> <span class="n">sp_ps</span><span class="o">.</span><span class="n">circular_section_by_area</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">)</span>
+        <span class="n">bar</span> <span class="o">=</span> <span class="n">sp_ps</span><span class="o">.</span><span class="n">circular_section_by_area</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="n">theta_0</span> <span class="o">+</span> <span class="n">idx</span> <span class="o">*</span> <span class="n">d_theta</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">ctr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">r_array</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">ctr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">r_array</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
@@ -462,7 +442,7 @@ function checkPageExistsAndRedirect(event) {
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
   </div>
   

@@ -642,15 +642,15 @@ function checkPageExistsAndRedirect(event) {
 <h1>concreteproperties.analysis_section.Tri3<a class="headerlink" href="#concreteproperties-analysis-section-tri3" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.Tri3">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Tri3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">el_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">np.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conc_material</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><span class="pre">Concrete</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Tri3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">el_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conc_material</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for a three noded linear triangular element.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>el_id</strong> (<em>int</em>) – Unique element id</p></li>
-<li><p><strong>coords</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – A 2 x 3 array of the coordinates of the tri-3 nodes.</p></li>
-<li><p><strong>node_ids</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – A list of the global node ids for the current element</p></li>
+<li><p><strong>el_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Unique element id</p></li>
+<li><p><strong>coords</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – A 2 x 3 array of the coordinates of the tri-3 nodes.</p></li>
+<li><p><strong>node_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – A list of the global node ids for the current element</p></li>
 <li><p><strong>conc_material</strong> (<a class="reference internal" href="concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a>) – Material object for the current finite element.</p></li>
 </ul>
 </dd>
@@ -699,89 +699,77 @@ function checkPageExistsAndRedirect(event) {
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.Tri3.second_moments_of_area">
-<span class="sig-name descname"><span class="pre">second_moments_of_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3.second_moments_of_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3.second_moments_of_area" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">second_moments_of_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3.second_moments_of_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3.second_moments_of_area" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates the second moments of area for the current finite element.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Modulus weighted second moments of area <em>(e_ixx, e_iyy, e_ixy)</em></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Tuple[float]</p>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Modulus weighted second moments of area <em>(e_ixx, e_iyy, e_ixy)</em></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.Tri3.calculate_elastic_actions">
-<span class="sig-name descname"><span class="pre">calculate_elastic_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_ixx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_iyy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_ixy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3.calculate_elastic_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3.calculate_elastic_actions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_elastic_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_ixx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_iyy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_ixy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3.calculate_elastic_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3.calculate_elastic_actions" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates elastic actions for the current finite element.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>float</em>) – Axial force</p></li>
-<li><p><strong>m_x</strong> (<em>float</em>) – Bending moment about the x-axis</p></li>
-<li><p><strong>m_y</strong> (<em>float</em>) – Bending moment about the y-axis</p></li>
-<li><p><strong>e_a</strong> (<em>float</em>) – Axial rigidity</p></li>
-<li><p><strong>cx</strong> (<em>float</em>) – x-Centroid</p></li>
-<li><p><strong>cy</strong> (<em>float</em>) – y-Centroid</p></li>
-<li><p><strong>e_ixx</strong> (<em>float</em>) – Flexural rigidity about the x-axis</p></li>
-<li><p><strong>e_iyy</strong> (<em>float</em>) – Flexural rigidity about the y-axis</p></li>
-<li><p><strong>e_ixy</strong> (<em>float</em>) – Flexural rigidity about the xy-axis</p></li>
+<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Axial force</p></li>
+<li><p><strong>m_x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Bending moment about the x-axis</p></li>
+<li><p><strong>m_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Bending moment about the y-axis</p></li>
+<li><p><strong>e_a</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Axial rigidity</p></li>
+<li><p><strong>cx</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – x-Centroid</p></li>
+<li><p><strong>cy</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – y-Centroid</p></li>
+<li><p><strong>e_ixx</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Flexural rigidity about the x-axis</p></li>
+<li><p><strong>e_iyy</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Flexural rigidity about the y-axis</p></li>
+<li><p><strong>e_ixy</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Flexural rigidity about the xy-axis</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Elastic force and resultant moment</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[float]</p>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Elastic force and resultant moments</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.Tri3.calculate_service_actions">
-<span class="sig-name descname"><span class="pre">calculate_service_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3.calculate_service_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3.calculate_service_actions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_service_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3.calculate_service_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3.calculate_service_actions" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates service actions for the current finite element.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point_na</strong> (<em>Tuple</em><em>[</em><em>float</em><em>]</em>) – Point on the neutral axis</p></li>
-<li><p><strong>d_n</strong> (<em>float</em>) – Depth of the neutral axis from the extreme compression fibre</p></li>
-<li><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the
+<li><p><strong>point_na</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – Point on the neutral axis</p></li>
+<li><p><strong>d_n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Depth of the neutral axis from the extreme compression fibre</p></li>
+<li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Angle (in radians) the neutral axis makes with the
 horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
-<li><p><strong>kappa</strong> (<em>float</em>) – Curvature</p></li>
-<li><p><strong>centroid</strong> (<em>Tuple</em><em>[</em><em>float</em><em>]</em>) – Centroid about which to take moments</p></li>
+<li><p><strong>kappa</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Curvature</p></li>
+<li><p><strong>centroid</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – Centroid about which to take moments</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Axial force, moments and maximum strain</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[float]</p>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Axial force, moments and maximum strain</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.Tri3.calculate_ultimate_actions">
-<span class="sig-name descname"><span class="pre">calculate_ultimate_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3.calculate_ultimate_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3.calculate_ultimate_actions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_ultimate_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3.calculate_ultimate_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3.calculate_ultimate_actions" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates ultimate actions for the current finite element.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point_na</strong> (<em>Tuple</em><em>[</em><em>float</em><em>]</em>) – Point on the neutral axis</p></li>
-<li><p><strong>d_n</strong> (<em>float</em>) – Depth of the neutral axis from the extreme compression fibre</p></li>
-<li><p><strong>theta</strong> (<em>float</em>) – Angle (in radians) the neutral axis makes with the
+<li><p><strong>point_na</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – Point on the neutral axis</p></li>
+<li><p><strong>d_n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Depth of the neutral axis from the extreme compression fibre</p></li>
+<li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Angle (in radians) the neutral axis makes with the
 horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
-<li><p><strong>ultimate_strain</strong> (<em>float</em>) – Concrete strain at failure</p></li>
-<li><p><strong>pc</strong> (<em>Tuple</em><em>[</em><em>float</em><em>]</em>) – Location of the plastic centroid</p></li>
+<li><p><strong>ultimate_strain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Concrete strain at failure</p></li>
+<li><p><strong>pc</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – Location of the plastic centroid</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Axial force and resultant moment about the global axes</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[float]</p>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Axial force and resultant moments about the global axes</p>
 </dd>
 </dl>
 </dd></dl>
@@ -835,7 +823,7 @@ horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
   </div>
   
