@@ -6,7 +6,6 @@ import numpy as np
 from rich.progress import BarColumn, Progress, ProgressColumn, SpinnerColumn, TextColumn
 from rich.table import Column
 from rich.text import Text
-from sectionproperties.analysis.fea import global_coordinate, principal_coordinate
 from sectionproperties.pre.geometry import CompoundGeometry
 
 if TYPE_CHECKING:
@@ -32,12 +31,10 @@ def get_service_strain(
     """
 
     # convert point to local coordinates
-    u, v = principal_coordinate(phi=theta * 180 / np.pi, x=point[0], y=point[1])
+    u, v = global_to_local(theta=theta, x=point[0], y=point[1])
 
     # convert point_na to local coordinates
-    u_na, v_na = principal_coordinate(
-        phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
-    )
+    u_na, v_na = global_to_local(theta=theta, x=point_na[0], y=point_na[1])
 
     # calculate distance between NA and point in `v` direction
     d = v - v_na
@@ -66,12 +63,10 @@ def get_ultimate_strain(
     """
 
     # convert point to local coordinates
-    u, v = principal_coordinate(phi=theta * 180 / np.pi, x=point[0], y=point[1])
+    u, v = global_to_local(theta=theta, x=point[0], y=point[1])
 
     # convert point_na to local coordinates
-    u_na, v_na = principal_coordinate(
-        phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
-    )
+    u_na, v_na = global_to_local(theta=theta, x=point_na[0], y=point_na[1])
 
     # calculate distance between NA and point in `v` direction
     d = v - v_na
@@ -96,15 +91,13 @@ def point_on_neutral_axis(
     """
 
     # determine the coordinate of the point wrt the local axis
-    (u, v) = principal_coordinate(
-        phi=theta * 180 / np.pi, x=extreme_fibre[0], y=extreme_fibre[1]
-    )
+    u, v = global_to_local(theta=theta, x=extreme_fibre[0], y=extreme_fibre[1])
 
     # subtract the neutral axis depth
     v -= d_n
 
     # convert point back to global coordinates
-    return global_coordinate(phi=theta * 180 / np.pi, x11=u, y22=v)
+    return local_to_global(theta=theta, u=u, v=v)
 
 
 def split_section_at_strains(
@@ -153,7 +146,7 @@ def split_section_at_strains(
                 d = strain / kappa
 
             # convert depth to global coordinates
-            dx, dy = global_coordinate(phi=theta * 180 / np.pi, x11=0, y22=d)
+            dx, dy = local_to_global(theta=theta, u=0, v=d)
 
             # calculate location of point with `strain`
             pt = point_na[0] + dx, point_na[1] + dy
@@ -223,14 +216,14 @@ def calculate_extreme_fibre(
 
     # initialise min/max variable & point
     max_pt = points[0]
-    _, v = principal_coordinate(phi=theta * 180 / np.pi, x=points[0][0], y=points[0][1])
+    _, v = global_to_local(theta=theta, x=points[0][0], y=points[0][1])
     v_min = v
     v_max = v
 
     # loop through all points
     for idx, point in enumerate(points[1:]):
         # determine the coordinate of the point wrt the local axis
-        _, v = principal_coordinate(phi=theta * 180 / np.pi, x=point[0], y=point[1])
+        _, v = global_to_local(theta=theta, x=point[0], y=point[1])
 
         # update the min/max & point where necessary
         if v < v_min:
@@ -267,7 +260,7 @@ def calculate_max_bending_depth(
     # loop through all points
     for idx, point in enumerate(points):
         # determine the coordinate of the point wrt the local axis
-        _, v = principal_coordinate(phi=theta * 180 / np.pi, x=point[0], y=point[1])
+        _, v = global_to_local(theta=theta, x=point[0], y=point[1])
 
         max_bending_depth = max(c_local_v - v, max_bending_depth)
 
@@ -344,9 +337,7 @@ def calculate_local_extents(
 
     # initialise min, max variables
     pt0 = geometry.points[0]
-    x11, y22 = principal_coordinate(
-        phi=theta * 180 / np.pi, x=pt0[0] - cx, y=pt0[1] - cy
-    )
+    x11, y22 = global_to_local(theta=theta, x=pt0[0] - cx, y=pt0[1] - cy)
     x11_max = x11
     x11_min = x11
     y22_max = y22
@@ -355,9 +346,7 @@ def calculate_local_extents(
     # loop through all points in geometry
     for idx, pt in enumerate(geometry.points[1:]):
         # determine the coordinate of the point wrt the principal axis
-        x11, y22 = principal_coordinate(
-            phi=theta * 180 / np.pi, x=pt[0] - cx, y=pt[1] - cy
-        )
+        x11, y22 = global_to_local(theta=theta, x=pt[0] - cx, y=pt[1] - cy)
 
         # update the mins and maxes where necessary
         x11_max = max(x11_max, x11)
@@ -366,6 +355,50 @@ def calculate_local_extents(
         y22_min = min(y22_min, y22)
 
     return x11_max, x11_min, y22_max, y22_min
+
+
+def global_to_local(
+    theta: float,
+    x: float,
+    y: float,
+) -> Tuple[float, float]:
+    r"""Determines the local coordinates of the global point (``x``, ``y``) given local
+    axis angle ``theta``.
+
+    :param theta: Angle (in radians) the local axis makes with the horizontal axis
+        (:math:`-\pi \leq \theta \leq \pi`)
+    :param x: x-coordinate of the point in the global axis
+    :param y: y-coordinate of the point in the global axis
+
+    :return: Local axis coordinates (``u``, ``v``)
+    """
+
+    cos_theta = np.cos(theta)
+    sin_theta = np.sin(theta)
+
+    return x * cos_theta + y * sin_theta, y * cos_theta - x * sin_theta
+
+
+def local_to_global(
+    theta: float,
+    u: float,
+    v: float,
+) -> Tuple[float, float]:
+    r"""Determines the global coordinates of the local point (``u``, ``v``) given local
+    axis angle ``theta``.
+
+    :param theta: Angle (in radians) the local axis makes with the horizontal axis
+        (:math:`-\pi \leq \theta \leq \pi`)
+    :param u: u-coordinate of the point in the local axis
+    :param v: v-coordinate of the point in the local axis
+
+    :return: Global axis coordinates (``x``, ``y``)
+    """
+
+    cos_theta = np.cos(theta)
+    sin_theta = np.sin(theta)
+
+    return u * cos_theta - v * sin_theta, u * sin_theta + v * cos_theta
 
 
 class CustomTimeElapsedColumn(ProgressColumn):
