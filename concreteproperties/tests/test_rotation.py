@@ -1,16 +1,13 @@
-import pytest
 import numpy as np
-
-from concreteproperties.material import Concrete, Steel
+import pytest
 from concreteproperties.concrete_section import ConcreteSection
+from concreteproperties.material import Concrete, Steel
 from concreteproperties.stress_strain_profile import (
     ConcreteLinear,
     RectangularStressBlock,
     SteelElasticPlastic,
 )
-
 from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
-
 
 # generate list of angles to test
 thetas = np.linspace(start=-np.pi, stop=np.pi, num=31)
@@ -54,8 +51,8 @@ ref_geom = concrete_rectangular_section(
     cover=30,
     area_top=310,
     area_bot=310,
-    conc_mat=concrete,
-    steel_mat=steel,
+    conc_mat=concrete,  # type: ignore
+    steel_mat=steel,  # type: ignore
 )
 
 ref_sec = ConcreteSection(ref_geom)

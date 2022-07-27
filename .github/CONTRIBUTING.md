@@ -24,7 +24,7 @@ Dependencies for developing with *concreteproperties* can be installed with:
 pip install concreteproperties[dev]
 ```
 
-## Styleguide
+## Style Guide
 
 If submitting a pull request, please follow the below style guide to ensure a smooth review and approval process.
 

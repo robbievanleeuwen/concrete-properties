@@ -1,5 +1,4 @@
 import pytest
-
 from concreteproperties.stress_strain_profile import *
 
 

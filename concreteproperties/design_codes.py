@@ -1,18 +1,18 @@
 from __future__ import annotations
 
-from typing import Optional, TYPE_CHECKING
 from copy import deepcopy
+from typing import TYPE_CHECKING, List, Optional, Tuple
+
 import numpy as np
+from rich.live import Live
 from scipy.interpolate import interp1d
 from scipy.optimize import brentq
-from rich.live import Live
-
-from concreteproperties.material import Concrete, Steel
-import concreteproperties.stress_strain_profile as ssp
-import concreteproperties.results as res
-import concreteproperties.utils as utils
-
 from sectionproperties.analysis.fea import principal_coordinate
+
+import concreteproperties.results as res
+import concreteproperties.stress_strain_profile as ssp
+import concreteproperties.utils as utils
+from concreteproperties.material import Concrete, Steel
 
 if TYPE_CHECKING:
     from concreteproperties.concrete_section import ConcreteSection
@@ -35,8 +35,6 @@ class DesignCode:
         """Assigns a concrete section to the design code.
 
         :param concrete_section: Concrete section object to analyse
-        :type concrete_section:
-            :class:`~concreteproperties.concrete_section.ConcreteSection`
         """
 
         self.concrete_section = concrete_section
@@ -44,18 +42,16 @@ class DesignCode:
     def create_concrete_material(
         self,
         compressive_strength: float,
-        colour: Optional[str] = "lightgrey",
+        colour: str = "lightgrey",
     ) -> Concrete:
         """Returns a concrete material object.
 
         List assumptions of material properties here...
 
-        :param float compressive_strength: Concrete compressive strength
+        :param compressive_strength: Concrete compressive strength
         :param colour: Colour of the concrete for rendering
-        :type colour: Optional[str]
 
         :return: Concrete material object
-        :rtype: :class:`~concreteproperties.material.Concrete`
         """
 
         raise NotImplementedError
@@ -63,18 +59,16 @@ class DesignCode:
     def create_steel_material(
         self,
         yield_strength: float,
-        colour: Optional[str] = "grey",
+        colour: str = "grey",
     ) -> Steel:
         """Returns a steel material object.
 
         List assumptions of material properties here...
 
-        :param float yield_strength: Steel yield strength
+        :param yield_strength: Steel yield strength
         :param colour: Colour of the steel for rendering
-        :type colour: Optional[str]
 
         :return: Steel material object
-        :rtype: :class:`~concreteproperties.material.Steel`
         """
 
         raise NotImplementedError
@@ -89,7 +83,6 @@ class DesignCode:
             :meth:`~concreteproperties.concrete_section.ConcreteSection.get_gross_properties`
 
         :return: Concrete properties object
-        :rtype: :class:`~concreteproperties.results.ConcreteProperties`
         """
 
         return self.concrete_section.get_gross_properties(**kwargs)
@@ -104,8 +97,6 @@ class DesignCode:
             :meth:`~concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties`
 
         :return: Transformed concrete properties object
-        :rtype:
-            :class:`~concreteproperties.results.TransformedConcreteProperties`
         """
 
         return self.concrete_section.get_transformed_gross_properties(**kwargs)
@@ -120,7 +111,6 @@ class DesignCode:
             :meth:`~concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties`
 
         :return: Cracked results object
-        :rtype: :class:`~concreteproperties.results.CrackedResults`
         """
 
         return self.concrete_section.calculate_cracked_properties(**kwargs)
@@ -136,7 +126,6 @@ class DesignCode:
             :meth:`~concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis`
 
         :return: Moment curvature results object
-        :rtype: :class:`~concreteproperties.results.MomentCurvatureResults`
         """
 
         return self.concrete_section.moment_curvature_analysis(**kwargs)
@@ -151,7 +140,6 @@ class DesignCode:
             :meth:`~concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity`
 
         :return: Ultimate bending results object
-        :rtype: :class:`~concreteproperties.results.UltimateBendingResults`
         """
 
         return self.concrete_section.ultimate_bending_capacity(**kwargs)
@@ -166,7 +154,6 @@ class DesignCode:
             :meth:`~concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram`
 
         :return: Moment interaction results object
-        :rtype: :class:`~concreteproperties.results.MomentInteractionResults`
         """
 
         return self.concrete_section.moment_interaction_diagram(**kwargs)
@@ -181,7 +168,6 @@ class DesignCode:
             :meth:`~concreteproperties.concrete_section.ConcreteSection.biaxial_bending_diagram`
 
         :return: Biaxial bending results
-        :rtype: :class:`~concreteproperties.results.BiaxialBendingResults`
         """
 
         return self.concrete_section.biaxial_bending_diagram(**kwargs)
@@ -197,7 +183,6 @@ class DesignCode:
             :meth:`~concreteproperties.concrete_section.ConcreteSection.calculate_uncracked_stress`
 
         :return: Stress results object
-        :rtype: :class:`~concreteproperties.results.StressResult`
         """
 
         return self.concrete_section.calculate_uncracked_stress(**kwargs)
@@ -213,7 +198,6 @@ class DesignCode:
             :meth:`~concreteproperties.concrete_section.ConcreteSection.calculate_cracked_stress`
 
         :return: Stress results object
-        :rtype: :class:`~concreteproperties.results.StressResult`
         """
 
         return self.concrete_section.calculate_cracked_stress(**kwargs)
@@ -228,7 +212,6 @@ class DesignCode:
             :meth:`~concreteproperties.concrete_section.ConcreteSection.calculate_service_stress`
 
         :return: Stress results object
-        :rtype: :class:`~concreteproperties.results.StressResult`
         """
 
         return self.concrete_section.calculate_service_stress(**kwargs)
@@ -243,7 +226,6 @@ class DesignCode:
             :meth:`~concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_stress`
 
         :return: Stress results object
-        :rtype: :class:`~concreteproperties.results.StressResult`
         """
 
         return self.concrete_section.calculate_ultimate_stress(**kwargs)
@@ -266,8 +248,6 @@ class AS3600(DesignCode):
         """Assigns a concrete section to the design code.
 
         :param concrete_section: Concrete section object to analyse
-        :type concrete_section:
-            :class:`~concreteproperties.concrete_section.ConcreteSection`
         """
 
         self.concrete_section = concrete_section
@@ -287,9 +267,9 @@ class AS3600(DesignCode):
     def create_concrete_material(
         self,
         compressive_strength: float,
-        colour: Optional[str] = "lightgrey",
+        colour: str = "lightgrey",
     ) -> Concrete:
-        """Returns a concrete material object to AS 3600:2018.
+        r"""Returns a concrete material object to AS 3600:2018.
 
         | **Material assumptions:**
         | - *Density*: 2400 kg/m\ :sup:`3`
@@ -301,15 +281,14 @@ class AS3600(DesignCode):
         | - *Alpha squash*: From Cl. 10.6.2.2
         | - *Flexural tensile strength*: From Cl. 3.1.1.3
 
-        :param float compressive_strength: Characteristic compressive strength of
+        :param compressive_strength: Characteristic compressive strength of
             concrete at 28 days in megapascals (MPa)
         :param colour: Colour of the concrete for rendering
-        :type colour: Optional[str]
 
-        :raises ValueError: If compressive_strength is not between 20 MPa and 100 MPa.
+        :raises ValueError: If ``compressive_strength`` is not between 20 MPa and
+            100 MPa.
 
         :return: Concrete material object
-        :rtype: :class:`~concreteproperties.material.Concrete`
         """
 
         if compressive_strength < 20 or compressive_strength > 100:
@@ -361,11 +340,11 @@ class AS3600(DesignCode):
 
     def create_steel_material(
         self,
-        yield_strength: Optional[float] = 500,
-        ductility_class: Optional[str] = "N",
-        colour: Optional[str] = "grey",
+        yield_strength: float = 500,
+        ductility_class: str = "N",
+        colour: str = "grey",
     ) -> Steel:
-        """Returns a steel material object.
+        r"""Returns a steel material object.
 
         | **Material assumptions:**
         | - *Density*: 7850 kg/m\ :sup:`3`
@@ -373,16 +352,12 @@ class AS3600(DesignCode):
         | - *Stress-strain profile:* Elastic-plastic, fracture strain from Table 3.2.1
 
         :param yield_strength: Steel yield strength
-        :type yield_strength: Optional[float]
         :param ductility_class: Steel ductility class ("N" or "L")
-        :type ductility_class: Optional[str]
         :param colour: Colour of the steel for rendering
-        :type colour: Optional[str]
 
-        :raises ValueError: If ductility_class is not N or L
+        :raises ValueError: If ``ductility_class`` is not "N" or "L"
 
         :return: Steel material object
-        :rtype: :class:`~concreteproperties.material.Steel`
         """
 
         if ductility_class == "N":
@@ -416,14 +391,13 @@ class AS3600(DesignCode):
         ``n_ub`` and ``phi_0`` only required for compression, ``n_uot`` only required
         for tension.
 
-        :param float n_u: Axial force in member
-        :param float n_ub: Axial force at balanced point
-        :param float n_uot: Axial force at ultimate tension load
-        :param float k_uo: Neutral axis parameter at pure bending
-        :param float phi_0: Capacity reduction factor for dominant compression
+        :param n_u: Axial force in member
+        :param n_ub: Axial force at balanced point
+        :param n_uot: Axial force at ultimate tension load
+        :param k_uo: Neutral axis parameter at pure bending
+        :param phi_0: Capacity reduction factor for dominant compression
 
         :return: Capacity reduction factor
-        :rtype: float
         """
 
         # pure bending phi
@@ -453,11 +427,10 @@ class AS3600(DesignCode):
     ) -> float:
         r"""Returns k_uo for the reinforced concrete cross-section given ``theta``.
 
-        :param float theta: Angle (in radians) the neutral axis makes with the
+        :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
 
         :return: Bending parameter k_uo
-        :rtype: float
         """
 
         pure_res = self.concrete_section.ultimate_bending_capacity(theta=theta)
@@ -470,11 +443,10 @@ class AS3600(DesignCode):
     ) -> float:
         r"""Returns n_ub for the reinforced concrete cross-section given ``theta``.
 
-        :param float theta: Angle (in radians) the neutral axis makes with the
+        :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
 
         :return: Balanced axial force n_ub
-        :rtype: float
         """
 
         # 1) find d_0
@@ -509,8 +481,8 @@ class AS3600(DesignCode):
 
         # 2) calculate yield strain
         yield_strain = (
-            extreme_geom.material.stress_strain_profile.yield_strength
-            / extreme_geom.material.stress_strain_profile.elastic_modulus
+            extreme_geom.material.stress_strain_profile.yield_strength  # type: ignore
+            / extreme_geom.material.stress_strain_profile.elastic_modulus  # type: ignore
         )
 
         # 3) k_uo at balanced load
@@ -528,25 +500,20 @@ class AS3600(DesignCode):
 
     def ultimate_bending_capacity(
         self,
-        theta: Optional[float] = 0,
-        n: Optional[float] = 0,
-        phi_0: Optional[float] = 0.6,
+        theta: float = 0,
+        n: float = 0,
+        phi_0: float = 0.6,
     ) -> Tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]:
         r"""Calculates the ultimate bending capacity with capacity factors to
         AS 3600:2018.
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
-        :type theta: Optional[float]
         :param n: Net axial force
-        :type n: Optional[float]
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
-        :type phi_0: Optional[float]
 
         :return: Factored and unfactored ultimate bending results objects, and capacity
             reduction factor *(factored_results, unfactored_results, phi)*
-        :rtype: Tuple[:class:`~concreteproperties.results.UltimateBendingResults`,
-            :class:`~concreteproperties.results.UltimateBendingResults`, float]
         """
 
         # get parameters to determine phi
@@ -571,7 +538,7 @@ class AS3600(DesignCode):
             a=phi_0,
             b=0.85,
             xtol=1e-3,
-            rtol=1e-6,
+            rtol=1e-6,  # type: ignore
             full_output=True,
             disp=False,
         )
@@ -592,20 +559,17 @@ class AS3600(DesignCode):
 
     def moment_interaction_diagram(
         self,
-        phi_0: Optional[float] = 0.6,
+        phi_0: float = 0.6,
         **kwargs,
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
         """Generates a moment interaction diagram with capacity factors to AS 3600:2018.
 
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
-        :type phi_0: Optional[float]
         :param kwargs: Keyword arguments passed to
             :meth:`~concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram`
 
         :return: Factored and unfactored moment interaction results objects, and list of
             capacity reduction factors *(factored_results, unfactored_results, phis)*
-        :rtype: Tuple[:class:`~concreteproperties.results.MomentInteractionResults`,
-            :class:`~concreteproperties.results.MomentInteractionResults`, List[float]]
         """
 
         mi_res = self.concrete_section.moment_interaction_diagram(**kwargs)
@@ -622,6 +586,10 @@ class AS3600(DesignCode):
         # positive bending
         k_uo = mi_res.results[-2].k_u
         n_ub = self.get_n_ub(theta=mi_res.results[0].theta)
+
+        # initialise negative parameters
+        k_uo_neg = 0
+        n_ub_neg = 0
 
         # negative bending
         if len(mi_res.results_neg) > 0:
@@ -654,23 +622,18 @@ class AS3600(DesignCode):
 
     def biaxial_bending_diagram(
         self,
-        n: Optional[float] = 0,
-        n_points: Optional[int] = 48,
-        phi_0: Optional[float] = 0.6,
+        n: float = 0,
+        n_points: int = 48,
+        phi_0: float = 0.6,
     ) -> Tuple[res.BiaxialBendingResults, List[float]]:
         """Generates a biaxial bending with capacity factors to AS 3600:2018.
 
         :param n: Net axial force
-        :type n: Optional[float]
         :param n_points: Number of calculation points between the decompression
-        :type n_points: Optional[int]
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
-        :type phi_0: Optional[float]
 
         :return: Factored biaxial bending results object and list of capacity reduction
             factors *(factored_results, phis)*
-        :rtype: Tuple[:class:`~concreteproperties.results.BiaxialBendingResults`,
-            List[float]]
         """
 
         pass

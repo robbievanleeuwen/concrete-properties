@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
 from concreteproperties.stress_strain_profile import (
     ConcreteServiceProfile,
@@ -14,19 +14,15 @@ from concreteproperties.stress_strain_profile import (
 class Concrete:
     """Class for a concrete material.
 
-    :param str name: Concrete material name
-    :param float density: Concrete density (mass per unit volume)
+    :param name: Concrete material name
+    :param density: Concrete density (mass per unit volume)
     :param stress_strain_profile: Service concrete stress-strain profile
-    :type stress_strain_profile:
-        :class:`~concreteproperties.stress_strain_profile.ConcreteServiceProfile`
     :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile
-    :type ultimate_stress_strain_profile:
-        :class:`~concreteproperties.stress_strain_profile.ConcreteUltimateProfile`
-    :param float alpha_squash: Factor that modifies the concrete compressive strength at
+    :param alpha_squash: Factor that modifies the concrete compressive strength at
         squash load
-    :param float flexural_tensile_strength: Absolute value of the concrete flexural
+    :param flexural_tensile_strength: Absolute value of the concrete flexural
         tensile strength
-    :param str colour: Colour of the material for rendering
+    :param colour: Colour of the material for rendering
     """
 
     name: str
@@ -55,12 +51,10 @@ class Concrete:
 class Steel:
     """Class for a steel material.
 
-    :param str name: Steel material name
-    :param float density: Steel density (mass per unit volume)
+    :param name: Steel material name
+    :param density: Steel density (mass per unit volume)
     :param stress_strain_profile: Ultimate steel stress-strain profile
-    :type ultimate_stress_strain_profile:
-        :class:`~concreteproperties.stress_strain_profile.SteelProfile`
-    :param str colour: Colour of the material for rendering
+    :param colour: Colour of the material for rendering
     """
 
     name: str

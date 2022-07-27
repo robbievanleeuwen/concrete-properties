@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-from typing import List, TYPE_CHECKING
 import warnings
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING, List, Optional, Union
 
-import numpy as np
 import matplotlib.pyplot as plt
-from scipy.interpolate import interp1d
+import numpy as np
 from rich.console import Console
 from rich.table import Table
+from scipy.interpolate import interp1d
 
 from concreteproperties.post import plotting_context
 
@@ -24,9 +24,7 @@ class StressStrainProfile:
     compression.
 
     :param strains: List of strains (must be increasing or equal)
-    :type strains: List[float]
     :param stresses: List of stresses
-    :type stresses: List[float]
     """
 
     strains: List[float]
@@ -60,10 +58,9 @@ class StressStrainProfile:
     ) -> float:
         """Returns a stress given a strain.
 
-        :param float strain: Strain at which to return a stress.
+        :param strain: Strain at which to return a stress.
 
         :return: Stress
-        :rtype: float
         """
 
         # create interpolation function
@@ -82,7 +79,6 @@ class StressStrainProfile:
         """Returns the elastic modulus of the stress-strain profile.
 
         :return: Elastic modulus
-        :rtype: float
         """
 
         small_strain = 1e-6
@@ -115,7 +111,6 @@ class StressStrainProfile:
         """Returns the most positive stress.
 
         :return: Compressive strength
-        :rtype: float
         """
 
         return max(self.stresses)
@@ -126,7 +121,6 @@ class StressStrainProfile:
         """Returns the most negative stress.
 
         :return: Tensile strength
-        :rtype: float
         """
 
         return min(self.stresses)
@@ -137,7 +131,6 @@ class StressStrainProfile:
         """Returns the largest strain.
 
         :return: Ultimate strain
-        :rtype: float
         """
 
         return max(self.strains)
@@ -157,12 +150,11 @@ class StressStrainProfile:
 
     def print_properties(
         self,
-        fmt: Optional[str] = "8.6e",
+        fmt: str = "8.6e",
     ):
         """Prints the stress-strain profile properties to the terminal.
 
         :param fmt: Number format
-        :type fmt: Optional[str]
         """
 
         table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
@@ -189,20 +181,17 @@ class StressStrainProfile:
 
     def plot_stress_strain(
         self,
-        title: Optional[str] = "Stress-Strain Profile",
-        fmt: Optional[str] = "o-",
+        title: str = "Stress-Strain Profile",
+        fmt: str = "o-",
         **kwargs,
-    ) -> matplotlib.axes.Axes:
+    ) -> matplotlib.axes.Axes:  # type: ignore
         """Plots the stress-strain profile.
 
         :param title: Plot title
-        :type title: Optional[str]
         :param fmt: Plot format string
-        :type fmt: Optional[str]
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
-        :rtype: :class:`matplotlib.axes.Axes`
         """
 
         # create plot and setup the plot
@@ -210,7 +199,7 @@ class StressStrainProfile:
             fig,
             ax,
         ):
-            ax.plot(self.strains, self.stresses, fmt)
+            ax.plot(self.strains, self.stresses, fmt)  # type: ignore
             plt.xlabel("Strain")
             plt.ylabel("Stress")
             plt.grid(True)
@@ -223,10 +212,8 @@ class ConcreteServiceProfile(StressStrainProfile):
     """Abstract class for a concrete service stress-strain profile.
 
     :param strains: List of strains (must be increasing or equal)
-    :type strains: List[float]
     :param stresses: List of stresses
-    :type stresses: List[float]
-    :param float ultimate_strain: Concrete strain at failure
+    :param ultimate_strain: Concrete strain at failure
     """
 
     strains: List[float]
@@ -236,12 +223,11 @@ class ConcreteServiceProfile(StressStrainProfile):
 
     def print_properties(
         self,
-        fmt: Optional[str] = "8.6e",
+        fmt: str = "8.6e",
     ):
         """Prints the stress-strain profile properties to the terminal.
 
         :param fmt: Number format
-        :type fmt: Optional[str]
         """
 
         table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
@@ -264,7 +250,6 @@ class ConcreteServiceProfile(StressStrainProfile):
         """Returns the elastic modulus of the stress-strain profile.
 
         :return: Elastic modulus
-        :rtype: float
         """
 
         try:
@@ -274,22 +259,20 @@ class ConcreteServiceProfile(StressStrainProfile):
 
     def get_compressive_strength(
         self,
-    ) -> float:
+    ) -> Union[float, None]:
         """Returns the most positive stress.
 
         :return: Compressive strength
-        :rtype: float
         """
 
         return None
 
     def get_tensile_strength(
         self,
-    ) -> float:
+    ) -> Union[float, None]:
         """Returns the most negative stress.
 
         :return: Tensile strength
-        :rtype: float
         """
 
         return None
@@ -300,7 +283,6 @@ class ConcreteServiceProfile(StressStrainProfile):
         """Returns the largest strain.
 
         :return: Ultimate strain
-        :rtype: float
         """
 
         return self.ultimate_strain
@@ -310,9 +292,8 @@ class ConcreteServiceProfile(StressStrainProfile):
 class ConcreteLinear(ConcreteServiceProfile):
     """Class for a symmetric linear stress-strain profile.
 
-    :param float elastic_modulus: Elastic modulus of the stress-strain profile
+    :param elastic_modulus: Elastic modulus of the stress-strain profile
     :param ultimate_strain: Concrete strain at failure
-    :type ultimate_strain: Optional[float]
     """
 
     strains: List[float] = field(init=False)
@@ -331,18 +312,16 @@ class ConcreteLinear(ConcreteServiceProfile):
 class ConcreteLinearNoTension(ConcreteServiceProfile):
     """Class for a linear stress-strain profile with no tensile strength.
 
-    :param float elastic_modulus: Elastic modulus of the stress-strain profile
+    :param elastic_modulus: Elastic modulus of the stress-strain profile
     :param ultimate_strain: Concrete strain at failure
-    :type ultimate_strain: Optional[float]
     :param compressive_strength: Compressive strength of the concrete
-    :type compressive_strength: Optional[float]
     """
 
     strains: List[float] = field(init=False)
     stresses: List[float] = field(init=False)
     elastic_modulus: float
     ultimate_strain: float = field(default=1)
-    compressive_strength: float = field(default=None)
+    compressive_strength: Union[float, None] = field(default=None)
 
     def __post_init__(
         self,
@@ -359,24 +338,22 @@ class ConcreteLinearNoTension(ConcreteServiceProfile):
 
 @dataclass
 class EurocodeNonLinear(ConcreteServiceProfile):
-    """Class for a non-linear stress-strain relationship to EC2.
+    r"""Class for a non-linear stress-strain relationship to EC2.
 
     Tension is modelled with a symmetric ``elastic_modulus`` until failure at
     ``tensile_strength``, after which the tensile stress reduces according to the
     ``tension_softening_stiffness``.
 
-    :param float elastic_modulus: Concrete elastic modulus (:math:`E_{cm}`)
-    :param float ultimate_strain: Concrete strain at failure (:math:`\epsilon_{cu1}`)
-    :param float compressive_strength: Concrete compressive strength (:math:`f_{cm}`)
-    :param float compressive_strain: Strain at which the concrete stress equals the
+    :param elastic_modulus: Concrete elastic modulus (:math:`E_{cm}`)
+    :param ultimate_strain: Concrete strain at failure (:math:`\epsilon_{cu1}`)
+    :param compressive_strength: Concrete compressive strength (:math:`f_{cm}`)
+    :param compressive_strain: Strain at which the concrete stress equals the
         compressive strength (:math:`\epsilon_{c1}`)
-    :param float tensile_strength:  Concrete tensile strength
-    :param float tension_softening_stiffness: Slope of the linear tension softening
+    :param tensile_strength:  Concrete tensile strength
+    :param tension_softening_stiffness: Slope of the linear tension softening
         branch
     :param n_points_1: Number of points to discretise the curve prior to the peak stress
-    :type n_points_1: Optional[int]
     :param n_points_2: Number of points to discretise the curve after the peak stress
-    :type n_points_2: Optional[int]
     """
 
     strains: List[float] = field(init=False)
@@ -387,8 +364,8 @@ class EurocodeNonLinear(ConcreteServiceProfile):
     compressive_strain: float
     tensile_strength: float
     tension_softening_stiffness: float
-    n_points_1: Optional[int] = field(default=10)
-    n_points_2: Optional[int] = field(default=3)
+    n_points_1: int = field(default=10)
+    n_points_2: int = field(default=3)
 
     def __post_init__(
         self,
@@ -419,6 +396,10 @@ class EurocodeNonLinear(ConcreteServiceProfile):
             * self.compressive_strain
             / self.compressive_strength
         )
+
+        # initialise concrete stress and strain
+        conc_strain = 0
+        conc_stress = 0
 
         # prior to peak stress
         for idx in range(self.n_points_1):
@@ -455,10 +436,8 @@ class ConcreteUltimateProfile(StressStrainProfile):
     """Abstract class for a concrete ultimate stress-strain profile.
 
     :param strains: List of strains (must be increasing or equal)
-    :type strains: List[float]
     :param stresses: List of stresses
-    :type stresses: List[float]
-    :param float compressive_strength: Concrete compressive strength
+    :param compressive_strength: Concrete compressive strength
     """
 
     strains: List[float]
@@ -471,7 +450,6 @@ class ConcreteUltimateProfile(StressStrainProfile):
         """Returns the most positive stress.
 
         :return: Compressive strength
-        :rtype: float
         """
 
         return self.compressive_strength
@@ -482,22 +460,20 @@ class ConcreteUltimateProfile(StressStrainProfile):
         """Returns the ultimate strain, or largest compressive strain.
 
         :return: Ultimate strain
-        :rtype: float
         """
 
         try:
-            return self.ultimate_strain
+            return self.ultimate_strain  # type: ignore
         except AttributeError:
             return super().get_ultimate_strain()
 
     def print_properties(
         self,
-        fmt: Optional[str] = "8.6e",
+        fmt: str = "8.6e",
     ):
         """Prints the stress-strain profile properties to the terminal.
 
         :param fmt: Number format
-        :type fmt: Optional[str]
         """
 
         table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
@@ -519,10 +495,10 @@ class ConcreteUltimateProfile(StressStrainProfile):
 class RectangularStressBlock(ConcreteUltimateProfile):
     """Class for a rectangular stress block.
 
-    :param float compressive_strength: Concrete compressive strength
-    :param float alpha: Factor that modifies the concrete compressive strength
-    :param float gamma: Factor that modifies the depth of the stress block
-    :param float ultimate_strain: Concrete strain at failure
+    :param compressive_strength: Concrete compressive strength
+    :param alpha: Factor that modifies the concrete compressive strength
+    :param gamma: Factor that modifies the depth of the stress block
+    :param ultimate_strain: Concrete strain at failure
     """
 
     strains: List[float] = field(init=False)
@@ -557,10 +533,9 @@ class RectangularStressBlock(ConcreteUltimateProfile):
         Overrides parent method with small tolerance to aid ultimate stress generation
         at nodes.
 
-        :param float strain: Strain at which to return a stress.
+        :param strain: Strain at which to return a stress.
 
         :return: Stress
-        :rtype: float
         """
 
         if strain >= self.strains[1] - 1e-12:
@@ -573,10 +548,10 @@ class RectangularStressBlock(ConcreteUltimateProfile):
 class BilinearStressStrain(ConcreteUltimateProfile):
     """Class for a bilinear stress-strain relationship.
 
-    :param float compressive_strength: Concrete compressive strength
-    :param float compressive_strain: Strain at which the concrete stress equals the
+    :param compressive_strength: Concrete compressive strength
+    :param compressive_strain: Strain at which the concrete stress equals the
         compressive strength
-    :param float ultimate_strain: Concrete strain at failure
+    :param ultimate_strain: Concrete strain at failure
     """
 
     strains: List[float] = field(init=False)
@@ -606,13 +581,12 @@ class BilinearStressStrain(ConcreteUltimateProfile):
 class EurocodeParabolicUltimate(ConcreteUltimateProfile):
     """Class for an ultimate parabolic stress-strain relationship to EC2.
 
-    :param float compressive_strength: Concrete compressive strength
-    :param float compressive_strain: Strain at which the concrete stress equals the
+    :param compressive_strength: Concrete compressive strength
+    :param compressive_strain: Strain at which the concrete stress equals the
         compressive strength
-    :param float ultimate_strain: Concrete strain at failure
-    :param float n: Parabolic curve exponent
+    :param ultimate_strain: Concrete strain at failure
+    :param n: Parabolic curve exponent
     :param n_points: Number of points to discretise the parabolic segment of the curve
-    :type n_points: Optional[int]
     """
 
     strains: List[float] = field(init=False)
@@ -621,7 +595,7 @@ class EurocodeParabolicUltimate(ConcreteUltimateProfile):
     compressive_strain: float
     ultimate_strain: float
     n: float
-    n_points: Optional[int] = field(default=10)
+    n_points: int = field(default=10)
 
     def __post_init__(
         self,
@@ -655,12 +629,10 @@ class SteelProfile(StressStrainProfile):
     """Abstract class for a steel stress-strain profile.
 
     :param strains: List of strains (must be increasing or equal)
-    :type strains: List[float]
     :param stresses: List of stresses
-    :type stresses: List[float]
-    :param float yield_strength: Steel yield strength
-    :param float elastic_modulus: Steel elastic modulus
-    :param float fracture_strain: Steel fracture strain
+    :param yield_strength: Steel yield strength
+    :param elastic_modulus: Steel elastic modulus
+    :param fracture_strain: Steel fracture strain
     """
 
     strains: List[float]
@@ -675,19 +647,17 @@ class SteelProfile(StressStrainProfile):
         """Returns the elastic modulus of the stress-strain profile.
 
         :return: Elastic modulus
-        :rtype: float
         """
 
         return self.elastic_modulus
 
     def print_properties(
         self,
-        fmt: Optional[str] = "8.6e",
+        fmt: str = "8.6e",
     ):
         """Prints the stress-strain profile properties to the terminal.
 
         :param fmt: Number format
-        :type fmt: Optional[str]
         """
 
         table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
@@ -716,9 +686,9 @@ class SteelProfile(StressStrainProfile):
 class SteelElasticPlastic(SteelProfile):
     """Class for a perfectly elastic-plastic steel stress-strain profile.
 
-    :param float yield_strength: Steel yield strength
-    :param float elastic_modulus: Steel elastic modulus
-    :param float fracture_strain: Steel fracture strain
+    :param yield_strength: Steel yield strength
+    :param elastic_modulus: Steel elastic modulus
+    :param fracture_strain: Steel fracture strain
     """
 
     strains: List[float] = field(init=False)
@@ -751,10 +721,10 @@ class SteelElasticPlastic(SteelProfile):
 class SteelHardening(SteelProfile):
     """Class for a steel stress-strain profile with strain hardening.
 
-    :param float yield_strength: Steel yield strength
-    :param float elastic_modulus: Steel elastic modulus
-    :param float fracture_strain: Steel fracture strain
-    :param float ultimate_strength: Steel ultimate strength
+    :param yield_strength: Steel yield strength
+    :param elastic_modulus: Steel elastic modulus
+    :param fracture_strain: Steel fracture strain
+    :param ultimate_strength: Steel ultimate strength
     """
 
     strains: List[float] = field(init=False)

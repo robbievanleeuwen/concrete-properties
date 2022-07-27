@@ -16,7 +16,6 @@ import sys
 sys.path.insert(0, os.path.abspath("../../"))
 from concreteproperties import __version__ as ver
 
-
 # -- Project information -----------------------------------------------------
 
 project = "concreteproperties"
@@ -41,6 +40,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.mathjax",
     "sphinx.ext.intersphinx",
+    "sphinx_autodoc_typehints",
     "sphinx_autorun",
     "matplotlib.sphinxext.plot_directive",
     "nbsphinx",
@@ -60,6 +60,8 @@ nbsphinx_execute_arguments = [
     "--InlineBackend.figure_formats={'svg', 'pdf'}",
     "--InlineBackend.rc=figure.dpi=96",
 ]
+typehints_use_rtype = False  # document return type as part of the :return: directive
+typehints_defaults = "comma"  # adds a default annotation after the type
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

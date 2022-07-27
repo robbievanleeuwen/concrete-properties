@@ -1,17 +1,15 @@
-import pytest
-import numpy as np
-
-from concreteproperties.pre import add_bar, add_bar_rectangular_array
-from concreteproperties.material import Concrete, Steel
-from concreteproperties.concrete_section import ConcreteSection
 import concreteproperties.results as res
+import numpy as np
+import pytest
+import sectionproperties.pre.library.primitive_sections as sp_ps
+from concreteproperties.concrete_section import ConcreteSection
+from concreteproperties.material import Concrete, Steel
+from concreteproperties.pre import add_bar, add_bar_rectangular_array
 from concreteproperties.stress_strain_profile import (
     ConcreteLinear,
     RectangularStressBlock,
     SteelElasticPlastic,
 )
-
-import sectionproperties.pre.library.primitive_sections as sp_ps
 from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
 
 # All examples come from:
@@ -56,8 +54,8 @@ def test_example_3_1():
         cover=48,
         area_top=0,
         area_bot=450,
-        conc_mat=concrete,
-        steel_mat=steel,
+        conc_mat=concrete,  # type: ignore
+        steel_mat=steel,  # type: ignore
     )
 
     conc_sec = ConcreteSection(geometry)
@@ -106,9 +104,9 @@ def test_example_3_2():
     )
 
     beam = sp_ps.rectangular_section(
-        d=800 - 120, b=300, material=concrete
+        d=800 - 120, b=300, material=concrete  # type: ignore
     ).shift_section(x_offset=350)
-    slab = sp_ps.rectangular_section(d=120, b=1000, material=concrete).align_to(
+    slab = sp_ps.rectangular_section(d=120, b=1000, material=concrete).align_to(  # type: ignore
         other=beam, on="top"
     )
     geom = beam + slab
@@ -135,7 +133,7 @@ def test_example_3_2():
         anchor=(394, 60),
     )
 
-    conc_sec = ConcreteSection(geom)
+    conc_sec = ConcreteSection(geom)  # type: ignore
     props = conc_sec.get_transformed_gross_properties(elastic_modulus=30.1e3)
     cracked_results = conc_sec.calculate_cracked_properties()
     cracked_results.calculate_transformed_properties(elastic_modulus=30.1e3)
@@ -189,9 +187,9 @@ def test_example_3_4():
     )
 
     beam = sp_ps.rectangular_section(
-        d=800 - 120, b=300, material=concrete
+        d=800 - 120, b=300, material=concrete  # type: ignore
     ).shift_section(x_offset=350)
-    slab = sp_ps.rectangular_section(d=120, b=1000, material=concrete).align_to(
+    slab = sp_ps.rectangular_section(d=120, b=1000, material=concrete).align_to(  # type: ignore
         other=beam, on="top"
     )
     geom = beam + slab
@@ -216,7 +214,7 @@ def test_example_3_4():
         anchor=(394, 60),
     )
 
-    conc_sec = ConcreteSection(geom)
+    conc_sec = ConcreteSection(geom)  # type: ignore
     cracked_results = conc_sec.calculate_cracked_properties(theta=np.pi)
     cracked_results.calculate_transformed_properties(elastic_modulus=30.1e3)
 
@@ -263,8 +261,8 @@ def test_example_3_8():
         cover=48,
         area_top=0,
         area_bot=450,
-        conc_mat=concrete,
-        steel_mat=steel,
+        conc_mat=concrete,  # type: ignore
+        steel_mat=steel,  # type: ignore
     )
 
     conc_sec = ConcreteSection(geometry)
@@ -312,8 +310,8 @@ def test_example_3_9():
         cover=48,
         area_top=450,
         area_bot=450,
-        conc_mat=concrete,
-        steel_mat=steel,
+        conc_mat=concrete,  # type: ignore
+        steel_mat=steel,  # type: ignore
     )
 
     conc_sec = ConcreteSection(geometry)
@@ -350,8 +348,8 @@ def test_example_3_11():
         colour="grey",
     )
 
-    beam = sp_ps.rectangular_section(d=726 - 120, b=400, material=concrete)
-    slab = sp_ps.rectangular_section(d=120, b=1100, material=concrete).align_to(
+    beam = sp_ps.rectangular_section(d=726 - 120, b=400, material=concrete)  # type: ignore
+    slab = sp_ps.rectangular_section(d=120, b=1100, material=concrete).align_to(  # type: ignore
         other=beam, on="top"
     )
     geom = beam + slab
@@ -368,7 +366,7 @@ def test_example_3_11():
         anchor=(46, 46),
     )
 
-    conc_sec = ConcreteSection(geom)
+    conc_sec = ConcreteSection(geom)  # type: ignore
     ultimate_results = conc_sec.ultimate_bending_capacity()
     assert pytest.approx(ultimate_results.d_n, abs=1) == 196
     assert pytest.approx(ultimate_results.k_u, rel=0.01) == 196 / (726 - 46)
@@ -402,7 +400,7 @@ def test_example_5_1():
         colour="grey",
     )
 
-    geom = sp_ps.rectangular_section(d=800, b=600, material=concrete)
+    geom = sp_ps.rectangular_section(d=800, b=600, material=concrete)  # type: ignore
     void = sp_ps.circular_section_by_area(area=np.pi * 75 * 75, n=16).shift_section(
         x_offset=300, y_offset=300
     )
@@ -420,7 +418,7 @@ def test_example_5_1():
         exterior_only=True,
     )
 
-    conc_sec = ConcreteSection(geom)
+    conc_sec = ConcreteSection(geom)  # type: ignore
 
     assert pytest.approx(conc_sec.gross_properties.axial_pc_y, rel=0.01) == 800 - 397
 
@@ -452,7 +450,7 @@ def test_example_5_2():
         colour="grey",
     )
 
-    geom = sp_ps.rectangular_section(d=600, b=400, material=concrete)
+    geom = sp_ps.rectangular_section(d=600, b=400, material=concrete)  # type: ignore
     geom = add_bar(
         geometry=geom,
         area=1200,
@@ -468,7 +466,7 @@ def test_example_5_2():
         y=600 - 74,
     )
 
-    conc_sec = ConcreteSection(geom)
+    conc_sec = ConcreteSection(geom)  # type: ignore
     decomp = conc_sec.calculate_ultimate_section_actions(d_n=526)
     balanced = conc_sec.calculate_ultimate_section_actions(d_n=287)
     pure = conc_sec.ultimate_bending_capacity()
