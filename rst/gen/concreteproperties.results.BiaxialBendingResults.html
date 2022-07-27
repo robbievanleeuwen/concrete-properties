@@ -674,10 +674,13 @@ function checkPageExistsAndRedirect(event) {
 <tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.results.BiaxialBendingResults.plot_diagram" title="concreteproperties.results.BiaxialBendingResults.plot_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_diagram</span></code></a></p></td>
 <td><p>Plots a biaxial bending diagram.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams" title="concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_multiple_diagrams</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams_2d" title="concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams_2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_multiple_diagrams_2d</span></code></a></p></td>
 <td><p>Plots multiple biaxial bending diagrams in a 3D plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.results.BiaxialBendingResults.point_in_diagram" title="concreteproperties.results.BiaxialBendingResults.point_in_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_in_diagram</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams_3d" title="concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams_3d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_multiple_diagrams_3d</span></code></a></p></td>
+<td><p>Plots multiple biaxial bending diagrams in a 3D plot.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.results.BiaxialBendingResults.point_in_diagram" title="concreteproperties.results.BiaxialBendingResults.point_in_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_in_diagram</span></code></a></p></td>
 <td><p>Determines whether or not the combination of bending moments lies within the biaxial bending diagram.</p></td>
 </tr>
 </tbody>
@@ -727,8 +730,29 @@ function checkPageExistsAndRedirect(event) {
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">biaxial_bending_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_multiple_diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams_2d">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_diagrams_2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">biaxial_bending_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_multiple_diagrams_2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams_2d" title="Permalink to this definition">#</a></dt>
+<dd><p>Plots multiple biaxial bending diagrams in a 3D plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>biaxial_bending_results</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code></a>]) – List of biaxial bending results objects</p></li>
+<li><p><strong>labels</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – List of labels for each biaxial bending diagram, if not provided
+labels are axial forces</p></li>
+<li><p><strong>m_scale</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">1e-06</span></code>) – Scaling factor to apply to bending moment</p></li>
+<li><p><strong>fmt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'o-'</span></code>) – Plot format string</p></li>
+<li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> – Matplotlib axes object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams_3d">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_multiple_diagrams_3d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">biaxial_bending_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#BiaxialBendingResults.plot_multiple_diagrams_3d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams_3d" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots multiple biaxial bending diagrams in a 3D plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

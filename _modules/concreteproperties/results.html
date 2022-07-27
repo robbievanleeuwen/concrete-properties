@@ -1122,8 +1122,66 @@ function checkPageExistsAndRedirect(event) {
 
         <span class="k">return</span> <span class="n">ax</span></div>
 
-<div class="viewcode-block" id="BiaxialBendingResults.plot_multiple_diagrams"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">plot_multiple_diagrams</span><span class="p">(</span>
+<div class="viewcode-block" id="BiaxialBendingResults.plot_multiple_diagrams_2d"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams_2d">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">plot_multiple_diagrams_2d</span><span class="p">(</span>
+        <span class="n">biaxial_bending_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BiaxialBendingResults</span><span class="p">],</span>
+        <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="sd">&quot;&quot;&quot;Plots multiple biaxial bending diagrams in a 3D plot.</span>
+
+<span class="sd">        :param biaxial_bending_results: List of biaxial bending results objects</span>
+<span class="sd">        :param labels: List of labels for each biaxial bending diagram, if not provided</span>
+<span class="sd">            labels are axial forces</span>
+<span class="sd">        :param m_scale: Scaling factor to apply to bending moment</span>
+<span class="sd">        :param fmt: Plot format string</span>
+<span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
+
+<span class="sd">        :return: Matplotlib axes object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># create plot and setup the plot</span>
+        <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Biaxial Bending Diagram&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span>
+            <span class="n">fig</span><span class="p">,</span>
+            <span class="n">ax</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># generate default labels</span>
+            <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">default_labels</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">default_labels</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="c1"># for each M-N curve</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">bb_result</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">biaxial_bending_results</span><span class="p">):</span>
+                <span class="n">m_x_list</span><span class="p">,</span> <span class="n">m_y_list</span> <span class="o">=</span> <span class="n">bb_result</span><span class="o">.</span><span class="n">get_results_lists</span><span class="p">()</span>
+
+                <span class="c1"># scale results</span>
+                <span class="n">m_x_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m_x_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+                <span class="n">m_y_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m_y_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+
+                <span class="c1"># generate default labels</span>
+                <span class="k">if</span> <span class="n">default_labels</span><span class="p">:</span>
+                    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;N = </span><span class="si">{</span><span class="n">bb_result</span><span class="o">.</span><span class="n">n</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m_x_list</span><span class="p">,</span> <span class="n">m_y_list</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_x$&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_y$&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># if there is more than one curve show legend</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="BiaxialBendingResults.plot_multiple_diagrams_3d"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults.plot_multiple_diagrams_3d">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">plot_multiple_diagrams_3d</span><span class="p">(</span>
         <span class="n">biaxial_bending_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BiaxialBendingResults</span><span class="p">],</span>
         <span class="n">n_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
         <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
