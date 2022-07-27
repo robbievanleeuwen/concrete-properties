@@ -185,11 +185,9 @@ class ConcreteSection:
         ):
             self.gross_properties.phi = 0
         else:
-            self.gross_properties.phi = (
-                np.arctan2(
-                    self.gross_properties.e_ixx_c - self.gross_properties.e_i11,
-                    self.gross_properties.e_ixy_c,
-                )
+            self.gross_properties.phi = np.arctan2(
+                self.gross_properties.e_ixx_c - self.gross_properties.e_i11,
+                self.gross_properties.e_ixy_c,
             )
 
         # centroidal section moduli
@@ -455,11 +453,9 @@ class ConcreteSection:
         ):
             cracked_results.phi_cr = 0
         else:
-            cracked_results.phi_cr = (
-                np.arctan2(
-                    cracked_results.e_ixx_c_cr - cracked_results.e_i11_cr,
-                    cracked_results.e_ixy_c_cr,
-                )
+            cracked_results.phi_cr = np.arctan2(
+                cracked_results.e_ixx_c_cr - cracked_results.e_i11_cr,
+                cracked_results.e_ixy_c_cr,
             )
 
         return cracked_results
