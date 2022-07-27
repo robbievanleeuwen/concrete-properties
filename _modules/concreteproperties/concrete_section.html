@@ -291,7 +291,6 @@ function checkPageExistsAndRedirect(event) {
 <span class="kn">import</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="k">as</span> <span class="nn">sp_geom</span>
 <span class="kn">from</span> <span class="nn">rich.live</span> <span class="kn">import</span> <span class="n">Live</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">brentq</span>
-<span class="kn">from</span> <span class="nn">sectionproperties.analysis.fea</span> <span class="kn">import</span> <span class="n">global_coordinate</span><span class="p">,</span> <span class="n">principal_coordinate</span>
 
 <span class="kn">import</span> <span class="nn">concreteproperties.results</span> <span class="k">as</span> <span class="nn">res</span>
 <span class="kn">import</span> <span class="nn">concreteproperties.utils</span> <span class="k">as</span> <span class="nn">utils</span>
@@ -467,13 +466,9 @@ function checkPageExistsAndRedirect(event) {
         <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixx_c</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixy_c</span><span class="p">,</span>
-                <span class="p">)</span>
-                <span class="o">*</span> <span class="mi">180</span>
-                <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixx_c</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_ixy_c</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="c1"># centroidal section moduli</span>
@@ -496,7 +491,7 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">geometry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
             <span class="n">cx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span>
             <span class="n">cy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span><span class="p">,</span>
-            <span class="n">theta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">phi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span><span class="p">,</span>
+            <span class="n">theta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># evaluate principal section moduli</span>
@@ -739,13 +734,9 @@ function checkPageExistsAndRedirect(event) {
         <span class="p">):</span>
             <span class="n">cracked_results</span><span class="o">.</span><span class="n">phi_cr</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">cracked_results</span><span class="o">.</span><span class="n">phi_cr</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span>
-                    <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixx_c_cr</span> <span class="o">-</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_i11_cr</span><span class="p">,</span>
-                    <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixy_c_cr</span><span class="p">,</span>
-                <span class="p">)</span>
-                <span class="o">*</span> <span class="mi">180</span>
-                <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+            <span class="n">cracked_results</span><span class="o">.</span><span class="n">phi_cr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span>
+                <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixx_c_cr</span> <span class="o">-</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_i11_cr</span><span class="p">,</span>
+                <span class="n">cracked_results</span><span class="o">.</span><span class="n">e_ixy_c_cr</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">cracked_results</span></div>
@@ -780,7 +771,9 @@ function checkPageExistsAndRedirect(event) {
             <span class="c1"># get distance from centroid to extreme tensile fibre</span>
             <span class="n">d</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_max_bending_depth</span><span class="p">(</span>
                 <span class="n">points</span><span class="o">=</span><span class="n">conc_geom</span><span class="o">.</span><span class="n">points</span><span class="p">,</span>
-                <span class="n">c_local_v</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">c_local_v</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span>
+                <span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
             <span class="p">)</span>
 
@@ -832,8 +825,8 @@ function checkPageExistsAndRedirect(event) {
         <span class="p">)</span>
 
         <span class="c1"># get principal coordinates of neutral axis</span>
-        <span class="n">na_local</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-            <span class="n">phi</span><span class="o">=</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">na_local</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span>
+            <span class="n">theta</span><span class="o">=</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="p">)</span>
 
         <span class="c1"># split concrete geometries above and below d_nc, discard below</span>
@@ -861,8 +854,8 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">centroid</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
 
             <span class="c1"># convert centroid to local coordinates</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-                <span class="n">phi</span><span class="o">=</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">cracked_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="p">)</span>
 
             <span class="c1"># calculate first moment of area</span>
@@ -950,10 +943,10 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">point_na</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">point_on_neutral_axis</span><span class="p">(</span>
                     <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
                 <span class="p">)</span>
-                <span class="n">_</span><span class="p">,</span> <span class="n">v_c</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-                    <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">v_c</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                 <span class="p">)</span>
-                <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="n">u_c</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">v_c</span><span class="p">)</span>
+                <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">local_to_global</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">u_c</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v_c</span><span class="p">)</span>
 
                 <span class="c1"># calculate moments</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">service_normal_force_convergence</span><span class="p">(</span>
@@ -1090,8 +1083,8 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">n</span> <span class="o">+=</span> <span class="n">force</span>
 
             <span class="c1"># convert steel centroid to local coordinates</span>
-            <span class="n">u_s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-                <span class="n">phi</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+            <span class="n">u_s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
                 <span class="n">x</span><span class="o">=</span><span class="n">steel_centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
                 <span class="n">y</span><span class="o">=</span><span class="n">steel_centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
             <span class="p">)</span>
@@ -1197,8 +1190,8 @@ function checkPageExistsAndRedirect(event) {
         <span class="p">)</span>
 
         <span class="c1"># extreme fibre in local coordinates</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">ef_v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-            <span class="n">phi</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">ef_v</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span>
+            <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
             <span class="n">x</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
             <span class="n">y</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
         <span class="p">)</span>
@@ -1266,8 +1259,8 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">n</span> <span class="o">+=</span> <span class="n">force</span>
 
             <span class="c1"># convert centroid to local coordinates</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-                <span class="n">phi</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="p">)</span>
 
             <span class="c1"># calculate moment</span>
@@ -1686,9 +1679,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="p">)</span>
 
         <span class="c1"># get principal coordinates of neutral axis</span>
-        <span class="n">na_local</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-            <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="p">)</span>
+        <span class="n">na_local</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="c1"># loop through all concrete geometries and calculate stress</span>
         <span class="k">for</span> <span class="n">geom</span> <span class="ow">in</span> <span class="n">cracked_results</span><span class="o">.</span><span class="n">cracked_geometries</span><span class="p">:</span>
@@ -1813,10 +1804,8 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">point_na</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">point_on_neutral_axis</span><span class="p">(</span>
             <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
         <span class="p">)</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">v_c</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-            <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="p">)</span>
-        <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">global_coordinate</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x11</span><span class="o">=</span><span class="n">u_c</span><span class="p">,</span> <span class="n">y22</span><span class="o">=</span><span class="n">v_c</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">v_c</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">local_to_global</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">u_c</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v_c</span><span class="p">)</span>
 
         <span class="c1"># initialise stress results</span>
         <span class="n">analysis_sections</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1909,8 +1898,8 @@ function checkPageExistsAndRedirect(event) {
         <span class="p">)</span>
 
         <span class="c1"># get principal coordinates of neutral axis</span>
-        <span class="n">na_local</span> <span class="o">=</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-            <span class="n">phi</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">na_local</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span>
+            <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="p">)</span>
 
         <span class="c1"># initialise stress results for each concrete geometry</span>
@@ -1986,42 +1975,6 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">steel_stresses</span><span class="o">=</span><span class="n">steel_sigs</span><span class="p">,</span>
             <span class="n">steel_strains</span><span class="o">=</span><span class="n">steel_strains</span><span class="p">,</span>
             <span class="n">steel_forces</span><span class="o">=</span><span class="n">steel_forces</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
-<div class="viewcode-block" id="ConcreteSection.get_c_local"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_c_local">[docs]</a>    <span class="k">def</span> <span class="nf">get_c_local</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the elastic centroid location in local coordinates.</span>
-
-<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
-<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
-
-<span class="sd">        :return: Elastic centroid in local coordinates `(c_u, c_v)`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-            <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
-            <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span>
-            <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
-<div class="viewcode-block" id="ConcreteSection.get_pc_local"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_pc_local">[docs]</a>    <span class="k">def</span> <span class="nf">get_pc_local</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the plastic centroid location in local coordinates.</span>
-
-<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
-<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
-
-<span class="sd">        :return: Plastic centroid in local coordinates `(pc_u, pc_v)`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="n">principal_coordinate</span><span class="p">(</span>
-            <span class="n">phi</span><span class="o">=</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
-            <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_x</span><span class="p">,</span>
-            <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_y</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.plot_section"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.plot_section">[docs]</a>    <span class="k">def</span> <span class="nf">plot_section</span><span class="p">(</span>

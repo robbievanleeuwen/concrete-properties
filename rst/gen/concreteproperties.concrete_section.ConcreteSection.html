@@ -567,6 +567,16 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.utils.global_to_local.html">
+     concreteproperties.utils.global_to_local
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.utils.local_to_global.html">
+     concreteproperties.utils.local_to_global
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.utils.point_on_neutral_axis.html">
      concreteproperties.utils.point_on_neutral_axis
     </a>
@@ -692,14 +702,8 @@ reinforced concrete section</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence" title="concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cracked_neutral_axis_convergence</span></code></a></p></td>
 <td><p>Given a trial cracked neutral axis depth <cite>d_nc</cite>, determines the difference between the first moments of area above and below the trial axis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_c_local" title="concreteproperties.concrete_section.ConcreteSection.get_c_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_c_local</span></code></a></p></td>
-<td><p>Returns the elastic centroid location in local coordinates.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gross_properties</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gross_properties</span></code></a></p></td>
 <td><p>Returns the gross section properties of the reinforced concrete section.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_pc_local" title="concreteproperties.concrete_section.ConcreteSection.get_pc_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pc_local</span></code></a></p></td>
-<td><p>Returns the plastic centroid location in local coordinates.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_transformed_gross_properties</span></code></a></p></td>
 <td><p>Transforms gross section properties given a reference elastic modulus.</p></td>
@@ -1037,36 +1041,6 @@ plots the stress at the given curvature</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a> – Stress results object</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.get_c_local">
-<span class="sig-name descname"><span class="pre">get_c_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_c_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.get_c_local" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the elastic centroid location in local coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Angle (in radians) the neutral axis makes with the
-horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Elastic centroid in local coordinates <cite>(c_u, c_v)</cite></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.get_pc_local">
-<span class="sig-name descname"><span class="pre">get_pc_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/concrete_section.html#ConcreteSection.get_pc_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.get_pc_local" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the plastic centroid location in local coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Angle (in radians) the neutral axis makes with the
-horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Plastic centroid in local coordinates <cite>(pc_u, pc_v)</cite></p>
 </dd>
 </dl>
 </dd></dl>
