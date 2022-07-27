@@ -10,7 +10,6 @@ import numpy as np
 import sectionproperties.pre.geometry as sp_geom
 from rich.live import Live
 from scipy.optimize import brentq
-from sectionproperties.analysis.fea import global_coordinate, principal_coordinate
 
 import concreteproperties.results as res
 import concreteproperties.utils as utils
@@ -191,8 +190,6 @@ class ConcreteSection:
                     self.gross_properties.e_ixx_c - self.gross_properties.e_i11,
                     self.gross_properties.e_ixy_c,
                 )
-                * 180
-                / np.pi
             )
 
         # centroidal section moduli
@@ -215,7 +212,7 @@ class ConcreteSection:
             geometry=self.geometry,
             cx=self.gross_properties.cx,
             cy=self.gross_properties.cy,
-            theta=self.gross_properties.phi * np.pi / 180,
+            theta=self.gross_properties.phi,
         )
 
         # evaluate principal section moduli
@@ -463,8 +460,6 @@ class ConcreteSection:
                     cracked_results.e_ixx_c_cr - cracked_results.e_i11_cr,
                     cracked_results.e_ixy_c_cr,
                 )
-                * 180
-                / np.pi
             )
 
         return cracked_results
@@ -499,7 +494,9 @@ class ConcreteSection:
             # get distance from centroid to extreme tensile fibre
             d = utils.calculate_max_bending_depth(
                 points=conc_geom.points,
-                c_local_v=self.get_c_local(theta=theta)[1],
+                c_local_v=utils.global_to_local(
+                    theta=theta, x=self.gross_properties.cx, y=self.gross_properties.cy
+                )[1],
                 theta=theta,
             )
 
@@ -551,8 +548,8 @@ class ConcreteSection:
         )
 
         # get principal coordinates of neutral axis
-        na_local = principal_coordinate(
-            phi=cracked_results.theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+        na_local = utils.global_to_local(
+            theta=cracked_results.theta, x=point_na[0], y=point_na[1]
         )
 
         # split concrete geometries above and below d_nc, discard below
@@ -580,8 +577,8 @@ class ConcreteSection:
             centroid = geom.calculate_centroid()
 
             # convert centroid to local coordinates
-            _, c_v = principal_coordinate(
-                phi=cracked_results.theta * 180 / np.pi, x=centroid[0], y=centroid[1]
+            _, c_v = utils.global_to_local(
+                theta=cracked_results.theta, x=centroid[0], y=centroid[1]
             )
 
             # calculate first moment of area
@@ -669,10 +666,10 @@ class ConcreteSection:
                 point_na = utils.point_on_neutral_axis(
                     extreme_fibre=extreme_fibre, d_n=d_n, theta=theta
                 )
-                _, v_c = principal_coordinate(
-                    phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+                _, v_c = utils.global_to_local(
+                    theta=theta, x=point_na[0], y=point_na[1]
                 )
-                cx, cy = global_coordinate(phi=theta * 180 / np.pi, x11=u_c, y22=v_c)
+                cx, cy = utils.local_to_global(theta=theta, u=u_c, v=v_c)
 
                 # calculate moments
                 self.service_normal_force_convergence(
@@ -809,8 +806,8 @@ class ConcreteSection:
             n += force
 
             # convert steel centroid to local coordinates
-            u_s, _ = principal_coordinate(
-                phi=moment_curvature.theta * 180 / np.pi,
+            u_s, _ = utils.global_to_local(
+                theta=moment_curvature.theta,
                 x=steel_centroid[0],
                 y=steel_centroid[1],
             )
@@ -916,8 +913,8 @@ class ConcreteSection:
         )
 
         # extreme fibre in local coordinates
-        _, ef_v = principal_coordinate(
-            phi=ultimate_results.theta * 180 / np.pi,
+        _, ef_v = utils.global_to_local(
+            theta=ultimate_results.theta,
             x=extreme_fibre[0],
             y=extreme_fibre[1],
         )
@@ -985,8 +982,8 @@ class ConcreteSection:
             n += force
 
             # convert centroid to local coordinates
-            _, c_v = principal_coordinate(
-                phi=ultimate_results.theta * 180 / np.pi, x=centroid[0], y=centroid[1]
+            _, c_v = utils.global_to_local(
+                theta=ultimate_results.theta, x=centroid[0], y=centroid[1]
             )
 
             # calculate moment
@@ -1405,9 +1402,7 @@ class ConcreteSection:
         )
 
         # get principal coordinates of neutral axis
-        na_local = principal_coordinate(
-            phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
-        )
+        na_local = utils.global_to_local(theta=theta, x=point_na[0], y=point_na[1])
 
         # loop through all concrete geometries and calculate stress
         for geom in cracked_results.cracked_geometries:
@@ -1532,10 +1527,8 @@ class ConcreteSection:
         point_na = utils.point_on_neutral_axis(
             extreme_fibre=extreme_fibre, d_n=d_n, theta=theta
         )
-        _, v_c = principal_coordinate(
-            phi=theta * 180 / np.pi, x=point_na[0], y=point_na[1]
-        )
-        cx, cy = global_coordinate(phi=theta * 180 / np.pi, x11=u_c, y22=v_c)
+        _, v_c = utils.global_to_local(theta=theta, x=point_na[0], y=point_na[1])
+        cx, cy = utils.local_to_global(theta=theta, u=u_c, v=v_c)
 
         # initialise stress results
         analysis_sections = []
@@ -1628,8 +1621,8 @@ class ConcreteSection:
         )
 
         # get principal coordinates of neutral axis
-        na_local = principal_coordinate(
-            phi=ultimate_results.theta * 180 / np.pi, x=point_na[0], y=point_na[1]
+        na_local = utils.global_to_local(
+            theta=ultimate_results.theta, x=point_na[0], y=point_na[1]
         )
 
         # initialise stress results for each concrete geometry
@@ -1705,42 +1698,6 @@ class ConcreteSection:
             steel_stresses=steel_sigs,
             steel_strains=steel_strains,
             steel_forces=steel_forces,
-        )
-
-    def get_c_local(
-        self,
-        theta: float,
-    ) -> Tuple[float, float]:
-        r"""Returns the elastic centroid location in local coordinates.
-
-        :param theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-
-        :return: Elastic centroid in local coordinates `(c_u, c_v)`
-        """
-
-        return principal_coordinate(
-            phi=theta * 180 / np.pi,
-            x=self.gross_properties.cx,
-            y=self.gross_properties.cy,
-        )
-
-    def get_pc_local(
-        self,
-        theta: float,
-    ) -> Tuple[float, float]:
-        r"""Returns the plastic centroid location in local coordinates.
-
-        :param theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-
-        :return: Plastic centroid in local coordinates `(pc_u, pc_v)`
-        """
-
-        return principal_coordinate(
-            phi=theta * 180 / np.pi,
-            x=self.gross_properties.axial_pc_x,
-            y=self.gross_properties.axial_pc_y,
         )
 
     def plot_section(

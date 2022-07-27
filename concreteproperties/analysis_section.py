@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, List, Optional, Tuple
 
 import numpy as np
-import sectionproperties.analysis.fea as sp_fea
 import triangle
 from matplotlib.colors import ListedColormap
 
@@ -624,7 +623,7 @@ class Tri3:
             force_gp = gp[0] * stress * j
 
             # convert gauss point to local coordinates
-            u, _ = sp_fea.principal_coordinate(phi=theta * 180 / np.pi, x=x, y=y)
+            u, _ = utils.global_to_local(theta=theta, x=x, y=y)
             # add force and moment
             force_e += force_gp
             m_x_e += force_e * (y - centroid[1])

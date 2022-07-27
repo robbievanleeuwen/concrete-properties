@@ -7,7 +7,6 @@ import numpy as np
 from rich.live import Live
 from scipy.interpolate import interp1d
 from scipy.optimize import brentq
-from sectionproperties.analysis.fea import principal_coordinate
 
 import concreteproperties.results as res
 import concreteproperties.stress_strain_profile as ssp
@@ -463,15 +462,11 @@ class AS3600(DesignCode):
             centroid = steel_geom.calculate_centroid()
 
             # convert centroid to local coordinates
-            _, c_v = principal_coordinate(
-                phi=theta * 180 / np.pi, x=centroid[0], y=centroid[1]
-            )
+            _, c_v = utils.global_to_local(theta=theta, x=centroid[0], y=centroid[1])
 
             # calculate d
-            _, ef_v = principal_coordinate(
-                phi=theta * 180 / np.pi,
-                x=extreme_fibre[0],
-                y=extreme_fibre[1],
+            _, ef_v = utils.global_to_local(
+                theta=theta, x=extreme_fibre[0], y=extreme_fibre[1]
             )
             d = ef_v - c_v
 
