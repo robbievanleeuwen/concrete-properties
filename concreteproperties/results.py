@@ -842,7 +842,65 @@ class BiaxialBendingResults:
         return ax
 
     @staticmethod
-    def plot_multiple_diagrams(
+    def plot_multiple_diagrams_2d(
+        biaxial_bending_results: List[BiaxialBendingResults],
+        labels: Optional[List[str]] = None,
+        m_scale: float = 1e-6,
+        fmt: str = "o-",
+        **kwargs,
+    ) -> matplotlib.axes.Axes:  # type: ignore
+        """Plots multiple biaxial bending diagrams in a 3D plot.
+
+        :param biaxial_bending_results: List of biaxial bending results objects
+        :param labels: List of labels for each biaxial bending diagram, if not provided
+            labels are axial forces
+        :param m_scale: Scaling factor to apply to bending moment
+        :param fmt: Plot format string
+        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+
+        :return: Matplotlib axes object
+        """
+
+        # create plot and setup the plot
+        with plotting_context(title="Biaxial Bending Diagram", **kwargs) as (
+            fig,
+            ax,
+        ):
+            idx = 0
+
+            # generate default labels
+            if labels is None:
+                labels = []
+                default_labels = True
+            else:
+                default_labels = False
+
+            # for each M-N curve
+            for idx, bb_result in enumerate(biaxial_bending_results):
+                m_x_list, m_y_list = bb_result.get_results_lists()
+
+                # scale results
+                m_x_list = np.array(m_x_list) * m_scale
+                m_y_list = np.array(m_y_list) * m_scale
+
+                # generate default labels
+                if default_labels:
+                    labels.append(f"N = {bb_result.n:.3e}")
+
+                ax.plot(m_x_list, m_y_list, fmt, label=labels[idx])  # type: ignore
+
+            plt.xlabel("Bending Moment $M_x$")
+            plt.ylabel("Bending Moment $M_y$")
+            plt.grid(True)
+
+            # if there is more than one curve show legend
+            if idx > 0:
+                ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))  # type: ignore
+
+        return ax
+
+    @staticmethod
+    def plot_multiple_diagrams_3d(
         biaxial_bending_results: List[BiaxialBendingResults],
         n_scale: float = 1e-3,
         m_scale: float = 1e-6,
