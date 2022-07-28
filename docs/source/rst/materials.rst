@@ -28,6 +28,12 @@ Steel
 ..  autoclass:: concreteproperties.material.Steel
   :noindex:
 
+.. note::
+
+  In the current version of *concreteproperties*, all geometries assigned with the 
+  :class:`~concreteproperties.material.Steel` material are treated as lumped masses.
+  In *concreteproperties* ``v0.3.0+``, the Materials module will be overhauled allowing
+  for steel geometries to be treated as structural sections.
 
 .. _stress-strain-profiles:
 
