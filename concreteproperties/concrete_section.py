@@ -1094,7 +1094,7 @@ class ConcreteSection:
             # ensure max_comp is positive and below squash load
             if max_comp < 0 or max_comp > self.gross_properties.squash_load:
                 raise ValueError("max_comp must be positive and below the squash load.")
-            
+
             # find intersection of max comp with interaction diagram
             # and determine which points need to be removed from diagram
             x = []
@@ -1117,7 +1117,8 @@ class ConcreteSection:
             del mi_results.results[:idx_to_keep]
 
             # add first two points to diagram
-            mi_results.results.insert(0,
+            mi_results.results.insert(
+                0,
                 res.UltimateBendingResults(
                     theta=theta,
                     d_n=nan,
@@ -1126,9 +1127,10 @@ class ConcreteSection:
                     m_x=nan,
                     m_y=nan,
                     m_u=m_max_comp,
-                )
+                ),
             )
-            mi_results.results.insert(0,
+            mi_results.results.insert(
+                0,
                 res.UltimateBendingResults(
                     theta=theta,
                     d_n=inf,
@@ -1137,7 +1139,7 @@ class ConcreteSection:
                     m_x=0,
                     m_y=0,
                     m_u=0,
-                )
+                ),
             )
 
         return mi_results
