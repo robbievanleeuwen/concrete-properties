@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from math import inf
+from math import inf, nan
 from typing import TYPE_CHECKING, List, Optional, Tuple
 
 import matplotlib.patches as mpatches
@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sectionproperties.pre.geometry as sp_geom
 from rich.live import Live
+from scipy.interpolate import interp1d
 from scipy.optimize import brentq
 
 import concreteproperties.results as res
@@ -1007,6 +1008,7 @@ class ConcreteSection:
         self,
         theta: float = 0,
         n_points: int = 24,
+        max_comp: Optional[float] = None,
     ) -> res.MomentInteractionResults:
         r"""Generates a moment interaction diagram given a neutral axis angle `theta`
         and `n_points` calculation points between the decompression case and the pure
@@ -1016,6 +1018,11 @@ class ConcreteSection:
             (:math:`-\pi \leq \theta \leq \pi`)
         :param n_points: Number of calculation points between the decompression point
             and the pure bending point
+        :param max_comp: If provided, limits the maximum compressive force in the moment
+            interaction diagram to ``max_comp``
+
+        :raises ValueError: If ``max_comp`` is less than zero (tensile) or is greater
+            than the computed squash load
 
         :return: Moment interaction results object
         """
@@ -1069,20 +1076,71 @@ class ConcreteSection:
             )
             live.refresh()
 
-            # add tensile load
-            mi_results.results.append(
+        # add tensile load
+        mi_results.results.append(
+            res.UltimateBendingResults(
+                theta=theta,
+                d_n=0,
+                k_u=0,
+                n=self.gross_properties.tensile_load,
+                m_x=0,
+                m_y=0,
+                m_u=0,
+            )
+        )
+
+        # cut diagram at max_comp
+        if max_comp:
+            # ensure max_comp is positive and below squash load
+            if max_comp < 0 or max_comp > self.gross_properties.squash_load:
+                raise ValueError("max_comp must be positive and below the squash load.")
+            
+            # find intersection of max comp with interaction diagram
+            # and determine which points need to be removed from diagram
+            x = []
+            y = []
+            idx_to_keep = 0
+
+            for idx, mi_res in enumerate(mi_results.results):
+                # create coordinates for interpolation
+                x.append(mi_res.n)
+                y.append(mi_res.m_u)
+
+                # determine which index is the first to keep
+                if idx_to_keep == 0 and mi_res.n < max_comp:
+                    idx_to_keep = idx
+
+            f_mi = interp1d(x=x, y=y)
+            m_max_comp = f_mi(max_comp)
+
+            # remove points in diagram
+            del mi_results.results[:idx_to_keep]
+
+            # add first two points to diagram
+            mi_results.results.insert(0,
                 res.UltimateBendingResults(
                     theta=theta,
-                    d_n=0,
+                    d_n=nan,
+                    k_u=nan,
+                    n=max_comp,
+                    m_x=nan,
+                    m_y=nan,
+                    m_u=m_max_comp,
+                )
+            )
+            mi_results.results.insert(0,
+                res.UltimateBendingResults(
+                    theta=theta,
+                    d_n=inf,
                     k_u=0,
-                    n=self.gross_properties.tensile_load,
+                    n=max_comp,
                     m_x=0,
                     m_y=0,
                     m_u=0,
                 )
             )
 
-            return mi_results
+        return mi_results
 
     def biaxial_bending_diagram(
         self,
