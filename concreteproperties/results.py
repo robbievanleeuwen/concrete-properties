@@ -612,19 +612,14 @@ class MomentInteractionResults:
     """Class for storing moment interaction results.
 
     :param results: List of ultimate bending result objects
-    :param results_neg: List of ultimate bending result objects (for negative bending)
     """
 
     results: List[UltimateBendingResults] = field(default_factory=list)
-    results_neg: List[UltimateBendingResults] = field(default_factory=list)
 
     def get_results_lists(
         self,
-        neg=False,
     ) -> Tuple[List[float], List[float]]:
         """Returns a list of axial forces and moments.
-
-        :param neg: If True, gets the negative bending results
 
         :return: List of axial forces and moments *(n, m)*
         """
@@ -633,12 +628,7 @@ class MomentInteractionResults:
         n_list = []
         m_list = []
 
-        if neg:
-            results_list = self.results_neg
-        else:
-            results_list = self.results
-
-        for result in results_list:
+        for result in self.results:
             n_list.append(result.n)
             m_list.append(result.m_u)
 
@@ -672,15 +662,6 @@ class MomentInteractionResults:
             # scale results
             forces = np.array(n_list) * n_scale
             moments = np.array(m_list) * m_scale
-
-            # if negative results
-            if len(self.results_neg) > 0:
-                # get results
-                n_list, m_list = self.get_results_lists(neg=True)
-
-                # scale results
-                forces = np.hstack((forces, np.flip(np.array(n_list) * n_scale)))
-                moments = np.hstack((moments, np.flip(np.array(m_list) * m_scale)))
 
             ax.plot(moments, forces, fmt)  # type: ignore
 
@@ -726,15 +707,6 @@ class MomentInteractionResults:
                 forces = np.array(n_list) * n_scale
                 moments = np.array(m_list) * m_scale
 
-                # if negative results
-                if len(mi_result.results_neg) > 0:
-                    # get results
-                    n_list, m_list = mi_result.get_results_lists(neg=True)
-
-                    # scale results
-                    forces = np.hstack((forces, np.flip(np.array(n_list) * n_scale)))
-                    moments = np.hstack((moments, np.flip(np.array(m_list) * m_scale)))
-
                 ax.plot(moments, forces, fmt, label=labels[idx])  # type: ignore
 
             plt.xlabel("Bending Moment")
@@ -765,9 +737,6 @@ class MomentInteractionResults:
         poly_points = []
 
         for ult_res in self.results:
-            poly_points.append((ult_res.m_u, ult_res.n))
-
-        for ult_res in self.results_neg:
             poly_points.append((ult_res.m_u, ult_res.n))
 
         poly = Polygon(poly_points)

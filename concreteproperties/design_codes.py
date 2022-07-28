@@ -582,30 +582,10 @@ class AS3600(DesignCode):
         k_uo = mi_res.results[-2].k_u
         n_ub = self.get_n_ub(theta=mi_res.results[0].theta)
 
-        # initialise negative parameters
-        k_uo_neg = 0
-        n_ub_neg = 0
-
-        # negative bending
-        if len(mi_res.results_neg) > 0:
-            k_uo_neg = mi_res.results_neg[-2].k_u
-            n_ub_neg = self.get_n_ub(theta=mi_res.results_neg[0].theta)
-
         # factor results for positive bending
         for ult_res in factored_mi_res.results:
             phi = self.capacity_reduction_factor(
                 n_u=ult_res.n, n_ub=n_ub, n_uot=n_uot, k_uo=k_uo, phi_0=phi_0
-            )
-            ult_res.n *= phi
-            ult_res.m_x *= phi
-            ult_res.m_y *= phi
-            ult_res.m_u *= phi
-            phis.append(phi)
-
-        # factor results for negative bending
-        for ult_res in factored_mi_res.results_neg:
-            phi = self.capacity_reduction_factor(
-                n_u=ult_res.n, n_ub=n_ub_neg, n_uot=n_uot, k_uo=k_uo_neg, phi_0=phi_0
             )
             ult_res.n *= phi
             ult_res.m_x *= phi

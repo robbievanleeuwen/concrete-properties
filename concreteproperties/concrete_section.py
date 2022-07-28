@@ -1006,7 +1006,6 @@ class ConcreteSection:
     def moment_interaction_diagram(
         self,
         theta: float = 0,
-        m_neg: bool = False,
         n_points: int = 24,
     ) -> res.MomentInteractionResults:
         r"""Generates a moment interaction diagram given a neutral axis angle `theta`
@@ -1015,8 +1014,6 @@ class ConcreteSection:
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
-        :param m_neg: If set to True, also calculates the moment interaction for
-            :math:`\theta = \theta + \pi`, i.e. sagging and hogging
         :param n_points: Number of calculation points between the decompression point
             and the pure bending point
 
@@ -1054,9 +1051,6 @@ class ConcreteSection:
         with Live(progress, refresh_per_second=10) as live:
             progress_length = n_points
 
-            if m_neg:
-                progress_length *= 2
-
             task = progress.add_task(
                 description="[red]Generating M-N diagram",
                 total=progress_length,
@@ -1069,12 +1063,11 @@ class ConcreteSection:
                 mi_results.results.append(ult_res)
                 progress.update(task, advance=1)
 
-            if not m_neg:
-                progress.update(
-                    task,
-                    description="[bold green]:white_check_mark: M-N diagram generated",
-                )
-                live.refresh()
+            progress.update(
+                task,
+                description="[bold green]:white_check_mark: M-N diagram generated",
+            )
+            live.refresh()
 
             # add tensile load
             mi_results.results.append(
@@ -1089,70 +1082,7 @@ class ConcreteSection:
                 )
             )
 
-            # if not calculating negative bending
-            if not m_neg:
-                return mi_results
-
-            # negative bending
-            theta += np.pi
-
-            if theta > np.pi:
-                theta -= 2 * np.pi
-
-            # add squash load
-            mi_results.results_neg.append(
-                res.UltimateBendingResults(
-                    theta=theta,
-                    d_n=inf,
-                    k_u=0,
-                    n=self.gross_properties.squash_load,
-                    m_x=0,
-                    m_y=0,
-                    m_u=0,
-                )
-            )
-
-            # compute extreme tensile fibre
-            _, d_t = utils.calculate_extreme_fibre(
-                points=self.geometry.points, theta=theta
-            )
-
-            # compute neutral axis depth for pure bending case
-            ult_res_pure = self.ultimate_bending_capacity(theta=theta, n=0)
-
-            # generate list of neutral axes
-            d_n_list = np.linspace(start=d_t, stop=ult_res_pure.d_n, num=n_points)
-
-            for d_n in d_n_list:
-                ult_res = self.calculate_ultimate_section_actions(
-                    d_n=d_n,
-                    ultimate_results=res.UltimateBendingResults(theta=theta),
-                )
-                # bending moment is negative
-                ult_res.m_u *= -1
-                mi_results.results_neg.append(ult_res)
-                progress.update(task, advance=1)
-
-            progress.update(
-                task,
-                description="[bold green]:white_check_mark: M-N diagram generated",
-            )
-            live.refresh()
-
-            # add tensile load
-            mi_results.results_neg.append(
-                res.UltimateBendingResults(
-                    theta=theta,
-                    d_n=0,
-                    k_u=0,
-                    n=self.gross_properties.tensile_load,
-                    m_x=0,
-                    m_y=0,
-                    m_u=0,
-                )
-            )
-
-        return mi_results
+            return mi_results
 
     def biaxial_bending_diagram(
         self,
