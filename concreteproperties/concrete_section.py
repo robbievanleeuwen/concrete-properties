@@ -1008,7 +1008,7 @@ class ConcreteSection:
         self,
         theta: float = 0,
         control_points: List[Tuple[str, float]] = [("D", 1.0), ("N", 0.0)],
-        labels: List[Union[str, None]] = [None, None],
+        labels: List[Union[str, None]] = [None],
         n_points: Union[int, List[int]] = 24,
         max_comp: Optional[float] = None,
     ) -> res.MomentInteractionResults:
@@ -1028,7 +1028,8 @@ class ConcreteSection:
             force). The default control points define an interaction diagram from the
             decompression point to the pure bending point.
         :param labels: List of labels to apply to the ``control_points`` for plotting
-            purposes, length must be the same as the length of ``control_points``
+            purposes, length must be the same as the length of ``control_points``. If a
+            single value is provided, will apply this label to all control points.
         :param n_points: Number of points to compute between each control point. Length
             must be one less than the length of ``control_points``. If an integer is
             provided this will be used between all control points.
@@ -1045,6 +1046,10 @@ class ConcreteSection:
         # if an integer is provided for n_points, generate a list
         if isinstance(n_points, int):
             n_points = [n_points] * (len(control_points) - 1)
+
+        # if there are no labels provided, generate a list
+        if len(labels) == 1:
+            labels = labels * len(control_points)
 
         # validate n_points length
         if len(n_points) != len(control_points) - 1:
@@ -1147,7 +1152,7 @@ class ConcreteSection:
             # add progress bar task
             task = progress.add_task(
                 description="[red]Generating M-N diagram",
-                total=sum(n_points) - 1,
+                total=sum(n_points) - len(n_points) + 1,
             )
 
             # loop through all neutral axes
