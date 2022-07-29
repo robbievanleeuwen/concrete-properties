@@ -4,9 +4,11 @@ import sectionproperties.pre.library.primitive_sections as sp_ps
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.pre import add_bar, add_bar_rectangular_array
-from concreteproperties.stress_strain_profile import (ConcreteLinear,
-                                                      RectangularStressBlock,
-                                                      SteelElasticPlastic)
+from concreteproperties.stress_strain_profile import (
+    ConcreteLinear,
+    RectangularStressBlock,
+    SteelElasticPlastic,
+)
 from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
 
 # All examples come from:

@@ -2,25 +2,27 @@ import numpy as np
 import pytest
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import Concrete, Steel
-from concreteproperties.stress_strain_profile import (ConcreteLinear,
-                                                      RectangularStressBlock,
-                                                      SteelElasticPlastic)
+from concreteproperties.stress_strain_profile import (
+    ConcreteLinear,
+    RectangularStressBlock,
+    SteelElasticPlastic,
+)
 from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
 
 concrete = Concrete(
-        name="32 MPa Concrete",
-        density=2.4e-6,
-        stress_strain_profile=ConcreteLinear(elastic_modulus=30.1e3),
-        ultimate_stress_strain_profile=RectangularStressBlock(
-            compressive_strength=32,
-            alpha=0.85,
-            gamma=0.83,
-            ultimate_strain=0.003,
-        ),
-        alpha_squash=0.85,
-        flexural_tensile_strength=1.0,
-        colour="lightgrey",
-    )
+    name="32 MPa Concrete",
+    density=2.4e-6,
+    stress_strain_profile=ConcreteLinear(elastic_modulus=30.1e3),
+    ultimate_stress_strain_profile=RectangularStressBlock(
+        compressive_strength=32,
+        alpha=0.85,
+        gamma=0.83,
+        ultimate_strain=0.003,
+    ),
+    alpha_squash=0.85,
+    flexural_tensile_strength=1.0,
+    colour="lightgrey",
+)
 
 steel = Steel(
     name="500 MPa Steel",
@@ -55,17 +57,19 @@ conc_sec = ConcreteSection(geometry)
 
 def test_control_points():
     control_points = [
-        ("D", 1.0), 
+        ("D", 1.0),
         ("D", 0.8),
         ("d_n", 310),
         ("d_n", 200),
         ("N", 1000.0),
         ("N", 0.0),
     ]
-    
+
     n = 10
 
-    mi_res = conc_sec.moment_interaction_diagram(control_points=control_points, n_points=n)
+    mi_res = conc_sec.moment_interaction_diagram(
+        control_points=control_points, n_points=n
+    )
 
     d_n_list = []
     n_list = []
@@ -87,4 +91,3 @@ def test_control_points():
 
     # check length of list
     assert len(d_n_list) == 5 * (n - 1) + 1 + 2
-
