@@ -1019,7 +1019,7 @@ class ConcreteSection:
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
         :param control_points: List of control points over which to generate the
-            interaction diagram. Each entry in ``control_points`` is a ``Tuple`` with 
+            interaction diagram. Each entry in ``control_points`` is a ``Tuple`` with
             the first item the type of control point and the second item defining the
             location of the control point. Acceptable types of control points are
             ``"D"`` (ratio of neutral axis depth to section depth), ``"d_n"`` (neutral
