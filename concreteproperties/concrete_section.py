@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from math import inf, nan
-from typing import TYPE_CHECKING, List, Optional, Tuple
+from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
@@ -1007,7 +1007,9 @@ class ConcreteSection:
     def moment_interaction_diagram(
         self,
         theta: float = 0,
-        n_points: int = 24,
+        control_points: List[Tuple[str, float]] = [("D", 1.0), ("N", 0.0)],
+        labels: List[Union[str, None]] = [None, None],
+        n_points: List[int] = [24],
         max_comp: Optional[float] = None,
     ) -> res.MomentInteractionResults:
         r"""Generates a moment interaction diagram given a neutral axis angle `theta`
@@ -1016,8 +1018,9 @@ class ConcreteSection:
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
-        :param n_points: Number of calculation points between the decompression point
-            and the pure bending point
+        :param control_points: xxx
+        :param labels:
+        :param n_points: xxx
         :param max_comp: If provided, limits the maximum compressive force in the moment
             interaction diagram to ``max_comp``
 
@@ -1026,6 +1029,21 @@ class ConcreteSection:
 
         :return: Moment interaction results object
         """
+
+        # validate n_points length
+        if len(n_points) != len(control_points) - 1:
+            raise ValueError(
+                "Length of n_points must be one less than the length of control_points."
+            )
+
+        # validate n_points entries are all longer than 2
+        for n_pt in n_points:
+            if n_pt < 3:
+                raise ValueError("n_points entries must be greater than 2.")
+
+        # validate labels length
+        if len(labels) != len(control_points):
+            raise ValueError("Length of labels must equal length of control_points.")
 
         # initialise results
         mi_results = res.MomentInteractionResults()
@@ -1046,30 +1064,89 @@ class ConcreteSection:
         # compute extreme tensile fibre
         _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
 
-        # compute neutral axis depth for pure bending case
-        ult_res_pure = self.ultimate_bending_capacity(theta=theta, n=0)
+        # function to decode d_n from control_point
+        def decode_d_n(cp):
+            # multiple of section depth
+            if cp[0] == "D":
+                # check D is within section
+                if cp[1] > 1 or cp[1] < 0:
+                    raise ValueError(
+                        f"Provided section depth (D) {cp[1]:.3f} must be between 0 and 1."
+                    )
+                return cp[1] * d_t
+            # neutral axis depth
+            elif cp[0] == "d_n":
+                # check d_n is within section
+                if cp[1] <= 0 or cp[1] > d_t:
+                    raise ValueError(
+                        f"Provided d_n {cp[1]:.3f} must lie within the section 0 < d_n <= {d_t:.3f}"
+                    )
+                return cp[1]
+            # provided axial force
+            elif cp[0] == "N":
+                ult_res = self.ultimate_bending_capacity(theta=theta, n=cp[1])
+                return ult_res.d_n
+            # control point type not valid
+            else:
+                raise ValueError(
+                    "First value of control_point tuple must be D, d_n or N."
+                )
 
-        # generate list of neutral axes
-        d_n_list = np.linspace(start=d_t, stop=ult_res_pure.d_n, num=n_points)
+        # generate list of neutral axis depths to analyse and list of labels to save
+        d_n_list = []
+        label_list = []
+        start_d_n = 0
+        end_d_n = 0
+
+        for idx, n_pt in enumerate(n_points):
+            # get netural axis depths from control_points
+            start_d_n = decode_d_n(control_points[idx])
+            end_d_n = decode_d_n(control_points[idx + 1])
+
+            # generate list of neutral axis depths for this interval
+            d_n_list.extend(
+                np.linspace(
+                    start=start_d_n, stop=end_d_n, num=n_pt - 1, endpoint=False
+                ).tolist()
+            )
+
+            # add labels
+            label_list.append(labels[idx])
+            label_list.extend([None] * (n_pt - 2))
+
+        # add final d_n and label
+        d_n_list.append(end_d_n)
+        label_list.append(labels[-1])
+
+        # check d_n_list is ordered
+        if not all(d_n_list[i] >= d_n_list[i + 1] for i in range(len(d_n_list) - 1)):
+            msg = "control_points must create an ordered list of neutral axes from "
+            msg += "tensile fibre to compressive fibre."
+            raise ValueError(msg)
 
         # create progress bar
         progress = utils.create_known_progress()
 
         with Live(progress, refresh_per_second=10) as live:
-            progress_length = n_points
-
+            # add progress bar task
             task = progress.add_task(
                 description="[red]Generating M-N diagram",
-                total=progress_length,
+                total=sum(n_points) - 1,
             )
 
-            for d_n in d_n_list:
+            # loop through all neutral axes
+            for idx, d_n in enumerate(d_n_list):
+                # calculate ultimate results
                 ult_res = self.calculate_ultimate_section_actions(
                     d_n=d_n, ultimate_results=res.UltimateBendingResults(theta=theta)
                 )
+                # add label
+                ult_res.label = label_list[idx]
+                # add ultimate result to moment interactions results and update progress
                 mi_results.results.append(ult_res)
                 progress.update(task, advance=1)
 
+            # display finished progress bar
             progress.update(
                 task,
                 description="[bold green]:white_check_mark: M-N diagram generated",
@@ -1110,6 +1187,8 @@ class ConcreteSection:
                 if idx_to_keep == 0 and mi_res.n < max_comp:
                     idx_to_keep = idx
 
+            # create interpolation function and determine moment which corresponds to
+            # an axial force of max_comp
             f_mi = interp1d(x=x, y=y)
             m_max_comp = f_mi(max_comp)
 
@@ -1117,6 +1196,7 @@ class ConcreteSection:
             del mi_results.results[:idx_to_keep]
 
             # add first two points to diagram
+            # (m_max_comp, max_comp)
             mi_results.results.insert(
                 0,
                 res.UltimateBendingResults(
@@ -1129,6 +1209,7 @@ class ConcreteSection:
                     m_u=m_max_comp,
                 ),
             )
+            # (0, max_comp)
             mi_results.results.insert(
                 0,
                 res.UltimateBendingResults(
