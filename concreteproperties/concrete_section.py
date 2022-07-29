@@ -1009,7 +1009,7 @@ class ConcreteSection:
         theta: float = 0,
         control_points: List[Tuple[str, float]] = [("D", 1.0), ("N", 0.0)],
         labels: List[Union[str, None]] = [None, None],
-        n_points: List[int] = [24],
+        n_points: Union[int, List[int]] = 24,
         max_comp: Optional[float] = None,
     ) -> res.MomentInteractionResults:
         r"""Generates a moment interaction diagram given a neutral axis angle `theta`
@@ -1018,17 +1018,33 @@ class ConcreteSection:
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
-        :param control_points: xxx
-        :param labels:
-        :param n_points: xxx
+        :param control_points: List of control points over which to generate the
+            interaction diagram. Each entry in ``control_points`` is a ``Tuple`` with 
+            the first item the type of control point and the second item defining the
+            location of the control point. Acceptable types of control points are
+            ``"D"`` (ratio of neutral axis depth to section depth), ``"d_n"`` (neutral
+            axis depth) and ``"N"`` (axial force). Control points must be defined in an
+            order which results in a decreasing neutral axis depth (decreasing axial
+            force). The default control points define an interaction diagram from the
+            decompression point to the pure bending point.
+        :param labels: List of labels to apply to the ``control_points`` for plotting
+            purposes, length must be the same as the length of ``control_points``
+        :param n_points: Number of points to compute between each control point. Length
+            must be one less than the length of ``control_points``. If an integer is
+            provided this will be used between all control points.
         :param max_comp: If provided, limits the maximum compressive force in the moment
             interaction diagram to ``max_comp``
 
+        :raises ValueError: If ``control_points``, ``labels`` or ``n_points`` is invalid
         :raises ValueError: If ``max_comp`` is less than zero (tensile) or is greater
             than the computed squash load
 
         :return: Moment interaction results object
         """
+
+        # if an integer is provided for n_points, generate a list
+        if isinstance(n_points, int):
+            n_points = [n_points] * (len(control_points) - 1)
 
         # validate n_points length
         if len(n_points) != len(control_points) - 1:
