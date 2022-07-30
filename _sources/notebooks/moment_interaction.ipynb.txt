@@ -171,33 +171,6 @@
   },
   {
    "cell_type": "markdown",
-   "id": "670cb44c",
-   "metadata": {},
-   "source": [
-    "It's also possible to plot a diagram for positive and negative bending (sagging and hogging). We do this by setting the parameter ``m_neg=True``. We can control the number of points between the pure bending point and decompression point by modifying the parameter ``n_points``."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "d7d9611f",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "mi_res = conc_sec.moment_interaction_diagram(m_neg=True, n_points=48)\n",
-    "mi_res.plot_diagram(fmt=\"-\")"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "id": "b8436e9d",
-   "metadata": {},
-   "source": [
-    "In the above plot the bending capacity is higher for positive bending and not symmetric. This is because the bottom bars (3N24) provide more area than the top bars (3N20)."
-   ]
-  },
-  {
-   "cell_type": "markdown",
    "id": "1f416faf",
    "metadata": {},
    "source": [
@@ -250,6 +223,126 @@
     "MomentInteractionResults.plot_multiple_diagrams(\n",
     "    moment_interaction_results=mi_results, labels=labels, fmt=\"-\"\n",
     ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f38b7e98",
+   "metadata": {},
+   "source": [
+    "## Positive & Negative Interaction Diagrams\n",
+    "We can combine positive and negative bending on one plot using the ``plot_multiple_diagrams()`` method. Here we genearte results for ``theta = 0`` and ``theta = np.pi`` and manually edit the negative bending results to display them with negative bending results."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b21e2799",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "geom = concrete_rectangular_section(\n",
+    "    b=400,\n",
+    "    d=600,\n",
+    "    dia_top=20,\n",
+    "    n_top=3,\n",
+    "    dia_bot=24,\n",
+    "    n_bot=3,\n",
+    "    n_circle=4,\n",
+    "    cover=30,\n",
+    "    area_top=310,\n",
+    "    area_bot=450,\n",
+    "    conc_mat=concrete,\n",
+    "    steel_mat=steel,\n",
+    ")\n",
+    "conc_sec = ConcreteSection(geom)\n",
+    "\n",
+    "mi_res_pos = conc_sec.moment_interaction_diagram()\n",
+    "mi_res_neg = conc_sec.moment_interaction_diagram(theta=np.pi)\n",
+    "\n",
+    "for ult_res in mi_res_neg.results:\n",
+    "    ult_res.m_u *= -1\n",
+    "\n",
+    "MomentInteractionResults.plot_multiple_diagrams(\n",
+    "    moment_interaction_results=[mi_res_pos, mi_res_neg],\n",
+    "    labels=[\"Positive\", \"Negative\"],\n",
+    "    fmt=\"-\",\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f1bf74bb",
+   "metadata": {},
+   "source": [
+    "In the above plot the bending capacity is higher for positive bending and not symmetric. This is because the bottom bars (3N24) provide more area than the top bars (3N20)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "cfae19e2",
+   "metadata": {},
+   "source": [
+    "## Advanced Features\n",
+    "This section will describe some advanced features that can be used to control how the moment interaction diagram is generated and displayed.\n",
+    "\n",
+    "1. ``control_points`` - adding control points to the moment interaction diagram allows the user to ensure certain points are captured on the moment interaction diagram. Control points are defined as a list of (``str``, ``float``) tuples. The default argument for ``control_points`` is ``[(\"D\", 1.0), (\"fy\", 1.0), (\"N\", 0.0)]`` which produces control points at the decompression point, the balanced point and the pure bending point. Types of acceptable control points are:<br>\n",
+    "    a. ``D`` - ratio of neutral axis depth to section depth, e.g. the (``\"D\"``, ``0.5``) control point will ensure a neutral axis at mid-depth is analysed.<br>\n",
+    "    b. ``d_n`` - neutral axis depth, e.g. the (``\"d_n\"``, ``200``) control point will ensure a netural axis at 200 is analysed.<br>\n",
+    "    c. ``fy`` - yield ratio of the most extreme tensile bar, e.g. the (``\"fy\"``, ``0.5``) control point will ensure a neutral axis corresponding to a strain of half the yield strain in the extreme tensile bar is analysed. The (``\"fy\"``, ``1.0``) control point is the balanced point.<br>\n",
+    "    d. ``N`` - axial force, e.g. (``\"N\"``, ``3000e3``) ensures a neutral axis depth corresponding to a net axial force of 3000e3 is analysed.<br>\n",
+    "\n",
+    "2. ``labels`` - A list of labels to apply to the ``control_points`` for plotting purposes.\n",
+    "3. ``n_points`` - The number of neutral axis depths to compute between each control point.\n",
+    "3. ``max_comp`` - Limits the maximum compressive force in the moment interaction diagram by cutting off the top of the diagram."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "303c4420",
+   "metadata": {},
+   "source": [
+    "The below example will use all these features, creating additional control points at zero strain, 50% strain and a neutral axis depth of 200 mm. Note, care must be taken to ensure that the ``control_points`` are ordered from largest neutral axis depth to smallest neutral axis depth otherwise a ``ValueError`` will be raised. Labels are applied and the number of points between each control point is modified. A maximum compressive force of 6800 kN is provided."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6886b953",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mi_res = conc_sec.moment_interaction_diagram(\n",
+    "    control_points=[\n",
+    "        (\"D\", 1.0),\n",
+    "        (\"fy\", 0),\n",
+    "        (\"fy\", 0.5),\n",
+    "        (\"fy\", 1.0),\n",
+    "        (\"d_n\", 200),\n",
+    "        (\"N\", 0.0),\n",
+    "    ],\n",
+    "    labels=[\"A\", \"B\", \"C\", \"D\", \"E\", \"F\"],\n",
+    "    n_points=[3, 8, 8, 8, 12],\n",
+    "    max_comp=6.8e6,\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "eaa74cf9",
+   "metadata": {},
+   "source": [
+    "To display the labels set ``labels=True``. The argument ``label_offset`` attempts to offset the labels from the diagram in a pretty way."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "19b0b1b8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mi_res.plot_diagram(fmt=\"-kx\", labels=True, label_offset=True)"
    ]
   }
  ],

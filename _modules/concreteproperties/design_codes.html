@@ -729,43 +729,14 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        :return: Balanced axial force n_ub</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># 1) find d_0</span>
-        <span class="n">d_0</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">extreme_geom</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># get depth to extreme tensile bar and its yield strain</span>
+        <span class="n">d_0</span><span class="p">,</span> <span class="n">eps_sy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">extreme_bar</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
 
-        <span class="c1"># calculate extreme fibre in global coordinates</span>
-        <span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
-            <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
-        <span class="p">)</span>
-
-        <span class="c1"># get depth to extreme tensile steel</span>
-        <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">:</span>
-            <span class="n">centroid</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
-
-            <span class="c1"># convert centroid to local coordinates</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">c_v</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
-            <span class="c1"># calculate d</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">ef_v</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span>
-                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="n">ef_v</span> <span class="o">-</span> <span class="n">c_v</span>
-
-            <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="n">d_0</span><span class="p">:</span>
-                <span class="n">d_0</span> <span class="o">=</span> <span class="n">d</span>
-                <span class="n">extreme_geom</span> <span class="o">=</span> <span class="n">steel_geom</span>
-
-        <span class="c1"># 2) calculate yield strain</span>
-        <span class="n">yield_strain</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">extreme_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">yield_strength</span>  <span class="c1"># type: ignore</span>
-            <span class="o">/</span> <span class="n">extreme_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">elastic_modulus</span>  <span class="c1"># type: ignore</span>
-        <span class="p">)</span>
-
-        <span class="c1"># 3) k_uo at balanced load</span>
-        <span class="n">k_uob</span> <span class="o">=</span> <span class="mf">0.003</span> <span class="o">/</span> <span class="p">(</span><span class="mf">0.003</span> <span class="o">+</span> <span class="n">yield_strain</span><span class="p">)</span>
+        <span class="c1"># get compressive strain at extreme fibre</span>
+        <span class="n">eps_cu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span>
 
         <span class="c1"># 4) calculate d_n at balanced load</span>
-        <span class="n">d_nb</span> <span class="o">=</span> <span class="n">k_uob</span> <span class="o">*</span> <span class="n">d_0</span>
+        <span class="n">d_nb</span> <span class="o">=</span> <span class="n">d_0</span> <span class="o">*</span> <span class="p">(</span><span class="n">eps_cu</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">eps_sy</span> <span class="o">+</span> <span class="n">eps_cu</span><span class="p">)</span>
 
         <span class="c1"># 5) calculate axial force at balanced load</span>
         <span class="n">balanced_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
@@ -850,43 +821,24 @@ function checkPageExistsAndRedirect(event) {
 
         <span class="n">mi_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
+        <span class="c1"># get theta</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">mi_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">theta</span>
+
         <span class="c1"># make a copy of the results to factor</span>
         <span class="n">factored_mi_res</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">mi_res</span><span class="p">)</span>
 
         <span class="c1"># list to store phis</span>
         <span class="n">phis</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="c1"># get required constants</span>
+        <span class="c1"># get required constants for phi</span>
         <span class="n">n_uot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">tensile_load</span>
+        <span class="n">k_uo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_k_uo</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">n_ub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_n_ub</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
 
-        <span class="c1"># positive bending</span>
-        <span class="n">k_uo</span> <span class="o">=</span> <span class="n">mi_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">k_u</span>
-        <span class="n">n_ub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_n_ub</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">mi_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span>
-
-        <span class="c1"># initialise negative parameters</span>
-        <span class="n">k_uo_neg</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">n_ub_neg</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="c1"># negative bending</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mi_res</span><span class="o">.</span><span class="n">results_neg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">k_uo_neg</span> <span class="o">=</span> <span class="n">mi_res</span><span class="o">.</span><span class="n">results_neg</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">k_u</span>
-            <span class="n">n_ub_neg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_n_ub</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">mi_res</span><span class="o">.</span><span class="n">results_neg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span>
-
-        <span class="c1"># factor results for positive bending</span>
+        <span class="c1"># factor results</span>
         <span class="k">for</span> <span class="n">ult_res</span> <span class="ow">in</span> <span class="n">factored_mi_res</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
             <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity_reduction_factor</span><span class="p">(</span>
                 <span class="n">n_u</span><span class="o">=</span><span class="n">ult_res</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">n_ub</span><span class="o">=</span><span class="n">n_ub</span><span class="p">,</span> <span class="n">n_uot</span><span class="o">=</span><span class="n">n_uot</span><span class="p">,</span> <span class="n">k_uo</span><span class="o">=</span><span class="n">k_uo</span><span class="p">,</span> <span class="n">phi_0</span><span class="o">=</span><span class="n">phi_0</span>
-            <span class="p">)</span>
-            <span class="n">ult_res</span><span class="o">.</span><span class="n">n</span> <span class="o">*=</span> <span class="n">phi</span>
-            <span class="n">ult_res</span><span class="o">.</span><span class="n">m_x</span> <span class="o">*=</span> <span class="n">phi</span>
-            <span class="n">ult_res</span><span class="o">.</span><span class="n">m_y</span> <span class="o">*=</span> <span class="n">phi</span>
-            <span class="n">ult_res</span><span class="o">.</span><span class="n">m_u</span> <span class="o">*=</span> <span class="n">phi</span>
-            <span class="n">phis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
-
-        <span class="c1"># factor results for negative bending</span>
-        <span class="k">for</span> <span class="n">ult_res</span> <span class="ow">in</span> <span class="n">factored_mi_res</span><span class="o">.</span><span class="n">results_neg</span><span class="p">:</span>
-            <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity_reduction_factor</span><span class="p">(</span>
-                <span class="n">n_u</span><span class="o">=</span><span class="n">ult_res</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">n_ub</span><span class="o">=</span><span class="n">n_ub_neg</span><span class="p">,</span> <span class="n">n_uot</span><span class="o">=</span><span class="n">n_uot</span><span class="p">,</span> <span class="n">k_uo</span><span class="o">=</span><span class="n">k_uo_neg</span><span class="p">,</span> <span class="n">phi_0</span><span class="o">=</span><span class="n">phi_0</span>
             <span class="p">)</span>
             <span class="n">ult_res</span><span class="o">.</span><span class="n">n</span> <span class="o">*=</span> <span class="n">phi</span>
             <span class="n">ult_res</span><span class="o">.</span><span class="n">m_x</span> <span class="o">*=</span> <span class="n">phi</span>
@@ -936,7 +888,9 @@ function checkPageExistsAndRedirect(event) {
             <span class="c1"># loop through thetas</span>
             <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">theta_list</span><span class="p">:</span>
                 <span class="c1"># factored capacity</span>
-                <span class="n">f_ult_res</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+                <span class="n">f_ult_res</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">phi_0</span><span class="o">=</span><span class="n">phi_0</span>
+                <span class="p">)</span>
                 <span class="n">f_bb_res</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_ult_res</span><span class="p">)</span>
                 <span class="n">phis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
 

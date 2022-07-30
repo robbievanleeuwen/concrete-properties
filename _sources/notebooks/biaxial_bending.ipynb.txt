@@ -273,11 +273,14 @@
     "\n",
     "for bb_res in biaxial_results[::2]:\n",
     "    labels.append(f\"N = {bb_res.n / 1e3:.0f} kN\")\n",
-    "    \n",
-    "ax = BiaxialBendingResults.plot_multiple_diagrams_2d(biaxial_results[::2], fmt=\"-\", labels=labels, render=False)\n",
+    "\n",
+    "ax = BiaxialBendingResults.plot_multiple_diagrams_2d(\n",
+    "    biaxial_results[::2], fmt=\"-\", labels=labels, render=False\n",
+    ")\n",
     "ax.set_xlabel(\"Bending Moment $M_x$ [kN.m]\")\n",
     "ax.set_ylabel(\"Bending Moment $M_y$ [kN.m]\")\n",
     "import matplotlib.pyplot as plt\n",
+    "\n",
     "plt.show()"
    ]
   }
