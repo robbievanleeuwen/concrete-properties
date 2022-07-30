@@ -1007,9 +1007,9 @@ class ConcreteSection:
     def moment_interaction_diagram(
         self,
         theta: float = 0,
-        control_points: List[Tuple[str, float]] = [("D", 1.0), ("N", 0.0)],
+        control_points: List[Tuple[str, float]] = [("D", 1.0), ("fy", 1.0), ("N", 0.0)],
         labels: List[Union[str, None]] = [None],
-        n_points: Union[int, List[int]] = 24,
+        n_points: Union[int, List[int]] = [12, 12],
         max_comp: Optional[float] = None,
     ) -> res.MomentInteractionResults:
         r"""Generates a moment interaction diagram given a neutral axis angle `theta`
@@ -1023,16 +1023,17 @@ class ConcreteSection:
             the first item the type of control point and the second item defining the
             location of the control point. Acceptable types of control points are
             ``"D"`` (ratio of neutral axis depth to section depth), ``"d_n"`` (neutral
-            axis depth) and ``"N"`` (axial force). Control points must be defined in an
-            order which results in a decreasing neutral axis depth (decreasing axial
-            force). The default control points define an interaction diagram from the
-            decompression point to the pure bending point.
+            axis depth), ``"fy"`` (yield ratio of the most extreme tensile bar) and
+            ``"N"`` (axial force). Control points must be defined in an order which
+            results in a decreasing neutral axis depth (decreasing axial force). The
+            default control points define an interaction diagram from the decompression
+            point to the pure bending point.
         :param labels: List of labels to apply to the ``control_points`` for plotting
             purposes, length must be the same as the length of ``control_points``. If a
             single value is provided, will apply this label to all control points.
-        :param n_points: Number of points to compute between each control point. Length
-            must be one less than the length of ``control_points``. If an integer is
-            provided this will be used between all control points.
+        :param n_points: Number of neutral axis depths to compute between each control
+            point. Length must be one less than the length of ``control_points``. If an
+            integer is provided this will be used between all control points.
         :param max_comp: If provided, limits the maximum compressive force in the moment
             interaction diagram to ``max_comp``
 
@@ -1103,6 +1104,13 @@ class ConcreteSection:
                         f"Provided d_n {cp[1]:.3f} must lie within the section 0 < d_n <= {d_t:.3f}"
                     )
                 return cp[1]
+            # extreme tensile steel yield ratio
+            elif cp[0] == "fy":
+                # get extreme tensile bar
+                d_ext, eps_sy = self.extreme_bar(theta=theta)
+                # get compressive strain at extreme fibre
+                eps_cu = self.gross_properties.conc_ultimate_strain
+                return d_ext * (eps_cu) / (cp[1] * eps_sy + eps_cu)
             # provided axial force
             elif cp[0] == "N":
                 ult_res = self.ultimate_bending_capacity(theta=theta, n=cp[1])
@@ -1787,6 +1795,53 @@ class ConcreteSection:
             steel_strains=steel_strains,
             steel_forces=steel_forces,
         )
+
+    def extreme_bar(
+        self,
+        theta: float,
+    ) -> Tuple[float, float]:
+        r"""Given neutral axis angle ``theta``, determines the depth of the furthest bar
+        from the extreme compressive fibre and also returns its yield strain.
+
+        :param theta: Angle (in radians) the neutral axis makes with the horizontal
+            axis (:math:`-\pi \leq \theta \leq \pi`)
+
+        :return: Depth of furthest bar and its yield strain
+        """
+
+        # initialise variables
+        d_ext = 0
+        extreme_geom = None
+
+        # calculate extreme fibre in local coordinates
+        extreme_fibre, _ = utils.calculate_extreme_fibre(
+            points=self.geometry.points, theta=theta
+        )
+        _, ef_v = utils.global_to_local(
+            theta=theta, x=extreme_fibre[0], y=extreme_fibre[1]
+        )
+
+        # get depth to extreme tensile bar
+        for steel_geom in self.steel_geometries:
+            centroid = steel_geom.calculate_centroid()
+
+            # convert centroid to local coordinates
+            _, c_v = utils.global_to_local(theta=theta, x=centroid[0], y=centroid[1])
+
+            # calculate d
+            d = ef_v - c_v
+
+            if d > d_ext:
+                d_ext = d
+                extreme_geom = steel_geom
+
+        # calculate yield strain
+        yield_strain = (
+            extreme_geom.material.stress_strain_profile.yield_strength  # type: ignore
+            / extreme_geom.material.stress_strain_profile.elastic_modulus  # type: ignore
+        )
+
+        return d_ext, yield_strain
 
     def plot_section(
         self,

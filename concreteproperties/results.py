@@ -869,7 +869,7 @@ class BiaxialBendingResults:
         fmt: str = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:  # type: ignore
-        """Plots multiple biaxial bending diagrams in a 3D plot.
+        """Plots multiple biaxial bending diagrams in a 2D plot.
 
         :param biaxial_bending_results: List of biaxial bending results objects
         :param labels: List of labels for each biaxial bending diagram, if not provided
