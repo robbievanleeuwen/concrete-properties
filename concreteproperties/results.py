@@ -565,6 +565,7 @@ class UltimateBendingResults:
     :param m_x: Resultant bending moment about the x-axis
     :param m_y: Resultant bending moment about the y-axis
     :param m_u: Resultant bending moment about the u-axis
+    :param label: Result label
     """
 
     # bending angle
@@ -580,6 +581,9 @@ class UltimateBendingResults:
     m_y: float = 0
     m_u: float = 0
 
+    # label
+    label: Optional[str] = None
+
     def print_results(
         self,
         fmt: str = "8.6e",
@@ -592,6 +596,9 @@ class UltimateBendingResults:
         table = Table(title="Ultimate Bending Results")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
+
+        if self.label:
+            table.add_row("Label", self.label)
 
         table.add_row("Bending Angle - theta", "{:>{fmt}}".format(self.theta, fmt=fmt))
         table.add_row("Neutral Axis Depth - d_n", "{:>{fmt}}".format(self.d_n, fmt=fmt))
@@ -612,19 +619,14 @@ class MomentInteractionResults:
     """Class for storing moment interaction results.
 
     :param results: List of ultimate bending result objects
-    :param results_neg: List of ultimate bending result objects (for negative bending)
     """
 
     results: List[UltimateBendingResults] = field(default_factory=list)
-    results_neg: List[UltimateBendingResults] = field(default_factory=list)
 
     def get_results_lists(
         self,
-        neg=False,
     ) -> Tuple[List[float], List[float]]:
         """Returns a list of axial forces and moments.
-
-        :param neg: If True, gets the negative bending results
 
         :return: List of axial forces and moments *(n, m)*
         """
@@ -633,12 +635,7 @@ class MomentInteractionResults:
         n_list = []
         m_list = []
 
-        if neg:
-            results_list = self.results_neg
-        else:
-            results_list = self.results
-
-        for result in results_list:
+        for result in self.results:
             n_list.append(result.n)
             m_list.append(result.m_u)
 
@@ -649,6 +646,8 @@ class MomentInteractionResults:
         n_scale: float = 1e-3,
         m_scale: float = 1e-6,
         fmt: str = "o-",
+        labels: bool = False,
+        label_offset: bool = False,
         **kwargs,
     ) -> matplotlib.axes.Axes:  # type: ignore
         """Plots a moment interaction diagram.
@@ -656,6 +655,9 @@ class MomentInteractionResults:
         :param n_scale: Scaling factor to apply to axial force
         :param n_scale: Scaling factor to apply to axial force
         :param fmt: Plot format string
+        :param labels: If set to True, also plots labels on the diagram
+        :param label_offset: If set to True, attempts to offset the label from the
+            diagram
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
@@ -673,16 +675,46 @@ class MomentInteractionResults:
             forces = np.array(n_list) * n_scale
             moments = np.array(m_list) * m_scale
 
-            # if negative results
-            if len(self.results_neg) > 0:
-                # get results
-                n_list, m_list = self.get_results_lists(neg=True)
-
-                # scale results
-                forces = np.hstack((forces, np.flip(np.array(n_list) * n_scale)))
-                moments = np.hstack((moments, np.flip(np.array(m_list) * m_scale)))
-
+            # plot diagram
             ax.plot(moments, forces, fmt)  # type: ignore
+
+            # plot labels
+            if labels:
+                if label_offset:
+                    # compute gradients of curve and aspect ratio of plot
+                    grad = np.gradient([moments, forces], axis=1)
+                    x_diff = ax.get_xlim()  # type: ignore
+                    y_diff = ax.get_ylim()  # type: ignore
+                    ar = (y_diff[1] - y_diff[0]) / (x_diff[1] - x_diff[0])
+
+                for idx, ult_res in enumerate(self.results):
+                    if ult_res.label:
+                        # get x,y position on plot
+                        x = ult_res.m_u * m_scale
+                        y = ult_res.n * n_scale
+
+                        if label_offset:
+                            # calculate text offset
+                            grad_pt = grad[1, idx] / grad[0, idx] / ar  # type: ignore
+                            norm_angle = np.arctan2(-1 / grad_pt, 1)
+                            x_t = np.cos(norm_angle) * 20
+                            y_t = np.sin(norm_angle) * 20
+                            annotate_dict = {
+                                "xytext": (x_t, y_t),
+                                "textcoords": "offset points",
+                                "arrowprops": dict(
+                                    arrowstyle="->",
+                                    connectionstyle="angle,angleA=0,angleB=90,rad=10",
+                                ),
+                                "bbox": dict(boxstyle="round", fc="0.8"),
+                            }
+                        else:
+                            annotate_dict = {}
+
+                        # plot text
+                        ax.annotate(  # type: ignore
+                            text=ult_res.label, xy=(x, y), **annotate_dict
+                        )
 
             plt.xlabel("Bending Moment")
             plt.ylabel("Axial Force")
@@ -726,15 +758,6 @@ class MomentInteractionResults:
                 forces = np.array(n_list) * n_scale
                 moments = np.array(m_list) * m_scale
 
-                # if negative results
-                if len(mi_result.results_neg) > 0:
-                    # get results
-                    n_list, m_list = mi_result.get_results_lists(neg=True)
-
-                    # scale results
-                    forces = np.hstack((forces, np.flip(np.array(n_list) * n_scale)))
-                    moments = np.hstack((moments, np.flip(np.array(m_list) * m_scale)))
-
                 ax.plot(moments, forces, fmt, label=labels[idx])  # type: ignore
 
             plt.xlabel("Bending Moment")
@@ -765,9 +788,6 @@ class MomentInteractionResults:
         poly_points = []
 
         for ult_res in self.results:
-            poly_points.append((ult_res.m_u, ult_res.n))
-
-        for ult_res in self.results_neg:
             poly_points.append((ult_res.m_u, ult_res.n))
 
         poly = Polygon(poly_points)
@@ -849,7 +869,7 @@ class BiaxialBendingResults:
         fmt: str = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:  # type: ignore
-        """Plots multiple biaxial bending diagrams in a 3D plot.
+        """Plots multiple biaxial bending diagrams in a 2D plot.
 
         :param biaxial_bending_results: List of biaxial bending results objects
         :param labels: List of labels for each biaxial bending diagram, if not provided

@@ -1,4 +1,3 @@
-import concreteproperties.results as res
 import numpy as np
 import pytest
 import sectionproperties.pre.library.primitive_sections as sp_ps

@@ -133,7 +133,7 @@ This object can be used to plot biaxial bending results.
 
 ..  autoclass:: concreteproperties.results.BiaxialBendingResults()
   :noindex:
-  :members: plot_diagram, plot_multiple_diagrams, point_in_diagram
+  :members: plot_diagram, plot_multiple_diagrams_2d, plot_multiple_diagrams_3d, point_in_diagram
 
 .. seealso::
   For an application of the above, see the example

@@ -448,43 +448,14 @@ class AS3600(DesignCode):
         :return: Balanced axial force n_ub
         """
 
-        # 1) find d_0
-        d_0 = 0
-        extreme_geom = None
+        # get depth to extreme tensile bar and its yield strain
+        d_0, eps_sy = self.concrete_section.extreme_bar(theta=theta)
 
-        # calculate extreme fibre in global coordinates
-        extreme_fibre, _ = utils.calculate_extreme_fibre(
-            points=self.concrete_section.geometry.points, theta=theta
-        )
-
-        # get depth to extreme tensile steel
-        for steel_geom in self.concrete_section.steel_geometries:
-            centroid = steel_geom.calculate_centroid()
-
-            # convert centroid to local coordinates
-            _, c_v = utils.global_to_local(theta=theta, x=centroid[0], y=centroid[1])
-
-            # calculate d
-            _, ef_v = utils.global_to_local(
-                theta=theta, x=extreme_fibre[0], y=extreme_fibre[1]
-            )
-            d = ef_v - c_v
-
-            if d > d_0:
-                d_0 = d
-                extreme_geom = steel_geom
-
-        # 2) calculate yield strain
-        yield_strain = (
-            extreme_geom.material.stress_strain_profile.yield_strength  # type: ignore
-            / extreme_geom.material.stress_strain_profile.elastic_modulus  # type: ignore
-        )
-
-        # 3) k_uo at balanced load
-        k_uob = 0.003 / (0.003 + yield_strain)
+        # get compressive strain at extreme fibre
+        eps_cu = self.concrete_section.gross_properties.conc_ultimate_strain
 
         # 4) calculate d_n at balanced load
-        d_nb = k_uob * d_0
+        d_nb = d_0 * (eps_cu) / (eps_sy + eps_cu)
 
         # 5) calculate axial force at balanced load
         balanced_res = self.concrete_section.calculate_ultimate_section_actions(
@@ -569,43 +540,24 @@ class AS3600(DesignCode):
 
         mi_res = self.concrete_section.moment_interaction_diagram(**kwargs)
 
+        # get theta
+        theta = mi_res.results[0].theta
+
         # make a copy of the results to factor
         factored_mi_res = deepcopy(mi_res)
 
         # list to store phis
         phis = []
 
-        # get required constants
+        # get required constants for phi
         n_uot = self.concrete_section.gross_properties.tensile_load
+        k_uo = self.get_k_uo(theta=theta)
+        n_ub = self.get_n_ub(theta=theta)
 
-        # positive bending
-        k_uo = mi_res.results[-2].k_u
-        n_ub = self.get_n_ub(theta=mi_res.results[0].theta)
-
-        # initialise negative parameters
-        k_uo_neg = 0
-        n_ub_neg = 0
-
-        # negative bending
-        if len(mi_res.results_neg) > 0:
-            k_uo_neg = mi_res.results_neg[-2].k_u
-            n_ub_neg = self.get_n_ub(theta=mi_res.results_neg[0].theta)
-
-        # factor results for positive bending
+        # factor results
         for ult_res in factored_mi_res.results:
             phi = self.capacity_reduction_factor(
                 n_u=ult_res.n, n_ub=n_ub, n_uot=n_uot, k_uo=k_uo, phi_0=phi_0
-            )
-            ult_res.n *= phi
-            ult_res.m_x *= phi
-            ult_res.m_y *= phi
-            ult_res.m_u *= phi
-            phis.append(phi)
-
-        # factor results for negative bending
-        for ult_res in factored_mi_res.results_neg:
-            phi = self.capacity_reduction_factor(
-                n_u=ult_res.n, n_ub=n_ub_neg, n_uot=n_uot, k_uo=k_uo_neg, phi_0=phi_0
             )
             ult_res.n *= phi
             ult_res.m_x *= phi
@@ -655,7 +607,9 @@ class AS3600(DesignCode):
             # loop through thetas
             for theta in theta_list:
                 # factored capacity
-                f_ult_res, _, phi = self.ultimate_bending_capacity(theta=theta, n=n)
+                f_ult_res, _, phi = self.ultimate_bending_capacity(
+                    theta=theta, n=n, phi_0=phi_0
+                )
                 f_bb_res.results.append(f_ult_res)
                 phis.append(phi)
 
