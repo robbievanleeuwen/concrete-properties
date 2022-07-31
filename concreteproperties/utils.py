@@ -63,10 +63,10 @@ def get_ultimate_strain(
     """
 
     # convert point to local coordinates
-    u, v = global_to_local(theta=theta, x=point[0], y=point[1])
+    _, v = global_to_local(theta=theta, x=point[0], y=point[1])
 
     # convert point_na to local coordinates
-    u_na, v_na = global_to_local(theta=theta, x=point_na[0], y=point_na[1])
+    _, v_na = global_to_local(theta=theta, x=point_na[0], y=point_na[1])
 
     # calculate distance between NA and point in `v` direction
     d = v - v_na
@@ -122,6 +122,10 @@ def split_section_at_strains(
 
     :return: List of split geometries
     """
+
+    # handle zero curvature
+    if kappa == 0:
+        return concrete_geometries
 
     # create splits in concrete geometries at points in stress-strain profiles
     concrete_split_geoms = []
