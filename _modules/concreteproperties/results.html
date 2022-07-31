@@ -364,11 +364,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">e_z22_plus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">e_z22_minus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="c1"># plastic properties</span>
-    <span class="n">squash_load</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">tensile_load</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">axial_pc_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">axial_pc_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># other properties</span>
     <span class="n">conc_ultimate_strain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="ConcreteProperties.print_results"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.ConcreteProperties.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span>
@@ -411,14 +407,6 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;E.Z11-&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e_z11_minus</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;E.Z22+&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e_z22_plus</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;E.Z22-&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">e_z22_minus</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
-        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Squash Load&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">squash_load</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
-        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Tensile Load&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tensile_load</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
-        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
-            <span class="s2">&quot;x-Axial Plastic Centroid&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axial_pc_x</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
-            <span class="s2">&quot;y-Axial Plastic Centroid&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axial_pc_y</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
-        <span class="p">)</span>
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
             <span class="s2">&quot;Ultimate Concrete Strain&quot;</span><span class="p">,</span>
             <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">),</span>
@@ -688,7 +676,10 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">    :param kappa: List of curvatures</span>
-<span class="sd">    :param moment: List of bending moments</span>
+<span class="sd">    :param n: List of axial forces</span>
+<span class="sd">    :param m_x: List of bending moments about the x-axis</span>
+<span class="sd">    :param m_y: List of bending moments about the y-axis</span>
+<span class="sd">    :param m_xy: List of resultant bending moments</span>
 <span class="sd">    :param failure_geometry: Geometry object of the region of the cross-section that</span>
 <span class="sd">        failed, ending the moment curvature analysis</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -696,21 +687,17 @@ function checkPageExistsAndRedirect(event) {
     <span class="c1"># results</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">kappa</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
-    <span class="n">moment</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">n</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">m_x</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">m_y</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">m_xy</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
     <span class="n">failure_geometry</span><span class="p">:</span> <span class="n">Geometry</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="c1"># for analysis</span>
     <span class="n">_n_i</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">_m_x_i</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">_m_y_i</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">_m_v_i</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">_failure</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">kappa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">moment</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MomentCurvatureResults.plot_results"><a class="viewcode-back" href="../../rst/results.html#concreteproperties.results.MomentCurvatureResults.plot_results">[docs]</a>    <span class="k">def</span> <span class="nf">plot_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -728,7 +715,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># scale moments</span>
-        <span class="n">moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moment</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+        <span class="n">moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_xy</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
 
         <span class="c1"># create plot and setup the plot</span>
         <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Moment-Curvature&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span>
@@ -772,7 +759,7 @@ function checkPageExistsAndRedirect(event) {
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">mk_result</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">moment_curvature_results</span><span class="p">):</span>
                 <span class="c1"># scale results</span>
                 <span class="n">kappas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mk_result</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span>
-                <span class="n">moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mk_result</span><span class="o">.</span><span class="n">moment</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+                <span class="n">moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mk_result</span><span class="o">.</span><span class="n">m_xy</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
 
                 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kappas</span><span class="p">,</span> <span class="n">moments</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
 
@@ -817,8 +804,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># check moment is within bounds of results</span>
-        <span class="n">m_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moment</span><span class="p">)</span>
-        <span class="n">m_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moment</span><span class="p">)</span>
+        <span class="n">m_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_xy</span><span class="p">)</span>
+        <span class="n">m_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_xy</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">moment</span> <span class="o">&gt;</span> <span class="n">m_max</span> <span class="ow">or</span> <span class="n">moment</span> <span class="o">&lt;</span> <span class="n">m_min</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -826,7 +813,7 @@ function checkPageExistsAndRedirect(event) {
             <span class="p">)</span>
 
         <span class="n">f_kappa</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span>
-            <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">moment</span><span class="p">,</span>
+            <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">m_xy</span><span class="p">,</span>
             <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kappa</span><span class="p">,</span>
             <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
         <span class="p">)</span>
@@ -845,7 +832,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    :param n: Resultant axial force</span>
 <span class="sd">    :param m_x: Resultant bending moment about the x-axis</span>
 <span class="sd">    :param m_y: Resultant bending moment about the y-axis</span>
-<span class="sd">    :param m_u: Resultant bending moment about the u-axis</span>
+<span class="sd">    :param m_xy: Resultant bending moment</span>
 <span class="sd">    :param label: Result label</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -860,7 +847,7 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">m_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">m_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">m_u</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m_xy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="c1"># label</span>
     <span class="n">label</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -889,7 +876,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Axial Force&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Bending Capacity - m_x&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_x</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Bending Capacity - m_y&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_y</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
-        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Bending Capacity - m_u&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_u</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Bending Capacity - m_xy&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_xy</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
 
         <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div></div>
@@ -906,9 +893,12 @@ function checkPageExistsAndRedirect(event) {
 
 <div class="viewcode-block" id="MomentInteractionResults.get_results_lists"><a class="viewcode-back" href="../../rst/gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults.get_results_lists">[docs]</a>    <span class="k">def</span> <span class="nf">get_results_lists</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="n">moment</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Returns a list of axial forces and moments.</span>
 
+<span class="sd">        :param moment: Which moment to plot, acceptable values are ``&quot;m_x&quot;``, ``&quot;m_y&quot;``</span>
+<span class="sd">            or ``&quot;m_xy&quot;``</span>
 <span class="sd">        :return: List of axial forces and moments *(n, m)*</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -918,7 +908,15 @@ function checkPageExistsAndRedirect(event) {
 
         <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
             <span class="n">n_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
-            <span class="n">m_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">m_u</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">moment</span> <span class="o">==</span> <span class="s2">&quot;m_x&quot;</span><span class="p">:</span>
+                <span class="n">m_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">m_x</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">moment</span> <span class="o">==</span> <span class="s2">&quot;m_y&quot;</span><span class="p">:</span>
+                <span class="n">m_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">m_y</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">moment</span> <span class="o">==</span> <span class="s2">&quot;m_xy&quot;</span><span class="p">:</span>
+                <span class="n">m_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">m_xy</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">moment</span><span class="si">}</span><span class="s2"> not an acceptable value for moment.&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">n_list</span><span class="p">,</span> <span class="n">m_list</span></div>
 
@@ -926,6 +924,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
         <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">moment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;m_x&quot;</span><span class="p">,</span>
         <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
         <span class="n">labels</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">label_offset</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -934,7 +933,9 @@ function checkPageExistsAndRedirect(event) {
         <span class="sd">&quot;&quot;&quot;Plots a moment interaction diagram.</span>
 
 <span class="sd">        :param n_scale: Scaling factor to apply to axial force</span>
-<span class="sd">        :param n_scale: Scaling factor to apply to axial force</span>
+<span class="sd">        :param m_scale: Scaling factor to apply to the bending moment</span>
+<span class="sd">        :param moment: Which moment to plot, acceptable values are ``&quot;m_x&quot;``, ``&quot;m_y&quot;``</span>
+<span class="sd">            or ``&quot;m_xy&quot;``</span>
 <span class="sd">        :param fmt: Plot format string</span>
 <span class="sd">        :param labels: If set to True, also plots labels on the diagram</span>
 <span class="sd">        :param label_offset: If set to True, attempts to offset the label from the</span>
@@ -950,7 +951,7 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">ax</span><span class="p">,</span>
         <span class="p">):</span>
             <span class="c1"># get results</span>
-            <span class="n">n_list</span><span class="p">,</span> <span class="n">m_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_results_lists</span><span class="p">()</span>
+            <span class="n">n_list</span><span class="p">,</span> <span class="n">m_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_results_lists</span><span class="p">(</span><span class="n">moment</span><span class="o">=</span><span class="n">moment</span><span class="p">)</span>
 
             <span class="c1"># scale results</span>
             <span class="n">forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_scale</span>
@@ -968,16 +969,19 @@ function checkPageExistsAndRedirect(event) {
                     <span class="n">y_diff</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
                     <span class="n">ar</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_diff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_diff</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_diff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_diff</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-                <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">ult_res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">ult_res</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">m_list</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
                         <span class="c1"># get x,y position on plot</span>
-                        <span class="n">x</span> <span class="o">=</span> <span class="n">ult_res</span><span class="o">.</span><span class="n">m_u</span> <span class="o">*</span> <span class="n">m_scale</span>
-                        <span class="n">y</span> <span class="o">=</span> <span class="n">ult_res</span><span class="o">.</span><span class="n">n</span> <span class="o">*</span> <span class="n">n_scale</span>
+                        <span class="n">x</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="n">m_scale</span>
+                        <span class="n">y</span> <span class="o">=</span> <span class="n">n_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_scale</span>
 
                         <span class="k">if</span> <span class="n">label_offset</span><span class="p">:</span>
                             <span class="c1"># calculate text offset</span>
                             <span class="n">grad_pt</span> <span class="o">=</span> <span class="n">grad</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">grad</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">ar</span>  <span class="c1"># type: ignore</span>
-                            <span class="n">norm_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="n">grad_pt</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">grad_pt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="n">norm_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">norm_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="n">grad_pt</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                             <span class="n">x_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">norm_angle</span><span class="p">)</span> <span class="o">*</span> <span class="mi">20</span>
                             <span class="n">y_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">norm_angle</span><span class="p">)</span> <span class="o">*</span> <span class="mi">20</span>
                             <span class="n">annotate_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -994,7 +998,7 @@ function checkPageExistsAndRedirect(event) {
 
                         <span class="c1"># plot text</span>
                         <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
-                            <span class="n">text</span><span class="o">=</span><span class="n">ult_res</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="o">**</span><span class="n">annotate_dict</span>
+                            <span class="n">text</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="o">**</span><span class="n">annotate_dict</span>
                         <span class="p">)</span>
 
             <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment&quot;</span><span class="p">)</span>
@@ -1009,6 +1013,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">n_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
         <span class="n">m_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">moment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;m_x&quot;</span><span class="p">,</span>
         <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
@@ -1018,6 +1023,8 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        :param labels: List of labels for each moment interaction diagram</span>
 <span class="sd">        :param n_scale: Scaling factor to apply to axial force</span>
 <span class="sd">        :param m_scale: Scaling factor to apply to bending moment</span>
+<span class="sd">        :param moment: Which moment to plot, acceptable values are ``&quot;m_x&quot;``, ``&quot;m_y&quot;``</span>
+<span class="sd">            or ``&quot;m_xy&quot;``</span>
 <span class="sd">        :param fmt: Plot format string</span>
 <span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
 
@@ -1033,7 +1040,7 @@ function checkPageExistsAndRedirect(event) {
 
             <span class="c1"># for each M-N curve</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">mi_result</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">moment_interaction_results</span><span class="p">):</span>
-                <span class="n">n_list</span><span class="p">,</span> <span class="n">m_list</span> <span class="o">=</span> <span class="n">mi_result</span><span class="o">.</span><span class="n">get_results_lists</span><span class="p">()</span>
+                <span class="n">n_list</span><span class="p">,</span> <span class="n">m_list</span> <span class="o">=</span> <span class="n">mi_result</span><span class="o">.</span><span class="n">get_results_lists</span><span class="p">(</span><span class="n">moment</span><span class="o">=</span><span class="n">moment</span><span class="p">)</span>
 
                 <span class="c1"># scale results</span>
                 <span class="n">forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_scale</span>
@@ -1055,21 +1062,27 @@ function checkPageExistsAndRedirect(event) {
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;m_x&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not the combination of axial force and moment lies</span>
 <span class="sd">        within the moment interaction diagram.</span>
 
 <span class="sd">        :param n: Axial force</span>
 <span class="sd">        :param m: Bending moment</span>
+<span class="sd">        :param moment: Which moment to analyse, acceptable values are ``&quot;m_x&quot;``,</span>
+<span class="sd">            ``&quot;m_y&quot;`` or ``&quot;m_xy&quot;``</span>
 
 <span class="sd">        :returns: True, if combination of axial force and moment is within the diagram</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="c1"># get results</span>
+        <span class="n">n_list</span><span class="p">,</span> <span class="n">m_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_results_lists</span><span class="p">(</span><span class="n">moment</span><span class="o">=</span><span class="n">moment</span><span class="p">)</span>
+
         <span class="c1"># create a polygon from points on diagram</span>
         <span class="n">poly_points</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">for</span> <span class="n">ult_res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
-            <span class="n">poly_points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ult_res</span><span class="o">.</span><span class="n">m_u</span><span class="p">,</span> <span class="n">ult_res</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">mom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">m_list</span><span class="p">):</span>
+            <span class="n">poly_points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mom</span><span class="p">,</span> <span class="n">n_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
 
         <span class="n">poly</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">poly_points</span><span class="p">)</span>
         <span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
@@ -1269,13 +1282,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="k">class</span> <span class="nc">StressResult</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class for storing stress results.</span>
 
-<span class="sd">    For uncracked and cracked analyses, the lever arm is the distance to the elastic</span>
-<span class="sd">    centroid.</span>
-
-<span class="sd">    For service stress analyses, the lever arm is the distance to the computed centroid.</span>
-
-<span class="sd">    For ultimate stress analyses, the lever arm is the distance to the plastic</span>
-<span class="sd">    centroid.</span>
+<span class="sd">    The lever arm is computed to the elastic centroid.</span>
 
 <span class="sd">    :param concrete_analysis_sections: List of concrete analysis section objects</span>
 <span class="sd">        present in the stress analysis, which can be visualised by calling the</span>
@@ -1284,12 +1291,12 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    :param concrete_stresses: List of concrete stresses at the nodes of each concrete</span>
 <span class="sd">        analysis section</span>
 <span class="sd">    :param concrete_forces: List of net forces for each concrete analysis section and its</span>
-<span class="sd">        lever arm to the neutral axis (``force``, ``d_x``, ``d_y``)</span>
+<span class="sd">        lever arm (``force``, ``d_x``, ``d_y``)</span>
 <span class="sd">    :param steel_geometries: List of steel geometry objects present in the stress analysis</span>
 <span class="sd">    :param steel_stresses: List of steel stresses for each steel geometry</span>
 <span class="sd">    :param steel_strains: List of steel strains for each steel geometry</span>
-<span class="sd">    :param steel_forces: List of net forces for each steel geometry and its lever arm to</span>
-<span class="sd">        the neutral axis (``force``, ``d_x``, ``d_y``)</span>
+<span class="sd">    :param steel_forces: List of net forces for each steel geometry and its lever arm</span>
+<span class="sd">        (``force``, ``d_x``, ``d_y``)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">concrete_section</span><span class="p">:</span> <span class="n">ConcreteSection</span>

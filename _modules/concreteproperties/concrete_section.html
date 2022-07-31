@@ -282,7 +282,7 @@ function checkPageExistsAndRedirect(event) {
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">inf</span><span class="p">,</span> <span class="n">nan</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">inf</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">isinf</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
@@ -347,9 +347,6 @@ function checkPageExistsAndRedirect(event) {
 
         <span class="c1"># calculate gross area properties</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculate_gross_area_properties</span><span class="p">()</span>
-
-        <span class="c1"># calculate gross plastic properties</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">calculate_gross_plastic_properties</span><span class="p">()</span>
 
 <div class="viewcode-block" id="ConcreteSection.calculate_gross_area_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_gross_area_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_gross_area_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -499,78 +496,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z11_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y22_max</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z11_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i11</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y22_min</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z22_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i22</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x11_max</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z22_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i22</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x11_min</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="ConcreteSection.calculate_gross_plastic_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_gross_plastic_properties">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_gross_plastic_properties</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">max_compressive_strain</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculates and stores gross section plastic properties.</span>
-
-<span class="sd">        Calculates the plastic centroid and squash load assuming all steel is at yield</span>
-<span class="sd">        and the concrete experiences a stress of alpha_squash * f&#39;c. Providing</span>
-<span class="sd">        max_compressive_strain limits the compressive strain in the steel.</span>
-
-<span class="sd">        Calculates tensile load assuming all steel is at yield and the concrete is</span>
-<span class="sd">        entirely cracked.</span>
-
-<span class="sd">        :param max_compressive_strain: Maximum compressive strain in the steel under</span>
-<span class="sd">            squash load</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># initialise the squash load, tensile load and squash moment variables</span>
-        <span class="n">squash_load</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">tensile_load</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">squash_moment_x</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">squash_moment_y</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="c1"># loop through all concrete geometries</span>
-        <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_geometries</span><span class="p">:</span>
-            <span class="c1"># calculate area and centroid</span>
-            <span class="n">area</span> <span class="o">=</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
-            <span class="n">centroid</span> <span class="o">=</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
-
-            <span class="c1"># calculate compressive force</span>
-            <span class="n">force_c</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">area</span>
-                <span class="o">*</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">alpha_squash</span>
-                <span class="o">*</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_compressive_strength</span><span class="p">()</span>
-            <span class="p">)</span>
-
-            <span class="c1"># add to totals</span>
-            <span class="n">squash_load</span> <span class="o">+=</span> <span class="n">force_c</span>
-            <span class="n">squash_moment_x</span> <span class="o">+=</span> <span class="n">force_c</span> <span class="o">*</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">squash_moment_y</span> <span class="o">+=</span> <span class="n">force_c</span> <span class="o">*</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-        <span class="c1"># loop through all steel geometries</span>
-        <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">:</span>
-            <span class="c1"># calculate area and centroid</span>
-            <span class="n">area</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
-            <span class="n">centroid</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
-
-            <span class="c1"># calculate compressive and tensile force</span>
-            <span class="k">if</span> <span class="n">max_compressive_strain</span><span class="p">:</span>
-                <span class="n">force_c</span> <span class="o">=</span> <span class="n">area</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span>
-                    <span class="n">strain</span><span class="o">=</span><span class="n">max_compressive_strain</span>
-                <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">force_c</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">area</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">yield_strength</span>
-                <span class="p">)</span>
-
-            <span class="n">force_t</span> <span class="o">=</span> <span class="o">-</span><span class="n">area</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">yield_strength</span>
-
-            <span class="c1"># add to totals</span>
-            <span class="n">squash_load</span> <span class="o">+=</span> <span class="n">force_c</span>
-            <span class="n">tensile_load</span> <span class="o">+=</span> <span class="n">force_t</span>
-            <span class="n">squash_moment_x</span> <span class="o">+=</span> <span class="n">force_c</span> <span class="o">*</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">squash_moment_y</span> <span class="o">+=</span> <span class="n">force_c</span> <span class="o">*</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-        <span class="c1"># store squash load, tensile load and plastic centroid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">squash_load</span> <span class="o">=</span> <span class="n">squash_load</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">tensile_load</span> <span class="o">=</span> <span class="n">tensile_load</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_x</span> <span class="o">=</span> <span class="n">squash_moment_x</span> <span class="o">/</span> <span class="n">squash_load</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_y</span> <span class="o">=</span> <span class="n">squash_moment_y</span> <span class="o">/</span> <span class="n">squash_load</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_z22_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">e_i22</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x11_min</span><span class="p">)</span>
 
         <span class="c1"># store ultimate concrete strain (get smallest from all concrete geometries)</span>
         <span class="n">conc_ult_strain</span> <span class="o">=</span> <span class="mi">0</span>
@@ -893,9 +819,7 @@ function checkPageExistsAndRedirect(event) {
 
         <span class="c1"># set neutral axis depth limits</span>
         <span class="c1"># depth of neutral axis at extreme tensile fibre</span>
-        <span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
-            <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
-        <span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
         <span class="n">a</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">d_t</span>  <span class="c1"># sufficiently small depth of compressive zone</span>
         <span class="n">b</span> <span class="o">=</span> <span class="n">d_t</span>  <span class="c1"># neutral axis at extreme tensile fibre</span>
 
@@ -921,7 +845,7 @@ function checkPageExistsAndRedirect(event) {
                     <span class="k">elif</span> <span class="n">moment_diff</span> <span class="o">&gt;=</span> <span class="n">delta_m_max</span><span class="p">:</span>
                         <span class="n">kappa_inc</span> <span class="o">*=</span> <span class="mf">0.5</span>
 
-                <span class="n">kappa</span> <span class="o">=</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">kappa_inc</span>
+                <span class="n">kappa</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="nb">iter</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">kappa_inc</span>
 
                 <span class="c1"># find neutral axis that gives convergence of the axial force</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -939,37 +863,29 @@ function checkPageExistsAndRedirect(event) {
                     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;brentq algorithm failed.&quot;</span><span class="p">)</span>
                     <span class="n">d_n</span> <span class="o">=</span> <span class="mi">0</span>
 
-                <span class="c1"># find centroid of force action</span>
-                <span class="n">u_c</span> <span class="o">=</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_v_i</span> <span class="o">/</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_n_i</span>
-                <span class="n">point_na</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">point_on_neutral_axis</span><span class="p">(</span>
-                    <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
-                <span class="p">)</span>
-                <span class="n">_</span><span class="p">,</span> <span class="n">v_c</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span>
-                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-                <span class="p">)</span>
-                <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">local_to_global</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">u_c</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v_c</span><span class="p">)</span>
-
                 <span class="c1"># calculate moments</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">service_normal_force_convergence</span><span class="p">(</span>
                     <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
                     <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
                     <span class="n">moment_curvature</span><span class="o">=</span><span class="n">moment_curvature</span><span class="p">,</span>
-                    <span class="n">centroid</span><span class="o">=</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">),</span>
                 <span class="p">)</span>
 
-                <span class="n">moment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                <span class="n">m_xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
                     <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_x_i</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_y_i</span><span class="o">**</span><span class="mi">2</span>
                 <span class="p">)</span>
 
                 <span class="n">text_update</span> <span class="o">=</span> <span class="s2">&quot;[red]Generating M-K diagram: &quot;</span>
-                <span class="n">text_update</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;M=</span><span class="si">{</span><span class="n">moment</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">text_update</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;M=</span><span class="si">{</span><span class="n">m_xy</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span>
 
                 <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">text_update</span><span class="p">)</span>
 
                 <span class="c1"># save results</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure</span><span class="p">:</span>
                     <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa</span><span class="p">)</span>
-                    <span class="n">moment_curvature</span><span class="o">.</span><span class="n">moment</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment</span><span class="p">)</span>
+                    <span class="n">moment_curvature</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_n_i</span><span class="p">)</span>
+                    <span class="n">moment_curvature</span><span class="o">.</span><span class="n">m_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_x_i</span><span class="p">)</span>
+                    <span class="n">moment_curvature</span><span class="o">.</span><span class="n">m_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_y_i</span><span class="p">)</span>
+                    <span class="n">moment_curvature</span><span class="o">.</span><span class="n">m_xy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m_xy</span><span class="p">)</span>
                     <span class="nb">iter</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
@@ -985,7 +901,6 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">moment_curvature</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">,</span>
-        <span class="n">centroid</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis depth ``d_n`` and curvature ``kappa``, returns the the</span>
 <span class="sd">        net axial force.</span>
@@ -993,7 +908,6 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        :param d_nc: Trial cracked neutral axis</span>
 <span class="sd">        :param kappa: Curvature</span>
 <span class="sd">        :param moment_curvature: Moment curvature results object</span>
-<span class="sd">        :param centroid: Centroid about which to take moments</span>
 
 <span class="sd">        :return: Net axial force</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1030,23 +944,21 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">m_x</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">m_y</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">m_v</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># calculate concrete actions</span>
         <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="n">concrete_split_geoms</span><span class="p">:</span>
             <span class="n">sec</span> <span class="o">=</span> <span class="n">AnalysisSection</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">conc_geom</span><span class="p">)</span>
-            <span class="n">n_sec</span><span class="p">,</span> <span class="n">m_x_sec</span><span class="p">,</span> <span class="n">m_y_sec</span><span class="p">,</span> <span class="n">m_v_sec</span><span class="p">,</span> <span class="n">max_strain</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">service_stress_analysis</span><span class="p">(</span>
+            <span class="n">n_sec</span><span class="p">,</span> <span class="n">m_x_sec</span><span class="p">,</span> <span class="n">m_y_sec</span><span class="p">,</span> <span class="n">max_strain</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">service_stress_analysis</span><span class="p">(</span>
                 <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
                 <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
                 <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
-                <span class="n">centroid</span><span class="o">=</span><span class="n">centroid</span><span class="p">,</span>
+                <span class="n">centroid</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span><span class="p">),</span>
             <span class="p">)</span>
 
             <span class="n">n</span> <span class="o">+=</span> <span class="n">n_sec</span>
             <span class="n">m_x</span> <span class="o">+=</span> <span class="n">m_x_sec</span>
             <span class="n">m_y</span> <span class="o">+=</span> <span class="n">m_y_sec</span>
-            <span class="n">m_v</span> <span class="o">+=</span> <span class="n">m_v_sec</span>
 
             <span class="c1"># check for concrete failure</span>
             <span class="k">if</span> <span class="p">(</span>
@@ -1083,22 +995,13 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">force</span> <span class="o">=</span> <span class="n">stress</span> <span class="o">*</span> <span class="n">area</span>
             <span class="n">n</span> <span class="o">+=</span> <span class="n">force</span>
 
-            <span class="c1"># convert steel centroid to local coordinates</span>
-            <span class="n">u_s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span>
-                <span class="n">theta</span><span class="o">=</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
-                <span class="n">x</span><span class="o">=</span><span class="n">steel_centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="n">y</span><span class="o">=</span><span class="n">steel_centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-            <span class="p">)</span>
-
             <span class="c1"># calculate moment</span>
-            <span class="n">m_x</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">steel_centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">m_y</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">steel_centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">m_v</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="n">u_s</span>
+            <span class="n">m_x</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">steel_centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span><span class="p">)</span>
+            <span class="n">m_y</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">steel_centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span><span class="p">)</span>
 
         <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_n_i</span> <span class="o">=</span> <span class="n">n</span>
         <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_x_i</span> <span class="o">=</span> <span class="n">m_x</span>
         <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_y_i</span> <span class="o">=</span> <span class="n">m_y</span>
-        <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_v_i</span> <span class="o">=</span> <span class="n">m_v</span>
 
         <span class="c1"># calculate convergence</span>
         <span class="k">return</span> <span class="n">n</span></div>
@@ -1122,7 +1025,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="c1"># depth of neutral axis at extreme tensile fibre</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
         <span class="n">a</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">d_t</span>  <span class="c1"># sufficiently small depth of compressive zone</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">d_t</span>  <span class="c1"># neutral axis at extreme tensile fibre</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">d_t</span>  <span class="c1"># neutral axis at sufficiently large tensile fibre</span>
 
         <span class="c1"># initialise ultimate bending results</span>
         <span class="n">ultimate_results</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
@@ -1174,9 +1077,10 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">ultimate_results</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates</span>
-<span class="sd">        the resultant bending moments `m_x`, `m_y`, `m_u` and the net axial force `n`.</span>
+<span class="sd">        the resultant bending moments `m_x`, `m_y`, `m_xy` and the net axial force `n`.</span>
 
 <span class="sd">        :param d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">        :param kappa0: If set to true, overwrites d_n and sets zero curvature</span>
 <span class="sd">        :param ultimate_results: Ultimate bending results object</span>
 
 <span class="sd">        :return: Ultimate bending results object</span>
@@ -1186,7 +1090,7 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">ultimate_results</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># calculate extreme fibre in global coordinates</span>
-        <span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
+        <span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
             <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span>
         <span class="p">)</span>
 
@@ -1200,23 +1104,27 @@ function checkPageExistsAndRedirect(event) {
         <span class="c1"># validate d_n input</span>
         <span class="k">if</span> <span class="n">d_n</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;d_n must be positive.&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">d_n</span> <span class="o">&gt;</span> <span class="n">d_t</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;d_n must lie within the section, i.e. d_n &lt;= d_t&quot;</span><span class="p">)</span>
 
         <span class="c1"># find point on neutral axis by shifting by d_n</span>
-        <span class="n">point_na</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">point_on_neutral_axis</span><span class="p">(</span>
-            <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">isinf</span><span class="p">(</span><span class="n">d_n</span><span class="p">):</span>
+            <span class="n">point_na</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">point_na</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">point_on_neutral_axis</span><span class="p">(</span>
+                <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span>
+            <span class="p">)</span>
 
         <span class="c1"># create splits in concrete geometries at points in stress-strain profiles</span>
-        <span class="n">concrete_split_geoms</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">split_section_at_strains</span><span class="p">(</span>
-            <span class="n">concrete_geometries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_geometries</span><span class="p">,</span>
-            <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
-            <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
-            <span class="n">ultimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
-            <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">isinf</span><span class="p">(</span><span class="n">d_n</span><span class="p">):</span>
+            <span class="n">concrete_split_geoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_geometries</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">concrete_split_geoms</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">split_section_at_strains</span><span class="p">(</span>
+                <span class="n">concrete_geometries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_geometries</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">ultimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="c1"># initialise results</span>
         <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1232,7 +1140,7 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
                 <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
-                <span class="n">pc</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_y</span><span class="p">),</span>
+                <span class="n">centroid</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span><span class="p">),</span>
             <span class="p">)</span>
 
             <span class="n">n</span> <span class="o">+=</span> <span class="n">n_sec</span>
@@ -1246,13 +1154,16 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">centroid</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
 
             <span class="c1"># get strain at centroid of steel</span>
-            <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(</span>
-                <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
-                <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
-                <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
-                <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">isinf</span><span class="p">(</span><span class="n">d_n</span><span class="p">):</span>
+                <span class="n">strain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(</span>
+                    <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                    <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
+                    <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
+                <span class="p">)</span>
 
             <span class="c1"># calculate stress and force</span>
             <span class="n">stress</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">)</span>
@@ -1265,15 +1176,15 @@ function checkPageExistsAndRedirect(event) {
             <span class="p">)</span>
 
             <span class="c1"># calculate moment</span>
-            <span class="n">m_x</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_y</span><span class="p">)</span>
-            <span class="n">m_y</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_x</span><span class="p">)</span>
+            <span class="n">m_x</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span><span class="p">)</span>
+            <span class="n">m_y</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span><span class="p">)</span>
 
             <span class="c1"># calculate k_u</span>
             <span class="n">d</span> <span class="o">=</span> <span class="n">ef_v</span> <span class="o">-</span> <span class="n">c_v</span>
             <span class="n">k_u</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d_n</span> <span class="o">/</span> <span class="n">d</span><span class="p">)</span>
 
         <span class="c1"># calculate resultant moment</span>
-        <span class="n">m_u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">m_x</span> <span class="o">*</span> <span class="n">m_x</span> <span class="o">+</span> <span class="n">m_y</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span>
+        <span class="n">m_xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">m_x</span> <span class="o">*</span> <span class="n">m_x</span> <span class="o">+</span> <span class="n">m_y</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span>
 
         <span class="c1"># save results</span>
         <span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span> <span class="o">=</span> <span class="n">d_n</span>
@@ -1281,17 +1192,24 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">ultimate_results</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
         <span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_x</span> <span class="o">=</span> <span class="n">m_x</span>
         <span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_y</span> <span class="o">=</span> <span class="n">m_y</span>
-        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_u</span> <span class="o">=</span> <span class="n">m_u</span>
+        <span class="n">ultimate_results</span><span class="o">.</span><span class="n">m_xy</span> <span class="o">=</span> <span class="n">m_xy</span>
 
         <span class="k">return</span> <span class="n">ultimate_results</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.moment_interaction_diagram"><a class="viewcode-back" href="../../rst/gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">moment_interaction_diagram</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">control_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;fy&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)],</span>
+        <span class="n">control_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;kappa0&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;fy&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;d_n&quot;</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">),</span>
+        <span class="p">],</span>
         <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
-        <span class="n">n_points</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+        <span class="n">n_points</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
         <span class="n">max_comp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_comp_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">:</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram given a neutral axis angle `theta`</span>
 <span class="sd">        and `n_points` calculation points between the decompression case and the pure</span>
@@ -1304,11 +1222,12 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">            the first item the type of control point and the second item defining the</span>
 <span class="sd">            location of the control point. Acceptable types of control points are</span>
 <span class="sd">            ``&quot;D&quot;`` (ratio of neutral axis depth to section depth), ``&quot;d_n&quot;`` (neutral</span>
-<span class="sd">            axis depth), ``&quot;fy&quot;`` (yield ratio of the most extreme tensile bar) and</span>
-<span class="sd">            ``&quot;N&quot;`` (axial force). Control points must be defined in an order which</span>
-<span class="sd">            results in a decreasing neutral axis depth (decreasing axial force). The</span>
-<span class="sd">            default control points define an interaction diagram from the decompression</span>
-<span class="sd">            point to the pure bending point.</span>
+<span class="sd">            axis depth), ``&quot;fy&quot;`` (yield ratio of the most extreme tensile bar), ``&quot;N&quot;``</span>
+<span class="sd">            (axial force) and ``&quot;kappa&quot;`` (zero curvature compression - must be at start</span>
+<span class="sd">            of list, second value in tuple is not used). Control points must be defined</span>
+<span class="sd">            in an order which results in a decreasing neutral axis depth (decreasing</span>
+<span class="sd">            axial force). The default control points define an interaction diagram from</span>
+<span class="sd">            the decompression point to the pure bending point.</span>
 <span class="sd">        :param labels: List of labels to apply to the ``control_points`` for plotting</span>
 <span class="sd">            purposes, length must be the same as the length of ``control_points``. If a</span>
 <span class="sd">            single value is provided, will apply this label to all control points.</span>
@@ -1317,10 +1236,11 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">            integer is provided this will be used between all control points.</span>
 <span class="sd">        :param max_comp: If provided, limits the maximum compressive force in the moment</span>
 <span class="sd">            interaction diagram to ``max_comp``</span>
+<span class="sd">        :param max_comp_labels: Labels to apply to the ``max_comp`` intersection points,</span>
+<span class="sd">            first value is at zero moment, second value is at the intersection with the</span>
+<span class="sd">            interaction diagram</span>
 
 <span class="sd">        :raises ValueError: If ``control_points``, ``labels`` or ``n_points`` is invalid</span>
-<span class="sd">        :raises ValueError: If ``max_comp`` is less than zero (tensile) or is greater</span>
-<span class="sd">            than the computed squash load</span>
 
 <span class="sd">        :return: Moment interaction results object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1351,19 +1271,6 @@ function checkPageExistsAndRedirect(event) {
         <span class="c1"># initialise results</span>
         <span class="n">mi_results</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">()</span>
 
-        <span class="c1"># add squash load</span>
-        <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
-                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
-                <span class="n">d_n</span><span class="o">=</span><span class="n">inf</span><span class="p">,</span>
-                <span class="n">k_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">squash_load</span><span class="p">,</span>
-                <span class="n">m_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                <span class="n">m_y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                <span class="n">m_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-
         <span class="c1"># compute extreme tensile fibre</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
 
@@ -1371,18 +1278,18 @@ function checkPageExistsAndRedirect(event) {
         <span class="k">def</span> <span class="nf">decode_d_n</span><span class="p">(</span><span class="n">cp</span><span class="p">):</span>
             <span class="c1"># multiple of section depth</span>
             <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span>
-                <span class="c1"># check D is within section</span>
-                <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># check D</span>
+                <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Provided section depth (D) </span><span class="si">{</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> must be between 0 and 1.&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Provided section depth (D) </span><span class="si">{</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> must be greater than 0.&quot;</span>
                     <span class="p">)</span>
                 <span class="k">return</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">d_t</span>
             <span class="c1"># neutral axis depth</span>
             <span class="k">elif</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;d_n&quot;</span><span class="p">:</span>
-                <span class="c1"># check d_n is within section</span>
-                <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">d_t</span><span class="p">:</span>
+                <span class="c1"># check d_n</span>
+                <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Provided d_n </span><span class="si">{</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> must lie within the section 0 &lt; d_n &lt;= </span><span class="si">{</span><span class="n">d_t</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Provided d_n </span><span class="si">{</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> must be greater than zero.&quot;</span>
                     <span class="p">)</span>
                 <span class="k">return</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="c1"># extreme tensile steel yield ratio</span>
@@ -1396,11 +1303,22 @@ function checkPageExistsAndRedirect(event) {
             <span class="k">elif</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;N&quot;</span><span class="p">:</span>
                 <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                 <span class="k">return</span> <span class="n">ult_res</span><span class="o">.</span><span class="n">d_n</span>
+            <span class="c1"># zero curvature</span>
+            <span class="k">elif</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kappa0&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">d_t</span>  <span class="c1"># sufficient depth to capture rectangular block</span>
             <span class="c1"># control point type not valid</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;First value of control_point tuple must be D, d_n or N.&quot;</span>
+                    <span class="s2">&quot;First value of control_point tuple must be D, d_n, fy, N or kappa0.&quot;</span>
                 <span class="p">)</span>
+
+        <span class="c1"># see if a kappa0 was used</span>
+        <span class="n">has_kappa0</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">control_points</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kappa0&quot;</span><span class="p">:</span>
+                <span class="n">has_kappa0</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
 
         <span class="c1"># generate list of neutral axis depths to analyse and list of labels to save</span>
         <span class="n">d_n_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1447,9 +1365,16 @@ function checkPageExistsAndRedirect(event) {
             <span class="c1"># loop through all neutral axes</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">d_n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d_n_list</span><span class="p">):</span>
                 <span class="c1"># calculate ultimate results</span>
-                <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
-                    <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
-                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">has_kappa0</span><span class="p">:</span>
+                    <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
+                        <span class="n">d_n</span><span class="o">=</span><span class="n">inf</span><span class="p">,</span>
+                        <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
+                        <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+                        <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">),</span>
+                    <span class="p">)</span>
                 <span class="c1"># add label</span>
                 <span class="n">ult_res</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
                 <span class="c1"># add ultimate result to moment interactions results and update progress</span>
@@ -1463,35 +1388,22 @@ function checkPageExistsAndRedirect(event) {
             <span class="p">)</span>
             <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
 
-        <span class="c1"># add tensile load</span>
-        <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
-                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
-                <span class="n">d_n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                <span class="n">k_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">tensile_load</span><span class="p">,</span>
-                <span class="n">m_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                <span class="n">m_y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                <span class="n">m_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-
         <span class="c1"># cut diagram at max_comp</span>
         <span class="k">if</span> <span class="n">max_comp</span><span class="p">:</span>
-            <span class="c1"># ensure max_comp is positive and below squash load</span>
-            <span class="k">if</span> <span class="n">max_comp</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">max_comp</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">squash_load</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;max_comp must be positive and below the squash load.&quot;</span><span class="p">)</span>
-
             <span class="c1"># find intersection of max comp with interaction diagram</span>
             <span class="c1"># and determine which points need to be removed from diagram</span>
             <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">y_mx</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">y_my</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">y_mxy</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">idx_to_keep</span> <span class="o">=</span> <span class="mi">0</span>
 
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">mi_res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="p">):</span>
                 <span class="c1"># create coordinates for interpolation</span>
                 <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mi_res</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
-                <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mi_res</span><span class="o">.</span><span class="n">m_u</span><span class="p">)</span>
+                <span class="n">y_mx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mi_res</span><span class="o">.</span><span class="n">m_x</span><span class="p">)</span>
+                <span class="n">y_my</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mi_res</span><span class="o">.</span><span class="n">m_y</span><span class="p">)</span>
+                <span class="n">y_mxy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mi_res</span><span class="o">.</span><span class="n">m_xy</span><span class="p">)</span>
 
                 <span class="c1"># determine which index is the first to keep</span>
                 <span class="k">if</span> <span class="n">idx_to_keep</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">mi_res</span><span class="o">.</span><span class="n">n</span> <span class="o">&lt;</span> <span class="n">max_comp</span><span class="p">:</span>
@@ -1499,8 +1411,12 @@ function checkPageExistsAndRedirect(event) {
 
             <span class="c1"># create interpolation function and determine moment which corresponds to</span>
             <span class="c1"># an axial force of max_comp</span>
-            <span class="n">f_mi</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
-            <span class="n">m_max_comp</span> <span class="o">=</span> <span class="n">f_mi</span><span class="p">(</span><span class="n">max_comp</span><span class="p">)</span>
+            <span class="n">f_mx</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_mx</span><span class="p">)</span>
+            <span class="n">f_my</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_my</span><span class="p">)</span>
+            <span class="n">f_mxy</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_mxy</span><span class="p">)</span>
+            <span class="n">m_max_comp_mx</span> <span class="o">=</span> <span class="n">f_mx</span><span class="p">(</span><span class="n">max_comp</span><span class="p">)</span>
+            <span class="n">m_max_comp_my</span> <span class="o">=</span> <span class="n">f_my</span><span class="p">(</span><span class="n">max_comp</span><span class="p">)</span>
+            <span class="n">m_max_comp_mxy</span> <span class="o">=</span> <span class="n">f_mxy</span><span class="p">(</span><span class="n">max_comp</span><span class="p">)</span>
 
             <span class="c1"># remove points in diagram</span>
             <span class="k">del</span> <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="p">[:</span><span class="n">idx_to_keep</span><span class="p">]</span>
@@ -1514,9 +1430,10 @@ function checkPageExistsAndRedirect(event) {
                     <span class="n">d_n</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
                     <span class="n">k_u</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
                     <span class="n">n</span><span class="o">=</span><span class="n">max_comp</span><span class="p">,</span>
-                    <span class="n">m_x</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
-                    <span class="n">m_y</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
-                    <span class="n">m_u</span><span class="o">=</span><span class="n">m_max_comp</span><span class="p">,</span>
+                    <span class="n">m_x</span><span class="o">=</span><span class="n">m_max_comp_mx</span><span class="p">,</span>
+                    <span class="n">m_y</span><span class="o">=</span><span class="n">m_max_comp_my</span><span class="p">,</span>
+                    <span class="n">m_xy</span><span class="o">=</span><span class="n">m_max_comp_mxy</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="n">max_comp_labels</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
                 <span class="p">),</span>
             <span class="p">)</span>
             <span class="c1"># (0, max_comp)</span>
@@ -1529,7 +1446,8 @@ function checkPageExistsAndRedirect(event) {
                     <span class="n">n</span><span class="o">=</span><span class="n">max_comp</span><span class="p">,</span>
                     <span class="n">m_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                     <span class="n">m_y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                    <span class="n">m_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">m_xy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="n">max_comp_labels</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
                 <span class="p">),</span>
             <span class="p">)</span>
 
@@ -1540,8 +1458,8 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">48</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">BiaxialBendingResults</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Generates a biaxial bending diagram given a net axial force `n` and</span>
-<span class="sd">        `n_points` calculation points.</span>
+        <span class="sd">&quot;&quot;&quot;Generates a biaxial bending diagram given a net axial force ``n`` and</span>
+<span class="sd">        ``n_points`` calculation points.</span>
 
 <span class="sd">        :param n: Net axial force</span>
 <span class="sd">        :param n_points: Number of calculation points between the decompression</span>
@@ -1899,14 +1817,6 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;brentq algorithm failed.&quot;</span><span class="p">)</span>
             <span class="n">d_n</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="c1"># find centroid of force action</span>
-        <span class="n">u_c</span> <span class="o">=</span> <span class="n">mk</span><span class="o">.</span><span class="n">_m_v_i</span> <span class="o">/</span> <span class="n">mk</span><span class="o">.</span><span class="n">_n_i</span>
-        <span class="n">point_na</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">point_on_neutral_axis</span><span class="p">(</span>
-            <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
-        <span class="p">)</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">v_c</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">local_to_global</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">u_c</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v_c</span><span class="p">)</span>
-
         <span class="c1"># initialise stress results</span>
         <span class="n">analysis_sections</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">conc_sigs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1914,6 +1824,11 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">steel_sigs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">steel_strains</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">steel_forces</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># find point on neutral axis by shifting by d_n</span>
+        <span class="n">point_na</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">point_on_neutral_axis</span><span class="p">(</span>
+            <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
+        <span class="p">)</span>
 
         <span class="c1"># create splits in concrete geometries at points in stress-strain profiles</span>
         <span class="n">concrete_split_geoms</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">split_section_at_strains</span><span class="p">(</span>
@@ -1934,7 +1849,7 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
                 <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
-                <span class="n">centroid</span><span class="o">=</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">),</span>
+                <span class="n">centroid</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="n">conc_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
             <span class="n">conc_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_conc</span><span class="p">,</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_y</span><span class="p">))</span>
@@ -1961,7 +1876,13 @@ function checkPageExistsAndRedirect(event) {
 
             <span class="n">steel_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
             <span class="n">steel_strains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span>
-            <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_steel</span><span class="p">,</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cx</span><span class="p">,</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cy</span><span class="p">))</span>
+            <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">n_steel</span><span class="p">,</span>
+                    <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span>
+                    <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">StressResult</span><span class="p">(</span>
             <span class="n">concrete_section</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
@@ -1986,21 +1907,19 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># depth of neutral axis at extreme tensile fibre</span>
-        <span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
+        <span class="n">extreme_fibre</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
             <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span>
         <span class="p">)</span>
 
         <span class="c1"># find point on neutral axis by shifting by d_n</span>
-        <span class="n">point_na</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">point_on_neutral_axis</span><span class="p">(</span>
-            <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span>
-            <span class="n">d_n</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span><span class="p">,</span>
-            <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="c1"># get principal coordinates of neutral axis</span>
-        <span class="n">na_local</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span>
-            <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">isinf</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span><span class="p">):</span>
+            <span class="n">point_na</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">point_na</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">point_on_neutral_axis</span><span class="p">(</span>
+                <span class="n">extreme_fibre</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">,</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="c1"># initialise stress results for each concrete geometry</span>
         <span class="n">analysis_sections</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2011,14 +1930,17 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">steel_forces</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># create splits in concrete geometries at points in stress-strain profiles</span>
-        <span class="n">concrete_split_geoms</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">split_section_at_strains</span><span class="p">(</span>
-            <span class="n">concrete_geometries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_geometries</span><span class="p">,</span>
-            <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
-            <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
-            <span class="n">ultimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
-            <span class="n">d_n</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">isinf</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span><span class="p">):</span>
+            <span class="n">concrete_split_geoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_geometries</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">concrete_split_geoms</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">split_section_at_strains</span><span class="p">(</span>
+                <span class="n">concrete_geometries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">concrete_geometries</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">ultimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="c1"># loop through all concrete geometries and calculate stress</span>
         <span class="k">for</span> <span class="n">geom</span> <span class="ow">in</span> <span class="n">concrete_split_geoms</span><span class="p">:</span>
@@ -2030,7 +1952,7 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
                 <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
-                <span class="n">pc</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_y</span><span class="p">),</span>
+                <span class="n">centroid</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="n">conc_sigs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
             <span class="n">conc_forces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_conc</span><span class="p">,</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_y</span><span class="p">))</span>
@@ -2044,13 +1966,16 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">centroid</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
 
             <span class="c1"># get strain at centroid of steel</span>
-            <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(</span>
-                <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
-                <span class="n">d_n</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span><span class="p">,</span>
-                <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
-                <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">isinf</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span><span class="p">):</span>
+                <span class="n">strain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(</span>
+                    <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                    <span class="n">d_n</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">d_n</span><span class="p">,</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">ultimate_results</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span>
+                    <span class="n">ultimate_strain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span><span class="p">,</span>
+                <span class="p">)</span>
 
             <span class="c1"># calculate stress, force and point of action</span>
             <span class="n">sig</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">)</span>
@@ -2061,8 +1986,8 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">steel_forces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="p">(</span>
                     <span class="n">n_steel</span><span class="p">,</span>
-                    <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_x</span><span class="p">,</span>
-                    <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">axial_pc_y</span><span class="p">,</span>
+                    <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span>
+                    <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
 

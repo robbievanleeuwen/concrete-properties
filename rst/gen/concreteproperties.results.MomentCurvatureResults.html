@@ -652,7 +652,7 @@ function checkPageExistsAndRedirect(event) {
 <h1>concreteproperties.results.MomentCurvatureResults<a class="headerlink" href="#concreteproperties-results-momentcurvatureresults" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.results.MomentCurvatureResults">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MomentCurvatureResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moment=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_n_i=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_m_x_i=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_m_y_i=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_m_v_i=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_failure=False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MomentCurvatureResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_x=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_y=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_xy=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_n_i=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_m_x_i=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_m_y_i=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_failure=False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#MomentCurvatureResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.MomentCurvatureResults" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for storing moment curvature results.</p>
 <dl class="field-list simple">
@@ -661,7 +661,10 @@ function checkPageExistsAndRedirect(event) {
 <li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Angle (in radians) the neutral axis makes with the horizontal
 axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
 <li><p><strong>kappa</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">&lt;factory&gt;</span></code>) – List of curvatures</p></li>
-<li><p><strong>moment</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">&lt;factory&gt;</span></code>) – List of bending moments</p></li>
+<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">&lt;factory&gt;</span></code>) – List of axial forces</p></li>
+<li><p><strong>m_x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">&lt;factory&gt;</span></code>) – List of bending moments about the x-axis</p></li>
+<li><p><strong>m_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">&lt;factory&gt;</span></code>) – List of bending moments about the y-axis</p></li>
+<li><p><strong>m_xy</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">&lt;factory&gt;</span></code>) – List of resultant bending moments</p></li>
 <li><p><strong>failure_geometry</strong> – Geometry object of the region of the cross-section that
 failed, ending the moment curvature analysis</p></li>
 </ul>
@@ -701,10 +704,19 @@ failed, ending the moment curvature analysis</p></li>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">kappa</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">failure_geometry</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">m_x</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">m_y</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">m_xy</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">failure_geometry</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>

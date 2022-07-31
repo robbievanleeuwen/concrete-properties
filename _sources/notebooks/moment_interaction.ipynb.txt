@@ -155,7 +155,7 @@
    "id": "21075090",
    "metadata": {},
    "source": [
-    "What if we were interested in bending about the ``y`` axis? In this case the neutral axis angle would be $\\theta = \\pi / 2$. Let's generate a moment interaction diagram for this case."
+    "What if we were interested in bending about the ``y`` axis? In this case the neutral axis angle would be $\\theta = \\pi / 2$. Let's generate a moment interaction diagram for this case. We must specify that the moments to plot are those about the ``y`` axis."
    ]
   },
   {
@@ -166,7 +166,7 @@
    "outputs": [],
    "source": [
     "mi_res = conc_sec.moment_interaction_diagram(theta=np.pi / 2)\n",
-    "mi_res.plot_diagram()"
+    "mi_res.plot_diagram(moment=\"m_y\")"
    ]
   },
   {
@@ -231,7 +231,7 @@
    "metadata": {},
    "source": [
     "## Positive & Negative Interaction Diagrams\n",
-    "We can combine positive and negative bending on one plot using the ``plot_multiple_diagrams()`` method. Here we genearte results for ``theta = 0`` and ``theta = np.pi`` and manually edit the negative bending results to display them with negative bending results."
+    "We can combine positive and negative bending on one plot using the ``plot_multiple_diagrams()`` method. Here we genearte results for ``theta = 0`` and ``theta = np.pi`` and plot both diagrams."
    ]
   },
   {
@@ -259,9 +259,6 @@
     "\n",
     "mi_res_pos = conc_sec.moment_interaction_diagram()\n",
     "mi_res_neg = conc_sec.moment_interaction_diagram(theta=np.pi)\n",
-    "\n",
-    "for ult_res in mi_res_neg.results:\n",
-    "    ult_res.m_u *= -1\n",
     "\n",
     "MomentInteractionResults.plot_multiple_diagrams(\n",
     "    moment_interaction_results=[mi_res_pos, mi_res_neg],\n",
@@ -291,6 +288,7 @@
     "    b. ``d_n`` - neutral axis depth, e.g. the (``\"d_n\"``, ``200``) control point will ensure a netural axis at 200 is analysed.<br>\n",
     "    c. ``fy`` - yield ratio of the most extreme tensile bar, e.g. the (``\"fy\"``, ``0.5``) control point will ensure a neutral axis corresponding to a strain of half the yield strain in the extreme tensile bar is analysed. The (``\"fy\"``, ``1.0``) control point is the balanced point.<br>\n",
     "    d. ``N`` - axial force, e.g. (``\"N\"``, ``3000e3``) ensures a neutral axis depth corresponding to a net axial force of 3000e3 is analysed.<br>\n",
+    "    e. ``kappa_0`` - zero curvature compression, this must be at start of the list as it results in the largest compression force. Note that the second value in the tuple is not used and can be anything.<br>\n",
     "\n",
     "2. ``labels`` - A list of labels to apply to the ``control_points`` for plotting purposes.\n",
     "3. ``n_points`` - The number of neutral axis depths to compute between each control point.\n",
@@ -309,21 +307,26 @@
    "cell_type": "code",
    "execution_count": null,
    "id": "6886b953",
-   "metadata": {},
+   "metadata": {
+    "scrolled": true
+   },
    "outputs": [],
    "source": [
     "mi_res = conc_sec.moment_interaction_diagram(\n",
     "    control_points=[\n",
+    "        (\"kappa0\", 0),\n",
     "        (\"D\", 1.0),\n",
     "        (\"fy\", 0),\n",
     "        (\"fy\", 0.5),\n",
     "        (\"fy\", 1.0),\n",
     "        (\"d_n\", 200),\n",
     "        (\"N\", 0.0),\n",
+    "        (\"d_n\", 1e-6),\n",
     "    ],\n",
-    "    labels=[\"A\", \"B\", \"C\", \"D\", \"E\", \"F\"],\n",
-    "    n_points=[3, 8, 8, 8, 12],\n",
+    "    labels=[\"NA\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\"],\n",
+    "    n_points=[3, 3, 8, 8, 8, 12, 8],\n",
     "    max_comp=6.8e6,\n",
+    "    max_comp_labels=[\"A\", \"B\"],\n",
     ")"
    ]
   },
@@ -342,7 +345,14 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "mi_res.plot_diagram(fmt=\"-kx\", labels=True, label_offset=True)"
+    "ax = mi_res.plot_diagram(fmt=\"-kx\", labels=True, label_offset=True, render=False)\n",
+    "\n",
+    "# reset axis limits to ensure labels are within plot\n",
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "ax.set_xlim(-20, 850)\n",
+    "ax.set_ylim(-3000, 9000)\n",
+    "plt.show()"
    ]
   }
  ],
@@ -363,6 +373,11 @@
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
    "version": "3.8.12"
+  },
+  "vscode": {
+   "interpreter": {
+    "hash": "cbcd46708823968cdeec8140ad70b4bb10e53ceac96cecaaf557485e336f0189"
+   }
   }
  },
  "nbformat": 4,
