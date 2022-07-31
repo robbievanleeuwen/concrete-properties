@@ -86,12 +86,6 @@ def test_rotated_gross_properties(theta):
     assert pytest.approx(new_gross_results.e_z11_minus) == ref_gross_results.e_z11_minus
     assert pytest.approx(new_gross_results.e_z22_plus) == ref_gross_results.e_z22_plus
     assert pytest.approx(new_gross_results.e_z22_minus) == ref_gross_results.e_z22_minus
-    assert pytest.approx(new_gross_results.squash_load) == ref_gross_results.squash_load
-    assert (
-        pytest.approx(new_gross_results.tensile_load) == ref_gross_results.tensile_load
-    )
-    assert pytest.approx(new_gross_results.axial_pc_x) == ref_gross_results.axial_pc_x
-    assert pytest.approx(new_gross_results.axial_pc_y) == ref_gross_results.axial_pc_y
 
 
 @pytest.mark.parametrize("theta", thetas)
@@ -122,7 +116,7 @@ def test_rotated_ultimate_properties(theta):
         new_ultimate = new_sec.ultimate_bending_capacity(theta=theta, n=nf)
 
         assert pytest.approx(new_ultimate.d_n) == ref_ultimate.d_n
-        assert pytest.approx(new_ultimate.m_u) == ref_ultimate.m_u
+        assert pytest.approx(new_ultimate.m_xy) == ref_ultimate.m_xy
 
 
 # list of normal forces

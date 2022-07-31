@@ -161,7 +161,7 @@ class AnalysisSection:
         theta: float,
         kappa: float,
         centroid: Tuple[float, float],
-    ) -> Tuple[float, float, float, float, float]:
+    ) -> Tuple[float, float, float, float]:
         r"""Performs a service stress analysis on the section.
 
         :param point_na: Point on the neutral axis
@@ -176,13 +176,12 @@ class AnalysisSection:
 
         # initialise section actions
         n = 0
-        max_strain = 0
         m_x = 0
         m_y = 0
-        m_v = 0
+        max_strain = 0
 
         for el in self.elements:
-            el_n, el_m_x, el_m_y, el_m_v, el_max_strain = el.calculate_service_actions(
+            el_n, el_m_x, el_m_y, el_max_strain = el.calculate_service_actions(
                 point_na=point_na,
                 d_n=d_n,
                 theta=theta,
@@ -194,9 +193,8 @@ class AnalysisSection:
             n += el_n
             m_x += el_m_x
             m_y += el_m_y
-            m_v += el_m_v
 
-        return n, m_x, m_y, m_v, max_strain
+        return n, m_x, m_y, max_strain
 
     def get_service_stress(
         self,
@@ -239,7 +237,7 @@ class AnalysisSection:
             )
 
         # calculate total force
-        n, m_x, m_y, _, _ = self.service_stress_analysis(
+        n, m_x, m_y, _ = self.service_stress_analysis(
             point_na=point_na,
             d_n=d_n,
             theta=theta,
@@ -263,7 +261,8 @@ class AnalysisSection:
         d_n: float,
         theta: float,
         ultimate_strain: float,
-        pc: Tuple[float, float],
+        kappa0: bool,
+        centroid: Tuple[float, float],
     ) -> Tuple[float, float, float]:
         r"""Performs an ultimate stress analysis on the section.
 
@@ -272,7 +271,8 @@ class AnalysisSection:
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param ultimate_strain: Concrete strain at failure
-        :param pc: Location of the plastic centroid
+        :param kappa0: If set to true, overwrites d_n and sets zero curvature
+        :param centroid: Centroid about which to take moments
 
         :return: Axial force and resultant moments about the global axes
         """
@@ -288,7 +288,8 @@ class AnalysisSection:
                 d_n=d_n,
                 theta=theta,
                 ultimate_strain=ultimate_strain,
-                pc=pc,
+                kappa0=kappa0,
+                centroid=centroid,
             )
 
             n += el_n
@@ -303,7 +304,8 @@ class AnalysisSection:
         point_na: Tuple[float, float],
         theta: float,
         ultimate_strain: float,
-        pc: Tuple[float, float],
+        kappa0: bool,
+        centroid: Tuple[float, float],
     ) -> Tuple[np.ndarray, float, float, float]:
         r"""Given the neutral axis depth `d_n` and ultimate strain, determines the
         ultimate stresses with the section.
@@ -313,7 +315,8 @@ class AnalysisSection:
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param ultimate_strain: Concrete strain at failure
-        :param pc: Location of the plastic centroid
+        :param kappa0: If set to true, overwrites d_n and sets zero curvature
+        :param centroid: Centroid about which to take moments
 
         :return: Ultimate stresses net force and distance from neutral axis to point of
             force action
@@ -325,13 +328,16 @@ class AnalysisSection:
         # loop through nodes
         for idx, node in enumerate(self.mesh_nodes):
             # get strain at node
-            strain = utils.get_ultimate_strain(
-                point=(node[0], node[1]),
-                point_na=point_na,
-                d_n=d_n,
-                theta=theta,
-                ultimate_strain=ultimate_strain,
-            )
+            if kappa0:
+                strain = ultimate_strain
+            else:
+                strain = utils.get_ultimate_strain(
+                    point=(node[0], node[1]),
+                    point_na=point_na,
+                    d_n=d_n,
+                    theta=theta,
+                    ultimate_strain=ultimate_strain,
+                )
 
             # get stress at gauss point
             sig[idx] = self.geometry.material.ultimate_stress_strain_profile.get_stress(  # type: ignore
@@ -344,7 +350,8 @@ class AnalysisSection:
             d_n=d_n,
             theta=theta,
             ultimate_strain=ultimate_strain,
-            pc=pc,
+            centroid=centroid,
+            kappa0=kappa0,
         )
 
         # calculate point of action
@@ -575,7 +582,7 @@ class Tri3:
         theta: float,
         kappa: float,
         centroid: Tuple[float, float],
-    ) -> Tuple[float, float, float, float, float]:
+    ) -> Tuple[float, float, float, float]:
         r"""Calculates service actions for the current finite element.
 
         :param point_na: Point on the neutral axis
@@ -590,10 +597,9 @@ class Tri3:
 
         # initialise element results
         force_e = 0
-        max_strain_e = 0
         m_x_e = 0
         m_y_e = 0
-        m_v_e = 0
+        max_strain_e = 0
 
         # get points for 1 point Gaussian integration
         gps = utils.gauss_points(n=1)
@@ -622,15 +628,12 @@ class Tri3:
             # calculate force (stress * area)
             force_gp = gp[0] * stress * j
 
-            # convert gauss point to local coordinates
-            u, _ = utils.global_to_local(theta=theta, x=x, y=y)
             # add force and moment
             force_e += force_gp
             m_x_e += force_e * (y - centroid[1])
             m_y_e += force_e * (x - centroid[0])
-            m_v_e += force_gp * u
 
-        return force_e, m_x_e, m_y_e, m_v_e, max_strain_e
+        return force_e, m_x_e, m_y_e, max_strain_e
 
     def calculate_ultimate_actions(
         self,
@@ -638,7 +641,8 @@ class Tri3:
         d_n: float,
         theta: float,
         ultimate_strain: float,
-        pc: Tuple[float, float],
+        kappa0: bool,
+        centroid: Tuple[float, float],
     ) -> Tuple[float, float, float]:
         r"""Calculates ultimate actions for the current finite element.
 
@@ -647,7 +651,8 @@ class Tri3:
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param ultimate_strain: Concrete strain at failure
-        :param pc: Location of the plastic centroid
+        :param kappa0: If set to true, overwrites d_n and sets zero curvature
+        :param centroid: Centroid about which to take moments
 
         :return: Axial force and resultant moments about the global axes
         """
@@ -670,13 +675,16 @@ class Tri3:
             y = np.dot(N, np.transpose(self.coords[1, :]))
 
             # get strain at gauss point
-            strain = utils.get_ultimate_strain(
-                point=(x, y),
-                point_na=point_na,
-                d_n=d_n,
-                theta=theta,
-                ultimate_strain=ultimate_strain,
-            )
+            if kappa0:
+                strain = ultimate_strain
+            else:
+                strain = utils.get_ultimate_strain(
+                    point=(x, y),
+                    point_na=point_na,
+                    d_n=d_n,
+                    theta=theta,
+                    ultimate_strain=ultimate_strain,
+                )
 
             # get stress at gauss point
             stress = self.conc_material.ultimate_stress_strain_profile.get_stress(
@@ -688,7 +696,7 @@ class Tri3:
 
             # add force and moment
             force_e += force_gp
-            m_x_e += force_gp * (y - pc[1])
-            m_y_e += force_gp * (x - pc[0])
+            m_x_e += force_gp * (y - centroid[1])
+            m_y_e += force_gp * (x - centroid[0])
 
         return force_e, m_x_e, m_y_e

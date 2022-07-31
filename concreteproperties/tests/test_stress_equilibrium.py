@@ -85,7 +85,7 @@ def test_stress_equilibrium_rectangle(theta):
     ult_stress = sec.calculate_ultimate_stress(ultimate_results=ultimate)
 
     assert pytest.approx(ult_stress.sum_forces(), abs=20) == 0
-    assert pytest.approx(ult_stress.sum_moments()[2], rel=1e-4) == ultimate.m_u
+    assert pytest.approx(ult_stress.sum_moments()[2], rel=1e-4) == ultimate.m_xy
 
 
 # list of normal forces
@@ -129,7 +129,7 @@ def test_stress_equilibrium_circular(nf):
     ult_stress = sec.calculate_ultimate_stress(ultimate_results=ultimate)
 
     assert pytest.approx(ult_stress.sum_forces(), abs=20) == 0
-    assert pytest.approx(ult_stress.sum_moments()[2], rel=1e-4) == ultimate.m_u
+    assert pytest.approx(ult_stress.sum_moments()[2], rel=1e-4) == ultimate.m_xy
 
 
 @pytest.mark.parametrize("theta", thetas)
@@ -179,4 +179,4 @@ def test_stress_equilibrium_tee(theta):
     ult_stress = sec.calculate_ultimate_stress(ultimate_results=ultimate)
 
     assert pytest.approx(ult_stress.sum_forces(), abs=20) == 0
-    assert pytest.approx(ult_stress.sum_moments()[2], rel=1e-4) == ultimate.m_u
+    assert pytest.approx(ult_stress.sum_moments()[2], rel=1e-4) == ultimate.m_xy

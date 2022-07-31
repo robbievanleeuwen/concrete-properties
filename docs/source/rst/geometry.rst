@@ -45,8 +45,8 @@ Below are a few examples:
 
 - ``m_x`` and ``m_y`` relate to bending moments about the ``x`` and ``y`` axes
   respectively.
-- ``m_u`` relates to a bending moment about the rotated local ``u`` axis, defined by the
-  angle ``theta``.
+- ``m_xy`` relates to a resultant bending moment, i.e. the positive square root of the 
+  sum of the squares of ``m_x`` and ``m_y``.
 - ``ixx_g`` and ``iyy_g`` relate to the second moments of area about the global ``x``
   and ``y`` axes respectively. The global axis refers to an axis centred at the origin
   (0, 0).

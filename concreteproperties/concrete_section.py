@@ -538,9 +538,7 @@ class ConcreteSection:
 
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
-        extreme_fibre, d_t = utils.calculate_extreme_fibre(
-            points=self.geometry.points, theta=theta
-        )
+        _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
         a = 1e-6 * d_t  # sufficiently small depth of compressive zone
         b = d_t  # neutral axis at extreme tensile fibre
 
@@ -566,7 +564,7 @@ class ConcreteSection:
                     elif moment_diff >= delta_m_max:
                         kappa_inc *= 0.5
 
-                kappa = moment_curvature.kappa[-1] + kappa_inc
+                kappa = 0 if iter == 0 else moment_curvature.kappa[-1] + kappa_inc
 
                 # find neutral axis that gives convergence of the axial force
                 try:
@@ -591,19 +589,22 @@ class ConcreteSection:
                     moment_curvature=moment_curvature,
                 )
 
-                moment = np.sqrt(
+                m_xy = np.sqrt(
                     moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2
                 )
 
                 text_update = "[red]Generating M-K diagram: "
-                text_update += f"M={moment:.3e}"
+                text_update += f"M={m_xy:.3e}"
 
                 progress.update(task, description=text_update)
 
                 # save results
                 if not moment_curvature._failure:
                     moment_curvature.kappa.append(kappa)
-                    moment_curvature.moment.append(moment)
+                    moment_curvature.n.append(moment_curvature._n_i)
+                    moment_curvature.m_x.append(moment_curvature._m_x_i)
+                    moment_curvature.m_y.append(moment_curvature._m_y_i)
+                    moment_curvature.m_xy.append(m_xy)
                     iter += 1
 
             progress.update(
@@ -619,7 +620,6 @@ class ConcreteSection:
         d_n: float,
         kappa: float,
         moment_curvature: res.MomentCurvatureResults,
-        centroid: Tuple[float, float] = (0, 0),
     ) -> float:
         """Given a neutral axis depth ``d_n`` and curvature ``kappa``, returns the the
         net axial force.
@@ -627,7 +627,6 @@ class ConcreteSection:
         :param d_nc: Trial cracked neutral axis
         :param kappa: Curvature
         :param moment_curvature: Moment curvature results object
-        :param centroid: Centroid about which to take moments
 
         :return: Net axial force
         """
@@ -664,23 +663,21 @@ class ConcreteSection:
         n = 0
         m_x = 0
         m_y = 0
-        m_v = 0
 
         # calculate concrete actions
         for conc_geom in concrete_split_geoms:
             sec = AnalysisSection(geometry=conc_geom)
-            n_sec, m_x_sec, m_y_sec, m_v_sec, max_strain = sec.service_stress_analysis(
+            n_sec, m_x_sec, m_y_sec, max_strain = sec.service_stress_analysis(
                 point_na=point_na,
                 d_n=d_n,
                 theta=moment_curvature.theta,
                 kappa=kappa,
-                centroid=centroid,
+                centroid=(self.gross_properties.cx, self.gross_properties.cy),
             )
 
             n += n_sec
             m_x += m_x_sec
             m_y += m_y_sec
-            m_v += m_v_sec
 
             # check for concrete failure
             if (
@@ -725,14 +722,12 @@ class ConcreteSection:
             )
 
             # calculate moment
-            m_x += force * (steel_centroid[1] - centroid[1])
-            m_y += force * (steel_centroid[0] - centroid[0])
-            m_v += force * u_s
+            m_x += force * (steel_centroid[1] - self.gross_properties.cy)
+            m_y += force * (steel_centroid[0] - self.gross_properties.cx)
 
         moment_curvature._n_i = n
         moment_curvature._m_x_i = m_x
         moment_curvature._m_y_i = m_y
-        moment_curvature._m_v_i = m_v
 
         # calculate convergence
         return n
@@ -756,7 +751,7 @@ class ConcreteSection:
         # depth of neutral axis at extreme tensile fibre
         _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
         a = 1e-6 * d_t  # sufficiently small depth of compressive zone
-        b = d_t  # neutral axis at extreme tensile fibre
+        b = 6 * d_t  # neutral axis at sufficiently large tensile fibre
 
         # initialise ultimate bending results
         ultimate_results = res.UltimateBendingResults(theta=theta)
@@ -805,12 +800,14 @@ class ConcreteSection:
     def calculate_ultimate_section_actions(
         self,
         d_n: float,
+        kappa0: bool = False,
         ultimate_results: Optional[res.UltimateBendingResults] = None,
     ) -> res.UltimateBendingResults:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
-        the resultant bending moments `m_x`, `m_y`, `m_u` and the net axial force `n`.
+        the resultant bending moments `m_x`, `m_y`, `m_xy` and the net axial force `n`.
 
         :param d_n: Depth of the neutral axis from the extreme compression fibre
+        :param kappa0: If set to true, overwrites d_n and sets zero curvature
         :param ultimate_results: Ultimate bending results object
 
         :return: Ultimate bending results object
@@ -834,23 +831,27 @@ class ConcreteSection:
         # validate d_n input
         if d_n <= 0:
             raise ValueError("d_n must be positive.")
-        elif d_n > d_t:
-            raise ValueError("d_n must lie within the section, i.e. d_n <= d_t")
 
         # find point on neutral axis by shifting by d_n
-        point_na = utils.point_on_neutral_axis(
-            extreme_fibre=extreme_fibre, d_n=d_n, theta=ultimate_results.theta
-        )
+        if kappa0:
+            point_na = (0, 0)
+        else:
+            point_na = utils.point_on_neutral_axis(
+                extreme_fibre=extreme_fibre, d_n=d_n, theta=ultimate_results.theta
+            )
 
         # create splits in concrete geometries at points in stress-strain profiles
-        concrete_split_geoms = utils.split_section_at_strains(
-            concrete_geometries=self.concrete_geometries,
-            theta=ultimate_results.theta,
-            point_na=point_na,
-            ultimate=True,
-            ultimate_strain=self.gross_properties.conc_ultimate_strain,
-            d_n=d_n,
-        )
+        if kappa0:
+            concrete_split_geoms = self.concrete_geometries
+        else:
+            concrete_split_geoms = utils.split_section_at_strains(
+                concrete_geometries=self.concrete_geometries,
+                theta=ultimate_results.theta,
+                point_na=point_na,
+                ultimate=True,
+                ultimate_strain=self.gross_properties.conc_ultimate_strain,
+                d_n=d_n,
+            )
 
         # initialise results
         n = 0
@@ -866,7 +867,8 @@ class ConcreteSection:
                 d_n=d_n,
                 theta=ultimate_results.theta,
                 ultimate_strain=self.gross_properties.conc_ultimate_strain,
-                pc=(self.gross_properties.axial_pc_x, self.gross_properties.axial_pc_y),
+                kappa0=kappa0,
+                centroid=(self.gross_properties.cx, self.gross_properties.cy),
             )
 
             n += n_sec
@@ -880,13 +882,16 @@ class ConcreteSection:
             centroid = steel_geom.calculate_centroid()
 
             # get strain at centroid of steel
-            strain = utils.get_ultimate_strain(
-                point=(centroid[0], centroid[1]),
-                point_na=point_na,
-                d_n=d_n,
-                theta=ultimate_results.theta,
-                ultimate_strain=self.gross_properties.conc_ultimate_strain,
-            )
+            if kappa0:
+                strain = self.gross_properties.conc_ultimate_strain
+            else:
+                strain = utils.get_ultimate_strain(
+                    point=(centroid[0], centroid[1]),
+                    point_na=point_na,
+                    d_n=d_n,
+                    theta=ultimate_results.theta,
+                    ultimate_strain=self.gross_properties.conc_ultimate_strain,
+                )
 
             # calculate stress and force
             stress = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
@@ -899,15 +904,15 @@ class ConcreteSection:
             )
 
             # calculate moment
-            m_x += force * (centroid[1] - self.gross_properties.axial_pc_y)
-            m_y += force * (centroid[0] - self.gross_properties.axial_pc_x)
+            m_x += force * (centroid[1] - self.gross_properties.cy)
+            m_y += force * (centroid[0] - self.gross_properties.cx)
 
             # calculate k_u
             d = ef_v - c_v
             k_u.append(d_n / d)
 
         # calculate resultant moment
-        m_u = np.sqrt(m_x * m_x + m_y * m_y)
+        m_xy = np.sqrt(m_x * m_x + m_y * m_y)
 
         # save results
         ultimate_results.d_n = d_n
@@ -915,17 +920,24 @@ class ConcreteSection:
         ultimate_results.n = n
         ultimate_results.m_x = m_x
         ultimate_results.m_y = m_y
-        ultimate_results.m_u = m_u
+        ultimate_results.m_xy = m_xy
 
         return ultimate_results
 
     def moment_interaction_diagram(
         self,
         theta: float = 0,
-        control_points: List[Tuple[str, float]] = [("D", 1.0), ("fy", 1.0), ("N", 0.0)],
+        control_points: List[Tuple[str, float]] = [
+            ("kappa0", 0.0),
+            ("D", 1.0),
+            ("fy", 1.0),
+            ("N", 0.0),
+            ("d_n", 1e-6),
+        ],
         labels: List[Union[str, None]] = [None],
-        n_points: Union[int, List[int]] = [12, 12],
+        n_points: Union[int, List[int]] = [4, 12, 12, 4],
         max_comp: Optional[float] = None,
+        max_comp_labels: List[Union[str, None]] = [None, None],
     ) -> res.MomentInteractionResults:
         r"""Generates a moment interaction diagram given a neutral axis angle `theta`
         and `n_points` calculation points between the decompression case and the pure
@@ -938,11 +950,12 @@ class ConcreteSection:
             the first item the type of control point and the second item defining the
             location of the control point. Acceptable types of control points are
             ``"D"`` (ratio of neutral axis depth to section depth), ``"d_n"`` (neutral
-            axis depth), ``"fy"`` (yield ratio of the most extreme tensile bar) and
-            ``"N"`` (axial force). Control points must be defined in an order which
-            results in a decreasing neutral axis depth (decreasing axial force). The
-            default control points define an interaction diagram from the decompression
-            point to the pure bending point.
+            axis depth), ``"fy"`` (yield ratio of the most extreme tensile bar), ``"N"``
+            (axial force) and ``"kappa"`` (zero curvature compression - must be at start
+            of list, second value in tuple is not used). Control points must be defined
+            in an order which results in a decreasing neutral axis depth (decreasing
+            axial force). The default control points define an interaction diagram from
+            the decompression point to the pure bending point.
         :param labels: List of labels to apply to the ``control_points`` for plotting
             purposes, length must be the same as the length of ``control_points``. If a
             single value is provided, will apply this label to all control points.
@@ -951,10 +964,11 @@ class ConcreteSection:
             integer is provided this will be used between all control points.
         :param max_comp: If provided, limits the maximum compressive force in the moment
             interaction diagram to ``max_comp``
+        :param max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
+            first value is at zero moment, second value is at the intersection with the
+            interaction diagram
 
         :raises ValueError: If ``control_points``, ``labels`` or ``n_points`` is invalid
-        :raises ValueError: If ``max_comp`` is less than zero (tensile) or is greater
-            than the computed squash load
 
         :return: Moment interaction results object
         """
@@ -985,19 +999,6 @@ class ConcreteSection:
         # initialise results
         mi_results = res.MomentInteractionResults()
 
-        # add squash load
-        mi_results.results.append(
-            res.UltimateBendingResults(
-                theta=theta,
-                d_n=inf,
-                k_u=0,
-                n=self.gross_properties.squash_load,
-                m_x=0,
-                m_y=0,
-                m_u=0,
-            )
-        )
-
         # compute extreme tensile fibre
         _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
 
@@ -1005,18 +1006,18 @@ class ConcreteSection:
         def decode_d_n(cp):
             # multiple of section depth
             if cp[0] == "D":
-                # check D is within section
-                if cp[1] > 1 or cp[1] < 0:
+                # check D
+                if cp[1] <= 0:
                     raise ValueError(
-                        f"Provided section depth (D) {cp[1]:.3f} must be between 0 and 1."
+                        f"Provided section depth (D) {cp[1]:.3f} must be greater than 0."
                     )
                 return cp[1] * d_t
             # neutral axis depth
             elif cp[0] == "d_n":
-                # check d_n is within section
-                if cp[1] <= 0 or cp[1] > d_t:
+                # check d_n
+                if cp[1] <= 0:
                     raise ValueError(
-                        f"Provided d_n {cp[1]:.3f} must lie within the section 0 < d_n <= {d_t:.3f}"
+                        f"Provided d_n {cp[1]:.3f} must be greater than zero."
                     )
                 return cp[1]
             # extreme tensile steel yield ratio
@@ -1030,12 +1031,23 @@ class ConcreteSection:
             elif cp[0] == "N":
                 ult_res = self.ultimate_bending_capacity(theta=theta, n=cp[1])
                 return ult_res.d_n
+            # zero curvature
+            elif cp[0] == "kappa0":
+                return 2 * d_t  # sufficient depth to capture rectangular block
             # control point type not valid
             else:
                 raise ValueError(
-                    "First value of control_point tuple must be D, d_n or N."
+                    "First value of control_point tuple must be D, d_n, fy, N or kappa0."
                 )
 
+        # see if a kappa0 was used
+        has_kappa0 = False
+
+        for cp in control_points:
+            if cp[0] == "kappa0":
+                has_kappa0 = True
+                break
+                
         # generate list of neutral axis depths to analyse and list of labels to save
         d_n_list = []
         label_list = []
@@ -1081,9 +1093,14 @@ class ConcreteSection:
             # loop through all neutral axes
             for idx, d_n in enumerate(d_n_list):
                 # calculate ultimate results
-                ult_res = self.calculate_ultimate_section_actions(
-                    d_n=d_n, ultimate_results=res.UltimateBendingResults(theta=theta)
-                )
+                if idx == 0 and has_kappa0:
+                    ult_res = self.calculate_ultimate_section_actions(
+                        d_n=inf, kappa0=True, ultimate_results=res.UltimateBendingResults(theta=theta)
+                    )
+                else:
+                    ult_res = self.calculate_ultimate_section_actions(
+                        d_n=d_n, ultimate_results=res.UltimateBendingResults(theta=theta)
+                    )
                 # add label
                 ult_res.label = label_list[idx]
                 # add ultimate result to moment interactions results and update progress
@@ -1097,35 +1114,22 @@ class ConcreteSection:
             )
             live.refresh()
 
-        # add tensile load
-        mi_results.results.append(
-            res.UltimateBendingResults(
-                theta=theta,
-                d_n=0,
-                k_u=0,
-                n=self.gross_properties.tensile_load,
-                m_x=0,
-                m_y=0,
-                m_u=0,
-            )
-        )
-
         # cut diagram at max_comp
         if max_comp:
-            # ensure max_comp is positive and below squash load
-            if max_comp < 0 or max_comp > self.gross_properties.squash_load:
-                raise ValueError("max_comp must be positive and below the squash load.")
-
             # find intersection of max comp with interaction diagram
             # and determine which points need to be removed from diagram
             x = []
-            y = []
+            y_mx = []
+            y_my = []
+            y_mxy = []
             idx_to_keep = 0
 
             for idx, mi_res in enumerate(mi_results.results):
                 # create coordinates for interpolation
                 x.append(mi_res.n)
-                y.append(mi_res.m_u)
+                y_mx.append(mi_res.m_x)
+                y_my.append(mi_res.m_y)
+                y_mxy.append(mi_res.m_xy)
 
                 # determine which index is the first to keep
                 if idx_to_keep == 0 and mi_res.n < max_comp:
@@ -1133,8 +1137,12 @@ class ConcreteSection:
 
             # create interpolation function and determine moment which corresponds to
             # an axial force of max_comp
-            f_mi = interp1d(x=x, y=y)
-            m_max_comp = f_mi(max_comp)
+            f_mx = interp1d(x=x, y=y_mx)
+            f_my = interp1d(x=x, y=y_my)
+            f_mxy = interp1d(x=x, y=y_mxy)
+            m_max_comp_mx = f_mx(max_comp)
+            m_max_comp_my = f_my(max_comp)
+            m_max_comp_mxy = f_mxy(max_comp)
 
             # remove points in diagram
             del mi_results.results[:idx_to_keep]
@@ -1148,9 +1156,10 @@ class ConcreteSection:
                     d_n=nan,
                     k_u=nan,
                     n=max_comp,
-                    m_x=nan,
-                    m_y=nan,
-                    m_u=m_max_comp,
+                    m_x=m_max_comp_mx,
+                    m_y=m_max_comp_my,
+                    m_xy=m_max_comp_mxy,
+                    label=max_comp_labels[1],
                 ),
             )
             # (0, max_comp)
@@ -1163,7 +1172,8 @@ class ConcreteSection:
                     n=max_comp,
                     m_x=0,
                     m_y=0,
-                    m_u=0,
+                    m_xy=0,
+                    label=max_comp_labels[0],
                 ),
             )
 

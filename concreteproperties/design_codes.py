@@ -519,7 +519,7 @@ class AS3600(DesignCode):
         factored_ult_res.n *= phi
         factored_ult_res.m_x *= phi
         factored_ult_res.m_y *= phi
-        factored_ult_res.m_u *= phi
+        factored_ult_res.m_xy *= phi
 
         return factored_ult_res, ult_res, phi
 
@@ -562,7 +562,7 @@ class AS3600(DesignCode):
             ult_res.n *= phi
             ult_res.m_x *= phi
             ult_res.m_y *= phi
-            ult_res.m_u *= phi
+            ult_res.m_xy *= phi
             phis.append(phi)
 
         return factored_mi_res, mi_res, phis

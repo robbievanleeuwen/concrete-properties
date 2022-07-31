@@ -470,11 +470,9 @@ def test_example_5_2():
     balanced = conc_sec.calculate_ultimate_section_actions(d_n=287)
     pure = conc_sec.ultimate_bending_capacity()
 
-    assert pytest.approx(conc_sec.gross_properties.squash_load, rel=0.01) == 9278e3
     assert pytest.approx(decomp.n, rel=0.015) == 6108e3
-    assert pytest.approx(decomp.m_u, rel=0.015) == 672e6
+    assert pytest.approx(decomp.m_xy, rel=0.015) == 672e6
     assert pytest.approx(balanced.n, rel=0.015) == 2939e3
-    assert pytest.approx(balanced.m_u, rel=0.015) == 826e6
+    assert pytest.approx(balanced.m_xy, rel=0.015) == 826e6
     assert pytest.approx(pure.n, abs=20) == 0
-    assert pytest.approx(pure.m_u, rel=0.015) == 306e6
-    assert pytest.approx(conc_sec.gross_properties.tensile_load, rel=0.01) == -1200e3
+    assert pytest.approx(pure.m_xy, rel=0.015) == 306e6

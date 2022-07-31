@@ -395,7 +395,10 @@ class MomentCurvatureResults:
     :param theta: Angle (in radians) the neutral axis makes with the horizontal
         axis (:math:`-\pi \leq \theta \leq \pi`)
     :param kappa: List of curvatures
-    :param moment: List of bending moments
+    :param n: List of axial forces
+    :param m_x: List of bending moments about the x-axis
+    :param m_y: List of bending moments about the y-axis
+    :param m_xy: List of resultant bending moments
     :param failure_geometry: Geometry object of the region of the cross-section that
         failed, ending the moment curvature analysis
     """
@@ -415,12 +418,6 @@ class MomentCurvatureResults:
     _m_y_i: float = field(default=0, repr=False)
     _failure: bool = field(default=False, repr=False)
 
-    def __post_init__(
-        self,
-    ):
-        self.kappa.append(0)
-        self.moment.append(0)
-
     def plot_results(
         self,
         m_scale: float = 1e-6,
@@ -437,7 +434,7 @@ class MomentCurvatureResults:
         """
 
         # scale moments
-        moments = np.array(self.moment) * m_scale
+        moments = np.array(self.m_xy) * m_scale
 
         # create plot and setup the plot
         with plotting_context(title="Moment-Curvature", **kwargs) as (
@@ -481,7 +478,7 @@ class MomentCurvatureResults:
             for idx, mk_result in enumerate(moment_curvature_results):
                 # scale results
                 kappas = np.array(mk_result.kappa)
-                moments = np.array(mk_result.moment) * m_scale
+                moments = np.array(mk_result.m_xy) * m_scale
 
                 ax.plot(kappas, moments, fmt, label=labels[idx])  # type: ignore
 
@@ -526,8 +523,8 @@ class MomentCurvatureResults:
         """
 
         # check moment is within bounds of results
-        m_min = min(self.moment)
-        m_max = max(self.moment)
+        m_min = min(self.m_xy)
+        m_max = max(self.m_xy)
 
         if moment > m_max or moment < m_min:
             raise ValueError(
@@ -535,7 +532,7 @@ class MomentCurvatureResults:
             )
 
         f_kappa = interp1d(
-            x=self.moment,
+            x=self.m_xy,
             y=self.kappa,
             kind="linear",
         )
@@ -554,7 +551,7 @@ class UltimateBendingResults:
     :param n: Resultant axial force
     :param m_x: Resultant bending moment about the x-axis
     :param m_y: Resultant bending moment about the y-axis
-    :param m_u: Resultant bending moment about the u-axis
+    :param m_xy: Resultant bending moment
     :param label: Result label
     """
 
@@ -569,7 +566,7 @@ class UltimateBendingResults:
     n: float = 0
     m_x: float = 0
     m_y: float = 0
-    m_u: float = 0
+    m_xy: float = 0
 
     # label
     label: Optional[str] = None
@@ -598,7 +595,7 @@ class UltimateBendingResults:
         table.add_row("Axial Force", "{:>{fmt}}".format(self.n, fmt=fmt))
         table.add_row("Bending Capacity - m_x", "{:>{fmt}}".format(self.m_x, fmt=fmt))
         table.add_row("Bending Capacity - m_y", "{:>{fmt}}".format(self.m_y, fmt=fmt))
-        table.add_row("Bending Capacity - m_u", "{:>{fmt}}".format(self.m_u, fmt=fmt))
+        table.add_row("Bending Capacity - m_xy", "{:>{fmt}}".format(self.m_xy, fmt=fmt))
 
         console = Console()
         console.print(table)
@@ -615,9 +612,12 @@ class MomentInteractionResults:
 
     def get_results_lists(
         self,
+        moment: str,
     ) -> Tuple[List[float], List[float]]:
         """Returns a list of axial forces and moments.
 
+        :param moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"``
+            or ``"m_xy"``
         :return: List of axial forces and moments *(n, m)*
         """
 
@@ -627,7 +627,15 @@ class MomentInteractionResults:
 
         for result in self.results:
             n_list.append(result.n)
-            m_list.append(result.m_u)
+
+            if moment == "m_x":
+                m_list.append(result.m_x)
+            elif moment == "m_y":
+                m_list.append(result.m_y)
+            elif moment == "m_xy":
+                m_list.append(result.m_xy)
+            else:
+                raise ValueError(f"{moment} not an acceptable value for moment.")
 
         return n_list, m_list
 
@@ -635,6 +643,7 @@ class MomentInteractionResults:
         self,
         n_scale: float = 1e-3,
         m_scale: float = 1e-6,
+        moment: str = "m_x",
         fmt: str = "o-",
         labels: bool = False,
         label_offset: bool = False,
@@ -643,7 +652,9 @@ class MomentInteractionResults:
         """Plots a moment interaction diagram.
 
         :param n_scale: Scaling factor to apply to axial force
-        :param n_scale: Scaling factor to apply to axial force
+        :param m_scale: Scaling factor to apply to the bending moment
+        :param moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"``
+            or ``"m_xy"``
         :param fmt: Plot format string
         :param labels: If set to True, also plots labels on the diagram
         :param label_offset: If set to True, attempts to offset the label from the
@@ -659,7 +670,7 @@ class MomentInteractionResults:
             ax,
         ):
             # get results
-            n_list, m_list = self.get_results_lists()
+            n_list, m_list = self.get_results_lists(moment=moment)
 
             # scale results
             forces = np.array(n_list) * n_scale
@@ -677,16 +688,19 @@ class MomentInteractionResults:
                     y_diff = ax.get_ylim()  # type: ignore
                     ar = (y_diff[1] - y_diff[0]) / (x_diff[1] - x_diff[0])
 
-                for idx, ult_res in enumerate(self.results):
-                    if ult_res.label:
+                for idx, m in enumerate(m_list):
+                    if self.results[idx].label:
                         # get x,y position on plot
-                        x = ult_res.m_u * m_scale
-                        y = ult_res.n * n_scale
+                        x = m * m_scale
+                        y = n_list[idx] * n_scale
 
                         if label_offset:
                             # calculate text offset
                             grad_pt = grad[1, idx] / grad[0, idx] / ar  # type: ignore
-                            norm_angle = np.arctan2(-1 / grad_pt, 1)
+                            if grad_pt == 0:
+                                norm_angle = np.pi / 2
+                            else:
+                                norm_angle = np.arctan2(-1 / grad_pt, 1)
                             x_t = np.cos(norm_angle) * 20
                             y_t = np.sin(norm_angle) * 20
                             annotate_dict = {
@@ -703,7 +717,7 @@ class MomentInteractionResults:
 
                         # plot text
                         ax.annotate(  # type: ignore
-                            text=ult_res.label, xy=(x, y), **annotate_dict
+                            text=self.results[idx].label, xy=(x, y), **annotate_dict
                         )
 
             plt.xlabel("Bending Moment")
@@ -718,6 +732,7 @@ class MomentInteractionResults:
         labels: List[str],
         n_scale: float = 1e-3,
         m_scale: float = 1e-6,
+        moment: str = "m_x",
         fmt: str = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:  # type: ignore
@@ -727,6 +742,8 @@ class MomentInteractionResults:
         :param labels: List of labels for each moment interaction diagram
         :param n_scale: Scaling factor to apply to axial force
         :param m_scale: Scaling factor to apply to bending moment
+        :param moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"``
+            or ``"m_xy"``
         :param fmt: Plot format string
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
@@ -742,7 +759,7 @@ class MomentInteractionResults:
 
             # for each M-N curve
             for idx, mi_result in enumerate(moment_interaction_results):
-                n_list, m_list = mi_result.get_results_lists()
+                n_list, m_list = mi_result.get_results_lists(moment=moment)
 
                 # scale results
                 forces = np.array(n_list) * n_scale
@@ -764,21 +781,27 @@ class MomentInteractionResults:
         self,
         n: float,
         m: float,
+        moment: str = "m_x",
     ) -> bool:
         """Determines whether or not the combination of axial force and moment lies
         within the moment interaction diagram.
 
         :param n: Axial force
         :param m: Bending moment
+        :param moment: Which moment to analyse, acceptable values are ``"m_x"``,
+            ``"m_y"`` or ``"m_xy"``
 
         :returns: True, if combination of axial force and moment is within the diagram
         """
 
+        # get results
+        n_list, m_list = self.get_results_lists(moment=moment)
+
         # create a polygon from points on diagram
         poly_points = []
 
-        for ult_res in self.results:
-            poly_points.append((ult_res.m_u, ult_res.n))
+        for idx, m in enumerate(m_list):
+            poly_points.append((m, n_list[idx]))
 
         poly = Polygon(poly_points)
         point = Point(m, n)
