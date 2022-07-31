@@ -67,9 +67,6 @@ class ConcreteSection:
         # calculate gross area properties
         self.calculate_gross_area_properties()
 
-        # calculate gross plastic properties
-        self.calculate_gross_plastic_properties()
-
     def calculate_gross_area_properties(
         self,
     ):
@@ -219,77 +216,6 @@ class ConcreteSection:
         self.gross_properties.e_z11_minus = self.gross_properties.e_i11 / abs(y22_min)
         self.gross_properties.e_z22_plus = self.gross_properties.e_i22 / abs(x11_max)
         self.gross_properties.e_z22_minus = self.gross_properties.e_i22 / abs(x11_min)
-
-    def calculate_gross_plastic_properties(
-        self,
-        max_compressive_strain: Optional[float] = None,
-    ):
-        """Calculates and stores gross section plastic properties.
-
-        Calculates the plastic centroid and squash load assuming all steel is at yield
-        and the concrete experiences a stress of alpha_squash * f'c. Providing
-        max_compressive_strain limits the compressive strain in the steel.
-
-        Calculates tensile load assuming all steel is at yield and the concrete is
-        entirely cracked.
-
-        :param max_compressive_strain: Maximum compressive strain in the steel under
-            squash load
-        """
-
-        # initialise the squash load, tensile load and squash moment variables
-        squash_load = 0
-        tensile_load = 0
-        squash_moment_x = 0
-        squash_moment_y = 0
-
-        # loop through all concrete geometries
-        for conc_geom in self.concrete_geometries:
-            # calculate area and centroid
-            area = conc_geom.calculate_area()
-            centroid = conc_geom.calculate_centroid()
-
-            # calculate compressive force
-            force_c = (
-                area
-                * conc_geom.material.alpha_squash
-                * conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
-            )
-
-            # add to totals
-            squash_load += force_c
-            squash_moment_x += force_c * centroid[0]
-            squash_moment_y += force_c * centroid[1]
-
-        # loop through all steel geometries
-        for steel_geom in self.steel_geometries:
-            # calculate area and centroid
-            area = steel_geom.calculate_area()
-            centroid = steel_geom.calculate_centroid()
-
-            # calculate compressive and tensile force
-            if max_compressive_strain:
-                force_c = area * steel_geom.material.stress_strain_profile.get_stress(
-                    strain=max_compressive_strain
-                )
-            else:
-                force_c = (
-                    area * steel_geom.material.stress_strain_profile.yield_strength
-                )
-
-            force_t = -area * steel_geom.material.stress_strain_profile.yield_strength
-
-            # add to totals
-            squash_load += force_c
-            tensile_load += force_t
-            squash_moment_x += force_c * centroid[0]
-            squash_moment_y += force_c * centroid[1]
-
-        # store squash load, tensile load and plastic centroid
-        self.gross_properties.squash_load = squash_load
-        self.gross_properties.tensile_load = tensile_load
-        self.gross_properties.axial_pc_x = squash_moment_x / squash_load
-        self.gross_properties.axial_pc_y = squash_moment_y / squash_load
 
         # store ultimate concrete strain (get smallest from all concrete geometries)
         conc_ult_strain = 0
@@ -658,22 +584,11 @@ class ConcreteSection:
                     warnings.warn("brentq algorithm failed.")
                     d_n = 0
 
-                # find centroid of force action
-                u_c = moment_curvature._m_v_i / moment_curvature._n_i
-                point_na = utils.point_on_neutral_axis(
-                    extreme_fibre=extreme_fibre, d_n=d_n, theta=theta
-                )
-                _, v_c = utils.global_to_local(
-                    theta=theta, x=point_na[0], y=point_na[1]
-                )
-                cx, cy = utils.local_to_global(theta=theta, u=u_c, v=v_c)
-
                 # calculate moments
                 self.service_normal_force_convergence(
                     d_n=d_n,
                     kappa=kappa,
                     moment_curvature=moment_curvature,
-                    centroid=(cx, cy),
                 )
 
                 moment = np.sqrt(

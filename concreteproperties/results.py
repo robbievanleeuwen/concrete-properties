@@ -83,11 +83,7 @@ class ConcreteProperties:
     e_z22_plus: float = 0
     e_z22_minus: float = 0
 
-    # plastic properties
-    squash_load: float = 0
-    tensile_load: float = 0
-    axial_pc_x: float = 0
-    axial_pc_y: float = 0
+    # other properties
     conc_ultimate_strain: float = 0
 
     def print_results(
@@ -130,14 +126,6 @@ class ConcreteProperties:
         table.add_row("E.Z11-", "{:>{fmt}}".format(self.e_z11_minus, fmt=fmt))
         table.add_row("E.Z22+", "{:>{fmt}}".format(self.e_z22_plus, fmt=fmt))
         table.add_row("E.Z22-", "{:>{fmt}}".format(self.e_z22_minus, fmt=fmt))
-        table.add_row("Squash Load", "{:>{fmt}}".format(self.squash_load, fmt=fmt))
-        table.add_row("Tensile Load", "{:>{fmt}}".format(self.tensile_load, fmt=fmt))
-        table.add_row(
-            "x-Axial Plastic Centroid", "{:>{fmt}}".format(self.axial_pc_x, fmt=fmt)
-        )
-        table.add_row(
-            "y-Axial Plastic Centroid", "{:>{fmt}}".format(self.axial_pc_y, fmt=fmt)
-        )
         table.add_row(
             "Ultimate Concrete Strain",
             "{:>{fmt}}".format(self.conc_ultimate_strain, fmt=fmt),
@@ -415,14 +403,16 @@ class MomentCurvatureResults:
     # results
     theta: float
     kappa: List[float] = field(default_factory=list)
-    moment: List[float] = field(default_factory=list)
+    n: List[float] = field(default_factory=list)
+    m_x: List[float] = field(default_factory=list)
+    m_y: List[float] = field(default_factory=list)
+    m_xy: List[float] = field(default_factory=list)
     failure_geometry: Geometry = field(init=False)
 
     # for analysis
     _n_i: float = field(default=0, repr=False)
     _m_x_i: float = field(default=0, repr=False)
     _m_y_i: float = field(default=0, repr=False)
-    _m_v_i: float = field(default=0, repr=False)
     _failure: bool = field(default=False, repr=False)
 
     def __post_init__(
