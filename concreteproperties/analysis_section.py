@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import isinf
 from typing import TYPE_CHECKING, List, Optional, Tuple
 
 import numpy as np
@@ -261,7 +262,6 @@ class AnalysisSection:
         d_n: float,
         theta: float,
         ultimate_strain: float,
-        kappa0: bool,
         centroid: Tuple[float, float],
     ) -> Tuple[float, float, float]:
         r"""Performs an ultimate stress analysis on the section.
@@ -271,7 +271,6 @@ class AnalysisSection:
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param ultimate_strain: Concrete strain at failure
-        :param kappa0: If set to true, overwrites d_n and sets zero curvature
         :param centroid: Centroid about which to take moments
 
         :return: Axial force and resultant moments about the global axes
@@ -288,7 +287,6 @@ class AnalysisSection:
                 d_n=d_n,
                 theta=theta,
                 ultimate_strain=ultimate_strain,
-                kappa0=kappa0,
                 centroid=centroid,
             )
 
@@ -304,7 +302,6 @@ class AnalysisSection:
         point_na: Tuple[float, float],
         theta: float,
         ultimate_strain: float,
-        kappa0: bool,
         centroid: Tuple[float, float],
     ) -> Tuple[np.ndarray, float, float, float]:
         r"""Given the neutral axis depth `d_n` and ultimate strain, determines the
@@ -315,7 +312,6 @@ class AnalysisSection:
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param ultimate_strain: Concrete strain at failure
-        :param kappa0: If set to true, overwrites d_n and sets zero curvature
         :param centroid: Centroid about which to take moments
 
         :return: Ultimate stresses net force and distance from neutral axis to point of
@@ -328,7 +324,7 @@ class AnalysisSection:
         # loop through nodes
         for idx, node in enumerate(self.mesh_nodes):
             # get strain at node
-            if kappa0:
+            if isinf(d_n):
                 strain = ultimate_strain
             else:
                 strain = utils.get_ultimate_strain(
@@ -351,7 +347,6 @@ class AnalysisSection:
             theta=theta,
             ultimate_strain=ultimate_strain,
             centroid=centroid,
-            kappa0=kappa0,
         )
 
         # calculate point of action
@@ -641,7 +636,6 @@ class Tri3:
         d_n: float,
         theta: float,
         ultimate_strain: float,
-        kappa0: bool,
         centroid: Tuple[float, float],
     ) -> Tuple[float, float, float]:
         r"""Calculates ultimate actions for the current finite element.
@@ -651,7 +645,6 @@ class Tri3:
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param ultimate_strain: Concrete strain at failure
-        :param kappa0: If set to true, overwrites d_n and sets zero curvature
         :param centroid: Centroid about which to take moments
 
         :return: Axial force and resultant moments about the global axes
@@ -675,7 +668,7 @@ class Tri3:
             y = np.dot(N, np.transpose(self.coords[1, :]))
 
             # get strain at gauss point
-            if kappa0:
+            if isinf(d_n):
                 strain = ultimate_strain
             else:
                 strain = utils.get_ultimate_strain(

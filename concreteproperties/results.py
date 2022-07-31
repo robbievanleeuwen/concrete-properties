@@ -800,8 +800,8 @@ class MomentInteractionResults:
         # create a polygon from points on diagram
         poly_points = []
 
-        for idx, m in enumerate(m_list):
-            poly_points.append((m, n_list[idx]))
+        for idx, mom in enumerate(m_list):
+            poly_points.append((mom, n_list[idx]))
 
         poly = Polygon(poly_points)
         point = Point(m, n)
@@ -1001,13 +1001,7 @@ class BiaxialBendingResults:
 class StressResult:
     """Class for storing stress results.
 
-    For uncracked and cracked analyses, the lever arm is the distance to the elastic
-    centroid.
-
-    For service stress analyses, the lever arm is the distance to the computed centroid.
-
-    For ultimate stress analyses, the lever arm is the distance to the plastic
-    centroid.
+    The lever arm is computed to the elastic centroid.
 
     :param concrete_analysis_sections: List of concrete analysis section objects
         present in the stress analysis, which can be visualised by calling the
@@ -1016,12 +1010,12 @@ class StressResult:
     :param concrete_stresses: List of concrete stresses at the nodes of each concrete
         analysis section
     :param concrete_forces: List of net forces for each concrete analysis section and its
-        lever arm to the neutral axis (``force``, ``d_x``, ``d_y``)
+        lever arm (``force``, ``d_x``, ``d_y``)
     :param steel_geometries: List of steel geometry objects present in the stress analysis
     :param steel_stresses: List of steel stresses for each steel geometry
     :param steel_strains: List of steel strains for each steel geometry
-    :param steel_forces: List of net forces for each steel geometry and its lever arm to
-        the neutral axis (``force``, ``d_x``, ``d_y``)
+    :param steel_forces: List of net forces for each steel geometry and its lever arm
+        (``force``, ``d_x``, ``d_y``)
     """
 
     concrete_section: ConcreteSection

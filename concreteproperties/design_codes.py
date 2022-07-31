@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from math import inf
 from typing import TYPE_CHECKING, List, Optional, Tuple
 
 import numpy as np
@@ -258,10 +259,10 @@ class AS3600(DesignCode):
             if steel_geom.material.stress_strain_profile.fracture_strain < 0.05:
                 self.reinforcement_class = "L"
 
-        # re-run plastic property calculation with max compressive strain
-        self.concrete_section.calculate_gross_plastic_properties(
-            max_compressive_strain=0.0025
-        )
+        # calculate squash and tensile load
+        squash, tensile = self.squash_tensile_load()
+        self.squash_load = squash
+        self.tensile_load = tensile
 
     def create_concrete_material(
         self,
@@ -377,6 +378,51 @@ class AS3600(DesignCode):
             colour=colour,
         )
 
+    def squash_tensile_load(
+        self,
+    ) -> Tuple[float, float]:
+        """Calculates the squash and tensile load of the reinforced concrete section.
+
+        :return: Squash and tensile load
+        """
+
+        # initialise the squash load, tensile load and squash moment variables
+        squash_load = 0
+        tensile_load = 0
+
+        # loop through all concrete geometries
+        for conc_geom in self.concrete_section.concrete_geometries:
+            # calculate area and centroid
+            area = conc_geom.calculate_area()
+
+            # calculate compressive force
+            force_c = (
+                area
+                * conc_geom.material.alpha_squash
+                * conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
+            )
+
+            # add to totals
+            squash_load += force_c
+
+        # loop through all steel geometries
+        for steel_geom in self.concrete_section.steel_geometries:
+            # calculate area and centroid
+            area = steel_geom.calculate_area()
+
+            # calculate compressive and tensile force
+            force_c = area * steel_geom.material.stress_strain_profile.get_stress(
+                strain=0.025
+            )
+
+            force_t = -area * steel_geom.material.stress_strain_profile.yield_strength
+
+            # add to totals
+            squash_load += force_c
+            tensile_load += force_t
+
+        return squash_load, tensile_load
+
     def capacity_reduction_factor(
         self,
         n_u: float,
@@ -483,7 +529,7 @@ class AS3600(DesignCode):
         """
 
         # get parameters to determine phi
-        n_uot = self.concrete_section.gross_properties.tensile_load
+        n_uot = self.tensile_load
         k_uo = self.get_k_uo(theta=theta)
         n_ub = self.get_n_ub(theta=theta)
 
@@ -526,22 +572,53 @@ class AS3600(DesignCode):
     def moment_interaction_diagram(
         self,
         phi_0: float = 0.6,
-        **kwargs,
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
         """Generates a moment interaction diagram with capacity factors to AS 3600:2018.
 
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
-        :param kwargs: Keyword arguments passed to
-            :meth:`~concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram`
 
         :return: Factored and unfactored moment interaction results objects, and list of
             capacity reduction factors *(factored_results, unfactored_results, phis)*
         """
 
-        mi_res = self.concrete_section.moment_interaction_diagram(**kwargs)
+        mi_res = self.concrete_section.moment_interaction_diagram(
+            control_points=[
+                ("D", 1.0),
+                ("fy", 1.0),
+                ("N", 0.0),
+            ],
+            n_points=[12, 12],
+        )
 
         # get theta
         theta = mi_res.results[0].theta
+
+        # add squash load
+        mi_res.results.insert(
+            0,
+            res.UltimateBendingResults(
+                theta=theta,
+                d_n=inf,
+                k_u=0,
+                n=self.squash_load,
+                m_x=0,
+                m_y=0,
+                m_xy=0,
+            ),
+        )
+
+        # add tensile load
+        mi_res.results.append(
+            res.UltimateBendingResults(
+                theta=theta,
+                d_n=0,
+                k_u=0,
+                n=self.tensile_load,
+                m_x=0,
+                m_y=0,
+                m_xy=0,
+            )
+        )
 
         # make a copy of the results to factor
         factored_mi_res = deepcopy(mi_res)
@@ -550,7 +627,7 @@ class AS3600(DesignCode):
         phis = []
 
         # get required constants for phi
-        n_uot = self.concrete_section.gross_properties.tensile_load
+        n_uot = self.tensile_load
         k_uo = self.get_k_uo(theta=theta)
         n_ub = self.get_n_ub(theta=theta)
 

@@ -90,4 +90,4 @@ def test_control_points():
     assert int(conc_sec.ultimate_bending_capacity(n=0).n) in n_list
 
     # check length of list
-    assert len(d_n_list) == 5 * (n - 1) + 1 + 2
+    assert len(d_n_list) == 5 * (n - 1) + 1

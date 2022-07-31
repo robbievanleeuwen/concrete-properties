@@ -372,56 +372,6 @@ def test_example_3_11():
     assert pytest.approx(ultimate_results.m_x, rel=0.01) == 1860e6
 
 
-def test_example_5_1():
-    concrete = Concrete(
-        name="40 MPa Concrete",
-        density=2.4e-6,
-        stress_strain_profile=ConcreteLinear(elastic_modulus=32.8e3),
-        ultimate_stress_strain_profile=RectangularStressBlock(
-            compressive_strength=40,
-            alpha=0.85,
-            gamma=0.77,
-            ultimate_strain=0.003,
-        ),
-        alpha_squash=0.85,
-        flexural_tensile_strength=3.4,
-        colour="lightgrey",
-    )
-
-    steel = Steel(
-        name="500 MPa Steel",
-        density=7.85e-6,
-        stress_strain_profile=SteelElasticPlastic(
-            yield_strength=500,
-            elastic_modulus=200e3,
-            fracture_strain=0.05,
-        ),
-        colour="grey",
-    )
-
-    geom = sp_ps.rectangular_section(d=800, b=600, material=concrete)  # type: ignore
-    void = sp_ps.circular_section_by_area(area=np.pi * 75 * 75, n=16).shift_section(
-        x_offset=300, y_offset=300
-    )
-    geom -= void
-
-    geom = add_bar_rectangular_array(
-        geometry=geom,
-        area=800,
-        material=steel,
-        n_x=3,
-        x_s=234,
-        n_y=3,
-        y_s=334,
-        anchor=(66, 66),
-        exterior_only=True,
-    )
-
-    conc_sec = ConcreteSection(geom)  # type: ignore
-
-    assert pytest.approx(conc_sec.gross_properties.axial_pc_y, rel=0.01) == 800 - 397
-
-
 def test_example_5_2():
     concrete = Concrete(
         name="40 MPa Concrete",

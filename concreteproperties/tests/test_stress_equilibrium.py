@@ -178,5 +178,5 @@ def test_stress_equilibrium_tee(theta):
     ultimate = sec.ultimate_bending_capacity()
     ult_stress = sec.calculate_ultimate_stress(ultimate_results=ultimate)
 
-    assert pytest.approx(ult_stress.sum_forces(), abs=20) == 0
+    assert pytest.approx(ult_stress.sum_forces(), abs=100) == 0
     assert pytest.approx(ult_stress.sum_moments()[2], rel=1e-4) == ultimate.m_xy

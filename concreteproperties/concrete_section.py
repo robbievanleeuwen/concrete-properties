@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from math import inf, nan
+from math import inf, nan, isinf
 from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
 import matplotlib.patches as mpatches
@@ -714,13 +714,6 @@ class ConcreteSection:
             force = stress * area
             n += force
 
-            # convert steel centroid to local coordinates
-            u_s, _ = utils.global_to_local(
-                theta=moment_curvature.theta,
-                x=steel_centroid[0],
-                y=steel_centroid[1],
-            )
-
             # calculate moment
             m_x += force * (steel_centroid[1] - self.gross_properties.cy)
             m_y += force * (steel_centroid[0] - self.gross_properties.cx)
@@ -800,7 +793,6 @@ class ConcreteSection:
     def calculate_ultimate_section_actions(
         self,
         d_n: float,
-        kappa0: bool = False,
         ultimate_results: Optional[res.UltimateBendingResults] = None,
     ) -> res.UltimateBendingResults:
         """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
@@ -817,7 +809,7 @@ class ConcreteSection:
             ultimate_results = res.UltimateBendingResults(theta=0)
 
         # calculate extreme fibre in global coordinates
-        extreme_fibre, d_t = utils.calculate_extreme_fibre(
+        extreme_fibre, _ = utils.calculate_extreme_fibre(
             points=self.geometry.points, theta=ultimate_results.theta
         )
 
@@ -833,7 +825,7 @@ class ConcreteSection:
             raise ValueError("d_n must be positive.")
 
         # find point on neutral axis by shifting by d_n
-        if kappa0:
+        if isinf(d_n):
             point_na = (0, 0)
         else:
             point_na = utils.point_on_neutral_axis(
@@ -841,7 +833,7 @@ class ConcreteSection:
             )
 
         # create splits in concrete geometries at points in stress-strain profiles
-        if kappa0:
+        if isinf(d_n):
             concrete_split_geoms = self.concrete_geometries
         else:
             concrete_split_geoms = utils.split_section_at_strains(
@@ -867,7 +859,6 @@ class ConcreteSection:
                 d_n=d_n,
                 theta=ultimate_results.theta,
                 ultimate_strain=self.gross_properties.conc_ultimate_strain,
-                kappa0=kappa0,
                 centroid=(self.gross_properties.cx, self.gross_properties.cy),
             )
 
@@ -882,7 +873,7 @@ class ConcreteSection:
             centroid = steel_geom.calculate_centroid()
 
             # get strain at centroid of steel
-            if kappa0:
+            if isinf(d_n):
                 strain = self.gross_properties.conc_ultimate_strain
             else:
                 strain = utils.get_ultimate_strain(
@@ -1047,7 +1038,7 @@ class ConcreteSection:
             if cp[0] == "kappa0":
                 has_kappa0 = True
                 break
-                
+
         # generate list of neutral axis depths to analyse and list of labels to save
         d_n_list = []
         label_list = []
@@ -1095,11 +1086,13 @@ class ConcreteSection:
                 # calculate ultimate results
                 if idx == 0 and has_kappa0:
                     ult_res = self.calculate_ultimate_section_actions(
-                        d_n=inf, kappa0=True, ultimate_results=res.UltimateBendingResults(theta=theta)
+                        d_n=inf,
+                        ultimate_results=res.UltimateBendingResults(theta=theta),
                     )
                 else:
                     ult_res = self.calculate_ultimate_section_actions(
-                        d_n=d_n, ultimate_results=res.UltimateBendingResults(theta=theta)
+                        d_n=d_n,
+                        ultimate_results=res.UltimateBendingResults(theta=theta),
                     )
                 # add label
                 ult_res.label = label_list[idx]
@@ -1184,8 +1177,8 @@ class ConcreteSection:
         n: float = 0,
         n_points: int = 48,
     ) -> res.BiaxialBendingResults:
-        """Generates a biaxial bending diagram given a net axial force `n` and
-        `n_points` calculation points.
+        """Generates a biaxial bending diagram given a net axial force ``n`` and
+        ``n_points`` calculation points.
 
         :param n: Net axial force
         :param n_points: Number of calculation points between the decompression
@@ -1543,14 +1536,6 @@ class ConcreteSection:
             warnings.warn("brentq algorithm failed.")
             d_n = 0
 
-        # find centroid of force action
-        u_c = mk._m_v_i / mk._n_i
-        point_na = utils.point_on_neutral_axis(
-            extreme_fibre=extreme_fibre, d_n=d_n, theta=theta
-        )
-        _, v_c = utils.global_to_local(theta=theta, x=point_na[0], y=point_na[1])
-        cx, cy = utils.local_to_global(theta=theta, u=u_c, v=v_c)
-
         # initialise stress results
         analysis_sections = []
         conc_sigs = []
@@ -1558,6 +1543,11 @@ class ConcreteSection:
         steel_sigs = []
         steel_strains = []
         steel_forces = []
+
+        # find point on neutral axis by shifting by d_n
+        point_na = utils.point_on_neutral_axis(
+            extreme_fibre=extreme_fibre, d_n=d_n, theta=theta
+        )
 
         # create splits in concrete geometries at points in stress-strain profiles
         concrete_split_geoms = utils.split_section_at_strains(
@@ -1578,7 +1568,7 @@ class ConcreteSection:
                 kappa=kappa,
                 point_na=point_na,
                 theta=theta,
-                centroid=(cx, cy),
+                centroid=(self.gross_properties.cx, self.gross_properties.cy),
             )
             conc_sigs.append(sig)
             conc_forces.append((n_conc, d_x, d_y))
@@ -1605,7 +1595,13 @@ class ConcreteSection:
 
             steel_sigs.append(sig)
             steel_strains.append(strain)
-            steel_forces.append((n_steel, centroid[0] - cx, centroid[1] - cy))
+            steel_forces.append(
+                (
+                    n_steel,
+                    centroid[0] - -self.gross_properties.cx,
+                    centroid[1] - -self.gross_properties.cy,
+                )
+            )
 
         return res.StressResult(
             concrete_section=self,
@@ -1630,21 +1626,19 @@ class ConcreteSection:
         """
 
         # depth of neutral axis at extreme tensile fibre
-        extreme_fibre, d_t = utils.calculate_extreme_fibre(
+        extreme_fibre, _ = utils.calculate_extreme_fibre(
             points=self.geometry.points, theta=ultimate_results.theta
         )
 
         # find point on neutral axis by shifting by d_n
-        point_na = utils.point_on_neutral_axis(
-            extreme_fibre=extreme_fibre,
-            d_n=ultimate_results.d_n,
-            theta=ultimate_results.theta,
-        )
-
-        # get principal coordinates of neutral axis
-        na_local = utils.global_to_local(
-            theta=ultimate_results.theta, x=point_na[0], y=point_na[1]
-        )
+        if isinf(ultimate_results.d_n):
+            point_na = (0, 0)
+        else:
+            point_na = utils.point_on_neutral_axis(
+                extreme_fibre=extreme_fibre,
+                d_n=ultimate_results.d_n,
+                theta=ultimate_results.theta,
+            )
 
         # initialise stress results for each concrete geometry
         analysis_sections = []
@@ -1655,14 +1649,17 @@ class ConcreteSection:
         steel_forces = []
 
         # create splits in concrete geometries at points in stress-strain profiles
-        concrete_split_geoms = utils.split_section_at_strains(
-            concrete_geometries=self.concrete_geometries,
-            theta=ultimate_results.theta,
-            point_na=point_na,
-            ultimate=True,
-            ultimate_strain=self.gross_properties.conc_ultimate_strain,
-            d_n=ultimate_results.d_n,
-        )
+        if isinf(ultimate_results.d_n):
+            concrete_split_geoms = self.concrete_geometries
+        else:
+            concrete_split_geoms = utils.split_section_at_strains(
+                concrete_geometries=self.concrete_geometries,
+                theta=ultimate_results.theta,
+                point_na=point_na,
+                ultimate=True,
+                ultimate_strain=self.gross_properties.conc_ultimate_strain,
+                d_n=ultimate_results.d_n,
+            )
 
         # loop through all concrete geometries and calculate stress
         for geom in concrete_split_geoms:
@@ -1674,7 +1671,7 @@ class ConcreteSection:
                 point_na=point_na,
                 theta=ultimate_results.theta,
                 ultimate_strain=self.gross_properties.conc_ultimate_strain,
-                pc=(self.gross_properties.axial_pc_x, self.gross_properties.axial_pc_y),
+                centroid=(self.gross_properties.cx, self.gross_properties.cy),
             )
             conc_sigs.append(sig)
             conc_forces.append((n_conc, d_x, d_y))
@@ -1688,13 +1685,16 @@ class ConcreteSection:
             centroid = steel_geom.calculate_centroid()
 
             # get strain at centroid of steel
-            strain = utils.get_ultimate_strain(
-                point=(centroid[0], centroid[1]),
-                point_na=point_na,
-                d_n=ultimate_results.d_n,
-                theta=ultimate_results.theta,
-                ultimate_strain=self.gross_properties.conc_ultimate_strain,
-            )
+            if isinf(ultimate_results.d_n):
+                strain = self.gross_properties.conc_ultimate_strain
+            else:
+                strain = utils.get_ultimate_strain(
+                    point=(centroid[0], centroid[1]),
+                    point_na=point_na,
+                    d_n=ultimate_results.d_n,
+                    theta=ultimate_results.theta,
+                    ultimate_strain=self.gross_properties.conc_ultimate_strain,
+                )
 
             # calculate stress, force and point of action
             sig = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
@@ -1705,8 +1705,8 @@ class ConcreteSection:
             steel_forces.append(
                 (
                     n_steel,
-                    centroid[0] - self.gross_properties.axial_pc_x,
-                    centroid[1] - self.gross_properties.axial_pc_y,
+                    centroid[0] - self.gross_properties.cx,
+                    centroid[1] - self.gross_properties.cy,
                 )
             )
 
