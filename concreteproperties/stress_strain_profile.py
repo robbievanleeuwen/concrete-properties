@@ -125,6 +125,16 @@ class StressStrainProfile:
 
         return min(self.stresses)
 
+    def get_yield_strength(
+        self,
+    ) -> float:
+        """Returns the yield strength of the stress-strain profile.
+
+        :return: Yield strength
+        """
+
+        raise NotImplementedError
+
     def get_ultimate_compressive_strain(
         self,
     ) -> float:
@@ -667,6 +677,16 @@ class SteelProfile(StressStrainProfile):
         """
 
         return self.elastic_modulus
+
+    def get_yield_strength(
+        self,
+    ) -> float:
+        """Returns the yield strength of the stress-strain profile.
+
+        :return: Yield strength
+        """
+
+        return self.yield_strength
 
     def print_properties(
         self,

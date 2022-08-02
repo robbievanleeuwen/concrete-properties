@@ -741,6 +741,8 @@ class ConcreteSection:
         r"""Given a neutral axis angle ``theta`` and an axial force ``n``, calculates
         the ultimate bending capacity.
 
+        Note that ``k_u`` is calculated only for lumped (non-meshed) geometries.
+
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
         :param n: Net axial force
@@ -861,10 +863,6 @@ class ConcreteSection:
 
                 meshed_split_geoms.extend(split_geoms)
 
-        # # TESTING
-        # for geom in meshed_split_geoms:
-        #     geom.plot_geometry()
-
         # initialise results
         n = 0
         m_x = 0
@@ -905,7 +903,9 @@ class ConcreteSection:
                 )
 
             # calculate stress and force
-            stress = lumped_geom.material.stress_strain_profile.get_stress(strain=strain)
+            stress = lumped_geom.material.stress_strain_profile.get_stress(
+                strain=strain
+            )
             force = stress * area
             n += force
 
@@ -1011,7 +1011,9 @@ class ConcreteSection:
         mi_results = res.MomentInteractionResults()
 
         # compute extreme tensile fibre
-        _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
+        _, d_t = utils.calculate_extreme_fibre(
+            points=self.compound_geometry.points, theta=theta
+        )
 
         # function to decode d_n from control_point
         def decode_d_n(cp):
@@ -1745,8 +1747,9 @@ class ConcreteSection:
         self,
         theta: float,
     ) -> Tuple[float, float]:
-        r"""Given neutral axis angle ``theta``, determines the depth of the furthest bar
-        from the extreme compressive fibre and also returns its yield strain.
+        r"""Given neutral axis angle ``theta``, determines the depth of the furthest
+        lumped reinforcement from the extreme compressive fibre and also returns its
+        yield strain.
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal
             axis (:math:`-\pi \leq \theta \leq \pi`)
@@ -1756,19 +1759,20 @@ class ConcreteSection:
 
         # initialise variables
         d_ext = 0
-        extreme_geom = None
 
         # calculate extreme fibre in local coordinates
         extreme_fibre, _ = utils.calculate_extreme_fibre(
-            points=self.geometry.points, theta=theta
+            points=self.compound_geometry.points, theta=theta
         )
         _, ef_v = utils.global_to_local(
             theta=theta, x=extreme_fibre[0], y=extreme_fibre[1]
         )
 
-        # get depth to extreme tensile bar
-        for steel_geom in self.steel_geometries:
-            centroid = steel_geom.calculate_centroid()
+        # get depth to extreme lumped reinforcement
+        extreme_geom = self.reinf_geometries_lumped[0]
+
+        for lumped_geom in self.reinf_geometries_lumped:
+            centroid = lumped_geom.calculate_centroid()
 
             # convert centroid to local coordinates
             _, c_v = utils.global_to_local(theta=theta, x=centroid[0], y=centroid[1])
@@ -1778,12 +1782,12 @@ class ConcreteSection:
 
             if d > d_ext:
                 d_ext = d
-                extreme_geom = steel_geom
+                extreme_geom = lumped_geom
 
         # calculate yield strain
         yield_strain = (
-            extreme_geom.material.stress_strain_profile.yield_strength  # type: ignore
-            / extreme_geom.material.stress_strain_profile.elastic_modulus  # type: ignore
+            extreme_geom.material.stress_strain_profile.get_yield_strength()
+            / extreme_geom.material.stress_strain_profile.get_elastic_modulus()
         )
 
         return d_ext, yield_strain

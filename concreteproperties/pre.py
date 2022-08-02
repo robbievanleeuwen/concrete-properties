@@ -300,8 +300,8 @@ class CPGeom:
         return top_polys, bot_polys
 
     def plot_geometry(
-        self, 
-        title: str = "Cross-Section Geometry", 
+        self,
+        title: str = "Cross-Section Geometry",
         **kwargs,
     ) -> matplotlib.axes.Axes:  # type: ignore
         """Plots the geometry.
