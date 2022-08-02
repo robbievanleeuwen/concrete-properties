@@ -125,15 +125,25 @@ class StressStrainProfile:
 
         return min(self.stresses)
 
-    def get_ultimate_strain(
+    def get_ultimate_compressive_strain(
         self,
     ) -> float:
-        """Returns the largest strain.
+        """Returns the largest compressive strain.
 
         :return: Ultimate strain
         """
 
         return max(self.strains)
+
+    def get_ultimate_tensile_strain(
+        self,
+    ) -> float:
+        """Returns the largest tensile strain.
+
+        :return: Ultimate strain
+        """
+
+        return min(self.strains)
 
     def get_unique_strains(
         self,
@@ -173,7 +183,12 @@ class StressStrainProfile:
             "{:>{fmt}}".format(-self.get_tensile_strength(), fmt=fmt),
         )
         table.add_row(
-            "Ultimate Strain", "{:>{fmt}}".format(self.get_ultimate_strain(), fmt=fmt)
+            "Ultimate Compressive Strain",
+            "{:>{fmt}}".format(self.get_ultimate_compressive_strain(), fmt=fmt),
+        )
+        table.add_row(
+            "Ultimate Tensile Strain",
+            "{:>{fmt}}".format(self.get_ultimate_tensile_strain(), fmt=fmt),
         )
 
         console = Console()
@@ -238,7 +253,8 @@ class ConcreteServiceProfile(StressStrainProfile):
             "Elastic Modulus", "{:>{fmt}}".format(self.get_elastic_modulus(), fmt=fmt)
         )
         table.add_row(
-            "Ultimate Strain", "{:>{fmt}}".format(self.get_ultimate_strain(), fmt=fmt)
+            "Ultimate Compressive Strain",
+            "{:>{fmt}}".format(self.get_ultimate_compressive_strain(), fmt=fmt),
         )
 
         console = Console()
@@ -277,7 +293,7 @@ class ConcreteServiceProfile(StressStrainProfile):
 
         return None
 
-    def get_ultimate_strain(
+    def get_ultimate_compressive_strain(
         self,
     ) -> float:
         """Returns the largest strain.
@@ -454,7 +470,7 @@ class ConcreteUltimateProfile(StressStrainProfile):
 
         return self.compressive_strength
 
-    def get_ultimate_strain(
+    def get_ultimate_compressive_strain(
         self,
     ) -> float:
         """Returns the ultimate strain, or largest compressive strain.
@@ -465,7 +481,7 @@ class ConcreteUltimateProfile(StressStrainProfile):
         try:
             return self.ultimate_strain  # type: ignore
         except AttributeError:
-            return super().get_ultimate_strain()
+            return super().get_ultimate_compressive_strain()
 
     def print_properties(
         self,
@@ -485,7 +501,8 @@ class ConcreteUltimateProfile(StressStrainProfile):
             "{:>{fmt}}".format(self.get_compressive_strength(), fmt=fmt),
         )
         table.add_row(
-            "Ultimate Strain", "{:>{fmt}}".format(self.get_ultimate_strain(), fmt=fmt)
+            "Ultimate Compressive Strain",
+            "{:>{fmt}}".format(self.get_ultimate_compressive_strain(), fmt=fmt),
         )
         console = Console()
         console.print(table)
@@ -675,7 +692,8 @@ class SteelProfile(StressStrainProfile):
             "{:>{fmt}}".format(-self.get_tensile_strength(), fmt=fmt),
         )
         table.add_row(
-            "Fracture Strain", "{:>{fmt}}".format(self.get_ultimate_strain(), fmt=fmt)
+            "Fracture Strain",
+            "{:>{fmt}}".format(self.get_ultimate_tensile_strain(), fmt=fmt),
         )
 
         console = Console()

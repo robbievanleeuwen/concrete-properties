@@ -8,8 +8,10 @@ from rich.table import Column
 from rich.text import Text
 from sectionproperties.pre.geometry import CompoundGeometry
 
+from concreteproperties.pre import CPGeomConcrete
+
 if TYPE_CHECKING:
-    from sectionproperties.pre.geometry import Geometry
+    from concreteproperties.pre import CPGeom
 
 
 def get_service_strain(
@@ -31,10 +33,10 @@ def get_service_strain(
     """
 
     # convert point to local coordinates
-    u, v = global_to_local(theta=theta, x=point[0], y=point[1])
+    _, v = global_to_local(theta=theta, x=point[0], y=point[1])
 
     # convert point_na to local coordinates
-    u_na, v_na = global_to_local(theta=theta, x=point_na[0], y=point_na[1])
+    _, v_na = global_to_local(theta=theta, x=point_na[0], y=point_na[1])
 
     # calculate distance between NA and point in `v` direction
     d = v - v_na
@@ -100,24 +102,27 @@ def point_on_neutral_axis(
     return local_to_global(theta=theta, u=u, v=v)
 
 
-def split_section_at_strains(
-    concrete_geometries: List[Geometry],
+def split_geom_at_strains(
+    geom: Union[CPGeom, CPGeomConcrete],
     theta: float,
     point_na: Tuple[float, float],
     ultimate: bool,
     ultimate_strain: Optional[float] = None,
     d_n: Optional[float] = None,
     kappa: Optional[float] = None,
-) -> List[Geometry]:
-    r"""Splits concrete geometries at discontinuities in its stress-strain profile.
+) -> Union[List[CPGeom], List[CPGeomConcrete]]:
+    r"""Splits geometries at discontinuities in its stress-strain profile.
 
-    :param concrete_geometries: List of concrete geometries
+    :param geom: Geometry to split
     :param theta: Angle (in radians) the neutral axis makes with the horizontal
         axis (:math:`-\pi \leq \theta \leq \pi`)
     :param point_na: Point on the neutral axis
-    :param ultimate: If set to True, uses ultimate stress-strain profile
-    :param ultimate_strain: Concrete strain at failure
-    :param d_n: Depth of the neutral axis from the extreme compression fibre
+    :param ultimate: If set to True, uses ultimate stress-strain profile for concrete
+        geometries
+    :param ultimate_strain: Concrete strain at failure (required for ``ultimate=True``
+        only)
+    :param d_n: Depth of the neutral axis from the extreme compression fibre (required
+        for ``ultimate=True`` only)
     :param kappa: Curvature
 
     :return: List of split geometries
@@ -125,82 +130,64 @@ def split_section_at_strains(
 
     # handle zero curvature
     if kappa == 0:
-        return concrete_geometries
+        return [geom]
 
     # create splits in concrete geometries at points in stress-strain profiles
-    concrete_split_geoms = []
+    split_geoms: Union[List[CPGeom], List[CPGeomConcrete]] = []
 
-    for conc_geom in concrete_geometries:
-        if ultimate:
-            strains = (
-                conc_geom.material.ultimate_stress_strain_profile.get_unique_strains()  # type: ignore
-            )
+    if ultimate and isinstance(geom, CPGeomConcrete):
+        strains = geom.material.ultimate_stress_strain_profile.get_unique_strains()
+    else:
+        strains = geom.material.stress_strain_profile.get_unique_strains()
+
+    # make geom a list of geometries
+    geom_list = [geom]
+
+    # initialise top_geoms in case of two unique strains
+    top_geoms = geom_list
+
+    # loop through intermediate points on stress-strain profile
+    for strain in strains[1:-1]:
+        # depth to points of *strain* from NA
+        # ultimate case
+        if ultimate and ultimate_strain and d_n:
+            d = strain / ultimate_strain * d_n
+        # service case
+        elif kappa:
+            d = strain / kappa
         else:
-            strains = conc_geom.material.stress_strain_profile.get_unique_strains()  # type: ignore
+            raise ValueError("Not enough arguments provided.")
 
-        # initialise top_geoms in case of two unique strains
-        top_geoms = [conc_geom]
+        # convert depth to global coordinates
+        dx, dy = local_to_global(theta=theta, u=0, v=d)
 
-        # loop through intermediate points on stress-strain profile
-        for idx, strain in enumerate(strains[1:-1]):
-            # depth to point with `strain` from NA
-            if ultimate:
-                d = strain / ultimate_strain * d_n
-            else:
-                d = strain / kappa
+        # calculate location of point
+        pt = point_na[0] + dx, point_na[1] + dy
 
-            # convert depth to global coordinates
-            dx, dy = local_to_global(theta=theta, u=0, v=d)
+        # make list of geometries that will need to continue to be split after the
+        # split operation, i.e. those above the split
+        continuing_geoms = []
 
-            # calculate location of point with `strain`
-            pt = point_na[0] + dx, point_na[1] + dy
-
-            # split concrete geometry (from bottom up)
-            top_geoms, bot_geoms = split_section(
-                geometry=conc_geom,
+        # split concrete geometries (from bottom up)
+        for g in geom_list:
+            top_geoms, bot_geoms = g.split_section(
                 point=pt,
                 theta=theta,
             )
 
             # save bottom geoms
-            concrete_split_geoms.extend(bot_geoms)
+            split_geoms.extend(bot_geoms)
 
-            # continue to split top geoms
-            conc_geom = CompoundGeometry(geoms=top_geoms)
+            # save continuing geoms
+            continuing_geoms.extend(top_geoms)
 
-        # save final top geoms
-        concrete_split_geoms.extend(top_geoms)
+        # update geom_list for next strain
+        geom_list = continuing_geoms
 
-    return concrete_split_geoms
+    # save final top geoms
+    split_geoms.extend(top_geoms)
 
-
-def split_section(
-    geometry: Union[Geometry, CompoundGeometry],
-    point: Tuple[float, float],
-    theta: float,
-) -> Tuple[List[Geometry], List[Geometry]]:
-    r"""Splits the geometry along a line defined by a `point` and rotation angle
-    `theta`.
-
-    :param geometry: Geometry to split
-    :param point: Point at which to split the geometry `(x, y)`
-    :param theta: Angle (in radians) the neutral axis makes with the horizontal
-        axis (:math:`-\pi \leq \theta \leq \pi`)
-
-    :return: Split geometry above and below the line
-    """
-
-    # split the section using the sectionproperties method
-    top_geoms, bot_geoms = geometry.split_section(
-        point_i=np.round(point, 8), vector=(np.cos(theta), np.sin(theta))
-    )
-
-    # ensure top geoms is in compression
-    # sectionproperties definition is based on global coordinate system only
-    if theta <= np.pi / 2 and theta >= -np.pi / 2:
-        return top_geoms, bot_geoms
-    else:
-        return bot_geoms, top_geoms
+    return split_geoms
 
 
 def calculate_extreme_fibre(

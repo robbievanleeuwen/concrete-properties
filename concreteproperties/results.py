@@ -11,7 +11,6 @@ import matplotlib.tri as tri
 import numpy as np
 from matplotlib.collections import PatchCollection
 from matplotlib.colors import CenteredNorm  # type: ignore
-from mpl_toolkits import mplot3d
 from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
 from rich.console import Console
 from rich.table import Table
@@ -24,14 +23,14 @@ from concreteproperties.post import plotting_context
 
 if TYPE_CHECKING:
     import matplotlib
-    from sectionproperties.pre.geometry import Geometry
 
     from concreteproperties.analysis_section import AnalysisSection
     from concreteproperties.concrete_section import ConcreteSection
+    from concreteproperties.pre import CPGeom
 
 
 @dataclass
-class ConcreteProperties:
+class GrossProperties:
     """Class for storing gross concrete section properties.
 
     All properties with an `e_` preceding the property are multiplied by the elastic
@@ -43,7 +42,8 @@ class ConcreteProperties:
     # section areas
     total_area: float = 0
     concrete_area: float = 0
-    steel_area: float = 0
+    reinf_meshed_area: float = 0
+    reinf_lumped_area: float = 0
     e_a: float = 0
 
     # section mass
@@ -101,7 +101,14 @@ class ConcreteProperties:
 
         table.add_row("Total Area", "{:>{fmt}}".format(self.total_area, fmt=fmt))
         table.add_row("Concrete Area", "{:>{fmt}}".format(self.concrete_area, fmt=fmt))
-        table.add_row("Steel Area", "{:>{fmt}}".format(self.steel_area, fmt=fmt))
+        table.add_row(
+            "Meshed Reinforcement Area",
+            "{:>{fmt}}".format(self.reinf_meshed_area, fmt=fmt),
+        )
+        table.add_row(
+            "Lumped Reinforcement Area",
+            "{:>{fmt}}".format(self.reinf_lumped_area, fmt=fmt),
+        )
         table.add_row("Axial Rigidity (EA)", "{:>{fmt}}".format(self.e_a, fmt=fmt))
         table.add_row("Mass (per unit length)", "{:>{fmt}}".format(self.mass, fmt=fmt))
         table.add_row("Perimeter", "{:>{fmt}}".format(self.perimeter, fmt=fmt))
@@ -143,7 +150,7 @@ class TransformedConcreteProperties:
     :param elastic_modulus: Reference elastic modulus
     """
 
-    concrete_properties: ConcreteProperties = field(repr=False)
+    concrete_properties: GrossProperties = field(repr=False)
     elastic_modulus: float
 
     # area
@@ -250,7 +257,7 @@ class CrackedResults:
     theta: float
     m_cr: float = 0
     d_nc: float = 0
-    cracked_geometries: List[Geometry] = field(default_factory=list, repr=False)
+    cracked_geometries: List[CPGeom] = field(default_factory=list, repr=False)
     e_a_cr: float = 0
     e_qx_cr: float = 0
     e_qy_cr: float = 0
@@ -311,8 +318,8 @@ class CrackedResults:
         title: str = "Cracked Geometries",
         **kwargs,
     ) -> matplotlib.axes.Axes:  # type: ignore
-        """Plots the geometries that remain (are in compression or are steel) after a
-        cracked analysis.
+        """Plots the geometries that remain (are in compression or are reinforcement)
+        after a cracked analysis.
 
         :param title: Plot title
         :param kwargs: Passed to
@@ -321,9 +328,9 @@ class CrackedResults:
         :return: Matplotlib axes object
         """
 
-        return CompoundGeometry(self.cracked_geometries).plot_geometry(
-            title=title, **kwargs
-        )
+        return CompoundGeometry(
+            [geom.to_sp_geom() for geom in self.cracked_geometries]
+        ).plot_geometry(title=title, **kwargs)
 
     def print_results(
         self,
@@ -410,7 +417,7 @@ class MomentCurvatureResults:
     m_x: List[float] = field(default_factory=list)
     m_y: List[float] = field(default_factory=list)
     m_xy: List[float] = field(default_factory=list)
-    failure_geometry: Geometry = field(init=False)
+    failure_geometry: CPGeom = field(init=False)
 
     # for analysis
     _n_i: float = field(default=0, repr=False)
@@ -1022,7 +1029,7 @@ class StressResult:
     concrete_analysis_sections: List[AnalysisSection]
     concrete_stresses: List[np.ndarray]
     concrete_forces: List[Tuple[float, float, float]]
-    steel_geometries: List[Geometry]
+    steel_geometries: List[CPGeom]
     steel_stresses: List[float]
     steel_strains: List[float]
     steel_forces: List[Tuple[float, float, float]]

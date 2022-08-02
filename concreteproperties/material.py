@@ -3,15 +3,34 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
-from concreteproperties.stress_strain_profile import (
-    ConcreteServiceProfile,
-    ConcreteUltimateProfile,
-    SteelProfile,
-)
+import concreteproperties.stress_strain_profile as ssp
 
 
-@dataclass(eq=True)
-class Concrete:
+@dataclass
+class Material:
+    """Abstract class for a *concreteproperties* material.
+
+    :param name: Material name
+    :param density: Material density (mass per unit volume)
+    :param stress_strain_profile: Material stress-strain profile
+    :param colour: Colour of the material for rendering
+    :param meshed: If set to True, the material region is meshed; if set to False, the
+        material region is treated as a lumped circular mass at its centroid
+    """
+
+    name: str
+    density: float
+    stress_strain_profile: ssp.StressStrainProfile
+    colour: str
+    meshed: bool
+
+    def __post_init__(self):
+        # set elastic modulus
+        self.elastic_modulus = self.stress_strain_profile.get_elastic_modulus()
+
+
+@dataclass
+class Concrete(Material):
     """Class for a concrete material.
 
     :param name: Concrete material name
@@ -27,45 +46,64 @@ class Concrete:
 
     name: str
     density: float
-    stress_strain_profile: ConcreteServiceProfile
-    ultimate_stress_strain_profile: ConcreteUltimateProfile
+    stress_strain_profile: ssp.ConcreteServiceProfile
+    ultimate_stress_strain_profile: ssp.ConcreteUltimateProfile
     alpha_squash: float
     flexural_tensile_strength: float
     colour: str
+    meshed: bool = field(default=True, init=False)
 
     def __post_init__(self):
-        self.elastic_modulus = self.stress_strain_profile.get_elastic_modulus()
+        super().__post_init__()
 
-        if not isinstance(self.stress_strain_profile, ConcreteServiceProfile):
-            raise ValueError(
-                "Concrete stress_strain_profile must be a ConcreteServiceProfile object"
-            )
+        if not isinstance(self.stress_strain_profile, ssp.ConcreteServiceProfile):
+            msg = "Concrete stress_strain_profile must be a "
+            msg += "ConcreteServiceProfile object."
+            raise ValueError(msg)
 
-        if not isinstance(self.ultimate_stress_strain_profile, ConcreteUltimateProfile):
-            raise ValueError(
-                "Concrete ultimate_stress_strain_profile must be a ConcreteUltimateProfile object"
-            )
+        if not isinstance(
+            self.ultimate_stress_strain_profile, ssp.ConcreteUltimateProfile
+        ):
+            msg = "Concrete ultimate_stress_strain_profile must be a "
+            msg += "ConcreteUltimateProfile object."
+            raise ValueError(msg)
 
 
-@dataclass(eq=True)
-class Steel:
+@dataclass
+class Steel(Material):
     """Class for a steel material.
 
     :param name: Steel material name
     :param density: Steel density (mass per unit volume)
-    :param stress_strain_profile: Ultimate steel stress-strain profile
+    :param stress_strain_profile: Steel stress-strain profile
     :param colour: Colour of the material for rendering
     """
 
     name: str
     density: float
-    stress_strain_profile: SteelProfile
+    stress_strain_profile: ssp.StressStrainProfile
     colour: str
+    meshed: bool = field(default=True, init=False)
 
-    def __post_init__(self):
-        self.elastic_modulus = self.stress_strain_profile.get_elastic_modulus()
 
-        if not isinstance(self.stress_strain_profile, SteelProfile):
-            raise ValueError(
-                "Steel stress_strain_profile must be a SteelProfile object"
-            )
+@dataclass
+class SteelBar(Steel):
+    """Class for a steel material.
+
+    :param name: Steel bar material name
+    :param density: Steel bar density (mass per unit volume)
+    :param stress_strain_profile: Steel bar stress-strain profile
+    :param colour: Colour of the material for rendering
+    """
+
+    name: str
+    density: float
+    stress_strain_profile: ssp.StressStrainProfile
+    colour: str
+    meshed: bool = field(default=False, init=False)
+
+
+@dataclass
+class SteelStrand(Steel):
+    # placeholder
+    pass

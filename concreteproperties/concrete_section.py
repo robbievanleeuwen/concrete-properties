@@ -5,7 +5,6 @@ from math import inf, nan, isinf
 from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
 import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
 import numpy as np
 import sectionproperties.pre.geometry as sp_geom
 from rich.live import Live
@@ -17,6 +16,7 @@ import concreteproperties.utils as utils
 from concreteproperties.analysis_section import AnalysisSection
 from concreteproperties.material import Concrete, Steel
 from concreteproperties.post import plotting_context
+from concreteproperties.pre import CPGeom, CPGeomConcrete
 
 if TYPE_CHECKING:
     import matplotlib
@@ -31,38 +31,46 @@ class ConcreteSection:
     ):
         """Inits the ConcreteSection class.
 
-        :param geometry: *sectionproperties* compound geometry object describing the
+        :param geometry: *sectionproperties* CompoundGeometry object describing the
             reinforced concrete section
         """
 
-        self.geometry = geometry
-
-        # sort into concrete and steel geometries
-        self.concrete_geometries = []
-        self.steel_geometries = []
-
-        for geom in self.geometry.geoms:
-            if isinstance(geom.material, Concrete):
-                self.concrete_geometries.append(geom)
-            if isinstance(geom.material, Steel):
-                self.steel_geometries.append(geom)
-
-        # validate reinforced concrete input
-        if len(self.concrete_geometries) == 0 or len(self.steel_geometries) == 0:
-            raise ValueError(
-                "geometry must contain both Concrete and Steel geometries."
-            )
+        self.compound_geometry = geometry
 
         # check overlapping regions
-        polygons = [sec_geom.geom for sec_geom in self.geometry.geoms]
+        polygons = [sec_geom.geom for sec_geom in self.compound_geometry.geoms]
         overlapped_regions = sp_geom.check_geometry_overlaps(polygons)
         if overlapped_regions:
             warnings.warn(
                 "The provided geometry contains overlapping regions, results may be incorrect."
             )
 
+        # sort into concrete and reinforcement (meshed and lumped) geometries
+        self.all_geometries: List[Union[CPGeomConcrete, CPGeom]] = []
+        self.meshed_geometries: List[Union[CPGeomConcrete, CPGeom]] = []
+        self.concrete_geometries: List[CPGeomConcrete] = []
+        self.reinf_geometries_meshed: List[CPGeom] = []
+        self.reinf_geometries_lumped: List[CPGeom] = []
+
+        # sort geometry into appropriate list
+        for geom in self.compound_geometry.geoms:
+            if isinstance(geom.material, Concrete):
+                cp_geom = CPGeomConcrete(geom=geom.geom, material=geom.material)
+                self.concrete_geometries.append(cp_geom)
+                self.meshed_geometries.append(cp_geom)
+            else:
+                cp_geom = CPGeom(geom=geom.geom, material=geom.material)  # type: ignore
+
+                if cp_geom.material.meshed:
+                    self.reinf_geometries_meshed.append(cp_geom)
+                    self.meshed_geometries.append(cp_geom)
+                elif not cp_geom.material.meshed:
+                    self.reinf_geometries_lumped.append(cp_geom)
+
+            self.all_geometries.append(cp_geom)
+
         # initialise gross properties results class
-        self.gross_properties = res.ConcreteProperties()
+        self.gross_properties = res.GrossProperties()
 
         # calculate gross area properties
         self.calculate_gross_area_properties()
@@ -72,45 +80,36 @@ class ConcreteSection:
     ):
         """Calculates and stores gross section area properties."""
 
-        # concrete areas
+        # loop through all geometries
+        for geom in self.all_geometries:
+            # area and centroid of geometry
+            area = geom.calculate_area()
+            centroid = geom.calculate_centroid()
+
+            self.gross_properties.total_area += area
+            self.gross_properties.e_a += area * geom.material.elastic_modulus
+            self.gross_properties.mass += area * geom.material.density
+            self.gross_properties.e_qx += (
+                area * geom.material.elastic_modulus * centroid[1]
+            )
+            self.gross_properties.e_qy += (
+                area * geom.material.elastic_modulus * centroid[0]
+            )
+
+        # sum concrete areas
         for conc_geom in self.concrete_geometries:
-            # area and centroid of geometry
-            area = conc_geom.calculate_area()
-            centroid = conc_geom.calculate_centroid()
+            self.gross_properties.concrete_area += conc_geom.calculate_area()
 
-            self.gross_properties.concrete_area += area
-            self.gross_properties.e_a += area * conc_geom.material.elastic_modulus
-            self.gross_properties.mass += area * conc_geom.material.density
-            self.gross_properties.e_qx += (
-                area * conc_geom.material.elastic_modulus * centroid[1]
-            )
-            self.gross_properties.e_qy += (
-                area * conc_geom.material.elastic_modulus * centroid[0]
-            )
+        # sum reinforcement meshed areas
+        for meshed_geom in self.reinf_geometries_meshed:
+            self.gross_properties.reinf_meshed_area += meshed_geom.calculate_area()
 
-        # steel area
-        for steel_geom in self.steel_geometries:
-            # area and centroid of geometry
-            area = steel_geom.calculate_area()
-            centroid = steel_geom.calculate_centroid()
-
-            self.gross_properties.steel_area += area
-            self.gross_properties.e_a += area * steel_geom.material.elastic_modulus
-            self.gross_properties.mass += area * steel_geom.material.density
-            self.gross_properties.e_qx += (
-                area * steel_geom.material.elastic_modulus * centroid[1]
-            )
-            self.gross_properties.e_qy += (
-                area * steel_geom.material.elastic_modulus * centroid[0]
-            )
-
-        # total area
-        self.gross_properties.total_area = (
-            self.gross_properties.concrete_area + self.gross_properties.steel_area
-        )
+        # sum reinforcement lumped areas
+        for lumped_geom in self.reinf_geometries_lumped:
+            self.gross_properties.reinf_lumped_area += lumped_geom.calculate_area()
 
         # perimeter
-        self.gross_properties.perimeter = self.geometry.calculate_perimeter()
+        self.gross_properties.perimeter = self.compound_geometry.calculate_perimeter()
 
         # centroids
         self.gross_properties.cx = (
@@ -121,30 +120,30 @@ class ConcreteSection:
         )
 
         # global second moments of area
-        # concrete geometries
-        for conc_geom in self.concrete_geometries:
-            conc_sec = AnalysisSection(geometry=conc_geom)
+        # meshed geometries
+        for geom in self.meshed_geometries:
+            sec = AnalysisSection(geometry=geom)
 
-            for conc_el in conc_sec.elements:
-                el_e_ixx_g, el_e_iyy_g, el_e_ixy_g = conc_el.second_moments_of_area()
+            for el in sec.elements:
+                el_e_ixx_g, el_e_iyy_g, el_e_ixy_g = el.second_moments_of_area()
                 self.gross_properties.e_ixx_g += el_e_ixx_g
                 self.gross_properties.e_iyy_g += el_e_iyy_g
                 self.gross_properties.e_ixy_g += el_e_ixy_g
 
-        # steel geometries
-        for steel_geom in self.steel_geometries:
+        # lumped geometries - treat as lumped circles
+        for geom in self.reinf_geometries_lumped:
             # area, diameter and centroid of geometry
-            area = steel_geom.calculate_area()
+            area = geom.calculate_area()
             diam = np.sqrt(4 * area / np.pi)
-            centroid = steel_geom.calculate_centroid()
+            centroid = geom.calculate_centroid()
 
-            self.gross_properties.e_ixx_g += steel_geom.material.elastic_modulus * (
+            self.gross_properties.e_ixx_g += geom.material.elastic_modulus * (
                 np.pi * pow(diam, 4) / 64 + area * centroid[1] * centroid[1]
             )
-            self.gross_properties.e_iyy_g += steel_geom.material.elastic_modulus * (
+            self.gross_properties.e_iyy_g += geom.material.elastic_modulus * (
                 np.pi * pow(diam, 4) / 64 + area * centroid[0] * centroid[0]
             )
-            self.gross_properties.e_ixy_g += steel_geom.material.elastic_modulus * (
+            self.gross_properties.e_ixy_g += geom.material.elastic_modulus * (
                 area * centroid[0] * centroid[1]
             )
 
@@ -189,7 +188,7 @@ class ConcreteSection:
             )
 
         # centroidal section moduli
-        x_min, x_max, y_min, y_max = self.geometry.calculate_extents()
+        x_min, x_max, y_min, y_max = self.compound_geometry.calculate_extents()
         self.gross_properties.e_zxx_plus = self.gross_properties.e_ixx_c / abs(
             y_max - self.gross_properties.cy
         )
@@ -205,7 +204,7 @@ class ConcreteSection:
 
         # principal section moduli
         x11_max, x11_min, y22_max, y22_min = utils.calculate_local_extents(
-            geometry=self.geometry,
+            geometry=self.compound_geometry,
             cx=self.gross_properties.cx,
             cy=self.gross_properties.cy,
             theta=self.gross_properties.phi,
@@ -222,7 +221,7 @@ class ConcreteSection:
 
         for idx, conc_geom in enumerate(self.concrete_geometries):
             ult_strain = (
-                conc_geom.material.ultimate_stress_strain_profile.get_ultimate_strain()
+                conc_geom.material.ultimate_stress_strain_profile.get_ultimate_compressive_strain()
             )
             if idx == 0:
                 conc_ult_strain = ult_strain
@@ -233,10 +232,10 @@ class ConcreteSection:
 
     def get_gross_properties(
         self,
-    ) -> res.ConcreteProperties:
+    ) -> res.GrossProperties:
         """Returns the gross section properties of the reinforced concrete section.
 
-        :return: Concrete properties object
+        :return: Gross concrete properties object
         """
 
         return self.gross_properties
@@ -260,7 +259,7 @@ class ConcreteSection:
         self,
         theta: float = 0,
     ) -> res.CrackedResults:
-        r"""Calculates cracked section properties given a neutral axis angle `theta`.
+        r"""Calculates cracked section properties given a neutral axis angle ``theta``.
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
@@ -273,7 +272,9 @@ class ConcreteSection:
 
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
-        _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
+        _, d_t = utils.calculate_extreme_fibre(
+            points=self.compound_geometry.points, theta=theta
+        )
         a = 1e-6 * d_t  # sufficiently small depth of compressive zone
         b = d_t  # neutral axis at extreme tensile fibre
 
@@ -312,21 +313,17 @@ class ConcreteSection:
 
         # global second moments of area
         for geom in cracked_results.cracked_geometries:
-            # if concrete
-            if isinstance(geom.material, Concrete):
-                conc_sec = AnalysisSection(geometry=geom)
+            # if meshed
+            if geom.material.meshed:
+                sec = AnalysisSection(geometry=geom)
 
-                for conc_el in conc_sec.elements:
-                    (
-                        el_e_ixx_g,
-                        el_e_iyy_g,
-                        el_e_ixy_g,
-                    ) = conc_el.second_moments_of_area()
+                for el in sec.elements:
+                    el_e_ixx_g, el_e_iyy_g, el_e_ixy_g = el.second_moments_of_area()
                     cracked_results.e_ixx_g_cr += el_e_ixx_g
                     cracked_results.e_iyy_g_cr += el_e_iyy_g
                     cracked_results.e_ixy_g_cr += el_e_ixy_g
-
-            elif isinstance(geom.material, Steel):
+            # if lumped
+            else:
                 # area, diameter and centroid of geometry
                 area = geom.calculate_area()
                 diam = np.sqrt(4 * area / np.pi)
@@ -391,7 +388,7 @@ class ConcreteSection:
         self,
         theta: float,
     ) -> float:
-        r"""Calculates the cracking moment given a bending angle `theta`.
+        r"""Calculates the cracking moment given a bending angle ``theta``.
 
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
@@ -431,10 +428,10 @@ class ConcreteSection:
             f_t = conc_geom.material.flexural_tensile_strength
             m_c_geom = (f_t / conc_geom.material.elastic_modulus) * (e_iuu / d)
 
-            # if first geometry, initialise cracking moment
+            # if we are the first geometry, initialise cracking moment
             if idx == 0:
                 m_c = m_c_geom
-            # otherwise take smallest cracking moment
+            # otherwise take smaller cracking moment
             else:
                 m_c = min(m_c, m_c_geom)
 
@@ -445,7 +442,7 @@ class ConcreteSection:
         d_nc: float,
         cracked_results: res.CrackedResults,
     ) -> float:
-        """Given a trial cracked neutral axis depth `d_nc`, determines the difference
+        """Given a trial cracked neutral axis depth ``d_nc``, determines the difference
         between the first moments of area above and below the trial axis.
 
         :param d_nc: Trial cracked neutral axis
@@ -456,7 +453,7 @@ class ConcreteSection:
 
         # calculate extreme fibre in global coordinates
         extreme_fibre, d_t = utils.calculate_extreme_fibre(
-            points=self.geometry.points, theta=cracked_results.theta
+            points=self.compound_geometry.points, theta=cracked_results.theta
         )
 
         # validate d_nc input
@@ -476,11 +473,10 @@ class ConcreteSection:
         )
 
         # split concrete geometries above and below d_nc, discard below
-        cracked_geoms = []
+        cracked_geoms: List[Union[CPGeomConcrete, CPGeom]] = []
 
         for conc_geom in self.concrete_geometries:
-            top_geoms, _ = utils.split_section(
-                geometry=conc_geom,
+            top_geoms, _ = conc_geom.split_section(
                 point=point_na,
                 theta=cracked_results.theta,
             )
@@ -488,13 +484,13 @@ class ConcreteSection:
             # save compression geometries
             cracked_geoms.extend(top_geoms)
 
+        # add reinforcement geometries to list
+        cracked_geoms.extend(self.reinf_geometries_meshed)
+        cracked_geoms.extend(self.reinf_geometries_lumped)
+
         # determine moment of area equilibrium about neutral axis
         e_qu = 0  # initialise first moment of area
 
-        # add steel geometries to list
-        cracked_geoms.extend(self.steel_geometries)
-
-        # concrete & steel
         for geom in cracked_geoms:
             ea = geom.calculate_area() * geom.material.elastic_modulus
             centroid = geom.calculate_centroid()
@@ -518,10 +514,9 @@ class ConcreteSection:
         delta_m_min: float = 0.15,
         delta_m_max: float = 0.3,
     ) -> res.MomentCurvatureResults:
-        r"""Performs a moment curvature analysis given a bending angle `theta`.
+        r"""Performs a moment curvature analysis given a bending angle ``theta``.
 
-        Analysis continues until the steel reaches fracture strain or the concrete
-        reaches its ultimate strain.
+        Analysis continues until a material reaches its ultimate strain.
 
         :param: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
@@ -538,7 +533,9 @@ class ConcreteSection:
 
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
-        _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
+        _, d_t = utils.calculate_extreme_fibre(
+            points=self.compound_geometry.points, theta=theta
+        )
         a = 1e-6 * d_t  # sufficiently small depth of compressive zone
         b = d_t  # neutral axis at extreme tensile fibre
 
@@ -551,7 +548,7 @@ class ConcreteSection:
                 total=None,
             )
 
-            # while there hasn't been a failure in the steel
+            # while there hasn't been a failure
             while not moment_curvature._failure:
                 # calculate adaptive step size for curvature
                 if iter > 1:
@@ -580,14 +577,6 @@ class ConcreteSection:
                     )
                 except ValueError:
                     warnings.warn("brentq algorithm failed.")
-                    d_n = 0
-
-                # calculate moments
-                self.service_normal_force_convergence(
-                    d_n=d_n,
-                    kappa=kappa,
-                    moment_curvature=moment_curvature,
-                )
 
                 m_xy = np.sqrt(
                     moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2
@@ -636,7 +625,7 @@ class ConcreteSection:
 
         # calculate extreme fibre in global coordinates
         extreme_fibre, d_t = utils.calculate_extreme_fibre(
-            points=self.geometry.points, theta=moment_curvature.theta
+            points=self.compound_geometry.points, theta=moment_curvature.theta
         )
 
         # validate d_n input
@@ -650,26 +639,31 @@ class ConcreteSection:
             extreme_fibre=extreme_fibre, d_n=d_n, theta=moment_curvature.theta
         )
 
-        # create splits in concrete geometries at points in stress-strain profiles
-        concrete_split_geoms = utils.split_section_at_strains(
-            concrete_geometries=self.concrete_geometries,
-            theta=moment_curvature.theta,
-            point_na=point_na,
-            ultimate=False,
-            kappa=kappa,
-        )
+        # create splits in meshed geometries at points in stress-strain profiles
+        meshed_split_geoms: List[Union[CPGeom, CPGeomConcrete]] = []
+
+        for meshed_geom in self.meshed_geometries:
+            split_geoms = utils.split_geom_at_strains(
+                geom=meshed_geom,
+                theta=moment_curvature.theta,
+                point_na=point_na,
+                ultimate=False,
+                kappa=kappa,
+            )
+
+            meshed_split_geoms.extend(split_geoms)
 
         # initialise results
         n = 0
         m_x = 0
         m_y = 0
 
-        # calculate concrete actions
-        for conc_geom in concrete_split_geoms:
-            sec = AnalysisSection(geometry=conc_geom)
-            n_sec, m_x_sec, m_y_sec, max_strain = sec.service_stress_analysis(
+        # calculate meshed geometry actions
+        for meshed_geom in meshed_split_geoms:
+            sec = AnalysisSection(geometry=meshed_geom)
+
+            n_sec, m_x_sec, m_y_sec, min_strain, max_strain = sec.service_analysis(
                 point_na=point_na,
-                d_n=d_n,
                 theta=moment_curvature.theta,
                 kappa=kappa,
                 centroid=(self.gross_properties.cx, self.gross_properties.cy),
@@ -679,44 +673,58 @@ class ConcreteSection:
             m_x += m_x_sec
             m_y += m_y_sec
 
-            # check for concrete failure
-            if (
-                max_strain
-                > conc_geom.material.stress_strain_profile.get_ultimate_strain()  # type: ignore
+            # check for failure
+            ult_comp_strain = (
+                meshed_geom.material.stress_strain_profile.get_ultimate_compressive_strain()
+            )
+            ult_tens_strain = (
+                meshed_geom.material.stress_strain_profile.get_ultimate_tensile_strain()
+            )
+
+            # don't worry about tension failure in concrete
+            if max_strain > ult_comp_strain or (
+                min_strain < ult_tens_strain
+                and not isinstance(meshed_geom, CPGeomConcrete)
             ):
                 moment_curvature._failure = True
-                moment_curvature.failure_geometry = conc_geom
+                moment_curvature.failure_geometry = meshed_geom
 
-        # calculate steel actions
-        for steel_geom in self.steel_geometries:
+        # calculate lumped geometry actions
+        for lumped_geom in self.reinf_geometries_lumped:
             # calculate area and centroid
-            area = steel_geom.calculate_area()
-            steel_centroid = steel_geom.calculate_centroid()
+            area = lumped_geom.calculate_area()
+            centroid = lumped_geom.calculate_centroid()
 
-            # get strain at centroid of steel
+            # get strain at centroid of lump
             strain = utils.get_service_strain(
-                point=(steel_centroid[0], steel_centroid[1]),
+                point=(centroid[0], centroid[1]),
                 point_na=point_na,
                 theta=moment_curvature.theta,
                 kappa=kappa,
             )
 
-            # check for steel failure
-            if (
-                abs(strain)
-                > steel_geom.material.stress_strain_profile.get_ultimate_strain()
-            ):
+            # check for failure
+            ult_comp_strain = (
+                lumped_geom.material.stress_strain_profile.get_ultimate_compressive_strain()
+            )
+            ult_tens_strain = (
+                lumped_geom.material.stress_strain_profile.get_ultimate_tensile_strain()
+            )
+
+            if strain > ult_comp_strain or strain < ult_tens_strain:
                 moment_curvature._failure = True
-                moment_curvature.failure_geometry = steel_geom
+                moment_curvature.failure_geometry = lumped_geom
 
             # calculate stress and force
-            stress = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
+            stress = lumped_geom.material.stress_strain_profile.get_stress(
+                strain=strain
+            )
             force = stress * area
             n += force
 
             # calculate moment
-            m_x += force * (steel_centroid[1] - self.gross_properties.cy)
-            m_y += force * (steel_centroid[0] - self.gross_properties.cx)
+            m_x += force * (centroid[1] - self.gross_properties.cy)
+            m_y += force * (centroid[0] - self.gross_properties.cx)
 
         moment_curvature._n_i = n
         moment_curvature._m_x_i = m_x
@@ -730,8 +738,8 @@ class ConcreteSection:
         theta: float = 0,
         n: float = 0,
     ) -> res.UltimateBendingResults:
-        r"""Given a neutral axis angle `theta` and an axial force `n`, calculates the
-        ultimate bending capacity.
+        r"""Given a neutral axis angle ``theta`` and an axial force ``n``, calculates
+        the ultimate bending capacity.
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
@@ -742,7 +750,9 @@ class ConcreteSection:
 
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
-        _, d_t = utils.calculate_extreme_fibre(points=self.geometry.points, theta=theta)
+        _, d_t = utils.calculate_extreme_fibre(
+            points=self.compound_geometry.points, theta=theta
+        )
         a = 1e-6 * d_t  # sufficiently small depth of compressive zone
         b = 6 * d_t  # neutral axis at sufficiently large tensile fibre
 
@@ -772,8 +782,9 @@ class ConcreteSection:
         n: float,
         ultimate_results: res.UltimateBendingResults,
     ) -> float:
-        """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
-        the difference between the target net axial force `n` and the axial force.
+        """Given a neutral axis depth ``d_n`` and neutral axis angle ``theta``,
+        calculates the difference between the target net axial force ``n`` and the
+        calculated axial force.
 
         :param d_n: Depth of the neutral axis from the extreme compression fibre
         :param n: Net axial force
@@ -795,11 +806,11 @@ class ConcreteSection:
         d_n: float,
         ultimate_results: Optional[res.UltimateBendingResults] = None,
     ) -> res.UltimateBendingResults:
-        """Given a neutral axis depth `d_n` and neutral axis angle `theta`, calculates
-        the resultant bending moments `m_x`, `m_y`, `m_xy` and the net axial force `n`.
+        """Given a neutral axis depth ``d_n`` and neutral axis angle ``theta``,
+        calculates the resultant bending moments ``m_x``, ``m_y``, ``m_xy`` and the net
+        axial force ``n``.
 
         :param d_n: Depth of the neutral axis from the extreme compression fibre
-        :param kappa0: If set to true, overwrites d_n and sets zero curvature
         :param ultimate_results: Ultimate bending results object
 
         :return: Ultimate bending results object
@@ -810,7 +821,7 @@ class ConcreteSection:
 
         # calculate extreme fibre in global coordinates
         extreme_fibre, _ = utils.calculate_extreme_fibre(
-            points=self.geometry.points, theta=ultimate_results.theta
+            points=self.compound_geometry.points, theta=ultimate_results.theta
         )
 
         # extreme fibre in local coordinates
@@ -832,18 +843,27 @@ class ConcreteSection:
                 extreme_fibre=extreme_fibre, d_n=d_n, theta=ultimate_results.theta
             )
 
-        # create splits in concrete geometries at points in stress-strain profiles
+        # create splits in meshed geometries at points in stress-strain profiles
+        meshed_split_geoms: List[Union[CPGeom, CPGeomConcrete]] = []
+
         if isinf(d_n):
-            concrete_split_geoms = self.concrete_geometries
+            meshed_split_geoms = self.meshed_geometries
         else:
-            concrete_split_geoms = utils.split_section_at_strains(
-                concrete_geometries=self.concrete_geometries,
-                theta=ultimate_results.theta,
-                point_na=point_na,
-                ultimate=True,
-                ultimate_strain=self.gross_properties.conc_ultimate_strain,
-                d_n=d_n,
-            )
+            for meshed_geom in self.meshed_geometries:
+                split_geoms = utils.split_geom_at_strains(
+                    geom=meshed_geom,
+                    theta=ultimate_results.theta,
+                    point_na=point_na,
+                    ultimate=True,
+                    ultimate_strain=self.gross_properties.conc_ultimate_strain,
+                    d_n=d_n,
+                )
+
+                meshed_split_geoms.extend(split_geoms)
+
+        # # TESTING
+        # for geom in meshed_split_geoms:
+        #     geom.plot_geometry()
 
         # initialise results
         n = 0
@@ -851,10 +871,10 @@ class ConcreteSection:
         m_y = 0
         k_u = []
 
-        # calculate concrete actions
-        for conc_geom in concrete_split_geoms:
-            sec = AnalysisSection(geometry=conc_geom)
-            n_sec, m_x_sec, m_y_sec = sec.ultimate_stress_analysis(
+        # calculate meshed geometry actions
+        for meshed_geom in meshed_split_geoms:
+            sec = AnalysisSection(geometry=meshed_geom)
+            n_sec, m_x_sec, m_y_sec = sec.ultimate_analysis(
                 point_na=point_na,
                 d_n=d_n,
                 theta=ultimate_results.theta,
@@ -866,13 +886,13 @@ class ConcreteSection:
             m_x += m_x_sec
             m_y += m_y_sec
 
-        # calculate steel actions
-        for steel_geom in self.steel_geometries:
+        # calculate lumped actions
+        for lumped_geom in self.reinf_geometries_lumped:
             # calculate area and centroid
-            area = steel_geom.calculate_area()
-            centroid = steel_geom.calculate_centroid()
+            area = lumped_geom.calculate_area()
+            centroid = lumped_geom.calculate_centroid()
 
-            # get strain at centroid of steel
+            # get strain at centroid of lump
             if isinf(d_n):
                 strain = self.gross_properties.conc_ultimate_strain
             else:
@@ -885,7 +905,7 @@ class ConcreteSection:
                 )
 
             # calculate stress and force
-            stress = steel_geom.material.stress_strain_profile.get_stress(strain=strain)
+            stress = lumped_geom.material.stress_strain_profile.get_stress(strain=strain)
             force = stress * area
             n += force
 
@@ -1788,49 +1808,51 @@ class ConcreteSection:
             plotted_materials = []
             legend_labels = []
 
-            # plot concrete geometries
-            for conc_geom in self.concrete_geometries:
-                if conc_geom.material not in plotted_materials:
+            # plot meshed geometries
+            for meshed_geom in self.meshed_geometries:
+                if meshed_geom.material not in plotted_materials:
                     patch = mpatches.Patch(
-                        color=conc_geom.material.colour, label=conc_geom.material.name
+                        color=meshed_geom.material.colour,
+                        label=meshed_geom.material.name,
                     )
                     legend_labels.append(patch)
-                    plotted_materials.append(conc_geom.material)
+                    plotted_materials.append(meshed_geom.material)
 
                 # TODO - when shapely implements polygon plotting, fix this up
-                sec = AnalysisSection(geometry=conc_geom)
+                sec = AnalysisSection(geometry=meshed_geom)
 
                 if not background:
                     sec.plot_shape(ax=ax)
 
                 # plot the points and facets
-                for f in conc_geom.facets:
+                for f in meshed_geom.facets:
                     if background:
                         fmt = "k-"
                     else:
                         fmt = "ko-"
 
                     ax.plot(  # type: ignore
-                        [conc_geom.points[f[0]][0], conc_geom.points[f[1]][0]],
-                        [conc_geom.points[f[0]][1], conc_geom.points[f[1]][1]],
+                        [meshed_geom.points[f[0]][0], meshed_geom.points[f[1]][0]],
+                        [meshed_geom.points[f[0]][1], meshed_geom.points[f[1]][1]],
                         fmt,
                         markersize=2,
                         linewidth=1.5,
                     )
 
-            # plot steel geometries
-            for steel_geom in self.steel_geometries:
-                if steel_geom.material not in plotted_materials:
+            # plot lumped geometries
+            for lumped_geom in self.reinf_geometries_lumped:
+                if lumped_geom.material not in plotted_materials:
                     patch = mpatches.Patch(
-                        color=steel_geom.material.colour, label=steel_geom.material.name
+                        color=lumped_geom.material.colour,
+                        label=lumped_geom.material.name,
                     )
                     legend_labels.append(patch)
-                    plotted_materials.append(steel_geom.material)
+                    plotted_materials.append(lumped_geom.material)
 
                 # plot the points and facets
-                coords = list(steel_geom.geom.exterior.coords)
+                coords = list(lumped_geom.geom.exterior.coords)
                 bar = mpatches.Polygon(
-                    xy=coords, closed=False, color=steel_geom.material.colour
+                    xy=coords, closed=False, color=lumped_geom.material.colour
                 )
                 ax.add_patch(bar)  # type: ignore
 

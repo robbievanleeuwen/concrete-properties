@@ -76,7 +76,7 @@ class DesignCode:
     def get_gross_properties(
         self,
         **kwargs,
-    ) -> res.ConcreteProperties:
+    ) -> res.GrossProperties:
         """Returns the gross section properties of the reinforced concrete section.
 
         :param kwargs: Keyword arguments passed to
