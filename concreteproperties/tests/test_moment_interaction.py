@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 from concreteproperties.concrete_section import ConcreteSection
-from concreteproperties.material import Concrete, Steel
+from concreteproperties.material import Concrete, SteelBar
 from concreteproperties.stress_strain_profile import (
     ConcreteLinear,
     RectangularStressBlock,
@@ -24,7 +24,7 @@ concrete = Concrete(
     colour="lightgrey",
 )
 
-steel = Steel(
+steel = SteelBar(
     name="500 MPa Steel",
     density=7.85e-6,
     stress_strain_profile=SteelElasticPlastic(

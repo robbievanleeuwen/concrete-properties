@@ -178,6 +178,9 @@ class CPGeom:
         :return: Geometries above and below the line
         """
 
+        # round point
+        point = np.round(point, 6)
+
         # generate unit vector
         vector = np.cos(theta), np.sin(theta)
 

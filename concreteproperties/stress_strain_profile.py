@@ -565,7 +565,7 @@ class RectangularStressBlock(ConcreteUltimateProfile):
         :return: Stress
         """
 
-        if strain >= self.strains[1] - 1e-12:
+        if strain >= self.strains[1] - 1e-8:
             return self.stresses[2]
         else:
             return 0

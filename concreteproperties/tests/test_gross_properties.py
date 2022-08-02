@@ -8,7 +8,7 @@ def test_rectangle_second_moment_of_area():
     b = 100
 
     rect = sp_ps.rectangular_section(d=d, b=b)
-    sec = AnalysisSection(geometry=rect)
+    sec = AnalysisSection(geometry=rect)  # type: ignore
 
     ixx_g = 0
     iyy_g = 0
