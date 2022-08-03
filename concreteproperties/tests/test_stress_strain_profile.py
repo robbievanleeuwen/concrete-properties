@@ -11,7 +11,7 @@ def test_whitney():
     assert pytest.approx(profile.get_stress(-0.001)) == 0
     assert pytest.approx(profile.get_stress(-0.003)) == 0
     assert pytest.approx(profile.get_stress(-0.1)) == 0
-    assert pytest.approx(profile.get_stress(0.00068999)) == 0
+    assert pytest.approx(profile.get_stress(0.00068998)) == 0
     assert pytest.approx(profile.get_stress(0.00069)) == 0.85 * 40
     assert pytest.approx(profile.get_stress(0.001)) == 0.85 * 40
 
