@@ -72,7 +72,10 @@ def test_rotated_gross_properties(theta):
         pytest.approx(new_gross_results.concrete_area)
         == ref_gross_results.concrete_area
     )
-    assert pytest.approx(new_gross_results.reinf_lumped_area) == ref_gross_results.reinf_lumped_area
+    assert (
+        pytest.approx(new_gross_results.reinf_lumped_area)
+        == ref_gross_results.reinf_lumped_area
+    )
     assert pytest.approx(new_gross_results.e_a) == ref_gross_results.e_a
     assert pytest.approx(new_gross_results.mass) == ref_gross_results.mass
     assert pytest.approx(new_gross_results.perimeter) == ref_gross_results.perimeter
@@ -148,7 +151,10 @@ def test_rotated_uncracked_stress(theta):
             assert pytest.approx(cf[0]) == ref_uncr_stress.concrete_forces[i][0]
 
         for idx, sf in enumerate(new_uncr_stress.lumped_reinforcement_forces):
-            assert pytest.approx(sf[0]) == ref_uncr_stress.lumped_reinforcement_forces[idx][0]
+            assert (
+                pytest.approx(sf[0])
+                == ref_uncr_stress.lumped_reinforcement_forces[idx][0]
+            )
 
 
 # list of normal forces
@@ -177,7 +183,10 @@ def test_rotated_cracked_stress(theta):
             assert pytest.approx(cf[0]) == ref_cr_stress.concrete_forces[idx][0]
 
         for idx, sf in enumerate(new_cr_stress.lumped_reinforcement_forces):
-            assert pytest.approx(sf[0]) == ref_cr_stress.lumped_reinforcement_forces[idx][0]
+            assert (
+                pytest.approx(sf[0])
+                == ref_cr_stress.lumped_reinforcement_forces[idx][0]
+            )
 
 
 # list of normal forces
@@ -207,4 +216,7 @@ def test_rotated_ultimate_stress(theta):
             )
 
         for idx, sf in enumerate(new_ult_stress.lumped_reinforcement_forces):
-            assert pytest.approx(sf[0], rel=5e-4) == ref_ult_stress.lumped_reinforcement_forces[idx][0]
+            assert (
+                pytest.approx(sf[0], rel=5e-4)
+                == ref_ult_stress.lumped_reinforcement_forces[idx][0]
+            )

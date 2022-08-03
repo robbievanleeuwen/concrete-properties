@@ -234,8 +234,8 @@ class DesignCode:
 
 class AS3600(DesignCode):
     """Design code class for Australian standard AS 3600:2018.
-    
-    Note that this design code only supports :class:`~concreteproperties.pre.Concrete` 
+
+    Note that this design code only supports :class:`~concreteproperties.pre.Concrete`
     and :class:`~concreteproperties.pre.SteelBar` material objects. Meshed
     :class:`~concreteproperties.pre.Steel` material objects are **not** supported
     as this falls under the composite structures design code.
@@ -261,13 +261,20 @@ class AS3600(DesignCode):
 
         # check to make sure there are no meshed reinforcement regions
         if self.concrete_section.reinf_geometries_meshed:
-            raise ValueError("Meshed reinforcement is not supported in this design code.")
+            raise ValueError(
+                "Meshed reinforcement is not supported in this design code."
+            )
 
         # determine reinforcement class
         self.reinforcement_class = "N"
 
         for steel_geom in self.concrete_section.reinf_geometries_lumped:
-            if abs(steel_geom.material.stress_strain_profile.get_ultimate_tensile_strain()) < 0.05:
+            if (
+                abs(
+                    steel_geom.material.stress_strain_profile.get_ultimate_tensile_strain()
+                )
+                < 0.05
+            ):
                 self.reinforcement_class = "L"
 
         # calculate squash and tensile load
@@ -426,7 +433,9 @@ class AS3600(DesignCode):
                 strain=0.025
             )
 
-            force_t = -area * steel_geom.material.stress_strain_profile.get_yield_strength()
+            force_t = (
+                -area * steel_geom.material.stress_strain_profile.get_yield_strength()
+            )
 
             # add to totals
             squash_load += force_c

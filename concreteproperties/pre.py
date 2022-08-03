@@ -359,7 +359,7 @@ def add_bar(
     x: float,
     y: float,
     n: int = 4,
-) -> Union[Geometry, CompoundGeometry]:
+) -> Union[CompoundGeometry]:  # type: ignore
     """Adds a reinforcing bar to a *sectionproperties* geometry.
 
     Bars are discretised by four points by default.
@@ -392,7 +392,7 @@ def add_bar_rectangular_array(
     anchor: Tuple[float, float] = (0, 0),
     exterior_only: bool = False,
     n: int = 4,
-) -> Union[Geometry, CompoundGeometry]:
+) -> Union[CompoundGeometry]:  # type: ignore
     """Adds a rectangular array of reinforcing bars to a *sectionproperties* geometry.
 
     Bars are discretised by four points by default.
@@ -429,7 +429,7 @@ def add_bar_rectangular_array(
                 bar = bar.shift_section(x_offset=x, y_offset=y)
                 geometry = (geometry - bar) + bar
 
-    return geometry
+    return geometry  # type: ignore
 
 
 def add_bar_circular_array(
@@ -441,7 +441,7 @@ def add_bar_circular_array(
     theta_0: float = 0,
     ctr: Tuple[float, float] = (0, 0),
     n: int = 4,
-) -> Union[Geometry, CompoundGeometry]:
+) -> Union[CompoundGeometry]:  # type: ignore
     """Adds a circular array of reinforcing bars to a *sectionproperties* geometry.
 
     Bars are discretised by four points by default.
@@ -469,4 +469,4 @@ def add_bar_circular_array(
         bar = bar.shift_section(x_offset=x, y_offset=y)
         geometry = (geometry - bar) + bar
 
-    return geometry
+    return geometry  # type: ignore

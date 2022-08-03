@@ -1144,15 +1144,15 @@ class StressResult:
                 # check region has a force
                 if abs(self.concrete_forces[idx][0]) > 1e-8:
                     # create triangulation
-                    triang = tri.Triangulation(
+                    triang_conc = tri.Triangulation(
                         self.concrete_analysis_sections[idx].mesh_nodes[:, 0],
                         self.concrete_analysis_sections[idx].mesh_nodes[:, 1],
                         self.concrete_analysis_sections[idx].mesh_elements[:, 0:3],  # type: ignore
                     )
 
                     # plot the filled contour
-                    trictr = fig.axes[0].tricontourf(
-                        triang, sig, v_conc, cmap=cmap_conc, norm=CenteredNorm()
+                    trictr_conc = fig.axes[0].tricontourf(
+                        triang_conc, sig, v_conc, cmap=cmap_conc, norm=CenteredNorm()
                     )
 
                     # plot a zero stress contour, supressing warning
@@ -1180,23 +1180,29 @@ class StressResult:
                             zero_level = -1e-12
 
                         CS = fig.axes[0].tricontour(
-                            triang, sig, [zero_level], linewidths=1, linestyles="dashed"
+                            triang_conc,
+                            sig,
+                            [zero_level],
+                            linewidths=1,
+                            linestyles="dashed",
                         )
 
             # plot the meshed reinforcement stresses
+            trictr_reinf = None
+
             for idx, sig in enumerate(self.meshed_reinforcement_stresses):
                 # check region has a force
                 if abs(self.meshed_reinforcement_forces[idx][0]) > 1e-8:
                     # create triangulation
-                    triang = tri.Triangulation(
+                    triang_reinf = tri.Triangulation(
                         self.meshed_reinforcement_sections[idx].mesh_nodes[:, 0],
                         self.meshed_reinforcement_sections[idx].mesh_nodes[:, 1],
                         self.meshed_reinforcement_sections[idx].mesh_elements[:, 0:3],  # type: ignore
                     )
 
                     # plot the filled contour
-                    trictr = fig.axes[0].tricontourf(
-                        triang, sig, v_reinf, cmap=cmap_reinf, norm=CenteredNorm()
+                    trictr_reinf = fig.axes[0].tricontourf(
+                        triang_reinf, sig, v_reinf, cmap=cmap_reinf, norm=CenteredNorm()
                     )
 
                     # plot a zero stress contour, supressing warning
@@ -1224,7 +1230,11 @@ class StressResult:
                             zero_level = -1e-12
 
                         CS = fig.axes[0].tricontour(
-                            triang, sig, [zero_level], linewidths=1, linestyles="dashed"
+                            triang_reinf,
+                            sig,
+                            [zero_level],
+                            linewidths=1,
+                            linestyles="dashed",
                         )
 
             # plot the lumped reinforcement stresses
@@ -1243,18 +1253,26 @@ class StressResult:
             patch.set_array(colours)
             if reinf_tick_same:
                 patch.set_clim([0.99 * v_reinf[0], 1.01 * v_reinf[-1]])
+            else:
+                patch.set_clim([v_reinf[0], v_reinf[-1]])
             fig.axes[0].add_collection(patch)
 
             # add the colour bars
             fig.colorbar(
-                trictr,  # type: ignore
+                trictr_conc,  # type: ignore
                 label="Concrete Stress",
                 format="%.2e",
                 ticks=ticks_conc,
                 cax=fig.axes[1],
             )
+
+            if trictr_reinf:
+                mappable = trictr_reinf
+            else:
+                mappable = patch
+
             fig.colorbar(
-                patch,
+                mappable,
                 label="Reinforcement Stress",
                 format="%.2e",
                 ticks=ticks_reinf,
@@ -1306,7 +1324,7 @@ class StressResult:
             moment_sum_x += conc_force[0] * conc_force[2]
             moment_sum_y += conc_force[0] * conc_force[1]
 
-         # sum meshed reinf stresses
+        # sum meshed reinf stresses
         for meshed_reinf_force in self.meshed_reinforcement_forces:
             moment_sum_x += meshed_reinf_force[0] * meshed_reinf_force[2]
             moment_sum_y += meshed_reinf_force[0] * meshed_reinf_force[1]

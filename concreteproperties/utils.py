@@ -145,6 +145,7 @@ def split_geom_at_strains(
 
     # initialise top_geoms in case of two unique strains
     top_geoms = geom_list
+    continuing_geoms = []
 
     # loop through intermediate points on stress-strain profile
     for strain in strains[1:-1]:
@@ -185,7 +186,7 @@ def split_geom_at_strains(
         geom_list = continuing_geoms
 
     # save final top geoms
-    split_geoms.extend(top_geoms)
+    split_geoms.extend(continuing_geoms)
 
     return split_geoms
 
