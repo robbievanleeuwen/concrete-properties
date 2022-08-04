@@ -104,13 +104,6 @@ extreme compressive fibre to the ``ultimate_strain`` parameter (see
 :ref:`label-conc-ult-profile`) and finding the neutral axis which satisfies the
 equilibrium of axial forces.
 
-.. note::
-
-  The bending neutral axis must lie within the cross-section, if a combination of
-  ``theta`` and ``n`` is provided to the method that results in the neutral axis angle
-  lying outside the cross-section, the algorithm will not converge and a warning message
-  displayed.
-
 .. seealso::
   For an application of the above, see the example
   :ref:`/notebooks/ultimate_bending.ipynb`.

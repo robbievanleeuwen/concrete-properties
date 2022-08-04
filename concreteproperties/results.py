@@ -143,7 +143,7 @@ class GrossProperties:
 
 
 @dataclass
-class TransformedConcreteProperties:
+class TransformedGrossProperties:
     """Class for storing transformed gross concrete section properties.
 
     :param concrete_properties: Concrete properties object
@@ -597,7 +597,7 @@ class UltimateBendingResults:
         table.add_row("Bending Angle - theta", "{:>{fmt}}".format(self.theta, fmt=fmt))
         table.add_row("Neutral Axis Depth - d_n", "{:>{fmt}}".format(self.d_n, fmt=fmt))
         table.add_row(
-            "Neutral Axis Parameter- k_u", "{:>{fmt}}".format(self.k_u, fmt=fmt)
+            "Neutral Axis Parameter - k_u", "{:>{fmt}}".format(self.k_u, fmt=fmt)
         )
         table.add_row("Axial Force", "{:>{fmt}}".format(self.n, fmt=fmt))
         table.add_row("Bending Capacity - m_x", "{:>{fmt}}".format(self.m_x, fmt=fmt))

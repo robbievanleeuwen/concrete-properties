@@ -7,33 +7,61 @@ properties can be used for a single cross-section. For example, higher strength 
 sections can be topped with lower grade in-situ slabs, and high tensile steel can be
 used in combination with normal grade reinforcing steel.
 
-The structural behaviour of both concrete and steel materials are described by
-:ref:`stress-strain-profiles`.
+The structural behaviour of materials is described by :ref:`stress-strain-profiles`.
 
 .. note::
 
   In *concreteproperties*, a positive sign is given to compressive forces, stresses and
   strains, while a negative sign is given to tensile forces, stresses and strains.
 
+
+Material Classes
+----------------
+
+*concreteproperties* ships with material objects describing the structural behaviour of
+both concrete and steel. The generic :class:`~concreteproperties.material.Material`
+class can be used to describe the behaviour of any other material.
+
+By default, all geometries in *concreteproperties* are meshed to capture strain
+variation across the section. However, for smaller geometries (such as reinforcement),
+*concreteproperties* can treat the area as having a constant strain with a lumped mass,
+which increases the performance of the analysis with almost no loss in fidelity. The
+meshing can be switched off by setting the attribute ``meshed=False``. 
+
+The :class:`~concreteproperties.material.SteelBar` class has meshing disabled by default
+and should be used when defining steel reinforcement. On the other hand, the
+:class:`~concreteproperties.material.Steel` class is meshed by default so should be used
+when defining larger sections such as strucutral steel sections used in composite
+sections.
+
+
+Material
+^^^^^^^^
+
+..  autoclass:: concreteproperties.material.Material
+  :noindex:
+
+
 Concrete
---------
+^^^^^^^^
 
 ..  autoclass:: concreteproperties.material.Concrete
   :noindex:
 
 
 Steel
------
+^^^^^
 
 ..  autoclass:: concreteproperties.material.Steel
   :noindex:
 
-.. note::
 
-  In the current version of *concreteproperties*, all geometries assigned with the 
-  :class:`~concreteproperties.material.Steel` material are treated as lumped masses.
-  In *concreteproperties* ``v0.3.0+``, the Materials module will be overhauled allowing
-  for steel geometries to be treated as structural sections.
+SteelBar
+^^^^^^^^
+
+..  autoclass:: concreteproperties.material.SteelBar
+  :noindex:
+
 
 .. _stress-strain-profiles:
 
@@ -45,9 +73,8 @@ service and ultimate analyses. A :class:`~concreteproperties.material.Concrete` 
 requires both a **service** stress-strain profile (calculation of area properties,
 moment-curvature analysis, elastic and service stress analysis) and an **ultimate**
 stress-strain profile (ultimate bending capacity, moment interaction diagram, biaxial
-bending diagram, ultimate stress analysis). A
-:class:`~concreteproperties.material.Steel` object only requires one stress-strain
-profile which is used for both service and ultimate analyses.
+bending diagram, ultimate stress analysis). All other material objects only requires one
+stress-strain profile which is used for both service and ultimate analyses.
 
 .. note::
 

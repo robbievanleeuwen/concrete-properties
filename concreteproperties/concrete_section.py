@@ -243,7 +243,7 @@ class ConcreteSection:
     def get_transformed_gross_properties(
         self,
         elastic_modulus: float,
-    ) -> res.TransformedConcreteProperties:
+    ) -> res.TransformedGrossProperties:
         """Transforms gross section properties given a reference elastic modulus.
 
         :param elastic_modulus: Reference elastic modulus
@@ -251,7 +251,7 @@ class ConcreteSection:
         :return: Transformed concrete properties object
         """
 
-        return res.TransformedConcreteProperties(
+        return res.TransformedGrossProperties(
             concrete_properties=self.gross_properties, elastic_modulus=elastic_modulus
         )
 
@@ -927,11 +927,13 @@ class ConcreteSection:
 
         # save results
         ultimate_results.d_n = d_n
-        ultimate_results.k_u = min(k_u)
         ultimate_results.n = n
         ultimate_results.m_x = m_x
         ultimate_results.m_y = m_y
         ultimate_results.m_xy = m_xy
+
+        if k_u:
+            ultimate_results.k_u = min(k_u)
 
         return ultimate_results
 

@@ -62,7 +62,7 @@ class DesignCode:
         yield_strength: float,
         colour: str = "grey",
     ) -> SteelBar:
-        """Returns a steel material object.
+        """Returns a steel bar material object.
 
         List assumptions of material properties here...
 
@@ -91,7 +91,7 @@ class DesignCode:
     def get_transformed_gross_properties(
         self,
         **kwargs,
-    ) -> res.TransformedConcreteProperties:
+    ) -> res.TransformedGrossProperties:
         """Transforms gross section properties.
 
         :param kwargs: Keyword arguments passed to
@@ -362,7 +362,7 @@ class AS3600(DesignCode):
         ductility_class: str = "N",
         colour: str = "grey",
     ) -> SteelBar:
-        r"""Returns a steel material object.
+        r"""Returns a steel bar material object.
 
         | **Material assumptions:**
         | - *Density*: 7850 kg/m\ :sup:`3`

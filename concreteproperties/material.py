@@ -8,14 +8,14 @@ import concreteproperties.stress_strain_profile as ssp
 
 @dataclass
 class Material:
-    """Abstract class for a *concreteproperties* material.
+    """Generic class for a *concreteproperties* material.
 
     :param name: Material name
     :param density: Material density (mass per unit volume)
     :param stress_strain_profile: Material stress-strain profile
     :param colour: Colour of the material for rendering
-    :param meshed: If set to True, the material region is meshed; if set to False, the
-        material region is treated as a lumped circular mass at its centroid
+    :param meshed: If set to True, the entire material region is meshed; if set to
+        False, the material region is treated as a lumped circular mass at its centroid
     """
 
     name: str
@@ -71,7 +71,8 @@ class Concrete(Material):
 
 @dataclass
 class Steel(Material):
-    """Class for a steel material.
+    """Class for a steel material with the entire region meshed to allow for strain
+    variation across the section, e.g. structural steel profiles.
 
     :param name: Steel material name
     :param density: Steel density (mass per unit volume)
@@ -88,7 +89,8 @@ class Steel(Material):
 
 @dataclass
 class SteelBar(Steel):
-    """Class for a steel material.
+    """Class for a steel bar material, treated as a lumped circular mass with a constant
+    strain.
 
     :param name: Steel bar material name
     :param density: Steel bar density (mass per unit volume)
@@ -103,7 +105,7 @@ class SteelBar(Steel):
     meshed: bool = field(default=False, init=False)
 
 
-@dataclass
-class SteelStrand(Steel):
-    # placeholder
-    pass
+# @dataclass
+# class SteelStrand(Steel):
+#     # placeholder
+#     pass
