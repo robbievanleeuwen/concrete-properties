@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from math import inf, nan, isinf
+from math import inf, isinf, nan
 from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
 import matplotlib.patches as mpatches
@@ -14,7 +14,7 @@ from scipy.optimize import brentq
 import concreteproperties.results as res
 import concreteproperties.utils as utils
 from concreteproperties.analysis_section import AnalysisSection
-from concreteproperties.material import Concrete, Steel
+from concreteproperties.material import Concrete
 from concreteproperties.post import plotting_context
 from concreteproperties.pre import CPGeom, CPGeomConcrete
 
@@ -1035,7 +1035,7 @@ class ConcreteSection:
                         f"Provided d_n {cp[1]:.3f} must be greater than zero."
                     )
                 return cp[1]
-            # extreme tensile steel yield ratio
+            # extreme tensile reinforcement yield ratio
             elif cp[0] == "fy":
                 # get extreme tensile bar
                 d_ext, eps_sy = self.extreme_bar(theta=theta)
@@ -1254,8 +1254,8 @@ class ConcreteSection:
         """Calculates stresses within the reinforced concrete section assuming an
         uncracked section.
 
-        Uses gross area section properties to determine concrete and steel stresses
-        given an axial force ``n``, and bending moments ``m_x`` and ``m_y``.
+        Uses gross area section properties to determine concrete and reinforcement
+        stresses given an axial force ``n``, and bending moments ``m_x`` and ``m_y``.
 
         :param n: Axial force
         :param m_x: Bending moment about the x-axis
@@ -1752,7 +1752,7 @@ class ConcreteSection:
             # get position of lump
             centroid = lumped_geom.calculate_centroid()
 
-            # get strain at centroid of steel
+            # get strain at centroid of lump
             if isinf(ultimate_results.d_n):
                 strain = self.gross_properties.conc_ultimate_strain
             else:

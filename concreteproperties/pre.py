@@ -1,19 +1,18 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, List, Tuple, Union
-from more_itertools import peekable
 
 import numpy as np
-from shapely.geometry import Polygon, LineString
-from shapely.ops import split
 import sectionproperties.pre.library.primitive_sections as sp_ps
+from more_itertools import peekable
 from sectionproperties.pre.geometry import Geometry
+from shapely.geometry import LineString, Polygon
+from shapely.ops import split
 
 from concreteproperties.material import Concrete
 
 if TYPE_CHECKING:
     import matplotlib
-
     from sectionproperties.pre.geometry import CompoundGeometry
 
     from concreteproperties.material import Material, SteelBar

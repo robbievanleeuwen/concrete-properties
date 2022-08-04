@@ -1,5 +1,4 @@
 import numpy as np
-import pytest
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import Concrete, SteelBar
 from concreteproperties.stress_strain_profile import (

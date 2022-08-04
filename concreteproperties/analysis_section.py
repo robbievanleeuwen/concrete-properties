@@ -9,8 +9,8 @@ import triangle
 from matplotlib.colors import ListedColormap
 
 import concreteproperties.utils as utils
-from concreteproperties.post import plotting_context
 from concreteproperties.material import Concrete
+from concreteproperties.post import plotting_context
 
 if TYPE_CHECKING:
     import matplotlib

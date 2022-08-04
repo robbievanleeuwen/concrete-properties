@@ -6,11 +6,12 @@ import numpy as np
 from rich.progress import BarColumn, Progress, ProgressColumn, SpinnerColumn, TextColumn
 from rich.table import Column
 from rich.text import Text
-from sectionproperties.pre.geometry import CompoundGeometry
 
 from concreteproperties.pre import CPGeomConcrete
 
 if TYPE_CHECKING:
+    from sectionproperties.pre.geometry import CompoundGeometry
+
     from concreteproperties.pre import CPGeom
 
 
