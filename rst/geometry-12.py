@@ -1,10 +1,7 @@
-from sectionproperties.pre.library.primitive_sections import rectangular_section
+from sectionproperties.pre.library.bridge_sections import super_t_girder_section
 
 concrete = None  # define your concrete material properties here
 steel = None  # define your steel material properties here
-beam = rectangular_section(d=500, b=300, material=concrete)
-geom = add_bar_rectangular_array(
-  geometry=beam, area=310, material=steel, n_x=3, x_s=110, n_y=2, y_s=420,
-  anchor=(40, 40)
-)
+beam = super_t_girder_section(girder_type=5, material=concrete)
+geom = add_bar(geometry=beam, area=5000, material=steel, x=0, y=-1550)
 geom.plot_geometry(labels=[], cp=False, legend=False)

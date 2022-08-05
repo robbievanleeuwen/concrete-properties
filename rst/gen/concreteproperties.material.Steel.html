@@ -38,8 +38,8 @@
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="concreteproperties.stress_strain_profile" href="concreteproperties.stress_strain_profile.html" />
-    <link rel="prev" title="concreteproperties.material.Concrete" href="concreteproperties.material.Concrete.html" />
+    <link rel="next" title="concreteproperties.material.SteelBar" href="concreteproperties.material.SteelBar.html" />
+    <link rel="prev" title="concreteproperties.material.Material" href="concreteproperties.material.Material.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -288,6 +288,16 @@ function checkPageExistsAndRedirect(event) {
      concreteproperties.pre.add_bar_rectangular_array
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.CPGeom.html">
+     concreteproperties.pre.CPGeom
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.CPGeomConcrete.html">
+     concreteproperties.pre.CPGeomConcrete
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -305,9 +315,19 @@ function checkPageExistsAndRedirect(event) {
      concreteproperties.material.Concrete
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.material.Material.html">
+     concreteproperties.material.Material
+    </a>
+   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      concreteproperties.material.Steel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.material.SteelBar.html">
+     concreteproperties.material.SteelBar
     </a>
    </li>
   </ul>
@@ -439,13 +459,13 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.ConcreteProperties.html">
-     concreteproperties.results.ConcreteProperties
+    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
+     concreteproperties.results.CrackedResults
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
-     concreteproperties.results.CrackedResults
+    <a class="reference internal" href="concreteproperties.results.GrossProperties.html">
+     concreteproperties.results.GrossProperties
     </a>
    </li>
    <li class="toctree-l2">
@@ -464,8 +484,8 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.TransformedConcreteProperties.html">
-     concreteproperties.results.TransformedConcreteProperties
+    <a class="reference internal" href="concreteproperties.results.TransformedGrossProperties.html">
+     concreteproperties.results.TransformedGrossProperties
     </a>
    </li>
    <li class="toctree-l2">
@@ -585,13 +605,8 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_section.html">
-     concreteproperties.utils.split_section
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_section_at_strains.html">
-     concreteproperties.utils.split_section_at_strains
+    <a class="reference internal" href="concreteproperties.utils.split_geom_at_strains.html">
+     concreteproperties.utils.split_geom_at_strains
     </a>
    </li>
    <li class="toctree-l2">
@@ -651,14 +666,15 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.material.Steel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Steel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/material.html#Steel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.material.Steel" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class for a steel material.</p>
+<dd><p>Bases: <a class="reference internal" href="concreteproperties.material.Material.html#concreteproperties.material.Material" title="concreteproperties.material.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a></p>
+<p>Class for a steel material with the entire region meshed to allow for strain
+variation across the section, e.g. structural steel profiles.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Steel material name</p></li>
 <li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Steel density (mass per unit volume)</p></li>
-<li><p><strong>stress_strain_profile</strong> (<a class="reference internal" href="concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile" title="concreteproperties.stress_strain_profile.SteelProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelProfile</span></code></a>) – Ultimate steel stress-strain profile</p></li>
+<li><p><strong>stress_strain_profile</strong> (<a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a>) – Steel stress-strain profile</p></li>
 <li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Colour of the material for rendering</p></li>
 </ul>
 </dd>
@@ -679,16 +695,19 @@ function checkPageExistsAndRedirect(event) {
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">meshed</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">density</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">stress_strain_profile</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">density</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">colour</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">stress_strain_profile</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">colour</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -705,17 +724,17 @@ function checkPageExistsAndRedirect(event) {
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="concreteproperties.material.Concrete.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="concreteproperties.material.Material.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">concreteproperties.material.Concrete</p>
+          <p class="prev-next-title">concreteproperties.material.Material</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="concreteproperties.stress_strain_profile.html" title="next page">
+  <a class='right-next' id="next-link" href="concreteproperties.material.SteelBar.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">concreteproperties.stress_strain_profile</p>
+      <p class="prev-next-title">concreteproperties.material.SteelBar</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

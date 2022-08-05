@@ -283,14 +283,31 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#concrete">
-   Concrete
+  <a class="reference internal nav-link" href="#material-classes">
+   Material Classes
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#steel">
-   Steel
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#material">
+     Material
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concrete">
+     Concrete
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#steel">
+     Steel
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#steelbar">
+     SteelBar
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#stress-strain-profiles">
@@ -408,18 +425,53 @@ steel components of the reinforced concrete section. Any number of different mat
 properties can be used for a single cross-section. For example, higher strength precast
 sections can be topped with lower grade in-situ slabs, and high tensile steel can be
 used in combination with normal grade reinforcing steel.</p>
-<p>The structural behaviour of both concrete and steel materials are described by
-<a class="reference internal" href="#stress-strain-profiles"><span class="std std-ref">Stress-Strain Profiles</span></a>.</p>
+<p>The structural behaviour of materials is described by <a class="reference internal" href="#stress-strain-profiles"><span class="std std-ref">Stress-Strain Profiles</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In <em>concreteproperties</em>, a positive sign is given to compressive forces, stresses and
 strains, while a negative sign is given to tensile forces, stresses and strains.</p>
 </div>
-<div class="section" id="concrete">
-<h2>Concrete<a class="headerlink" href="#concrete" title="Permalink to this heading">#</a></h2>
+<div class="section" id="material-classes">
+<h2>Material Classes<a class="headerlink" href="#material-classes" title="Permalink to this heading">#</a></h2>
+<p><em>concreteproperties</em> ships with material objects describing the structural behaviour of
+both concrete and steel. The generic <a class="reference internal" href="gen/concreteproperties.material.Material.html#concreteproperties.material.Material" title="concreteproperties.material.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>
+class can be used to describe the behaviour of any other material.</p>
+<p>By default, all geometries in <em>concreteproperties</em> are meshed to capture strain
+variation across the section. However, for smaller geometries (such as reinforcement),
+<em>concreteproperties</em> can treat the area as having a constant strain with a lumped mass,
+which increases the performance of the analysis with almost no loss in fidelity. The
+meshing can be switched off by setting the attribute <code class="docutils literal notranslate"><span class="pre">meshed=False</span></code>.</p>
+<p>The <a class="reference internal" href="gen/concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a> class has meshing disabled by default
+and should be used when defining steel reinforcement. On the other hand, the
+<a class="reference internal" href="gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> class is meshed by default so should be used
+when defining larger sections such as strucutral steel sections used in composite
+sections.</p>
+<div class="section" id="material">
+<h3>Material<a class="headerlink" href="#material" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Concrete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_squash</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flexural_tensile_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#Concrete"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meshed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#Material"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Generic class for a <em>concreteproperties</em> material.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Material name</p></li>
+<li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Material density (mass per unit volume)</p></li>
+<li><p><strong>stress_strain_profile</strong> (<a class="reference internal" href="gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a>) – Material stress-strain profile</p></li>
+<li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Colour of the material for rendering</p></li>
+<li><p><strong>meshed</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If set to True, the entire material region is meshed; if set to
+False, the material region is treated as a lumped circular mass at its centroid</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="concrete">
+<h3>Concrete<a class="headerlink" href="#concrete" title="Permalink to this heading">#</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Concrete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_squash</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flexural_tensile_strength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#Concrete"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Class for a concrete material.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -440,29 +492,44 @@ tensile strength</p></li>
 
 </div>
 <div class="section" id="steel">
-<h2>Steel<a class="headerlink" href="#steel" title="Permalink to this heading">#</a></h2>
+<h3>Steel<a class="headerlink" href="#steel" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Steel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#Steel"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Class for a steel material.</p>
+<dd><p>Class for a steel material with the entire region meshed to allow for strain
+variation across the section, e.g. structural steel profiles.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Steel material name</p></li>
 <li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Steel density (mass per unit volume)</p></li>
-<li><p><strong>stress_strain_profile</strong> (<a class="reference internal" href="gen/concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile" title="concreteproperties.stress_strain_profile.SteelProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelProfile</span></code></a>) – Ultimate steel stress-strain profile</p></li>
+<li><p><strong>stress_strain_profile</strong> (<a class="reference internal" href="gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a>) – Steel stress-strain profile</p></li>
 <li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Colour of the material for rendering</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In the current version of <em>concreteproperties</em>, all geometries assigned with the
-<a class="reference internal" href="gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> material are treated as lumped masses.
-In <em>concreteproperties</em> <code class="docutils literal notranslate"><span class="pre">v0.3.0+</span></code>, the Materials module will be overhauled allowing
-for steel geometries to be treated as structural sections.</p>
+</div>
+<div class="section" id="steelbar">
+<h3>SteelBar<a class="headerlink" href="#steelbar" title="Permalink to this heading">#</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteelBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#SteelBar"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Class for a steel bar material, treated as a lumped circular mass with a constant
+strain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Steel bar material name</p></li>
+<li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Steel bar density (mass per unit volume)</p></li>
+<li><p><strong>stress_strain_profile</strong> (<a class="reference internal" href="gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a>) – Steel bar stress-strain profile</p></li>
+<li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Colour of the material for rendering</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </div>
 <div class="section" id="stress-strain-profiles">
@@ -472,9 +539,8 @@ service and ultimate analyses. A <a class="reference internal" href="gen/concret
 requires both a <strong>service</strong> stress-strain profile (calculation of area properties,
 moment-curvature analysis, elastic and service stress analysis) and an <strong>ultimate</strong>
 stress-strain profile (ultimate bending capacity, moment interaction diagram, biaxial
-bending diagram, ultimate stress analysis). A
-<a class="reference internal" href="gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> object only requires one stress-strain
-profile which is used for both service and ultimate analyses.</p>
+bending diagram, ultimate stress analysis). All other material objects only requires one
+stress-strain profile which is used for both service and ultimate analyses.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Stress values are interpolated from stresses and strains supplied to the profile. If

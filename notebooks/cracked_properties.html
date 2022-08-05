@@ -296,8 +296,13 @@ function checkPageExistsAndRedirect(event) {
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="composite_section.html">
+   8. Composite Sections
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="design_codes.html">
-   8. Design Codes
+   9. Design Codes
   </a>
  </li>
 </ul>
@@ -639,7 +644,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">Steel</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">SteelBar</span>
 <span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">ConcreteLinear</span><span class="p">,</span>
     <span class="n">RectangularStressBlock</span><span class="p">,</span>
@@ -672,7 +677,7 @@ div.rendered_html tbody tr:hover {
     <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">steel</span> <span class="o">=</span> <span class="n">Steel</span><span class="p">(</span>
+<span class="n">steel</span> <span class="o">=</span> <span class="n">SteelBar</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;500 MPa Steel&quot;</span><span class="p">,</span>
     <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
     <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
@@ -772,10 +777,10 @@ div.rendered_html tbody tr:hover {
 │<span style="color: #008080; text-decoration-color: #008080"> y-Centroid </span>│<span style="color: #008000; text-decoration-color: #008000">  7.706103e+02 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  3.710634e+15 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  7.741002e+14 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  6.673558e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  6.673559e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  2.821589e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  6.441988e+14 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> -1.250000e-01 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> -3.750000e-01 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iuu_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  2.821589e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.I11_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  6.441988e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.I22_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  2.821589e+14 </span>│
@@ -805,7 +810,7 @@ div.rendered_html tbody tr:hover {
 │<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 5.235110e+13 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.369473e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.999762e+13 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 0.000000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.343750e-02 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iuu_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.369473e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.I11_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.369473e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.I22_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.999762e+13 </span>│
@@ -855,16 +860,16 @@ div.rendered_html tbody tr:hover {
 │<span style="color: #008080; text-decoration-color: #008080"> Ixy_g_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  2.034621e+10 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Ixx_c_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  8.602406e+09 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Iyy_c_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  1.964021e+10 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> Ixy_c_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> -3.810976e-06 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Ixy_c_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> -1.143293e-05 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Iuu_cr     </span>│<span style="color: #008000; text-decoration-color: #008000">  8.602406e+09 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> I11_cr     </span>│<span style="color: #008000; text-decoration-color: #008000">  1.964021e+10 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> I22_cr     </span>│<span style="color: #008000; text-decoration-color: #008000">  8.602406e+09 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  3.710634e+15 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  7.741002e+14 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  6.673558e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  6.673559e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  2.821589e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  6.441988e+14 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> -1.250000e-01 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> -3.750000e-01 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iuu_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  2.821589e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.I11_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  6.441988e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.I22_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  2.821589e+14 </span>│
@@ -898,7 +903,7 @@ div.rendered_html tbody tr:hover {
 │<span style="color: #008080; text-decoration-color: #008080"> Ixy_g_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.596070e+09 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Ixx_c_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.175223e+09 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Iyy_c_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.524318e+09 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> Ixy_c_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 0.000000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Ixy_c_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 7.145579e-07 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Iuu_cr     </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.175223e+09 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> I11_cr     </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.175223e+09 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> I22_cr     </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.524318e+09 </span>│
@@ -907,7 +912,7 @@ div.rendered_html tbody tr:hover {
 │<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 5.235110e+13 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.369473e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.999762e+13 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 0.000000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.343750e-02 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iuu_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.369473e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.I11_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.369473e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.I22_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.999762e+13 </span>│

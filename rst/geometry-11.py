@@ -1,7 +1,16 @@
-from sectionproperties.pre.library.bridge_sections import super_t_girder_section
+import sectionproperties.pre.library.primitive_sections as sp_ps
 
-concrete = None  # define your concrete material properties here
+conc = None  # define your concrete material properties here
 steel = None  # define your steel material properties here
-beam = super_t_girder_section(girder_type=5, material=concrete)
-geom = add_bar(geometry=beam, area=5000, material=steel, x=0, y=-1550)
-geom.plot_geometry(labels=[], cp=False, legend=False)
+steel_col = sp_ps.circular_section_by_area(
+  area=np.pi * 323.9**2 / 4,
+  n=64,
+  material=steel,
+)
+inner_conc = sp_ps.circular_section_by_area(
+  area=np.pi * (323.9 - 2 * 12.7) ** 2 / 4,
+  n=64,
+  material=conc,
+)
+geom = steel_col - inner_conc + inner_conc
+geom.plot_geometry()

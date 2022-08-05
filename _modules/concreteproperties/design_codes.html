@@ -283,7 +283,8 @@ function checkPageExistsAndRedirect(event) {
 
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">inf</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">multiprocessing.sharedctypes</span> <span class="kn">import</span> <span class="n">Value</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">rich.live</span> <span class="kn">import</span> <span class="n">Live</span>
@@ -293,7 +294,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="kn">import</span> <span class="nn">concreteproperties.results</span> <span class="k">as</span> <span class="nn">res</span>
 <span class="kn">import</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="k">as</span> <span class="nn">ssp</span>
 <span class="kn">import</span> <span class="nn">concreteproperties.utils</span> <span class="k">as</span> <span class="nn">utils</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">Steel</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">SteelBar</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
@@ -341,8 +342,8 @@ function checkPageExistsAndRedirect(event) {
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;grey&quot;</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Steel</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Returns a steel material object.</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SteelBar</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a steel bar material object.</span>
 
 <span class="sd">        List assumptions of material properties here...</span>
 
@@ -357,7 +358,7 @@ function checkPageExistsAndRedirect(event) {
 <div class="viewcode-block" id="DesignCode.get_gross_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.design_codes.DesignCode.html#concreteproperties.design_codes.DesignCode.get_gross_properties">[docs]</a>    <span class="k">def</span> <span class="nf">get_gross_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">ConcreteProperties</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">GrossProperties</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the gross section properties of the reinforced concrete section.</span>
 
 <span class="sd">        :param kwargs: Keyword arguments passed to</span>
@@ -371,7 +372,7 @@ function checkPageExistsAndRedirect(event) {
 <div class="viewcode-block" id="DesignCode.get_transformed_gross_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.design_codes.DesignCode.html#concreteproperties.design_codes.DesignCode.get_transformed_gross_properties">[docs]</a>    <span class="k">def</span> <span class="nf">get_transformed_gross_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">TransformedConcreteProperties</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">TransformedGrossProperties</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Transforms gross section properties.</span>
 
 <span class="sd">        :param kwargs: Keyword arguments passed to</span>
@@ -513,7 +514,13 @@ function checkPageExistsAndRedirect(event) {
 
 
 <div class="viewcode-block" id="AS3600"><a class="viewcode-back" href="../../rst/gen/concreteproperties.design_codes.AS3600.html#concreteproperties.design_codes.AS3600">[docs]</a><span class="k">class</span> <span class="nc">AS3600</span><span class="p">(</span><span class="n">DesignCode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Design code class for Australian standard AS 3600:2018.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Design code class for Australian standard AS 3600:2018.</span>
+
+<span class="sd">    Note that this design code only supports :class:`~concreteproperties.pre.Concrete`</span>
+<span class="sd">    and :class:`~concreteproperties.pre.SteelBar` material objects. Meshed</span>
+<span class="sd">    :class:`~concreteproperties.pre.Steel` material objects are **not** supported</span>
+<span class="sd">    as this falls under the composite structures design code.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -533,11 +540,22 @@ function checkPageExistsAndRedirect(event) {
 
         <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span> <span class="o">=</span> <span class="n">concrete_section</span>
 
+        <span class="c1"># check to make sure there are no meshed reinforcement regions</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">reinf_geometries_meshed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Meshed reinforcement is not supported in this design code.&quot;</span>
+            <span class="p">)</span>
+
         <span class="c1"># determine reinforcement class</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reinforcement_class</span> <span class="o">=</span> <span class="s2">&quot;N&quot;</span>
 
-        <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">fracture_strain</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">reinf_geometries_lumped</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">abs</span><span class="p">(</span>
+                    <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_ultimate_tensile_strain</span><span class="p">()</span>
+                <span class="p">)</span>
+                <span class="o">&lt;</span> <span class="mf">0.05</span>
+            <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">reinforcement_class</span> <span class="o">=</span> <span class="s2">&quot;L&quot;</span>
 
         <span class="c1"># calculate squash and tensile load</span>
@@ -624,8 +642,8 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>
         <span class="n">ductility_class</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span>
         <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;grey&quot;</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Steel</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a steel material object.</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SteelBar</span><span class="p">:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a steel bar material object.</span>
 
 <span class="sd">        | **Material assumptions:**</span>
 <span class="sd">        | - *Density*: 7850 kg/m\ :sup:`3`</span>
@@ -648,7 +666,7 @@ function checkPageExistsAndRedirect(event) {
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ductility_class must be N or L.&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">Steel</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">SteelBar</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">yield_strength</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> MPa Steel (AS 3600:2018)&quot;</span><span class="p">,</span>
             <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
             <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
@@ -687,7 +705,7 @@ function checkPageExistsAndRedirect(event) {
             <span class="n">squash_load</span> <span class="o">+=</span> <span class="n">force_c</span>
 
         <span class="c1"># loop through all steel geometries</span>
-        <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">steel_geometries</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">reinf_geometries_lumped</span><span class="p">:</span>
             <span class="c1"># calculate area and centroid</span>
             <span class="n">area</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
 
@@ -696,7 +714,9 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">strain</span><span class="o">=</span><span class="mf">0.025</span>
             <span class="p">)</span>
 
-            <span class="n">force_t</span> <span class="o">=</span> <span class="o">-</span><span class="n">area</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">yield_strength</span>
+            <span class="n">force_t</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="o">-</span><span class="n">area</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_yield_strength</span><span class="p">()</span>
+            <span class="p">)</span>
 
             <span class="c1"># add to totals</span>
             <span class="n">squash_load</span> <span class="o">+=</span> <span class="n">force_c</span>
@@ -781,10 +801,10 @@ function checkPageExistsAndRedirect(event) {
         <span class="c1"># get compressive strain at extreme fibre</span>
         <span class="n">eps_cu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span>
 
-        <span class="c1"># 4) calculate d_n at balanced load</span>
+        <span class="c1"># calculate d_n at balanced load</span>
         <span class="n">d_nb</span> <span class="o">=</span> <span class="n">d_0</span> <span class="o">*</span> <span class="p">(</span><span class="n">eps_cu</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">eps_sy</span> <span class="o">+</span> <span class="n">eps_cu</span><span class="p">)</span>
 
-        <span class="c1"># 5) calculate axial force at balanced load</span>
+        <span class="c1"># calculate axial force at balanced load</span>
         <span class="n">balanced_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
             <span class="n">d_n</span><span class="o">=</span><span class="n">d_nb</span><span class="p">,</span> <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
         <span class="p">)</span>

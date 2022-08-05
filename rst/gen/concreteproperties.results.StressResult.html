@@ -38,7 +38,7 @@
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="concreteproperties.results.TransformedConcreteProperties" href="concreteproperties.results.TransformedConcreteProperties.html" />
+    <link rel="next" title="concreteproperties.results.TransformedGrossProperties" href="concreteproperties.results.TransformedGrossProperties.html" />
     <link rel="prev" title="concreteproperties.results.MomentInteractionResults" href="concreteproperties.results.MomentInteractionResults.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -288,6 +288,16 @@ function checkPageExistsAndRedirect(event) {
      concreteproperties.pre.add_bar_rectangular_array
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.CPGeom.html">
+     concreteproperties.pre.CPGeom
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.CPGeomConcrete.html">
+     concreteproperties.pre.CPGeomConcrete
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -306,8 +316,18 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.material.Material.html">
+     concreteproperties.material.Material
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.material.Steel.html">
      concreteproperties.material.Steel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.material.SteelBar.html">
+     concreteproperties.material.SteelBar
     </a>
    </li>
   </ul>
@@ -439,13 +459,13 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.ConcreteProperties.html">
-     concreteproperties.results.ConcreteProperties
+    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
+     concreteproperties.results.CrackedResults
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
-     concreteproperties.results.CrackedResults
+    <a class="reference internal" href="concreteproperties.results.GrossProperties.html">
+     concreteproperties.results.GrossProperties
     </a>
    </li>
    <li class="toctree-l2">
@@ -464,8 +484,8 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.TransformedConcreteProperties.html">
-     concreteproperties.results.TransformedConcreteProperties
+    <a class="reference internal" href="concreteproperties.results.TransformedGrossProperties.html">
+     concreteproperties.results.TransformedGrossProperties
     </a>
    </li>
    <li class="toctree-l2">
@@ -585,13 +605,8 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_section.html">
-     concreteproperties.utils.split_section
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_section_at_strains.html">
-     concreteproperties.utils.split_section_at_strains
+    <a class="reference internal" href="concreteproperties.utils.split_geom_at_strains.html">
+     concreteproperties.utils.split_geom_at_strains
     </a>
    </li>
    <li class="toctree-l2">
@@ -650,7 +665,7 @@ function checkPageExistsAndRedirect(event) {
 <h1>concreteproperties.results.StressResult<a class="headerlink" href="#concreteproperties-results-stressresult" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.results.StressResult">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StressResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concrete_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concrete_analysis_sections</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concrete_stresses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concrete_forces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steel_geometries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steel_stresses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steel_strains</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steel_forces</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#StressResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.StressResult" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StressResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concrete_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concrete_analysis_sections</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concrete_stresses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concrete_forces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meshed_reinforcement_sections</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meshed_reinforcement_stresses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meshed_reinforcement_forces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lumped_reinforcement_geometries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lumped_reinforcement_stresses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lumped_reinforcement_strains</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lumped_reinforcement_forces</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#StressResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.StressResult" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for storing stress results.</p>
 <p>The lever arm is computed to the elastic centroid.</p>
@@ -663,13 +678,22 @@ present in the stress analysis, which can be visualised by calling the
 <a class="reference internal" href="concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.plot_shape" title="concreteproperties.analysis_section.AnalysisSection.plot_shape"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_shape()</span></code></a></p></li>
 <li><p><strong>concrete_stresses</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>]) – List of concrete stresses at the nodes of each concrete
 analysis section</p></li>
-<li><p><strong>concrete_forces</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]) – List of net forces for each concrete analysis section and its
-lever arm (<code class="docutils literal notranslate"><span class="pre">force</span></code>, <code class="docutils literal notranslate"><span class="pre">d_x</span></code>, <code class="docutils literal notranslate"><span class="pre">d_y</span></code>)</p></li>
-<li><p><strong>steel_geometries</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>]) – List of steel geometry objects present in the stress analysis</p></li>
-<li><p><strong>steel_stresses</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – List of steel stresses for each steel geometry</p></li>
-<li><p><strong>steel_strains</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – List of steel strains for each steel geometry</p></li>
-<li><p><strong>steel_forces</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]) – List of net forces for each steel geometry and its lever arm
-(<code class="docutils literal notranslate"><span class="pre">force</span></code>, <code class="docutils literal notranslate"><span class="pre">d_x</span></code>, <code class="docutils literal notranslate"><span class="pre">d_y</span></code>)</p></li>
+<li><p><strong>concrete_forces</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]) – List of net forces for each concrete analysis section and
+its lever arm (<code class="docutils literal notranslate"><span class="pre">force</span></code>, <code class="docutils literal notranslate"><span class="pre">d_x</span></code>, <code class="docutils literal notranslate"><span class="pre">d_y</span></code>)</p></li>
+<li><p><strong>meshed_reinforcement_sections</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection" title="concreteproperties.analysis_section.AnalysisSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnalysisSection</span></code></a>]) – List of meshed reinforcement section objects
+present in the stress analysis</p></li>
+<li><p><strong>meshed_reinforcement_stresses</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>]) – List of meshed reinforcement stresses at the
+nodes of each meshed reinforcement analysis section</p></li>
+<li><p><strong>meshed_reinforcement_forces</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]) – List of net forces for each meshed reinforcement
+analysis section and its lever arm (<code class="docutils literal notranslate"><span class="pre">force</span></code>, <code class="docutils literal notranslate"><span class="pre">d_x</span></code>, <code class="docutils literal notranslate"><span class="pre">d_y</span></code>)</p></li>
+<li><p><strong>lumped_reinforcement_geometries</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="concreteproperties.pre.CPGeom.html#concreteproperties.pre.CPGeom" title="concreteproperties.pre.CPGeom"><code class="xref py py-class docutils literal notranslate"><span class="pre">CPGeom</span></code></a>]) – List of lumped reinforcement geometry
+objects present in the stress analysis</p></li>
+<li><p><strong>lumped_reinforcement_stresses</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – List of lumped reinforcement stresses for
+each lumped geometry</p></li>
+<li><p><strong>lumped_reinforcement_strains</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – List of lumped reinforcement strains for each
+lumped geometry</p></li>
+<li><p><strong>lumped_reinforcement_forces</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]) – List of net forces for each lumped reinforcement
+geometry and its lever arm (<code class="docutils literal notranslate"><span class="pre">force</span></code>, <code class="docutils literal notranslate"><span class="pre">d_x</span></code>, <code class="docutils literal notranslate"><span class="pre">d_y</span></code>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -710,30 +734,39 @@ lever arm (<code class="docutils literal notranslate"><span class="pre">force</s
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">concrete_forces</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">steel_geometries</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">meshed_reinforcement_sections</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">steel_stresses</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">meshed_reinforcement_stresses</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">steel_strains</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">meshed_reinforcement_forces</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">steel_forces</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lumped_reinforcement_geometries</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lumped_reinforcement_stresses</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lumped_reinforcement_strains</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lumped_reinforcement_forces</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.results.StressResult.plot_stress">
-<span class="sig-name descname"><span class="pre">plot_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Stress'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conc_cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdGy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steel_cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bwr'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#StressResult.plot_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.StressResult.plot_stress" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Stress'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conc_cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdGy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reinf_cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bwr'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/results.html#StressResult.plot_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.results.StressResult.plot_stress" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots concrete and steel stresses on a concrete section.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>title</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'Stress'</span></code>) – Plot title</p></li>
 <li><p><strong>conc_cmap</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'RdGy'</span></code>) – Colour map for the concrete stress</p></li>
-<li><p><strong>steel_cmap</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'bwr'</span></code>) – Colour map for the steel stress</p></li>
+<li><p><strong>reinf_cmap</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'bwr'</span></code>) – Colour map for the reinforcement stress</p></li>
 <li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
 </ul>
 </dd>
@@ -785,10 +818,10 @@ lever arm (<code class="docutils literal notranslate"><span class="pre">force</s
           <p class="prev-next-title">concreteproperties.results.MomentInteractionResults</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="concreteproperties.results.TransformedConcreteProperties.html" title="next page">
+  <a class='right-next' id="next-link" href="concreteproperties.results.TransformedGrossProperties.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">concreteproperties.results.TransformedConcreteProperties</p>
+      <p class="prev-next-title">concreteproperties.results.TransformedGrossProperties</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

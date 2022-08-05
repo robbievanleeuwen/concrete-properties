@@ -25,7 +25,7 @@
    "source": [
     "import numpy as np\n",
     "from rich.pretty import pprint\n",
-    "from concreteproperties.material import Concrete, Steel\n",
+    "from concreteproperties.material import Concrete, SteelBar\n",
     "from concreteproperties.stress_strain_profile import (\n",
     "    EurocodeNonLinear,\n",
     "    RectangularStressBlock,\n",
@@ -73,7 +73,7 @@
     "    colour=\"lightgrey\",\n",
     ")\n",
     "\n",
-    "steel = Steel(\n",
+    "steel = SteelBar(\n",
     "    name=\"500 MPa Steel\",\n",
     "    density=7.85e-6,\n",
     "    stress_strain_profile=SteelElasticPlastic(\n",
@@ -225,7 +225,7 @@
    "metadata": {},
    "source": [
     "### Concrete Results\n",
-    "Concrete geometries that remain after cracking are stored in the ``concrete_analysis_sections`` attribute as a list of ``AnalysisSection`` objects. We can visualise this geometry by calling the ``plot_mesh()`` method. The ``StressResult`` object also stores the stresses at the nodes in each ``AnalysisSection`` in the ``concrete_stresses`` attribute - these are the stresses you see on the ``plot_stress()`` plots. Finally, the ``concrete_forces`` attribute stores the resultant force for each ``AnalysisSection`` and its lever arm about the neutral axis."
+    "Concrete geometries that remain after cracking are stored in the ``concrete_analysis_sections`` attribute as a list of ``AnalysisSection`` objects. We can visualise this geometry by calling the ``plot_mesh()`` method. The ``StressResult`` object also stores the stresses at the nodes in each ``AnalysisSection`` in the ``concrete_stresses`` attribute - these are the stresses you see on the ``plot_stress()`` plots. Finally, the ``concrete_forces`` attribute stores the resultant force for each ``AnalysisSection`` and its lever arm to the cracked centroid."
    ]
   },
   {
@@ -266,8 +266,8 @@
    "id": "8c3da4fa",
    "metadata": {},
    "source": [
-    "### Steel Results\n",
-    "Steel geometries are stored in the ``steel_geometries`` attribute of the ``StressResult`` object. Similar to the concrete results, the stresses and forces/lever arms are stored, as well as the strains. Here we print the stress for each bar to the terminal."
+    "### Reinforcement Results\n",
+    "Lumped reinforcement geometries are stored in the ``lumped_reinforcement_geometries`` attribute of the ``StressResult`` object. Similar to the concrete results, the stresses and forces/lever arms are stored, as well as the strains. Here we print the stress for each lumped bar to the terminal. Note that meshed reinforcement results are also stored, but have not been used for this analysis."
    ]
   },
   {
@@ -285,7 +285,7 @@
     "moments_x = []\n",
     "\n",
     "# create a Rich table for pretty printing\n",
-    "table = Table(title=\"Steel Results\")\n",
+    "table = Table(title=\"Reinforcement Results\")\n",
     "table.add_column(\"Bar No.\", justify=\"center\", style=\"cyan\", no_wrap=True)\n",
     "table.add_column(\"Location (x, y) (mm)\", justify=\"center\", style=\"green\")\n",
     "table.add_column(\"Stress (MPa)\", justify=\"center\", style=\"green\")\n",
@@ -293,12 +293,12 @@
     "table.add_column(\"Lever Arm (mm)\", justify=\"center\", style=\"green\")\n",
     "table.add_column(\"Moment (kN.m)\", justify=\"center\", style=\"green\")\n",
     "\n",
-    "for idx, steel_geom in enumerate(cracked_stress_res.steel_geometries):\n",
-    "    # get the steel results\n",
-    "    centroid = steel_geom.calculate_centroid()\n",
-    "    stress = cracked_stress_res.steel_stresses[idx]\n",
-    "    strain = cracked_stress_res.steel_strains[idx]\n",
-    "    force, d_x, d_y = cracked_stress_res.steel_forces[idx]\n",
+    "for idx, reinf_geom in enumerate(cracked_stress_res.lumped_reinforcement_geometries):\n",
+    "    # get the reinforcement results\n",
+    "    centroid = reinf_geom.calculate_centroid()\n",
+    "    stress = cracked_stress_res.lumped_reinforcement_stresses[idx]\n",
+    "    strain = cracked_stress_res.lumped_reinforcement_strains[idx]\n",
+    "    force, d_x, d_y = cracked_stress_res.lumped_reinforcement_forces[idx]\n",
     "\n",
     "    # calculate the moment each bar creates and store the results\n",
     "    moment_x = force * d_y\n",

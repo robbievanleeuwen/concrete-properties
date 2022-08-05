@@ -290,6 +290,16 @@ function checkPageExistsAndRedirect(event) {
      concreteproperties.pre.add_bar_rectangular_array
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.CPGeom.html">
+     concreteproperties.pre.CPGeom
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.CPGeomConcrete.html">
+     concreteproperties.pre.CPGeomConcrete
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -308,8 +318,18 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.material.Material.html">
+     concreteproperties.material.Material
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.material.Steel.html">
      concreteproperties.material.Steel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.material.SteelBar.html">
+     concreteproperties.material.SteelBar
     </a>
    </li>
   </ul>
@@ -441,13 +461,13 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.ConcreteProperties.html">
-     concreteproperties.results.ConcreteProperties
+    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
+     concreteproperties.results.CrackedResults
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
-     concreteproperties.results.CrackedResults
+    <a class="reference internal" href="concreteproperties.results.GrossProperties.html">
+     concreteproperties.results.GrossProperties
     </a>
    </li>
    <li class="toctree-l2">
@@ -466,8 +486,8 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.TransformedConcreteProperties.html">
-     concreteproperties.results.TransformedConcreteProperties
+    <a class="reference internal" href="concreteproperties.results.TransformedGrossProperties.html">
+     concreteproperties.results.TransformedGrossProperties
     </a>
    </li>
    <li class="toctree-l2">
@@ -587,13 +607,8 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_section.html">
-     concreteproperties.utils.split_section
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_section_at_strains.html">
-     concreteproperties.utils.split_section_at_strains
+    <a class="reference internal" href="concreteproperties.utils.split_geom_at_strains.html">
+     concreteproperties.utils.split_geom_at_strains
     </a>
    </li>
    <li class="toctree-l2">
@@ -652,16 +667,15 @@ function checkPageExistsAndRedirect(event) {
 <h1>concreteproperties.analysis_section.Tri3<a class="headerlink" href="#concreteproperties-analysis-section-tri3" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.Tri3">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Tri3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">el_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conc_material</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Tri3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for a three noded linear triangular element.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>el_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Unique element id</p></li>
-<li><p><strong>coords</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – A 2 x 3 array of the coordinates of the tri-3 nodes.</p></li>
+<li><p><strong>coords</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – A 2 x 3 array of the coordinates of the tri-3 nodes</p></li>
 <li><p><strong>node_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – A list of the global node ids for the current element</p></li>
-<li><p><strong>conc_material</strong> (<a class="reference internal" href="concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a>) – Material object for the current finite element.</p></li>
+<li><p><strong>material</strong> (<a class="reference internal" href="concreteproperties.material.Material.html#concreteproperties.material.Material" title="concreteproperties.material.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>) – Material object for the current finite element</p></li>
 </ul>
 </dd>
 </dl>
@@ -693,16 +707,13 @@ function checkPageExistsAndRedirect(event) {
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">el_id</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">coords</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">coords</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_ids</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_ids</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">conc_material</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -744,13 +755,12 @@ function checkPageExistsAndRedirect(event) {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.Tri3.calculate_service_actions">
-<span class="sig-name descname"><span class="pre">calculate_service_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3.calculate_service_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3.calculate_service_actions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculate_service_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3.calculate_service_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3.calculate_service_actions" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculates service actions for the current finite element.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>point_na</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – Point on the neutral axis</p></li>
-<li><p><strong>d_n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Depth of the neutral axis from the extreme compression fibre</p></li>
 <li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Angle (in radians) the neutral axis makes with the
 horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
 <li><p><strong>kappa</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Curvature</p></li>
@@ -758,7 +768,7 @@ horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Axial force, moments and maximum strain</p>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Axial force, moments and min/max strain</p>
 </dd>
 </dl>
 </dd></dl>

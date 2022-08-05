@@ -282,17 +282,35 @@ function checkPageExistsAndRedirect(event) {
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
-<span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ConcreteServiceProfile</span><span class="p">,</span>
-    <span class="n">ConcreteUltimateProfile</span><span class="p">,</span>
-    <span class="n">SteelProfile</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="k">as</span> <span class="nn">ssp</span>
 
 
-<div class="viewcode-block" id="Concrete"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.material.Concrete">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Concrete</span><span class="p">:</span>
+<div class="viewcode-block" id="Material"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.material.Material">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Material</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generic class for a *concreteproperties* material.</span>
+
+<span class="sd">    :param name: Material name</span>
+<span class="sd">    :param density: Material density (mass per unit volume)</span>
+<span class="sd">    :param stress_strain_profile: Material stress-strain profile</span>
+<span class="sd">    :param colour: Colour of the material for rendering</span>
+<span class="sd">    :param meshed: If set to True, the entire material region is meshed; if set to</span>
+<span class="sd">        False, the material region is treated as a lumped circular mass at its centroid</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">ssp</span><span class="o">.</span><span class="n">StressStrainProfile</span>
+    <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">meshed</span><span class="p">:</span> <span class="nb">bool</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># set elastic modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Concrete"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.material.Concrete">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Concrete</span><span class="p">(</span><span class="n">Material</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class for a concrete material.</span>
 
 <span class="sd">    :param name: Concrete material name</span>
@@ -308,48 +326,69 @@ function checkPageExistsAndRedirect(event) {
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">ConcreteServiceProfile</span>
-    <span class="n">ultimate_stress_strain_profile</span><span class="p">:</span> <span class="n">ConcreteUltimateProfile</span>
+    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteServiceProfile</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="p">:</span> <span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteUltimateProfile</span>
     <span class="n">alpha_squash</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">flexural_tensile_strength</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">meshed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="p">,</span> <span class="n">ConcreteServiceProfile</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Concrete stress_strain_profile must be a ConcreteServiceProfile object&quot;</span>
-            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="p">,</span> <span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteServiceProfile</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Concrete stress_strain_profile must be a &quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;ConcreteServiceProfile object.&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="p">,</span> <span class="n">ConcreteUltimateProfile</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Concrete ultimate_stress_strain_profile must be a ConcreteUltimateProfile object&quot;</span>
-            <span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="p">,</span> <span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteUltimateProfile</span>
+        <span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Concrete ultimate_stress_strain_profile must be a &quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;ConcreteUltimateProfile object.&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Steel"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.material.Steel">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Steel</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Class for a steel material.</span>
+<div class="viewcode-block" id="Steel"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.material.Steel">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Steel</span><span class="p">(</span><span class="n">Material</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for a steel material with the entire region meshed to allow for strain</span>
+<span class="sd">    variation across the section, e.g. structural steel profiles.</span>
 
 <span class="sd">    :param name: Steel material name</span>
 <span class="sd">    :param density: Steel density (mass per unit volume)</span>
-<span class="sd">    :param stress_strain_profile: Ultimate steel stress-strain profile</span>
+<span class="sd">    :param stress_strain_profile: Steel stress-strain profile</span>
 <span class="sd">    :param colour: Colour of the material for rendering</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">SteelProfile</span>
+    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">ssp</span><span class="o">.</span><span class="n">StressStrainProfile</span>
     <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">meshed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="p">,</span> <span class="n">SteelProfile</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Steel stress_strain_profile must be a SteelProfile object&quot;</span>
-            <span class="p">)</span></div>
+<div class="viewcode-block" id="SteelBar"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.material.SteelBar">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SteelBar</span><span class="p">(</span><span class="n">Steel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for a steel bar material, treated as a lumped circular mass with a constant</span>
+<span class="sd">    strain.</span>
+
+<span class="sd">    :param name: Steel bar material name</span>
+<span class="sd">    :param density: Steel bar density (mass per unit volume)</span>
+<span class="sd">    :param stress_strain_profile: Steel bar stress-strain profile</span>
+<span class="sd">    :param colour: Colour of the material for rendering</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">ssp</span><span class="o">.</span><span class="n">StressStrainProfile</span>
+    <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">meshed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<span class="c1"># @dataclass</span>
+<span class="c1"># class SteelStrand(Steel):</span>
+<span class="c1">#     # placeholder</span>
+<span class="c1">#     pass</span>
 </pre></div>
 
               </article>

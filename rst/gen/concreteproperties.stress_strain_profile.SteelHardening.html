@@ -288,6 +288,16 @@ function checkPageExistsAndRedirect(event) {
      concreteproperties.pre.add_bar_rectangular_array
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.CPGeom.html">
+     concreteproperties.pre.CPGeom
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.CPGeomConcrete.html">
+     concreteproperties.pre.CPGeomConcrete
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -306,8 +316,18 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.material.Material.html">
+     concreteproperties.material.Material
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.material.Steel.html">
      concreteproperties.material.Steel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.material.SteelBar.html">
+     concreteproperties.material.SteelBar
     </a>
    </li>
   </ul>
@@ -439,13 +459,13 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.ConcreteProperties.html">
-     concreteproperties.results.ConcreteProperties
+    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
+     concreteproperties.results.CrackedResults
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
-     concreteproperties.results.CrackedResults
+    <a class="reference internal" href="concreteproperties.results.GrossProperties.html">
+     concreteproperties.results.GrossProperties
     </a>
    </li>
    <li class="toctree-l2">
@@ -464,8 +484,8 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.TransformedConcreteProperties.html">
-     concreteproperties.results.TransformedConcreteProperties
+    <a class="reference internal" href="concreteproperties.results.TransformedGrossProperties.html">
+     concreteproperties.results.TransformedGrossProperties
     </a>
    </li>
    <li class="toctree-l2">
@@ -585,13 +605,8 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_section.html">
-     concreteproperties.utils.split_section
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_section_at_strains.html">
-     concreteproperties.utils.split_section_at_strains
+    <a class="reference internal" href="concreteproperties.utils.split_geom_at_strains.html">
+     concreteproperties.utils.split_geom_at_strains
     </a>
    </li>
    <li class="toctree-l2">
@@ -682,11 +697,17 @@ function checkPageExistsAndRedirect(event) {
 <tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelHardening.get_tensile_strength" title="concreteproperties.stress_strain_profile.SteelHardening.get_tensile_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tensile_strength</span></code></a></p></td>
 <td><p>Returns the most negative stress.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelHardening.get_ultimate_strain" title="concreteproperties.stress_strain_profile.SteelHardening.get_ultimate_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_strain</span></code></a></p></td>
-<td><p>Returns the largest strain.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelHardening.get_ultimate_compressive_strain" title="concreteproperties.stress_strain_profile.SteelHardening.get_ultimate_compressive_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_compressive_strain</span></code></a></p></td>
+<td><p>Returns the largest compressive strain.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelHardening.get_unique_strains" title="concreteproperties.stress_strain_profile.SteelHardening.get_unique_strains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_unique_strains</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelHardening.get_ultimate_tensile_strain" title="concreteproperties.stress_strain_profile.SteelHardening.get_ultimate_tensile_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_tensile_strain</span></code></a></p></td>
+<td><p>Returns the largest tensile strain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelHardening.get_unique_strains" title="concreteproperties.stress_strain_profile.SteelHardening.get_unique_strains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_unique_strains</span></code></a></p></td>
 <td><p>Returns an ordered list of unique strains.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelHardening.get_yield_strength" title="concreteproperties.stress_strain_profile.SteelHardening.get_yield_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_yield_strength</span></code></a></p></td>
+<td><p>Returns the yield strength of the stress-strain profile.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.SteelHardening.plot_stress_strain" title="concreteproperties.stress_strain_profile.SteelHardening.plot_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_stress_strain</span></code></a></p></td>
 <td><p>Plots the stress-strain profile.</p></td>
@@ -771,9 +792,20 @@ function checkPageExistsAndRedirect(event) {
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.SteelHardening.get_ultimate_strain">
-<span class="sig-name descname"><span class="pre">get_ultimate_strain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.SteelHardening.get_ultimate_strain" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the largest strain.</p>
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.SteelHardening.get_ultimate_compressive_strain">
+<span class="sig-name descname"><span class="pre">get_ultimate_compressive_strain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.SteelHardening.get_ultimate_compressive_strain" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the largest compressive strain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Ultimate strain</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.SteelHardening.get_ultimate_tensile_strain">
+<span class="sig-name descname"><span class="pre">get_ultimate_tensile_strain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.SteelHardening.get_ultimate_tensile_strain" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the largest tensile strain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Ultimate strain</p>
@@ -788,6 +820,17 @@ function checkPageExistsAndRedirect(event) {
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Ordered list of unique strains</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.SteelHardening.get_yield_strength">
+<span class="sig-name descname"><span class="pre">get_yield_strength</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.SteelHardening.get_yield_strength" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the yield strength of the stress-strain profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Yield strength</p>
 </dd>
 </dl>
 </dd></dl>

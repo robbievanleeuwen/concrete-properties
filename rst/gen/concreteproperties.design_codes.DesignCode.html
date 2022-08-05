@@ -288,6 +288,16 @@ function checkPageExistsAndRedirect(event) {
      concreteproperties.pre.add_bar_rectangular_array
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.CPGeom.html">
+     concreteproperties.pre.CPGeom
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.CPGeomConcrete.html">
+     concreteproperties.pre.CPGeomConcrete
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -306,8 +316,18 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.material.Material.html">
+     concreteproperties.material.Material
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.material.Steel.html">
      concreteproperties.material.Steel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.material.SteelBar.html">
+     concreteproperties.material.SteelBar
     </a>
    </li>
   </ul>
@@ -439,13 +459,13 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.ConcreteProperties.html">
-     concreteproperties.results.ConcreteProperties
+    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
+     concreteproperties.results.CrackedResults
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
-     concreteproperties.results.CrackedResults
+    <a class="reference internal" href="concreteproperties.results.GrossProperties.html">
+     concreteproperties.results.GrossProperties
     </a>
    </li>
    <li class="toctree-l2">
@@ -464,8 +484,8 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.TransformedConcreteProperties.html">
-     concreteproperties.results.TransformedConcreteProperties
+    <a class="reference internal" href="concreteproperties.results.TransformedGrossProperties.html">
+     concreteproperties.results.TransformedGrossProperties
     </a>
    </li>
    <li class="toctree-l2">
@@ -585,13 +605,8 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_section.html">
-     concreteproperties.utils.split_section
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_section_at_strains.html">
-     concreteproperties.utils.split_section_at_strains
+    <a class="reference internal" href="concreteproperties.utils.split_geom_at_strains.html">
+     concreteproperties.utils.split_geom_at_strains
     </a>
    </li>
    <li class="toctree-l2">
@@ -686,7 +701,7 @@ function checkPageExistsAndRedirect(event) {
 <td><p>Returns a concrete material object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.DesignCode.create_steel_material" title="concreteproperties.design_codes.DesignCode.create_steel_material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_steel_material</span></code></a></p></td>
-<td><p>Returns a steel material object.</p></td>
+<td><p>Returns a steel bar material object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.DesignCode.get_gross_properties" title="concreteproperties.design_codes.DesignCode.get_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gross_properties</span></code></a></p></td>
 <td><p>Returns the gross section properties of the reinforced concrete section.</p></td>
@@ -737,7 +752,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.design_codes.DesignCode.create_steel_material">
 <span class="sig-name descname"><span class="pre">create_steel_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'grey'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes.html#DesignCode.create_steel_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.DesignCode.create_steel_material" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a steel material object.</p>
+<dd><p>Returns a steel bar material object.</p>
 <p>List assumptions of material properties here…</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -747,7 +762,7 @@ function checkPageExistsAndRedirect(event) {
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> – Steel material object</p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a> – Steel material object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -762,7 +777,7 @@ function checkPageExistsAndRedirect(event) {
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.ConcreteProperties.html#concreteproperties.results.ConcreteProperties" title="concreteproperties.results.ConcreteProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteProperties</span></code></a> – Concrete properties object</p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.GrossProperties.html#concreteproperties.results.GrossProperties" title="concreteproperties.results.GrossProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">GrossProperties</span></code></a> – Concrete properties object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -777,7 +792,7 @@ function checkPageExistsAndRedirect(event) {
 <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_transformed_gross_properties()</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.TransformedConcreteProperties.html#concreteproperties.results.TransformedConcreteProperties" title="concreteproperties.results.TransformedConcreteProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformedConcreteProperties</span></code></a> – Transformed concrete properties object</p>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.TransformedGrossProperties.html#concreteproperties.results.TransformedGrossProperties" title="concreteproperties.results.TransformedGrossProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformedGrossProperties</span></code></a> – Transformed concrete properties object</p>
 </dd>
 </dl>
 </dd></dl>

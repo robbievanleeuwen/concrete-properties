@@ -339,6 +339,10 @@ following design codes:</p>
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AS3600</span></span><a class="reference internal" href="../_modules/concreteproperties/design_codes.html#AS3600"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Design code class for Australian standard AS 3600:2018.</p>
+<p>Note that this design code only supports <code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code>
+and <code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code> material objects. Meshed
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code> material objects are <strong>not</strong> supported
+as this falls under the composite structures design code.</p>
 <p>Inits the AS3600 class.</p>
 </dd></dl>
 
@@ -432,7 +436,7 @@ concrete at 28 days in megapascals (MPa)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">AS3600.</span></span><span class="sig-name descname"><span class="pre">create_steel_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ductility_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'grey'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes.html#AS3600.create_steel_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Returns a steel material object.</p>
+<dd><p>Returns a steel bar material object.</p>
 <div class="line-block">
 <div class="line"><strong>Material assumptions:</strong></div>
 <div class="line">- <em>Density</em>: 7850 kg/m<sup>3</sup></div>
@@ -451,7 +455,7 @@ concrete at 28 days in megapascals (MPa)</p></li>
 <dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">ductility_class</span></code> is not “N” or “L”</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><a class="reference internal" href="gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> – Steel material object</p>
+<dd class="field-odd"><p><a class="reference internal" href="gen/concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a> – Steel material object</p>
 </dd>
 </dl>
 </dd></dl>

@@ -24,7 +24,7 @@
    "outputs": [],
    "source": [
     "import numpy as np\n",
-    "from concreteproperties.material import Concrete, Steel\n",
+    "from concreteproperties.material import Concrete, SteelBar\n",
     "from concreteproperties.stress_strain_profile import (\n",
     "    ConcreteLinear,\n",
     "    RectangularStressBlock,\n",
@@ -67,7 +67,7 @@
     "    colour=\"lightgrey\",\n",
     ")\n",
     "\n",
-    "steel = Steel(\n",
+    "steel = SteelBar(\n",
     "    name=\"500 MPa Steel\",\n",
     "    density=7.85e-6,\n",
     "    stress_strain_profile=SteelElasticPlastic(\n",

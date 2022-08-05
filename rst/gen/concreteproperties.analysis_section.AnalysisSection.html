@@ -290,6 +290,16 @@ function checkPageExistsAndRedirect(event) {
      concreteproperties.pre.add_bar_rectangular_array
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.CPGeom.html">
+     concreteproperties.pre.CPGeom
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.pre.CPGeomConcrete.html">
+     concreteproperties.pre.CPGeomConcrete
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -308,8 +318,18 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.material.Material.html">
+     concreteproperties.material.Material
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concreteproperties.material.Steel.html">
      concreteproperties.material.Steel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concreteproperties.material.SteelBar.html">
+     concreteproperties.material.SteelBar
     </a>
    </li>
   </ul>
@@ -441,13 +461,13 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.ConcreteProperties.html">
-     concreteproperties.results.ConcreteProperties
+    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
+     concreteproperties.results.CrackedResults
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
-     concreteproperties.results.CrackedResults
+    <a class="reference internal" href="concreteproperties.results.GrossProperties.html">
+     concreteproperties.results.GrossProperties
     </a>
    </li>
    <li class="toctree-l2">
@@ -466,8 +486,8 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.TransformedConcreteProperties.html">
-     concreteproperties.results.TransformedConcreteProperties
+    <a class="reference internal" href="concreteproperties.results.TransformedGrossProperties.html">
+     concreteproperties.results.TransformedGrossProperties
     </a>
    </li>
    <li class="toctree-l2">
@@ -587,13 +607,8 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_section.html">
-     concreteproperties.utils.split_section
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_section_at_strains.html">
-     concreteproperties.utils.split_section_at_strains
+    <a class="reference internal" href="concreteproperties.utils.split_geom_at_strains.html">
+     concreteproperties.utils.split_geom_at_strains
     </a>
    </li>
    <li class="toctree-l2">
@@ -654,11 +669,11 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AnalysisSection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class for an analysis section to perform a fast analysis on concrete sections.</p>
+<p>Class for an analysis section to perform a fast analysis on meshed sections.</p>
 <p>Inits the AnalysisSection class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>) – Geometry object</p>
+<dd class="field-odd"><p><strong>geometry</strong> (<a class="reference internal" href="concreteproperties.pre.CPGeom.html#concreteproperties.pre.CPGeom" title="concreteproperties.pre.CPGeom"><code class="xref py py-class docutils literal notranslate"><span class="pre">CPGeom</span></code></a>) – Geometry object</p>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
@@ -683,10 +698,10 @@ function checkPageExistsAndRedirect(event) {
 <tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.plot_shape" title="concreteproperties.analysis_section.AnalysisSection.plot_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_shape</span></code></a></p></td>
 <td><p>Plots the coloured shape of the mesh with no outlines on <cite>ax</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.service_stress_analysis" title="concreteproperties.analysis_section.AnalysisSection.service_stress_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_stress_analysis</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.service_analysis" title="concreteproperties.analysis_section.AnalysisSection.service_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_analysis</span></code></a></p></td>
 <td><p>Performs a service stress analysis on the section.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.ultimate_stress_analysis" title="concreteproperties.analysis_section.AnalysisSection.ultimate_stress_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_stress_analysis</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.ultimate_analysis" title="concreteproperties.analysis_section.AnalysisSection.ultimate_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_analysis</span></code></a></p></td>
 <td><p>Performs an ultimate stress analysis on the section.</p></td>
 </tr>
 </tbody>
@@ -717,14 +732,14 @@ force action</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection.service_stress_analysis">
-<span class="sig-name descname"><span class="pre">service_stress_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.service_stress_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.service_stress_analysis" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection.service_analysis">
+<span class="sig-name descname"><span class="pre">service_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.service_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.service_analysis" title="Permalink to this definition">#</a></dt>
 <dd><p>Performs a service stress analysis on the section.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>point_na</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – Point on the neutral axis</p></li>
-<li><p><strong>d_n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Depth of the neutral axis from the extreme compression fibre</p></li>
+<li><p><strong>d_n</strong> – Depth of the neutral axis from the extreme compression fibre</p></li>
 <li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Angle (in radians) the neutral axis makes with the
 horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
 <li><p><strong>kappa</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Curvature</p></li>
@@ -732,7 +747,7 @@ horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Axial force, section moments and max strain</p>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Axial force, section moments and min/max strain</p>
 </dd>
 </dl>
 </dd></dl>
@@ -761,8 +776,8 @@ force action</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection.ultimate_stress_analysis">
-<span class="sig-name descname"><span class="pre">ultimate_stress_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.ultimate_stress_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.ultimate_stress_analysis" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection.ultimate_analysis">
+<span class="sig-name descname"><span class="pre">ultimate_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_na</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.ultimate_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.ultimate_analysis" title="Permalink to this definition">#</a></dt>
 <dd><p>Performs an ultimate stress analysis on the section.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
