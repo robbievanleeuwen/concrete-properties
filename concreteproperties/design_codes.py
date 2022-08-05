@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from copy import deepcopy
 from math import inf
-from typing import TYPE_CHECKING, List, Optional, Tuple
+from multiprocessing.sharedctypes import Value
+from typing import TYPE_CHECKING, List, Tuple
 
 import numpy as np
 from rich.live import Live
@@ -12,7 +13,7 @@ from scipy.optimize import brentq
 import concreteproperties.results as res
 import concreteproperties.stress_strain_profile as ssp
 import concreteproperties.utils as utils
-from concreteproperties.material import Concrete, Steel
+from concreteproperties.material import Concrete, SteelBar
 
 if TYPE_CHECKING:
     from concreteproperties.concrete_section import ConcreteSection
@@ -60,8 +61,8 @@ class DesignCode:
         self,
         yield_strength: float,
         colour: str = "grey",
-    ) -> Steel:
-        """Returns a steel material object.
+    ) -> SteelBar:
+        """Returns a steel bar material object.
 
         List assumptions of material properties here...
 
@@ -76,7 +77,7 @@ class DesignCode:
     def get_gross_properties(
         self,
         **kwargs,
-    ) -> res.ConcreteProperties:
+    ) -> res.GrossProperties:
         """Returns the gross section properties of the reinforced concrete section.
 
         :param kwargs: Keyword arguments passed to
@@ -90,7 +91,7 @@ class DesignCode:
     def get_transformed_gross_properties(
         self,
         **kwargs,
-    ) -> res.TransformedConcreteProperties:
+    ) -> res.TransformedGrossProperties:
         """Transforms gross section properties.
 
         :param kwargs: Keyword arguments passed to
@@ -232,7 +233,13 @@ class DesignCode:
 
 
 class AS3600(DesignCode):
-    """Design code class for Australian standard AS 3600:2018."""
+    """Design code class for Australian standard AS 3600:2018.
+
+    Note that this design code only supports :class:`~concreteproperties.pre.Concrete`
+    and :class:`~concreteproperties.pre.SteelBar` material objects. Meshed
+    :class:`~concreteproperties.pre.Steel` material objects are **not** supported
+    as this falls under the composite structures design code.
+    """
 
     def __init__(
         self,
@@ -252,11 +259,22 @@ class AS3600(DesignCode):
 
         self.concrete_section = concrete_section
 
+        # check to make sure there are no meshed reinforcement regions
+        if self.concrete_section.reinf_geometries_meshed:
+            raise ValueError(
+                "Meshed reinforcement is not supported in this design code."
+            )
+
         # determine reinforcement class
         self.reinforcement_class = "N"
 
-        for steel_geom in self.concrete_section.steel_geometries:
-            if steel_geom.material.stress_strain_profile.fracture_strain < 0.05:
+        for steel_geom in self.concrete_section.reinf_geometries_lumped:
+            if (
+                abs(
+                    steel_geom.material.stress_strain_profile.get_ultimate_tensile_strain()
+                )
+                < 0.05
+            ):
                 self.reinforcement_class = "L"
 
         # calculate squash and tensile load
@@ -343,8 +361,8 @@ class AS3600(DesignCode):
         yield_strength: float = 500,
         ductility_class: str = "N",
         colour: str = "grey",
-    ) -> Steel:
-        r"""Returns a steel material object.
+    ) -> SteelBar:
+        r"""Returns a steel bar material object.
 
         | **Material assumptions:**
         | - *Density*: 7850 kg/m\ :sup:`3`
@@ -367,7 +385,7 @@ class AS3600(DesignCode):
         else:
             raise ValueError("ductility_class must be N or L.")
 
-        return Steel(
+        return SteelBar(
             name=f"{yield_strength:.0f} MPa Steel (AS 3600:2018)",
             density=7.85e-6,
             stress_strain_profile=ssp.SteelElasticPlastic(
@@ -406,7 +424,7 @@ class AS3600(DesignCode):
             squash_load += force_c
 
         # loop through all steel geometries
-        for steel_geom in self.concrete_section.steel_geometries:
+        for steel_geom in self.concrete_section.reinf_geometries_lumped:
             # calculate area and centroid
             area = steel_geom.calculate_area()
 
@@ -415,7 +433,9 @@ class AS3600(DesignCode):
                 strain=0.025
             )
 
-            force_t = -area * steel_geom.material.stress_strain_profile.yield_strength
+            force_t = (
+                -area * steel_geom.material.stress_strain_profile.get_yield_strength()
+            )
 
             # add to totals
             squash_load += force_c
@@ -500,10 +520,10 @@ class AS3600(DesignCode):
         # get compressive strain at extreme fibre
         eps_cu = self.concrete_section.gross_properties.conc_ultimate_strain
 
-        # 4) calculate d_n at balanced load
+        # calculate d_n at balanced load
         d_nb = d_0 * (eps_cu) / (eps_sy + eps_cu)
 
-        # 5) calculate axial force at balanced load
+        # calculate axial force at balanced load
         balanced_res = self.concrete_section.calculate_ultimate_section_actions(
             d_n=d_nb, ultimate_results=res.UltimateBendingResults(theta=theta)
         )

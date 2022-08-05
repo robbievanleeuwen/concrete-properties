@@ -14,4 +14,5 @@ The following examples complement the structured documentation presented thus fa
    ../notebooks/moment_interaction
    ../notebooks/biaxial_bending
    ../notebooks/stress_analysis
+   ../notebooks/composite_section
    ../notebooks/design_codes

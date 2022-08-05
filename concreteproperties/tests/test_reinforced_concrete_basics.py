@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 import sectionproperties.pre.library.primitive_sections as sp_ps
 from concreteproperties.concrete_section import ConcreteSection
-from concreteproperties.material import Concrete, Steel
+from concreteproperties.material import Concrete, SteelBar
 from concreteproperties.pre import add_bar, add_bar_rectangular_array
 from concreteproperties.stress_strain_profile import (
     ConcreteLinear,
@@ -31,7 +31,7 @@ def test_example_3_1():
         colour="lightgrey",
     )
 
-    steel = Steel(
+    steel = SteelBar(
         name="500 MPa Steel",
         density=7.85e-6,
         stress_strain_profile=SteelElasticPlastic(
@@ -72,7 +72,10 @@ def test_example_3_1():
     assert pytest.approx(cracked_results.ixx_c_cr, rel=0.01) == 821e6
     assert pytest.approx(cracked_results.iuu_cr, rel=0.01) == 821e6
     assert pytest.approx(max(cracked_stress.concrete_stresses[0]), rel=0.01) == 15.3
-    assert pytest.approx(min(cracked_stress.steel_stresses), rel=0.01) == -213
+    assert (
+        pytest.approx(min(cracked_stress.lumped_reinforcement_stresses), rel=0.01)
+        == -213
+    )
 
 
 def test_example_3_2():
@@ -91,7 +94,7 @@ def test_example_3_2():
         colour="lightgrey",
     )
 
-    steel = Steel(
+    steel = SteelBar(
         name="500 MPa Steel",
         density=7.85e-6,
         stress_strain_profile=SteelElasticPlastic(
@@ -153,9 +156,17 @@ def test_example_3_2():
         conc_stresses.extend(cs)
 
     assert pytest.approx(max(conc_stresses), rel=0.01) == 8.1
-    assert pytest.approx(max(cracked_stress.steel_stresses), rel=0.02) == 33
-    assert pytest.approx(min(cracked_stress.steel_stresses), rel=0.01) == -193
-    assert pytest.approx(cracked_stress.steel_stresses[-1], rel=0.01) == -173
+    assert (
+        pytest.approx(max(cracked_stress.lumped_reinforcement_stresses), rel=0.02) == 33
+    )
+    assert (
+        pytest.approx(min(cracked_stress.lumped_reinforcement_stresses), rel=0.01)
+        == -193
+    )
+    assert (
+        pytest.approx(cracked_stress.lumped_reinforcement_stresses[-1], rel=0.01)
+        == -173
+    )
 
 
 def test_example_3_4():
@@ -174,7 +185,7 @@ def test_example_3_4():
         colour="lightgrey",
     )
 
-    steel = Steel(
+    steel = SteelBar(
         name="500 MPa Steel",
         density=7.85e-6,
         stress_strain_profile=SteelElasticPlastic(
@@ -238,7 +249,7 @@ def test_example_3_8():
         colour="lightgrey",
     )
 
-    steel = Steel(
+    steel = SteelBar(
         name="500 MPa Steel",
         density=7.85e-6,
         stress_strain_profile=SteelElasticPlastic(
@@ -287,7 +298,7 @@ def test_example_3_9():
         colour="lightgrey",
     )
 
-    steel = Steel(
+    steel = SteelBar(
         name="500 MPa Steel",
         density=7.85e-6,
         stress_strain_profile=SteelElasticPlastic(
@@ -336,7 +347,7 @@ def test_example_3_11():
         colour="lightgrey",
     )
 
-    steel = Steel(
+    steel = SteelBar(
         name="500 MPa Steel",
         density=7.85e-6,
         stress_strain_profile=SteelElasticPlastic(
@@ -388,7 +399,7 @@ def test_example_5_2():
         colour="lightgrey",
     )
 
-    steel = Steel(
+    steel = SteelBar(
         name="500 MPa Steel",
         density=7.85e-6,
         stress_strain_profile=SteelElasticPlastic(

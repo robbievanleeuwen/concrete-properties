@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 import sectionproperties.pre.library.concrete_sections as sp_cs
 from concreteproperties.concrete_section import ConcreteSection
-from concreteproperties.material import Concrete, Steel
+from concreteproperties.material import Concrete, SteelBar
 from concreteproperties.stress_strain_profile import (
     ConcreteLinear,
     RectangularStressBlock,
@@ -28,7 +28,7 @@ concrete = Concrete(
     colour="lightgrey",
 )
 
-steel = Steel(
+steel = SteelBar(
     name="500 MPa Steel",
     density=7.85e-6,
     stress_strain_profile=SteelElasticPlastic(
@@ -69,7 +69,7 @@ def test_stress_equilibrium_rectangle(theta):
         # check section equilibirum for uncracked stress
         uncr_stress = sec.calculate_uncracked_stress(n=nf, m_x=m_star)
 
-        assert pytest.approx(uncr_stress.sum_forces(), abs=1e-8) == nf
+        assert pytest.approx(uncr_stress.sum_forces(), abs=1e-3) == nf
         assert pytest.approx(uncr_stress.sum_moments()[2], rel=1e-3) == m_star
 
         # check section equilibirum for cracked stress
@@ -77,7 +77,7 @@ def test_stress_equilibrium_rectangle(theta):
             cracked_results=cracked, n=nf, m=m_star
         )
 
-        assert pytest.approx(cr_stress.sum_forces(), abs=1e-8) == nf
+        assert pytest.approx(cr_stress.sum_forces(), abs=1e-3) == nf
         assert pytest.approx(cr_stress.sum_moments()[2], rel=5e-3) == m_star
 
     # check section equilibirum for ultimate stress
@@ -115,13 +115,13 @@ def test_stress_equilibrium_circular(nf):
     # check section equilibirum for uncracked stress
     uncr_stress = sec.calculate_uncracked_stress(n=nf, m_x=m_star)
 
-    assert pytest.approx(uncr_stress.sum_forces(), abs=1e-8) == nf
+    assert pytest.approx(uncr_stress.sum_forces(), abs=1e-3) == nf
     assert pytest.approx(uncr_stress.sum_moments()[2], rel=1e-3) == m_star
 
     # check section equilibirum for cracked stress
     cr_stress = sec.calculate_cracked_stress(cracked_results=cracked, n=nf, m=m_star)
 
-    assert pytest.approx(cr_stress.sum_forces(), abs=1e-8) == nf
+    assert pytest.approx(cr_stress.sum_forces(), abs=1e-3) == nf
     assert pytest.approx(cr_stress.sum_moments()[2], rel=5e-3) == m_star
 
     # check section equilibirum for ultimate stress
@@ -163,7 +163,7 @@ def test_stress_equilibrium_tee(theta):
         # check section equilibirum for uncracked stress
         uncr_stress = sec.calculate_uncracked_stress(n=nf, m_x=m_star)
 
-        assert pytest.approx(uncr_stress.sum_forces(), abs=1e-8) == nf
+        assert pytest.approx(uncr_stress.sum_forces(), abs=1e-3) == nf
         assert pytest.approx(uncr_stress.sum_moments()[2], rel=1e-3) == m_star
 
         # check section equilibirum for cracked stress
@@ -171,7 +171,7 @@ def test_stress_equilibrium_tee(theta):
             cracked_results=cracked, n=nf, m=m_star
         )
 
-        assert pytest.approx(cr_stress.sum_forces(), abs=1e-8) == nf
+        assert pytest.approx(cr_stress.sum_forces(), abs=1e-3) == nf
         assert pytest.approx(cr_stress.sum_moments()[2], rel=5e-3) == m_star
 
     # check section equilibirum for ultimate stress

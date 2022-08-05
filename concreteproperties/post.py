@@ -4,13 +4,9 @@ import contextlib
 from typing import TYPE_CHECKING, Optional, Tuple, Union
 
 import matplotlib.pyplot as plt
-import numpy as np
 
 if TYPE_CHECKING:
     import matplotlib
-
-    from concreteproperties.analysis_section import AnalysisSection
-    from concreteproperties.concrete_section import ConcreteSection
 
 
 @contextlib.contextmanager
