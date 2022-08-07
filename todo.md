@@ -1,12 +1,5 @@
 # POST-RELEASE ITEMS
-- [ ] Speed up
-  - [ ] Profiling
-  - [ ] Clean up all the na_local, points_na etc. etc.
-  - [ ] Double calculations etc.?
-  - [ ] General refactoring
 - [ ] Add prestressing
-- [x] Docs version control
-- [x] Start to add design codes
 - [ ] More tests!
 
 # Version Instructions

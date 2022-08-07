@@ -11,7 +11,6 @@ import matplotlib.tri as tri
 import numpy as np
 from matplotlib.collections import PatchCollection
 from matplotlib.colors import CenteredNorm  # type: ignore
-from mpl_toolkits import mplot3d
 from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
 from rich.console import Console
 from rich.table import Table
@@ -24,14 +23,14 @@ from concreteproperties.post import plotting_context
 
 if TYPE_CHECKING:
     import matplotlib
-    from sectionproperties.pre.geometry import Geometry
 
     from concreteproperties.analysis_section import AnalysisSection
     from concreteproperties.concrete_section import ConcreteSection
+    from concreteproperties.pre import CPGeom
 
 
 @dataclass
-class ConcreteProperties:
+class GrossProperties:
     """Class for storing gross concrete section properties.
 
     All properties with an `e_` preceding the property are multiplied by the elastic
@@ -43,7 +42,8 @@ class ConcreteProperties:
     # section areas
     total_area: float = 0
     concrete_area: float = 0
-    steel_area: float = 0
+    reinf_meshed_area: float = 0
+    reinf_lumped_area: float = 0
     e_a: float = 0
 
     # section mass
@@ -101,7 +101,14 @@ class ConcreteProperties:
 
         table.add_row("Total Area", "{:>{fmt}}".format(self.total_area, fmt=fmt))
         table.add_row("Concrete Area", "{:>{fmt}}".format(self.concrete_area, fmt=fmt))
-        table.add_row("Steel Area", "{:>{fmt}}".format(self.steel_area, fmt=fmt))
+        table.add_row(
+            "Meshed Reinforcement Area",
+            "{:>{fmt}}".format(self.reinf_meshed_area, fmt=fmt),
+        )
+        table.add_row(
+            "Lumped Reinforcement Area",
+            "{:>{fmt}}".format(self.reinf_lumped_area, fmt=fmt),
+        )
         table.add_row("Axial Rigidity (EA)", "{:>{fmt}}".format(self.e_a, fmt=fmt))
         table.add_row("Mass (per unit length)", "{:>{fmt}}".format(self.mass, fmt=fmt))
         table.add_row("Perimeter", "{:>{fmt}}".format(self.perimeter, fmt=fmt))
@@ -136,14 +143,14 @@ class ConcreteProperties:
 
 
 @dataclass
-class TransformedConcreteProperties:
+class TransformedGrossProperties:
     """Class for storing transformed gross concrete section properties.
 
     :param concrete_properties: Concrete properties object
     :param elastic_modulus: Reference elastic modulus
     """
 
-    concrete_properties: ConcreteProperties = field(repr=False)
+    concrete_properties: GrossProperties = field(repr=False)
     elastic_modulus: float
 
     # area
@@ -250,7 +257,7 @@ class CrackedResults:
     theta: float
     m_cr: float = 0
     d_nc: float = 0
-    cracked_geometries: List[Geometry] = field(default_factory=list, repr=False)
+    cracked_geometries: List[CPGeom] = field(default_factory=list, repr=False)
     e_a_cr: float = 0
     e_qx_cr: float = 0
     e_qy_cr: float = 0
@@ -311,8 +318,8 @@ class CrackedResults:
         title: str = "Cracked Geometries",
         **kwargs,
     ) -> matplotlib.axes.Axes:  # type: ignore
-        """Plots the geometries that remain (are in compression or are steel) after a
-        cracked analysis.
+        """Plots the geometries that remain (are in compression or are reinforcement)
+        after a cracked analysis.
 
         :param title: Plot title
         :param kwargs: Passed to
@@ -321,9 +328,9 @@ class CrackedResults:
         :return: Matplotlib axes object
         """
 
-        return CompoundGeometry(self.cracked_geometries).plot_geometry(
-            title=title, **kwargs
-        )
+        return CompoundGeometry(
+            [geom.to_sp_geom() for geom in self.cracked_geometries]
+        ).plot_geometry(title=title, **kwargs)
 
     def print_results(
         self,
@@ -410,7 +417,7 @@ class MomentCurvatureResults:
     m_x: List[float] = field(default_factory=list)
     m_y: List[float] = field(default_factory=list)
     m_xy: List[float] = field(default_factory=list)
-    failure_geometry: Geometry = field(init=False)
+    failure_geometry: CPGeom = field(init=False)
 
     # for analysis
     _n_i: float = field(default=0, repr=False)
@@ -590,7 +597,7 @@ class UltimateBendingResults:
         table.add_row("Bending Angle - theta", "{:>{fmt}}".format(self.theta, fmt=fmt))
         table.add_row("Neutral Axis Depth - d_n", "{:>{fmt}}".format(self.d_n, fmt=fmt))
         table.add_row(
-            "Neutral Axis Parameter- k_u", "{:>{fmt}}".format(self.k_u, fmt=fmt)
+            "Neutral Axis Parameter - k_u", "{:>{fmt}}".format(self.k_u, fmt=fmt)
         )
         table.add_row("Axial Force", "{:>{fmt}}".format(self.n, fmt=fmt))
         table.add_row("Bending Capacity - m_x", "{:>{fmt}}".format(self.m_x, fmt=fmt))
@@ -1009,36 +1016,48 @@ class StressResult:
         :meth:`~concreteproperties.analysis_section.AnalysisSection.plot_shape`
     :param concrete_stresses: List of concrete stresses at the nodes of each concrete
         analysis section
-    :param concrete_forces: List of net forces for each concrete analysis section and its
-        lever arm (``force``, ``d_x``, ``d_y``)
-    :param steel_geometries: List of steel geometry objects present in the stress analysis
-    :param steel_stresses: List of steel stresses for each steel geometry
-    :param steel_strains: List of steel strains for each steel geometry
-    :param steel_forces: List of net forces for each steel geometry and its lever arm
-        (``force``, ``d_x``, ``d_y``)
+    :param concrete_forces: List of net forces for each concrete analysis section and
+        its lever arm (``force``, ``d_x``, ``d_y``)
+    :param meshed_reinforcement_sections: List of meshed reinforcement section objects
+        present in the stress analysis
+    :param meshed_reinforcement_stresses: List of meshed reinforcement stresses at the
+        nodes of each meshed reinforcement analysis section
+    :param meshed_reinforcement_forces: List of net forces for each meshed reinforcement
+         analysis section and its lever arm (``force``, ``d_x``, ``d_y``)
+    :param lumped_reinforcement_geometries: List of lumped reinforcement geometry
+        objects present in the stress analysis
+    :param lumped_reinforcement_stresses: List of lumped reinforcement stresses for
+        each lumped geometry
+    :param lumped_reinforcement_strains: List of lumped reinforcement strains for each
+        lumped geometry
+    :param lumped_reinforcement_forces: List of net forces for each lumped reinforcement
+         geometry and its lever arm (``force``, ``d_x``, ``d_y``)
     """
 
     concrete_section: ConcreteSection
     concrete_analysis_sections: List[AnalysisSection]
     concrete_stresses: List[np.ndarray]
     concrete_forces: List[Tuple[float, float, float]]
-    steel_geometries: List[Geometry]
-    steel_stresses: List[float]
-    steel_strains: List[float]
-    steel_forces: List[Tuple[float, float, float]]
+    meshed_reinforcement_sections: List[AnalysisSection]
+    meshed_reinforcement_stresses: List[np.ndarray]
+    meshed_reinforcement_forces: List[Tuple[float, float, float]]
+    lumped_reinforcement_geometries: List[CPGeom]
+    lumped_reinforcement_stresses: List[float]
+    lumped_reinforcement_strains: List[float]
+    lumped_reinforcement_forces: List[Tuple[float, float, float]]
 
     def plot_stress(
         self,
         title: str = "Stress",
         conc_cmap: str = "RdGy",
-        steel_cmap: str = "bwr",
+        reinf_cmap: str = "bwr",
         **kwargs,
     ) -> matplotlib.axes.Axes:  # type: ignore
         """Plots concrete and steel stresses on a concrete section.
 
         :param title: Plot title
         :param conc_cmap: Colour map for the concrete stress
-        :param steel_cmap: Colour map for the steel stress
+        :param reinf_cmap: Colour map for the reinforcement stress
         :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
@@ -1057,18 +1076,55 @@ class StressResult:
 
             # set up the colormaps
             cmap_conc = cm.get_cmap(name=conc_cmap)
-            cmap_steel = cm.get_cmap(name=steel_cmap)
+            cmap_reinf = cm.get_cmap(name=reinf_cmap)
 
             # determine minimum and maximum stress values for the contour list
             # add tolerance for plotting stress blocks
             conc_sig_min = min([min(x) for x in self.concrete_stresses]) - 1e-12
             conc_sig_max = max([max(x) for x in self.concrete_stresses]) + 1e-12
-            steel_sig_min = min(self.steel_stresses)
-            steel_sig_max = max(self.steel_stresses)
+
+            # if there is meshed reinforcement, calculate min and max
+            if self.meshed_reinforcement_stresses:
+                meshed_reinf_sig_min = (
+                    min([min(x) for x in self.meshed_reinforcement_stresses]) - 1e-12
+                )
+                meshed_reinf_sig_max = (
+                    max([max(x) for x in self.meshed_reinforcement_stresses]) + 1e-12
+                )
+            else:
+                meshed_reinf_sig_min = None
+                meshed_reinf_sig_max = None
+
+            # if there is lumped reinforcement, calculate min and max
+            if self.lumped_reinforcement_stresses:
+                lumped_reinf_sig_min = min(self.lumped_reinforcement_stresses)
+                lumped_reinf_sig_max = max(self.lumped_reinforcement_stresses)
+            else:
+                lumped_reinf_sig_min = None
+                lumped_reinf_sig_max = None
+
+            # determine min and max reinforcement stresess
+            if (
+                meshed_reinf_sig_min
+                and meshed_reinf_sig_max
+                and lumped_reinf_sig_min
+                and lumped_reinf_sig_max
+            ):
+                reinf_sig_min = min(meshed_reinf_sig_min, lumped_reinf_sig_min)
+                reinf_sig_max = max(meshed_reinf_sig_max, lumped_reinf_sig_max)
+            elif meshed_reinf_sig_min and meshed_reinf_sig_max:
+                reinf_sig_min = meshed_reinf_sig_min
+                reinf_sig_max = meshed_reinf_sig_max
+            elif lumped_reinf_sig_min and lumped_reinf_sig_max:
+                reinf_sig_min = lumped_reinf_sig_min
+                reinf_sig_max = lumped_reinf_sig_max
+            else:
+                reinf_sig_min = 0
+                reinf_sig_max = 0
 
             # set up ticks
             v_conc = np.linspace(conc_sig_min, conc_sig_max, 15, endpoint=True)
-            v_steel = np.linspace(steel_sig_min, steel_sig_max, 15, endpoint=True)
+            v_reinf = np.linspace(reinf_sig_min, reinf_sig_max, 15, endpoint=True)
 
             if np.isclose(v_conc[0], v_conc[-1], atol=1e-12):
                 v_conc = 15
@@ -1076,27 +1132,27 @@ class StressResult:
             else:
                 ticks_conc = v_conc
 
-            if np.isclose(v_steel[0], v_steel[-1], atol=1e-12):
-                ticks_steel = None
-                steel_tick_same = True
+            if np.isclose(v_reinf[0], v_reinf[-1], atol=1e-12):
+                ticks_reinf = None
+                reinf_tick_same = True
             else:
-                ticks_steel = v_steel
-                steel_tick_same = False
+                ticks_reinf = v_reinf
+                reinf_tick_same = False
 
             # plot the concrete stresses
             for idx, sig in enumerate(self.concrete_stresses):
                 # check region has a force
                 if abs(self.concrete_forces[idx][0]) > 1e-8:
                     # create triangulation
-                    triang = tri.Triangulation(
+                    triang_conc = tri.Triangulation(
                         self.concrete_analysis_sections[idx].mesh_nodes[:, 0],
                         self.concrete_analysis_sections[idx].mesh_nodes[:, 1],
                         self.concrete_analysis_sections[idx].mesh_elements[:, 0:3],  # type: ignore
                     )
 
                     # plot the filled contour
-                    trictr = fig.axes[0].tricontourf(
-                        triang, sig, v_conc, cmap=cmap_conc, norm=CenteredNorm()
+                    trictr_conc = fig.axes[0].tricontourf(
+                        triang_conc, sig, v_conc, cmap=cmap_conc, norm=CenteredNorm()
                     )
 
                     # plot a zero stress contour, supressing warning
@@ -1124,44 +1180,102 @@ class StressResult:
                             zero_level = -1e-12
 
                         CS = fig.axes[0].tricontour(
-                            triang, sig, [zero_level], linewidths=1, linestyles="dashed"
+                            triang_conc,
+                            sig,
+                            [zero_level],
+                            linewidths=1,
+                            linestyles="dashed",
                         )
 
-            # plot the steel stresses
-            steel_patches = []
+            # plot the meshed reinforcement stresses
+            trictr_reinf = None
+
+            for idx, sig in enumerate(self.meshed_reinforcement_stresses):
+                # check region has a force
+                if abs(self.meshed_reinforcement_forces[idx][0]) > 1e-8:
+                    # create triangulation
+                    triang_reinf = tri.Triangulation(
+                        self.meshed_reinforcement_sections[idx].mesh_nodes[:, 0],
+                        self.meshed_reinforcement_sections[idx].mesh_nodes[:, 1],
+                        self.meshed_reinforcement_sections[idx].mesh_elements[:, 0:3],  # type: ignore
+                    )
+
+                    # plot the filled contour
+                    trictr_reinf = fig.axes[0].tricontourf(
+                        triang_reinf, sig, v_reinf, cmap=cmap_reinf, norm=CenteredNorm()
+                    )
+
+                    # plot a zero stress contour, supressing warning
+                    with warnings.catch_warnings():
+                        warnings.filterwarnings(
+                            "ignore",
+                            message="No contour levels were found within the data range.",
+                        )
+
+                        # set zero stress for neutral axis contour
+                        zero_level = 0
+
+                        if min(sig) > 0:
+                            if min(sig) < 1e-3:
+                                zero_level = min(sig) + 1e-12
+
+                        if max(sig) < 0:
+                            if max(sig) > -1e-3:
+                                zero_level = max(sig) - 1e-12
+
+                        if min(sig) == 0:
+                            zero_level = 1e-12
+
+                        if max(sig) == 0:
+                            zero_level = -1e-12
+
+                        CS = fig.axes[0].tricontour(
+                            triang_reinf,
+                            sig,
+                            [zero_level],
+                            linewidths=1,
+                            linestyles="dashed",
+                        )
+
+            # plot the lumped reinforcement stresses
+            lumped_reinf_patches = []
             colours = []
 
-            for idx, sig in enumerate(self.steel_stresses):
-                steel_patches.append(
+            for idx, sig in enumerate(self.lumped_reinforcement_stresses):
+                lumped_reinf_patches.append(
                     mpatches.Polygon(
-                        xy=list(
-                            self.concrete_section.steel_geometries[
-                                idx
-                            ].geom.exterior.coords
-                        )
+                        xy=list(self.lumped_reinforcement_geometries[idx].geom.exterior.coords)  # type: ignore
                     )
                 )
                 colours.append(sig)
 
-            patch = PatchCollection(steel_patches, cmap=cmap_steel)
+            patch = PatchCollection(lumped_reinf_patches, cmap=cmap_reinf)
             patch.set_array(colours)
-            if steel_tick_same:
-                patch.set_clim([0.99 * v_steel[0], 1.01 * v_steel[-1]])
+            if reinf_tick_same:
+                patch.set_clim([0.99 * v_reinf[0], 1.01 * v_reinf[-1]])
+            else:
+                patch.set_clim([v_reinf[0], v_reinf[-1]])
             fig.axes[0].add_collection(patch)
 
             # add the colour bars
             fig.colorbar(
-                trictr,  # type: ignore
+                trictr_conc,  # type: ignore
                 label="Concrete Stress",
                 format="%.2e",
                 ticks=ticks_conc,
                 cax=fig.axes[1],
             )
+
+            if trictr_reinf:
+                mappable = trictr_reinf
+            else:
+                mappable = patch
+
             fig.colorbar(
-                patch,
-                label="Steel Stress",
+                mappable,
+                label="Reinforcement Stress",
                 format="%.2e",
-                ticks=ticks_steel,
+                ticks=ticks_reinf,
                 cax=fig.axes[2],
             )
 
@@ -1183,9 +1297,13 @@ class StressResult:
         for conc_force in self.concrete_forces:
             force_sum += conc_force[0]
 
-        # sum steel forces
-        for steel_force in self.steel_forces:
-            force_sum += steel_force[0]
+        # sum meshed reinf stresses
+        for meshed_reinf_force in self.meshed_reinforcement_forces:
+            force_sum += meshed_reinf_force[0]
+
+        # sum lumped reinf forces
+        for lumped_reinf_force in self.lumped_reinforcement_forces:
+            force_sum += lumped_reinf_force[0]
 
         return force_sum
 
@@ -1206,10 +1324,15 @@ class StressResult:
             moment_sum_x += conc_force[0] * conc_force[2]
             moment_sum_y += conc_force[0] * conc_force[1]
 
-        # sum steel forces
-        for steel_force in self.steel_forces:
-            moment_sum_x += steel_force[0] * steel_force[2]
-            moment_sum_y += steel_force[0] * steel_force[1]
+        # sum meshed reinf stresses
+        for meshed_reinf_force in self.meshed_reinforcement_forces:
+            moment_sum_x += meshed_reinf_force[0] * meshed_reinf_force[2]
+            moment_sum_y += meshed_reinf_force[0] * meshed_reinf_force[1]
+
+        # sum lumped reinf forces
+        for lumped_reinf_force in self.lumped_reinforcement_forces:
+            moment_sum_x += lumped_reinf_force[0] * lumped_reinf_force[2]
+            moment_sum_y += lumped_reinf_force[0] * lumped_reinf_force[1]
 
         moment_sum = np.sqrt(moment_sum_x * moment_sum_x + moment_sum_y * moment_sum_y)
 

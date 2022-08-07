@@ -2,35 +2,36 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from math import isinf
-from typing import TYPE_CHECKING, List, Optional, Tuple
+from typing import TYPE_CHECKING, List, Tuple
 
 import numpy as np
 import triangle
 from matplotlib.colors import ListedColormap
 
 import concreteproperties.utils as utils
+from concreteproperties.material import Concrete
 from concreteproperties.post import plotting_context
 
 if TYPE_CHECKING:
     import matplotlib
-    from sectionproperties.pre.geometry import Geometry
 
-    from concreteproperties.material import Concrete
+    from concreteproperties.material import Material
+    from concreteproperties.pre import CPGeom
 
 
 class AnalysisSection:
-    """Class for an analysis section to perform a fast analysis on concrete sections."""
+    """Class for an analysis section to perform a fast analysis on meshed sections."""
 
     def __init__(
         self,
-        geometry: Geometry,
+        geometry: CPGeom,
     ):
         """Inits the AnalysisSection class.
 
         :param geometry: Geometry object
         """
 
-        self.geometry = geometry
+        self.material = geometry.material
 
         # create simple mesh
         tri = {}  # create tri dictionary
@@ -40,6 +41,7 @@ class AnalysisSection:
         if geometry.holes:
             tri["holes"] = geometry.holes  # set holes
 
+        # coarse mesh
         self.mesh = triangle.triangulate(tri, "p")
 
         # extract mesh data
@@ -51,9 +53,9 @@ class AnalysisSection:
             self.mesh_elements = []
 
         # build elements
-        self.elements = []
+        self.elements: List[Tri3] = []
 
-        for idx, node_ids in enumerate(self.mesh_elements):
+        for node_ids in self.mesh_elements:
             x1 = self.mesh_nodes[node_ids[0]][0]
             y1 = self.mesh_nodes[node_ids[0]][1]
             x2 = self.mesh_nodes[node_ids[1]][0]
@@ -67,10 +69,9 @@ class AnalysisSection:
             # add tri elements to the mesh
             self.elements.append(
                 Tri3(
-                    el_id=idx,
                     coords=coords,
                     node_ids=node_ids,
-                    conc_material=self.geometry.material,  # type: ignore
+                    material=self.material,
                 )
             )
 
@@ -111,22 +112,22 @@ class AnalysisSection:
             y = node[1] - cy
 
             # axial stress
-            sig[idx] += n * self.geometry.material.elastic_modulus / e_a
+            sig[idx] += n * self.material.elastic_modulus / e_a
 
             # bending moment
-            sig[idx] += self.geometry.material.elastic_modulus * (
+            sig[idx] += self.material.elastic_modulus * (
                 -(e_ixy * m_x) / (e_ixx * e_iyy - e_ixy**2) * x
                 + (e_iyy * m_x) / (e_ixx * e_iyy - e_ixy**2) * y
             )
-            sig[idx] += self.geometry.material.elastic_modulus * (
+            sig[idx] += self.material.elastic_modulus * (
                 +(e_ixx * m_y) / (e_ixx * e_iyy - e_ixy**2) * x
                 - (e_ixy * m_y) / (e_ixx * e_iyy - e_ixy**2) * y
             )
 
         # initialise section actions
-        n_conc = 0
-        m_x_conc = 0
-        m_y_conc = 0
+        n_sec = 0
+        m_x_sec = 0
+        m_y_sec = 0
 
         for el in self.elements:
             el_n, el_m_x, el_m_y = el.calculate_elastic_actions(
@@ -141,28 +142,27 @@ class AnalysisSection:
                 e_ixy=e_ixy,
             )
 
-            n_conc += el_n
-            m_x_conc += el_m_x
-            m_y_conc += el_m_y
+            n_sec += el_n
+            m_x_sec += el_m_x
+            m_y_sec += el_m_y
 
         # calculate point of action
-        if n_conc == 0:
+        if n_sec == 0:
             d_x = 0
             d_y = 0
         else:
-            d_x = m_y_conc / n_conc
-            d_y = m_x_conc / n_conc
+            d_x = m_y_sec / n_sec
+            d_y = m_x_sec / n_sec
 
-        return sig, n_conc, d_x, d_y
+        return sig, n_sec, d_x, d_y
 
-    def service_stress_analysis(
+    def service_analysis(
         self,
         point_na: Tuple[float, float],
-        d_n: float,
         theta: float,
         kappa: float,
         centroid: Tuple[float, float],
-    ) -> Tuple[float, float, float, float]:
+    ) -> Tuple[float, float, float, float, float]:
         r"""Performs a service stress analysis on the section.
 
         :param point_na: Point on the neutral axis
@@ -172,30 +172,37 @@ class AnalysisSection:
         :param kappa: Curvature
         :param centroid: Centroid about which to take moments
 
-        :return: Axial force, section moments and max strain
+        :return: Axial force, section moments and min/max strain
         """
 
         # initialise section actions
-        n = 0
-        m_x = 0
-        m_y = 0
+        n_sec = 0
+        m_x_sec = 0
+        m_y_sec = 0
+        min_strain = 0
         max_strain = 0
 
         for el in self.elements:
-            el_n, el_m_x, el_m_y, el_max_strain = el.calculate_service_actions(
+            (
+                el_n,
+                el_m_x,
+                el_m_y,
+                el_min_strain,
+                el_max_strain,
+            ) = el.calculate_service_actions(
                 point_na=point_na,
-                d_n=d_n,
                 theta=theta,
                 kappa=kappa,
                 centroid=centroid,
             )
+            min_strain = min(min_strain, el_min_strain)
             max_strain = max(max_strain, el_max_strain)
 
-            n += el_n
-            m_x += el_m_x
-            m_y += el_m_y
+            n_sec += el_n
+            m_x_sec += el_m_x
+            m_y_sec += el_m_y
 
-        return n, m_x, m_y, max_strain
+        return n_sec, m_x_sec, m_y_sec, min_strain, max_strain
 
     def get_service_stress(
         self,
@@ -233,30 +240,27 @@ class AnalysisSection:
             )
 
             # get stress at gauss point
-            sig[idx] = self.geometry.material.stress_strain_profile.get_stress(  # type: ignore
-                strain=strain
-            )
+            sig[idx] = self.material.stress_strain_profile.get_stress(strain=strain)
 
         # calculate total force
-        n, m_x, m_y, _ = self.service_stress_analysis(
+        n_sec, m_x_sec, m_y_sec, _, _ = self.service_analysis(
             point_na=point_na,
-            d_n=d_n,
             theta=theta,
             kappa=kappa,
             centroid=centroid,
         )
 
         # calculate point of action
-        if n == 0:
+        if n_sec == 0:
             d_x = 0
             d_y = 0
         else:
-            d_x = m_y / n
-            d_y = m_x / n
+            d_x = m_y_sec / n_sec
+            d_y = m_x_sec / n_sec
 
-        return sig, n, d_x, d_y
+        return sig, n_sec, d_x, d_y
 
-    def ultimate_stress_analysis(
+    def ultimate_analysis(
         self,
         point_na: Tuple[float, float],
         d_n: float,
@@ -277,9 +281,9 @@ class AnalysisSection:
         """
 
         # initialise section actions
-        n = 0
-        m_x = 0
-        m_y = 0
+        n_sec = 0
+        m_x_sec = 0
+        m_y_sec = 0
 
         for el in self.elements:
             el_n, el_m_x, el_m_y = el.calculate_ultimate_actions(
@@ -290,11 +294,11 @@ class AnalysisSection:
                 centroid=centroid,
             )
 
-            n += el_n
-            m_x += el_m_x
-            m_y += el_m_y
+            n_sec += el_n
+            m_x_sec += el_m_x
+            m_y_sec += el_m_y
 
-        return n, m_x, m_y
+        return n_sec, m_x_sec, m_y_sec
 
     def get_ultimate_stress(
         self,
@@ -336,12 +340,15 @@ class AnalysisSection:
                 )
 
             # get stress at gauss point
-            sig[idx] = self.geometry.material.ultimate_stress_strain_profile.get_stress(  # type: ignore
-                strain=strain
-            )
+            if isinstance(self.material, Concrete):
+                sig[idx] = self.material.ultimate_stress_strain_profile.get_stress(
+                    strain=strain
+                )
+            else:
+                sig[idx] = self.material.stress_strain_profile.get_stress(strain=strain)
 
         # calculate total force
-        n, m_x, m_y = self.ultimate_stress_analysis(
+        n_sec, m_x_sec, m_y_sec = self.ultimate_analysis(
             point_na=point_na,
             d_n=d_n,
             theta=theta,
@@ -350,14 +357,14 @@ class AnalysisSection:
         )
 
         # calculate point of action
-        if n == 0:
+        if n_sec == 0:
             d_x = 0
             d_y = 0
         else:
-            d_x = m_y / n
-            d_y = m_x / n
+            d_x = m_y_sec / n_sec
+            d_y = m_x_sec / n_sec
 
-        return sig, n, d_x, d_y
+        return sig, n_sec, d_x, d_y
 
     def plot_mesh(
         self,
@@ -379,8 +386,8 @@ class AnalysisSection:
             c = []  # Indices of elements for mapping colours
 
             # create an array of finite element colours
-            for idx, element in enumerate(self.elements):
-                colour_array.append(element.conc_material.colour)
+            for idx, el in enumerate(self.elements):
+                colour_array.append(el.material.colour)
                 c.append(idx)
 
             cmap = ListedColormap(colour_array)  # custom colourmap
@@ -421,8 +428,8 @@ class AnalysisSection:
         c = []  # Indices of elements for mapping colours
 
         # create an array of finite element colours
-        for idx, element in enumerate(self.elements):
-            colour_array.append(element.conc_material.colour)
+        for idx, el in enumerate(self.elements):
+            colour_array.append(el.material.colour)
             c.append(idx)
 
         cmap = ListedColormap(colour_array)  # custom colourmap
@@ -441,16 +448,14 @@ class AnalysisSection:
 class Tri3:
     """Class for a three noded linear triangular element.
 
-    :param el_id: Unique element id
-    :param coords: A 2 x 3 array of the coordinates of the tri-3 nodes.
+    :param coords: A 2 x 3 array of the coordinates of the tri-3 nodes
     :param node_ids: A list of the global node ids for the current element
-    :param conc_material: Material object for the current finite element.
+    :param material: Material object for the current finite element
     """
 
-    el_id: int
     coords: np.ndarray
     node_ids: List[int]
-    conc_material: Concrete
+    material: Material
 
     def second_moments_of_area(
         self,
@@ -474,19 +479,19 @@ class Tri3:
             N, j = utils.shape_function(coords=self.coords, gauss_point=gp)
 
             e_ixx += (
-                self.conc_material.elastic_modulus
+                self.material.elastic_modulus
                 * gp[0]
                 * np.dot(N, np.transpose(self.coords[1, :])) ** 2
                 * j
             )
             e_iyy += (
-                self.conc_material.elastic_modulus
+                self.material.elastic_modulus
                 * gp[0]
                 * np.dot(N, np.transpose(self.coords[0, :])) ** 2
                 * j
             )
             e_ixy += (
-                self.conc_material.elastic_modulus
+                self.material.elastic_modulus
                 * gp[0]
                 * np.dot(N, np.transpose(self.coords[1, :]))
                 * np.dot(N, np.transpose(self.coords[0, :]))
@@ -541,12 +546,12 @@ class Tri3:
 
             # axial force
             force_gp = 0
-            force_gp += gp[0] * n * self.conc_material.elastic_modulus / e_a * j
+            force_gp += gp[0] * n * self.material.elastic_modulus / e_a * j
 
             # bending moment
             force_gp += (
                 gp[0]
-                * self.conc_material.elastic_modulus
+                * self.material.elastic_modulus
                 * (
                     -(e_ixy * m_x) / (e_ixx * e_iyy - e_ixy**2) * x
                     + (e_iyy * m_x) / (e_ixx * e_iyy - e_ixy**2) * y
@@ -555,7 +560,7 @@ class Tri3:
             )
             force_gp += (
                 gp[0]
-                * self.conc_material.elastic_modulus
+                * self.material.elastic_modulus
                 * (
                     +(e_ixx * m_y) / (e_ixx * e_iyy - e_ixy**2) * x
                     - (e_ixy * m_y) / (e_ixx * e_iyy - e_ixy**2) * y
@@ -573,27 +578,26 @@ class Tri3:
     def calculate_service_actions(
         self,
         point_na: Tuple[float, float],
-        d_n: float,
         theta: float,
         kappa: float,
         centroid: Tuple[float, float],
-    ) -> Tuple[float, float, float, float]:
+    ) -> Tuple[float, float, float, float, float]:
         r"""Calculates service actions for the current finite element.
 
         :param point_na: Point on the neutral axis
-        :param d_n: Depth of the neutral axis from the extreme compression fibre
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param kappa: Curvature
         :param centroid: Centroid about which to take moments
 
-        :return: Axial force, moments and maximum strain
+        :return: Axial force, moments and min/max strain
         """
 
         # initialise element results
         force_e = 0
         m_x_e = 0
         m_y_e = 0
+        min_strain_e = 0
         max_strain_e = 0
 
         # get points for 1 point Gaussian integration
@@ -615,10 +619,11 @@ class Tri3:
                 theta=theta,
                 kappa=kappa,
             )
+            min_strain_e = min(min_strain_e, strain)
             max_strain_e = max(max_strain_e, strain)
 
             # get stress at gauss point
-            stress = self.conc_material.stress_strain_profile.get_stress(strain=strain)
+            stress = self.material.stress_strain_profile.get_stress(strain=strain)
 
             # calculate force (stress * area)
             force_gp = gp[0] * stress * j
@@ -628,7 +633,7 @@ class Tri3:
             m_x_e += force_e * (y - centroid[1])
             m_y_e += force_e * (x - centroid[0])
 
-        return force_e, m_x_e, m_y_e, max_strain_e
+        return force_e, m_x_e, m_y_e, min_strain_e, max_strain_e
 
     def calculate_ultimate_actions(
         self,
@@ -680,9 +685,12 @@ class Tri3:
                 )
 
             # get stress at gauss point
-            stress = self.conc_material.ultimate_stress_strain_profile.get_stress(
-                strain=strain
-            )
+            if isinstance(self.material, Concrete):
+                stress = self.material.ultimate_stress_strain_profile.get_stress(
+                    strain=strain
+                )
+            else:
+                stress = self.material.stress_strain_profile.get_stress(strain=strain)
 
             # calculate force (stress * area)
             force_gp = gp[0] * stress * j

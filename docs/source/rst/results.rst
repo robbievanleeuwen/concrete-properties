@@ -18,12 +18,12 @@ method.
 ..  automethod:: concreteproperties.concrete_section.ConcreteSection.get_gross_properties
   :noindex:
 
-This method returns a :class:`~concreteproperties.results.ConcreteProperties` object,
+This method returns a :class:`~concreteproperties.results.GrossProperties` object,
 which stores all the calculated section properties as attributes. The gross area
 properties can be printed to the terminal by calling the
-:meth:`~concreteproperties.results.ConcreteProperties.print_results` method.
+:meth:`~concreteproperties.results.GrossProperties.print_results` method.
 
-..  autoclass:: concreteproperties.results.ConcreteProperties()
+..  autoclass:: concreteproperties.results.GrossProperties()
   :noindex:
   :members:
 
@@ -34,13 +34,13 @@ method.
 ..  automethod:: concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties
   :noindex:
 
-This method returns a :class:`~concreteproperties.results.TransformedConcreteProperties`
+This method returns a :class:`~concreteproperties.results.TransformedGrossProperties`
 object, which stores all the calculated transformed section properties as class
 attributes. The transformed gross area properties can be printed to the terminal by
 calling the
-:meth:`~concreteproperties.results.TransformedConcreteProperties.print_results` method.
+:meth:`~concreteproperties.results.TransformedGrossProperties.print_results` method.
 
-..  autoclass:: concreteproperties.results.TransformedConcreteProperties()
+..  autoclass:: concreteproperties.results.TransformedGrossProperties()
   :noindex:
   :members:
 
@@ -61,7 +61,7 @@ returns a :class:`~concreteproperties.results.CrackedResults` object.
   :members:
 
 Calling
-:meth:`~concreteproperties.results.TransformedConcreteProperties.calculate_transformed_properties`
+:meth:`~concreteproperties.results.TransformedGrossProperties.calculate_transformed_properties`
 on a :class:`~concreteproperties.results.CrackedResults` object stores the transformed
 cracked properties as attributes within the current object.
 
