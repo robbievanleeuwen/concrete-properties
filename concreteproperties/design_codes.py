@@ -728,7 +728,13 @@ class AS3600(DesignCode):
 class NZS3101(DesignCode):
     # TODO - add options for returning overstrength capacity/interaction curves
     # TODO - add density as input as E_conc reliant on it
-    """Design code class for New Zealand standard NZS3101:2006."""
+    """Design code class for New Zealand standard NZS3101:2006.
+
+    Note that this design code only supports :class:`~concreteproperties.pre.Concrete`
+    and :class:`~concreteproperties.pre.SteelBar` material objects. Meshed
+    :class:`~concreteproperties.pre.Steel` material objects are **not** supported
+    as this falls under the composite structures design code.
+    """
 
     def __init__(
         self,
@@ -749,13 +755,23 @@ class NZS3101(DesignCode):
 
         self.concrete_section = concrete_section
 
+        # check to make sure there are no meshed reinforcement regions
+        if self.concrete_section.reinf_geometries_meshed:
+            raise ValueError(
+                "Meshed reinforcement is not supported in this design code."
+            )
         # TODO - update to NZ code, reinforcement class not required for NZ design as all bars required to be class E
 
         # determine reinforcement class
         self.reinforcement_class = "N"
 
-        for steel_geom in self.concrete_section.steel_geometries:
-            if steel_geom.material.stress_strain_profile.fracture_strain < 0.05:
+        for steel_geom in self.concrete_section.reinf_geometries_lumped:
+            if (
+                abs(
+                    steel_geom.material.stress_strain_profile.get_ultimate_tensile_strain()
+                )
+                < 0.05
+            ):
                 self.reinforcement_class = "L"
 
         # calculate squash and tensile load
@@ -940,7 +956,7 @@ class NZS3101(DesignCode):
         self,
         yield_strength: float = 500,
         colour: Optional[str] = "grey",
-    ) -> Steel:
+    ) -> SteelBar:
         # TODO - update docstring for NZS3101 code
         r"""Returns a steel material object.
 
@@ -952,9 +968,11 @@ class NZS3101(DesignCode):
         :param yield_strength: Steel yield strength
         :param colour: Colour of the steel for rendering
 
-        :return: Steel material object
+        :return: Steel bar material object
         """
-        # TODO not required for NZS3101, all bars class E
+        # TODO - not required for NZS3101, all bars class E
+        # TODO -
+        fracture_strain = 0.10
         # if ductility_class == "N":
         #     fracture_strain = 0.05
         # elif ductility_class == "L":
@@ -962,7 +980,8 @@ class NZS3101(DesignCode):
         # else:
         #     raise ValueError("ductility_class must be N or L.")
         # TODO - note no specific fracture strain defined in NZS3101, inferred by curvature limits potentially?? Determine how this is utilised
-        return Steel(
+        # TODO - fracture strain not given in AS/NZS4671, but strain at max ultimate strength is given, hich coul dbe considered a lower bound
+        return SteelBar(
             name=f"{yield_strength:.0f} MPa Steel (NZS3101:2006)",
             density=7.85e-6,
             stress_strain_profile=ssp.SteelElasticPlastic(
@@ -1002,7 +1021,7 @@ class NZS3101(DesignCode):
             squash_load += force_c
 
         # loop through all steel geometries
-        for steel_geom in self.concrete_section.steel_geometries:
+        for steel_geom in self.concrete_section.reinf_geometries_lumped:
             # calculate area and centroid
             area = steel_geom.calculate_area()
 
@@ -1011,7 +1030,9 @@ class NZS3101(DesignCode):
                 strain=0.025
             )
 
-            force_t = -area * steel_geom.material.stress_strain_profile.yield_strength
+            force_t = (
+                -area * steel_geom.material.stress_strain_profile.get_yield_strength()
+            )
 
             # add to totals
             squash_load += force_c
