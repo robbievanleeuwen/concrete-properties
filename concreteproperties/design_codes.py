@@ -727,6 +727,10 @@ class AS3600(DesignCode):
 
 class NZS3101(DesignCode):
     # TODO - add options for returning overstrength capacity/interaction curves
+    # TODO - For design checks have three scenarios
+    #           1) Normal design phi and material strengths
+    #           2) Normal design material strengths, overstrength phi = 1.0
+    #           3) Overstrength material strengths, overstrength phi = 1.0
     # TODO - add density as input as E_conc reliant on it
     """Design code class for New Zealand standard NZS3101:2006.
 
@@ -780,27 +784,29 @@ class NZS3101(DesignCode):
         self.tensile_load = tensile
 
     def E_conc(self, compressive_strength, density=None):
-        '''calculate Youngs Modulus (E) for concrete in accordance with NZS3101:2006
-        If f_c is only provided, then the default density is assumed (dependant on code)
+        '''calculate Youngs Modulus (:math: `E_c`) for concrete in accordance with NZS3101:2006 CL 5.2.3(b)
+        If :math: `f_c` is only provided, then the default density is assumed
+
+            :math: `E_c=\\displaystyle{4700\\sqrt{f\\textquotesingle_c} \\frac{\\rho}{2300}}`
 
         :param compressive_strength: 28 day compressive concrete strength (MPa)
         :type compressive_strength: float
-        :param density: concrete density \\rho in accordance with, defaults to None. If None specified then default for normal weight concrete is adopted in accordance with specified analysis code derivation
+        :param density: concrete density \\rho in accordance with NZS3101:2006 CL 5.2.2, defaults to None. If None is specified then default for normal weight concrete is adopted in accordance with specified analysis code derivation
         :type density: float, optional
-        :return: E, Youngs Modulus (MPa)
+        :return: :math: `E_c`, Youngs Modulus (MPa)
         :rtype: float
         '''
 
-        # low and high limit on density in NZS3101 for E_c equation to be valid
+        # low and high limit on density in NZS3101:2006 CL 5.2.2 for E_c equation to be valid
         low_limit = 1800
         high_limit = 2800
 
-        if self.density is None:
-            self.density = 2300
+        if density is None:
+            density = 2300
 
-        self.check_limits(self.density, low_limit, high_limit)
+        self.check_limits(density, low_limit, high_limit)
 
-        E_c = (4700 * (compressive_strength**0.5)) * (self.density / 2300) ** 1.5
+        E_c = (4700 * (compressive_strength**0.5)) * (density / 2300) ** 1.5
 
         return E_c
 
@@ -811,11 +817,15 @@ class NZS3101(DesignCode):
             )
 
     def alpha_1(self, compressive_strength):
-        '''scaling factor relating the nominal 28 day concrete compressive strength to the effective concrete compressive strength used for design purposes within the concrete stress block. For an equivalent rectangular compressive stress block it relates the 28 day concrete compressive strength to the average concrete compressive design strength.
+        '''scaling factor relating the nominal 28 day concrete compressive strength to
+        the effective concrete compressive strength used for design purposes within the
+        concrete stress block. For an equivalent rectangular compressive stress block it
+        relates the 28 day concrete compressive strength to the average concrete
+        compressive design strength.
 
-        :math:`\\alpha_1=\\displaystyle{\\frac{f_{DESIGN}}{f\\rq_c}`
+            :math:`\\alpha_1=\\displaystyle{\\frac{f_{DESIGN}}{f\\rq_c}}`
 
-        :param compressive_strength: 28 day compressive design strength
+        :param compressive_strength: 28 day compressive design strength (MPa)
         :type compressive_strength: float
         :return: :math:`\\alpha_1` factor
         :rtype: float
@@ -828,11 +838,13 @@ class NZS3101(DesignCode):
         return alpha_1
 
     def beta_1(self, compressive_strength):
-        '''scaling factor relating the depth of an equivalent rectangular compressive stress block :math:`a` to the depth of the neutral axis :math:`c`. A function of the concrete strength
+        '''scaling factor relating the depth of an equivalent rectangular compressive
+        stress block :math:`a` to the depth of the neutral axis :math:`c`.
+        A function of the concrete strength
 
-            :math:`\\beta_1=\\displaystyle{\\frac{a}{c}`
+            :math:`\\beta_1=\\displaystyle{\\frac{a}{c}}`
 
-        :param compressive_strength: 28 day compressive design strength
+        :param compressive_strength: 28 day compressive design strength (MPa)
         :type compressive_strength: float
         :return: :math:`\\beta_1` factor
         :rtype: float
@@ -847,30 +859,43 @@ class NZS3101(DesignCode):
 
         return beta_1
 
+    def lamda(self, density=2300):
+        '''modification factor reflecting the reduced mechanical properties of lightweight concrete relative to normal weight concrete of the same compression strength
+
+            :math:`\\lamda=0.4+\\displaystyle{\\frac{0.6\\rho}{2200}} \\leq 1.0`
+
+        :param density: Saturated surface dry density of concrete material, defaults to 2300 kg/m\ :sup:`3`
+        :type density: int, optional
+        :return: :math:`\\lamda` factor
+        :rtype: float
+        '''
+        return min(0.4 + 0.6 * density / 2200, 1)
+
     # TODO - add PPHR classification, density (as E_conc dependant on this)
     def create_concrete_material(
         self,
         compressive_strength: float,
+        ultimate_strain: [float] = 0.003,
         density: Optional[float] = 2300,
         pphr_class: Optional[str] = 'NDPR',
         colour: Optional[str] = 'lightgrey',
     ) -> Concrete:
-        # TODO update assumptions, and clode clauses
-        r"""Returns a concrete material object to NZS3101:2006.
+        # TODO update assumptions, and code clauses
+        """Returns a concrete material object to NZS3101:2006.
 
 
         | **Material assumptions:**
-        | - *Density*: 2400 kg/m\ :sup:`3`
-        | - *Elastic modulus*: Interpolated from Table 3.1.2
-        | - *Service stress-strain profile*: Linear with no tension, compressive strength
-          at 0.9 * f'c
-        | - *Ultimate stress-strain profile*: Rectangular stress block, parameters from
-          Cl. 8.1.3
+        | - *Density*: Defaults to 2300 kg/m\ :sup:`3` unless supplied by user
+        | - *Elastic modulus*: Calculated from NZS3101:2006 Eq. 5-1
+        | - *Service stress-strain profile*: Linear with no tension
+        | - *Ultimate stress-strain profile*: Rectangular stress block, parameters from NZS3101:2006 CL 7.4.2.7
         | - *Alpha squash*: From Cl. 10.6.2.2
-        | - *Flexural tensile strength*: From Cl. 3.1.1.3
+        | - *Modulus of rupture*: Calculated from NZS3101:2006 Eq. 5-4
 
-        :param float compressive_strength: Characteristic compressive strength of
-            concrete at 28 days in megapascals (MPa)
+        :param compressive_strength: 28 day compressive design strength (MPa)
+        :type compressive_strength: float
+        :param ultimate_strain: Maximum concrete compressive strain at crushing of the concrete for design, defaults to 0.003
+        :type ultimate_strain: float
         :param density: Saturated surface dry density of concrete material, defaults to 2300 kg/m\ :sup:`3`
         :type density: Optional[float], optional
         :param pphr_class: Potential Plastic Hinge Region (PPHR) classification, NDPR/LDPR/DPR, defaults to 'NDPR'
@@ -884,16 +909,16 @@ class NZS3101(DesignCode):
         :return: Concrete material object
         """
 
-        # NZS3101:2006 CL 5.2.1 compressive strength limits
+        # Check NZS3101:2006 CL 5.2.1 compressive strength limits (dependant on PPHR class)
         self.check_f_c_limits(compressive_strength, pphr_class)
 
         # create concrete name
-        name = f'{compressive_strength:.0f} MPa Concrete (NZS 3101:2006)'
+        name = f'{compressive_strength:.0f} MPa Concrete ({self.analysis_code})'
 
         # calculate elastic modulus
         elastic_modulus = self.E_conc(compressive_strength, density)
 
-        # calculate stress block parameters
+        # calculate rectangular stress block parameters
         alpha_1 = self.alpha_1(compressive_strength)
         beta_1 = self.beta_1(compressive_strength)
 
@@ -904,26 +929,26 @@ class NZS3101(DesignCode):
         alpha_squash = min(alpha_squash, 0.85)
         alpha_squash = max(alpha_squash, 0.72)
 
-        # TODO - update to NZ code, how will this work when different ULS and SLS values
-        # calculate flexural_tensile_strength
-        flexural_tensile_strength = 0.6 * np.sqrt(compressive_strength)
+        # calculate modulus of rupture in accordance with NZS3101:2006 CL 5.2.5
+        lamda = self.lamda(density)
+        modulus_of_rupture = 0.6 * lamda * np.sqrt(compressive_strength)
 
         return Concrete(
             name=name,
             density=density,
             stress_strain_profile=ssp.ConcreteLinearNoTension(
                 elastic_modulus=elastic_modulus,
-                ultimate_strain=0.003,
+                ultimate_strain=ultimate_strain,
                 compressive_strength=compressive_strength,
             ),
             ultimate_stress_strain_profile=ssp.RectangularStressBlock(
                 compressive_strength=compressive_strength,
                 alpha=alpha_1,
                 gamma=beta_1,
-                ultimate_strain=0.003,
+                ultimate_strain=ultimate_strain,
             ),
             alpha_squash=alpha_squash,
-            flexural_tensile_strength=flexural_tensile_strength,
+            flexural_tensile_strength=modulus_of_rupture,
             colour=colour,
         )
 
@@ -993,6 +1018,7 @@ class NZS3101(DesignCode):
         )
 
     # TODO - update for NZS3101, max comprssive loads based on PPHR classification
+    # TODO - this should be a function to return max compressive load from CL 10.3.4.2 or CL 10.4.4 depending on PPHR classification, and the max tensile capacity
     def squash_tensile_load(
         self,
     ) -> Tuple[float, float]:
