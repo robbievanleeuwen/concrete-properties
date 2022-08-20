@@ -120,8 +120,8 @@ html_theme_options = {
     "navbar_start": ["navbar-logo", "version-switcher"],
     "switcher": {
         "json_url": json_url,
-        # "version_match": "latest",
-        "version_match": release,
+        "version_match": "latest",
+        # "version_match": release,
     },
 }
 
