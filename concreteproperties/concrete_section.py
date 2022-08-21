@@ -5,6 +5,7 @@ from math import inf, isinf, nan
 from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
 import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
 import numpy as np
 import sectionproperties.pre.geometry as sp_geom
 from rich.live import Live
@@ -1914,7 +1915,8 @@ class ConcreteSection:
                 ax.legend(  # type: ignore
                     loc="center left", bbox_to_anchor=(1, 0.5), handles=legend_labels
                 )
-
+                
+            plt.tight_layout()
             ax.set_aspect("equal", anchor="C")  # type: ignore
 
         return ax
