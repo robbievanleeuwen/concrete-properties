@@ -1858,7 +1858,7 @@ class ConcreteSection:
         :return: Matplotlib axes object
         """
 
-        with plotting_context(title=title, **kwargs) as (fig, ax):
+        with plotting_context(title=title, aspect=True, **kwargs) as (fig, ax):
             # create list of already plotted materials
             plotted_materials = []
             legend_labels = []
@@ -1916,7 +1916,4 @@ class ConcreteSection:
                     loc="center left", bbox_to_anchor=(1, 0.5), handles=legend_labels
                 )
                 
-            plt.tight_layout()
-            ax.set_aspect("equal", anchor="C")  # type: ignore
-
         return ax
