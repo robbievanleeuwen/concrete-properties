@@ -14,6 +14,7 @@ def plotting_context(
     ax: Optional[matplotlib.axes.Axes] = None,  # type: ignore
     pause: bool = True,
     title: str = "",
+    aspect: bool = False,
     filename: str = "",
     render: bool = True,
     axis_index: Optional[Union[int, Tuple[int]]] = None,
@@ -78,6 +79,9 @@ def plotting_context(
     # if no axes was supplied, finish the plot and return the figure and axes
     plt.tight_layout()
 
+    if aspect:
+        ax.set_aspect("equal", anchor="C")  # type: ignore
+        
     if filename:
         fig.savefig(filename, dpi=fig.dpi)
         plt.close(fig)  # close the figure to free the memory
