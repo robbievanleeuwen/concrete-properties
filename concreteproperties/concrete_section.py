@@ -5,7 +5,6 @@ from math import inf, isinf, nan
 from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
 import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
 import numpy as np
 import sectionproperties.pre.geometry as sp_geom
 from rich.live import Live
