@@ -1065,6 +1065,7 @@ class StressResult:
 
         with plotting_context(
             title=title,
+            aspect=True,
             **dict(
                 kwargs, nrows=1, ncols=3, gridspec_kw={"width_ratios": [1, 0.08, 0.08]}
             ),
@@ -1278,8 +1279,6 @@ class StressResult:
                 ticks=ticks_reinf,
                 cax=fig.axes[2],
             )
-
-            ax.set_aspect("equal", anchor="C")  # type: ignore
 
         return ax
 
