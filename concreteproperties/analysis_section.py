@@ -381,7 +381,7 @@ class AnalysisSection:
         :return: Matplotlib axes object
         """
 
-        with plotting_context(title=title, **kwargs) as (fig, ax):
+        with plotting_context(title=title, aspect=True, **kwargs) as (fig, ax):
             colour_array = []
             c = []  # Indices of elements for mapping colours
 
@@ -410,8 +410,6 @@ class AnalysisSection:
                 color="black",
                 alpha=alpha,
             )
-
-            ax.set_aspect("equal", anchor="C")  # type: ignore
 
         return ax
 
