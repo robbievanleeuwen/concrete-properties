@@ -2138,7 +2138,7 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">        :return: Matplotlib axes object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
             <span class="c1"># create list of already plotted materials</span>
             <span class="n">plotted_materials</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">legend_labels</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2195,8 +2195,6 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
                     <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">handles</span><span class="o">=</span><span class="n">legend_labels</span>
                 <span class="p">)</span>
-
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
         <span class="k">return</span> <span class="n">ax</span></div></div>
 </pre></div>
