@@ -21,7 +21,7 @@ def get_service_strain(
     theta: float,
     kappa: float,
 ) -> float:
-    r"""Determines the strain at point `point` given curvcature `kappa` and neutral axis
+    r"""Determines the strain at point `point` given curvature `kappa` and neutral axis
     angle `theta`. Positive strain is compression.
 
     :param point: Point at which to evaluate the strain
