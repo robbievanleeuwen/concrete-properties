@@ -1098,17 +1098,10 @@ class ConcreteSection:
         # create progress bar
         progress = utils.create_known_progress()
 
-        with Live(progress, refresh_per_second=10) as live:
-            # add progress bar task
-            task = progress.add_task(
-                description="[red]Generating M-N diagram",
-                total=sum(n_points) - len(n_points) + 1,
-            )
-
-            # loop through all neutral axes
-            for idx, d_n in enumerate(d_n_list):
+        def chunk_iteration_natural_axes(outer_index, neutral_axes):
+            for idx, d_n in enumerate(neutral_axes):
                 # calculate ultimate results
-                if idx == 0 and has_kappa0:
+                if idx == 0 and outer_index == 0 and has_kappa0:
                     ult_res = self.calculate_ultimate_section_actions(
                         d_n=inf,
                         ultimate_results=res.UltimateBendingResults(theta=theta),
@@ -1123,6 +1116,39 @@ class ConcreteSection:
                 # add ultimate result to moment interactions results and update progress
                 mi_results.results.append(ult_res)
                 progress.update(task, advance=1)
+
+        with Live(progress, refresh_per_second=10) as live:
+            # add progress bar task
+            task = progress.add_task(
+                description="[red]Generating M-N diagram",
+                total=sum(n_points) - len(n_points) + 1,
+            )
+
+            # loop through all neutral axes
+            # TODO: test the performance, is it really faster?
+            d_n_chunks = np.array_split(d_n_list, 16)
+            with ThreadPoolExecutor(max_workers=4) as executor:
+                for i, chunk in enumerate(d_n_chunks):
+                    executor.submit(chunk_iteration_natural_axes, i, chunk)
+            
+            # original loop
+            # for idx, d_n in enumerate(d_n_list):
+            #     # calculate ultimate results
+            #     if idx == 0 and has_kappa0:
+            #         ult_res = self.calculate_ultimate_section_actions(
+            #             d_n=inf,
+            #             ultimate_results=res.UltimateBendingResults(theta=theta),
+            #         )
+            #     else:
+            #         ult_res = self.calculate_ultimate_section_actions(
+            #             d_n=d_n,
+            #             ultimate_results=res.UltimateBendingResults(theta=theta),
+            #         )
+            #     # add label
+            #     ult_res.label = label_list[idx]
+            #     # add ultimate result to moment interactions results and update progress
+            #     mi_results.results.append(ult_res)
+            #     progress.update(task, advance=1)
 
             # display finished progress bar
             progress.update(
