@@ -410,7 +410,7 @@ class AS3600(DesignCode):
 
         # loop through all concrete geometries
         for conc_geom in self.concrete_section.concrete_geometries:
-            # calculate area and centroid
+            # calculate area
             area = conc_geom.calculate_area()
 
             # calculate compressive force
@@ -425,7 +425,7 @@ class AS3600(DesignCode):
 
         # loop through all steel geometries
         for steel_geom in self.concrete_section.reinf_geometries_lumped:
-            # calculate area and centroid
+            # calculate area
             area = steel_geom.calculate_area()
 
             # calculate compressive and tensile force
