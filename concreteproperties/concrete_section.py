@@ -1,4 +1,7 @@
 from __future__ import annotations
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+import multiprocessing
+from os import cpu_count
 
 import warnings
 from math import inf, isinf, nan
@@ -1248,6 +1251,12 @@ class ConcreteSection:
         # create progress bar
         progress = utils.create_known_progress()
 
+        def chunk_iterate_theta(outer_index, theta_chunk):
+            for theta in theta_chunk:
+                ultimate_results = self.ultimate_bending_capacity(theta=theta, n=n)
+                bb_results.results.append(ultimate_results)
+                progress.update(task, advance=1)
+
         with Live(progress, refresh_per_second=10) as live:
             task = progress.add_task(
                 description="[red]Generating biaxial bending diagram",
@@ -1255,6 +1264,11 @@ class ConcreteSection:
             )
 
             # loop through thetas
+            # TODO: test this somehow.
+            # theta_chunks = np.array_split(theta_list, 16)
+            # with ThreadPoolExecutor(max_workers=cpu_count()) as executor:
+            #     executor.map(chunk_iterate_theta, theta_chunks)
+
             for theta in theta_list:
                 ultimate_results = self.ultimate_bending_capacity(theta=theta, n=n)
                 bb_results.results.append(ultimate_results)
