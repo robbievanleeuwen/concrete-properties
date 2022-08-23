@@ -691,7 +691,7 @@ function checkPageExistsAndRedirect(event) {
 
         <span class="c1"># loop through all concrete geometries</span>
         <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">concrete_geometries</span><span class="p">:</span>
-            <span class="c1"># calculate area and centroid</span>
+            <span class="c1"># calculate area</span>
             <span class="n">area</span> <span class="o">=</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
 
             <span class="c1"># calculate compressive force</span>
@@ -706,7 +706,7 @@ function checkPageExistsAndRedirect(event) {
 
         <span class="c1"># loop through all steel geometries</span>
         <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">reinf_geometries_lumped</span><span class="p">:</span>
-            <span class="c1"># calculate area and centroid</span>
+            <span class="c1"># calculate area</span>
             <span class="n">area</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
 
             <span class="c1"># calculate compressive and tensile force</span>
