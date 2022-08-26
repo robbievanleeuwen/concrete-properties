@@ -317,8 +317,6 @@ function checkPageExistsAndRedirect(event) {
 <span class="sd">    :param density: Concrete density (mass per unit volume)</span>
 <span class="sd">    :param stress_strain_profile: Service concrete stress-strain profile</span>
 <span class="sd">    :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile</span>
-<span class="sd">    :param alpha_squash: Factor that modifies the concrete compressive strength at</span>
-<span class="sd">        squash load</span>
 <span class="sd">    :param flexural_tensile_strength: Absolute value of the concrete flexural</span>
 <span class="sd">        tensile strength</span>
 <span class="sd">    :param colour: Colour of the material for rendering</span>
@@ -328,7 +326,6 @@ function checkPageExistsAndRedirect(event) {
     <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteServiceProfile</span>
     <span class="n">ultimate_stress_strain_profile</span><span class="p">:</span> <span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteUltimateProfile</span>
-    <span class="n">alpha_squash</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">flexural_tensile_strength</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">meshed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>

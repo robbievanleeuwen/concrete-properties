@@ -608,13 +608,6 @@ function checkPageExistsAndRedirect(event) {
         <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.97</span> <span class="o">-</span> <span class="mf">0.0025</span> <span class="o">*</span> <span class="n">compressive_strength</span>
         <span class="n">gamma</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="mf">0.67</span><span class="p">)</span>
 
-        <span class="c1"># max compression strain for squash load = 0.0025!</span>
-
-        <span class="c1"># calculate alpha_squash</span>
-        <span class="n">alpha_squash</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">0.003</span> <span class="o">*</span> <span class="n">compressive_strength</span>
-        <span class="n">alpha_squash</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">alpha_squash</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
-        <span class="n">alpha_squash</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">alpha_squash</span><span class="p">,</span> <span class="mf">0.72</span><span class="p">)</span>
-
         <span class="c1"># calculate flexural_tensile_strength</span>
         <span class="n">flexural_tensile_strength</span> <span class="o">=</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">compressive_strength</span><span class="p">)</span>
 
@@ -632,7 +625,6 @@ function checkPageExistsAndRedirect(event) {
                 <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span>
                 <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
             <span class="p">),</span>
-            <span class="n">alpha_squash</span><span class="o">=</span><span class="n">alpha_squash</span><span class="p">,</span>
             <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="n">flexural_tensile_strength</span><span class="p">,</span>
             <span class="n">colour</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span>
         <span class="p">)</span></div>
@@ -694,10 +686,22 @@ function checkPageExistsAndRedirect(event) {
             <span class="c1"># calculate area</span>
             <span class="n">area</span> <span class="o">=</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
 
+            <span class="c1"># calculate alpha_squash</span>
+            <span class="n">comp_strength</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_compressive_strength</span><span class="p">()</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">comp_strength</span><span class="p">:</span>
+                <span class="n">alpha_squash</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">0.003</span> <span class="o">*</span> <span class="n">comp_strength</span>
+                <span class="n">alpha_squash</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">alpha_squash</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
+                <span class="n">alpha_squash</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">alpha_squash</span><span class="p">,</span> <span class="mf">0.72</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">alpha_squash</span> <span class="o">=</span> <span class="mi">1</span>
+
             <span class="c1"># calculate compressive force</span>
             <span class="n">force_c</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">area</span>
-                <span class="o">*</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">alpha_squash</span>
+                <span class="o">*</span> <span class="n">alpha_squash</span>
                 <span class="o">*</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_compressive_strength</span><span class="p">()</span>
             <span class="p">)</span>
 
