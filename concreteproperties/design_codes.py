@@ -327,13 +327,6 @@ class AS3600(DesignCode):
         gamma = 0.97 - 0.0025 * compressive_strength
         gamma = max(gamma, 0.67)
 
-        # max compression strain for squash load = 0.0025!
-
-        # calculate alpha_squash
-        alpha_squash = 1 - 0.003 * compressive_strength
-        alpha_squash = min(alpha_squash, 0.85)
-        alpha_squash = max(alpha_squash, 0.72)
-
         # calculate flexural_tensile_strength
         flexural_tensile_strength = 0.6 * np.sqrt(compressive_strength)
 
@@ -351,7 +344,6 @@ class AS3600(DesignCode):
                 gamma=gamma,
                 ultimate_strain=0.003,
             ),
-            alpha_squash=alpha_squash,
             flexural_tensile_strength=flexural_tensile_strength,
             colour=colour,
         )
@@ -413,10 +405,22 @@ class AS3600(DesignCode):
             # calculate area
             area = conc_geom.calculate_area()
 
+            # calculate alpha_squash
+            comp_strength = (
+                conc_geom.material.stress_strain_profile.get_compressive_strength()
+            )
+
+            if comp_strength:
+                alpha_squash = 1 - 0.003 * comp_strength
+                alpha_squash = min(alpha_squash, 0.85)
+                alpha_squash = max(alpha_squash, 0.72)
+            else:
+                alpha_squash = 1
+
             # calculate compressive force
             force_c = (
                 area
-                * conc_geom.material.alpha_squash
+                * alpha_squash
                 * conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
             )
 
