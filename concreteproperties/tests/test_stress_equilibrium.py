@@ -23,7 +23,6 @@ concrete = Concrete(
         gamma=0.77,
         ultimate_strain=0.003,
     ),
-    alpha_squash=0.85,
     flexural_tensile_strength=0.6 * np.sqrt(40),
     colour="lightgrey",
 )
