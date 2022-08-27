@@ -1,0 +1,565 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "4420ea1d",
+   "metadata": {},
+   "source": [
+    "# Stress Analysis"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "30a6d389",
+   "metadata": {},
+   "source": [
+    "This example demonstrates how to undertake stress analyses and view their results. We start by importing the necessary modules."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "554a858d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from rich.pretty import pprint\n",
+    "from concreteproperties.material import Concrete, SteelBar\n",
+    "from concreteproperties.stress_strain_profile import (\n",
+    "    EurocodeNonLinear,\n",
+    "    RectangularStressBlock,\n",
+    "    SteelElasticPlastic,\n",
+    ")\n",
+    "from sectionproperties.pre.library.concrete_sections import concrete_circular_section\n",
+    "from concreteproperties.concrete_section import ConcreteSection"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0ac1a3bd",
+   "metadata": {},
+   "source": [
+    "## Assign Materials\n",
+    "The materials used in this example will be 40 MPa concrete and 500 MPa steel, specified in accordance with AS 3600:2018. The service stress-strain profile for the concrete will be adapted from EC2."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8c5143fb",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "concrete = Concrete(\n",
+    "    name=\"40 MPa Concrete\",\n",
+    "    density=2.4e-6,\n",
+    "    stress_strain_profile=EurocodeNonLinear(\n",
+    "        elastic_modulus=32.8e3,\n",
+    "        ultimate_strain=0.0035,\n",
+    "        compressive_strength=40,\n",
+    "        compressive_strain=0.0023,\n",
+    "        tensile_strength=3.8,\n",
+    "        tension_softening_stiffness=10e3,\n",
+    "    ),\n",
+    "    ultimate_stress_strain_profile=RectangularStressBlock(\n",
+    "        compressive_strength=40,\n",
+    "        alpha=0.79,\n",
+    "        gamma=0.87,\n",
+    "        ultimate_strain=0.003,\n",
+    "    ),\n",
+    "    flexural_tensile_strength=3.8,\n",
+    "    colour=\"lightgrey\",\n",
+    ")\n",
+    "\n",
+    "steel = SteelBar(\n",
+    "    name=\"500 MPa Steel\",\n",
+    "    density=7.85e-6,\n",
+    "    stress_strain_profile=SteelElasticPlastic(\n",
+    "        yield_strength=500,\n",
+    "        elastic_modulus=200e3,\n",
+    "        fracture_strain=0.05,\n",
+    "    ),\n",
+    "    colour=\"grey\",\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5c778b79",
+   "metadata": {},
+   "source": [
+    "## Create Geometry and Concrete Section\n",
+    "The section in this example is a 600 mm diameter concrete column, reinforced with 10N20 bars with 45 mm cover. The geometry is generated using the *sectionproperties* concrete sections library."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "56244875",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "geom = concrete_circular_section(\n",
+    "    d=600,\n",
+    "    n=32,\n",
+    "    dia=20,\n",
+    "    n_bar=10,\n",
+    "    n_circle=4,\n",
+    "    area_conc=np.pi * 600 * 600 / 4,\n",
+    "    area_bar=310,\n",
+    "    cover=45,\n",
+    "    conc_mat=concrete,\n",
+    "    steel_mat=steel,\n",
+    ")\n",
+    "\n",
+    "conc_sec = ConcreteSection(geom)\n",
+    "conc_sec.plot_section()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0e0f8dee",
+   "metadata": {},
+   "source": [
+    "## Elastic Uncracked Stress Analysis\n",
+    "We perform an uncracked stress analysis using the ``calculate_uncracked_stress()`` method. This analysis assumes the entire concrete section acts to resist the applied loading. Note that *concreteproperties* does not check to see if the provided moment is above the cracking moment, this should be confirmed by performing a cracking analysis."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2ceff0ae",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "uncr_stress_res_1 = conc_sec.calculate_uncracked_stress(m_x=50e6)\n",
+    "uncr_stress_res_2 = conc_sec.calculate_uncracked_stress(m_x=25e6, m_y=35e6, n=200e3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "25ddd011",
+   "metadata": {},
+   "source": [
+    "We can visualise the stresses by calling the ``plot_stress()`` method."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b2cef230",
+   "metadata": {
+    "scrolled": false
+   },
+   "outputs": [],
+   "source": [
+    "uncr_stress_res_1.plot_stress()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "242ddf45",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "uncr_stress_res_2.plot_stress()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "99a57055",
+   "metadata": {},
+   "source": [
+    "## Elastic Cracked Stress Analysis\n",
+    "A cracked stress analysis first requires a cracking analysis to be performed by calling the ``calculate_cracked_properties()`` method. Here we perform a cracking analysis for bending about the ``x`` axis."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7045aad6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cracked_res = conc_sec.calculate_cracked_properties(theta=0)\n",
+    "print(f\"M_cr = {cracked_res.m_cr / 1e6:.2f} kN.m\")\n",
+    "print(f\"d_n,c = {cracked_res.d_nc:.2f} mm\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "26c93124",
+   "metadata": {},
+   "source": [
+    "Since the cracking moment is 86 kN.m, let's see what the stresses within the cross-section look like under 150 kN.m bending moment. Note that the moment will be applied about the same axis as used in the cracking analysis."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "40d98aad",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "m_ext = 150e6\n",
+    "cracked_stress_res = conc_sec.calculate_cracked_stress(\n",
+    "    cracked_results=cracked_res, m=m_ext\n",
+    ")\n",
+    "cracked_stress_res.plot_stress()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "27457ac6",
+   "metadata": {},
+   "source": [
+    "Many useful results are stored within the ``StressResult`` object. Let's examine a few of these results."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "96252dcb",
+   "metadata": {},
+   "source": [
+    "### Concrete Results\n",
+    "Concrete geometries that remain after cracking are stored in the ``concrete_analysis_sections`` attribute as a list of ``AnalysisSection`` objects. We can visualise this geometry by calling the ``plot_mesh()`` method. The ``StressResult`` object also stores the stresses at the nodes in each ``AnalysisSection`` in the ``concrete_stresses`` attribute - these are the stresses you see on the ``plot_stress()`` plots. Finally, the ``concrete_forces`` attribute stores the resultant force for each ``AnalysisSection`` and its lever arm to the cracked centroid."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3459b8cf",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for idx, an_sec in enumerate(cracked_stress_res.concrete_analysis_sections):\n",
+    "    # Label section and plot section mesh\n",
+    "    print(f\"Analysis Section {idx + 1}\")\n",
+    "    an_sec.plot_mesh()\n",
+    "\n",
+    "    # get concrete results\n",
+    "    sigs_conc = cracked_stress_res.concrete_stresses[idx]\n",
+    "    f_conc = cracked_stress_res.concrete_forces[idx][0]\n",
+    "    d_x_conc = cracked_stress_res.concrete_forces[idx][1]\n",
+    "    d_y_conc = cracked_stress_res.concrete_forces[idx][2]\n",
+    "    m_x_conc = f_conc * d_y_conc\n",
+    "    m_y_conc = f_conc * d_x_conc\n",
+    "    m_conc = np.sqrt(m_x_conc * m_x_conc + m_y_conc * m_y_conc)\n",
+    "\n",
+    "    # print results\n",
+    "    print(\"Concrete Stresses:\")\n",
+    "    pprint(sigs_conc)\n",
+    "    print(\"Concrete Net Force & Lever Arm:\")\n",
+    "    print(f\"F_c = {f_conc / 1e3:.2f} kN\")\n",
+    "    print(f\"d_x_n = {d_x_conc:.2f} mm\")\n",
+    "    print(f\"d_y_n = {d_y_conc:.2f} mm\")\n",
+    "    print(f\"M_x_c = {m_x_conc / 1e6:.2f} kN.m\")\n",
+    "    print(f\"M_y_c = {m_y_conc / 1e6:.2f} kN.m\")\n",
+    "    print(f\"M_c = {m_conc / 1e6:.2f} kN.m\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8c3da4fa",
+   "metadata": {},
+   "source": [
+    "### Reinforcement Results\n",
+    "Lumped reinforcement geometries are stored in the ``lumped_reinforcement_geometries`` attribute of the ``StressResult`` object. Similar to the concrete results, the stresses and forces/lever arms are stored, as well as the strains. Here we print the stress for each lumped bar to the terminal. Note that meshed reinforcement results are also stored, but have not been used for this analysis."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f3c68d08",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from rich.table import Table\n",
+    "from rich.console import Console\n",
+    "\n",
+    "# store forces & moments for later\n",
+    "forces = []\n",
+    "moments_x = []\n",
+    "\n",
+    "# create a Rich table for pretty printing\n",
+    "table = Table(title=\"Reinforcement Results\")\n",
+    "table.add_column(\"Bar No.\", justify=\"center\", style=\"cyan\", no_wrap=True)\n",
+    "table.add_column(\"Location (x, y) (mm)\", justify=\"center\", style=\"green\")\n",
+    "table.add_column(\"Stress (MPa)\", justify=\"center\", style=\"green\")\n",
+    "table.add_column(\"Force (kN)\", justify=\"center\", style=\"green\")\n",
+    "table.add_column(\"Lever Arm (mm)\", justify=\"center\", style=\"green\")\n",
+    "table.add_column(\"Moment (kN.m)\", justify=\"center\", style=\"green\")\n",
+    "\n",
+    "for idx, reinf_geom in enumerate(cracked_stress_res.lumped_reinforcement_geometries):\n",
+    "    # get the reinforcement results\n",
+    "    centroid = reinf_geom.calculate_centroid()\n",
+    "    stress = cracked_stress_res.lumped_reinforcement_stresses[idx]\n",
+    "    strain = cracked_stress_res.lumped_reinforcement_strains[idx]\n",
+    "    force, d_x, d_y = cracked_stress_res.lumped_reinforcement_forces[idx]\n",
+    "\n",
+    "    # calculate the moment each bar creates and store the results\n",
+    "    moment_x = force * d_y\n",
+    "    forces.append(force)\n",
+    "    moments_x.append(moment_x)\n",
+    "\n",
+    "    # print compression or tension\n",
+    "    if strain > 0:\n",
+    "        t_or_c = \"C\"\n",
+    "    else:\n",
+    "        t_or_c = \"T\"\n",
+    "\n",
+    "    table.add_row(\n",
+    "        f\"{idx + 1}\",\n",
+    "        f\"({centroid[0]:.1f}, {centroid[1]:.1f})\",\n",
+    "        f\"{abs(stress):.1f} ({t_or_c})\",\n",
+    "        f\"{abs(force) / 1e3:.1f}\",\n",
+    "        f\"{d_y:.1f}\",\n",
+    "        f\"{moment_x / 1e6:.2f}\",\n",
+    "    )\n",
+    "\n",
+    "console = Console()\n",
+    "console.print(table)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ba2f10cf",
+   "metadata": {},
+   "source": [
+    "Finally, let's confirm that the net axial force is indeed zero and the internal moment is equal to the external moment."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "83a5122b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# sum of forces\n",
+    "int_force = sum(forces) + f_conc\n",
+    "print(f\"Sum of Internal Forces: {int_force / 1e3:.0f} kN\")\n",
+    "\n",
+    "# sum of moments\n",
+    "int_moment = sum(moments_x) + m_conc\n",
+    "print(f\"Sum of Internal Moments: {int_moment / 1e6:.0f} kN.m\")\n",
+    "print(f\"External Moment: {m_ext / 1e6:.0f} kN.m\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "40eac385",
+   "metadata": {},
+   "source": [
+    "## Service Stress Analysis\n",
+    "A service stress analysis displays internal stresses based off the stress-strain profiles provided to the material properties. Before viewing the stresses, a moment curvature analysis must be performed to establish the structural response of the reinforced concrete section."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8c0d8d25",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mk_res = conc_sec.moment_curvature_analysis()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "87fb1453",
+   "metadata": {},
+   "source": [
+    "Let's plot the moment curvature diagram so that we can choose some interesting points to generate stress results."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c32f20c2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mk_res.plot_results()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "27d9b342",
+   "metadata": {},
+   "source": [
+    "Based on the above, we compile a list of moments and curvatures at which we want to visualise the cross-section stresses. We use curvatures as input around the softening region as there are two possible values of moment."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8cba11ca",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# create a list of inputs (either moments [m] or curvatures [k])\n",
+    "stress_inputs = [\n",
+    "    {\"m_or_k\": \"m\", \"val\": 50e6},\n",
+    "    {\"m_or_k\": \"m\", \"val\": cracked_res.m_cr},\n",
+    "    {\"m_or_k\": \"k\", \"val\": 7.5e-07},\n",
+    "    {\"m_or_k\": \"k\", \"val\": 1.15e-06},\n",
+    "    {\"m_or_k\": \"k\", \"val\": 2.15e-06},\n",
+    "    {\"m_or_k\": \"m\", \"val\": 250e6},\n",
+    "    {\"m_or_k\": \"m\", \"val\": 300e6},\n",
+    "    {\"m_or_k\": \"m\", \"val\": 360e6},\n",
+    "]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4d4cdd1b",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "# loop through each input\n",
+    "for s_in in stress_inputs:\n",
+    "    # determine if the input is a moment or curvature\n",
+    "    if s_in[\"m_or_k\"] == \"m\":\n",
+    "        m_stress = s_in[\"val\"]\n",
+    "        service_stress_res = conc_sec.calculate_service_stress(\n",
+    "            moment_curvature_results=mk_res, m=m_stress\n",
+    "        )\n",
+    "    elif s_in[\"m_or_k\"] == \"k\":\n",
+    "        service_stress_res = conc_sec.calculate_service_stress(\n",
+    "            moment_curvature_results=mk_res, m=None, kappa=s_in[\"val\"]\n",
+    "        )\n",
+    "        m_stress = service_stress_res.sum_moments()[2]\n",
+    "\n",
+    "    # create plot title and plot stress\n",
+    "    label = f\"Moment = {m_stress / 1e6:.0f} kN.m\"\n",
+    "    service_stress_res.plot_stress(title=label)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6bab3e53",
+   "metadata": {},
+   "source": [
+    "Viewing the above stress plots in combination with the moment curvature diagram is an insightful way of understanding the bending response of a reinforced concrete section!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9b0de6f7",
+   "metadata": {},
+   "source": [
+    "## Ultimate Stress Analysis\n",
+    "An ultimate stress analysis displayed the internal stresses at the ultimate bending moment. In this example we examine the ultimate stresses at the pure bending point, the balanced point and the decompression point. To locate these points we first plot the moment interaction diagram."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a83769b4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mi_res = conc_sec.moment_interaction_diagram()\n",
+    "mi_res.plot_diagram()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "630dc5b3",
+   "metadata": {},
+   "source": [
+    "Prior to plotting the stresses, the ultimate bending capacities must be calculated."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a7dd2099",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ultimate_res_pure = conc_sec.ultimate_bending_capacity()\n",
+    "ultimate_res_bal = conc_sec.ultimate_bending_capacity(n=3500e3)\n",
+    "ultimate_res_decomp = conc_sec.ultimate_bending_capacity(n=9000e3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "82ca0cda",
+   "metadata": {},
+   "source": [
+    "We calculate the ultimate stresses by calling the ``calculate_ultimate_stress()`` method."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5b6376fd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ultimate_stress_pure = conc_sec.calculate_ultimate_stress(\n",
+    "    ultimate_results=ultimate_res_pure\n",
+    ")\n",
+    "ultimate_stress_bal = conc_sec.calculate_ultimate_stress(\n",
+    "    ultimate_results=ultimate_res_bal\n",
+    ")\n",
+    "ultimate_stress_decomp = conc_sec.calculate_ultimate_stress(\n",
+    "    ultimate_results=ultimate_res_decomp\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "91cf165f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ultimate_stress_pure.plot_stress(title=\"Pure Bending\")\n",
+    "ultimate_stress_bal.plot_stress(title=\"Balanced\")\n",
+    "ultimate_stress_decomp.plot_stress(title=\"Decompression\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5cfa594a",
+   "metadata": {},
+   "source": [
+    "As a rectangular stress block is used for the ultimate stress-strain profile, the entire cross-section is not in compression due to the zero stress region above the neutral axis in the stress-strain profile."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3.8.12 ('cp')",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.12"
+  },
+  "vscode": {
+   "interpreter": {
+    "hash": "893b3ef6d13023afab4be8c5000be38ce11a760491bcfa4047435852657817d1"
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
