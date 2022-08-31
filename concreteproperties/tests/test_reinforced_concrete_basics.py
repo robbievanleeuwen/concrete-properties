@@ -26,7 +26,6 @@ def test_example_3_1():
             gamma=0.83,
             ultimate_strain=0.003,
         ),
-        alpha_squash=0.85,
         flexural_tensile_strength=1.0,
         colour="lightgrey",
     )
@@ -89,7 +88,6 @@ def test_example_3_2():
             gamma=0.83,
             ultimate_strain=0.003,
         ),
-        alpha_squash=0.85,
         flexural_tensile_strength=0.6,
         colour="lightgrey",
     )
@@ -180,7 +178,6 @@ def test_example_3_4():
             gamma=0.83,
             ultimate_strain=0.003,
         ),
-        alpha_squash=0.85,
         flexural_tensile_strength=0.6,
         colour="lightgrey",
     )
@@ -244,7 +241,6 @@ def test_example_3_8():
             gamma=0.83,
             ultimate_strain=0.003,
         ),
-        alpha_squash=0.85,
         flexural_tensile_strength=1.0,
         colour="lightgrey",
     )
@@ -293,7 +289,6 @@ def test_example_3_9():
             gamma=0.83,
             ultimate_strain=0.003,
         ),
-        alpha_squash=0.85,
         flexural_tensile_strength=1.0,
         colour="lightgrey",
     )
@@ -342,7 +337,6 @@ def test_example_3_11():
             gamma=0.85,
             ultimate_strain=0.003,
         ),
-        alpha_squash=0.85,
         flexural_tensile_strength=0,
         colour="lightgrey",
     )
@@ -394,7 +388,6 @@ def test_example_5_2():
             gamma=0.77,
             ultimate_strain=0.003,
         ),
-        alpha_squash=0.85,
         flexural_tensile_strength=3.4,
         colour="lightgrey",
     )

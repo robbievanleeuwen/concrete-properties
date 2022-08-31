@@ -36,8 +36,6 @@ class Concrete(Material):
     :param density: Concrete density (mass per unit volume)
     :param stress_strain_profile: Service concrete stress-strain profile
     :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile
-    :param alpha_squash: Factor that modifies the concrete compressive strength at
-        squash load
     :param flexural_tensile_strength: Absolute value of the concrete flexural
         tensile strength
     :param colour: Colour of the material for rendering
@@ -47,7 +45,6 @@ class Concrete(Material):
     density: float
     stress_strain_profile: ssp.ConcreteServiceProfile
     ultimate_stress_strain_profile: ssp.ConcreteUltimateProfile
-    alpha_squash: float
     flexural_tensile_strength: float
     colour: str
     meshed: bool = field(default=True, init=False)
