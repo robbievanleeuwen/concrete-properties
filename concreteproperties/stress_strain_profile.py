@@ -688,6 +688,16 @@ class SteelProfile(StressStrainProfile):
 
         return self.yield_strength
 
+    def get_fracture_strain(
+        self,
+    ) -> float:
+        """Returns the fracture strain of the stress-strain profile.
+
+        :return: Fracture strain
+        """
+
+        return self.fracture_strain
+
     def print_properties(
         self,
         fmt: str = "8.6e",
