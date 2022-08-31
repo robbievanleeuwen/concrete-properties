@@ -39,6 +39,8 @@ class Concrete(Material):
     :param flexural_tensile_strength: Absolute value of the concrete flexural
         tensile strength
     :param colour: Colour of the material for rendering
+    :param meshed: If set to True, the entire material region is meshed; if set to
+        False, the material region is treated as a lumped mass at its centroid
     """
 
     name: str
@@ -74,6 +76,8 @@ class Steel(Material):
     :param density: Steel density (mass per unit volume)
     :param stress_strain_profile: Steel stress-strain profile
     :param colour: Colour of the material for rendering
+    :param meshed: If set to True, the entire material region is meshed; if set to
+        False, the material region is treated as a lumped circular mass at its centroid
     """
 
     name: str
@@ -92,6 +96,8 @@ class SteelBar(Steel):
     :param density: Steel bar density (mass per unit volume)
     :param stress_strain_profile: Steel bar stress-strain profile
     :param colour: Colour of the material for rendering
+    :param meshed: If set to True, the entire material region is meshed; if set to
+        False, the material region is treated as a lumped circular mass at its centroid
     """
 
     name: str
