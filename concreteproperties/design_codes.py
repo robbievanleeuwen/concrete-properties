@@ -5,6 +5,8 @@ from math import inf
 from multiprocessing.sharedctypes import Value
 from typing import TYPE_CHECKING, List, Tuple
 
+from dataclasses import dataclass, field
+
 import numpy as np
 from rich.live import Live
 from scipy.interpolate import interp1d
@@ -684,8 +686,6 @@ class AS3600(DesignCode):
             factors *(factored_results, phis)*
         """
 
-        pass
-
         # initialise results
         f_bb_res = res.BiaxialBendingResults(n=n)
         phis = []
@@ -735,99 +735,114 @@ class NZS3101(DesignCode):
     #           1) Normal design phi and material strengths
     #           2) Normal design material strengths, overstrength phi = 1.0
     #           3) Overstrength material strengths, overstrength phi = 1.0
-    # TODO - add density as input as E_conc reliant on it
-    """Design code class for New Zealand standard NZS3101:2006.
+    '''Design code class for the New Zealand concrete design standard NZS3101:2006.
 
-    Note that this design code only supports :class:`~concreteproperties.pre.Concrete`
-    and :class:`~concreteproperties.pre.SteelBar` material objects. Meshed
+    Note that this design code currently only supports :class:`~concreteproperties.pre.Concrete`
+    and :class:`~concreteproperties.NZS3101.SteelBarNZ` material objects. Meshed
     :class:`~concreteproperties.pre.Steel` material objects are **not** supported
     as this falls under the composite structures design code.
-    """
+    '''
 
-    def __init__(
-        self,
-    ):
-        """Inits the NZS3101 class."""
+    def __init__(self):
+        '''Inits the NZS3101 class.'''
         self.analysis_code = 'NZS3101:2006'
-
         super().__init__()
+
+    @dataclass
+    class SteelBarNZ(SteelBar):
+        '''Class for a steel bar material to NZS3101, treated as a lumped circular mass
+        with a constant strain.
+
+        :param name: Steel bar material name
+        :param density: Steel bar density (mass per unit volume)
+        :param phi_os: Overstrength factor depending on reinforcement grade
+            (:math:`\phi_{o,f_y}`), refer to NZS3101:2006 CL 2.6.5.5
+        :param stress_strain_profile: Steel bar stress-strain profile
+        :param colour: Colour of the material for rendering
+        :param meshed: If set to True, the entire material region is meshed; if set to
+        False, the material region is treated as a lumped circular mass at its centroid
+        '''
+
+        name: str
+        density: float
+        phi_os: float = 1.0
+        stress_strain_profile: ssp.StressStrainProfile
+        colour: str
+        meshed: bool = field(default=False, init=False)
 
     def assign_concrete_section(
         self,
         concrete_section: ConcreteSection,
     ):
-        """Assigns a concrete section to the design code.
+        '''Assigns a concrete section to the design code.
 
         :param concrete_section: Concrete section object to analyse
-        """
-
+        '''
         self.concrete_section = concrete_section
 
         # check to make sure there are no meshed reinforcement regions
         if self.concrete_section.reinf_geometries_meshed:
             raise ValueError(
-                "Meshed reinforcement is not supported in this design code."
+                'Meshed reinforcement is not supported in this design code'
             )
-        # TODO - update to NZ code, reinforcement class not required for NZ design as all bars required to be class E
 
-        # determine reinforcement class
-        self.reinforcement_class = "N"
+    def E_conc(self, compressive_strength: float, density: float = 2300):
+        '''Calculate Youngs Modulus (:math: `E_c`) for concrete in accordance with
+            NZS3101:2006 CL 5.2.3(b)
 
-        for steel_geom in self.concrete_section.reinf_geometries_lumped:
-            if (
-                abs(
-                    steel_geom.material.stress_strain_profile.get_ultimate_tensile_strain()
-                )
-                < 0.05
-            ):
-                self.reinforcement_class = "L"
-
-        # calculate squash and tensile load
-        squash, tensile = self.squash_tensile_load()
-        self.squash_load = squash
-        self.tensile_load = tensile
-
-    def E_conc(self, compressive_strength, density=None):
-        '''calculate Youngs Modulus (:math: `E_c`) for concrete in accordance with NZS3101:2006 CL 5.2.3(b)
-        If :math: `f_c` is only provided, then the default density is assumed
-
-            :math: `E_c=\\displaystyle{4700\\sqrt{f\\textquotesingle_c} \\frac{\\rho}{2300}}`
+            :math: `E_c=\\displaystyle{4700\\sqrt{f'_c} \\frac{\\rho}{2300}}`
 
         :param compressive_strength: 28 day compressive concrete strength (MPa)
         :type compressive_strength: float
-        :param density: concrete density \\rho in accordance with NZS3101:2006 CL 5.2.2, defaults to None. If None is specified then default for normal weight concrete is adopted in accordance with specified analysis code derivation
+        :param density: Concrete density \\rho in accordance with NZS3101:2006 CL 5.2.2,
+            defaults to 2300 kg/m\ :sup:`3` for normal weight concrete
         :type density: float, optional
         :return: :math: `E_c`, Youngs Modulus (MPa)
         :rtype: float
         '''
-
-        # low and high limit on density in NZS3101:2006 CL 5.2.2 for E_c equation to be valid
+        # Check low and high limit on density in NZS3101:2006 CL 5.2.2 for E_c equation
+        # to be valid
         low_limit = 1800
         high_limit = 2800
 
-        if density is None:
-            density = 2300
-
-        self.check_limits(density, low_limit, high_limit)
+        # check upper and lower concrete strengths
+        self.check_density_limits(density, low_limit, high_limit)
 
         E_c = (4700 * (compressive_strength**0.5)) * (density / 2300) ** 1.5
 
         return E_c
 
-    def check_limits(self, test_value, low_limit, high_limit):
-        if test_value < low_limit or test_value > high_limit:
-            raise Exception(
-                f'The specified concrete density of {test_value}kg/m^3 is not within the bounds of {low_limit}kg/m^3 & {high_limit}kg/m^3 for the {self.analysis_code} code'
+    def check_density_limits(self, density: float, low_limit: float, high_limit: float):
+        '''Checks that the density is within the bounds outlined within NZS3101:2006
+            CL 5.2.2 for the elastic modulus expression within NZS3101:2006 CL 5.2.3(b)
+            to be valid
+
+        :param density: Concrete density \\rho in accordance with NZS3101:2006 CL 5.2.2
+        :type density: float
+        :param low_limit: Lower limit for density from NZS3101:2006 CL 5.2.2
+        :type low_limit: float
+        :param high_limit: Upper limit for density from NZS3101:2006 CL 5.2.2
+        :type high_limit: float
+        :raises ValueError: If density is outside of the limits within NZS3101:2006 CL
+            5.2.2
+        '''
+        if low_limit <= density <= high_limit:
+            pass
+        else:
+            raise ValueError(
+                f'The specified concrete density of {density}kg/m^3 is not within the '
+                f'bounds of {low_limit}kg/m^3 & {high_limit}kg/m^3 for the '
+                f'{self.analysis_code} Elastic Modulus eqn to be applicable'
             )
 
-    def alpha_1(self, compressive_strength):
+    def alpha_1(self, compressive_strength: float):
         '''scaling factor relating the nominal 28 day concrete compressive strength to
         the effective concrete compressive strength used for design purposes within the
         concrete stress block. For an equivalent rectangular compressive stress block it
         relates the 28 day concrete compressive strength to the average concrete
         compressive design strength.
 
-            :math:`\\alpha_1=\\displaystyle{\\frac{f_{DESIGN}}{f\\rq_c}}`
+            :math:`\\alpha_1=\\displaystyle{\\frac{f_{DESIGN}}{f\\'_c}}`
 
         :param compressive_strength: 28 day compressive design strength (MPa)
         :type compressive_strength: float
@@ -841,7 +856,7 @@ class NZS3101(DesignCode):
 
         return alpha_1
 
-    def beta_1(self, compressive_strength):
+    def beta_1(self, compressive_strength: float):
         '''scaling factor relating the depth of an equivalent rectangular compressive
         stress block :math:`a` to the depth of the neutral axis :math:`c`.
         A function of the concrete strength
@@ -853,7 +868,6 @@ class NZS3101(DesignCode):
         :return: :math:`\\beta_1` factor
         :rtype: float
         '''
-
         if compressive_strength <= 30:
             beta_1 = 0.85
         if compressive_strength >= 55:
@@ -863,61 +877,251 @@ class NZS3101(DesignCode):
 
         return beta_1
 
-    def lamda(self, density=2300):
-        '''modification factor reflecting the reduced mechanical properties of lightweight concrete relative to normal weight concrete of the same compression strength
+    def lamda(self, density: float = 2300):
+        '''Modification factor reflecting the reduced mechanical properties of
+            lightweight concrete relative to normal weight concrete of the same
+            compression strength
 
             :math:`\\lamda=0.4+\\displaystyle{\\frac{0.6\\rho}{2200}} \\leq 1.0`
 
-        :param density: Saturated surface dry density of concrete material, defaults to 2300 kg/m\ :sup:`3`
+        :param density: Saturated surface dry density of concrete material, defaults to
+            2300 kg/m\ :sup:`3`
         :type density: int, optional
         :return: :math:`\\lamda` factor
         :rtype: float
         '''
-        return min(0.4 + 0.6 * density / 2200, 1)
+        lamda = min(0.4 + 0.6 * density / 2200, 1)
+        return lamda
 
-    # TODO - add PPHR classification, density (as E_conc dependant on this)
+    def concrete_capacity(self, os_design: bool = False):
+        '''Function to return the nominal concrete capacity or the overstrength concrete
+            capacity of a concrete section
+
+        :param os_design: True if an overstrength capacity of a concrete section is
+            required, then the material properties for concrete are scaled to reflect
+            the likely maximum material strength properties, defaults to False
+        :type os_design: bool, optional
+        :return: Nominal or overstrength concrete yield force (N)
+        :rtype: float
+        '''
+        # initiate force variable
+        force = 0
+        # loop through all concrete geometries
+        for conc_geom in self.concrete_section.concrete_geometries:
+            # calculate concrete area & compressive strength
+            concrete_area = conc_geom.calculate_area()
+            compressive_strength = (
+                conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
+            )
+
+            # scale concrete compressive strength for overstrength if specified
+            if os_design:
+                compressive_strength += 15
+
+            # calculate cumulative concrete force
+            force += (
+                self.alpha_1(compressive_strength)
+                * concrete_area
+                * compressive_strength
+            )
+
+        return force
+
+    def steel_capacity(self, os_design: bool = False):
+        '''Function to return the nominal steel reinforcement capacity or the
+            overstrength steel reinforcement capacity of a concrete section
+
+        :param os_design: True if an overstrength capacity of a concrete section is
+            required, then the material properties for lumped reinforcement are scaled
+            to reflect the likely maximum material strength properties, defaults to
+            False
+        :type os_design: bool, optional
+        :return: Nominal steel reinforcement yield force (N)
+        :rtype: float
+        '''
+        # initiate force variable
+        force = 0
+        # loop through all steel geometries
+        for steel_geom in self.concrete_section.reinf_geometries_lumped:
+            # calculate reinforcement area & yield strength
+            steel_area = steel_geom.calculate_area()
+            yield_strength = (
+                steel_geom.material.stress_strain_profile.get_yield_strength()
+            )
+
+            # establish scaling factor for overstrength if specified
+            if os_design:
+                phi_os = steel_geom.material.phi_os
+            else:
+                phi_os = 1.0
+
+            # calculate cumulative reinforcement force
+            force += steel_area * yield_strength * phi_os
+
+        return force
+
+    def max_comp_strength(self, cpe_design: bool = False, os_design: bool = False):
+        '''Function to return the nominal axial load compressive strength of a concrete
+            section when the load is applied with zero eccentricity
+
+        For non-capacity design situations, refer to NZS3101:2006 CL 10.3.4.2:-
+
+            :math:`N^*/\\phi < 0.85N_{n,max}`
+
+        For capacity design situations, refer to NZS3101:2006 CL 10.4.4:-
+
+            :math:`N^*_o < 0.7N_{n,max}`
+
+        Where :math:`N_{n,max} = \\alpha_1f\\'_c(A_g-A_{st})+f_yA_{st}`
+
+        :param cpe_design: True if the capacity protected element capacity of a concrete
+            section is required (i.e. design capacity being checked against O/S
+            actions), defaults to False
+        :type cpe_design: bool, optional
+        :param os_design: True if the overstrength capacity of a concrete section is
+            required, then the material properties for concrete and lumped reinforcement
+            are scaled to reflect the likely maximum material strength properties,
+            defaults to False
+        :type os_design: bool, optional
+        :return: Returns the nominal axial load compressive strength of a concrete
+            section :math:`N_{n,max}`
+        :rtype: float
+        '''
+        # Calculate maximum axial compression strength
+        n_n_max = self.steel_capacity(os_design) + self.concrete_capacity(os_design)
+
+        if cpe_design:
+            max_comp = 0.7 * n_n_max
+        else:
+            max_comp = 0.85 * n_n_max
+        return max_comp
+
+    def max_ten_strength(self, os_design: bool = False):
+        '''Function to return the nominal axial load tension strength of a concrete
+            section when the load is applied with zero eccentricity
+
+        :param os_design: True if an overstrength capacity of a concrete section is
+            required, then the material properties for concrete and lumped reinforcement
+            are scaled to reflect the likely maximum material strength properties,
+            defaults to False
+        :type os_design: bool, optional
+        :return: Returns the nominal axial load compressive strength of a concrete
+            section :math:`N_{n,max}`
+        :rtype: float
+        '''
+        # Calculate maximum axial tension strength
+        max_ten = self.steel_capacity(os_design)
+
+        return max_ten
+
+    def check_f_y_limit(self):
+        '''Checks that the specified steel reinforcement strengths for all defined
+            steel geometries comply with NZS3101:2006 CL 5.3.3
+
+        :raises ValueError: If steel reinforcement yield strength is greater than 500MPa
+            limit in NZS3101:2006 CL 5.3.3
+        '''
+        # Upper bound yield strength
+        f_y_upper = 500
+
+        # loop through all steel geometries
+        for steel_geom in self.concrete_section.reinf_geometries_lumped:
+            # calculate yield strength
+            yield_strength = (
+                steel_geom.material.stress_strain_profile.get_yield_strength()
+            )
+
+            if yield_strength > f_y_upper:
+                raise ValueError(
+                    f'Steel yield strength for \'{steel_geom.material.name}\' '
+                    f'material must be less than {f_y_upper} MPa for the '
+                    f'{self.analysis_code} code, {yield_strength:.0f} MPa was '
+                    f'specified for this material'
+                )
+
+    def check_f_c_limits(self, pphr_class: str = 'NDPR'):
+        '''Checks that a valid Potential Plastic Hinge Region (PPHR) classification has
+            been specified, and that the specified compressive strengths for all defined
+            concrete geometries comply with NZS3101:2006 CL 5.2.1 for the specified PPHR
+            classification
+
+        :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
+            NDPR/LDPR/DPR, defaults to 'NDPR'
+                - *NDPR* = Nominally Ductile Plastic Region
+                - *LDPR* = Limited Ductile Plastic Region
+                - *DPR* = Ductile Plastic Region
+        :type pphr_class: str, optional
+
+        :raises Exception: If specified Potential Plastic Hinge Region (PPHR)
+            classification is not NDPR/LDPR/DPR
+        :raises ValueError: If specified compressive strength for a concrete geometry
+            is not between 20 MPa and 100 MPa for NDPR's, or between 20 MPa and 70 MPa
+            for LDPR's or DPR's
+        '''
+        # Lower bound compressive strength
+        f_c_lower = 20
+
+        # Upper bound compressive strength & check inputs within acceptable bounds
+        if pphr_class.upper() in ['NDPR']:
+            f_c_upper = 100
+        elif pphr_class.upper() in ['LDPR', 'DPR']:
+            f_c_upper = 70
+        else:
+            raise Exception(
+                f'The specified PPHR class specified ({pphr_class}) should be NDPR, '
+                f'LDPR or DPR for the {self.analysis_code} code, {pphr_class} was '
+                f'specified'
+            )
+
+        # loop through all concrete geometries
+        for conc_geom in self.concrete_section.concrete_geometries:
+            # calculate compressive strength
+            compressive_strength = (
+                conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
+            )
+            if f_c_lower <= compressive_strength <= f_c_upper:
+                pass
+            else:
+                raise ValueError(
+                    f'Concrete compressive strength for \'{conc_geom.material.name}\' '
+                    f'material must be between {f_c_lower} MPa & {f_c_upper} MPa for a '
+                    f'{pphr_class} PPHR for the {self.analysis_code} code, '
+                    f'{compressive_strength:.0f} MPa was specified for this material'
+                )
+
     def create_concrete_material(
         self,
         compressive_strength: float,
-        ultimate_strain: [float] = 0.003,
-        density: Optional[float] = 2300,
-        pphr_class: Optional[str] = 'NDPR',
-        colour: Optional[str] = 'lightgrey',
+        ultimate_strain: float = 0.003,
+        density: float = 2300,
+        colour: str = 'lightgrey',
     ) -> Concrete:
-        # TODO update assumptions, and code clauses
-        """Returns a concrete material object to NZS3101:2006.
-
+        '''Returns a concrete material object to NZS3101:2006.
 
         | **Material assumptions:**
-        | - *Density*: Defaults to 2300 kg/m\ :sup:`3` unless supplied by user
+        | - *Density*: Defaults to 2300 kg/m\ :sup:`3` unless supplied as user input
         | - *Elastic modulus*: Calculated from NZS3101:2006 Eq. 5-1
         | - *Service stress-strain profile*: Linear with no tension
-        | - *Ultimate stress-strain profile*: Rectangular stress block, parameters from NZS3101:2006 CL 7.4.2.7
-        | - *Alpha squash*: From Cl. 10.6.2.2
+        | - *Ultimate stress-strain profile*: Rectangular stress block, parameters from
+            NZS3101:2006 CL 7.4.2.7
         | - *Modulus of rupture*: Calculated from NZS3101:2006 Eq. 5-4
 
         :param compressive_strength: 28 day compressive design strength (MPa)
         :type compressive_strength: float
-        :param ultimate_strain: Maximum concrete compressive strain at crushing of the concrete for design, defaults to 0.003
+        :param ultimate_strain: Maximum concrete compressive strain at crushing of the
+            concrete for design, for design to NZS3101:2006 defaults to 0.003
         :type ultimate_strain: float
-        :param density: Saturated surface dry density of concrete material, defaults to 2300 kg/m\ :sup:`3`
-        :type density: Optional[float], optional
-        :param pphr_class: Potential Plastic Hinge Region (PPHR) classification, NDPR/LDPR/DPR, defaults to 'NDPR'
-        :type pphr_class: Optional[str], optional
-        :param colour: Colour of the concrete for rendering
-        :type colour: Optional[str]
-
-        #TODO need to update this, depends on type of PPHR
-        :raises ValueError: If compressive_strength is not between 20 MPa and 100 MPa. # need to update
-
+        :param density: Saturated surface dry density of concrete material, defaults to
+            2300 kg/m\ :sup:`3`
+        :type density: float, optional
+        :param colour: Colour of the concrete for rendering, defaults to 'lightgrey'
+        :type colour: str, optional
         :return: Concrete material object
-        """
-
-        # Check NZS3101:2006 CL 5.2.1 compressive strength limits (dependant on PPHR class)
-        self.check_f_c_limits(compressive_strength, pphr_class)
-
+        :rtype: Concrete
+        '''
         # create concrete name
-        name = f'{compressive_strength:.0f} MPa Concrete ({self.analysis_code})'
+        name = f'{compressive_strength:.0f} MPa Conc [{density:.0f} kg/m$^{{{3}}}$] '
+        f'({self.analysis_code})'
 
         # calculate elastic modulus
         elastic_modulus = self.E_conc(compressive_strength, density)
@@ -925,13 +1129,6 @@ class NZS3101(DesignCode):
         # calculate rectangular stress block parameters
         alpha_1 = self.alpha_1(compressive_strength)
         beta_1 = self.beta_1(compressive_strength)
-
-        # max compression strain for squash load = 0.0025!
-        # TODO is this relevant, assuming this is simply the maximum compression strength which is dependant on the PPHR classification
-        # calculate alpha_squash
-        alpha_squash = 1 - 0.003 * compressive_strength
-        alpha_squash = min(alpha_squash, 0.85)
-        alpha_squash = max(alpha_squash, 0.72)
 
         # calculate modulus of rupture in accordance with NZS3101:2006 CL 5.2.5
         lamda = self.lamda(density)
@@ -951,262 +1148,209 @@ class NZS3101(DesignCode):
                 gamma=beta_1,
                 ultimate_strain=ultimate_strain,
             ),
-            alpha_squash=alpha_squash,
             flexural_tensile_strength=modulus_of_rupture,
             colour=colour,
         )
 
-    def check_f_c_limits(self, compressive_strength, pphr_class):
-        # TODO - complete docstring
-        '''_summary_
-
-        :param compressive_strength: _description_
-        :type compressive_strength: _type_
-        :param pphr_class: _description_
-        :type pphr_class: _type_
-        :raises Exception: _description_
-        :raises ValueError: _description_
-        '''
-        f_c_lower = 20
-        if pphr_class.upper() in ['NDPR']:
-            f_c_upper = 100
-        elif pphr_class.upper() in ['LDPR', 'DPR']:
-            f_c_upper = 70
-        else:
-            raise Exception(
-                f'The specified PPHR class specified ({pphr_class}) should be NDPR, LDPR or DPR for the {self.analysis_code} code'
-            )
-        if not f_c_lower <= compressive_strength <= f_c_upper:
-            raise ValueError(
-                f'Concrete compressive strength must be between {f_c_lower} MPa & {f_c_upper} MPa for a {pphr_class} PPHR for the {self.analysis_code} code'
-            )
+    # TODO - look at adding user defined fracture_strain for user defined yield strength
 
     def create_steel_material(
         self,
-        yield_strength: float = 500,
-        colour: Optional[str] = "grey",
-    ) -> SteelBar:
-        # TODO - update docstring for NZS3101 code
-        r"""Returns a steel material object.
+        yield_strength: float = 500.0,
+        fracture_strain: float = None,
+        phi_os: float = None,
+        colour: str = 'red',
+    ) -> NZS3101.SteelBarNZ:
+        '''Returns a steel material object specific to the NZS3101:2006 code.
 
         | **Material assumptions:**
         | - *Density*: 7850 kg/m\ :sup:`3`
         | - *Elastic modulus*: 200,000 MPa
-        | - *Stress-strain profile:* Elastic-plastic, fracture strain from Table 3.2.1
+        | - *Stress-strain profile:* Elastic-plastic, fracture strain from Table 3.2.1(TODO UPDATE)
 
-        :param yield_strength: Steel yield strength
+        :param yield_strength: Steel yield strength (MPa)
+        :type yield_strength: float, optional
+        :param fracture_strain: Lower bound tensile strain, based on characteristic
+            uniform elongation limit from AS/NZS4671 Table 7.2(A), defaults to None
+        :type fracture_strain: float, optional
+        :param phi_os: Overstrength factor depending on reinforcement grade
+            (:math:`\\phi_{o,f_y}`), refer to NZS3101:2006 CL 2.6.5.5
+        :type phi_os: float, optional
         :param colour: Colour of the steel for rendering
+        :type colour: str, optional
 
         :return: Steel bar material object
-        """
-        # TODO - not required for NZS3101, all bars class E
-        # TODO -
-        fracture_strain = 0.10
-        # if ductility_class == "N":
-        #     fracture_strain = 0.05
-        # elif ductility_class == "L":
-        #     fracture_strain = 0.015
-        # else:
-        #     raise ValueError("ductility_class must be N or L.")
-        # TODO - note no specific fracture strain defined in NZS3101, inferred by curvature limits potentially?? Determine how this is utilised
-        # TODO - fracture strain not given in AS/NZS4671, but strain at max ultimate strength is given, hich coul dbe considered a lower bound
-        return SteelBar(
-            name=f"{yield_strength:.0f} MPa Steel (NZS3101:2006)",
-            density=7.85e-6,
+        :rtype: SteelBarNZ
+        '''
+        # create steel reinforcement name
+        name = f'{yield_strength:.0f} MPa Steel ({self.analysis_code})'
+
+        # define density
+        density = 7850
+
+        # define elastic modulus
+        elastic_modulus = 200000
+
+        # define fracture strain for grade E reinforcement in accordance with AS/NZS4671
+        # Table 7.2(A) for grade 300E and grade 500E
+        # TODO - add other historic steel grades with overstrengths and fracture
+        # strains, i.e. from NZSEE C5 Guidelines
+        if fracture_strain is None and phi_os is None:
+            if yield_strength in [500]:
+                # grade 500E
+                fracture_strain = 10 / 100
+                phi_os = 1.35
+            elif yield_strength in [300]:
+                # grade 300E
+                fracture_strain = 15 / 100
+                phi_os = 1.35
+            else:
+                raise ValueError(
+                    f'Where no user defined fracture_strain & phi_os is provided, the '
+                    f'yield_strength must be either 300 MPa or 500 MPa for grade 300E '
+                    f'or 500E reinforcement, a yield strength of {yield_strength} MPa '
+                    f'was provided'
+                )
+        # TODO - add if statements for when either fracture strain or phi_os is
+        # specified but not the other with a user defined non-std yield strength
+
+        return NZS3101.SteelBarNZ(
+            name=name,
+            density=density,
+            phi_os=phi_os,
             stress_strain_profile=ssp.SteelElasticPlastic(
                 yield_strength=yield_strength,
-                elastic_modulus=200e3,
+                elastic_modulus=elastic_modulus,
                 fracture_strain=fracture_strain,
             ),
             colour=colour,
         )
 
-    # TODO - update for NZS3101, max comprssive loads based on PPHR classification
-    # TODO - this should be a function to return max compressive load from CL 10.3.4.2 or CL 10.4.4 depending on PPHR classification, and the max tensile capacity
-    def squash_tensile_load(
-        self,
-    ) -> Tuple[float, float]:
-        """Calculates the squash and tensile load of the reinforced concrete section.
+    def capacity_reduction_factor(self, analysis_type: str) -> float:
+        '''Returns the appropriate NZS3101:2006 capacity reduction factor dependant on
+            the type of analysis specified. Refer to NZS3101:2006 CL 2.3.2.2
 
-        :return: Squash and tensile load
-        """
+        :param analysis_type: The type of cross section analysis to undertake on the
+            defined concrete section, by default a normal nominal strength design check
+            is undertaken:-
 
-        # initialise the squash load, tensile load and squash moment variables
-        squash_load = 0
-        tensile_load = 0
+                - nom_chk - Nominal strength design check
 
-        # loop through all concrete geometries
-        for conc_geom in self.concrete_section.concrete_geometries:
-            # calculate area and centroid
-            area = conc_geom.calculate_area()
+                    Returns the normal nominal strength section design capacity, i.e.
+                    undertakes the cross section analysis based on the following
+                    assumptions:-
 
-            # calculate compressive force
-            force_c = (
-                area
-                * conc_geom.material.alpha_squash
-                * conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
+                    - Using the strength reduction factor of \\phi=0.85 in accordance
+                      with NZS3101:2006 CL 2.3.2.2
+
+                    - Using the lower 5% characteristic reinforcement yield strengths
+
+                    - Using the lower 5% characteristic concrete 28 day compressive
+                      design strength
+
+                - cpe_chk - Capacity Protected Element (CPE) strength design check
+
+                    Returns the capacity protected element section design capacity, i.e.
+                    undertakes the cross section analysis based on the following
+                    assumptions:-
+
+                    - Using the strength reduction factor of \\phi=1.0 in accordance
+                      with NZS3101:2006 CL 2.3.2.2
+
+                    - Using the lower 5% characteristic reinforcement yield strengths
+
+                    - Using the lower 5% characteristic concrete 28 day compressive
+                      design strength
+
+                - os_chk - Overstrength (O/S) strength design check
+
+                    Returns the O/S (overstrength) section design capacity, i.e.
+                    undertakes the cross section analysis based on the following
+                    assumptions:-
+
+                    - Using the strength reduction factor of \\phi=1.0 in accordance
+                      with NZS3101:2006 CL 2.3.2.2
+
+                    - Using a likely maximum reinforcement yield strength of
+                      :math:`\\phi_{o,f_y}f_y`, typically :math:`\\phi_{o,f_y}=1.35` in
+                      accordance with NZS3101:2006 CL 2.6.5.5(a) for grade 300E or grade
+                      500E reinforcement which complies with AS/NZS4671. User may define
+                      custom overstrength factors when defining steel reinforcement
+                      materials using :class:`~concreteproperties.NZS3101.SteelBarNZ`
+
+                    - Using a likely maximum compression strength of the concrete based
+                      on the lower 5% characteristic concrete 28 day strength plus 15
+                      MPa, i.e.:math:`f'_c+15` in accordance with NZS3101:2006 CL
+                      2.6.5.5(c)
+
+        :type analysis_type: str
+        :raises Exception:
+        '''
+        # TODO - Implement phi=0.75 option for singly reinforced wall design
+        if analysis_type.lower() in ['nom_chk']:
+            phi = 0.85
+            cpe_design = False
+            os_design = False
+        elif analysis_type.lower() in ['cpe_chk']:
+            phi = 1.0
+            cpe_design = True
+            os_design = False
+        elif analysis_type.lower() in ['os_chk']:
+            phi = 1.0
+            cpe_design = False
+            os_design = True
+        else:
+            raise Exception(
+                f'The specified analysis type of \'{analysis_type}\' should be either '
+                f'\'nom_chk\', \'cpe_chk\' or \'os_chk\' for a {self.analysis_code} '
+                f'code analysis'
             )
 
-            # add to totals
-            squash_load += force_c
-
-        # loop through all steel geometries
-        for steel_geom in self.concrete_section.reinf_geometries_lumped:
-            # calculate area and centroid
-            area = steel_geom.calculate_area()
-
-            # calculate compressive and tensile force
-            force_c = area * steel_geom.material.stress_strain_profile.get_stress(
-                strain=0.025
-            )
-
-            force_t = (
-                -area * steel_geom.material.stress_strain_profile.get_yield_strength()
-            )
-
-            # add to totals
-            squash_load += force_c
-            tensile_load += force_t
-
-        return squash_load, tensile_load
-
-    # TODO - phi is constant 0.85 in NZS3101:2006, so this is not required, should strength reduction factor be defined as a variable in init, what about overstrength checks where phi = 1.0?
-    # def capacity_reduction_factor(
-    #     self,
-    #     n_u: float,
-    #     n_ub: float,
-    #     n_uot: float,
-    #     k_uo: float,
-    #     phi_0: float,
-    # ) -> float:
-    #     """Returns the AS 3600:2018 capacity reduction factor (Table 2.2.2).
-
-    #     ``n_ub`` and ``phi_0`` only required for compression, ``n_uot`` only required
-    #     for tension.
-
-    #     :param n_u: Axial force in member
-    #     :param n_ub: Axial force at balanced point
-    #     :param n_uot: Axial force at ultimate tension load
-    #     :param k_uo: Neutral axis parameter at pure bending
-    #     :param phi_0: Capacity reduction factor for dominant compression
-
-    #     :return: Capacity reduction factor
-    #     """
-
-    #     # pure bending phi
-    #     if self.reinforcement_class == "N":
-    #         phi = 1.24 - 13 * k_uo / 12
-    #         phi = min(phi, 0.85)
-    #         phi = max(phi, 0.65)
-    #     else:
-    #         phi = 0.65
-
-    #     # compression
-    #     if n_u > 0:
-    #         if n_u >= n_ub:
-    #             return phi_0
-    #         else:
-    #             return phi_0 + (phi - phi_0) * (1 - n_u / n_ub)
-    #     # tension
-    #     else:
-    #         if self.reinforcement_class == "N":
-    #             return phi + (0.85 - phi) * (n_u / n_uot)
-    #         else:
-    #             return 0.65
-
-    # def get_k_uo(
-    #     self,
-    #     theta: float,
-    # ) -> float:
-    #     r"""Returns k_uo for the reinforced concrete cross-section given ``theta``.
-
-    #     :param theta: Angle (in radians) the neutral axis makes with the
-    #         horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-
-    #     :return: Bending parameter k_uo
-    #     """
-
-    #     pure_res = self.concrete_section.ultimate_bending_capacity(theta=theta)
-
-    #     return pure_res.k_u
-
-    def get_n_ub(
-        self,
-        theta: float,
-    ) -> float:
-        r"""Returns n_ub for the reinforced concrete cross-section given ``theta``.
-
-        :param theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-
-        :return: Balanced axial force n_ub
-        """
-
-        # get depth to extreme tensile bar and its yield strain
-        d_0, eps_sy = self.concrete_section.extreme_bar(theta=theta)
-
-        # get compressive strain at extreme fibre
-        eps_cu = self.concrete_section.gross_properties.conc_ultimate_strain
-
-        # calculate d_n at balanced load
-        d_nb = d_0 * (eps_cu) / (eps_sy + eps_cu)
-
-        # calculate axial force at balanced load
-        balanced_res = self.concrete_section.calculate_ultimate_section_actions(
-            d_n=d_nb, ultimate_results=res.UltimateBendingResults(theta=theta)
-        )
-
-        return balanced_res.n
+        return phi, cpe_design, os_design
 
     # TODO - update based on NZS3101 code, phi will differ
+    # TODO - is returning phi even relevant here as it is constant?
     def ultimate_bending_capacity(
         self,
+        pphr_class: str = 'NDPR',
+        analysis_type: str = 'nom_chk',
         theta: float = 0,
         n: float = 0,
-        phi_0: float = 0.6,
     ) -> Tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]:
         # TODO - update docstring
-        r"""Calculates the ultimate bending capacity with capacity factors to
+        '''Calculates the ultimate bending capacity with capacity factors to
         NZS3101:2006.
 
+        :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
+            NDPR/LDPR/DPR, defaults to 'NDPR'
+
+                - *NDPR* = Nominally Ductile Plastic Region
+
+                - *LDPR* = Limited Ductile Plastic Region
+
+                - *DPR* = Ductile Plastic Region
+
+        :type pphr_class: str, optional
+
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
-            (:math:`-\pi \leq \theta \leq \pi`)
+            (:math:`-\\pi \\leq \\theta \\leq \\pi`)
         :param n: Net axial force
-        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
 
         :return: Factored and unfactored ultimate bending results objects, and capacity
             reduction factor *(factored_results, unfactored_results, phi)*
-        """
-        # TODO - not required with constant phi
-        # # get parameters to determine phi
-        # n_uot = self.tensile_load
-        # k_uo = self.get_k_uo(theta=theta)
-        # n_ub = self.get_n_ub(theta=theta)
+        '''
+        # TODO - this needs to occur prior to adopting/modifying any overstrength properties - remove comment when completed
+        # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
+        # (dependant on PPHR class)
+        self.check_f_c_limits(pphr_class)
 
-        # # non-linear calculation of phi
-        # def non_linear_phi(phi_guess):
-        #     phi = self.capacity_reduction_factor(
-        #         n_u=n / phi_guess,
-        #         n_ub=n_ub,
-        #         n_uot=n_uot,
-        #         k_uo=k_uo,
-        #         phi_0=phi_0,
-        #     )
+        # Check NZS3101:2006 CL 5.3.3 steel rienforcement yield strength limit
+        self.check_f_y_limit()
 
-        #     return phi - phi_guess
+        # determine strength reduction factor based on analysis type specified
+        phi, cpe_design, os_design = self.capacity_reduction_factor(analysis_type)
 
-        # (phi, r) = brentq(
-        #     f=non_linear_phi,
-        #     a=phi_0,
-        #     b=0.85,
-        #     xtol=1e-3,
-        #     rtol=1e-6,  # type: ignore
-        #     full_output=True,
-        #     disp=False,
-        # )
-
-        # create constant phi list
-        phi = [self.phi] * len(theta)
+        # TODO - need to set correct phi here, and modify concrete section
 
         # calculate ultimate bending capacity
         ult_res = self.concrete_section.ultimate_bending_capacity(
@@ -1222,60 +1366,148 @@ class NZS3101(DesignCode):
 
         return factored_ult_res, ult_res, phi
 
-    # TODO - update for phi in accordance with NZS3101
-    # TODO - update docstring
+    # TODO - need to decide if factored and unfactored are required, also phi being returned is perhaps redundant due to being constant
     def moment_interaction_diagram(
         self,
-        phi_0: float = 0.6,
+        pphr_class: str = 'NDPR',
+        analysis_type: str = 'nom_chk',
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
-        """Generates a moment interaction diagram with capacity factors to NZS3101:2006.
+        '''Generates a moment interaction diagram with capacity factors and material
+            strengths to NZS3101:2006.
 
-        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
+        :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
+            NDPR/LDPR/DPR, defaults to 'NDPR'
 
+                - **NDPR** = Nominally Ductile Plastic Region
+
+                - **LDPR** = Limited Ductile Plastic Region
+
+                - **DPR** = Ductile Plastic Region
+
+        :type pphr_class: str, optional
+        :param analysis_type: The type of cross section analysis to undertake on the
+            defined concrete section, by default a normal nominal strength design check
+            is undertaken:-
+
+                - nom_chk - Nominal strength design check
+
+                    Returns the normal nominal strength section design capacity, i.e.
+                    undertakes the cross section analysis based on the following
+                    assumptions:-
+
+                    - Using the strength reduction factor of \\phi=0.85 in accordance
+                    with NZS3101:2006 CL 2.3.2.2
+
+                    - Using the lower 5% characteristic reinforcement yield strengths
+
+                    - Using the lower 5% characteristic concrete 28 day compressive
+                    design strength
+
+                - cpe_chk - Capacity Protected Element (CPE) strength design check
+
+                    Returns the capacity protected element section design capacity,
+                    i.e. undertakes the cross section analysis based on the following
+                    assumptions:-
+
+                    - Using the strength reduction factor of \\phi=1.0 in accordance
+                    with NZS3101:2006 CL 2.3.2.2
+
+                    - Using the lower 5% characteristic reinforcement yield strengths
+
+                    - Using the lower 5% characteristic concrete 28 day compressive
+                    design strength
+
+                - os_chk - Overstrength (O/S) strength design check
+
+                    Returns the O/S (overstrength) section design capacity, i.e.
+                    undertakes the cross section analysis based on the following
+                    assumptions:-
+
+                    - Using the strength reduction factor of \\phi=1.0 in accordance
+                    with NZS3101:2006 CL 2.3.2.2
+
+                    - Using a likely maximum reinforcement yield strength of
+                    :math:`\\phi_{o,f_y}f_y`, typically :math:`\\phi_{o,f_y}=1.35` in
+                    accordance with NZS3101:2006 CL 2.6.5.5(a) for grade 300E or grade
+                    500E reinforcement which complies with AS/NZS4671.User may define
+                    custom overstrength factors when defining steel reinforcement
+                    materials using :class:`~concreteproperties.NZS3101.SteelBarNZ`
+
+                    - Using a likely maximum compression strength of the concrete based
+                    on the lower 5% characteristic concrete 28 day strength plus 15 MPa,
+                    i.e.:math:`f'_c+15` in accordance with NZS3101:2006 CL 2.6.5.5(c)
+
+        :type analysis_type: str, optional
         :return: Factored and unfactored moment interaction results objects, and list of
             capacity reduction factors *(factored_results, unfactored_results, phis)*
-        """
+        :rtype: Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]
+        '''
 
-        mi_res = self.concrete_section.moment_interaction_diagram(
+        # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
+        # (dependant on PPHR class)
+        self.check_f_c_limits(pphr_class)
+
+        # Check NZS3101:2006 CL 5.3.3 steel reinforcement yield strength limit
+        self.check_f_y_limit()
+
+        # determine strength reduction factor based on analysis type specified
+        phi, cpe_design, os_design = self.capacity_reduction_factor(analysis_type)
+
+        # TODO - if overstrength check, do we replicate the section and alter the concrete strength, replicate the reinforcement and scale it by the overstrength factor
+
+        # TODO - for case 1 normal design - analyse section based on normal parameters and phi = 0.85
+        # TODO - for case 2 cpe design - analyse section based on normal parameters and phi = 1.0
+        # TODO - for case 3 os design - analyse section based on overstrength material properties and phi = 1.0
+        os_concrete_section = deepcopy(self.concrete_section)
+
+        for conc_geom in os_concrete_section.concrete_geometries:
+            # calculate concrete area & compressive strength
+            print(f'pre = {conc_geom.material}')
+
+            conc_geom.material.ultimate_stress_strain_profile.compressive_strength += 15
+            print(
+                f'post = {conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()}'
+            )
+        # loop through all steel geometries and update to overstrength properties
+        for steel_geom in os_concrete_section.reinf_geometries_lumped:
+            # retrieve previous nominal/characteristic material properties
+            prev_yield_strength = (
+                steel_geom.material.stress_strain_profile.get_yield_strength()
+            )
+            prev_fracture_strain = (
+                steel_geom.material.stress_strain_profile.get_fracture_strain()
+            )
+            prev_phi_os = steel_geom.material.phi_os
+            prev_colour = steel_geom.material.colour
+
+            # update steel reinforcement material to overstrength properties
+            steel_geom.material = self.create_steel_material(
+                prev_yield_strength * prev_phi_os,
+                fracture_strain=prev_fracture_strain,
+                phi_os=prev_phi_os,
+                colour=prev_colour,
+            )
+
+        if analysis_type in ['nom_chk', 'cpe_chk']:
+            analysis_section = self.concrete_section
+        else:
+            analysis_section = os_concrete_section
+
+        print(f'phi = {phi}')
+
+        mi_res = analysis_section.moment_interaction_diagram(
+            labels=['B', 'C', 'D', 'E', 'F', 'G'],
             control_points=[
+                ("kappa0", 0.0),
                 ("D", 1.0),
+                ("fy", 0.5),
                 ("fy", 1.0),
                 ("N", 0.0),
+                ("d_n", 1e-6),
             ],
-            n_points=[12, 12],
-        )
-
-        # get theta
-        theta = mi_res.results[0].theta
-
-        # TODO - need to determine what k_u is here?
-        # TODO - check how this returns the correct Mx and My values so 'load angle' = theta? This doe snto seem correct as theata does not equal load angle typically?
-        # TODO - what is m_xy here? is it the resultant moment?
-        # add squash load
-        mi_res.results.insert(
-            0,
-            res.UltimateBendingResults(
-                theta=theta,
-                d_n=inf,
-                k_u=0,
-                n=self.squash_load,
-                m_x=0,
-                m_y=0,
-                m_xy=0,
-            ),
-        )
-
-        # add tensile load
-        mi_res.results.append(
-            res.UltimateBendingResults(
-                theta=theta,
-                d_n=0,
-                k_u=0,
-                n=self.tensile_load,
-                m_x=0,
-                m_y=0,
-                m_xy=0,
-            )
+            n_points=12,
+            max_comp=phi * self.max_comp_strength(cpe_design, os_design),
+            max_comp_labels=['A', 'B'],
         )
 
         # make a copy of the results to factor
@@ -1284,17 +1516,8 @@ class NZS3101(DesignCode):
         # list to store phis
         phis = []
 
-        # get required constants for phi
-        n_uot = self.tensile_load
-        k_uo = self.get_k_uo(theta=theta)
-        n_ub = self.get_n_ub(theta=theta)
-
-        # TODO - need to update for phi
         # factor results
         for ult_res in factored_mi_res.results:
-            phi = self.capacity_reduction_factor(
-                n_u=ult_res.n, n_ub=n_ub, n_uot=n_uot, k_uo=k_uo, phi_0=phi_0
-            )
             ult_res.n *= phi
             ult_res.m_x *= phi
             ult_res.m_y *= phi
@@ -1303,29 +1526,45 @@ class NZS3101(DesignCode):
 
         return factored_mi_res, mi_res, phis
 
-    # TODO - need to update for constant phi
     # TODO - update docstring
     def biaxial_bending_diagram(
         self,
-        n: float = 0,
+        pphr_class: str = 'NDPR',
+        analysis_type: str = 'nom_chk',
+        n: float = 0.0,
         n_points: int = 48,
-        phi_0: float = 0.6,
     ) -> Tuple[res.BiaxialBendingResults, List[float]]:
-        """Generates a biaxial bending with capacity factors to NZS3101:2006.
+        '''Generates a biaxial bending with capacity factors to NZS3101:2006.
+
+        :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
+            NDPR/LDPR/DPR, defaults to 'NDPR'
+                - *NDPR* = Nominally Ductile Plastic Region
+                - *LDPR* = Limited Ductile Plastic Region
+                - *DPR* = Ductile Plastic Region
+        :type pphr_class: str, optional
 
         :param n: Net axial force
         :param n_points: Number of calculation points between the decompression
-        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
 
         :return: Factored biaxial bending results object and list of capacity reduction
             factors *(factored_results, phis)*
-        """
+        '''
 
-        pass
+        # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
+        # (dependant on PPHR class)
+        self.check_f_c_limits(pphr_class)
+
+        # Check NZS3101:2006 CL 5.3.3 steel reinforcement yield strength limit
+        self.check_f_y_limit()
+
+        # determine strength reduction factor based on analysis type specified
+        phi, cpe_design, os_design = self.capacity_reduction_factor(analysis_type)
 
         # TODO - what does the f stand for here bb = biaxial bending.... f = factored?
         # initialise results
         f_bb_res = res.BiaxialBendingResults(n=n)
+
+        # list to store phis
         phis = []
 
         # calculate d_theta
@@ -1346,9 +1585,12 @@ class NZS3101(DesignCode):
             # loop through thetas
             for theta in theta_list:
                 # factored capacity
-                # TODO check if this returns the Mx and My values
+                # TODO check if this returns the Mx and My values??
                 f_ult_res, _, phi = self.ultimate_bending_capacity(
-                    theta=theta, n=n, phi_0=phi_0
+                    pphr_class,
+                    analysis_type,
+                    theta=theta,
+                    n=n,
                 )
                 f_bb_res.results.append(f_ult_res)
                 phis.append(phi)
