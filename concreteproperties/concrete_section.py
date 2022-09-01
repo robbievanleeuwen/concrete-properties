@@ -1130,7 +1130,7 @@ class ConcreteSection:
             # loop through all neutral axes
             # TODO: test the performance, is it really faster?
             d_n_chunks = np.array_split(d_n_list, 16)
-            with ThreadPoolExecutor(max_workers=4) as executor:
+            with ThreadPoolExecutor() as executor:
                 for i, chunk in enumerate(d_n_chunks):
                     executor.submit(chunk_iteration_natural_axes, i, chunk)
             
@@ -1266,7 +1266,7 @@ class ConcreteSection:
             # loop through thetas
             # TODO: test this somehow.
             # theta_chunks = np.array_split(theta_list, 16)
-            # with ThreadPoolExecutor(max_workers=cpu_count()) as executor:
+            # with ThreadPoolExecutor() as executor:
             #     executor.map(chunk_iterate_theta, theta_chunks)
 
             for theta in theta_list:
