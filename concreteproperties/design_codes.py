@@ -1462,12 +1462,23 @@ class NZS3101(DesignCode):
 
         for conc_geom in os_concrete_section.concrete_geometries:
             # calculate concrete area & compressive strength
-            print(f'pre = {conc_geom.material}')
-
-            conc_geom.material.ultimate_stress_strain_profile.compressive_strength += 15
-            print(
-                f'post = {conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()}'
+            prev_compressive_strength = (
+                conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
             )
+            prev_ultimate_strain = (
+                conc_geom.material.ultimate_stress_strain_profile.get_ultimate_compressive_strain()
+            )
+            prev_density = conc_geom.material.density
+            prev_colour_conc = conc_geom.material.colour
+
+            # update concrete material to overstrength properties
+            conc_geom.material = self.create_concrete_material(
+                compressive_strength=prev_compressive_strength + 15,
+                ultimate_strain=prev_ultimate_strain,
+                density=prev_density,
+                colour=prev_colour_conc,
+            )
+
         # loop through all steel geometries and update to overstrength properties
         for steel_geom in os_concrete_section.reinf_geometries_lumped:
             # retrieve previous nominal/characteristic material properties
@@ -1478,22 +1489,20 @@ class NZS3101(DesignCode):
                 steel_geom.material.stress_strain_profile.get_fracture_strain()
             )
             prev_phi_os = steel_geom.material.phi_os
-            prev_colour = steel_geom.material.colour
+            prev_colour_steel = steel_geom.material.colour
 
             # update steel reinforcement material to overstrength properties
             steel_geom.material = self.create_steel_material(
                 prev_yield_strength * prev_phi_os,
                 fracture_strain=prev_fracture_strain,
                 phi_os=prev_phi_os,
-                colour=prev_colour,
+                colour=prev_colour_steel,
             )
 
         if analysis_type in ['nom_chk', 'cpe_chk']:
             analysis_section = self.concrete_section
         else:
             analysis_section = os_concrete_section
-
-        print(f'phi = {phi}')
 
         mi_res = analysis_section.moment_interaction_diagram(
             labels=['B', 'C', 'D', 'E', 'F', 'G'],
