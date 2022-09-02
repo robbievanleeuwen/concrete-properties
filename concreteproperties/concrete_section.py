@@ -1,7 +1,5 @@
 from __future__ import annotations
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
-import multiprocessing
-from os import cpu_count
 
 import warnings
 from math import inf, isinf, nan
@@ -1100,9 +1098,11 @@ class ConcreteSection:
 
         # create progress bar
         progress = utils.create_known_progress()
-
+        
+        chunk_size = 128
         def chunk_iteration_natural_axes(outer_index, neutral_axes):
-            for idx, d_n in enumerate(neutral_axes):
+            for inner_index, d_n in enumerate(neutral_axes):
+                idx = inner_index + outer_index * chunk_size
                 # calculate ultimate results
                 if idx == 0 and outer_index == 0 and has_kappa0:
                     ult_res = self.calculate_ultimate_section_actions(
@@ -1129,10 +1129,9 @@ class ConcreteSection:
 
             # loop through all neutral axes
             # TODO: test the performance, is it really faster?
-            d_n_chunks = np.array_split(d_n_list, 16)
+            d_n_chunks = [d_n_list[offs:offs+chunk_size] for offs in range(0, len(d_n_list), chunk_size)]
             with ThreadPoolExecutor() as executor:
-                for i, chunk in enumerate(d_n_chunks):
-                    executor.submit(chunk_iteration_natural_axes, i, chunk)
+                    executor.map(lambda args: chunk_iteration_natural_axes(*args), enumerate(d_n_chunks))
             
             # original loop
             # for idx, d_n in enumerate(d_n_list):
@@ -1251,6 +1250,7 @@ class ConcreteSection:
         # create progress bar
         progress = utils.create_known_progress()
 
+        chunk_size = 128
         def chunk_iterate_theta(outer_index, theta_chunk):
             for theta in theta_chunk:
                 ultimate_results = self.ultimate_bending_capacity(theta=theta, n=n)
@@ -1265,9 +1265,9 @@ class ConcreteSection:
 
             # loop through thetas
             # TODO: test this somehow.
-            # theta_chunks = np.array_split(theta_list, 16)
+            # theta_chunks = [theta_list[offs:offs+chunk_size] for offs in range(0, len(theta_list), chunk_size)]
             # with ThreadPoolExecutor() as executor:
-            #     executor.map(chunk_iterate_theta, theta_chunks)
+            #    executor.map(lambda args: chunk_iterate_theta(*args), enumerate(theta_chunks))
 
             for theta in theta_list:
                 ultimate_results = self.ultimate_bending_capacity(theta=theta, n=n)
