@@ -947,7 +947,7 @@ class NZS3101(DesignCode):
 
         return force
 
-    def steel_capacity(self, os_design: bool = False):
+    def steel_capacity(self, os_design: bool = False, prob_design: bool = False):
         '''Function to return the nominal steel reinforcement capacity or the
             overstrength steel reinforcement capacity of a concrete section.
 
@@ -956,28 +956,39 @@ class NZS3101(DesignCode):
             to reflect the likely maximum material strength properties, defaults to
             False
         :type os_design: bool, optional
+        :param prob_design: True if the probable capacity of a concrete
+            section is required, then the material properties for concrete and lumped
+            reinforcement are scaled to reflect the probable material strength
+            properties, defaults to False
+        :type prob_design: bool, optional
         :return: Nominal steel reinforcement yield force (N)
         :rtype: float
         '''
+        # Retrieve predefined names of probable strength based materials
+        _, _, prob_properties = self.predefined_steel_materials()
+
         # initiate force variable
         force = 0
 
         # loop through all steel geometries
         for steel_geom in self.concrete_section.reinf_geometries_lumped:
-            # calculate reinforcement area & yield strength
+            # calculate reinforcement area & yield strength & steel_grade
             steel_area = steel_geom.calculate_area()
             yield_strength = (
                 steel_geom.material.stress_strain_profile.get_yield_strength()
             )
+            steel_grade = steel_geom.material.steel_grade
 
             # establish scaling factor for overstrength if specified
             if os_design:
-                phi_os = steel_geom.material.phi_os
+                mult_yield_strength = steel_geom.material.phi_os
+            elif prob_design and steel_grade not in prob_properties:
+                mult_yield_strength = 1.08
             else:
-                phi_os = 1.0
+                mult_yield_strength = 1.0
 
             # calculate cumulative reinforcement force
-            force += steel_area * yield_strength * phi_os
+            force += steel_area * yield_strength * mult_yield_strength
 
         return force
 
@@ -1019,7 +1030,7 @@ class NZS3101(DesignCode):
         :rtype: float
         '''
         # Calculate maximum axial compression strength
-        n_n_max = self.steel_capacity(os_design) + self.concrete_capacity(
+        n_n_max = self.steel_capacity(os_design, prob_design) + self.concrete_capacity(
             os_design, prob_design
         )
 
@@ -1057,7 +1068,7 @@ class NZS3101(DesignCode):
         :raises ValueError: If steel reinforcement yield strength is greater than 500MPa
             limit in NZS3101:2006 CL 5.3.3
         '''
-        # Retrieve predefined names of probable strenght based materials
+        # Retrieve predefined names of probable strength based materials
         _, _, prob_properties = self.predefined_steel_materials()
 
         # Upper bound yield strength
@@ -1380,6 +1391,10 @@ class NZS3101(DesignCode):
 
         # create steel reinforcement name
         name = f'{yield_strength:.0f} MPa Steel\n({self.analysis_code})'
+
+        # create steel grade name if not provided
+        if steel_grade is None:
+            steel_grade = f'user{yield_strength:.0f}'
 
         # define density
         density = 7850
