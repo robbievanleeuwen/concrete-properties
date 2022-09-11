@@ -1483,8 +1483,8 @@ class NZS3101(DesignCode):
                       equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
                       40 MPa, :math:`f'_{cp}=1.4f'_c`
 
-                - prob_os_chk - Probable overstrength design check to NZSEE C5 guidelines based
-                  on NZS3101:2006 analysis provisions
+                - prob_os_chk - Probable overstrength design check to NZSEE C5
+                  guidelines based on NZS3101:2006 analysis provisions
 
                   Returns the probable O/S (overstrength) strength section design
                   capacity, i.e. undertakes the cross section analysis based on the
@@ -1511,6 +1511,7 @@ class NZS3101(DesignCode):
                       specified 28 day concrete compressive strengths of less than or
                       equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
                       40 MPa, :math:`f'_{cp}=1.4f'_c`
+
                       Note there is no enhancement to concrete strength for overstrength
                       checks in accordance with the NZSEE C5 assessment guidelines
 
@@ -1804,6 +1805,64 @@ class NZS3101(DesignCode):
                       MPa, i.e.:math:`f'_c+15` in accordance with NZS3101:2006 CL
                       2.6.5.5(c)
 
+                - prob_chk - Probable strength design check to NZSEE C5 guidelines based
+                  on NZS3101:2006 analysis provisions
+
+                    Returns the probable strength section design capacity, i.e.
+                    undertakes the cross section analysis based on the following
+                    assumptions:-
+
+                    - Using the strength reduction factor of \\phi=1.0 in accordance
+                      with NZSEE C5 assessment guidelines C5.5.1.4
+
+                    - Using the probable reinforcement yield strengths in accordance
+                      with NZSEE C5 assessment guidelines C5.4.3, typically
+                      :math:`f_{yp}=1.08f_y` in accordance with NZSEE C5 assessment
+                      guidelines C5.4.3. User may define custom probable strengths when
+                      defining steel reinforcement materials using
+                      :class:`~concreteproperties.NZS3101.SteelBarNZ`. Note if one of
+                      the predefined probable strength based steel grade materials are
+                      being utilised, then the yield strength is inclusive of the 1.08
+                      factor noted above
+
+                    - Using the probable compressive strength of the concrete in
+                      accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+                      specified 28 day concrete compressive strengths of less than or
+                      equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
+                      40 MPa, :math:`f'_{cp}=1.4f'_c`
+
+                - prob_os_chk - Probable overstrength design check to NZSEE C5
+                  guidelines based on NZS3101:2006 analysis provisions
+
+                  Returns the probable O/S (overstrength) strength section design
+                  capacity, i.e. undertakes the cross section analysis based on the
+                  following assumptions:-
+
+                    - Using the strength reduction factor of \\phi=1.0 in accordance
+                      with NZSEE C5 assessment guidelines C5.5.1.4
+
+                    - Using the probable overstrength reinforcement yield strengths in
+                      accordance with NZSEE C5 assessment guidelines C5.4.3, typically
+                      :math:`f_o=\\phi_of_{yp}` in accordance with NZSEE C5 assessment
+                      guidelines C5.4.3 & C5.5.2.3. User may define custom overstrength
+                      factors strengths when defining steel reinforcement materials
+                      using :class:`~concreteproperties.NZS3101.SteelBarNZ`. Note if one
+                      of the predefined probable strength based steel grade materials
+                      are being utilised, then the overstrength factor being applied to
+                      the yield strength is inclusive of the 1.08 factor on the lower
+                      bound yield strength.
+                        i.e. :math:`\\phi_o=\\diplaystyle{\\frac{f_o}{f_{yp}}`
+                        where :math:`f_{yp}=1.08f_y`
+
+                    - Using the probable compressive strength of the concrete in
+                      accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+                      specified 28 day concrete compressive strengths of less than or
+                      equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
+                      40 MPa, :math:`f'_{cp}=1.4f'_c`
+
+                      Note there is no enhancement to concrete strength for overstrength
+                      checks in accordance with the NZSEE C5 assessment guidelines
+
         :type analysis_type: str
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
@@ -1912,6 +1971,64 @@ class NZS3101(DesignCode):
                     - Using a likely maximum compression strength of the concrete based
                     on the lower 5% characteristic concrete 28 day strength plus 15 MPa,
                     i.e.:math:`f'_c+15` in accordance with NZS3101:2006 CL 2.6.5.5(c)
+
+                - prob_chk - Probable strength design check to NZSEE C5 guidelines based
+                  on NZS3101:2006 analysis provisions
+
+                    Returns the probable strength section design capacity, i.e.
+                    undertakes the cross section analysis based on the following
+                    assumptions:-
+
+                    - Using the strength reduction factor of \\phi=1.0 in accordance
+                      with NZSEE C5 assessment guidelines C5.5.1.4
+
+                    - Using the probable reinforcement yield strengths in accordance
+                      with NZSEE C5 assessment guidelines C5.4.3, typically
+                      :math:`f_{yp}=1.08f_y` in accordance with NZSEE C5 assessment
+                      guidelines C5.4.3. User may define custom probable strengths when
+                      defining steel reinforcement materials using
+                      :class:`~concreteproperties.NZS3101.SteelBarNZ`. Note if one of
+                      the predefined probable strength based steel grade materials are
+                      being utilised, then the yield strength is inclusive of the 1.08
+                      factor noted above
+
+                    - Using the probable compressive strength of the concrete in
+                      accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+                      specified 28 day concrete compressive strengths of less than or
+                      equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
+                      40 MPa, :math:`f'_{cp}=1.4f'_c`
+
+                - prob_os_chk - Probable overstrength design check to NZSEE C5
+                  guidelines based on NZS3101:2006 analysis provisions
+
+                  Returns the probable O/S (overstrength) strength section design
+                  capacity, i.e. undertakes the cross section analysis based on the
+                  following assumptions:-
+
+                    - Using the strength reduction factor of \\phi=1.0 in accordance
+                      with NZSEE C5 assessment guidelines C5.5.1.4
+
+                    - Using the probable overstrength reinforcement yield strengths in
+                      accordance with NZSEE C5 assessment guidelines C5.4.3, typically
+                      :math:`f_o=\\phi_of_{yp}` in accordance with NZSEE C5 assessment
+                      guidelines C5.4.3 & C5.5.2.3. User may define custom overstrength
+                      factors strengths when defining steel reinforcement materials
+                      using :class:`~concreteproperties.NZS3101.SteelBarNZ`. Note if one
+                      of the predefined probable strength based steel grade materials
+                      are being utilised, then the overstrength factor being applied to
+                      the yield strength is inclusive of the 1.08 factor on the lower
+                      bound yield strength.
+                        i.e. :math:`\\phi_o=\\diplaystyle{\\frac{f_o}{f_{yp}}`
+                        where :math:`f_{yp}=1.08f_y`
+
+                    - Using the probable compressive strength of the concrete in
+                      accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+                      specified 28 day concrete compressive strengths of less than or
+                      equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
+                      40 MPa, :math:`f'_{cp}=1.4f'_c`
+
+                      Note there is no enhancement to concrete strength for overstrength
+                      checks in accordance with the NZSEE C5 assessment guidelines
 
         :type analysis_type: str, optional
         :return: Factored and unfactored moment interaction results objects, and list of
@@ -2044,6 +2161,64 @@ class NZS3101(DesignCode):
                     - Using a likely maximum compression strength of the concrete based
                     on the lower 5% characteristic concrete 28 day strength plus 15 MPa,
                     i.e.:math:`f'_c+15` in accordance with NZS3101:2006 CL 2.6.5.5(c)
+
+                - prob_chk - Probable strength design check to NZSEE C5 guidelines based
+                  on NZS3101:2006 analysis provisions
+
+                    Returns the probable strength section design capacity, i.e.
+                    undertakes the cross section analysis based on the following
+                    assumptions:-
+
+                    - Using the strength reduction factor of \\phi=1.0 in accordance
+                      with NZSEE C5 assessment guidelines C5.5.1.4
+
+                    - Using the probable reinforcement yield strengths in accordance
+                      with NZSEE C5 assessment guidelines C5.4.3, typically
+                      :math:`f_{yp}=1.08f_y` in accordance with NZSEE C5 assessment
+                      guidelines C5.4.3. User may define custom probable strengths when
+                      defining steel reinforcement materials using
+                      :class:`~concreteproperties.NZS3101.SteelBarNZ`. Note if one of
+                      the predefined probable strength based steel grade materials are
+                      being utilised, then the yield strength is inclusive of the 1.08
+                      factor noted above
+
+                    - Using the probable compressive strength of the concrete in
+                      accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+                      specified 28 day concrete compressive strengths of less than or
+                      equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
+                      40 MPa, :math:`f'_{cp}=1.4f'_c`
+
+                - prob_os_chk - Probable overstrength design check to NZSEE C5
+                  guidelines based on NZS3101:2006 analysis provisions
+
+                  Returns the probable O/S (overstrength) strength section design
+                  capacity, i.e. undertakes the cross section analysis based on the
+                  following assumptions:-
+
+                    - Using the strength reduction factor of \\phi=1.0 in accordance
+                      with NZSEE C5 assessment guidelines C5.5.1.4
+
+                    - Using the probable overstrength reinforcement yield strengths in
+                      accordance with NZSEE C5 assessment guidelines C5.4.3, typically
+                      :math:`f_o=\\phi_of_{yp}` in accordance with NZSEE C5 assessment
+                      guidelines C5.4.3 & C5.5.2.3. User may define custom overstrength
+                      factors strengths when defining steel reinforcement materials
+                      using :class:`~concreteproperties.NZS3101.SteelBarNZ`. Note if one
+                      of the predefined probable strength based steel grade materials
+                      are being utilised, then the overstrength factor being applied to
+                      the yield strength is inclusive of the 1.08 factor on the lower
+                      bound yield strength.
+                        i.e. :math:`\\phi_o=\\diplaystyle{\\frac{f_o}{f_{yp}}`
+                        where :math:`f_{yp}=1.08f_y`
+
+                    - Using the probable compressive strength of the concrete in
+                      accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+                      specified 28 day concrete compressive strengths of less than or
+                      equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
+                      40 MPa, :math:`f'_{cp}=1.4f'_c`
+
+                      Note there is no enhancement to concrete strength for overstrength
+                      checks in accordance with the NZSEE C5 assessment guidelines
 
         :type analysis_type: str, optional
         :param n: Net axial force
