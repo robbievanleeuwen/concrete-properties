@@ -1,4 +1,5 @@
 from __future__ import annotations
+from ast import Raise
 
 from copy import deepcopy
 from math import inf
@@ -731,9 +732,6 @@ class AS3600(DesignCode):
 
 
 class NZS3101(DesignCode):
-    # TODO - add options for calculating probable strengths as per NZSEE guidelines
-    # TODO - add other historic steel grades with overstrengths and fracture
-    # strains, i.e. from NZSEE C5 Assessment Guidelines
     # TODO - Implement phi=0.75 option for singly reinforced wall design
     '''Design code class for the New Zealand concrete design standard NZS3101:2006.
 
@@ -766,6 +764,7 @@ class NZS3101(DesignCode):
         '''
 
         name: str
+        steel_grade: str
         density: float
         phi_os: float = 1.0
         stress_strain_profile: ssp.StressStrainProfile
@@ -896,7 +895,10 @@ class NZS3101(DesignCode):
         return lamda
 
     def concrete_capacity(
-        self, os_design: bool = False, add_compressive_strength: float = 15
+        self,
+        os_design: bool = False,
+        prob_design: bool = False,
+        add_compressive_strength: float = 15,
     ):
         '''Function to return the nominal concrete capacity or the overstrength concrete
             capacity of a concrete section.
@@ -905,6 +907,11 @@ class NZS3101(DesignCode):
             required, then the material properties for concrete are scaled to reflect
             the likely maximum material strength properties, defaults to False
         :type os_design: bool, optional
+        :param prob_design: True if the probable capacity of a concrete section is
+            required, then the material properties for concrete and lumped reinforcement
+            are scaled to reflect the probable material strength properties, defaults to
+            False
+        :type prob_design: bool, optional
         :param add_compressive_strength: The increase in compressive strength of the
             specified 28 day compressive strength of concrete to reflect the likely
             maximum material strength, defaults to an additional 15 MPa as per
@@ -915,6 +922,7 @@ class NZS3101(DesignCode):
         '''
         # initiate force variable
         force = 0
+
         # loop through all concrete geometries
         for conc_geom in self.concrete_section.concrete_geometries:
             # calculate concrete area & compressive strength
@@ -924,7 +932,10 @@ class NZS3101(DesignCode):
             )
 
             # scale concrete compressive strength for overstrength if specified
-            if os_design:
+            if prob_design:
+                mult_compressive_strength = 1.5 if compressive_strength <= 40 else 1.4
+                compressive_strength *= mult_compressive_strength
+            elif os_design:
                 compressive_strength += add_compressive_strength
 
             # calculate cumulative concrete force
@@ -950,6 +961,7 @@ class NZS3101(DesignCode):
         '''
         # initiate force variable
         force = 0
+
         # loop through all steel geometries
         for steel_geom in self.concrete_section.reinf_geometries_lumped:
             # calculate reinforcement area & yield strength
@@ -969,7 +981,12 @@ class NZS3101(DesignCode):
 
         return force
 
-    def max_comp_strength(self, cpe_design: bool = False, os_design: bool = False):
+    def max_comp_strength(
+        self,
+        cpe_design: bool = False,
+        os_design: bool = False,
+        prob_design: bool = False,
+    ):
         '''Function to return the nominal axial load compressive strength of a concrete
             section when the load is applied with zero eccentricity.
 
@@ -992,12 +1009,19 @@ class NZS3101(DesignCode):
             are scaled to reflect the likely maximum material strength properties,
             defaults to False
         :type os_design: bool, optional
+        :param prob_design: True if the probable capacity of a concrete
+            section is required, then the material properties for concrete and lumped
+            reinforcement are scaled to reflect the probable material strength
+            properties, defaults to False
+        :type prob_design: bool, optional
         :return: Returns the nominal axial load compressive strength of a concrete
             section :math:`N_{n,max}`
         :rtype: float
         '''
         # Calculate maximum axial compression strength
-        n_n_max = self.steel_capacity(os_design) + self.concrete_capacity(os_design)
+        n_n_max = self.steel_capacity(os_design) + self.concrete_capacity(
+            os_design, prob_design
+        )
 
         if cpe_design:
             max_comp = 0.7 * n_n_max
@@ -1027,26 +1051,33 @@ class NZS3101(DesignCode):
         '''Checks that the specified steel reinforcement strengths for all defined
             steel geometries comply with NZS3101:2006 CL 5.3.3.
 
+            Note check does not apply to predefined materials based on probable strength
+            properties
+
         :raises ValueError: If steel reinforcement yield strength is greater than 500MPa
             limit in NZS3101:2006 CL 5.3.3
         '''
+        # Retrieve predefined names of probable strenght based materials
+        _, _, prob_properties = self.predefined_steel_materials()
+
         # Upper bound yield strength
         f_y_upper = 500
 
         # loop through all steel geometries
         for steel_geom in self.concrete_section.reinf_geometries_lumped:
-            # calculate yield strength
+            # calculate defined steel grade & yield strength
+            steel_grade = steel_geom.material.steel_grade
             yield_strength = (
                 steel_geom.material.stress_strain_profile.get_yield_strength()
             )
-
-            if yield_strength > f_y_upper:
-                raise ValueError(
-                    f'Steel yield strength for \'{steel_geom.material.name}\' '
-                    f'material must be less than {f_y_upper} MPa for the '
-                    f'{self.analysis_code} code, {yield_strength:.0f} MPa was '
-                    f'specified for this material'
-                )
+            if steel_grade not in prob_properties:
+                if yield_strength > f_y_upper:
+                    raise ValueError(
+                        f'Steel yield strength for \'{steel_geom.material.name}\' '
+                        f'material must be less than {f_y_upper} MPa for the '
+                        f'{self.analysis_code} code, {yield_strength:.0f} MPa was '
+                        f'specified for this material'
+                    )
 
     def check_f_c_limits(self, pphr_class: str = 'NDPR'):
         '''Checks that a valid Potential Plastic Hinge Region (PPHR) classification has
@@ -1163,9 +1194,71 @@ class NZS3101(DesignCode):
             colour=colour,
         )
 
+    def predefined_steel_materials(self) -> Tuple[dict, list(str), list(str)]:
+        '''Creates a list of predefined material properties for steel grades for design
+            to NZS3101:2006 & NZSEE C5 assessment guidelines.
+
+        :return: Returns a dictionary with standard predefined steel material properties
+            based on current steel grade 300E & 500E material properties in accordance
+            with NZS3101:2006, and based on historic steel grade material properties in
+            accordance with NZSEE C5 assessment guidelines
+
+            predefined dictionary with material properties based on steel grade
+
+            key 1 = yield strength or probable strength
+
+            key 2 = fracture strain
+
+            key 3 = overstrength factor (note if probable strength based property the
+                    true O/S factor is 1.08 times this value)
+
+            key 4 = True  = probable strength based yield strength & overstrength factor
+                    False = lower characteristic strength based yield strength &
+                            overstrength factor
+
+            Refer to :meth:`NZS3101.create_steel_material` for details of predefined
+            steel grades
+
+            Returns two additional lists for checking for predefined steel grades:-
+                - The first with a list of predefined material grades that have been
+                    defined on characteristic strength material properties
+                - The second with a list of predefined material grades that have been
+                    defined based on probable strength material properties
+
+        :rtype: Tuple[dict, list(str), list(str)]
+        '''
+        properties_dict = {
+            'pre-1945': {1: 280.0, 2: 0.1, 3: 1.25, 4: True},
+            '33': {1: 280.0, 2: 0.1, 3: 1.25, 4: True},
+            '40': {1: 324.0, 2: 0.15, 3: 1.25, 4: True},
+            '275': {1: 324.0, 2: 0.15, 3: 1.25, 4: True},
+            'HY60': {1: 455.0, 2: 0.12, 3: 1.5, 4: True},
+            '380': {1: 455.0, 2: 0.12, 3: 1.5, 4: True},
+            '430': {1: 464.0, 2: 0.12, 3: 1.25, 4: True},
+            '300': {1: 324.0, 2: 0.15, 3: 1.25, 4: True},
+            '500': {1: 540.0, 2: 0.10, 3: 1.25, 4: True},
+            '300E': {1: 300.0, 2: 15 / 100, 3: 1.35, 4: False},
+            '500E': {1: 500.0, 2: 10 / 100, 3: 1.35, 4: False},
+        }
+
+        # list to store predefined probable strength based steel grades
+        prob_properties = []
+        # list to store predefined characteristic strength based steel grades
+        nom_properties = []
+
+        # Create list of probable strength based and nominal strength based steel grades
+        for properties in properties_dict:
+            if properties_dict[properties][4] is True:
+                prob_properties.append(properties)
+            else:
+                nom_properties.append(properties)
+
+        return properties_dict, nom_properties, prob_properties
+
     def create_steel_material(
         self,
-        yield_strength: float = 500.0,
+        steel_grade: str = None,
+        yield_strength: float = None,
         fracture_strain: float = None,
         phi_os: float = None,
         colour: str = 'red',
@@ -1176,15 +1269,80 @@ class NZS3101(DesignCode):
         | - *Density*: 7850 kg/m\ :sup:`3`
         | - *Elastic modulus*: 200,000 MPa
         | - *Stress-strain profile:* Elastic-plastic, fracture strain from AS/NZS4671
-            Table 7.2(A)
+            Table 7.2(A) or NZSEE C5 assessment guidelines (for historic reinforcement
+            grades)
 
-        :param yield_strength: Steel yield strength (MPa)
+        :param steel_grade: Designation of the grade of reinforcement bar to be
+            analysed, included current and historic grades are as follows, note defaults
+            to None
+                - **Pre-1945** - Use for probable strength design to NZSEE C5 assessment
+                    guidelines
+                    - Probable Yield strength = 280 MPa
+                    - fracture strain = 10% or 0.10
+                    - \phi_{f_y,os} = 1.25
+                - **33** - Use for probable strength design to NZSEE C5 assessment
+                    guidelines
+                    - Probable Yield strength = 280 MPa
+                    - fracture strain = 10% or 0.10
+                    - \phi_{f_y,os} = 1.25
+                - **40** - Use for probable strength design to NZSEE C5 assessment
+                    guidelines
+                    - Probable Yield strength = 324 MPa
+                    - fracture strain = 15% or 0.15
+                    - \phi_{f_y,os} = 1.25
+                - **275** - Use for probable strength design to NZSEE C5 assessment
+                    guidelines
+                    - Probable Yield strength = 324 MPa
+                    - fracture strain = 15% or 0.15
+                    - \phi_{f_y,os} = 1.25
+                - **HY60** - Use for probable strength design to NZSEE C5 assessment
+                    guidelines
+                    - Probable Yield strength = 455 MPa
+                    - fracture strain = 12% or 0.12
+                    - \phi_{f_y,os} = 1.5
+                - **380** - Use for probable strength design to NZSEE C5 assessment
+                    guidelines
+                    - Probable Yield strength = 455 MPa
+                    - fracture strain = 12% or 0.12
+                    - \phi_{f_y,os} = 1.5
+                - **430** - Use for probable strength design to NZSEE C5 assessment
+                    guidelines
+                    - Probable Yield strength = 464 MPa
+                    - fracture strain = 12% or 0.12
+                    - \phi_{f_y,os} = 1.25
+                - **300** - Use for probable strength design to NZSEE C5 assessment
+                    guidelines
+                    - Probable Yield strength = 324 MPa
+                    - fracture strain = 15% or 0.15
+                    - \phi_{f_y,os} = 1.25
+                - **500** - Use for probable strength design to NZSEE C5 assessment
+                    guidelines
+                    - Probable Yield strength = 540 MPa
+                    - fracture strain = 10% or 0.10
+                    - \phi_{f_y,os} = 1.25
+                - **300E** - Use for current design to NZS3101:2006 provisions
+                    - Characteristic Yield strength = 300 MPa
+                    - fracture strain = 15% or 0.15
+                    - \phi_{f_y,os} = 1.35
+                - **500E** - Use for current design to NZS3101:2006 provisions
+                    - Characteristic Yield strength = 500 MPa
+                    - fracture strain = 10% or 0.10
+                    - \phi_{f_y,os} = 1.35
+
+            By using a valid steel grade designation the other parameters are initiated
+            with the required values for current reinforcement grades from the
+            AS/NZS4671 standard or for historic grades from the NZSEE C5 assessment
+            guidelines
+        :type steel_grade: str, optional
+        :param yield_strength: Steel yield strength (MPa), defaults to None
         :type yield_strength: float, optional
         :param fracture_strain: Lower bound tensile strain, based on characteristic
             uniform elongation limit from AS/NZS4671 Table 7.2(A), defaults to None
         :type fracture_strain: float, optional
         :param phi_os: Overstrength factor depending on reinforcement grade
-            (:math:`\\phi_{o,f_y}`), refer to NZS3101:2006 CL 2.6.5.5
+            (:math:`\\phi_{o,f_y}`), refer to NZS3101:2006 CL 2.6.5.5, or for a probable
+            strength assessment to the NZSEE C5 assessment guidelines refer to NZSEE C5
+            Table C5.4
         :type phi_os: float, optional
         :param colour: Colour of the steel for rendering
         :type colour: str, optional
@@ -1192,6 +1350,34 @@ class NZS3101(DesignCode):
         :return: Steel bar material object
         :rtype: SteelBarNZ
         '''
+        # Populate dictionary with predefined material properties
+        (
+            properties_dict,
+            nom_properties,
+            prob_properties,
+        ) = self.predefined_steel_materials()
+
+        if steel_grade is None or steel_grade not in properties_dict.keys():
+            # check if all user defined parameters are provided
+            if yield_strength is None or fracture_strain is None or phi_os is None:
+                raise Exception(
+                    f'A predefined steel grade has not been provided, to create a user '
+                    f'defined steel material a yield strength, fracture strain and '
+                    f'overstrength factor are required to be specified.\n   Valid '
+                    f'predefined Characteristic strength based steel grades are '
+                    f'{nom_properties}, refer AS/NZS4671\n   Valid predefined Probable '
+                    f'strength based steel grades are {prob_properties}, refer NZSEE '
+                    f'C5 assessment guidelines'
+                )
+        elif steel_grade in properties_dict.keys():
+            # initiate predefined properties unless there is a user defined property
+            if yield_strength is None:
+                yield_strength = properties_dict[steel_grade][1]
+            if fracture_strain is None:
+                fracture_strain = properties_dict[steel_grade][2]
+            if phi_os is None:
+                phi_os = properties_dict[steel_grade][3]
+
         # create steel reinforcement name
         name = f'{yield_strength:.0f} MPa Steel\n({self.analysis_code})'
 
@@ -1201,29 +1387,9 @@ class NZS3101(DesignCode):
         # define elastic modulus
         elastic_modulus = 200000
 
-        # define fracture strain for grade E reinforcement in accordance with AS/NZS4671
-        # Table 7.2(A) for grade 300E and grade 500E
-        if fracture_strain is None and phi_os is None:
-            if yield_strength in [500]:
-                # grade 500E
-                fracture_strain = 10 / 100
-                phi_os = 1.35
-            elif yield_strength in [300]:
-                # grade 300E
-                fracture_strain = 15 / 100
-                phi_os = 1.35
-            else:
-                raise ValueError(
-                    f'Where no user defined fracture_strain & phi_os is provided, the '
-                    f'yield_strength must be either 300 MPa or 500 MPa for grade 300E '
-                    f'or 500E reinforcement, a yield strength of {yield_strength} MPa '
-                    f'was provided'
-                )
-        # TODO - add if statements for when either fracture strain or phi_os is
-        # specified but not the other with a user defined non-std yield strength
-
         return NZS3101.SteelBarNZ(
             name=name,
+            steel_grade=steel_grade,
             density=density,
             phi_os=phi_os,
             stress_strain_profile=ssp.SteelElasticPlastic(
@@ -1291,6 +1457,63 @@ class NZS3101(DesignCode):
                       MPa, i.e.:math:`f'_c+15` in accordance with NZS3101:2006 CL
                       2.6.5.5(c)
 
+                - prob_chk - Probable strength design check to NZSEE C5 guidelines based
+                  on NZS3101:2006 analysis provisions
+
+                    Returns the probable strength section design capacity, i.e.
+                    undertakes the cross section analysis based on the following
+                    assumptions:-
+
+                    - Using the strength reduction factor of \\phi=1.0 in accordance
+                      with NZSEE C5 assessment guidelines C5.5.1.4
+
+                    - Using the probable reinforcement yield strengths in accordance
+                      with NZSEE C5 assessment guidelines C5.4.3, typically
+                      :math:`f_{yp}=1.08f_y` in accordance with NZSEE C5 assessment
+                      guidelines C5.4.3. User may define custom probable strengths when
+                      defining steel reinforcement materials using
+                      :class:`~concreteproperties.NZS3101.SteelBarNZ`. Note if one of
+                      the predefined probable strength based steel grade materials are
+                      being utilised, then the yield strength is inclusive of the 1.08
+                      factor noted above
+
+                    - Using the probable compressive strength of the concrete in
+                      accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+                      specified 28 day concrete compressive strengths of less than or
+                      equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
+                      40 MPa, :math:`f'_{cp}=1.4f'_c`
+
+                - prob_os_chk - Probable overstrength design check to NZSEE C5 guidelines based
+                  on NZS3101:2006 analysis provisions
+
+                  Returns the probable O/S (overstrength) strength section design
+                  capacity, i.e. undertakes the cross section analysis based on the
+                  following assumptions:-
+
+                    - Using the strength reduction factor of \\phi=1.0 in accordance
+                      with NZSEE C5 assessment guidelines C5.5.1.4
+
+                    - Using the probable overstrength reinforcement yield strengths in
+                      accordance with NZSEE C5 assessment guidelines C5.4.3, typically
+                      :math:`f_o=\\phi_of_{yp}` in accordance with NZSEE C5 assessment
+                      guidelines C5.4.3 & C5.5.2.3. User may define custom overstrength
+                      factors strengths when defining steel reinforcement materials
+                      using :class:`~concreteproperties.NZS3101.SteelBarNZ`. Note if one
+                      of the predefined probable strength based steel grade materials
+                      are being utilised, then the overstrength factor being applied to
+                      the yield strength is inclusive of the 1.08 factor on the lower
+                      bound yield strength.
+                        i.e. :math:`\\phi_o=\\diplaystyle{\\frac{f_o}{f_{yp}}`
+                        where :math:`f_{yp}=1.08f_y`
+
+                    - Using the probable compressive strength of the concrete in
+                      accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+                      specified 28 day concrete compressive strengths of less than or
+                      equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
+                      40 MPa, :math:`f'_{cp}=1.4f'_c`
+                      Note there is no enhancement to concrete strength for overstrength
+                      checks in accordance with the NZSEE C5 assessment guidelines
+
         :type analysis_type: str
         :raises ValueError: If analysis type is not valid
         '''
@@ -1298,22 +1521,147 @@ class NZS3101(DesignCode):
             phi = 0.85
             cpe_design = False
             os_design = False
+            prob_design = False
         elif analysis_type.lower() in ['cpe_chk']:
             phi = 1.0
             cpe_design = True
             os_design = False
+            prob_design = False
         elif analysis_type.lower() in ['os_chk']:
             phi = 1.0
             cpe_design = False
             os_design = True
+            prob_design = False
+        elif analysis_type.lower() in ['prob_chk']:
+            phi = 1.0
+            cpe_design = False
+            os_design = False
+            prob_design = True
+        elif analysis_type.lower() in ['prob_os_chk']:
+            phi = 1.0
+            cpe_design = False
+            os_design = True
+            prob_design = True
         else:
             raise ValueError(
                 f'The specified analysis type of \'{analysis_type}\' should be either '
-                f'\'nom_chk\', \'cpe_chk\' or \'os_chk\' for a {self.analysis_code} '
-                f'code analysis'
+                f'\'nom_chk\', \'cpe_chk\', \'os_chk\', \'prob_chk\' or \'prob_os_chk\''
+                f'for a {self.analysis_code} code analysis'
             )
 
-        return phi, cpe_design, os_design
+        # check that if using a predefined probable strength based steel grade
+        # that only a probable strength check is being undertaken
+        _, nom_properties, prob_properties = self.predefined_steel_materials()
+        for steel_geom in self.concrete_section.reinf_geometries_lumped:
+            if (
+                analysis_type in ['nom_chk', 'cpe_chk', 'os_chk']
+                and steel_geom.material.steel_grade in prob_properties
+            ):
+                raise Exception(
+                    f'\'{analysis_type}\' analysis is not able to be undertaken on the '
+                    f'provided concrete section as it contains predefined steel '
+                    f'materials based on probable yield strengths and will give '
+                    f'erroneous results for a design to {self.analysis_code} as '
+                    f'material is not based on characteristic yield strengths. Define '
+                    f'a user defined or predefined steel material based on '
+                    f'characteristic yield properties to undertake a '
+                    f'\'{analysis_type}\' concrete section analysis.\n   Note '
+                    f'predefined steel grades based on characteristic consist of '
+                    f'{nom_properties}\n   Note analysis types consistent with a '
+                    f'probable strength based material are [\'prob_chk\', '
+                    f'\'prob_os_chk\'] undertaken in accordance with NZSEE C5 '
+                    f'assessment guidelines'
+                )
+
+        return phi, cpe_design, os_design, prob_design
+
+    def create_prob_section(self, os_design: bool = False) -> ConcreteSection:
+        '''Creates a concrete section with probable strength material properties
+            for a cross section analysis to NZS3101:2006 & NZSEE C5 assessment
+            guidelines. Concrete and steel reinforcement strength properties are
+            modified in accordance with NZSEE C5 assessment guidelines C5.4.2.2 &
+            C5.4.3.
+
+        :param os_design: True if an overstrength probable capacity of a concrete
+            section is required, then the material properties for concrete and lumped
+            reinforcement are scaled to reflect the probable overstrength material
+            strength properties, defaults to False which only scales the material
+            properties for concrete to reflec tthe probable material strength properties
+        :type os_design: bool, optional
+        :return: Returns a concrete section with material strengths modified to reflect
+            probable material strengths or probable overstrength material strengths, to
+            enable a probable strength or probable overstrength based analysis
+            to be undertaken
+        :rtype: :class: `ConcreteSection`
+        '''
+        # create copy of concrete section to modify materials to overstrength properties
+        prob_concrete_section = deepcopy(self.concrete_section)
+
+        # loop through all concrete geometries & update to probable strength properties
+        for conc_geom in prob_concrete_section.concrete_geometries:
+            # retrieve previous nominal/characteristic material properties
+            prev_compressive_strength = (
+                conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
+            )
+            prev_ultimate_strain = (
+                conc_geom.material.ultimate_stress_strain_profile.get_ultimate_compressive_strain()
+            )
+            prev_density = conc_geom.material.density
+            prev_colour_conc = conc_geom.material.colour
+
+            # update concrete material to new material with overstrength properties
+            mult_compressive_strength = 1.5 if prev_compressive_strength <= 40 else 1.4
+            conc_geom.material = self.create_concrete_material(
+                compressive_strength=prev_compressive_strength
+                * mult_compressive_strength,
+                ultimate_strain=prev_ultimate_strain,
+                density=prev_density,
+                colour=prev_colour_conc,
+            )
+
+            # update modulus of rupture to probable strength based value
+            conc_geom.material.flexural_tensile_strength = 0.55 * np.sqrt(
+                prev_compressive_strength * mult_compressive_strength
+            )
+
+        # populate list with predefined probable strength based steel grades
+        _, _, prob_properties = self.predefined_steel_materials()
+
+        # loop through all steel geometries and update to overstrength properties
+        for steel_geom in prob_concrete_section.reinf_geometries_lumped:
+            # retrieve previous nominal/characteristic material properties
+            prev_steel_grade = steel_geom.material.steel_grade
+            prev_yield_strength = (
+                steel_geom.material.stress_strain_profile.get_yield_strength()
+            )
+            prev_fracture_strain = (
+                steel_geom.material.stress_strain_profile.get_fracture_strain()
+            )
+            prev_phi_os = steel_geom.material.phi_os
+            prev_colour_steel = steel_geom.material.colour
+
+            # determine  scale yield strength by 1.08 from NZSEE C5
+            # assessment guidelines C5.4.3
+            if prev_steel_grade not in prob_properties and os_design:
+                mult_prob_strength = prev_phi_os
+            elif prev_steel_grade not in prob_properties and not os_design:
+                mult_prob_strength = 1.08
+            elif os_design:
+                mult_prob_strength = prev_phi_os
+            else:
+                mult_prob_strength = 1.0
+
+            # update steel reinforcement material to new material with overstrength
+            # properties
+            steel_geom.material = self.create_steel_material(
+                steel_grade=prev_steel_grade,
+                yield_strength=prev_yield_strength * mult_prob_strength,
+                fracture_strain=prev_fracture_strain,
+                phi_os=prev_phi_os,
+                colour=prev_colour_steel,
+            )
+
+        return prob_concrete_section
 
     def create_os_section(
         self, add_compressive_strength: float = 15
@@ -1360,6 +1708,7 @@ class NZS3101(DesignCode):
         # loop through all steel geometries and update to overstrength properties
         for steel_geom in os_concrete_section.reinf_geometries_lumped:
             # retrieve previous nominal/characteristic material properties
+            prev_steel_grade = steel_geom.material.steel_grade
             prev_yield_strength = (
                 steel_geom.material.stress_strain_profile.get_yield_strength()
             )
@@ -1372,7 +1721,8 @@ class NZS3101(DesignCode):
             # update steel reinforcement material to new material with overstrength
             # properties
             steel_geom.material = self.create_steel_material(
-                prev_yield_strength * prev_phi_os,
+                steel_grade=prev_steel_grade,
+                yield_strength=prev_yield_strength * prev_phi_os,
                 fracture_strain=prev_fracture_strain,
                 phi_os=prev_phi_os,
                 colour=prev_colour_steel,
@@ -1471,14 +1821,15 @@ class NZS3101(DesignCode):
         self.check_f_y_limit()
 
         # determine strength reduction factor based on analysis type specified
-        phi, _, _ = self.capacity_reduction_factor(analysis_type)
+        phi, _, os_design, _ = self.capacity_reduction_factor(analysis_type)
 
-        # TODO - need to set correct phi here, and modify concrete section
         # determine the section to analyse
         if analysis_type in ['nom_chk', 'cpe_chk']:
             analysis_section = self.concrete_section
-        else:
+        elif analysis_type in ['os_chk']:
             analysis_section = self.create_os_section()
+        else:
+            analysis_section = self.create_prob_section(os_design)
 
         # calculate ultimate bending capacity
         ult_res = analysis_section.ultimate_bending_capacity(theta=theta, n=n / phi)
@@ -1575,13 +1926,17 @@ class NZS3101(DesignCode):
         self.check_f_y_limit()
 
         # determine strength reduction factor based on analysis type specified
-        phi, cpe_design, os_design = self.capacity_reduction_factor(analysis_type)
+        phi, cpe_design, os_design, prob_design = self.capacity_reduction_factor(
+            analysis_type
+        )
 
         # determine the section to analyse
         if analysis_type in ['nom_chk', 'cpe_chk']:
             analysis_section = self.concrete_section
-        else:
+        elif analysis_type in ['os_chk']:
             analysis_section = self.create_os_section()
+        else:
+            analysis_section = self.create_prob_section(os_design)
 
         # analyse the concrete section to create the M/N interaction curve
         # TODO - modify defaults?
@@ -1597,7 +1952,9 @@ class NZS3101(DesignCode):
             ],
             n_points=12,
             max_comp=phi
-            * self.max_comp_strength(cpe_design=cpe_design, os_design=os_design),
+            * self.max_comp_strength(
+                cpe_design=cpe_design, os_design=os_design, prob_design=prob_design
+            ),
             max_comp_labels=['A', 'B'],
         )
 
