@@ -733,7 +733,7 @@ class AS3600(DesignCode):
 
 class NZS3101(DesignCode):
     # TODO - Implement phi=0.75 option for singly reinforced wall design
-    '''Design code class for the New Zealand concrete design standard NZS3101:2006.
+    """Design code class for the New Zealand concrete design standard NZS3101:2006.
 
     ..note::
         Note that this design code currently only supports
@@ -741,16 +741,16 @@ class NZS3101(DesignCode):
         :class:`~concreteproperties.NZS3101.SteelBarNZ` material objects. Meshed
         :class:`~concreteproperties.material.Steel` material objects are **not** supported
         as this falls under the composite structures design code.
-    '''
+    """
 
     def __init__(self):
-        '''Inits the NZS3101 class.'''
-        self.analysis_code = 'NZS3101:2006'
+        """Inits the NZS3101 class."""
+        self.analysis_code = "NZS3101:2006"
         super().__init__()
 
     @dataclass
     class SteelBarNZ(SteelBar):
-        '''Class for a steel bar material to NZS3101, treated as a lumped circular mass
+        """Class for a steel bar material to NZS3101, treated as a lumped circular mass
         with a constant strain.
 
         :param name: Steel bar material name
@@ -761,7 +761,7 @@ class NZS3101(DesignCode):
         :param colour: Colour of the material for rendering
         :param meshed: If set to True, the entire material region is meshed; if set to
         False, the material region is treated as a lumped circular mass at its centroid
-        '''
+        """
 
         name: str
         steel_grade: str
@@ -775,20 +775,20 @@ class NZS3101(DesignCode):
         self,
         concrete_section: ConcreteSection,
     ):
-        '''Assigns a concrete section to the design code.
+        """Assigns a concrete section to the design code.
 
         :param concrete_section: Concrete section object to analyse
-        '''
+        """
         self.concrete_section = concrete_section
 
         # check to make sure there are no meshed reinforcement regions
         if self.concrete_section.reinf_geometries_meshed:
             raise ValueError(
-                'Meshed reinforcement is not supported in this design code'
+                "Meshed reinforcement is not supported in this design code"
             )
 
     def E_conc(self, compressive_strength: float, density: float = 2300):
-        '''Calculate Youngs Modulus (:math: `E_c`) for concrete in accordance with
+        """Calculate Youngs Modulus (:math: `E_c`) for concrete in accordance with
             NZS3101:2006 CL 5.2.3(b).
 
             :math: `E_c=\\displaystyle{4700\\sqrt{f'_c} \\frac{\\rho}{2300}}`
@@ -800,7 +800,7 @@ class NZS3101(DesignCode):
         :type density: float, optional
         :return: :math: `E_c`, Youngs Modulus (MPa)
         :rtype: float
-        '''
+        """
         # Check low and high limit on density in NZS3101:2006 CL 5.2.2 for E_c equation
         # to be valid
         low_limit = 1800
@@ -814,7 +814,7 @@ class NZS3101(DesignCode):
         return E_c
 
     def check_density_limits(self, density: float, low_limit: float, high_limit: float):
-        '''Checks that the density is within the bounds outlined within NZS3101:2006
+        """Checks that the density is within the bounds outlined within NZS3101:2006
             CL 5.2.2 for the elastic modulus expression within NZS3101:2006 CL 5.2.3(b)
             to be valid.
 
@@ -826,18 +826,18 @@ class NZS3101(DesignCode):
         :type high_limit: float
         :raises ValueError: If density is outside of the limits within NZS3101:2006 CL
             5.2.2
-        '''
+        """
         if low_limit <= density <= high_limit:
             pass
         else:
             raise ValueError(
-                f'The specified concrete density of {density}kg/m^3 is not within the '
-                f'bounds of {low_limit}kg/m^3 & {high_limit}kg/m^3 for the '
-                f'{self.analysis_code} Elastic Modulus eqn to be applicable'
+                f"The specified concrete density of {density}kg/m^3 is not within the "
+                f"bounds of {low_limit}kg/m^3 & {high_limit}kg/m^3 for the "
+                f"{self.analysis_code} Elastic Modulus eqn to be applicable"
             )
 
     def alpha_1(self, compressive_strength: float):
-        '''scaling factor relating the nominal 28 day concrete compressive strength to
+        """scaling factor relating the nominal 28 day concrete compressive strength to
         the effective concrete compressive strength used for design purposes within the
         concrete stress block. For an equivalent rectangular compressive stress block it
         relates the 28 day concrete compressive strength to the average concrete
@@ -849,7 +849,7 @@ class NZS3101(DesignCode):
         :type compressive_strength: float
         :return: :math:`\\alpha_1` factor
         :rtype: float
-        '''
+        """
         if compressive_strength <= 55:
             alpha_1 = 0.85
         if compressive_strength > 55:
@@ -858,7 +858,7 @@ class NZS3101(DesignCode):
         return alpha_1
 
     def beta_1(self, compressive_strength: float):
-        '''scaling factor relating the depth of an equivalent rectangular compressive
+        """scaling factor relating the depth of an equivalent rectangular compressive
         stress block :math:`a` to the depth of the neutral axis :math:`c`.
         A function of the concrete strength.
 
@@ -868,7 +868,7 @@ class NZS3101(DesignCode):
         :type compressive_strength: float
         :return: :math:`\\beta_1` factor
         :rtype: float
-        '''
+        """
         if compressive_strength <= 30:
             beta_1 = 0.85
         if compressive_strength >= 55:
@@ -879,7 +879,7 @@ class NZS3101(DesignCode):
         return beta_1
 
     def lamda(self, density: float = 2300):
-        '''Modification factor reflecting the reduced mechanical properties of
+        """Modification factor reflecting the reduced mechanical properties of
             lightweight concrete relative to normal weight concrete of the same
             compression strength.
 
@@ -890,7 +890,7 @@ class NZS3101(DesignCode):
         :type density: int, optional
         :return: :math:`\\lamda` factor
         :rtype: float
-        '''
+        """
         lamda = min(0.4 + 0.6 * density / 2200, 1)
         return lamda
 
@@ -900,7 +900,7 @@ class NZS3101(DesignCode):
         prob_design: bool = False,
         add_compressive_strength: float = 15,
     ):
-        '''Function to return the nominal concrete capacity or the overstrength concrete
+        """Function to return the nominal concrete capacity or the overstrength concrete
             capacity of a concrete section.
 
         :param os_design: True if an overstrength capacity of a concrete section is
@@ -919,7 +919,7 @@ class NZS3101(DesignCode):
         :type add_compressive_strength: float, optional
         :return: Nominal or overstrength concrete yield force (N)
         :rtype: float
-        '''
+        """
         # initiate force variable
         force = 0
 
@@ -948,7 +948,7 @@ class NZS3101(DesignCode):
         return force
 
     def steel_capacity(self, os_design: bool = False, prob_design: bool = False):
-        '''Function to return the nominal steel reinforcement capacity or the
+        """Function to return the nominal steel reinforcement capacity or the
             overstrength steel reinforcement capacity of a concrete section.
 
         :param os_design: True if an overstrength capacity of a concrete section is
@@ -963,7 +963,7 @@ class NZS3101(DesignCode):
         :type prob_design: bool, optional
         :return: Nominal steel reinforcement yield force (N)
         :rtype: float
-        '''
+        """
         # Retrieve predefined names of probable strength based materials
         _, _, prob_properties = self.predefined_steel_materials()
 
@@ -998,7 +998,7 @@ class NZS3101(DesignCode):
         os_design: bool = False,
         prob_design: bool = False,
     ):
-        '''Function to return the nominal axial load compressive strength of a concrete
+        """Function to return the nominal axial load compressive strength of a concrete
             section when the load is applied with zero eccentricity.
 
         For non-capacity design situations, refer to NZS3101:2006 CL 10.3.4.2:-
@@ -1028,7 +1028,7 @@ class NZS3101(DesignCode):
         :return: Returns the nominal axial load compressive strength of a concrete
             section :math:`N_{n,max}`
         :rtype: float
-        '''
+        """
         # Calculate maximum axial compression strength
         n_n_max = self.steel_capacity(os_design, prob_design) + self.concrete_capacity(
             os_design, prob_design
@@ -1041,7 +1041,7 @@ class NZS3101(DesignCode):
         return max_comp
 
     def max_ten_strength(self, os_design: bool = False):
-        '''Function to return the nominal axial load tension strength of a concrete
+        """Function to return the nominal axial load tension strength of a concrete
             section when the load is applied with zero eccentricity.
 
         :param os_design: True if an overstrength capacity of a concrete section is
@@ -1052,14 +1052,14 @@ class NZS3101(DesignCode):
         :return: Returns the nominal axial load compressive strength of a concrete
             section :math:`N_{n,max}`
         :rtype: float
-        '''
+        """
         # Calculate maximum axial tension strength
         max_ten = self.steel_capacity(os_design)
 
         return max_ten
 
     def check_f_y_limit(self):
-        '''Checks that the specified steel reinforcement strengths for all defined
+        """Checks that the specified steel reinforcement strengths for all defined
             steel geometries comply with NZS3101:2006 CL 5.3.3.
 
             Note check does not apply to predefined materials based on probable strength
@@ -1067,7 +1067,7 @@ class NZS3101(DesignCode):
 
         :raises ValueError: If steel reinforcement yield strength is greater than 500MPa
             limit in NZS3101:2006 CL 5.3.3
-        '''
+        """
         # Retrieve predefined names of probable strength based materials
         _, _, prob_properties = self.predefined_steel_materials()
 
@@ -1084,14 +1084,14 @@ class NZS3101(DesignCode):
             if steel_grade not in prob_properties:
                 if yield_strength > f_y_upper:
                     raise ValueError(
-                        f'Steel yield strength for \'{steel_geom.material.name}\' '
-                        f'material must be less than {f_y_upper} MPa for the '
-                        f'{self.analysis_code} code, {yield_strength:.0f} MPa was '
-                        f'specified for this material'
+                        f"Steel yield strength for '{steel_geom.material.name}' "
+                        f"material must be less than {f_y_upper} MPa for the "
+                        f"{self.analysis_code} code, {yield_strength:.0f} MPa was "
+                        f"specified for this material"
                     )
 
-    def check_f_c_limits(self, pphr_class: str = 'NDPR'):
-        '''Checks that a valid Potential Plastic Hinge Region (PPHR) classification has
+    def check_f_c_limits(self, pphr_class: str = "NDPR"):
+        """Checks that a valid Potential Plastic Hinge Region (PPHR) classification has
             been specified, and that the specified compressive strengths for all defined
             concrete geometries comply with NZS3101:2006 CL 5.2.1 for the specified PPHR
             classification.
@@ -1108,20 +1108,20 @@ class NZS3101(DesignCode):
         :raises ValueError: If specified compressive strength for a concrete geometry
             is not between 20 MPa and 100 MPa for NDPR's, or between 20 MPa and 70 MPa
             for LDPR's or DPR's
-        '''
+        """
         # Lower bound compressive strength
         f_c_lower = 20
 
         # Upper bound compressive strength & check inputs within acceptable bounds
-        if pphr_class.upper() in ['NDPR']:
+        if pphr_class.upper() in ["NDPR"]:
             f_c_upper = 100
-        elif pphr_class.upper() in ['LDPR', 'DPR']:
+        elif pphr_class.upper() in ["LDPR", "DPR"]:
             f_c_upper = 70
         else:
             raise ValueError(
-                f'The specified PPHR class specified ({pphr_class}) should be NDPR, '
-                f'LDPR or DPR for the {self.analysis_code} code, {pphr_class} was '
-                f'specified'
+                f"The specified PPHR class specified ({pphr_class}) should be NDPR, "
+                f"LDPR or DPR for the {self.analysis_code} code, {pphr_class} was "
+                f"specified"
             )
 
         # loop through all concrete geometries
@@ -1134,10 +1134,10 @@ class NZS3101(DesignCode):
                 pass
             else:
                 raise ValueError(
-                    f'Concrete compressive strength for \'{conc_geom.material.name}\' '
-                    f'material must be between {f_c_lower} MPa & {f_c_upper} MPa for a '
-                    f'{pphr_class} PPHR for the {self.analysis_code} code, '
-                    f'{compressive_strength:.0f} MPa was specified for this material'
+                    f"Concrete compressive strength for '{conc_geom.material.name}' "
+                    f"material must be between {f_c_lower} MPa & {f_c_upper} MPa for a "
+                    f"{pphr_class} PPHR for the {self.analysis_code} code, "
+                    f"{compressive_strength:.0f} MPa was specified for this material"
                 )
 
     def create_concrete_material(
@@ -1145,9 +1145,9 @@ class NZS3101(DesignCode):
         compressive_strength: float,
         ultimate_strain: float = 0.003,
         density: float = 2300,
-        colour: str = 'lightgrey',
+        colour: str = "lightgrey",
     ) -> Concrete:
-        '''Returns a concrete material object to NZS3101:2006.
+        """Returns a concrete material object to NZS3101:2006.
 
         | **Material assumptions:**
         | - *Density*: Defaults to 2300 kg/m\ :sup:`3` unless supplied as user input
@@ -1169,11 +1169,11 @@ class NZS3101(DesignCode):
         :type colour: str, optional
         :return: Concrete material object
         :rtype: Concrete
-        '''
+        """
         # create concrete name
         name = (
-            f'{compressive_strength:.0f} MPa Conc [{density:.0f} kg/m$^{{{3}}}$] '
-            f'\n({self.analysis_code})'
+            f"{compressive_strength:.0f} MPa Conc [{density:.0f} kg/m$^{{{3}}}$] "
+            f"\n({self.analysis_code})"
         )
 
         # calculate elastic modulus
@@ -1206,7 +1206,7 @@ class NZS3101(DesignCode):
         )
 
     def predefined_steel_materials(self) -> Tuple[dict, list(str), list(str)]:
-        '''Creates a list of predefined material properties for steel grades for design
+        """Creates a list of predefined material properties for steel grades for design
             to NZS3101:2006 & NZSEE C5 assessment guidelines.
 
         :return: Returns a dictionary with standard predefined steel material properties
@@ -1237,19 +1237,19 @@ class NZS3101(DesignCode):
                     defined based on probable strength material properties
 
         :rtype: Tuple[dict, list(str), list(str)]
-        '''
+        """
         properties_dict = {
-            'pre-1945': {1: 280.0, 2: 0.1, 3: 1.25, 4: True},
-            '33': {1: 280.0, 2: 0.1, 3: 1.25, 4: True},
-            '40': {1: 324.0, 2: 0.15, 3: 1.25, 4: True},
-            '275': {1: 324.0, 2: 0.15, 3: 1.25, 4: True},
-            'HY60': {1: 455.0, 2: 0.12, 3: 1.5, 4: True},
-            '380': {1: 455.0, 2: 0.12, 3: 1.5, 4: True},
-            '430': {1: 464.0, 2: 0.12, 3: 1.25, 4: True},
-            '300': {1: 324.0, 2: 0.15, 3: 1.25, 4: True},
-            '500': {1: 540.0, 2: 0.10, 3: 1.25, 4: True},
-            '300E': {1: 300.0, 2: 15 / 100, 3: 1.35, 4: False},
-            '500E': {1: 500.0, 2: 10 / 100, 3: 1.35, 4: False},
+            "pre-1945": {1: 280.0, 2: 0.1, 3: 1.25, 4: True},
+            "33": {1: 280.0, 2: 0.1, 3: 1.25, 4: True},
+            "40": {1: 324.0, 2: 0.15, 3: 1.25, 4: True},
+            "275": {1: 324.0, 2: 0.15, 3: 1.25, 4: True},
+            "HY60": {1: 455.0, 2: 0.12, 3: 1.5, 4: True},
+            "380": {1: 455.0, 2: 0.12, 3: 1.5, 4: True},
+            "430": {1: 464.0, 2: 0.12, 3: 1.25, 4: True},
+            "300": {1: 324.0, 2: 0.15, 3: 1.25, 4: True},
+            "500": {1: 540.0, 2: 0.10, 3: 1.25, 4: True},
+            "300E": {1: 300.0, 2: 15 / 100, 3: 1.35, 4: False},
+            "500E": {1: 500.0, 2: 10 / 100, 3: 1.35, 4: False},
         }
 
         # list to store predefined probable strength based steel grades
@@ -1272,9 +1272,9 @@ class NZS3101(DesignCode):
         yield_strength: float = None,
         fracture_strain: float = None,
         phi_os: float = None,
-        colour: str = 'red',
+        colour: str = "red",
     ) -> NZS3101.SteelBarNZ:
-        '''Returns a steel material object specific to the NZS3101:2006 code.
+        """Returns a steel material object specific to the NZS3101:2006 code.
 
         | **Material assumptions:**
         | - *Density*: 7850 kg/m\ :sup:`3`
@@ -1360,7 +1360,7 @@ class NZS3101(DesignCode):
 
         :return: Steel bar material object
         :rtype: SteelBarNZ
-        '''
+        """
         # Populate dictionary with predefined material properties
         (
             properties_dict,
@@ -1372,13 +1372,13 @@ class NZS3101(DesignCode):
             # check if all user defined parameters are provided
             if yield_strength is None or fracture_strain is None or phi_os is None:
                 raise Exception(
-                    f'A predefined steel grade has not been provided, to create a user '
-                    f'defined steel material a yield strength, fracture strain and '
-                    f'overstrength factor are required to be specified.\n   Valid '
-                    f'predefined Characteristic strength based steel grades are '
-                    f'{nom_properties}, refer AS/NZS4671\n   Valid predefined Probable '
-                    f'strength based steel grades are {prob_properties}, refer NZSEE '
-                    f'C5 assessment guidelines'
+                    f"A predefined steel grade has not been provided, to create a user "
+                    f"defined steel material a yield strength, fracture strain and "
+                    f"overstrength factor are required to be specified.\n   Valid "
+                    f"predefined Characteristic strength based steel grades are "
+                    f"{nom_properties}, refer AS/NZS4671\n   Valid predefined Probable "
+                    f"strength based steel grades are {prob_properties}, refer NZSEE "
+                    f"C5 assessment guidelines"
                 )
         elif steel_grade in properties_dict.keys():
             # initiate predefined properties unless there is a user defined property
@@ -1390,11 +1390,11 @@ class NZS3101(DesignCode):
                 phi_os = properties_dict[steel_grade][3]
 
         # create steel reinforcement name
-        name = f'{yield_strength:.0f} MPa Steel\n({self.analysis_code})'
+        name = f"{yield_strength:.0f} MPa Steel\n({self.analysis_code})"
 
         # create steel grade name if not provided
         if steel_grade is None:
-            steel_grade = f'user{yield_strength:.0f}'
+            steel_grade = f"user{yield_strength:.0f}"
 
         # define density
         density = 7850
@@ -1416,7 +1416,7 @@ class NZS3101(DesignCode):
         )
 
     def capacity_reduction_factor(self, analysis_type: str) -> float:
-        '''Returns the appropriate NZS3101:2006 capacity reduction factor dependant on
+        """Returns the appropriate NZS3101:2006 capacity reduction factor dependant on
             the type of analysis specified. Refer to NZS3101:2006 CL 2.3.2.2.
 
         :param analysis_type: The type of cross section analysis to undertake on the
@@ -1532,37 +1532,37 @@ class NZS3101(DesignCode):
 
         :type analysis_type: str
         :raises ValueError: If analysis type is not valid
-        '''
-        if analysis_type.lower() in ['nom_chk']:
+        """
+        if analysis_type.lower() in ["nom_chk"]:
             phi = 0.85
             cpe_design = False
             os_design = False
             prob_design = False
-        elif analysis_type.lower() in ['cpe_chk']:
+        elif analysis_type.lower() in ["cpe_chk"]:
             phi = 1.0
             cpe_design = True
             os_design = False
             prob_design = False
-        elif analysis_type.lower() in ['os_chk']:
+        elif analysis_type.lower() in ["os_chk"]:
             phi = 1.0
             cpe_design = False
             os_design = True
             prob_design = False
-        elif analysis_type.lower() in ['prob_chk']:
+        elif analysis_type.lower() in ["prob_chk"]:
             phi = 1.0
             cpe_design = False
             os_design = False
             prob_design = True
-        elif analysis_type.lower() in ['prob_os_chk']:
+        elif analysis_type.lower() in ["prob_os_chk"]:
             phi = 1.0
             cpe_design = False
             os_design = True
             prob_design = True
         else:
             raise ValueError(
-                f'The specified analysis type of \'{analysis_type}\' should be either '
-                f'\'nom_chk\', \'cpe_chk\', \'os_chk\', \'prob_chk\' or \'prob_os_chk\''
-                f'for a {self.analysis_code} code analysis'
+                f"The specified analysis type of '{analysis_type}' should be either "
+                f"'nom_chk', 'cpe_chk', 'os_chk', 'prob_chk' or 'prob_os_chk'"
+                f"for a {self.analysis_code} code analysis"
             )
 
         # check that if using a predefined probable strength based steel grade
@@ -1570,29 +1570,29 @@ class NZS3101(DesignCode):
         _, nom_properties, prob_properties = self.predefined_steel_materials()
         for steel_geom in self.concrete_section.reinf_geometries_lumped:
             if (
-                analysis_type in ['nom_chk', 'cpe_chk', 'os_chk']
+                analysis_type in ["nom_chk", "cpe_chk", "os_chk"]
                 and steel_geom.material.steel_grade in prob_properties
             ):
                 raise Exception(
-                    f'\'{analysis_type}\' analysis is not able to be undertaken on the '
-                    f'provided concrete section as it contains predefined steel '
-                    f'materials based on probable yield strengths and will give '
-                    f'erroneous results for a design to {self.analysis_code} as '
-                    f'material is not based on characteristic yield strengths. Define '
-                    f'a user defined or predefined steel material based on '
-                    f'characteristic yield properties to undertake a '
-                    f'\'{analysis_type}\' concrete section analysis.\n   Note '
-                    f'predefined steel grades based on characteristic consist of '
-                    f'{nom_properties}\n   Note analysis types consistent with a '
-                    f'probable strength based material are [\'prob_chk\', '
-                    f'\'prob_os_chk\'] undertaken in accordance with NZSEE C5 '
-                    f'assessment guidelines'
+                    f"'{analysis_type}' analysis is not able to be undertaken on the "
+                    f"provided concrete section as it contains predefined steel "
+                    f"materials based on probable yield strengths and will give "
+                    f"erroneous results for a design to {self.analysis_code} as "
+                    f"material is not based on characteristic yield strengths. Define "
+                    f"a user defined or predefined steel material based on "
+                    f"characteristic yield properties to undertake a "
+                    f"'{analysis_type}' concrete section analysis.\n   Note "
+                    f"predefined steel grades based on characteristic consist of "
+                    f"{nom_properties}\n   Note analysis types consistent with a "
+                    f"probable strength based material are ['prob_chk', "
+                    f"'prob_os_chk'] undertaken in accordance with NZSEE C5 "
+                    f"assessment guidelines"
                 )
 
         return phi, cpe_design, os_design, prob_design
 
     def create_prob_section(self, os_design: bool = False) -> ConcreteSection:
-        '''Creates a concrete section with probable strength material properties
+        """Creates a concrete section with probable strength material properties
             for a cross section analysis to NZS3101:2006 & NZSEE C5 assessment
             guidelines. Concrete and steel reinforcement strength properties are
             modified in accordance with NZSEE C5 assessment guidelines C5.4.2.2 &
@@ -1609,7 +1609,7 @@ class NZS3101(DesignCode):
             enable a probable strength or probable overstrength based analysis
             to be undertaken
         :rtype: :class: `ConcreteSection`
-        '''
+        """
         # create copy of concrete section to modify materials to overstrength properties
         prob_concrete_section = deepcopy(self.concrete_section)
 
@@ -1682,7 +1682,7 @@ class NZS3101(DesignCode):
     def create_os_section(
         self, add_compressive_strength: float = 15
     ) -> ConcreteSection:
-        '''Creates a concrete section with likely maximum material strength properties
+        """Creates a concrete section with likely maximum material strength properties
             for a cross section analysis to NZS3101:2006. Concrete and steel
             reinforcement strength properties are modified in accordance with
             NZS3101:2006 CL 2.6.5.5 to reflect likely maximum material strengths.
@@ -1696,7 +1696,7 @@ class NZS3101(DesignCode):
             likely maximum material strengths to enable an overstrength based analysis
             to be undertaken
         :rtype: :class: `ConcreteSection`
-        '''
+        """
         # create copy of concrete section to modify materials to overstrength properties
         os_concrete_section = deepcopy(self.concrete_section)
 
@@ -1748,12 +1748,12 @@ class NZS3101(DesignCode):
 
     def ultimate_bending_capacity(
         self,
-        pphr_class: str = 'NDPR',
-        analysis_type: str = 'nom_chk',
+        pphr_class: str = "NDPR",
+        analysis_type: str = "nom_chk",
         theta: float = 0,
         n: float = 0,
     ) -> Tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]:
-        '''Calculates the ultimate bending capacity with capacity factors to
+        """Calculates the ultimate bending capacity with capacity factors to
         NZS3101:2006.
 
         :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
@@ -1886,7 +1886,7 @@ class NZS3101(DesignCode):
 
         :return: Factored and unfactored ultimate bending results objects, and capacity
             reduction factor *(factored_results, unfactored_results, phi)*
-        '''
+        """
         # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
         # (dependant on PPHR class)
         self.check_f_c_limits(pphr_class)
@@ -1898,9 +1898,9 @@ class NZS3101(DesignCode):
         phi, _, os_design, _ = self.capacity_reduction_factor(analysis_type)
 
         # determine the section to analyse
-        if analysis_type in ['nom_chk', 'cpe_chk']:
+        if analysis_type in ["nom_chk", "cpe_chk"]:
             analysis_section = self.concrete_section
-        elif analysis_type in ['os_chk']:
+        elif analysis_type in ["os_chk"]:
             analysis_section = self.create_os_section()
         else:
             analysis_section = self.create_prob_section(os_design)
@@ -1919,10 +1919,10 @@ class NZS3101(DesignCode):
 
     def moment_interaction_diagram(
         self,
-        pphr_class: str = 'NDPR',
-        analysis_type: str = 'nom_chk',
+        pphr_class: str = "NDPR",
+        analysis_type: str = "nom_chk",
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
-        '''Generates a moment interaction diagram with capacity factors and material
+        """Generates a moment interaction diagram with capacity factors and material
             strengths to NZS3101:2006.
 
         :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
@@ -2049,7 +2049,7 @@ class NZS3101(DesignCode):
         :return: Factored and unfactored moment interaction results objects, and list of
             capacity reduction factors *(factored_results, unfactored_results, phis)*
         :rtype: Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]
-        '''
+        """
         # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
         # (dependant on PPHR class)
         self.check_f_c_limits(pphr_class)
@@ -2063,9 +2063,9 @@ class NZS3101(DesignCode):
         )
 
         # determine the section to analyse
-        if analysis_type in ['nom_chk', 'cpe_chk']:
+        if analysis_type in ["nom_chk", "cpe_chk"]:
             analysis_section = self.concrete_section
-        elif analysis_type in ['os_chk']:
+        elif analysis_type in ["os_chk"]:
             analysis_section = self.create_os_section()
         else:
             analysis_section = self.create_prob_section(os_design)
@@ -2073,7 +2073,7 @@ class NZS3101(DesignCode):
         # analyse the concrete section to create the M/N interaction curve
         # TODO - modify defaults?
         mi_res = analysis_section.moment_interaction_diagram(
-            labels=['B', 'C', 'D', 'E', 'F', 'G'],
+            labels=["B", "C", "D", "E", "F", "G"],
             control_points=[
                 ("kappa0", 0.0),
                 ("D", 1.0),
@@ -2087,7 +2087,7 @@ class NZS3101(DesignCode):
             * self.max_comp_strength(
                 cpe_design=cpe_design, os_design=os_design, prob_design=prob_design
             ),
-            max_comp_labels=['A', 'B'],
+            max_comp_labels=["A", "B"],
         )
 
         # make a copy of the results to factor
@@ -2108,12 +2108,12 @@ class NZS3101(DesignCode):
 
     def biaxial_bending_diagram(
         self,
-        pphr_class: str = 'NDPR',
-        analysis_type: str = 'nom_chk',
+        pphr_class: str = "NDPR",
+        analysis_type: str = "nom_chk",
         n: float = 0.0,
         n_points: int = 48,
     ) -> Tuple[res.BiaxialBendingResults, List[float]]:
-        '''Generates a biaxial bending with capacity factors to NZS3101:2006.
+        """Generates a biaxial bending with capacity factors to NZS3101:2006.
 
         :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
             NDPR/LDPR/DPR, defaults to 'NDPR'
@@ -2243,7 +2243,7 @@ class NZS3101(DesignCode):
         :type n_points: int, optional
         :return: Factored biaxial bending results object and list of capacity reduction
             factors *(factored_results, phis)*
-        '''
+        """
 
         # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
         # (dependant on PPHR class)
@@ -2269,7 +2269,7 @@ class NZS3101(DesignCode):
 
         with Live(progress, refresh_per_second=10) as live:
             task = progress.add_task(
-                description='[red]Generating biaxial bending diagram',
+                description="[red]Generating biaxial bending diagram",
                 total=n_points,
             )
 
@@ -2294,8 +2294,8 @@ class NZS3101(DesignCode):
             progress.update(
                 task,
                 description=(
-                    '[bold green]:white_check_mark: Biaxial bending diagram'
-                    ' generated'
+                    "[bold green]:white_check_mark: Biaxial bending diagram"
+                    " generated"
                 ),
             )
             live.refresh()
