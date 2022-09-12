@@ -732,7 +732,9 @@ class AS3600(DesignCode):
 
 class NZS3101(DesignCode):
     # TODO - Implement phi=0.75 option for singly reinforced wall design
-    """Design code class for the New Zealand concrete design standard NZS3101:2006.
+    """Design code class for the New Zealand concrete design standard NZS3101:2006. Also
+        implements the requirements of the NZSEE C5 assessment guidelines for probable
+        strength design.
 
     ..note::
         Note that this design code currently only supports
@@ -755,7 +757,8 @@ class NZS3101(DesignCode):
         :param name: Steel bar material name
         :param density: Steel bar density (mass per unit volume)
         :param phi_os: Overstrength factor depending on reinforcement grade
-            (:math:`\phi_{o,f_y}`), refer to NZS3101:2006 CL 2.6.5.5
+            (:math:`\phi_{o,f_y}`), refer to NZS3101:2006 CL 2.6.5.5 or NZSEE C5
+            assessment guidelines C5.4.3
         :param stress_strain_profile: Steel bar stress-strain profile
         :param colour: Colour of the material for rendering
         :param meshed: If set to True, the entire material region is meshed; if set to
@@ -1204,7 +1207,7 @@ class NZS3101(DesignCode):
             colour=colour,
         )
 
-    def predefined_steel_materials(self) -> Tuple[dict, list(str), list(str)]:
+    def predefined_steel_materials(self) -> Tuple[dict, list[str], list[str]]:
         """Creates a list of predefined material properties for steel grades for design
             to NZS3101:2006 & NZSEE C5 assessment guidelines.
 
@@ -1235,7 +1238,7 @@ class NZS3101(DesignCode):
                 - The second with a list of predefined material grades that have been
                     defined based on probable strength material properties
 
-        :rtype: Tuple[dict, list(str), list(str)]
+        :rtype: Tuple[dict, list[str], list[str]]
         """
         properties_dict = {
             "pre-1945": {1: 280.0, 2: 0.1, 3: 1.25, 4: True},
@@ -1287,55 +1290,55 @@ class NZS3101(DesignCode):
             to None
                 - **Pre-1945** - Use for probable strength design to NZSEE C5 assessment
                     guidelines
-                    - Probable Yield strength = 280 MPa
+                    - Probable yield strength = 280 MPa
                     - fracture strain = 10% or 0.10
                     - \phi_{f_y,os} = 1.25
                 - **33** - Use for probable strength design to NZSEE C5 assessment
                     guidelines
-                    - Probable Yield strength = 280 MPa
+                    - Probable yield strength = 280 MPa
                     - fracture strain = 10% or 0.10
                     - \phi_{f_y,os} = 1.25
                 - **40** - Use for probable strength design to NZSEE C5 assessment
                     guidelines
-                    - Probable Yield strength = 324 MPa
+                    - Probable yield strength = 324 MPa
                     - fracture strain = 15% or 0.15
                     - \phi_{f_y,os} = 1.25
                 - **275** - Use for probable strength design to NZSEE C5 assessment
                     guidelines
-                    - Probable Yield strength = 324 MPa
+                    - Probable yield strength = 324 MPa
                     - fracture strain = 15% or 0.15
                     - \phi_{f_y,os} = 1.25
                 - **HY60** - Use for probable strength design to NZSEE C5 assessment
                     guidelines
-                    - Probable Yield strength = 455 MPa
+                    - Probable yield strength = 455 MPa
                     - fracture strain = 12% or 0.12
                     - \phi_{f_y,os} = 1.5
                 - **380** - Use for probable strength design to NZSEE C5 assessment
                     guidelines
-                    - Probable Yield strength = 455 MPa
+                    - Probable yield strength = 455 MPa
                     - fracture strain = 12% or 0.12
                     - \phi_{f_y,os} = 1.5
                 - **430** - Use for probable strength design to NZSEE C5 assessment
                     guidelines
-                    - Probable Yield strength = 464 MPa
+                    - Probable yield strength = 464 MPa
                     - fracture strain = 12% or 0.12
                     - \phi_{f_y,os} = 1.25
                 - **300** - Use for probable strength design to NZSEE C5 assessment
                     guidelines
-                    - Probable Yield strength = 324 MPa
+                    - Probable yield strength = 324 MPa
                     - fracture strain = 15% or 0.15
                     - \phi_{f_y,os} = 1.25
                 - **500** - Use for probable strength design to NZSEE C5 assessment
                     guidelines
-                    - Probable Yield strength = 540 MPa
+                    - Probable yield strength = 540 MPa
                     - fracture strain = 10% or 0.10
                     - \phi_{f_y,os} = 1.25
                 - **300E** - Use for current design to NZS3101:2006 provisions
-                    - Characteristic Yield strength = 300 MPa
+                    - Characteristic yield strength = 300 MPa
                     - fracture strain = 15% or 0.15
                     - \phi_{f_y,os} = 1.35
                 - **500E** - Use for current design to NZS3101:2006 provisions
-                    - Characteristic Yield strength = 500 MPa
+                    - Characteristic yield strength = 500 MPa
                     - fracture strain = 10% or 0.10
                     - \phi_{f_y,os} = 1.35
 
@@ -1343,8 +1346,20 @@ class NZS3101(DesignCode):
             with the required values for current reinforcement grades from the
             AS/NZS4671 standard or for historic grades from the NZSEE C5 assessment
             guidelines
+
+            Note if no steel grade is provided, a steel grade of 'user' + yield stength
+            is utilised
         :type steel_grade: str, optional
-        :param yield_strength: Steel yield strength (MPa), defaults to None
+        :param yield_strength: Steel characteristic yield strength (MPa), defaults to
+            None.
+
+            - Note for a predefined steel grade based on probable strength
+            properties this is interpreted as the probable yield strength
+
+            - Note for a user defined steel grade, this is **always** entered on the
+            basis of a characteristic yield strength, even if undertaking a probable
+            strength based analysis
+
         :type yield_strength: float, optional
         :param fracture_strain: Lower bound tensile strain, based on characteristic
             uniform elongation limit from AS/NZS4671 Table 7.2(A), defaults to None
@@ -1357,8 +1372,17 @@ class NZS3101(DesignCode):
         :param colour: Colour of the steel for rendering
         :type colour: str, optional
 
+        :raises Exception: If a predefined steel grade is not provided and the required
+            material properties have not been provided. For creating a user defined
+            steel material, values for all of the following properties are required to
+            define a valid user defined material:-
+
+                - yield strength
+                - fracture strain
+                - overstrength factor
+
         :return: Steel bar material object
-        :rtype: SteelBarNZ
+        :rtype: :class: `NZS3101.SteelBarNZ`
         """
         # Populate dictionary with predefined material properties
         (
@@ -1414,9 +1438,12 @@ class NZS3101(DesignCode):
             colour=colour,
         )
 
-    def capacity_reduction_factor(self, analysis_type: str) -> float:
-        """Returns the appropriate NZS3101:2006 capacity reduction factor dependant on
-            the type of analysis specified. Refer to NZS3101:2006 CL 2.3.2.2.
+    def capacity_reduction_factor(
+        self, analysis_type: str
+    ) -> Tuple[List[float], bool, bool, bool]:
+        """Returns the appropriate NZS3101:2006 or NZSEE C5 assessment guidelines
+            capacity reduction factor dependant on the type of analysis specified.
+            Refer to NZS3101:2006 CL 2.3.2.2 or NZSEE C5 assessment guidelines C5.5.1.4.
 
         :param analysis_type: The type of cross section analysis to undertake on the
             defined concrete section, by default a normal nominal strength design check
@@ -1528,9 +1555,18 @@ class NZS3101(DesignCode):
 
                       Note there is no enhancement to concrete strength for overstrength
                       checks in accordance with the NZSEE C5 assessment guidelines
-
         :type analysis_type: str
         :raises ValueError: If analysis type is not valid
+        :raises Exception: If a characteristic strength based analysis is specified, but
+            a predefined probable strength based steel grade has been specified.
+            Undertaking a non NZSEE C5 assessment guidelines analysis on a probable
+            strength based steel grade is not consistent with an analysis to
+            NZS3101:2006
+        :return: Returns the appropriate strength reduction factor :math:`\\phi` and
+            variables to indicate the type of analysis being requested
+        :rtype: Tuple[List[float], bool, bool, bool]
+
+
         """
         if analysis_type.lower() in ["nom_chk"]:
             phi = 0.85
@@ -1609,7 +1645,8 @@ class NZS3101(DesignCode):
             to be undertaken
         :rtype: :class: `ConcreteSection`
         """
-        # create copy of concrete section to modify materials to overstrength properties
+        # create copy of concrete section to modify materials to probable strength
+        # properties
         prob_concrete_section = deepcopy(self.concrete_section)
 
         # loop through all concrete geometries & update to probable strength properties
@@ -1624,7 +1661,7 @@ class NZS3101(DesignCode):
             prev_density = conc_geom.material.density
             prev_colour_conc = conc_geom.material.colour
 
-            # update concrete material to new material with overstrength properties
+            # update concrete material to new material with probable strength properties
             mult_compressive_strength = 1.5 if prev_compressive_strength <= 40 else 1.4
             conc_geom.material = self.create_concrete_material(
                 compressive_strength=prev_compressive_strength
@@ -1642,7 +1679,7 @@ class NZS3101(DesignCode):
         # populate list with predefined probable strength based steel grades
         _, _, prob_properties = self.predefined_steel_materials()
 
-        # loop through all steel geometries and update to overstrength properties
+        # loop through all steel geometries and update to probable strength properties
         for steel_geom in prob_concrete_section.reinf_geometries_lumped:
             # retrieve previous nominal/characteristic material properties
             prev_steel_grade = steel_geom.material.steel_grade
@@ -1655,8 +1692,8 @@ class NZS3101(DesignCode):
             prev_phi_os = steel_geom.material.phi_os
             prev_colour_steel = steel_geom.material.colour
 
-            # determine  scale yield strength by 1.08 from NZSEE C5
-            # assessment guidelines C5.4.3
+            # determine appropriate scaling factor for yield strength depen depending on
+            # defined mmaterial and anlysis type
             if prev_steel_grade not in prob_properties and os_design:
                 mult_prob_strength = prev_phi_os
             elif prev_steel_grade not in prob_properties and not os_design:
@@ -1666,7 +1703,7 @@ class NZS3101(DesignCode):
             else:
                 mult_prob_strength = 1.0
 
-            # update steel reinforcement material to new material with overstrength
+            # update steel reinforcement material to new material with probable strength
             # properties
             steel_geom.material = self.create_steel_material(
                 steel_grade=prev_steel_grade,
@@ -1753,7 +1790,7 @@ class NZS3101(DesignCode):
         n: float = 0,
     ) -> Tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]:
         """Calculates the ultimate bending capacity with capacity factors to
-        NZS3101:2006.
+        NZS3101:2006 or the NZSEE C5 assessment guidelines dependant on analysis type.
 
         :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
             NDPR/LDPR/DPR, defaults to 'NDPR'
@@ -1865,7 +1902,7 @@ class NZS3101(DesignCode):
                       are being utilised, then the overstrength factor being applied to
                       the yield strength is inclusive of the 1.08 factor on the lower
                       bound yield strength.
-                        i.e. :math:`\\phi_o=\\diplaystyle{\\frac{f_o}{f_{yp}}`
+                        i.e. :math:`\\phi_o=\\diplaystyle{\\frac{f_o}{f_{yp}}}`
                         where :math:`f_{yp}=1.08f_y`
 
                     - Using the probable compressive strength of the concrete in
@@ -1885,12 +1922,13 @@ class NZS3101(DesignCode):
 
         :return: Factored and unfactored ultimate bending results objects, and capacity
             reduction factor *(factored_results, unfactored_results, phi)*
+        :rtype: Tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]
         """
         # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
         # (dependant on PPHR class)
         self.check_f_c_limits(pphr_class)
 
-        # Check NZS3101:2006 CL 5.3.3 steel rienforcement yield strength limit
+        # Check NZS3101:2006 CL 5.3.3 steel reinforcement yield strength limit
         self.check_f_y_limit()
 
         # determine strength reduction factor based on analysis type specified
@@ -1922,7 +1960,8 @@ class NZS3101(DesignCode):
         analysis_type: str = "nom_chk",
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
         """Generates a moment interaction diagram with capacity factors and material
-            strengths to NZS3101:2006.
+            strengths to NZS3101:2006 or the NZSEE C5 assessment guidelines dependant
+            on analysis type.
 
         :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
             NDPR/LDPR/DPR, defaults to 'NDPR'
@@ -2112,7 +2151,8 @@ class NZS3101(DesignCode):
         n: float = 0.0,
         n_points: int = 48,
     ) -> Tuple[res.BiaxialBendingResults, List[float]]:
-        """Generates a biaxial bending with capacity factors to NZS3101:2006.
+        """Generates a biaxial bending with capacity factors to NZS3101:2006 or the
+        NZSEE C5 assessment guidelines dependant on analysis type.
 
         :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
             NDPR/LDPR/DPR, defaults to 'NDPR'
@@ -2242,6 +2282,7 @@ class NZS3101(DesignCode):
         :type n_points: int, optional
         :return: Factored biaxial bending results object and list of capacity reduction
             factors *(factored_results, phis)*
+        :rtype: Tuple[res.BiaxialBendingResults, List[float]]
         """
 
         # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
