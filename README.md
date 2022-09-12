@@ -15,7 +15,7 @@ Here's an example of some of the non-linear output *concreteproperties* can gene
   <img src="docs/source/_static/anim/anim_compress.gif" width="500"/>
 </p>
 
-## Installation:
+## Installation
 
 For more detailed installation instructions, refer to the [documentation](https://robbievanleeuwen.github.io/concrete-properties/rst/installation.html).
 
@@ -23,7 +23,7 @@ For more detailed installation instructions, refer to the [documentation](https:
 pip install concreteproperties
 ```
 
-## Documentation:
+## Documentation
 
 *concreteproperties* is fully documented including examples and a fully documented API.
 The documentation can found at [https://robbievanleeuwen.github.io/concrete-properties](https://robbievanleeuwen.github.io/concrete-properties).
@@ -34,9 +34,10 @@ We welcome anyone interested in contributing to *concreteproperties*, whether it
 through submitting bug reports, feature requests or pull requests. Please read the
 [contributing guide](.github/CONTRIBUTING.md) prior to contributing.
 
-## Current Capabilities:
+## Current Capabilities
 
 ### Material Properties
+
 - [x] Concrete material
   - [x] Service stress-strain profiles
     - [x] Linear profile
@@ -53,6 +54,7 @@ through submitting bug reports, feature requests or pull requests. Please read t
     - [x] Elastic-plastic (with hardening)
 
 ### Gross Section Properties
+
 - [x] Cross-sectional areas (total, concrete, steel)
 - [x] Axial rigidity
 - [x] Cross-section mass
@@ -67,11 +69,13 @@ through submitting bug reports, feature requests or pull requests. Please read t
 - [x] Principal section moduli
 
 ### Service Analysis
+
 - [x] Cracking moment
 - [x] Cracked second moment of area
 - [x] Moment-curvature diagram
 
 ### Ultimate Analysis
+
 - [x] Ultimate bending capacity
 - [x] Squash load
 - [x] Tensile load
@@ -80,17 +84,20 @@ through submitting bug reports, feature requests or pull requests. Please read t
   - [x] Biaxial bending curve
 
 ### Stress Analysis
+
 - [x] Uncracked stresses
 - [x] Cracked stresses
 - [x] Service stresses
 - [x] Ultimate stresses
 
 ### Design Codes
+
 - [x] Design code modules
   - [x] AS3600
   - [ ] AS5100
+  - [x] NZS3101 & NZSEE C5 Assessment Guidelines
 
-## Disclaimer:
+## Disclaimer
 
 *concreteproperties* is an open source engineering tool that continues to benefit from
 the collaboration of many contributors. Although efforts have been made to ensure the
