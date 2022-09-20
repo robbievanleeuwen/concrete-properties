@@ -5,109 +5,22 @@ The design code module allows *concreteproperties* to be easily used in the cont
 common reinforced concrete design standards. *concreteproperties* currently supports the
 following design codes:
 
-- :ref:`label-as3600-2018`
+.. toctree::
+   :maxdepth: 1
 
+   design_codes/as3600
 
-.. _label-as3600-2018:
+.. warning::
 
-AS 3600:2018
-------------
-
-..  autoclass:: concreteproperties.design_codes.AS3600
-  :noindex:
-
-Using the AS 3600:2018 design code starts by creating an
-:class:`~concreteproperties.design_codes.AS3600` object::
-
-  from concreteproperties.design_codes import AS3600
-
-  design_code = AS3600()
-
-After a :class:`~concreteproperties.concrete_section.ConcreteSection` object has been
-created it must be assigned to the design code::
-
-  design_code.assign_concrete_section(concrete_section=concrete_section)
-
-..  automethod:: concreteproperties.design_codes.AS3600.assign_concrete_section
-  :noindex:
-
-.. note::
-
-  To maintain unit consistency, the cross-section dimensions should be entered in
-  *[mm]*.
-
-
-Creating Material Properties
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The :class:`~concreteproperties.design_codes.AS3600` class can be used to easily create
-material objects whose attributes comply with the standard.
-
-..  automethod:: concreteproperties.design_codes.AS3600.create_concrete_material
-  :noindex:
-
-.. plot::
-  :include-source: True
-
-  from concreteproperties.design_codes import AS3600
-
-  design_code = AS3600()
-  concrete = design_code.create_concrete_material(compressive_strength=40)
-
-  concrete.stress_strain_profile.plot_stress_strain(
-    title=f"{concrete.name} - Service Profile"
-  )
-  concrete.ultimate_stress_strain_profile.plot_stress_strain(
-    title=f"{concrete.name} - Ultimate Profile"
-  )
-
-..  automethod:: concreteproperties.design_codes.AS3600.create_steel_material
-  :noindex:
-
-.. plot::
-  :include-source: True
-
-  from concreteproperties.design_codes import AS3600
-
-  design_code = AS3600()
-  steel = design_code.create_steel_material()
-
-  steel.stress_strain_profile.plot_stress_strain(
-    title=f"{steel.name} - Stress-Strain Profile"
-  )
-
-
-Calculating Section Properties
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Analysis methods can be called from the :class:`~concreteproperties.design_codes.AS3600`
-object similar to :class:`~concreteproperties.concrete_section.ConcreteSection` object.
-The following methods are identical to those found in the
-:class:`~concreteproperties.concrete_section.ConcreteSection` object, i.e. do not apply
-any capacity reduction factors:
-
-- :meth:`~concreteproperties.design_codes.AS3600.get_gross_properties`
-- :meth:`~concreteproperties.design_codes.AS3600.get_transformed_gross_properties`
-- :meth:`~concreteproperties.design_codes.AS3600.calculate_cracked_properties`
-- :meth:`~concreteproperties.design_codes.AS3600.moment_curvature_analysis`
-- :meth:`~concreteproperties.design_codes.AS3600.calculate_uncracked_stress`
-- :meth:`~concreteproperties.design_codes.AS3600.calculate_cracked_stress`
-- :meth:`~concreteproperties.design_codes.AS3600.calculate_service_stress`
-- :meth:`~concreteproperties.design_codes.AS3600.calculate_ultimate_stress`
-
-The following methods have been modified for AS 3600:2018, with codified capacity
-reduction factors applied.
-
-..  automethod:: concreteproperties.design_codes.AS3600.ultimate_bending_capacity
-  :noindex:
-
-..  automethod:: concreteproperties.design_codes.AS3600.moment_interaction_diagram
-  :noindex:
-
-..  automethod:: concreteproperties.design_codes.AS3600.biaxial_bending_diagram
-  :noindex:
-
-
-.. seealso::
-  For an application of the use of the design code object, see the example
-  :ref:`/notebooks/design_codes.ipynb`.
+   The current implementation of moment interaction diagrams in *concreteproperties*
+   allows the user to define the angle the neutral axis makes with the horizontal.
+   Asymmetric sections with a non-zero neutral axis angle will result in biaxial
+   bending moments. When generating moment interaction diagrams using this approach, the
+   ratio between the bending moments ``m_x`` and ``m_y`` will change depending on the
+   level of axial load. As a result, without generating biaxial bending diagrams, 
+   a false impression of demand/capacity may be generated when operating close to the
+   design curve. A future version of *concreteproperties* will incorporate a constant 
+   'load-angle' approach, which will keep the ratio of ``m_x`` to ``m_y`` constant
+   for a given moment interaction diagram, rather than keeping the neutral axis angle
+   constant. Further discussion of this issue can be found
+   `here <https://github.com/robbievanleeuwen/concrete-properties/discussions/31>`_.
