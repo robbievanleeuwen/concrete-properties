@@ -16,3 +16,4 @@ The following examples complement the structured documentation presented thus fa
    ../notebooks/stress_analysis
    ../notebooks/composite_section
    ../notebooks/as3600
+   ../notebooks/nzs3101
