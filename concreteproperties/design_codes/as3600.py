@@ -95,8 +95,10 @@ class AS3600(DesignCode):
         :param compressive_strength: Characteristic compressive strength of
             concrete at 28 days in megapascals (MPa)
         :param colour: Colour of the concrete for rendering
+
         :raises ValueError: If ``compressive_strength`` is not between 20 MPa and
             100 MPa.
+
         :return: Concrete material object
         """
 
@@ -158,7 +160,9 @@ class AS3600(DesignCode):
         :param yield_strength: Steel yield strength
         :param ductility_class: Steel ductility class ("N" or "L")
         :param colour: Colour of the steel for rendering
+
         :raises ValueError: If ``ductility_class`` is not "N" or "L"
+
         :return: Steel material object
         """
 
@@ -184,6 +188,7 @@ class AS3600(DesignCode):
         self,
     ) -> Tuple[float, float]:
         """Calculates the squash and tensile load of the reinforced concrete section.
+
         :return: Squash and tensile load
         """
 
@@ -250,11 +255,13 @@ class AS3600(DesignCode):
 
         ``n_ub`` and ``phi_0`` only required for compression, ``n_uot`` only required
         for tension.
+
         :param n_u: Axial force in member
         :param n_ub: Axial force at balanced point
         :param n_uot: Axial force at ultimate tension load
         :param k_uo: Neutral axis parameter at pure bending
         :param phi_0: Capacity reduction factor for dominant compression
+
         :return: Capacity reduction factor
         """
 
@@ -284,8 +291,10 @@ class AS3600(DesignCode):
         theta: float,
     ) -> float:
         r"""Returns k_uo for the reinforced concrete cross-section given ``theta``.
+
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
+
         :return: Bending parameter k_uo
         """
 
@@ -298,8 +307,10 @@ class AS3600(DesignCode):
         theta: float,
     ) -> float:
         r"""Returns n_ub for the reinforced concrete cross-section given ``theta``.
+
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
+
         :return: Balanced axial force n_ub
         """
 
@@ -327,10 +338,12 @@ class AS3600(DesignCode):
     ) -> Tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]:
         r"""Calculates the ultimate bending capacity with capacity factors to
         AS 3600:2018.
+
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
         :param n: Net axial force
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
+
         :return: Factored and unfactored ultimate bending results objects, and capacity
             reduction factor *(factored_results, unfactored_results, phi)*
         """
@@ -368,20 +381,22 @@ class AS3600(DesignCode):
         )
 
         # factor ultimate results
-        factored_ult_res = deepcopy(ult_res)
-        factored_ult_res.n *= phi
-        factored_ult_res.m_x *= phi
-        factored_ult_res.m_y *= phi
-        factored_ult_res.m_xy *= phi
+        f_ult_res = deepcopy(ult_res)
+        f_ult_res.n *= phi
+        f_ult_res.m_x *= phi
+        f_ult_res.m_y *= phi
+        f_ult_res.m_xy *= phi
 
-        return factored_ult_res, ult_res, phi
+        return f_ult_res, ult_res, phi
 
     def moment_interaction_diagram(
         self,
         phi_0: float = 0.6,
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
         """Generates a moment interaction diagram with capacity factors to AS 3600:2018.
+
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
+
         :return: Factored and unfactored moment interaction results objects, and list of
             capacity reduction factors *(factored_results, unfactored_results, phis)*
         """
@@ -465,6 +480,7 @@ class AS3600(DesignCode):
         :return: Factored biaxial bending results object and list of capacity reduction
             factors *(factored_results, phis)*
         """
+
         # initialise results
         f_bb_res = res.BiaxialBendingResults(n=n)
         phis = []
