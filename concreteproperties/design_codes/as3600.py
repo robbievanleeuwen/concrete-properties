@@ -97,8 +97,6 @@ class AS3600(DesignCode):
         :param colour: Colour of the concrete for rendering
         :raises ValueError: If ``compressive_strength`` is not between 20 MPa and
             100 MPa.
-        :raises ValueError: If ``compressive_strength`` is not between 20 MPa and
-            100 MPa.
         :return: Concrete material object
         """
 
