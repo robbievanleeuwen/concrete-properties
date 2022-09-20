@@ -6,28 +6,28 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>8. Composite Sections &#8212; concreteproperties 0.3.1 documentation</title>
-<script>
-  document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
-  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
-</script>
-
+  <script>
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
 
-
+  
   <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -38,24 +38,48 @@
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/composite_section';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="9. Design Codes" href="design_codes.html" />
+    <link rel="next" title="9. AS3600 Design Code" href="as3600.html" />
     <link rel="prev" title="7. Stress Analysis" href="stress_analysis.html" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="docsearch:language" content="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
   </head>
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
-    <div class="bd-header-announcement container-fluid" id="banner">
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
       
-
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
     </div>
+  </div>
 
-    
-    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
-
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fas fa-bars"></span>
+  </label>
   <div id="navbar-start">
     
     
@@ -63,9 +87,15 @@
 
 
 <a class="navbar-brand logo" href="../index.html">
+
   
   
   
+  
+  
+  
+  
+
   
     <img src="../_static/cp_logo.png" class="logo__image only-light" alt="Logo image">
     <img src="../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image">
@@ -73,156 +103,108 @@
   
 </a>
     
-    <div class="dropdown" id="version_switcher">
-    <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+    <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
         latest  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
-    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
     <!-- dropdown will be populated by javascript on page load -->
     </div>
 </div>
-
-<!-- NOTE: this JS must live here (not in our global JS file) because it relies
-     on being processed by Jinja before it is run (specifically for replacing
-     variables notebooks/composite_section and {'json_url': 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json', 'version_match': 'latest'}.
--->
-
-<script type="text/javascript">
-// Check if corresponding page path exists in other version of docs
-// and, if so, go there instead of the homepage of the other docs version
-function checkPageExistsAndRedirect(event) {
-    const currentFilePath = "notebooks/composite_section.html",
-          tryUrl = event.target.getAttribute("href");
-    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
-    $.ajax({
-        type: 'HEAD',
-        url: tryUrl,
-        // if the page exists, go there
-        success: function() {
-            location.href = tryUrl;
-        }
-    }).fail(function() {
-        location.href = otherDocsHomepage;
-    });
-    // this prevents the browser from following the href of the clicked node
-    // (which is fine because this function takes care of redirecting)
-    return false;
-}
-
-// Populate the version switcher from the JSON config file
-(function () {
-    $.getJSON("https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json", function(data, textStatus, jqXHR) {
-        const currentFilePath = "notebooks/composite_section.html";
-        let btn = document.getElementById("version_switcher_button");
-        // Set empty strings by default so that these attributes exist and can be used in CSS selectors
-        btn.dataset["activeVersionName"] = "";
-        btn.dataset["activeVersion"] = "";
-        // create links to the corresponding page in the other docs versions
-        $.each(data, function(index, entry) {
-            // if no custom name specified (e.g., "latest"), use version string
-            if (!("name" in entry)) {
-                entry.name = entry.version;
-            }
-            // create the node
-            const node = document.createElement("a");
-            node.setAttribute("class", "list-group-item list-group-item-action py-1");
-            node.textContent = `${entry.name}`;
-            node.setAttribute("href", `${entry.url}${currentFilePath}`);
-            // on click, AJAX calls will check if the linked page exists before
-            // trying to redirect, and if not, will redirect to the homepage
-            // for that version of the docs.
-            node.onclick = checkPageExistsAndRedirect;
-            // Add dataset values for the version and name in case people want
-            // to apply CSS styling based on this information.
-            node.dataset["versionName"] = entry.name;
-            node.dataset["version"] = entry.version;
-
-            $("#version_switcher_menu").append(node);
-            // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.3.1 variable.
-            // also highlight the dropdown entry for the currently-viewed
-            // version's entry
-            if (entry.version == "latest") {
-                node.classList.add("active");
-                btn.innerText = btn.dataset["activeVersionName"] = entry.name;
-                btn.dataset["activeVersion"] = entry.version;
-            }
-        });
-    });
-})();
-</script>
     
   </div>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="fas fa-bars"></span>
-  </button>
-
   
-  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+  <div class="col-lg-9 navbar-header-items">
     <div id="navbar-center" class="mr-auto">
       
       <div class="navbar-center-item">
-        <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../rst/installation.html">
-  Installation
- </a>
-</li>
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/installation.html">
+                        Installation
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../rst/materials.html">
-  Materials
- </a>
-</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/materials.html">
+                        Materials
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../rst/geometry.html">
-  Geometry
- </a>
-</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/geometry.html">
+                        Geometry
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../rst/analysis.html">
-  Analysis
- </a>
-</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/analysis.html">
+                        Analysis
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../rst/results.html">
-  Results
- </a>
-</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/results.html">
+                        Results
+                    </a>
+                </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/design_codes.html">
+                        Design Codes
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../rst/design_codes.html">
-  Design Codes
- </a>
-</li>
+                <li class="nav-item current active">
+                    <a class="nav-link" href="../rst/examples.html">
+                        Examples
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 current active nav-item">
- <a class="reference internal nav-link" href="../rst/examples.html">
-  Examples
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../rst/api.html">
-  API Reference
- </a>
-</li>
-
-    
-</ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/api.html">
+                        API Reference
+                    </a>
+                </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
       </div>
       
     </div>
 
     <div id="navbar-end">
+      <div class="navbar-end-item navbar-end__search-button-container">
+        
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
+  <i class="fas fa-search"></i>
+</button>
+      </div>
       
       <div class="navbar-end-item">
-        <span id="theme-switch" class="btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
     <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
     <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
     <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
@@ -232,11 +214,23 @@ function checkPageExistsAndRedirect(event) {
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/robbievanleeuwen/concrete-properties" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="https://pypi.org/project/concreteproperties/" rel="noopener" target="_blank" title="PyPI"><span><i class="fas fa-box"></i></span>
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank"><span><i class="fas fa-box"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
       </ul>
@@ -244,21 +238,161 @@ function checkPageExistsAndRedirect(event) {
       
     </div>
   </div>
+
+
+  
+  <div class="search-button-container--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
+  <i class="fas fa-search"></i>
+</button>
+  </div>
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fas fa-outdent"></span>
+  </label>
+  
+
 </div>
-    </nav>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/installation.html">
+                        Installation
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/materials.html">
+                        Materials
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/geometry.html">
+                        Geometry
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/analysis.html">
+                        Analysis
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/results.html">
+                        Results
+                    </a>
+                </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/design_codes.html">
+                        Design Codes
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="../rst/examples.html">
+                        Examples
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../rst/api.html">
+                        API Reference
+                    </a>
+                </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+      </div>
     
 
-    <div class="bd-container container-xl">
-      <div class="bd-container__inner row">
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
           
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
 
-<!-- Only show if we have sidebars configured, else just a small margin  -->
-<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
-  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-  <div class="bd-toc-item active">
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">
+    Section Navigation
+  </p>
+  <div class="bd-toc-item navbar-nav">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="area_properties.html">
@@ -301,131 +435,38 @@ function checkPageExistsAndRedirect(event) {
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="design_codes.html">
-   9. Design Codes
+  <a class="reference internal" href="as3600.html">
+   9. AS3600 Design Code
   </a>
  </li>
 </ul>
 
   </div>
 </nav>
-  </div>
-  <div class="sidebar-end-items">
-  </div>
-</div>
-
-
-          
-
-
-<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
-  
-    
-    <div class="toc-item">
-      
-<div class="tocsection onthispage mt-5 pt-1 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
-
-<nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#Assign-Materials">
-   8.1. Assign Materials
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#Square-Column-with-Universal-Beam">
-   8.2. Square Column with Universal Beam
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#Elastic-Stress">
-     8.2.1. Elastic Stress
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#Cracked-Stress">
-     8.2.2. Cracked Stress
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#Moment-Curvature-Diagram">
-     8.2.3. Moment Curvature Diagram
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#Ultimate-Results">
-     8.2.4. Ultimate Results
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#Concrete-Filled-Steel-Column">
-   8.3. Concrete Filled Steel Column
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#Compare-Elastic-Stresses">
-     8.3.1. Compare Elastic Stresses
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#Compare-Moment-Curvature-Response">
-     8.3.2. Compare Moment Curvature Response
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#Compare-Moment-Interaction-Results">
-     8.3.3. Compare Moment Interaction Results
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#Composite-Steel-Beam">
-   8.4. Composite Steel Beam
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#Moment-Curvature-Response">
-     8.4.1. Moment Curvature Response
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#Ultimate-Bending-Capacity">
-     8.4.2. Ultimate Bending Capacity
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
-</nav>
     </div>
-    
-    <div class="toc-item">
-      
-
-<div class="tocsection editthispage">
-    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/notebooks/composite_section.ipynb">
-        <i class="fas fa-pencil-alt"></i> Edit this page
-    </a>
-</div>
-
-    </div>
-    
+  </div>
   
-</div>
 
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
 
-          
-          
-          <div class="bd-content col-12 col-md-9 col-xl-7">
-              
-              <article class="bd-article" role="main">
+      </div>
+      <main class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
                 
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
   
 <style>
 /* CSS for nbsphinx extension */
@@ -806,7 +847,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Reinforced Concrete Section&#39;}&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Reinforced Concrete Section&#39;}&gt;
 </pre></div></div>
 </div>
 <div class="section" id="Elastic-Stress">
@@ -833,7 +874,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Stress&#39;}&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
 </pre></div></div>
 </div>
 </div>
@@ -862,7 +903,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Stress&#39;}&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
 </pre></div></div>
 </div>
 </div>
@@ -881,7 +922,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "adf04e69b347481d916732e982993918"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "3033de2585ec425ebf8a1e924751e9a7"}</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -909,7 +950,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Moment-Curvature&#39;}, xlabel=&#39;Curvature&#39;, ylabel=&#39;Moment&#39;&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Moment-Curvature&#39;}, xlabel=&#39;Curvature&#39;, ylabel=&#39;Moment&#39;&gt;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -935,7 +976,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Stress&#39;}&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
 </pre></div></div>
 </div>
 </div>
@@ -1002,7 +1043,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "592c3ec60de24acea472bac67b292e69"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "c31e70006ad74452a140fb9868b7d40d"}</script></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -1022,7 +1063,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Moment Interaction Diagram&#39;}, xlabel=&#39;Bending Moment&#39;, ylabel=&#39;Axial Force&#39;&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Moment Interaction Diagram&#39;}, xlabel=&#39;Bending Moment&#39;, ylabel=&#39;Axial Force&#39;&gt;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1038,7 +1079,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "b9f23b7db6f04bed9604ae2b001c1116"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "e695267b005042f6998ce772db1d28ee"}</script></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -1058,7 +1099,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Biaxial Bending Diagram, $N = 0.000e+00$&#39;}, xlabel=&#39;Bending Moment $M_x$&#39;, ylabel=&#39;Bending Moment $M_y$&#39;&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Biaxial Bending Diagram, $N = 0.000e+00$&#39;}, xlabel=&#39;Bending Moment $M_x$&#39;, ylabel=&#39;Bending Moment $M_y$&#39;&gt;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1090,7 +1131,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Stress&#39;}&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
 </pre></div></div>
 </div>
 </div>
@@ -1189,7 +1230,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Reinforced Concrete Section&#39;}&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Reinforced Concrete Section&#39;}&gt;
 </pre></div></div>
 </div>
 <div class="section" id="Compare-Elastic-Stresses">
@@ -1224,7 +1265,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Stress&#39;}&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
 </pre></div></div>
 </div>
 <p>Compare the elastic stresses under a bending moment of 50 kN.m (cracked).</p>
@@ -1264,7 +1305,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Stress&#39;}&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
 </pre></div></div>
 </div>
 </div>
@@ -1284,7 +1325,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "2003b6598db74ffa87d5930061806195"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "436941faf4aa461ea307ca6372aa8379"}</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -1296,7 +1337,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "304ff2a6cdcc470ca3ed7a785c4276aa"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "b7fcea9cc3ac4254a15a9854d636cd7e"}</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -1328,7 +1369,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Moment-Curvature&#39;}, xlabel=&#39;Curvature&#39;, ylabel=&#39;Moment&#39;&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Moment-Curvature&#39;}, xlabel=&#39;Curvature&#39;, ylabel=&#39;Moment&#39;&gt;
 </pre></div></div>
 </div>
 <p>Although the composite section is significantly stiffer and stronger, the regular concrete section exhibits a more ductile response due to the reduced amount of steel reinforcement.</p>
@@ -1364,7 +1405,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "b1d8dcac28b2438ba6afbc9d0eadc7a0"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "0887851322bf43b396b6fda181b5e2ec"}</script></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -1376,7 +1417,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "686ccca047ee4617af33d2c8edcd3ea8"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "ed469d0537ff4101b843e6b3380fc8a9"}</script></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -1396,7 +1437,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Moment Interaction Diagram&#39;}, xlabel=&#39;Bending Moment&#39;, ylabel=&#39;Axial Force&#39;&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Moment Interaction Diagram&#39;}, xlabel=&#39;Bending Moment&#39;, ylabel=&#39;Axial Force&#39;&gt;
 </pre></div></div>
 </div>
 </div>
@@ -1479,7 +1520,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Reinforced Concrete Section&#39;}&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Reinforced Concrete Section&#39;}&gt;
 </pre></div></div>
 </div>
 <div class="section" id="Moment-Curvature-Response">
@@ -1497,7 +1538,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "97d404493b424dbfae30bc4dd116a942"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "910ddc8a0649495e912ecbff2815446a"}</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -1525,7 +1566,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Moment-Curvature&#39;}, xlabel=&#39;Curvature&#39;, ylabel=&#39;Moment&#39;&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Moment-Curvature&#39;}, xlabel=&#39;Curvature&#39;, ylabel=&#39;Moment&#39;&gt;
 </pre></div></div>
 </div>
 <p>We can examine the stresses at various point within the moment-curvature response.</p>
@@ -1577,7 +1618,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:title={&#39;center&#39;:&#39;Stress&#39;}&gt;
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
 </pre></div></div>
 </div>
 </div>
@@ -1613,18 +1654,18 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>The above results match closely with the moment curvature results, as will as confirming that the neutral axis is within the concrete slab. Note that <code class="docutils literal notranslate"><span class="pre">k_u</span></code> is not calculated for only meshed sections, it is only computed for lumped reinforcement.</p>
 <script type="application/vnd.jupyter.widget-state+json">
-{"state": {"a21e339b83ca4050817fb89c116e465b": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "adf04e69b347481d916732e982993918": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_a21e339b83ca4050817fb89c116e465b", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u2827\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                           \u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m \u001b[33m[ 7.1279 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u2827</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                           <span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 7.1279 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "65a6431bf2ae40d4929143a78ffc98a3": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "592c3ec60de24acea472bac67b292e69": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_65a6431bf2ae40d4929143a78ffc98a3", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 M-N diagram generated\u001b[0m                        \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 0.5631 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-N diagram generated</span>                        <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 0.5631 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "1956593ab18b4bf5b11fcdc708661e63": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b9f23b7db6f04bed9604ae2b001c1116": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_1956593ab18b4bf5b11fcdc708661e63", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 Biaxial bending diagram generated\u001b[0m            \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 8.5819 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 Biaxial bending diagram generated</span>            <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 8.5819 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "01960b05d3494b03bed7852a6e36ecc8": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "2003b6598db74ffa87d5930061806195": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_01960b05d3494b03bed7852a6e36ecc8", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u2838\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                           \u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m \u001b[33m[ 8.3764 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u2838</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                           <span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 8.3764 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "f5e1196a6f6d48f0817a56eafe0b5334": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "304ff2a6cdcc470ca3ed7a785c4276aa": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_f5e1196a6f6d48f0817a56eafe0b5334", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u2807\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                           \u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m \u001b[33m[ 5.5558 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u2807</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                           <span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 5.5558 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "c6fb3147b5bf4469b0f7b2dfde7e5fdb": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b1d8dcac28b2438ba6afbc9d0eadc7a0": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_c6fb3147b5bf4469b0f7b2dfde7e5fdb", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 M-N diagram generated\u001b[0m                        \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 0.9139 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-N diagram generated</span>                        <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 0.9139 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "078b8143fc85474ab7a1f3f0ec833d33": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "686ccca047ee4617af33d2c8edcd3ea8": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_078b8143fc85474ab7a1f3f0ec833d33", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 M-N diagram generated\u001b[0m                        \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 0.2322 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-N diagram generated</span>                        <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 0.2322 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "0b86ac5603a14463966ca88e5f76ab19": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "97d404493b424dbfae30bc4dd116a942": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_0b86ac5603a14463966ca88e5f76ab19", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u280b\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                           \u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m \u001b[33m[ 1.7290 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u280b</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                           <span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 1.7290 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}}, "version_major": 2, "version_minor": 0}
+{"state": {"aae9a440716a4a30b59e7024a4d54758": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "3033de2585ec425ebf8a1e924751e9a7": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_aae9a440716a4a30b59e7024a4d54758", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u2839\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                          \u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m \u001b[33m[ 11.5209 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u2839</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                          <span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 11.5209 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "83be6d452f8b45c79cf321eaf72934e3": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "c31e70006ad74452a140fb9868b7d40d": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_83be6d452f8b45c79cf321eaf72934e3", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 M-N diagram generated\u001b[0m                        \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 0.8930 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-N diagram generated</span>                        <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 0.8930 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "7bb4e5629a7f4e949cc949d56da7234c": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "e695267b005042f6998ce772db1d28ee": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_7bb4e5629a7f4e949cc949d56da7234c", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 Biaxial bending diagram generated\u001b[0m            \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 13.1975 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 Biaxial bending diagram generated</span>            <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 13.1975 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "52eb56afb4534bf9b2bdd51bf7e9b782": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "436941faf4aa461ea307ca6372aa8379": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_52eb56afb4534bf9b2bdd51bf7e9b782", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u2838\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                          \u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m \u001b[33m[ 13.9762 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u2838</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                          <span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 13.9762 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "46a47ef48b53437697a86f52a820ca11": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b7fcea9cc3ac4254a15a9854d636cd7e": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_46a47ef48b53437697a86f52a820ca11", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u2838\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                           \u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m \u001b[33m[ 9.1684 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u2838</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                           <span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 9.1684 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "6021d9f4ec4e42efb149dcf1516d4019": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "0887851322bf43b396b6fda181b5e2ec": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_6021d9f4ec4e42efb149dcf1516d4019", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 M-N diagram generated\u001b[0m                        \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 1.4599 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-N diagram generated</span>                        <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 1.4599 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "0fae500771534df19435ab16bf95456d": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "ed469d0537ff4101b843e6b3380fc8a9": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_0fae500771534df19435ab16bf95456d", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 M-N diagram generated\u001b[0m                        \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 0.3442 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-N diagram generated</span>                        <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 0.3442 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "27fb83a2fe374d3f9c1a916b455ad793": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "910ddc8a0649495e912ecbff2815446a": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_27fb83a2fe374d3f9c1a916b455ad793", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u283c\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                           \u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m \u001b[33m[ 2.8542 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u283c</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                           <span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 2.8542 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}}, "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
 </div>
 
 
-              </article>
-              
-
-              
-              <footer class="bd-footer-article">
-                  <!-- Previous / next buttons -->
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'>
   <a class='left-prev' id="prev-link" href="stress_analysis.html" title="previous page">
       <i class="fas fa-angle-left"></i>
@@ -1633,41 +1674,160 @@ div.rendered_html tbody tr:hover {
           <p class="prev-next-title"><span class="section-number">7. </span>Stress Analysis</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="design_codes.html" title="next page">
+  <a class='right-next' id="next-link" href="as3600.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title"><span class="section-number">9. </span>Design Codes</p>
+      <p class="prev-next-title"><span class="section-number">9. </span>AS3600 Design Code</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>
 </div>
-              </footer>
-              
+            </footer>
+            
           </div>
           
-      </div>
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fas fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Assign-Materials">
+   8.1. Assign Materials
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Square-Column-with-Universal-Beam">
+   8.2. Square Column with Universal Beam
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Elastic-Stress">
+     8.2.1. Elastic Stress
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Cracked-Stress">
+     8.2.2. Cracked Stress
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Moment-Curvature-Diagram">
+     8.2.3. Moment Curvature Diagram
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Ultimate-Results">
+     8.2.4. Ultimate Results
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Concrete-Filled-Steel-Column">
+   8.3. Concrete Filled Steel Column
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Compare-Elastic-Stresses">
+     8.3.1. Compare Elastic Stresses
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Compare-Moment-Curvature-Response">
+     8.3.2. Compare Moment Curvature Response
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Compare-Moment-Interaction-Results">
+     8.3.3. Compare Moment Interaction Results
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Composite-Steel-Beam">
+   8.4. Composite Steel Beam
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Moment-Curvature-Response">
+     8.4.1. Moment Curvature Response
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Ultimate-Bending-Capacity">
+     8.4.2. Ultimate Bending Capacity
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+<div class="toc-item">
+  
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/notebooks/composite_section.ipynb">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
     </div>
+  </div>
 
   
-  
+    
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
 
-<footer class="bd-footer"><div class="bd-footer__inner container">
+  <footer class="bd-footer"><div class="bd-footer__inner container">
   
   <div class="footer-item">
-    <p class="copyright">
+    
+<p class="copyright">
+
     &copy; Copyright 2022, Robbie van Leeuwen.<br>
+
 </p>
+
   </div>
   
   <div class="footer-item">
-    <p class="sphinx-version">
+    
+<p class="sphinx-version">
 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
 </p>
+
   </div>
   
 </div>
-</footer>
+  </footer>
   </body>
 </html>
