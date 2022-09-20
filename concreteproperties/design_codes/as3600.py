@@ -97,6 +97,8 @@ class AS3600(DesignCode):
         :param colour: Colour of the concrete for rendering
         :raises ValueError: If ``compressive_strength`` is not between 20 MPa and
             100 MPa.
+        :raises ValueError: If ``compressive_strength`` is not between 20 MPa and
+            100 MPa.
         :return: Concrete material object
         """
 
@@ -247,6 +249,7 @@ class AS3600(DesignCode):
         phi_0: float,
     ) -> float:
         """Returns the AS 3600:2018 capacity reduction factor (Table 2.2.2).
+
         ``n_ub`` and ``phi_0`` only required for compression, ``n_uot`` only required
         for tension.
         :param n_u: Axial force in member
@@ -464,7 +467,6 @@ class AS3600(DesignCode):
         :return: Factored biaxial bending results object and list of capacity reduction
             factors *(factored_results, phis)*
         """
-
         # initialise results
         f_bb_res = res.BiaxialBendingResults(n=n)
         phis = []
