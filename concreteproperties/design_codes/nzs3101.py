@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import TYPE_CHECKING, Dict, List, Tuple
+from typing import TYPE_CHECKING, Dict, List, Optional, Tuple
 
 from dataclasses import dataclass, field
 import concreteproperties.results as res
@@ -560,10 +560,10 @@ class NZS3101(DesignCode):
 
     def create_steel_material(
         self,
-        steel_grade: str = None,
-        yield_strength: float = None,
-        fracture_strain: float = None,
-        phi_os: float = None,
+        steel_grade: Optional[str] = None,
+        yield_strength: Optional[float] = None,
+        fracture_strain: Optional[float] = None,
+        phi_os: Optional[float] = None,
         colour: str = "red",
     ) -> NZS3101.SteelBarNZ:
         """Returns a steel material object specific to the NZS3101:2006 code.
