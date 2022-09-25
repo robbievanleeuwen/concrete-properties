@@ -30,6 +30,8 @@ class NZS3101(DesignCode):
     """
 
     # TODO - Implement phi=0.75 option for singly reinforced wall design
+    # TODO - Implement method for max_comp_strength for walls (currently only
+    #        implemented for columns to NZS3101 Chapter 10)
 
     def __init__(self):
         """Inits the NZS3101 class."""
@@ -141,7 +143,7 @@ class NZS3101(DesignCode):
         if compressive_strength <= 55:
             alpha_1 = 0.85
         if compressive_strength > 55:
-            alpha_1 = min(0.75, 0.85 - 0.004 * (compressive_strength - 55))
+            alpha_1 = max(0.75, 0.85 - 0.004 * (compressive_strength - 55))
 
         return alpha_1
 
@@ -162,7 +164,7 @@ class NZS3101(DesignCode):
         if compressive_strength <= 30:
             beta_1 = 0.85
         if compressive_strength > 30:
-            beta_1 = min(0.65, 0.85 - 0.008 * (compressive_strength - 30))
+            beta_1 = max(0.65, 0.85 - 0.008 * (compressive_strength - 30))
 
         return beta_1
 
