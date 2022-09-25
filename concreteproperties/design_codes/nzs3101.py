@@ -81,7 +81,7 @@ class NZS3101(DesignCode):
         """Calculates Youngs Modulus (:math:`E_c`) for concrete in accordance with
         NZS3101:2006 CL 5.2.3(b).
 
-            :math:`E_c=\displaystyle{4700\sqrt{f'_c}\\frac{\\rho}{2300}}`
+        :math:`E_c=\displaystyle{4700\sqrt{f'_c}\\frac{\\rho}{2300}}`
 
         :param compressive_strength: 28 day compressive concrete strength (MPa)
         :param density: Concrete density :math:`\\rho` in accordance with NZS3101:2006
@@ -388,8 +388,8 @@ class NZS3101(DesignCode):
         :raises ValueError: If specified Potential Plastic Hinge Region (PPHR)
             classification is not NDPR, LDPR or DPR
         :raises ValueError: If specified compressive strength for a concrete geometry
-            is not between 20 MPa and 100 MPa for NDPR's, or between 20 MPa and 70 MPa
-            for LDPR's or DPR's
+            is not between 20 MPa and 100 MPa for NDPR PPHR's, or is not between 20 MPa
+            and 70 MPa for LDPR or DPR PPHR's
         """
         # Lower bound compressive strength
         f_c_lower = 20
@@ -791,7 +791,7 @@ class NZS3101(DesignCode):
         density = 7850
 
         # define elastic modulus
-        elastic_modulus = 200000
+        elastic_modulus = 200_000
 
         # change colour if predefined probable strength based steel grade
         if steel_grade.lower() in prob_properties and colour in ["red"]:
@@ -1043,7 +1043,7 @@ class NZS3101(DesignCode):
                 steel_geom.material.stress_strain_profile.get_yield_strength()
             )
             prev_fracture_strain = (
-                steel_geom.material.stress_strain_profile.get_fracture_strain()
+                -steel_geom.material.stress_strain_profile.get_ultimate_tensile_strain()
             )
             prev_phi_os = steel_geom.material.phi_os
             prev_colour_steel = steel_geom.material.colour
@@ -1118,7 +1118,7 @@ class NZS3101(DesignCode):
                 steel_geom.material.stress_strain_profile.get_yield_strength()
             )
             prev_fracture_strain = (
-                steel_geom.material.stress_strain_profile.get_fracture_strain()
+                -steel_geom.material.stress_strain_profile.get_ultimate_tensile_strain()
             )
             prev_phi_os = steel_geom.material.phi_os
             prev_colour_steel = steel_geom.material.colour
