@@ -161,3 +161,91 @@ def test_nzs3101_capacity_reduction_factor_exception(analysis_type):
     create_dummy_section(design_code)
     with pytest.raises(Exception):
         design_code.capacity_reduction_factor(analysis_type, prob_section=True)
+
+
+@pytest.mark.parametrize(
+    "pphr_class, compressive_strength",
+    [
+        ("this_is_not_a_valid_pphr_class", 20),
+        ("NDPR", 19),
+        ("NDPR", 101),
+        ("LDPR", 19),
+        ("LDPR", 71),
+        ("DPR", 19),
+        ("DPR", 71),
+    ],
+)
+def test_nzs3101_check_f_c_limits_valueerror(pphr_class, compressive_strength):
+    design_code = NZS3101()
+    create_dummy_section(design_code)
+
+    for conc_geom in design_code.concrete_section.concrete_geometries:
+        conc_geom.material.ultimate_stress_strain_profile.__setattr__(
+            "compressive_strength", compressive_strength
+        )
+    with pytest.raises(ValueError):
+        design_code.check_f_c_limits(pphr_class)
+
+
+@pytest.mark.parametrize(
+    "pphr_class, compressive_strength",
+    [
+        ("NDPR", 20),
+        ("NDPR", 100),
+        ("LDPR", 20),
+        ("LDPR", 70),
+        ("DPR", 20),
+        ("DPR", 70),
+    ],
+)
+def test_nzs3101_check_f_c_limits_valid(pphr_class, compressive_strength):
+    design_code = NZS3101()
+    create_dummy_section(design_code)
+
+    for conc_geom in design_code.concrete_section.concrete_geometries:
+        conc_geom.material.ultimate_stress_strain_profile.__setattr__(
+            "compressive_strength", compressive_strength
+        )
+    try:
+        design_code.check_f_c_limits(pphr_class)
+    except ValueError:
+        assert False
+
+
+@pytest.mark.parametrize(
+    "yield_strength",
+    [
+        (501),
+    ],
+)
+def test_nzs3101_check_f_y_limit_valueerror(yield_strength):
+    design_code = NZS3101()
+    create_dummy_section(design_code)
+
+    for steel_geom in design_code.concrete_section.reinf_geometries_lumped:
+        steel_geom.material.stress_strain_profile.__setattr__(
+            "yield_strength", yield_strength
+        )
+    with pytest.raises(ValueError):
+        design_code.check_f_y_limit()
+
+
+@pytest.mark.parametrize(
+    "yield_strength",
+    [
+        (1),
+        (500),
+    ],
+)
+def test_nzs3101_check_f_y_limit_valid(yield_strength):
+    design_code = NZS3101()
+    create_dummy_section(design_code)
+
+    for steel_geom in design_code.concrete_section.reinf_geometries_lumped:
+        steel_geom.material.stress_strain_profile.__setattr__(
+            "yield_strength", yield_strength
+        )
+    try:
+        design_code.check_f_y_limit()
+    except ValueError:
+        assert False
