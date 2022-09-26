@@ -530,7 +530,7 @@ class NZS3101(DesignCode):
         """
         # Create dictionary with predefined steel grades
         properties_dict = {
-            "pre-1945": {1: 280.0, 2: 0.1, 3: 1.25, 4: True},
+            "pre_1945": {1: 280.0, 2: 0.1, 3: 1.25, 4: True},
             "33": {1: 280.0, 2: 0.1, 3: 1.25, 4: True},
             "40": {1: 324.0, 2: 0.15, 3: 1.25, 4: True},
             "275": {1: 324.0, 2: 0.15, 3: 1.25, 4: True},
@@ -616,7 +616,7 @@ class NZS3101(DesignCode):
 
           **NZSEE C5 guidelines probable yield strength based predefined materials**
 
-          - **pre-1945** - Use for probable strength design to NZSEE C5 assessment
+          - **pre_1945** - Use for probable strength design to NZSEE C5 assessment
             guidelines
 
             - Probable yield strength :math:`f_{yp}` = 280 MPa
