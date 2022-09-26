@@ -249,3 +249,172 @@ def test_nzs3101_check_f_y_limit_valid(yield_strength):
         design_code.check_f_y_limit()
     except ValueError:
         assert False
+
+
+@pytest.mark.parametrize(
+    "steel_grade, yield_strength, fracture_strain, phi_os",
+    [
+        ("pre_1945", 280, 0.1, 1.25),
+        ("33", 280, 0.1, 1.25),
+        ("40", 324, 0.15, 1.25),
+        ("275", 324, 0.15, 1.25),
+        ("hy60", 455, 0.12, 1.5),
+        ("380", 455, 0.12, 1.5),
+        ("430", 464, 0.12, 1.25),
+        ("300", 324, 0.15, 1.25),
+        ("500n", 500, 0.05, 1.5),
+        ("500", 540, 0.1, 1.25),
+        ("cd_mesh", 600, 0.015, 1.2),
+        ("duc_mesh", 540, 0.03, 1.2),
+        ("300e", 300, 0.15, 1.35),
+        ("500e", 500, 0.1, 1.35),
+    ],
+)
+def test_nzs3101_create_steel_material_predefined(
+    steel_grade, yield_strength, fracture_strain, phi_os
+):
+    design_code = NZS3101()
+    steel_mat = design_code.create_steel_material(steel_grade)
+    assert pytest.approx(steel_mat.__getattribute__("steel_grade")) == steel_grade
+    assert (
+        pytest.approx(
+            steel_mat.stress_strain_profile.__getattribute__("yield_strength")
+        )
+        == yield_strength
+    )
+    assert (
+        pytest.approx(
+            steel_mat.stress_strain_profile.__getattribute__("fracture_strain")
+        )
+        == fracture_strain
+    )
+    assert pytest.approx(steel_mat.__getattribute__("phi_os")) == phi_os
+
+
+@pytest.mark.parametrize(
+    "steel_grade, yield_strength, fracture_strain, phi_os",
+    [
+        (None, 280, 0.1, 1.25),
+    ],
+)
+def test_nzs3101_create_steel_material_user_defined(
+    steel_grade, yield_strength, fracture_strain, phi_os
+):
+    design_code = NZS3101()
+    steel_mat = design_code.create_steel_material(
+        steel_grade, yield_strength, fracture_strain, phi_os
+    )
+    assert (
+        pytest.approx(steel_mat.__getattribute__("steel_grade"))
+        == f"user_{yield_strength:.0f}"
+    )
+
+
+@pytest.mark.parametrize(
+    "steel_grade, yield_strength, fracture_strain, phi_os",
+    [
+        (None, 500, None, None),
+        (None, None, 0.1, None),
+        (None, None, None, 1.35),
+        (None, None, None, None),
+        (
+            "this_is_not_a_predefined_steel_grade_without_all_the_properties_required",
+            None,
+            0.1,
+            None,
+        ),
+    ],
+)
+def test_nzs3101_create_steel_material_exception(
+    steel_grade, yield_strength, fracture_strain, phi_os
+):
+    design_code = NZS3101()
+    with pytest.raises(Exception):
+        design_code.create_steel_material(
+            steel_grade, yield_strength, fracture_strain, phi_os
+        )
+
+
+@pytest.mark.parametrize(
+    "compressive_strength, ultimate_strain, density, calc_value_e_conc, "
+    "calc_value_alpha_1, calc_value_beta_1, calc_value_modulus_of_rupture",
+    [
+        (20, 0.004, 2400, 22404.639, 0.85, 0.85, 2.68328),
+        (30, 0.004, 2200, 24082.454, 0.85, 0.85, 3.28633),
+        (40, 0.004, 2100, 25933.733, 0.85, 0.77, 3.69124),
+        (50, 0.004, 1800, 23009.112, 0.85, 0.69, 3.77980),
+        (60, 0.004, 1950, 28420.626, 0.83, 0.65, 4.3306),
+        (70, 0.004, 2700, 50015.057, 0.79, 0.65, 5.01996),
+        (80, 0.004, 2000, 34087.573, 0.75, 0.65, 5.0738),
+        (90, 0.004, 2400, 47527.417, 0.75, 0.65, 5.69209),
+    ],
+)
+def test_nzs3101_create_concrete_material(
+    compressive_strength,
+    ultimate_strain,
+    density,
+    calc_value_e_conc,
+    calc_value_alpha_1,
+    calc_value_beta_1,
+    calc_value_modulus_of_rupture,
+):
+    design_code = NZS3101()
+    concrete_mat = design_code.create_concrete_material(
+        compressive_strength, ultimate_strain, density
+    )
+    assert pytest.approx(concrete_mat.__getattribute__("density")) == density
+    assert (
+        pytest.approx(
+            concrete_mat.__getattribute__("flexural_tensile_strength"), rel=0.001
+        )
+        == calc_value_modulus_of_rupture
+    )
+
+    assert (
+        pytest.approx(
+            concrete_mat.ultimate_stress_strain_profile.__getattribute__(
+                "compressive_strength"
+            )
+        )
+        == compressive_strength
+    )
+    assert (
+        pytest.approx(
+            concrete_mat.ultimate_stress_strain_profile.__getattribute__("alpha")
+        )
+        == calc_value_alpha_1
+    )
+    assert (
+        pytest.approx(
+            concrete_mat.ultimate_stress_strain_profile.__getattribute__("gamma")
+        )
+        == calc_value_beta_1
+    )
+    assert (
+        pytest.approx(
+            concrete_mat.ultimate_stress_strain_profile.__getattribute__(
+                "ultimate_strain"
+            )
+        )
+        == ultimate_strain
+    )
+
+    assert (
+        pytest.approx(
+            concrete_mat.stress_strain_profile.__getattribute__("compressive_strength")
+        )
+        == compressive_strength
+    )
+    assert (
+        pytest.approx(
+            concrete_mat.stress_strain_profile.__getattribute__("ultimate_strain")
+        )
+        == ultimate_strain
+    )
+    assert (
+        pytest.approx(
+            concrete_mat.stress_strain_profile.__getattribute__("elastic_modulus"),
+            rel=0.01,
+        )
+        == calc_value_e_conc
+    )
