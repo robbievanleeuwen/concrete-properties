@@ -369,7 +369,6 @@ def test_nzs3101_create_concrete_material(
         )
         == calc_value_modulus_of_rupture
     )
-
     assert (
         pytest.approx(
             concrete_mat.ultimate_stress_strain_profile.__getattribute__(
@@ -398,7 +397,6 @@ def test_nzs3101_create_concrete_material(
         )
         == ultimate_strain
     )
-
     assert (
         pytest.approx(
             concrete_mat.stress_strain_profile.__getattribute__("compressive_strength")
@@ -418,3 +416,151 @@ def test_nzs3101_create_concrete_material(
         )
         == calc_value_e_conc
     )
+
+
+@pytest.mark.parametrize(
+    "yield_strength, fracture_strain, phi_os, compressive_strength, "
+    "ultimate_strain, density, calc_value_e_conc, calc_value_alpha_1, "
+    "calc_value_beta_1, calc_value_modulus_of_rupture",
+    [
+        (280, 0.1, 1.25, 20, 0.003, 2400, 29638.552, 0.85, 0.81, 3.54965),
+        (280, 0.1, 1.25, 27.5, 0.003, 2200, 28663.854, 0.85, 0.75, 3.91152),
+        (324, 0.15, 1.25, 30, 0.003, 2100, 27506.878, 0.85, 0.73, 3.91515),
+        (324, 0.15, 1.25, 45, 0.003, 1800, 25205.219, 0.83, 0.65, 4.14057),
+        (455, 0.12, 1.5, 35, 0.003, 1950, 25944.363, 0.85, 0.69, 3.95337),
+        (455, 0.12, 1.5, 55, 0.003, 2700, 50015.057, 0.79, 0.65, 5.01996),
+        (464, 0.12, 1.25, 32, 0.003, 2000, 26127.630, 0.85, 0.714, 3.88903),
+        (324, 0.15, 1.25, 65, 0.003, 2400, 44809.279, 0.75, 0.65, 5.36656),
+        (500, 0.05, 1.5, 25, 0.003, 1875, 21879.531, 0.85, 0.77, 3.45838),
+        (540, 0.1, 1.25, 50, 0.003, 2125, 33651.248, 0.81, 0.65, 4.73841),
+        (600, 0.015, 1.2, 65, 0.003, 2300, 42038.078, 0.75, 0.65, 5.36656),
+        (540, 0.03, 1.2, 37.5, 0.003, 2100, 29710.824, 0.85, 0.67, 4.22885),
+        (300, 0.15, 1.35, 52.5, 0.003, 2025, 31900.356, 0.80, 0.65, 4.69423),
+        (500, 0.1, 1.35, 62.5, 0.003, 2600, 49729.830, 0.76, 0.65, 5.28205),
+    ],
+)
+def test_nzs3101_create_os_section(
+    yield_strength,
+    fracture_strain,
+    phi_os,
+    compressive_strength,
+    ultimate_strain,
+    density,
+    calc_value_e_conc,
+    calc_value_alpha_1,
+    calc_value_beta_1,
+    calc_value_modulus_of_rupture,
+):
+    design_code = NZS3101()
+    create_dummy_section(design_code)
+    # update section properties for scaling to overstrength
+    for steel_geom in design_code.concrete_section.reinf_geometries_lumped:
+        steel_geom.material.__setattr__("steel_grade", None)
+        steel_geom.material.stress_strain_profile.__setattr__(
+            "yield_strength", yield_strength
+        )
+        steel_geom.material.stress_strain_profile.__setattr__(
+            "fracture_strain", fracture_strain
+        )
+        steel_geom.material.__setattr__("phi_os", phi_os)
+    for conc_geom in design_code.concrete_section.concrete_geometries:
+        conc_geom.material.ultimate_stress_strain_profile.__setattr__(
+            "compressive_strength", compressive_strength
+        )
+        conc_geom.material.ultimate_stress_strain_profile.__setattr__(
+            "ultimate_strain", ultimate_strain
+        )
+        conc_geom.material.__setattr__("density", density)
+
+    concrete_os_section = design_code.create_os_section()
+    # check steel overstrength properties
+    for steel_geom in concrete_os_section.reinf_geometries_lumped:
+        assert (
+            pytest.approx(steel_geom.material.__getattribute__("steel_grade"))
+            == f"user_{yield_strength*phi_os:.0f}"
+        )
+        assert (
+            pytest.approx(
+                steel_geom.material.stress_strain_profile.__getattribute__(
+                    "yield_strength"
+                )
+            )
+            == yield_strength * phi_os
+        )
+        assert (
+            pytest.approx(
+                steel_geom.material.stress_strain_profile.__getattribute__(
+                    "fracture_strain"
+                )
+            )
+            == fracture_strain
+        )
+        assert pytest.approx(steel_geom.material.__getattribute__("phi_os")) == phi_os
+
+    # check concrete overstrength properties
+    for conc_geom in concrete_os_section.concrete_geometries:
+        assert pytest.approx(conc_geom.material.__getattribute__("density")) == density
+        assert (
+            pytest.approx(
+                conc_geom.material.__getattribute__("flexural_tensile_strength"),
+                rel=0.001,
+            )
+            == calc_value_modulus_of_rupture
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "compressive_strength"
+                )
+            )
+            == compressive_strength + 15
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "alpha"
+                )
+            )
+            == calc_value_alpha_1
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "gamma"
+                )
+            )
+            == calc_value_beta_1
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "ultimate_strain"
+                )
+            )
+            == ultimate_strain
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.stress_strain_profile.__getattribute__(
+                    "compressive_strength"
+                )
+            )
+            == compressive_strength + 15
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.stress_strain_profile.__getattribute__(
+                    "ultimate_strain"
+                )
+            )
+            == ultimate_strain
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.stress_strain_profile.__getattribute__(
+                    "elastic_modulus"
+                ),
+                rel=0.01,
+            )
+            == calc_value_e_conc
+        )

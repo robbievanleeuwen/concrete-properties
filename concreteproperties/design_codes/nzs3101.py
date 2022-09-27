@@ -1020,10 +1020,14 @@ class NZS3101(DesignCode):
         for conc_geom in os_concrete_section.concrete_geometries:
             # retrieve previous nominal/characteristic material properties
             prev_compressive_strength = (
-                conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "compressive_strength"
+                )
             )
             prev_ultimate_strain = (
-                conc_geom.material.ultimate_stress_strain_profile.get_ultimate_compressive_strain()
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "ultimate_strain"
+                )
             )
             prev_density = conc_geom.material.density
             prev_colour_conc = conc_geom.material.colour
@@ -1042,10 +1046,14 @@ class NZS3101(DesignCode):
             # retrieve previous nominal/characteristic material properties
             prev_steel_grade = steel_geom.material.steel_grade
             prev_yield_strength = (
-                steel_geom.material.stress_strain_profile.get_yield_strength()
+                steel_geom.material.stress_strain_profile.__getattribute__(
+                    "yield_strength"
+                )
             )
             prev_fracture_strain = (
-                -steel_geom.material.stress_strain_profile.get_ultimate_tensile_strain()
+                steel_geom.material.stress_strain_profile.__getattribute__(
+                    "fracture_strain"
+                )
             )
             prev_phi_os = steel_geom.material.phi_os
             prev_colour_steel = steel_geom.material.colour
@@ -1086,10 +1094,14 @@ class NZS3101(DesignCode):
         for conc_geom in prob_concrete_section.concrete_geometries:
             # retrieve previous nominal/characteristic material properties
             prev_compressive_strength = (
-                conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "compressive_strength"
+                )
             )
             prev_ultimate_strain = (
-                conc_geom.material.ultimate_stress_strain_profile.get_ultimate_compressive_strain()
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "ultimate_strain"
+                )
             )
             prev_density = conc_geom.material.density
             prev_colour_conc = conc_geom.material.colour
@@ -1117,10 +1129,14 @@ class NZS3101(DesignCode):
             # retrieve previous nominal/characteristic material properties
             prev_steel_grade = steel_geom.material.steel_grade
             prev_yield_strength = (
-                steel_geom.material.stress_strain_profile.get_yield_strength()
+                steel_geom.material.stress_strain_profile.__getattribute__(
+                    "yield_strength"
+                )
             )
             prev_fracture_strain = (
-                -steel_geom.material.stress_strain_profile.get_ultimate_tensile_strain()
+                steel_geom.material.stress_strain_profile.__getattribute__(
+                    "fracture_strain"
+                )
             )
             prev_phi_os = steel_geom.material.phi_os
             prev_colour_steel = steel_geom.material.colour
