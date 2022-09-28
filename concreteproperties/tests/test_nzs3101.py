@@ -564,3 +564,283 @@ def test_nzs3101_create_os_section(
             )
             == calc_value_e_conc
         )
+
+
+@pytest.mark.parametrize(
+    "yield_strength, fracture_strain, phi_os, compressive_strength, "
+    "ultimate_strain, calc_value_e_conc, calc_value_alpha_1, calc_value_beta_1, "
+    "calc_value_modulus_of_rupture",
+    [
+        (280, 0.1, 1.25, 20, 0.003, 25742.960, 0.85, 0.85, 3.01247),
+        (280, 0.1, 1.25, 27.5, 0.003, 30186.297, 0.85, 0.76, 3.53243),
+        (324, 0.15, 1.25, 30, 0.003, 31528.558, 0.85, 0.73, 3.68951),
+        (324, 0.15, 1.25, 45, 0.003, 37305.093, 0.818, 0.65, 4.36548),
+        (455, 0.12, 1.5, 35, 0.003, 34054.735, 0.85, 0.67, 3.98512),
+        (455, 0.12, 1.5, 55, 0.003, 41242.333, 0.762, 0.65, 4.82623),
+        (464, 0.12, 1.25, 32, 0.003, 32562.555, 0.85, 0.706, 3.81051),
+        (324, 0.15, 1.25, 65, 0.003, 44835.142, 0.75, 0.65, 5.24666),
+        (500, 0.05, 1.5, 25, 0.003, 28781.504, 0.85, 0.79, 3.36804),
+        (540, 0.1, 1.25, 50, 0.003, 39323.021, 0.79, 0.65, 4.60163),
+        (600, 0.015, 1.2, 65, 0.003, 44835.142, 0.75, 0.65, 5.24666),
+        (540, 0.03, 1.2, 37.5, 0.003, 35250.000, 0.845, 0.65, 4.12500),
+        (300, 0.15, 1.35, 52.5, 0.003, 40294.106, 0.776, 0.65, 4.71526),
+        (500, 0.1, 1.35, 62.5, 0.003, 43964.474, 0.75, 0.65, 5.14477),
+    ],
+)
+def test_nzs3101_create_prob_section(
+    yield_strength,
+    fracture_strain,
+    phi_os,
+    compressive_strength,
+    ultimate_strain,
+    calc_value_e_conc,
+    calc_value_alpha_1,
+    calc_value_beta_1,
+    calc_value_modulus_of_rupture,
+):
+    design_code = NZS3101()
+    create_dummy_section(design_code)
+    # update section properties for scaling to overstrength
+    for steel_geom in design_code.concrete_section.reinf_geometries_lumped:
+        steel_geom.material.__setattr__("steel_grade", None)
+        steel_geom.material.stress_strain_profile.__setattr__(
+            "yield_strength", yield_strength
+        )
+        steel_geom.material.stress_strain_profile.__setattr__(
+            "fracture_strain", fracture_strain
+        )
+        steel_geom.material.__setattr__("phi_os", phi_os)
+    for conc_geom in design_code.concrete_section.concrete_geometries:
+        conc_geom.material.ultimate_stress_strain_profile.__setattr__(
+            "compressive_strength", compressive_strength
+        )
+        conc_geom.material.ultimate_stress_strain_profile.__setattr__(
+            "ultimate_strain", ultimate_strain
+        )
+        conc_geom.material.__setattr__("density", 2300)
+
+    concrete_prob_section = design_code.create_prob_section()
+    # check steel overstrength properties
+    for steel_geom in concrete_prob_section.reinf_geometries_lumped:
+        assert (
+            pytest.approx(steel_geom.material.__getattribute__("steel_grade"))
+            == f"user_{yield_strength*1.08:.0f}"
+        )
+        assert (
+            pytest.approx(
+                steel_geom.material.stress_strain_profile.__getattribute__(
+                    "yield_strength"
+                )
+            )
+            == yield_strength * 1.08
+        )
+        assert (
+            pytest.approx(
+                steel_geom.material.stress_strain_profile.__getattribute__(
+                    "fracture_strain"
+                )
+            )
+            == fracture_strain
+        )
+        assert pytest.approx(steel_geom.material.__getattribute__("phi_os")) == phi_os
+
+    # check concrete overstrength properties
+    for conc_geom in concrete_prob_section.concrete_geometries:
+        assert (
+            pytest.approx(
+                conc_geom.material.__getattribute__("flexural_tensile_strength"),
+                rel=0.001,
+            )
+            == calc_value_modulus_of_rupture
+        )
+        assert pytest.approx(
+            conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                "compressive_strength"
+            )
+        ) == compressive_strength * (1.5 if compressive_strength <= 40 else 1.4)
+        assert (
+            pytest.approx(
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "alpha"
+                )
+            )
+            == calc_value_alpha_1
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "gamma"
+                )
+            )
+            == calc_value_beta_1
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "ultimate_strain"
+                )
+            )
+            == ultimate_strain
+        )
+        assert pytest.approx(
+            conc_geom.material.stress_strain_profile.__getattribute__(
+                "compressive_strength"
+            )
+        ) == compressive_strength * (1.5 if compressive_strength <= 40 else 1.4)
+        assert (
+            pytest.approx(
+                conc_geom.material.stress_strain_profile.__getattribute__(
+                    "ultimate_strain"
+                )
+            )
+            == ultimate_strain
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.stress_strain_profile.__getattribute__(
+                    "elastic_modulus"
+                ),
+                rel=0.01,
+            )
+            == calc_value_e_conc
+        )
+
+
+@pytest.mark.parametrize(
+    "yield_strength, fracture_strain, phi_os, compressive_strength, "
+    "ultimate_strain, calc_value_e_conc, calc_value_alpha_1, calc_value_beta_1, "
+    "calc_value_modulus_of_rupture",
+    [
+        (280, 0.1, 1.25, 20, 0.003, 25742.960, 0.85, 0.85, 3.01247),
+        (280, 0.1, 1.25, 27.5, 0.003, 30186.297, 0.85, 0.76, 3.53243),
+        (324, 0.15, 1.25, 30, 0.003, 31528.558, 0.85, 0.73, 3.68951),
+        (324, 0.15, 1.25, 45, 0.003, 37305.093, 0.818, 0.65, 4.36548),
+        (455, 0.12, 1.5, 35, 0.003, 34054.735, 0.85, 0.67, 3.98512),
+        (455, 0.12, 1.5, 55, 0.003, 41242.333, 0.762, 0.65, 4.82623),
+        (464, 0.12, 1.25, 32, 0.003, 32562.555, 0.85, 0.706, 3.81051),
+        (324, 0.15, 1.25, 65, 0.003, 44835.142, 0.75, 0.65, 5.24666),
+        (500, 0.05, 1.5, 25, 0.003, 28781.504, 0.85, 0.79, 3.36804),
+        (540, 0.1, 1.25, 50, 0.003, 39323.021, 0.79, 0.65, 4.60163),
+        (600, 0.015, 1.2, 65, 0.003, 44835.142, 0.75, 0.65, 5.24666),
+        (540, 0.03, 1.2, 37.5, 0.003, 35250.000, 0.845, 0.65, 4.12500),
+        (300, 0.15, 1.35, 52.5, 0.003, 40294.106, 0.776, 0.65, 4.71526),
+        (500, 0.1, 1.35, 62.5, 0.003, 43964.474, 0.75, 0.65, 5.14477),
+    ],
+)
+def test_nzs3101_create_prob_os_section(
+    yield_strength,
+    fracture_strain,
+    phi_os,
+    compressive_strength,
+    ultimate_strain,
+    calc_value_e_conc,
+    calc_value_alpha_1,
+    calc_value_beta_1,
+    calc_value_modulus_of_rupture,
+):
+    design_code = NZS3101()
+    create_dummy_section(design_code)
+    # update section properties for scaling to overstrength
+    for steel_geom in design_code.concrete_section.reinf_geometries_lumped:
+        steel_geom.material.__setattr__("steel_grade", None)
+        steel_geom.material.stress_strain_profile.__setattr__(
+            "yield_strength", yield_strength
+        )
+        steel_geom.material.stress_strain_profile.__setattr__(
+            "fracture_strain", fracture_strain
+        )
+        steel_geom.material.__setattr__("phi_os", phi_os)
+    for conc_geom in design_code.concrete_section.concrete_geometries:
+        conc_geom.material.ultimate_stress_strain_profile.__setattr__(
+            "compressive_strength", compressive_strength
+        )
+        conc_geom.material.ultimate_stress_strain_profile.__setattr__(
+            "ultimate_strain", ultimate_strain
+        )
+        conc_geom.material.__setattr__("density", 2300)
+
+    concrete_prob_section = design_code.create_prob_section(os_design=True)
+    # check steel overstrength properties
+    for steel_geom in concrete_prob_section.reinf_geometries_lumped:
+        assert (
+            pytest.approx(steel_geom.material.__getattribute__("steel_grade"))
+            == f"user_{yield_strength*phi_os:.0f}"
+        )
+        assert (
+            pytest.approx(
+                steel_geom.material.stress_strain_profile.__getattribute__(
+                    "yield_strength"
+                )
+            )
+            == yield_strength * phi_os
+        )
+        assert (
+            pytest.approx(
+                steel_geom.material.stress_strain_profile.__getattribute__(
+                    "fracture_strain"
+                )
+            )
+            == fracture_strain
+        )
+        assert pytest.approx(steel_geom.material.__getattribute__("phi_os")) == phi_os
+
+    # check concrete overstrength properties
+    for conc_geom in concrete_prob_section.concrete_geometries:
+        assert (
+            pytest.approx(
+                conc_geom.material.__getattribute__("flexural_tensile_strength"),
+                rel=0.001,
+            )
+            == calc_value_modulus_of_rupture
+        )
+        assert pytest.approx(
+            conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                "compressive_strength"
+            )
+        ) == compressive_strength * (1.5 if compressive_strength <= 40 else 1.4)
+        assert (
+            pytest.approx(
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "alpha"
+                )
+            )
+            == calc_value_alpha_1
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "gamma"
+                )
+            )
+            == calc_value_beta_1
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
+                    "ultimate_strain"
+                )
+            )
+            == ultimate_strain
+        )
+        assert pytest.approx(
+            conc_geom.material.stress_strain_profile.__getattribute__(
+                "compressive_strength"
+            )
+        ) == compressive_strength * (1.5 if compressive_strength <= 40 else 1.4)
+        assert (
+            pytest.approx(
+                conc_geom.material.stress_strain_profile.__getattribute__(
+                    "ultimate_strain"
+                )
+            )
+            == ultimate_strain
+        )
+        assert (
+            pytest.approx(
+                conc_geom.material.stress_strain_profile.__getattribute__(
+                    "elastic_modulus"
+                ),
+                rel=0.01,
+            )
+            == calc_value_e_conc
+        )
