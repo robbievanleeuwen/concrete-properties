@@ -844,3 +844,51 @@ def test_nzs3101_create_prob_os_section(
             )
             == calc_value_e_conc
         )
+
+
+@pytest.mark.parametrize(
+    "analysis_type, rel_tol, calc_value",
+    [
+        ("nom_chk", 0.1, 15549884.85),
+        ("cpe_chk", 0.1, 12805787.52),
+        ("os_chk", 0.1, 21347712.25),
+        ("prob_chk", 0.1, 22262357.41),
+        ("prob_os_chk", 0.1, 22622855.17),
+    ],
+)
+def test_max_comp_strength(analysis_type, rel_tol, calc_value):
+    design_code = NZS3101()
+    create_dummy_section(design_code)
+    _, cpe_design, os_design, prob_design = design_code.capacity_reduction_factor(
+        analysis_type
+    )
+    assert (
+        pytest.approx(
+            design_code.max_comp_strength(cpe_design, os_design, prob_design),
+            rel=rel_tol,
+        )
+        == calc_value
+    )
+
+
+@pytest.mark.parametrize(
+    "analysis_type, rel_tol, calc_value",
+    [
+        ("nom_chk", 0.1, 1570796.33),
+        ("cpe_chk", 0.1, 1570796.33),
+        ("os_chk", 0.1, 2120575.04),
+        ("prob_chk", 0.1, 1696460.03),
+        ("prob_os_chk", 0.1, 2120575.04),
+    ],
+)
+def test_max_ten_strength(analysis_type, rel_tol, calc_value):
+    design_code = NZS3101()
+    create_dummy_section(design_code)
+    _, _, os_design, prob_design = design_code.capacity_reduction_factor(analysis_type)
+    assert (
+        pytest.approx(
+            design_code.max_ten_strength(os_design, prob_design),
+            rel=rel_tol,
+        )
+        == calc_value
+    )
