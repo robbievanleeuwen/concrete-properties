@@ -576,7 +576,8 @@ class ConcreteSection:
                         disp=False,
                     )
                 except ValueError:
-                    warnings.warn("brentq algorithm failed.")
+                    if not moment_curvature._failure:
+                        warnings.warn("brentq algorithm failed.")
 
                 m_xy = np.sqrt(
                     moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2
