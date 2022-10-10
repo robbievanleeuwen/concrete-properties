@@ -12,8 +12,8 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
 
   
   <link rel="stylesheet"
@@ -22,18 +22,21 @@
     href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -68,7 +71,7 @@
     <div class="search-button__search-container">
       
 <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
+  <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
@@ -78,7 +81,7 @@
   
   <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fas fa-bars"></span>
+      <span class="fa-solid fa-bars"></span>
   </label>
   <div id="navbar-start">
     
@@ -198,16 +201,16 @@
     <div id="navbar-end">
       <div class="navbar-end-item navbar-end__search-button-container">
         
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
       </div>
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
+    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
 </span>
       </div>
       
@@ -220,7 +223,8 @@
           
           
           
-          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
         <li class="nav-item">
@@ -230,7 +234,8 @@
           
           
           
-          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank"><span><i class="fas fa-box"></i></span>
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
       </ul>
@@ -242,14 +247,14 @@
 
   
   <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
   </div>
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fas fa-outdent"></span>
+      <span class="fa-solid fa-outdent"></span>
   </label>
   
 
@@ -350,10 +355,10 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
+    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
 </span>
       </div>
       
@@ -366,7 +371,8 @@
           
           
           
-          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
         <li class="nav-item">
@@ -376,7 +382,8 @@
           
           
           
-          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank"><span><i class="fas fa-box"></i></span>
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
       </ul>
@@ -393,389 +400,90 @@
     Section Navigation
   </p>
   <div class="bd-toc-item navbar-nav">
-    <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  API Reference
- </span>
-</p>
+    <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="concreteproperties.pre.html">
-   concreteproperties.pre
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label class="toctree-toggle" for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.pre.add_bar.html">
-     concreteproperties.pre.add_bar
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.pre.add_bar_circular_array.html">
-     concreteproperties.pre.add_bar_circular_array
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.pre.add_bar_rectangular_array.html">
-     concreteproperties.pre.add_bar_rectangular_array
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.pre.CPGeom.html">
-     concreteproperties.pre.CPGeom
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.pre.CPGeomConcrete.html">
-     concreteproperties.pre.CPGeomConcrete
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="concreteproperties.material.html">
-   concreteproperties.material
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label class="toctree-toggle" for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.material.Concrete.html">
-     concreteproperties.material.Concrete
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.material.Material.html">
-     concreteproperties.material.Material
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.material.Steel.html">
-     concreteproperties.material.Steel
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.material.SteelBar.html">
-     concreteproperties.material.SteelBar
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="concreteproperties.stress_strain_profile.html">
-   concreteproperties.stress_strain_profile
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label class="toctree-toggle" for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearStressStrain.html">
-     concreteproperties.stress_strain_profile.BilinearStressStrain
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinear.html">
-     concreteproperties.stress_strain_profile.ConcreteLinear
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearNoTension.html">
-     concreteproperties.stress_strain_profile.ConcreteLinearNoTension
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html">
-     concreteproperties.stress_strain_profile.ConcreteServiceProfile
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">
-     concreteproperties.stress_strain_profile.ConcreteUltimateProfile
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeNonLinear.html">
-     concreteproperties.stress_strain_profile.EurocodeNonLinear
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeParabolicUltimate.html">
-     concreteproperties.stress_strain_profile.EurocodeParabolicUltimate
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.RectangularStressBlock.html">
-     concreteproperties.stress_strain_profile.RectangularStressBlock
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelElasticPlastic.html">
-     concreteproperties.stress_strain_profile.SteelElasticPlastic
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelHardening.html">
-     concreteproperties.stress_strain_profile.SteelHardening
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.SteelProfile.html">
-     concreteproperties.stress_strain_profile.SteelProfile
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html">
-     concreteproperties.stress_strain_profile.StressStrainProfile
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="concreteproperties.concrete_section.html">
-   concreteproperties.concrete_section
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label class="toctree-toggle" for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html">
-     concreteproperties.concrete_section.ConcreteSection
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="concreteproperties.analysis_section.html">
-   concreteproperties.analysis_section
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label class="toctree-toggle" for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.analysis_section.AnalysisSection.html">
-     concreteproperties.analysis_section.AnalysisSection
-    </a>
-   </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     concreteproperties.analysis_section.Tri3
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="concreteproperties.results.html">
-   concreteproperties.results
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label class="toctree-toggle" for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.BiaxialBendingResults.html">
-     concreteproperties.results.BiaxialBendingResults
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.CrackedResults.html">
-     concreteproperties.results.CrackedResults
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.GrossProperties.html">
-     concreteproperties.results.GrossProperties
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.MomentCurvatureResults.html">
-     concreteproperties.results.MomentCurvatureResults
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html">
-     concreteproperties.results.MomentInteractionResults
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.StressResult.html">
-     concreteproperties.results.StressResult
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.TransformedGrossProperties.html">
-     concreteproperties.results.TransformedGrossProperties
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html">
-     concreteproperties.results.UltimateBendingResults
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="concreteproperties.design_codes.html">
-   concreteproperties.design_codes
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label class="toctree-toggle" for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="concreteproperties.design_codes.as3600.html">
-     concreteproperties.design_codes.as3600
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label class="toctree-toggle" for="toctree-checkbox-8">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="concreteproperties.design_codes.as3600.AS3600.html">
-       concreteproperties.design_codes.as3600.AS3600
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="concreteproperties.design_codes.design_code.html">
-     concreteproperties.design_codes.design_code
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-    <label class="toctree-toggle" for="toctree-checkbox-9">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="concreteproperties.design_codes.design_code.DesignCode.html">
-       concreteproperties.design_codes.design_code.DesignCode
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="concreteproperties.post.html">
-   concreteproperties.post
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-  <label class="toctree-toggle" for="toctree-checkbox-10">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.post.plotting_context.html">
-     concreteproperties.post.plotting_context
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="concreteproperties.utils.html">
-   concreteproperties.utils
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label class="toctree-toggle" for="toctree-checkbox-11">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.calculate_extreme_fibre.html">
-     concreteproperties.utils.calculate_extreme_fibre
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.calculate_local_extents.html">
-     concreteproperties.utils.calculate_local_extents
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.calculate_max_bending_depth.html">
-     concreteproperties.utils.calculate_max_bending_depth
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.create_known_progress.html">
-     concreteproperties.utils.create_known_progress
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.create_unknown_progress.html">
-     concreteproperties.utils.create_unknown_progress
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.gauss_points.html">
-     concreteproperties.utils.gauss_points
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.get_service_strain.html">
-     concreteproperties.utils.get_service_strain
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.get_ultimate_strain.html">
-     concreteproperties.utils.get_ultimate_strain
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.global_to_local.html">
-     concreteproperties.utils.global_to_local
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.local_to_global.html">
-     concreteproperties.utils.local_to_global
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.point_on_neutral_axis.html">
-     concreteproperties.utils.point_on_neutral_axis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.shape_function.html">
-     concreteproperties.utils.shape_function
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.split_geom_at_strains.html">
-     concreteproperties.utils.split_geom_at_strains
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="concreteproperties.utils.CustomTimeElapsedColumn.html">
-     concreteproperties.utils.CustomTimeElapsedColumn
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.pre.html">concreteproperties.pre</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.add_bar.html">concreteproperties.pre.add_bar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.add_bar_circular_array.html">concreteproperties.pre.add_bar_circular_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.add_bar_rectangular_array.html">concreteproperties.pre.add_bar_rectangular_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.CPGeom.html">concreteproperties.pre.CPGeom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.CPGeomConcrete.html">concreteproperties.pre.CPGeomConcrete</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.material.html">concreteproperties.material</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.Concrete.html">concreteproperties.material.Concrete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.Material.html">concreteproperties.material.Material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.Steel.html">concreteproperties.material.Steel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.SteelBar.html">concreteproperties.material.SteelBar</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.stress_strain_profile.html">concreteproperties.stress_strain_profile</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearStressStrain.html">concreteproperties.stress_strain_profile.BilinearStressStrain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinear.html">concreteproperties.stress_strain_profile.ConcreteLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearNoTension.html">concreteproperties.stress_strain_profile.ConcreteLinearNoTension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html">concreteproperties.stress_strain_profile.ConcreteServiceProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">concreteproperties.stress_strain_profile.ConcreteUltimateProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeNonLinear.html">concreteproperties.stress_strain_profile.EurocodeNonLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeParabolicUltimate.html">concreteproperties.stress_strain_profile.EurocodeParabolicUltimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.RectangularStressBlock.html">concreteproperties.stress_strain_profile.RectangularStressBlock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelElasticPlastic.html">concreteproperties.stress_strain_profile.SteelElasticPlastic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelHardening.html">concreteproperties.stress_strain_profile.SteelHardening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelProfile.html">concreteproperties.stress_strain_profile.SteelProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html">concreteproperties.stress_strain_profile.StressStrainProfile</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.concrete_section.html">concreteproperties.concrete_section</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html">concreteproperties.concrete_section.ConcreteSection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="concreteproperties.analysis_section.html">concreteproperties.analysis_section</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.analysis_section.AnalysisSection.html">concreteproperties.analysis_section.AnalysisSection</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">concreteproperties.analysis_section.Tri3</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.results.html">concreteproperties.results</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.BiaxialBendingResults.html">concreteproperties.results.BiaxialBendingResults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.CrackedResults.html">concreteproperties.results.CrackedResults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.GrossProperties.html">concreteproperties.results.GrossProperties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.MomentCurvatureResults.html">concreteproperties.results.MomentCurvatureResults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html">concreteproperties.results.MomentInteractionResults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.StressResult.html">concreteproperties.results.StressResult</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.TransformedGrossProperties.html">concreteproperties.results.TransformedGrossProperties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html">concreteproperties.results.UltimateBendingResults</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.design_codes.html">concreteproperties.design_codes</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concreteproperties.design_codes.as3600.html">concreteproperties.design_codes.as3600</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="concreteproperties.design_codes.as3600.AS3600.html">concreteproperties.design_codes.as3600.AS3600</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concreteproperties.design_codes.design_code.html">concreteproperties.design_codes.design_code</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="concreteproperties.design_codes.design_code.DesignCode.html">concreteproperties.design_codes.design_code.DesignCode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.post.html">concreteproperties.post</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.post.plotting_context.html">concreteproperties.post.plotting_context</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.utils.html">concreteproperties.utils</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.calculate_extreme_fibre.html">concreteproperties.utils.calculate_extreme_fibre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.calculate_local_extents.html">concreteproperties.utils.calculate_local_extents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.calculate_max_bending_depth.html">concreteproperties.utils.calculate_max_bending_depth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.create_known_progress.html">concreteproperties.utils.create_known_progress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.create_unknown_progress.html">concreteproperties.utils.create_unknown_progress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.gauss_points.html">concreteproperties.utils.gauss_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.get_service_strain.html">concreteproperties.utils.get_service_strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.get_ultimate_strain.html">concreteproperties.utils.get_ultimate_strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.global_to_local.html">concreteproperties.utils.global_to_local</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.local_to_global.html">concreteproperties.utils.local_to_global</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.point_on_neutral_axis.html">concreteproperties.utils.point_on_neutral_axis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.shape_function.html">concreteproperties.utils.shape_function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.split_geom_at_strains.html">concreteproperties.utils.split_geom_at_strains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.CustomTimeElapsedColumn.html">concreteproperties.utils.CustomTimeElapsedColumn</a></li>
+</ul>
+</li>
 </ul>
 
   </div>
@@ -948,7 +656,7 @@ horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
   <a class='left-prev' id="prev-link" href="concreteproperties.analysis_section.AnalysisSection.html" title="previous page">
-      <i class="fas fa-angle-left"></i>
+      <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
           <p class="prev-next-title">concreteproperties.analysis_section.AnalysisSection</p>
@@ -959,7 +667,7 @@ horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \
       <p class="prev-next-subtitle">next</p>
       <p class="prev-next-title">concreteproperties.results</p>
   </div>
-  <i class="fas fa-angle-right"></i>
+  <i class="fa-solid fa-angle-right"></i>
   </a>
 </div>
             </footer>
@@ -972,10 +680,74 @@ horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \
               
 <div class="toc-item">
   
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#concreteproperties.analysis_section.Tri3">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Tri3
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.analysis_section.Tri3.second_moments_of_area">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Tri3.second_moments_of_area()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.analysis_section.Tri3.calculate_elastic_actions">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Tri3.calculate_elastic_actions()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.analysis_section.Tri3.calculate_service_actions">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Tri3.calculate_service_actions()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.analysis_section.Tri3.calculate_ultimate_actions">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Tri3.calculate_ultimate_actions()
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
 
 <div class="tocsection editthispage">
     <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/rst/gen/concreteproperties.analysis_section.Tri3.rst">
-        <i class="fas fa-pencil-alt"></i> Edit this page
+        <i class="fa-solid fa-pencil"></i> Edit this page
     </a>
 </div>
 
@@ -1002,7 +774,7 @@ horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -1019,7 +791,7 @@ horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \
   <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
 </p>
 
   </div>
