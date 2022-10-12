@@ -614,7 +614,7 @@ class ConcreteSection:
         """Given a neutral axis depth ``d_n`` and curvature ``kappa``, returns the the
         net axial force.
 
-        :param d_nc: Trial cracked neutral axis
+        :param d_n: Trial cracked neutral axis
         :param kappa: Curvature
         :param moment_curvature: Moment curvature results object
 
