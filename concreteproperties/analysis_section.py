@@ -78,7 +78,7 @@ class AnalysisSection:
 
     def calculate_meshed_area(self) -> float:
         """Calculates the area of the analysis section based on the generated mesh.
-        
+
         :return: Meshed area (un-weighted by elastic modulus)
         """
 
@@ -471,7 +471,7 @@ class Tri3:
 
     def calculate_area(self) -> float:
         """Calculates the area of the finite element.
-        
+
         :return: Element area
         """
 
