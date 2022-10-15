@@ -535,17 +535,20 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.Tri3.calculate_elastic_actions" title="concreteproperties.analysis_section.Tri3.calculate_elastic_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_elastic_actions</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.Tri3.calculate_area" title="concreteproperties.analysis_section.Tri3.calculate_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_area</span></code></a></p></td>
+<td><p>Calculates the area of the finite element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.Tri3.calculate_elastic_actions" title="concreteproperties.analysis_section.Tri3.calculate_elastic_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_elastic_actions</span></code></a></p></td>
 <td><p>Calculates elastic actions for the current finite element.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.Tri3.calculate_service_actions" title="concreteproperties.analysis_section.Tri3.calculate_service_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_service_actions</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.Tri3.calculate_service_actions" title="concreteproperties.analysis_section.Tri3.calculate_service_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_service_actions</span></code></a></p></td>
 <td><p>Calculates service actions for the current finite element.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.Tri3.calculate_ultimate_actions" title="concreteproperties.analysis_section.Tri3.calculate_ultimate_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_ultimate_actions</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.Tri3.calculate_ultimate_actions" title="concreteproperties.analysis_section.Tri3.calculate_ultimate_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_ultimate_actions</span></code></a></p></td>
 <td><p>Calculates ultimate actions for the current finite element.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.Tri3.second_moments_of_area" title="concreteproperties.analysis_section.Tri3.second_moments_of_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">second_moments_of_area</span></code></a></p></td>
-<td><p>Calculates the second moments of area for the current finite element.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.Tri3.second_moments_of_area" title="concreteproperties.analysis_section.Tri3.second_moments_of_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">second_moments_of_area</span></code></a></p></td>
+<td><p>Calculates the second moments of area of the finite element.</p></td>
 </tr>
 </tbody>
 </table>
@@ -568,9 +571,20 @@
 </tbody>
 </table>
 <dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.analysis_section.Tri3.calculate_area">
+<span class="sig-name descname"><span class="pre">calculate_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3.calculate_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3.calculate_area" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the area of the finite element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Element area</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.Tri3.second_moments_of_area">
 <span class="sig-name descname"><span class="pre">second_moments_of_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#Tri3.second_moments_of_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.Tri3.second_moments_of_area" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates the second moments of area for the current finite element.</p>
+<dd><p>Calculates the second moments of area of the finite element.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Modulus weighted second moments of area <em>(e_ixx, e_iyy, e_ixy)</em></p>
@@ -694,6 +708,15 @@ horizontal axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \
    </code>
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.analysis_section.Tri3.calculate_area">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Tri3.calculate_area()
+      </span>
+     </code>
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#concreteproperties.analysis_section.Tri3.second_moments_of_area">
      <code class="docutils literal notranslate">

@@ -532,29 +532,43 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.get_elastic_stress" title="concreteproperties.analysis_section.AnalysisSection.get_elastic_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_elastic_stress</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.calculate_meshed_area" title="concreteproperties.analysis_section.AnalysisSection.calculate_meshed_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_meshed_area</span></code></a></p></td>
+<td><p>Calculates the area of the analysis section based on the generated mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.get_elastic_stress" title="concreteproperties.analysis_section.AnalysisSection.get_elastic_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_elastic_stress</span></code></a></p></td>
 <td><p>Given section actions and section propreties, calculates elastic stresses.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.get_service_stress" title="concreteproperties.analysis_section.AnalysisSection.get_service_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_service_stress</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.get_service_stress" title="concreteproperties.analysis_section.AnalysisSection.get_service_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_service_stress</span></code></a></p></td>
 <td><p>Given the neutral axis depth <cite>d_n</cite> and curvature <cite>kappa</cite> determines the service stresses within the section.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress" title="concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_stress</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress" title="concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_stress</span></code></a></p></td>
 <td><p>Given the neutral axis depth <cite>d_n</cite> and ultimate strain, determines the ultimate stresses with the section.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.plot_mesh" title="concreteproperties.analysis_section.AnalysisSection.plot_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_mesh</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.plot_mesh" title="concreteproperties.analysis_section.AnalysisSection.plot_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_mesh</span></code></a></p></td>
 <td><p>Plots the finite element mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.plot_shape" title="concreteproperties.analysis_section.AnalysisSection.plot_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_shape</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.plot_shape" title="concreteproperties.analysis_section.AnalysisSection.plot_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_shape</span></code></a></p></td>
 <td><p>Plots the coloured shape of the mesh with no outlines on <cite>ax</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.service_analysis" title="concreteproperties.analysis_section.AnalysisSection.service_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_analysis</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.service_analysis" title="concreteproperties.analysis_section.AnalysisSection.service_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_analysis</span></code></a></p></td>
 <td><p>Performs a service stress analysis on the section.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.ultimate_analysis" title="concreteproperties.analysis_section.AnalysisSection.ultimate_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_analysis</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.analysis_section.AnalysisSection.ultimate_analysis" title="concreteproperties.analysis_section.AnalysisSection.ultimate_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_analysis</span></code></a></p></td>
 <td><p>Performs an ultimate stress analysis on the section.</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection.calculate_meshed_area">
+<span class="sig-name descname"><span class="pre">calculate_meshed_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.calculate_meshed_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.calculate_meshed_area" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the area of the analysis section based on the generated mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Meshed area (un-weighted by elastic modulus)</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.analysis_section.AnalysisSection.get_elastic_stress">
 <span class="sig-name descname"><span class="pre">get_elastic_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_ixx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_iyy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_ixy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/analysis_section.html#AnalysisSection.get_elastic_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.analysis_section.AnalysisSection.get_elastic_stress" title="Permalink to this definition">#</a></dt>
@@ -748,6 +762,15 @@ force action</p>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.analysis_section.AnalysisSection.calculate_meshed_area">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       AnalysisSection.calculate_meshed_area()
+      </span>
+     </code>
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#concreteproperties.analysis_section.AnalysisSection.get_elastic_stress">
      <code class="docutils literal notranslate">

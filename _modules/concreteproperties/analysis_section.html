@@ -445,6 +445,7 @@
 <span class="sd">        :param geometry: Geometry object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">material</span>
 
         <span class="c1"># create simple mesh</span>
@@ -488,6 +489,19 @@
                     <span class="n">material</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
+
+<div class="viewcode-block" id="AnalysisSection.calculate_meshed_area"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.calculate_meshed_area">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_meshed_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the area of the analysis section based on the generated mesh.</span>
+
+<span class="sd">        :return: Meshed area (un-weighted by elastic modulus)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">area</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="n">area</span> <span class="o">+=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">area</span></div>
 
 <div class="viewcode-block" id="AnalysisSection.get_elastic_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.get_elastic_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_elastic_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -653,7 +667,7 @@
                 <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
             <span class="p">)</span>
 
-            <span class="c1"># get stress at gauss point</span>
+            <span class="c1"># get stress at node</span>
             <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">)</span>
 
         <span class="c1"># calculate total force</span>
@@ -753,7 +767,7 @@
                     <span class="n">ultimate_strain</span><span class="o">=</span><span class="n">ultimate_strain</span><span class="p">,</span>
                 <span class="p">)</span>
 
-            <span class="c1"># get stress at gauss point</span>
+            <span class="c1"># get stress at node</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="p">,</span> <span class="n">Concrete</span><span class="p">):</span>
                 <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span>
                     <span class="n">strain</span><span class="o">=</span><span class="n">strain</span>
@@ -804,7 +818,7 @@
                 <span class="n">colour_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">colour</span><span class="p">)</span>
                 <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
 
-            <span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colour_array</span><span class="p">)</span>  <span class="c1"># custom colourmap</span>
+            <span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colour_array</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
             <span class="c1"># plot the mesh colours</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">tripcolor</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
@@ -844,7 +858,7 @@
             <span class="n">colour_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">colour</span><span class="p">)</span>
             <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
 
-        <span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colour_array</span><span class="p">)</span>  <span class="c1"># custom colourmap</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colour_array</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
         <span class="c1"># plot the mesh colours</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">tripcolor</span><span class="p">(</span>
@@ -869,10 +883,28 @@
     <span class="n">node_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
     <span class="n">material</span><span class="p">:</span> <span class="n">Material</span>
 
-<div class="viewcode-block" id="Tri3.second_moments_of_area"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.second_moments_of_area">[docs]</a>    <span class="k">def</span> <span class="nf">second_moments_of_area</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Calculates the second moments of area for the current finite element.</span>
+<div class="viewcode-block" id="Tri3.calculate_area"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_area">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the area of the finite element.</span>
+
+<span class="sd">        :return: Element area</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">area</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># get points for 1 point Gaussian integration</span>
+        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># loop through each gauss point</span>
+        <span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="n">gps</span><span class="p">:</span>
+            <span class="c1"># determine shape function and jacobian</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">shape_function</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">gauss_point</span><span class="o">=</span><span class="n">gp</span><span class="p">)</span>
+
+            <span class="n">area</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">j</span>
+
+        <span class="k">return</span> <span class="n">area</span></div>
+
+<div class="viewcode-block" id="Tri3.second_moments_of_area"><a class="viewcode-back" href="../../rst/gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.second_moments_of_area">[docs]</a>    <span class="k">def</span> <span class="nf">second_moments_of_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the second moments of area of the finite element.</span>
 
 <span class="sd">        :return: Modulus weighted second moments of area *(e_ixx, e_iyy, e_ixy)*</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1012,8 +1044,8 @@
         <span class="n">min_strain_e</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">max_strain_e</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="c1"># get points for 1 point Gaussian integration</span>
-        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># get points for 3 point Gaussian integration</span>
+        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
         <span class="c1"># loop through each gauss point</span>
         <span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="n">gps</span><span class="p">:</span>
@@ -1042,8 +1074,8 @@
 
             <span class="c1"># add force and moment</span>
             <span class="n">force_e</span> <span class="o">+=</span> <span class="n">force_gp</span>
-            <span class="n">m_x_e</span> <span class="o">+=</span> <span class="n">force_e</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">m_y_e</span> <span class="o">+=</span> <span class="n">force_e</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">m_x_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">m_y_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">m_x_e</span><span class="p">,</span> <span class="n">m_y_e</span><span class="p">,</span> <span class="n">min_strain_e</span><span class="p">,</span> <span class="n">max_strain_e</span></div>
 
@@ -1072,8 +1104,8 @@
         <span class="n">m_x_e</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">m_y_e</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="c1"># get points for 1 point Gaussian integration</span>
-        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># get points for 3 point Gaussian integration</span>
+        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
         <span class="c1"># loop through each gauss point</span>
         <span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="n">gps</span><span class="p">:</span>
