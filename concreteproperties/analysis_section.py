@@ -31,6 +31,7 @@ class AnalysisSection:
         :param geometry: Geometry object
         """
 
+        self.geometry = geometry
         self.material = geometry.material
 
         # create simple mesh
@@ -74,6 +75,19 @@ class AnalysisSection:
                     material=self.material,
                 )
             )
+
+    def calculate_meshed_area(self) -> float:
+        """Calculates the area of the analysis section based on the generated mesh.
+        
+        :return: Meshed area (un-weighted by elastic modulus)
+        """
+
+        area = 0
+
+        for el in self.elements:
+            area += el.calculate_area()
+
+        return area
 
     def get_elastic_stress(
         self,
@@ -239,7 +253,7 @@ class AnalysisSection:
                 kappa=kappa,
             )
 
-            # get stress at gauss point
+            # get stress at node
             sig[idx] = self.material.stress_strain_profile.get_stress(strain=strain)
 
         # calculate total force
@@ -339,7 +353,7 @@ class AnalysisSection:
                     ultimate_strain=ultimate_strain,
                 )
 
-            # get stress at gauss point
+            # get stress at node
             if isinstance(self.material, Concrete):
                 sig[idx] = self.material.ultimate_stress_strain_profile.get_stress(
                     strain=strain
@@ -390,7 +404,7 @@ class AnalysisSection:
                 colour_array.append(el.material.colour)
                 c.append(idx)
 
-            cmap = ListedColormap(colour_array)  # custom colourmap
+            cmap = ListedColormap(colour_array)  # type: ignore
 
             # plot the mesh colours
             ax.tripcolor(  # type: ignore
@@ -430,7 +444,7 @@ class AnalysisSection:
             colour_array.append(el.material.colour)
             c.append(idx)
 
-        cmap = ListedColormap(colour_array)  # custom colourmap
+        cmap = ListedColormap(colour_array)  # type: ignore
 
         # plot the mesh colours
         ax.tripcolor(
@@ -455,10 +469,28 @@ class Tri3:
     node_ids: List[int]
     material: Material
 
-    def second_moments_of_area(
-        self,
-    ) -> Tuple[float, float, float]:
-        """Calculates the second moments of area for the current finite element.
+    def calculate_area(self) -> float:
+        """Calculates the area of the finite element.
+        
+        :return: Element area
+        """
+
+        area = 0
+
+        # get points for 1 point Gaussian integration
+        gps = utils.gauss_points(n=1)
+
+        # loop through each gauss point
+        for gp in gps:
+            # determine shape function and jacobian
+            _, j = utils.shape_function(coords=self.coords, gauss_point=gp)
+
+            area += gp[0] * j
+
+        return area
+
+    def second_moments_of_area(self) -> Tuple[float, float, float]:
+        """Calculates the second moments of area of the finite element.
 
         :return: Modulus weighted second moments of area *(e_ixx, e_iyy, e_ixy)*
         """
@@ -598,8 +630,8 @@ class Tri3:
         min_strain_e = 0
         max_strain_e = 0
 
-        # get points for 1 point Gaussian integration
-        gps = utils.gauss_points(n=1)
+        # get points for 3 point Gaussian integration
+        gps = utils.gauss_points(n=3)
 
         # loop through each gauss point
         for gp in gps:
@@ -628,8 +660,8 @@ class Tri3:
 
             # add force and moment
             force_e += force_gp
-            m_x_e += force_e * (y - centroid[1])
-            m_y_e += force_e * (x - centroid[0])
+            m_x_e += force_gp * (y - centroid[1])
+            m_y_e += force_gp * (x - centroid[0])
 
         return force_e, m_x_e, m_y_e, min_strain_e, max_strain_e
 
@@ -658,8 +690,8 @@ class Tri3:
         m_x_e = 0
         m_y_e = 0
 
-        # get points for 1 point Gaussian integration
-        gps = utils.gauss_points(n=1)
+        # get points for 3 point Gaussian integration
+        gps = utils.gauss_points(n=3)
 
         # loop through each gauss point
         for gp in gps:

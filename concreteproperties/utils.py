@@ -276,9 +276,9 @@ def gauss_points(
         return [[0.5, 1.0 / 3, 1.0 / 3]]
     elif n == 3:
         return [
-            [1.0 / 6, 0, 0.5],
-            [1.0 / 6, 0.5, 0],
-            [1.0 / 6, 0.5, 0.5],
+            [1.0 / 6, 1.0 / 6, 1.0 / 6],
+            [1.0 / 6, 2.0 / 3, 1.0 / 6],
+            [1.0 / 6, 1.0 / 6, 2.0 / 3],
         ]
     else:
         raise ValueError(f"{n} gauss points not implemented.")
