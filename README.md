@@ -43,6 +43,7 @@ through submitting bug reports, feature requests or pull requests. Please read t
     - [x] Linear profile
     - [x] Linear profile (no tension)
     - [x] Eurocode non-linear
+    - [x] Modified Mander non-linear profile (confined & unconfined concrete)
   - [x] Ultimate stress-strain profiles
     - [x] Rectangular stress block
     - [x] Bilinear stress-strain profile
