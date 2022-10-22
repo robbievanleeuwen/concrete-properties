@@ -1270,16 +1270,18 @@ class NZS3101(DesignCode):
         # analyse the concrete section to create the M/N interaction curve
         mi_res = analysis_section.moment_interaction_diagram(
             theta=theta,
-            control_points=[
-                ("kappa0", 0.0),
-                ("N", max_comp),
-                ("fy", 0),
-                ("fy", 0.5),
-                ("fy", 1.0),
-                ("N", 0.0),
-                ("d_n", 1e-6),
-            ],
-            n_points=[3, 8, 10, 12, 12, 3],
+            # Utilise default control points until this issue is addressed
+            # https://github.com/robbievanleeuwen/concrete-properties/issues/39
+            # control_points=[
+            #     ("kappa0", 0.0),
+            #     ("N", max_comp),
+            #     ("fy", 0),
+            #     ("fy", 0.5),
+            #     ("fy", 1.0),
+            #     ("N", 0.0),
+            #     ("d_n", 1e-6),
+            # ],
+            # n_points=[3, 8, 10, 12, 12, 3],
             max_comp=max_comp,
         )
 
