@@ -521,6 +521,13 @@ class ModifiedMander(ConcreteServiceProfile):
         - Note that the 0.6 factor applied to the ultimate tensile failure strain can
           be modified as noted above.
 
+    .. figure:: ../../_static/mander_unconfined.png
+       :align: center
+       :scale: 75 %
+    .. figure:: ../../_static/mander_confined.png
+       :align: center
+       :scale: 75 %
+
     .. [1] Theoretical Stress-Strain Model For Confined Concrete - Mander, Priestley,
       Park (1988)
     .. [2] Observed Stress-Strain Behavior of Confined Concrete - Mander, Priestley,
