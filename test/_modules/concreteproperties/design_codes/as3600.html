@@ -343,7 +343,7 @@
 
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">inf</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">concreteproperties.results</span> <span class="k">as</span> <span class="nn">res</span>
 <span class="kn">import</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="k">as</span> <span class="nn">ssp</span>
@@ -722,11 +722,38 @@
 
 <div class="viewcode-block" id="AS3600.moment_interaction_diagram"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.moment_interaction_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">moment_interaction_diagram</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">control_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;fy&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+        <span class="n">n_points</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
         <span class="n">phi_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
         <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram with capacity factors to AS 3600:2018.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram with capacity factors to AS 3600:2018.</span>
 
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
+<span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">        :param control_points: List of control points over which to generate the</span>
+<span class="sd">            interaction diagram. Each entry in ``control_points`` is a ``Tuple`` with</span>
+<span class="sd">            the first item the type of control point and the second item defining the</span>
+<span class="sd">            location of the control point. Acceptable types of control points are</span>
+<span class="sd">            ``&quot;D&quot;`` (ratio of neutral axis depth to section depth), ``&quot;d_n&quot;`` (neutral</span>
+<span class="sd">            axis depth), ``&quot;fy&quot;`` (yield ratio of the most extreme tensile bar), ``&quot;N&quot;``</span>
+<span class="sd">            (axial force) and ``&quot;kappa&quot;`` (zero curvature compression - must be at start</span>
+<span class="sd">            of list, second value in tuple is not used). Control points must be defined</span>
+<span class="sd">            in an order which results in a decreasing neutral axis depth (decreasing</span>
+<span class="sd">            axial force). The default control points define an interaction diagram from</span>
+<span class="sd">            the decompression point to the pure bending point.</span>
+<span class="sd">        :param labels: List of labels to apply to the ``control_points`` for plotting</span>
+<span class="sd">            purposes, length must be the same as the length of ``control_points``. If a</span>
+<span class="sd">            single value is provided, will apply this label to all control points.</span>
+<span class="sd">        :param n_points: Number of neutral axis depths to compute between each control</span>
+<span class="sd">            point. Length must be one less than the length of ``control_points``. If an</span>
+<span class="sd">            integer is provided this will be used between all control points.</span>
 <span class="sd">        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)</span>
 <span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
 
@@ -735,12 +762,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">mi_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span>
-            <span class="n">control_points</span><span class="o">=</span><span class="p">[</span>
-                <span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-                <span class="p">(</span><span class="s2">&quot;fy&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-                <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
-            <span class="p">],</span>
-            <span class="n">n_points</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+            <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+            <span class="n">control_points</span><span class="o">=</span><span class="n">control_points</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+            <span class="n">n_points</span><span class="o">=</span><span class="n">n_points</span><span class="p">,</span>
             <span class="n">progress_bar</span><span class="o">=</span><span class="n">progress_bar</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -839,7 +864,7 @@
 
                 <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
                     <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
- 
+
         <span class="k">if</span> <span class="n">progress_bar</span><span class="p">:</span>
             <span class="c1"># create progress bar</span>
             <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span>
@@ -853,8 +878,8 @@
                 <span class="n">bbcurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">)</span>
 
                 <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="n">task</span><span class="p">,</span>
-                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: Biaxial bending diagram generated&quot;</span><span class="p">,</span>
+                    <span class="n">task</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: Biaxial bending diagram generated&quot;</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
