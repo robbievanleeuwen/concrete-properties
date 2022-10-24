@@ -42,14 +42,10 @@ can be found in the README file on github.
    :maxdepth: 1
    :caption: Contents:
 
-   rst/installation
-   rst/materials
-   rst/geometry
-   rst/analysis
-   rst/results
-   rst/design_codes
-   rst/examples
-   rst/api
+   installation
+   user_guide
+   examples
+   api
 
 
 Indices and tables

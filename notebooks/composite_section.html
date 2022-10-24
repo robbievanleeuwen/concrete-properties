@@ -38,7 +38,6 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/composite_section';</script>
@@ -130,68 +129,32 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                 <li class="nav-item">
-                    <a class="nav-link" href="../rst/installation.html">
+                    <a class="nav-link" href="../installation.html">
                         Installation
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../rst/materials.html">
-                        Materials
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/geometry.html">
-                        Geometry
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/analysis.html">
-                        Analysis
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/results.html">
-                        Results
-                    </a>
-                </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                </button>
-                <div class="dropdown-menu">
-                    
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/design_codes.html">
-                        Design Codes
+                    <a class="nav-link" href="../user_guide.html">
+                        User Guide
                     </a>
                 </li>
                 
 
                 <li class="nav-item current active">
-                    <a class="nav-link" href="../rst/examples.html">
+                    <a class="nav-link" href="../examples.html">
                         Examples
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../rst/api.html">
+                    <a class="nav-link" href="../api.html">
                         API Reference
                     </a>
                 </li>
                 
-                </div>
-            </div>
-            
     </ul>
 </nav>
       </div>
@@ -281,68 +244,32 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                 <li class="nav-item">
-                    <a class="nav-link" href="../rst/installation.html">
+                    <a class="nav-link" href="../installation.html">
                         Installation
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../rst/materials.html">
-                        Materials
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/geometry.html">
-                        Geometry
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/analysis.html">
-                        Analysis
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/results.html">
-                        Results
-                    </a>
-                </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                </button>
-                <div class="dropdown-menu">
-                    
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/design_codes.html">
-                        Design Codes
+                    <a class="nav-link" href="../user_guide.html">
+                        User Guide
                     </a>
                 </li>
                 
 
                 <li class="nav-item current active">
-                    <a class="nav-link" href="../rst/examples.html">
+                    <a class="nav-link" href="../examples.html">
                         Examples
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../rst/api.html">
+                    <a class="nav-link" href="../api.html">
                         API Reference
                     </a>
                 </li>
                 
-                </div>
-            </div>
-            
     </ul>
 </nav>
       </div>
@@ -881,25 +808,13 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Moment-Curvature-Diagram">
 <h3><span class="section-number">8.2.3. </span>Moment Curvature Diagram<a class="headerlink" href="#Moment-Curvature-Diagram" title="Permalink to this heading">#</a></h3>
 <p>Generate a moment-curvature diagram and plot the stress after yielding of the steel.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "66b19237da3d4ea0ac0ed88a24587a68"}</script></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -995,7 +910,7 @@ div.rendered_html tbody tr:hover {
 │<span style="color: #008080; text-decoration-color: #008080"> Neutral Axis Depth - d_n     </span>│<span style="color: #008000; text-decoration-color: #008000">  1.714567e+02 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Neutral Axis Parameter - k_u </span>│<span style="color: #008000; text-decoration-color: #008000">  3.827159e-01 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Axial Force                  </span>│<span style="color: #008000; text-decoration-color: #008000"> -2.996934e+01 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_x       </span>│<span style="color: #008000; text-decoration-color: #008000">  1.266599e-07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_x       </span>│<span style="color: #008000; text-decoration-color: #008000">  9.685755e-08 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_y       </span>│<span style="color: #008000; text-decoration-color: #008000"> -8.622400e+08 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_xy      </span>│<span style="color: #008000; text-decoration-color: #008000">  8.622400e+08 </span>│
 └──────────────────────────────┴───────────────┘
@@ -1005,7 +920,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">mi_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1014,19 +929,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "4abdc32927954eeba36287ed9b99a920"}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_composite_section_17_2.svg" src="../_images/notebooks_composite_section_17_2.svg" /></div>
+<img alt="../_images/notebooks_composite_section_17_0.svg" src="../_images/notebooks_composite_section_17_0.svg" /></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -1041,7 +944,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bb_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">biaxial_bending_diagram</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bb_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">biaxial_bending_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">bb_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1050,19 +953,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "9a1ad6db75e648cfaa0427f45e2a4f34"}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_composite_section_18_2.svg" src="../_images/notebooks_composite_section_18_2.svg" /></div>
+<img alt="../_images/notebooks_composite_section_18_0.svg" src="../_images/notebooks_composite_section_18_0.svg" /></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -1283,38 +1174,14 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Compare-Moment-Curvature-Response">
 <h3><span class="section-number">8.3.2. </span>Compare Moment Curvature Response<a class="headerlink" href="#Compare-Moment-Curvature-Response" title="Permalink to this heading">#</a></h3>
 <p>Calculate the moment curvature response of each column and compare the results.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res_comp</span> <span class="o">=</span> <span class="n">conc_sec_comp</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">()</span>
-<span class="n">mk_res_conc</span> <span class="o">=</span> <span class="n">conc_sec_conc</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res_comp</span> <span class="o">=</span> <span class="n">conc_sec_comp</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">mk_res_conc</span> <span class="o">=</span> <span class="n">conc_sec_conc</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "6f6d220dc7a049029210f5b43e6a0a48"}</script></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "06396d91c15b4f6d8a48e44065a74295"}</script></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
@@ -1362,8 +1229,9 @@ div.rendered_html tbody tr:hover {
         <span class="p">(</span><span class="s2">&quot;d_n&quot;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">),</span>
     <span class="p">],</span>
     <span class="n">n_points</span><span class="o">=</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">mi_res_conc</span> <span class="o">=</span> <span class="n">conc_sec_conc</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">()</span>
+<span class="n">mi_res_conc</span> <span class="o">=</span> <span class="n">conc_sec_conc</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="o">.</span><span class="n">plot_multiple_diagrams</span><span class="p">(</span>
     <span class="n">moment_interaction_results</span><span class="o">=</span><span class="p">[</span><span class="n">mi_res_comp</span><span class="p">,</span> <span class="n">mi_res_conc</span><span class="p">],</span>
     <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Composite&quot;</span><span class="p">,</span> <span class="s2">&quot;Concrete&quot;</span><span class="p">],</span>
@@ -1376,31 +1244,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "a3f866f3f3f5457d94771a0f62ff36d2"}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "fe1491f058054f4dbbc33386f87e43ce"}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_composite_section_32_4.svg" src="../_images/notebooks_composite_section_32_4.svg" /></div>
+<img alt="../_images/notebooks_composite_section_32_0.svg" src="../_images/notebooks_composite_section_32_0.svg" /></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -1497,25 +1341,13 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Moment-Curvature-Response">
 <h3><span class="section-number">8.4.1. </span>Moment Curvature Response<a class="headerlink" href="#Moment-Curvature-Response" title="Permalink to this heading">#</a></h3>
 <p>Calculate the moment curvature response of the composite section. The section should show a gradual yielding response as plasticity develops over the depth of the steel beam.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "f30f8a29546b4e86980dacf94f588fcb"}</script></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
@@ -1617,16 +1449,14 @@ div.rendered_html tbody tr:hover {
 │<span style="color: #008080; text-decoration-color: #008080"> Neutral Axis Depth - d_n     </span>│<span style="color: #008000; text-decoration-color: #008000">  9.472512e+01 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Neutral Axis Parameter - k_u </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000000e+00 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Axial Force                  </span>│<span style="color: #008000; text-decoration-color: #008000">  3.399405e+01 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_x       </span>│<span style="color: #008000; text-decoration-color: #008000"> -3.010791e-08 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_x       </span>│<span style="color: #008000; text-decoration-color: #008000"> -5.744732e-08 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_y       </span>│<span style="color: #008000; text-decoration-color: #008000"> -1.195122e+09 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_xy      </span>│<span style="color: #008000; text-decoration-color: #008000">  1.195122e+09 </span>│
 └──────────────────────────────┴───────────────┘
 </pre></div>
 </div>
 <p>The above results match closely with the moment curvature results, as will as confirming that the neutral axis is within the concrete slab. Note that <code class="docutils literal notranslate"><span class="pre">k_u</span></code> is not calculated for only meshed sections, it is only computed for lumped reinforcement.</p>
-<script type="application/vnd.jupyter.widget-state+json">
-{"state": {"cdf4d5f4ad754aba9d64b5cecea2bdb3": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "66b19237da3d4ea0ac0ed88a24587a68": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_cdf4d5f4ad754aba9d64b5cecea2bdb3", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u2826\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                          \u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m \u001b[33m[ 19.0561 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u2826</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                          <span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 19.0561 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "59be4e935c1d49e9b2208735f1cd3b0f": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "4abdc32927954eeba36287ed9b99a920": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_59be4e935c1d49e9b2208735f1cd3b0f", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 M-N diagram generated\u001b[0m                        \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 1.2809 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-N diagram generated</span>                        <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 1.2809 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "0703db636c514545b6d341c58162e879": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "9a1ad6db75e648cfaa0427f45e2a4f34": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_0703db636c514545b6d341c58162e879", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 Biaxial bending diagram generated\u001b[0m            \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 18.9568 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 Biaxial bending diagram generated</span>            <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 18.9568 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "ee3c01120a30454c9f133766d1be53bd": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "6f6d220dc7a049029210f5b43e6a0a48": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_ee3c01120a30454c9f133766d1be53bd", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u2839\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                          \u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m \u001b[33m[ 23.4960 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u2839</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                          <span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 23.4960 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "537ba9b07d8e4cae8ec92fdab863dda2": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "06396d91c15b4f6d8a48e44065a74295": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_537ba9b07d8e4cae8ec92fdab863dda2", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u2834\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                          \u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m \u001b[33m[ 14.9298 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u2834</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                          <span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 14.9298 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "c21900ebc3604b34ac81ad0ba1cfcd03": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "a3f866f3f3f5457d94771a0f62ff36d2": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_c21900ebc3604b34ac81ad0ba1cfcd03", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 M-N diagram generated\u001b[0m                        \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 2.4756 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-N diagram generated</span>                        <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 2.4756 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "5980a9271ad640cfabd7fcd658d019b3": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "fe1491f058054f4dbbc33386f87e43ce": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_5980a9271ad640cfabd7fcd658d019b3", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 M-N diagram generated\u001b[0m                        \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 0.4980 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-N diagram generated</span>                        <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 0.4980 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "75ad4aee1913412f994bc431363b0a96": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "f30f8a29546b4e86980dacf94f588fcb": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_75ad4aee1913412f994bc431363b0a96", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u283c\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                           \u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m \u001b[33m[ 4.4649 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u283c</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                           <span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 4.4649 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}}, "version_major": 2, "version_minor": 0}
-</script></div>
+</div>
 </div>
 </div>
 

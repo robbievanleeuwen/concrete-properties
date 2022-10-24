@@ -38,7 +38,6 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/stress_analysis';</script>
@@ -130,68 +129,32 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                 <li class="nav-item">
-                    <a class="nav-link" href="../rst/installation.html">
+                    <a class="nav-link" href="../installation.html">
                         Installation
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../rst/materials.html">
-                        Materials
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/geometry.html">
-                        Geometry
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/analysis.html">
-                        Analysis
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/results.html">
-                        Results
-                    </a>
-                </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                </button>
-                <div class="dropdown-menu">
-                    
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/design_codes.html">
-                        Design Codes
+                    <a class="nav-link" href="../user_guide.html">
+                        User Guide
                     </a>
                 </li>
                 
 
                 <li class="nav-item current active">
-                    <a class="nav-link" href="../rst/examples.html">
+                    <a class="nav-link" href="../examples.html">
                         Examples
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../rst/api.html">
+                    <a class="nav-link" href="../api.html">
                         API Reference
                     </a>
                 </li>
                 
-                </div>
-            </div>
-            
     </ul>
 </nav>
       </div>
@@ -281,68 +244,32 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                 <li class="nav-item">
-                    <a class="nav-link" href="../rst/installation.html">
+                    <a class="nav-link" href="../installation.html">
                         Installation
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../rst/materials.html">
-                        Materials
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/geometry.html">
-                        Geometry
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/analysis.html">
-                        Analysis
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/results.html">
-                        Results
-                    </a>
-                </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                </button>
-                <div class="dropdown-menu">
-                    
-                <li class="nav-item">
-                    <a class="nav-link" href="../rst/design_codes.html">
-                        Design Codes
+                    <a class="nav-link" href="../user_guide.html">
+                        User Guide
                     </a>
                 </li>
                 
 
                 <li class="nav-item current active">
-                    <a class="nav-link" href="../rst/examples.html">
+                    <a class="nav-link" href="../examples.html">
                         Examples
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../rst/api.html">
+                    <a class="nav-link" href="../api.html">
                         API Reference
                     </a>
                 </li>
                 
-                </div>
-            </div>
-            
     </ul>
 </nav>
       </div>
@@ -1099,25 +1026,13 @@ External Moment: 150 kN.m
 <div class="section" id="Service-Stress-Analysis">
 <h2><span class="section-number">7.5. </span>Service Stress Analysis<a class="headerlink" href="#Service-Stress-Analysis" title="Permalink to this heading">#</a></h2>
 <p>A service stress analysis displays internal stresses based off the stress-strain profiles provided to the material properties. Before viewing the stresses, a moment curvature analysis must be performed to establish the structural response of the reinforced concrete section.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "7248bf6e89e449d6ac478284f2dcb97a"}</script></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
 </div>
 <p>Let’s plot the moment curvature diagram so that we can choose some interesting points to generate stress results.</p>
 <div class="nbinput docutils container">
@@ -1243,7 +1158,7 @@ External Moment: 150 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">mi_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1252,19 +1167,7 @@ External Moment: 150 kN.m
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "951b0fd3edc245808dba0d9ec255e6ca"}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_stress_analysis_32_2.svg" src="../_images/notebooks_stress_analysis_32_2.svg" /></div>
+<img alt="../_images/notebooks_stress_analysis_32_0.svg" src="../_images/notebooks_stress_analysis_32_0.svg" /></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -1341,9 +1244,7 @@ External Moment: 150 kN.m
 </pre></div></div>
 </div>
 <p>As a rectangular stress block is used for the ultimate stress-strain profile, the entire cross-section is not in compression due to the zero stress region above the neutral axis in the stress-strain profile.</p>
-<script type="application/vnd.jupyter.widget-state+json">
-{"state": {"664c51ed3cfc431a9d3b0715f5db70ab": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "7248bf6e89e449d6ac478284f2dcb97a": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_664c51ed3cfc431a9d3b0715f5db70ab", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "\u001b[32m\u2819\u001b[0m \u001b[1;32m\u2705 M-K diagram generated\u001b[0m                          \u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;58;58;58m\u2501\u001b[0m\u001b[38;2;62;57;59m\u2501\u001b[0m\u001b[38;2;76;56;63m\u2501\u001b[0m\u001b[38;2;97;53;69m\u2501\u001b[0m\u001b[38;2;123;51;77m\u2501\u001b[0m\u001b[38;2;153;48;86m\u2501\u001b[0m\u001b[38;2;183;44;94m\u2501\u001b[0m\u001b[38;2;209;42;102m\u2501\u001b[0m\u001b[38;2;230;39;108m\u2501\u001b[0m\u001b[38;2;244;38;112m\u2501\u001b[0m\u001b[38;2;249;38;114m\u2501\u001b[0m \u001b[33m[ 17.7972 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #008000; text-decoration-color: #008000\">\u2819</span> <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-K diagram generated</span>                          <span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #3a3a3a; text-decoration-color: #3a3a3a\">\u2501</span><span style=\"color: #3e393b; text-decoration-color: #3e393b\">\u2501</span><span style=\"color: #4c383f; text-decoration-color: #4c383f\">\u2501</span><span style=\"color: #613545; text-decoration-color: #613545\">\u2501</span><span style=\"color: #7b334d; text-decoration-color: #7b334d\">\u2501</span><span style=\"color: #993056; text-decoration-color: #993056\">\u2501</span><span style=\"color: #b72c5e; text-decoration-color: #b72c5e\">\u2501</span><span style=\"color: #d12a66; text-decoration-color: #d12a66\">\u2501</span><span style=\"color: #e6276c; text-decoration-color: #e6276c\">\u2501</span><span style=\"color: #f42670; text-decoration-color: #f42670\">\u2501</span><span style=\"color: #f92672; text-decoration-color: #f92672\">\u2501</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 17.7972 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}, "bbfcdb0c570e47c88657608ce5ef5b24": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "951b0fd3edc245808dba0d9ec255e6ca": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_bbfcdb0c570e47c88657608ce5ef5b24", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "  \u001b[1;32m\u2705 M-N diagram generated\u001b[0m                        \u001b[38;2;114;156;31m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[33m[ 0.5113 s ]\u001b[0m\n", "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">  <span style=\"color: #008000; text-decoration-color: #008000; font-weight: bold\">\u2705 M-N diagram generated</span>                        <span style=\"color: #729c1f; text-decoration-color: #729c1f\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #808000; text-decoration-color: #808000\">[ 0.5113 s ]</span>\n</pre>\n"}}], "tabbable": null, "tooltip": null}}}, "version_major": 2, "version_minor": 0}
-</script></div>
+</div>
 </div>
 
 

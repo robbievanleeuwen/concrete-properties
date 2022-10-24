@@ -38,7 +38,6 @@
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/concreteproperties/design_codes/as3600';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
@@ -126,68 +125,32 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                 <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/installation.html">
+                    <a class="nav-link" href="../../../installation.html">
                         Installation
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/materials.html">
-                        Materials
+                    <a class="nav-link" href="../../../user_guide.html">
+                        User Guide
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/geometry.html">
-                        Geometry
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/analysis.html">
-                        Analysis
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/results.html">
-                        Results
-                    </a>
-                </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                </button>
-                <div class="dropdown-menu">
-                    
-                <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/design_codes.html">
-                        Design Codes
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/examples.html">
+                    <a class="nav-link" href="../../../examples.html">
                         Examples
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/api.html">
+                    <a class="nav-link" href="../../../api.html">
                         API Reference
                     </a>
                 </li>
                 
-                </div>
-            </div>
-            
     </ul>
 </nav>
       </div>
@@ -277,68 +240,32 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                 <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/installation.html">
+                    <a class="nav-link" href="../../../installation.html">
                         Installation
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/materials.html">
-                        Materials
+                    <a class="nav-link" href="../../../user_guide.html">
+                        User Guide
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/geometry.html">
-                        Geometry
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/analysis.html">
-                        Analysis
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/results.html">
-                        Results
-                    </a>
-                </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                </button>
-                <div class="dropdown-menu">
-                    
-                <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/design_codes.html">
-                        Design Codes
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/examples.html">
+                    <a class="nav-link" href="../../../examples.html">
                         Examples
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../../../rst/api.html">
+                    <a class="nav-link" href="../../../api.html">
                         API Reference
                     </a>
                 </li>
                 
-                </div>
-            </div>
-            
     </ul>
 </nav>
       </div>
@@ -416,7 +343,7 @@
 
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">inf</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">concreteproperties.results</span> <span class="k">as</span> <span class="nn">res</span>
 <span class="kn">import</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="k">as</span> <span class="nn">ssp</span>
@@ -432,7 +359,7 @@
     <span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
 
 
-<div class="viewcode-block" id="AS3600"><a class="viewcode-back" href="../../../rst/gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600">[docs]</a><span class="k">class</span> <span class="nc">AS3600</span><span class="p">(</span><span class="n">DesignCode</span><span class="p">):</span>
+<div class="viewcode-block" id="AS3600"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600">[docs]</a><span class="k">class</span> <span class="nc">AS3600</span><span class="p">(</span><span class="n">DesignCode</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Design code class for Australian standard AS 3600:2018.</span>
 
 <span class="sd">    Note that this design code only supports :class:`~concreteproperties.pre.Concrete`</span>
@@ -448,7 +375,7 @@
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-<div class="viewcode-block" id="AS3600.assign_concrete_section"><a class="viewcode-back" href="../../../rst/gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.assign_concrete_section">[docs]</a>    <span class="k">def</span> <span class="nf">assign_concrete_section</span><span class="p">(</span>
+<div class="viewcode-block" id="AS3600.assign_concrete_section"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.assign_concrete_section">[docs]</a>    <span class="k">def</span> <span class="nf">assign_concrete_section</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">concrete_section</span><span class="p">:</span> <span class="n">ConcreteSection</span><span class="p">,</span>
     <span class="p">):</span>
@@ -482,7 +409,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">squash_load</span> <span class="o">=</span> <span class="n">squash</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tensile_load</span> <span class="o">=</span> <span class="n">tensile</span></div>
 
-<div class="viewcode-block" id="AS3600.create_concrete_material"><a class="viewcode-back" href="../../../rst/gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.create_concrete_material">[docs]</a>    <span class="k">def</span> <span class="nf">create_concrete_material</span><span class="p">(</span>
+<div class="viewcode-block" id="AS3600.create_concrete_material"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.create_concrete_material">[docs]</a>    <span class="k">def</span> <span class="nf">create_concrete_material</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">compressive_strength</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
@@ -548,7 +475,7 @@
             <span class="n">colour</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="AS3600.create_steel_material"><a class="viewcode-back" href="../../../rst/gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.create_steel_material">[docs]</a>    <span class="k">def</span> <span class="nf">create_steel_material</span><span class="p">(</span>
+<div class="viewcode-block" id="AS3600.create_steel_material"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.create_steel_material">[docs]</a>    <span class="k">def</span> <span class="nf">create_steel_material</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>
         <span class="n">ductility_class</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span>
@@ -588,7 +515,7 @@
             <span class="n">colour</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="AS3600.squash_tensile_load"><a class="viewcode-back" href="../../../rst/gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.squash_tensile_load">[docs]</a>    <span class="k">def</span> <span class="nf">squash_tensile_load</span><span class="p">(</span>
+<div class="viewcode-block" id="AS3600.squash_tensile_load"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.squash_tensile_load">[docs]</a>    <span class="k">def</span> <span class="nf">squash_tensile_load</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Calculates the squash and tensile load of the reinforced concrete section.</span>
@@ -647,7 +574,7 @@
 
         <span class="k">return</span> <span class="n">squash_load</span><span class="p">,</span> <span class="n">tensile_load</span></div>
 
-<div class="viewcode-block" id="AS3600.capacity_reduction_factor"><a class="viewcode-back" href="../../../rst/gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.capacity_reduction_factor">[docs]</a>    <span class="k">def</span> <span class="nf">capacity_reduction_factor</span><span class="p">(</span>
+<div class="viewcode-block" id="AS3600.capacity_reduction_factor"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.capacity_reduction_factor">[docs]</a>    <span class="k">def</span> <span class="nf">capacity_reduction_factor</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n_u</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">n_ub</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -690,7 +617,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="mf">0.65</span></div>
 
-<div class="viewcode-block" id="AS3600.get_k_uo"><a class="viewcode-back" href="../../../rst/gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.get_k_uo">[docs]</a>    <span class="k">def</span> <span class="nf">get_k_uo</span><span class="p">(</span>
+<div class="viewcode-block" id="AS3600.get_k_uo"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.get_k_uo">[docs]</a>    <span class="k">def</span> <span class="nf">get_k_uo</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -706,7 +633,7 @@
 
         <span class="k">return</span> <span class="n">pure_res</span><span class="o">.</span><span class="n">k_u</span></div>
 
-<div class="viewcode-block" id="AS3600.get_n_ub"><a class="viewcode-back" href="../../../rst/gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.get_n_ub">[docs]</a>    <span class="k">def</span> <span class="nf">get_n_ub</span><span class="p">(</span>
+<div class="viewcode-block" id="AS3600.get_n_ub"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.get_n_ub">[docs]</a>    <span class="k">def</span> <span class="nf">get_n_ub</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -734,7 +661,7 @@
 
         <span class="k">return</span> <span class="n">balanced_res</span><span class="o">.</span><span class="n">n</span></div>
 
-<div class="viewcode-block" id="AS3600.ultimate_bending_capacity"><a class="viewcode-back" href="../../../rst/gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.ultimate_bending_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_bending_capacity</span><span class="p">(</span>
+<div class="viewcode-block" id="AS3600.ultimate_bending_capacity"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.ultimate_bending_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_bending_capacity</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -793,25 +720,53 @@
 
         <span class="k">return</span> <span class="n">factored_ult_res</span><span class="p">,</span> <span class="n">ult_res</span><span class="p">,</span> <span class="n">phi</span></div>
 
-<div class="viewcode-block" id="AS3600.moment_interaction_diagram"><a class="viewcode-back" href="../../../rst/gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.moment_interaction_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">moment_interaction_diagram</span><span class="p">(</span>
+<div class="viewcode-block" id="AS3600.moment_interaction_diagram"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.moment_interaction_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">moment_interaction_diagram</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">control_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;fy&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+        <span class="n">n_points</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
         <span class="n">phi_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram with capacity factors to AS 3600:2018.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram with capacity factors to AS 3600:2018.</span>
 
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
+<span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">        :param control_points: List of control points over which to generate the</span>
+<span class="sd">            interaction diagram. Each entry in ``control_points`` is a ``Tuple`` with</span>
+<span class="sd">            the first item the type of control point and the second item defining the</span>
+<span class="sd">            location of the control point. Acceptable types of control points are</span>
+<span class="sd">            ``&quot;D&quot;`` (ratio of neutral axis depth to section depth), ``&quot;d_n&quot;`` (neutral</span>
+<span class="sd">            axis depth), ``&quot;fy&quot;`` (yield ratio of the most extreme tensile bar), ``&quot;N&quot;``</span>
+<span class="sd">            (axial force) and ``&quot;kappa&quot;`` (zero curvature compression - must be at start</span>
+<span class="sd">            of list, second value in tuple is not used). Control points must be defined</span>
+<span class="sd">            in an order which results in a decreasing neutral axis depth (decreasing</span>
+<span class="sd">            axial force). The default control points define an interaction diagram from</span>
+<span class="sd">            the decompression point to the pure bending point.</span>
+<span class="sd">        :param labels: List of labels to apply to the ``control_points`` for plotting</span>
+<span class="sd">            purposes, length must be the same as the length of ``control_points``. If a</span>
+<span class="sd">            single value is provided, will apply this label to all control points.</span>
+<span class="sd">        :param n_points: Number of neutral axis depths to compute between each control</span>
+<span class="sd">            point. Length must be one less than the length of ``control_points``. If an</span>
+<span class="sd">            integer is provided this will be used between all control points.</span>
 <span class="sd">        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)</span>
+<span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
 
 <span class="sd">        :return: Factored and unfactored moment interaction results objects, and list of</span>
 <span class="sd">            capacity reduction factors *(factored_results, unfactored_results, phis)*</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">mi_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span>
-            <span class="n">control_points</span><span class="o">=</span><span class="p">[</span>
-                <span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-                <span class="p">(</span><span class="s2">&quot;fy&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-                <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
-            <span class="p">],</span>
-            <span class="n">n_points</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+            <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+            <span class="n">control_points</span><span class="o">=</span><span class="n">control_points</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+            <span class="n">n_points</span><span class="o">=</span><span class="n">n_points</span><span class="p">,</span>
+            <span class="n">progress_bar</span><span class="o">=</span><span class="n">progress_bar</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># get theta</span>
@@ -868,23 +823,23 @@
 
         <span class="k">return</span> <span class="n">factored_mi_res</span><span class="p">,</span> <span class="n">mi_res</span><span class="p">,</span> <span class="n">phis</span></div>
 
-<div class="viewcode-block" id="AS3600.biaxial_bending_diagram"><a class="viewcode-back" href="../../../rst/gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.biaxial_bending_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">biaxial_bending_diagram</span><span class="p">(</span>
+<div class="viewcode-block" id="AS3600.biaxial_bending_diagram"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.biaxial_bending_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">biaxial_bending_diagram</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">48</span><span class="p">,</span>
         <span class="n">phi_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">BiaxialBendingResults</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Generates a biaxial bending with capacity factors to AS 3600:2018.</span>
 
 <span class="sd">        :param n: Net axial force</span>
 <span class="sd">        :param n_points: Number of calculation points between the decompression</span>
 <span class="sd">        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)</span>
+<span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
 
 <span class="sd">        :return: Factored biaxial bending results object and list of capacity reduction</span>
 <span class="sd">            factors *(factored_results, phis)*</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">pass</span>
 
         <span class="c1"># initialise results</span>
         <span class="n">f_bb_res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">BiaxialBendingResults</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
@@ -896,15 +851,8 @@
         <span class="c1"># generate list of thetas</span>
         <span class="n">theta_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">d_theta</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
 
-        <span class="c1"># create progress bar</span>
-        <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span>
-
-        <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">refresh_per_second</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
-            <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
-                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Generating biaxial bending diagram&quot;</span><span class="p">,</span>
-                <span class="n">total</span><span class="o">=</span><span class="n">n_points</span><span class="p">,</span>
-            <span class="p">)</span>
-
+        <span class="c1"># function that performs biaxial bending analysis</span>
+        <span class="k">def</span> <span class="nf">bbcurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
             <span class="c1"># loop through thetas</span>
             <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">theta_list</span><span class="p">:</span>
                 <span class="c1"># factored capacity</span>
@@ -914,17 +862,32 @@
                 <span class="n">f_bb_res</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_ult_res</span><span class="p">)</span>
                 <span class="n">phis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
 
-                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                    <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-            <span class="c1"># add first result to end of list top</span>
-            <span class="n">f_bb_res</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_bb_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">phis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phis</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">progress_bar</span><span class="p">:</span>
+            <span class="c1"># create progress bar</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span>
 
-            <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="n">task</span><span class="p">,</span>
-                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: Biaxial bending diagram generated&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+            <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">refresh_per_second</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Generating biaxial bending diagram&quot;</span><span class="p">,</span>
+                    <span class="n">total</span><span class="o">=</span><span class="n">n_points</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="n">bbcurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">)</span>
+
+                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="n">task</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: Biaxial bending diagram generated&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bbcurve</span><span class="p">()</span>
+
+        <span class="c1"># add first result to end of list top</span>
+        <span class="n">f_bb_res</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_bb_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">phis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phis</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="n">f_bb_res</span><span class="p">,</span> <span class="n">phis</span></div></div>
 </pre></div>

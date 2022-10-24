@@ -201,7 +201,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "mk_res = conc_sec.moment_curvature_analysis()"
+    "mk_res = conc_sec.moment_curvature_analysis(progress_bar=False)"
    ]
   },
   {
@@ -260,7 +260,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "mi_res = conc_sec.moment_interaction_diagram()\n",
+    "mi_res = conc_sec.moment_interaction_diagram(progress_bar=False)\n",
     "mi_res.plot_diagram()"
    ]
   },
@@ -271,7 +271,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "bb_res = conc_sec.biaxial_bending_diagram()\n",
+    "bb_res = conc_sec.biaxial_bending_diagram(progress_bar=False)\n",
     "bb_res.plot_diagram()"
    ]
   },
@@ -440,8 +440,8 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "mk_res_comp = conc_sec_comp.moment_curvature_analysis()\n",
-    "mk_res_conc = conc_sec_conc.moment_curvature_analysis()"
+    "mk_res_comp = conc_sec_comp.moment_curvature_analysis(progress_bar=False)\n",
+    "mk_res_conc = conc_sec_conc.moment_curvature_analysis(progress_bar=False)"
    ]
   },
   {
@@ -492,8 +492,9 @@
     "        (\"d_n\", 1e-06),\n",
     "    ],\n",
     "    n_points=[6, 16, 4, 4, 4],\n",
+    "    progress_bar=False,\n",
     ")\n",
-    "mi_res_conc = conc_sec_conc.moment_interaction_diagram()\n",
+    "mi_res_conc = conc_sec_conc.moment_interaction_diagram(progress_bar=False)\n",
     "res.MomentInteractionResults.plot_multiple_diagrams(\n",
     "    moment_interaction_results=[mi_res_comp, mi_res_conc],\n",
     "    labels=[\"Composite\", \"Concrete\"],\n",
@@ -600,7 +601,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "mk_res = conc_sec.moment_curvature_analysis(theta=np.pi / 2)"
+    "mk_res = conc_sec.moment_curvature_analysis(theta=np.pi / 2, progress_bar=False)"
    ]
   },
   {
@@ -680,7 +681,7 @@
  ],
  "metadata": {
   "kernelspec": {
-   "display_name": "Python 3.8.12 ('cp')",
+   "display_name": "Python 3 (ipykernel)",
    "language": "python",
    "name": "python3"
   },

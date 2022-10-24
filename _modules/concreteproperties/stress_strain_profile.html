@@ -38,7 +38,6 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/concreteproperties/stress_strain_profile';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
@@ -126,68 +125,32 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                 <li class="nav-item">
-                    <a class="nav-link" href="../../rst/installation.html">
+                    <a class="nav-link" href="../../installation.html">
                         Installation
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../../rst/materials.html">
-                        Materials
+                    <a class="nav-link" href="../../user_guide.html">
+                        User Guide
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../../rst/geometry.html">
-                        Geometry
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../../rst/analysis.html">
-                        Analysis
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../../rst/results.html">
-                        Results
-                    </a>
-                </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                </button>
-                <div class="dropdown-menu">
-                    
-                <li class="nav-item">
-                    <a class="nav-link" href="../../rst/design_codes.html">
-                        Design Codes
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../../rst/examples.html">
+                    <a class="nav-link" href="../../examples.html">
                         Examples
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../../rst/api.html">
+                    <a class="nav-link" href="../../api.html">
                         API Reference
                     </a>
                 </li>
                 
-                </div>
-            </div>
-            
     </ul>
 </nav>
       </div>
@@ -277,68 +240,32 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                 <li class="nav-item">
-                    <a class="nav-link" href="../../rst/installation.html">
+                    <a class="nav-link" href="../../installation.html">
                         Installation
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../../rst/materials.html">
-                        Materials
+                    <a class="nav-link" href="../../user_guide.html">
+                        User Guide
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../../rst/geometry.html">
-                        Geometry
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../../rst/analysis.html">
-                        Analysis
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../../rst/results.html">
-                        Results
-                    </a>
-                </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                </button>
-                <div class="dropdown-menu">
-                    
-                <li class="nav-item">
-                    <a class="nav-link" href="../../rst/design_codes.html">
-                        Design Codes
-                    </a>
-                </li>
-                
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../../rst/examples.html">
+                    <a class="nav-link" href="../../examples.html">
                         Examples
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../../rst/api.html">
+                    <a class="nav-link" href="../../api.html">
                         API Reference
                     </a>
                 </li>
                 
-                </div>
-            </div>
-            
     </ul>
 </nav>
       </div>
@@ -430,7 +357,7 @@
     <span class="kn">import</span> <span class="nn">matplotlib</span>
 
 
-<div class="viewcode-block" id="StressStrainProfile"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.StressStrainProfile">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="StressStrainProfile"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.StressStrainProfile">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">StressStrainProfile</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Abstract base class for a material stress-strain profile.</span>
 
@@ -466,7 +393,7 @@
 
                 <span class="n">prev_strain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
-<div class="viewcode-block" id="StressStrainProfile.get_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_stress</span><span class="p">(</span>
+<div class="viewcode-block" id="StressStrainProfile.get_stress"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -487,7 +414,7 @@
 
         <span class="k">return</span> <span class="n">stress_function</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StressStrainProfile.get_elastic_modulus"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_elastic_modulus">[docs]</a>    <span class="k">def</span> <span class="nf">get_elastic_modulus</span><span class="p">(</span>
+<div class="viewcode-block" id="StressStrainProfile.get_elastic_modulus"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_elastic_modulus">[docs]</a>    <span class="k">def</span> <span class="nf">get_elastic_modulus</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the elastic modulus of the stress-strain profile.</span>
@@ -519,7 +446,7 @@
 
         <span class="k">return</span> <span class="n">em_positive</span></div>
 
-<div class="viewcode-block" id="StressStrainProfile.get_compressive_strength"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_compressive_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_compressive_strength</span><span class="p">(</span>
+<div class="viewcode-block" id="StressStrainProfile.get_compressive_strength"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_compressive_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_compressive_strength</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the most positive stress.</span>
@@ -529,7 +456,7 @@
 
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StressStrainProfile.get_tensile_strength"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_tensile_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_tensile_strength</span><span class="p">(</span>
+<div class="viewcode-block" id="StressStrainProfile.get_tensile_strength"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_tensile_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_tensile_strength</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the most negative stress.</span>
@@ -539,7 +466,7 @@
 
         <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StressStrainProfile.get_yield_strength"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_yield_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_yield_strength</span><span class="p">(</span>
+<div class="viewcode-block" id="StressStrainProfile.get_yield_strength"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_yield_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_yield_strength</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the yield strength of the stress-strain profile.</span>
@@ -549,7 +476,7 @@
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="StressStrainProfile.get_ultimate_compressive_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_ultimate_compressive_strain">[docs]</a>    <span class="k">def</span> <span class="nf">get_ultimate_compressive_strain</span><span class="p">(</span>
+<div class="viewcode-block" id="StressStrainProfile.get_ultimate_compressive_strain"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_ultimate_compressive_strain">[docs]</a>    <span class="k">def</span> <span class="nf">get_ultimate_compressive_strain</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the largest compressive strain.</span>
@@ -559,7 +486,7 @@
 
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StressStrainProfile.get_ultimate_tensile_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_ultimate_tensile_strain">[docs]</a>    <span class="k">def</span> <span class="nf">get_ultimate_tensile_strain</span><span class="p">(</span>
+<div class="viewcode-block" id="StressStrainProfile.get_ultimate_tensile_strain"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_ultimate_tensile_strain">[docs]</a>    <span class="k">def</span> <span class="nf">get_ultimate_tensile_strain</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the largest tensile strain.</span>
@@ -569,7 +496,7 @@
 
         <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StressStrainProfile.get_unique_strains"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_unique_strains">[docs]</a>    <span class="k">def</span> <span class="nf">get_unique_strains</span><span class="p">(</span>
+<div class="viewcode-block" id="StressStrainProfile.get_unique_strains"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile.get_unique_strains">[docs]</a>    <span class="k">def</span> <span class="nf">get_unique_strains</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Returns an ordered list of unique strains.</span>
@@ -582,7 +509,7 @@
 
         <span class="k">return</span> <span class="n">unique_strains</span></div>
 
-<div class="viewcode-block" id="StressStrainProfile.print_properties"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.StressStrainProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
+<div class="viewcode-block" id="StressStrainProfile.print_properties"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.StressStrainProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
     <span class="p">):</span>
@@ -618,7 +545,7 @@
         <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StressStrainProfile.plot_stress_strain"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.StressStrainProfile.plot_stress_strain">[docs]</a>    <span class="k">def</span> <span class="nf">plot_stress_strain</span><span class="p">(</span>
+<div class="viewcode-block" id="StressStrainProfile.plot_stress_strain"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.StressStrainProfile.plot_stress_strain">[docs]</a>    <span class="k">def</span> <span class="nf">plot_stress_strain</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Stress-Strain Profile&quot;</span><span class="p">,</span>
         <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;o-&quot;</span><span class="p">,</span>
@@ -646,7 +573,7 @@
         <span class="k">return</span> <span class="n">ax</span></div></div>
 
 
-<div class="viewcode-block" id="ConcreteServiceProfile"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="ConcreteServiceProfile"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ConcreteServiceProfile</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Abstract class for a concrete service stress-strain profile.</span>
 
@@ -660,7 +587,7 @@
     <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span>
 
-<div class="viewcode-block" id="ConcreteServiceProfile.print_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
+<div class="viewcode-block" id="ConcreteServiceProfile.print_properties"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
     <span class="p">):</span>
@@ -684,7 +611,7 @@
         <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ConcreteServiceProfile.get_elastic_modulus"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_elastic_modulus">[docs]</a>    <span class="k">def</span> <span class="nf">get_elastic_modulus</span><span class="p">(</span>
+<div class="viewcode-block" id="ConcreteServiceProfile.get_elastic_modulus"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_elastic_modulus">[docs]</a>    <span class="k">def</span> <span class="nf">get_elastic_modulus</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the elastic modulus of the stress-strain profile.</span>
@@ -697,7 +624,7 @@
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ConcreteServiceProfile.get_compressive_strength"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_compressive_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_compressive_strength</span><span class="p">(</span>
+<div class="viewcode-block" id="ConcreteServiceProfile.get_compressive_strength"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_compressive_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_compressive_strength</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Returns the most positive stress.</span>
@@ -707,7 +634,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="ConcreteServiceProfile.get_tensile_strength"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_tensile_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_tensile_strength</span><span class="p">(</span>
+<div class="viewcode-block" id="ConcreteServiceProfile.get_tensile_strength"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_tensile_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_tensile_strength</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Returns the most negative stress.</span>
@@ -717,7 +644,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="ConcreteServiceProfile.get_ultimate_compressive_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_ultimate_compressive_strain">[docs]</a>    <span class="k">def</span> <span class="nf">get_ultimate_compressive_strain</span><span class="p">(</span>
+<div class="viewcode-block" id="ConcreteServiceProfile.get_ultimate_compressive_strain"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.ConcreteServiceProfile.html#concreteproperties.stress_strain_profile.ConcreteServiceProfile.get_ultimate_compressive_strain">[docs]</a>    <span class="k">def</span> <span class="nf">get_ultimate_compressive_strain</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the largest strain.</span>
@@ -728,7 +655,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_strain</span></div></div>
 
 
-<div class="viewcode-block" id="ConcreteLinear"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.ConcreteLinear">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="ConcreteLinear"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.ConcreteLinear">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ConcreteLinear</span><span class="p">(</span><span class="n">ConcreteServiceProfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class for a symmetric linear stress-strain profile.</span>
 
@@ -748,7 +675,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.001</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.001</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="ConcreteLinearNoTension"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.ConcreteLinearNoTension">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="ConcreteLinearNoTension"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.ConcreteLinearNoTension">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ConcreteLinearNoTension</span><span class="p">(</span><span class="n">ConcreteServiceProfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class for a linear stress-strain profile with no tensile strength.</span>
 
@@ -776,7 +703,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="EurocodeNonLinear"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.EurocodeNonLinear">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="EurocodeNonLinear"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.EurocodeNonLinear">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">EurocodeNonLinear</span><span class="p">(</span><span class="n">ConcreteServiceProfile</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class for a non-linear stress-strain relationship to EC2.</span>
 
@@ -871,7 +798,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conc_stress</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ConcreteUltimateProfile"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="ConcreteUltimateProfile"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ConcreteUltimateProfile</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Abstract class for a concrete ultimate stress-strain profile.</span>
 
@@ -884,7 +811,7 @@
     <span class="n">stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
     <span class="n">compressive_strength</span><span class="p">:</span> <span class="nb">float</span>
 
-<div class="viewcode-block" id="ConcreteUltimateProfile.get_compressive_strength"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile.get_compressive_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_compressive_strength</span><span class="p">(</span>
+<div class="viewcode-block" id="ConcreteUltimateProfile.get_compressive_strength"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile.get_compressive_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_compressive_strength</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the most positive stress.</span>
@@ -894,7 +821,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span></div>
 
-<div class="viewcode-block" id="ConcreteUltimateProfile.get_ultimate_compressive_strain"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile.get_ultimate_compressive_strain">[docs]</a>    <span class="k">def</span> <span class="nf">get_ultimate_compressive_strain</span><span class="p">(</span>
+<div class="viewcode-block" id="ConcreteUltimateProfile.get_ultimate_compressive_strain"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile.get_ultimate_compressive_strain">[docs]</a>    <span class="k">def</span> <span class="nf">get_ultimate_compressive_strain</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the ultimate strain, or largest compressive strain.</span>
@@ -907,7 +834,7 @@
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_ultimate_compressive_strain</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ConcreteUltimateProfile.print_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
+<div class="viewcode-block" id="ConcreteUltimateProfile.print_properties"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
     <span class="p">):</span>
@@ -932,7 +859,7 @@
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="RectangularStressBlock"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.RectangularStressBlock">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="RectangularStressBlock"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.RectangularStressBlock">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">RectangularStressBlock</span><span class="p">(</span><span class="n">ConcreteUltimateProfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class for a rectangular stress block.</span>
 
@@ -965,7 +892,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span><span class="p">,</span>
         <span class="p">]</span>
 
-<div class="viewcode-block" id="RectangularStressBlock.get_stress"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.RectangularStressBlock.html#concreteproperties.stress_strain_profile.RectangularStressBlock.get_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_stress</span><span class="p">(</span>
+<div class="viewcode-block" id="RectangularStressBlock.get_stress"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.RectangularStressBlock.html#concreteproperties.stress_strain_profile.RectangularStressBlock.get_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -985,7 +912,7 @@
             <span class="k">return</span> <span class="mi">0</span></div></div>
 
 
-<div class="viewcode-block" id="BilinearStressStrain"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.BilinearStressStrain">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="BilinearStressStrain"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.BilinearStressStrain">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">BilinearStressStrain</span><span class="p">(</span><span class="n">ConcreteUltimateProfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class for a bilinear stress-strain relationship.</span>
 
@@ -1018,7 +945,7 @@
         <span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="EurocodeParabolicUltimate"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.EurocodeParabolicUltimate">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="EurocodeParabolicUltimate"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.EurocodeParabolicUltimate">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">EurocodeParabolicUltimate</span><span class="p">(</span><span class="n">ConcreteUltimateProfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class for an ultimate parabolic stress-strain relationship to EC2.</span>
 
@@ -1065,7 +992,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="SteelProfile"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.SteelProfile">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="SteelProfile"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.SteelProfile">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">SteelProfile</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Abstract class for a steel stress-strain profile.</span>
 
@@ -1082,7 +1009,7 @@
     <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">fracture_strain</span><span class="p">:</span> <span class="nb">float</span>
 
-<div class="viewcode-block" id="SteelProfile.get_elastic_modulus"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile.get_elastic_modulus">[docs]</a>    <span class="k">def</span> <span class="nf">get_elastic_modulus</span><span class="p">(</span>
+<div class="viewcode-block" id="SteelProfile.get_elastic_modulus"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile.get_elastic_modulus">[docs]</a>    <span class="k">def</span> <span class="nf">get_elastic_modulus</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the elastic modulus of the stress-strain profile.</span>
@@ -1092,7 +1019,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span></div>
 
-<div class="viewcode-block" id="SteelProfile.get_yield_strength"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile.get_yield_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_yield_strength</span><span class="p">(</span>
+<div class="viewcode-block" id="SteelProfile.get_yield_strength"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile.get_yield_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_yield_strength</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the yield strength of the stress-strain profile.</span>
@@ -1102,7 +1029,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span></div>
 
-<div class="viewcode-block" id="SteelProfile.print_properties"><a class="viewcode-back" href="../../rst/gen/concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
+<div class="viewcode-block" id="SteelProfile.print_properties"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.SteelProfile.html#concreteproperties.stress_strain_profile.SteelProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
     <span class="p">):</span>
@@ -1134,7 +1061,7 @@
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="SteelElasticPlastic"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.SteelElasticPlastic">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="SteelElasticPlastic"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.SteelElasticPlastic">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">SteelElasticPlastic</span><span class="p">(</span><span class="n">SteelProfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class for a perfectly elastic-plastic steel stress-strain profile.</span>
 
@@ -1169,7 +1096,7 @@
         <span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="SteelHardening"><a class="viewcode-back" href="../../rst/materials.html#concreteproperties.stress_strain_profile.SteelHardening">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="SteelHardening"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.SteelHardening">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">SteelHardening</span><span class="p">(</span><span class="n">SteelProfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class for a steel stress-strain profile with strain hardening.</span>
 
