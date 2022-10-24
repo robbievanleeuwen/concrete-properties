@@ -390,6 +390,7 @@ class AS3600(DesignCode):
         labels: List[Union[str, None]] = [None],
         n_points: Union[int, List[int]] = [12, 12],
         phi_0: float = 0.6,
+        progress_bar: bool = True,
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
         r"""Generates a moment interaction diagram with capacity factors to AS 3600:2018.
 
@@ -413,6 +414,7 @@ class AS3600(DesignCode):
             point. Length must be one less than the length of ``control_points``. If an
             integer is provided this will be used between all control points.
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
+        :param progress_bar: If set to True, displays the progress bar
 
         :return: Factored and unfactored moment interaction results objects, and list of
             capacity reduction factors *(factored_results, unfactored_results, phis)*
@@ -423,6 +425,7 @@ class AS3600(DesignCode):
             control_points=control_points,
             labels=labels,
             n_points=n_points,
+            progress_bar=progress_bar,
         )
 
         # get theta
@@ -484,18 +487,18 @@ class AS3600(DesignCode):
         n: float = 0,
         n_points: int = 48,
         phi_0: float = 0.6,
+        progress_bar: bool = True,
     ) -> Tuple[res.BiaxialBendingResults, List[float]]:
         """Generates a biaxial bending with capacity factors to AS 3600:2018.
 
         :param n: Net axial force
         :param n_points: Number of calculation points between the decompression
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
+        :param progress_bar: If set to True, displays the progress bar
 
         :return: Factored biaxial bending results object and list of capacity reduction
             factors *(factored_results, phis)*
         """
-
-        pass
 
         # initialise results
         f_bb_res = res.BiaxialBendingResults(n=n)
@@ -507,15 +510,8 @@ class AS3600(DesignCode):
         # generate list of thetas
         theta_list = np.linspace(start=-np.pi, stop=np.pi - d_theta, num=n_points)
 
-        # create progress bar
-        progress = utils.create_known_progress()
-
-        with Live(progress, refresh_per_second=10) as live:
-            task = progress.add_task(
-                description="[red]Generating biaxial bending diagram",
-                total=n_points,
-            )
-
+        # function that performs biaxial bending analysis
+        def bbcurve(progress=None):
             # loop through thetas
             for theta in theta_list:
                 # factored capacity
@@ -525,16 +521,31 @@ class AS3600(DesignCode):
                 f_bb_res.results.append(f_ult_res)
                 phis.append(phi)
 
-                progress.update(task, advance=1)
+                if progress:
+                    progress.update(task, advance=1)
 
-            # add first result to end of list top
-            f_bb_res.results.append(f_bb_res.results[0])
-            phis.append(phis[0])
+        if progress_bar:
+            # create progress bar
+            progress = utils.create_known_progress()
 
-            progress.update(
-                task,
-                description="[bold green]:white_check_mark: Biaxial bending diagram generated",
-            )
-            live.refresh()
+            with Live(progress, refresh_per_second=10) as live:
+                task = progress.add_task(
+                    description="[red]Generating biaxial bending diagram",
+                    total=n_points,
+                )
+
+                bbcurve(progress=progress)
+
+                progress.update(
+                    task,
+                    description="[bold green]:white_check_mark: Biaxial bending diagram generated",
+                )
+                live.refresh()
+        else:
+            bbcurve()
+
+        # add first result to end of list top
+        f_bb_res.results.append(f_bb_res.results[0])
+        phis.append(phis[0])
 
         return f_bb_res, phis
