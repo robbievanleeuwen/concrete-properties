@@ -129,7 +129,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "bb_res = conc_sec.biaxial_bending_diagram()"
+    "bb_res = conc_sec.biaxial_bending_diagram(progress_bar=False)"
    ]
   },
   {
@@ -165,7 +165,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "bb_res = conc_sec.biaxial_bending_diagram(n=1000e3)\n",
+    "bb_res = conc_sec.biaxial_bending_diagram(n=1000e3, progress_bar=False)\n",
     "bb_res.plot_diagram()"
    ]
   },
@@ -185,8 +185,8 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "mi_x = conc_sec.moment_interaction_diagram()\n",
-    "mi_y = conc_sec.moment_interaction_diagram(theta=np.pi / 2)\n",
+    "mi_x = conc_sec.moment_interaction_diagram(progress_bar=False)\n",
+    "mi_y = conc_sec.moment_interaction_diagram(theta=np.pi / 2, progress_bar=False)\n",
     "mi_x.plot_diagram()\n",
     "mi_y.plot_diagram(moment=\"m_y\")\n",
     "print(f\"Decompression point for M_x is N = {mi_x.results[3].n / 1e3:.2f} kN\")\n",
@@ -212,7 +212,7 @@
     "biaxial_results = []\n",
     "\n",
     "for n in n_list:\n",
-    "    biaxial_results.append(conc_sec.biaxial_bending_diagram(n=n))"
+    "    biaxial_results.append(conc_sec.biaxial_bending_diagram(n=n, progress_bar=False))"
    ]
   },
   {

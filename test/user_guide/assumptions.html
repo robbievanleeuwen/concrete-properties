@@ -38,7 +38,6 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/assumptions';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
@@ -370,19 +369,19 @@
 <div class="section" id="general">
 <h2><span class="section-number">6.1. </span>General<a class="headerlink" href="#general" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Plane sections remain plane (Euler-Bernoulli) i.e. linear strain profile throughout</p></li>
-</ul>
-<p>the cross-section
-- For a given depth, the strain in the reinforcement is equal to the strain in the
-concrete, i.e. there is a perfect bond between concrete and reinforcement
-- Materials that have <code class="docutils literal notranslate"><span class="pre">meshed=False</span></code> (e.g.
+<li><p>Plane sections remain plane (Euler-Bernoulli) i.e. linear strain profile throughout
+the cross-section</p></li>
+<li><p>For a given depth, the strain in the reinforcement is equal to the strain in the
+concrete, i.e. there is a perfect bond between concrete and reinforcement</p></li>
+<li><p>Materials that have <code class="docutils literal notranslate"><span class="pre">meshed=False</span></code> (e.g.
 <a class="reference internal" href="../gen/concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a>) are characterised by a constant strain
-at it’s geometric centroid
-- Stresses in materials are determined from strains by linear interpolation from the
+at it’s geometric centroid</p></li>
+<li><p>Stresses in materials are determined from strains by linear interpolation from the
 corresponding stress-strain profile (linear extrapolation is used where the strains
-are outside the range of the profile)
-- Finite element assumptions and background can be found
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/theory.html">here</a></p>
+are outside the range of the profile)</p></li>
+<li><p>Finite element assumptions and background can be found
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/theory.html">here</a></p></li>
+</ul>
 </div>
 <div class="section" id="cracked-analysis">
 <h2><span class="section-number">6.2. </span>Cracked Analysis<a class="headerlink" href="#cracked-analysis" title="Permalink to this heading">#</a></h2>
@@ -393,23 +392,23 @@ are outside the range of the profile)
 <div class="section" id="ultimate-analysis">
 <h2><span class="section-number">6.3. </span>Ultimate Analysis<a class="headerlink" href="#ultimate-analysis" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>The maximum strain at the extreme concrete compression fibre is assumed to reach a</p></li>
-</ul>
-<p>maximum limiting compressive strain, see note in <a class="reference internal" href="materials.html#label-conc-ult-profile"><span class="std std-ref">Concrete Ultimate Stress-Strain Profiles</span></a>
-- The tensile strength of the concrete is assumed to be zero
-- There are no geometric instabilities (e.g. buckling) prior to the cross-section
-reaching its ultimate strength
-- The stress-strain relationship for concrete may be assumed to be rectangular,
+<li><p>The maximum strain at the extreme concrete compression fibre is assumed to reach a
+maximum limiting compressive strain, see note in <a class="reference internal" href="materials.html#label-conc-ult-profile"><span class="std std-ref">Concrete Ultimate Stress-Strain Profiles</span></a></p></li>
+<li><p>The tensile strength of the concrete is assumed to be zero</p></li>
+<li><p>There are no geometric instabilities (e.g. buckling) prior to the cross-section
+reaching its ultimate strength</p></li>
+<li><p>The stress-strain relationship for concrete may be assumed to be rectangular,
 trapezoidal, bilinear, parabolic, or any other arbitrary shape that results in the
-prediction of strength in substantial agreement with the results of comprehensive tests</p>
+prediction of strength in substantial agreement with the results of comprehensive tests</p></li>
+</ul>
 </div>
 <div class="section" id="conventions">
 <h2><span class="section-number">6.4. </span>Conventions<a class="headerlink" href="#conventions" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Compressive stresses are positive, tensile stresses area negative</p></li>
-<li><p>Angles are measured in radians and are positive counter clockwise from the positive</p></li>
+<li><p>Angles are measured in radians and are positive counter clockwise from the positive
+<code class="docutils literal notranslate"><span class="pre">x</span></code> axis</p></li>
 </ul>
-<p><code class="docutils literal notranslate"><span class="pre">x</span></code> axis</p>
 </div>
 </div>
 

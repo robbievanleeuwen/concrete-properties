@@ -38,7 +38,6 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/concreteproperties/concrete_section';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
@@ -855,6 +854,7 @@
         <span class="n">kappa_inc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-7</span><span class="p">,</span>
         <span class="n">delta_m_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span>
         <span class="n">delta_m_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">:</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Performs a moment curvature analysis given a bending angle ``theta``.</span>
 
@@ -865,13 +865,13 @@
 <span class="sd">        :param kappa_inc: Initial curvature increment</span>
 <span class="sd">        :param delta_m_min: Relative change in moment at which to double step</span>
 <span class="sd">        :param delta_m_max: Relative change in moment at which to halve step</span>
+<span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
 
 <span class="sd">        :return: Moment curvature results object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># initialise variables</span>
         <span class="n">moment_curvature</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentCurvatureResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
-        <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># set neutral axis depth limits</span>
         <span class="c1"># depth of neutral axis at extreme tensile fibre</span>
@@ -881,16 +881,10 @@
         <span class="n">a</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">d_t</span>  <span class="c1"># sufficiently small depth of compressive zone</span>
         <span class="n">b</span> <span class="o">=</span> <span class="n">d_t</span>  <span class="c1"># neutral axis at extreme tensile fibre</span>
 
-        <span class="c1"># create progress bar</span>
-        <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_unknown_progress</span><span class="p">()</span>
+        <span class="c1"># function that performs moment curvature analysis</span>
+        <span class="k">def</span> <span class="nf">mcurve</span><span class="p">(</span><span class="n">kappa_inc</span><span class="o">=</span><span class="n">kappa_inc</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">refresh_per_second</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
-            <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
-                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Generating M-K diagram&quot;</span><span class="p">,</span>
-                <span class="n">total</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="p">)</span>
-
-            <span class="c1"># while there hasn&#39;t been a failure</span>
             <span class="k">while</span> <span class="ow">not</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure</span><span class="p">:</span>
                 <span class="c1"># calculate adaptive step size for curvature</span>
                 <span class="k">if</span> <span class="nb">iter</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -925,10 +919,10 @@
                     <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_x_i</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_y_i</span><span class="o">**</span><span class="mi">2</span>
                 <span class="p">)</span>
 
-                <span class="n">text_update</span> <span class="o">=</span> <span class="s2">&quot;[red]Generating M-K diagram: &quot;</span>
-                <span class="n">text_update</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;M=</span><span class="si">{</span><span class="n">m_xy</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span>
-
-                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">text_update</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                    <span class="n">text_update</span> <span class="o">=</span> <span class="s2">&quot;[red]Generating M-K diagram: &quot;</span>
+                    <span class="n">text_update</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;M=</span><span class="si">{</span><span class="n">m_xy</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">text_update</span><span class="p">)</span>
 
                 <span class="c1"># save results</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure</span><span class="p">:</span>
@@ -939,11 +933,27 @@
                     <span class="n">moment_curvature</span><span class="o">.</span><span class="n">m_xy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m_xy</span><span class="p">)</span>
                     <span class="nb">iter</span> <span class="o">+=</span> <span class="mi">1</span>
 
-            <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="n">task</span><span class="p">,</span>
-                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: M-K diagram generated&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="c1"># create progress bar</span>
+        <span class="k">if</span> <span class="n">progress_bar</span><span class="p">:</span>
+            <span class="c1"># create progress bar</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_unknown_progress</span><span class="p">()</span>
+
+            <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">refresh_per_second</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Generating M-K diagram&quot;</span><span class="p">,</span>
+                    <span class="n">total</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="n">mcurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">)</span>
+
+                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="n">task</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: M-K diagram generated&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mcurve</span><span class="p">()</span>
+
 
         <span class="k">return</span> <span class="n">moment_curvature</span></div>
 
@@ -1294,6 +1304,7 @@
         <span class="n">n_points</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
         <span class="n">max_comp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">max_comp_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">:</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram given a neutral axis angle `theta`</span>
 <span class="sd">        and `n_points` calculation points between the decompression case and the pure</span>
@@ -1323,6 +1334,7 @@
 <span class="sd">        :param max_comp_labels: Labels to apply to the ``max_comp`` intersection points,</span>
 <span class="sd">            first value is at zero moment, second value is at the intersection with the</span>
 <span class="sd">            interaction diagram</span>
+<span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
 
 <span class="sd">        :raises ValueError: If ``control_points``, ``labels`` or ``n_points`` is invalid</span>
 
@@ -1438,16 +1450,8 @@
             <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;tensile fibre to compressive fibre.&quot;</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-        <span class="c1"># create progress bar</span>
-        <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span>
-
-        <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">refresh_per_second</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
-            <span class="c1"># add progress bar task</span>
-            <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
-                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Generating M-N diagram&quot;</span><span class="p">,</span>
-                <span class="n">total</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">n_points</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_points</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="p">)</span>
-
+        <span class="c1"># function that performs moment interaction analysis</span>
+        <span class="k">def</span> <span class="nf">micurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
             <span class="c1"># loop through all neutral axes</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">d_n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d_n_list</span><span class="p">):</span>
                 <span class="c1"># calculate ultimate results</span>
@@ -1465,7 +1469,22 @@
                 <span class="n">ult_res</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
                 <span class="c1"># add ultimate result to moment interactions results and update progress</span>
                 <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ult_res</span><span class="p">)</span>
-                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                    <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">progress_bar</span><span class="p">:</span>
+            <span class="c1"># create progress bar</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span>
+
+            <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">refresh_per_second</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
+                <span class="c1"># add progress bar task</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Generating M-N diagram&quot;</span><span class="p">,</span>
+                    <span class="n">total</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">n_points</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_points</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="n">micurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">)</span>
 
             <span class="c1"># display finished progress bar</span>
             <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
@@ -1473,6 +1492,8 @@
                 <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: M-N diagram generated&quot;</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">micurve</span><span class="p">()</span>
 
         <span class="c1"># cut diagram at max_comp</span>
         <span class="k">if</span> <span class="n">max_comp</span><span class="p">:</span>
@@ -1543,12 +1564,14 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">48</span><span class="p">,</span>
+        <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">BiaxialBendingResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Generates a biaxial bending diagram given a net axial force ``n`` and</span>
 <span class="sd">        ``n_points`` calculation points.</span>
 
 <span class="sd">        :param n: Net axial force</span>
 <span class="sd">        :param n_points: Number of calculation points between the decompression</span>
+<span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
 
 <span class="sd">        :return: Biaxial bending results</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1562,29 +1585,38 @@
         <span class="c1"># generate list of thetas</span>
         <span class="n">theta_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">d_theta</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
 
-        <span class="c1"># create progress bar</span>
-        <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span>
-
-        <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">refresh_per_second</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
-            <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
-                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Generating biaxial bending diagram&quot;</span><span class="p">,</span>
-                <span class="n">total</span><span class="o">=</span><span class="n">n_points</span><span class="p">,</span>
-            <span class="p">)</span>
-
+        <span class="c1"># function that performs biaxial bending analysis</span>
+        <span class="k">def</span> <span class="nf">bbcurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
             <span class="c1"># loop through thetas</span>
             <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">theta_list</span><span class="p">:</span>
                 <span class="n">ultimate_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
                 <span class="n">bb_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ultimate_results</span><span class="p">)</span>
-                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                    <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
             <span class="c1"># add first result to end of list top</span>
             <span class="n">bb_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bb_results</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-            <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="n">task</span><span class="p">,</span>
-                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: Biaxial bending diagram generated&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">progress_bar</span><span class="p">:</span>
+            <span class="c1"># create progress bar</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span>
+
+            <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">refresh_per_second</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Generating biaxial bending diagram&quot;</span><span class="p">,</span>
+                    <span class="n">total</span><span class="o">=</span><span class="n">n_points</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="n">bbcurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">)</span>
+
+                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="n">task</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: Biaxial bending diagram generated&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bbcurve</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">bb_results</span></div>
 
