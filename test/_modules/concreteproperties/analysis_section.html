@@ -1,0 +1,1148 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>concreteproperties.analysis_section &#8212; concreteproperties 0.3.1 documentation</title>
+  <script>
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+
+  
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/concreteproperties/analysis_section';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../_static/cp_logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+    <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
+        latest  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../../installation.html">
+                        Installation
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../user_guide.html">
+                        User Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../examples.html">
+                        Examples
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../api.html">
+                        API Reference
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      <div class="navbar-end-item navbar-end__search-button-container">
+        
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
+    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  <div class="search-button-container--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+  </div>
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../../installation.html">
+                        Installation
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../user_guide.html">
+                        User Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../examples.html">
+                        Examples
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../api.html">
+                        API Reference
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
+    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+      </div>
+      <main class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <h1>Source code for concreteproperties.analysis_section</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">isinf</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">triangle</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+
+<span class="kn">import</span> <span class="nn">concreteproperties.utils</span> <span class="k">as</span> <span class="nn">utils</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.post</span> <span class="kn">import</span> <span class="n">plotting_context</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">matplotlib</span>
+
+    <span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Material</span>
+    <span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">CPGeom</span>
+
+
+<div class="viewcode-block" id="AnalysisSection"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection">[docs]</a><span class="k">class</span> <span class="nc">AnalysisSection</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for an analysis section to perform a fast analysis on meshed sections.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">geometry</span><span class="p">:</span> <span class="n">CPGeom</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits the AnalysisSection class.</span>
+
+<span class="sd">        :param geometry: Geometry object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">material</span>
+
+        <span class="c1"># create simple mesh</span>
+        <span class="n">tri</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># create tri dictionary</span>
+        <span class="n">tri</span><span class="p">[</span><span class="s2">&quot;vertices&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">points</span>  <span class="c1"># set point</span>
+        <span class="n">tri</span><span class="p">[</span><span class="s2">&quot;segments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">facets</span>  <span class="c1"># set facets</span>
+
+        <span class="k">if</span> <span class="n">geometry</span><span class="o">.</span><span class="n">holes</span><span class="p">:</span>
+            <span class="n">tri</span><span class="p">[</span><span class="s2">&quot;holes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">holes</span>  <span class="c1"># set holes</span>
+
+        <span class="c1"># coarse mesh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">triangle</span><span class="o">.</span><span class="n">triangulate</span><span class="p">(</span><span class="n">tri</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">)</span>
+
+        <span class="c1"># extract mesh data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="s2">&quot;vertices&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mesh_elements</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="s2">&quot;triangles&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># if there are no triangles</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mesh_elements</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># build elements</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tri3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">node_ids</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh_elements</span><span class="p">:</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[</span><span class="n">node_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[</span><span class="n">node_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[</span><span class="n">node_ids</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[</span><span class="n">node_ids</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">x3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[</span><span class="n">node_ids</span><span class="p">[</span><span class="mi">2</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">y3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[</span><span class="n">node_ids</span><span class="p">[</span><span class="mi">2</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># create a list containing the vertex coordinates</span>
+            <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">],</span> <span class="p">[</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span><span class="p">]])</span>
+
+            <span class="c1"># add tri elements to the mesh</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Tri3</span><span class="p">(</span>
+                    <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span>
+                    <span class="n">node_ids</span><span class="o">=</span><span class="n">node_ids</span><span class="p">,</span>
+                    <span class="n">material</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="AnalysisSection.calculate_meshed_area"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.calculate_meshed_area">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_meshed_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the area of the analysis section based on the generated mesh.</span>
+
+<span class="sd">        :return: Meshed area (un-weighted by elastic modulus)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">area</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="n">area</span> <span class="o">+=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">area</span></div>
+
+<div class="viewcode-block" id="AnalysisSection.get_elastic_stress"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.get_elastic_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_elastic_stress</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">m_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">m_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">e_a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">cx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">cy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">e_ixx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">e_iyy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">e_ixy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Given section actions and section propreties, calculates elastic stresses.</span>
+
+<span class="sd">        :param n: Axial force</span>
+<span class="sd">        :param m_x: Bending moment about the x-axis</span>
+<span class="sd">        :param m_y: Bending moment about the y-axis</span>
+<span class="sd">        :param e_a: Axial rigidity</span>
+<span class="sd">        :param cx: x-Centroid</span>
+<span class="sd">        :param cy: y-Centroid</span>
+<span class="sd">        :param e_ixx: Flexural rigidity about the x-axis</span>
+<span class="sd">        :param e_iyy: Flexural rigidity about the y-axis</span>
+<span class="sd">        :param e_ixy: Flexural rigidity about the xy-axis</span>
+
+<span class="sd">        :return: Elastic stresses, net force and distance from neutral axis to point of</span>
+<span class="sd">            force action</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># intialise stress results</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">))</span>
+
+        <span class="c1"># loop through nodes</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cx</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cy</span>
+
+            <span class="c1"># axial stress</span>
+            <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">/</span> <span class="n">e_a</span>
+
+            <span class="c1"># bending moment</span>
+            <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="o">-</span><span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                <span class="o">+</span> <span class="p">(</span><span class="n">e_iyy</span> <span class="o">*</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+            <span class="p">)</span>
+            <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+            <span class="p">)</span>
+
+        <span class="c1"># initialise section actions</span>
+        <span class="n">n_sec</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_x_sec</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_y_sec</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="n">el_n</span><span class="p">,</span> <span class="n">el_m_x</span><span class="p">,</span> <span class="n">el_m_y</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_elastic_actions</span><span class="p">(</span>
+                <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                <span class="n">m_x</span><span class="o">=</span><span class="n">m_x</span><span class="p">,</span>
+                <span class="n">m_y</span><span class="o">=</span><span class="n">m_y</span><span class="p">,</span>
+                <span class="n">e_a</span><span class="o">=</span><span class="n">e_a</span><span class="p">,</span>
+                <span class="n">cx</span><span class="o">=</span><span class="n">cx</span><span class="p">,</span>
+                <span class="n">cy</span><span class="o">=</span><span class="n">cy</span><span class="p">,</span>
+                <span class="n">e_ixx</span><span class="o">=</span><span class="n">e_ixx</span><span class="p">,</span>
+                <span class="n">e_iyy</span><span class="o">=</span><span class="n">e_iyy</span><span class="p">,</span>
+                <span class="n">e_ixy</span><span class="o">=</span><span class="n">e_ixy</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">n_sec</span> <span class="o">+=</span> <span class="n">el_n</span>
+            <span class="n">m_x_sec</span> <span class="o">+=</span> <span class="n">el_m_x</span>
+            <span class="n">m_y_sec</span> <span class="o">+=</span> <span class="n">el_m_y</span>
+
+        <span class="c1"># calculate point of action</span>
+        <span class="k">if</span> <span class="n">n_sec</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">d_x</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">d_y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d_x</span> <span class="o">=</span> <span class="n">m_y_sec</span> <span class="o">/</span> <span class="n">n_sec</span>
+            <span class="n">d_y</span> <span class="o">=</span> <span class="n">m_x_sec</span> <span class="o">/</span> <span class="n">n_sec</span>
+
+        <span class="k">return</span> <span class="n">sig</span><span class="p">,</span> <span class="n">n_sec</span><span class="p">,</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_y</span></div>
+
+<div class="viewcode-block" id="AnalysisSection.service_analysis"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.service_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">service_analysis</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">centroid</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Performs a service stress analysis on the section.</span>
+
+<span class="sd">        :param point_na: Point on the neutral axis</span>
+<span class="sd">        :param d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
+<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">        :param kappa: Curvature</span>
+<span class="sd">        :param centroid: Centroid about which to take moments</span>
+
+<span class="sd">        :return: Axial force, section moments and min/max strain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># initialise section actions</span>
+        <span class="n">n_sec</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_x_sec</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_y_sec</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">min_strain</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_strain</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="p">(</span>
+                <span class="n">el_n</span><span class="p">,</span>
+                <span class="n">el_m_x</span><span class="p">,</span>
+                <span class="n">el_m_y</span><span class="p">,</span>
+                <span class="n">el_min_strain</span><span class="p">,</span>
+                <span class="n">el_max_strain</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_service_actions</span><span class="p">(</span>
+                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
+                <span class="n">centroid</span><span class="o">=</span><span class="n">centroid</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">min_strain</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_strain</span><span class="p">,</span> <span class="n">el_min_strain</span><span class="p">)</span>
+            <span class="n">max_strain</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_strain</span><span class="p">,</span> <span class="n">el_max_strain</span><span class="p">)</span>
+
+            <span class="n">n_sec</span> <span class="o">+=</span> <span class="n">el_n</span>
+            <span class="n">m_x_sec</span> <span class="o">+=</span> <span class="n">el_m_x</span>
+            <span class="n">m_y_sec</span> <span class="o">+=</span> <span class="n">el_m_y</span>
+
+        <span class="k">return</span> <span class="n">n_sec</span><span class="p">,</span> <span class="n">m_x_sec</span><span class="p">,</span> <span class="n">m_y_sec</span><span class="p">,</span> <span class="n">min_strain</span><span class="p">,</span> <span class="n">max_strain</span></div>
+
+<div class="viewcode-block" id="AnalysisSection.get_service_stress"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.get_service_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_service_stress</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">centroid</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Given the neutral axis depth `d_n` and curvature `kappa` determines the</span>
+<span class="sd">        service stresses within the section.</span>
+
+<span class="sd">        :param d_n: Neutral axis depth</span>
+<span class="sd">        :param kappa: Curvature</span>
+<span class="sd">        :param point_na: Point on the neutral axis</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
+<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">        :param centroid: Centroid about which to take moments</span>
+
+<span class="sd">        :return: Service stresses, net force and distance from centroid to point of</span>
+<span class="sd">            force action</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># intialise stress results</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">))</span>
+
+        <span class="c1"># loop through nodes and calculate stress at nodes</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">):</span>
+            <span class="c1"># get strain at node</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_service_strain</span><span class="p">(</span>
+                <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># get stress at node</span>
+            <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">)</span>
+
+        <span class="c1"># calculate total force</span>
+        <span class="n">n_sec</span><span class="p">,</span> <span class="n">m_x_sec</span><span class="p">,</span> <span class="n">m_y_sec</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_analysis</span><span class="p">(</span>
+            <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+            <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+            <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
+            <span class="n">centroid</span><span class="o">=</span><span class="n">centroid</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># calculate point of action</span>
+        <span class="k">if</span> <span class="n">n_sec</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">d_x</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">d_y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d_x</span> <span class="o">=</span> <span class="n">m_y_sec</span> <span class="o">/</span> <span class="n">n_sec</span>
+            <span class="n">d_y</span> <span class="o">=</span> <span class="n">m_x_sec</span> <span class="o">/</span> <span class="n">n_sec</span>
+
+        <span class="k">return</span> <span class="n">sig</span><span class="p">,</span> <span class="n">n_sec</span><span class="p">,</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_y</span></div>
+
+<div class="viewcode-block" id="AnalysisSection.ultimate_analysis"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.ultimate_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_analysis</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">centroid</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Performs an ultimate stress analysis on the section.</span>
+
+<span class="sd">        :param point_na: Point on the neutral axis</span>
+<span class="sd">        :param d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
+<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">        :param ultimate_strain: Concrete strain at failure</span>
+<span class="sd">        :param centroid: Centroid about which to take moments</span>
+
+<span class="sd">        :return: Axial force and resultant moments about the global axes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># initialise section actions</span>
+        <span class="n">n_sec</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_x_sec</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_y_sec</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="n">el_n</span><span class="p">,</span> <span class="n">el_m_x</span><span class="p">,</span> <span class="n">el_m_y</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_ultimate_actions</span><span class="p">(</span>
+                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">ultimate_strain</span><span class="o">=</span><span class="n">ultimate_strain</span><span class="p">,</span>
+                <span class="n">centroid</span><span class="o">=</span><span class="n">centroid</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">n_sec</span> <span class="o">+=</span> <span class="n">el_n</span>
+            <span class="n">m_x_sec</span> <span class="o">+=</span> <span class="n">el_m_x</span>
+            <span class="n">m_y_sec</span> <span class="o">+=</span> <span class="n">el_m_y</span>
+
+        <span class="k">return</span> <span class="n">n_sec</span><span class="p">,</span> <span class="n">m_x_sec</span><span class="p">,</span> <span class="n">m_y_sec</span></div>
+
+<div class="viewcode-block" id="AnalysisSection.get_ultimate_stress"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.get_ultimate_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_ultimate_stress</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">centroid</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Given the neutral axis depth `d_n` and ultimate strain, determines the</span>
+<span class="sd">        ultimate stresses with the section.</span>
+
+<span class="sd">        :param d_n: Neutral axis depth</span>
+<span class="sd">        :param point_na: Point on the neutral axis</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
+<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">        :param ultimate_strain: Concrete strain at failure</span>
+<span class="sd">        :param centroid: Centroid about which to take moments</span>
+
+<span class="sd">        :return: Ultimate stresses net force and distance from neutral axis to point of</span>
+<span class="sd">            force action</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># intialise stress results</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">))</span>
+
+        <span class="c1"># loop through nodes</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">):</span>
+            <span class="c1"># get strain at node</span>
+            <span class="k">if</span> <span class="n">isinf</span><span class="p">(</span><span class="n">d_n</span><span class="p">):</span>
+                <span class="n">strain</span> <span class="o">=</span> <span class="n">ultimate_strain</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(</span>
+                    <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                    <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                    <span class="n">ultimate_strain</span><span class="o">=</span><span class="n">ultimate_strain</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="c1"># get stress at node</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="p">,</span> <span class="n">Concrete</span><span class="p">):</span>
+                <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span>
+                    <span class="n">strain</span><span class="o">=</span><span class="n">strain</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sig</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">)</span>
+
+        <span class="c1"># calculate total force</span>
+        <span class="n">n_sec</span><span class="p">,</span> <span class="n">m_x_sec</span><span class="p">,</span> <span class="n">m_y_sec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_analysis</span><span class="p">(</span>
+            <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+            <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+            <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+            <span class="n">ultimate_strain</span><span class="o">=</span><span class="n">ultimate_strain</span><span class="p">,</span>
+            <span class="n">centroid</span><span class="o">=</span><span class="n">centroid</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># calculate point of action</span>
+        <span class="k">if</span> <span class="n">n_sec</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">d_x</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">d_y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d_x</span> <span class="o">=</span> <span class="n">m_y_sec</span> <span class="o">/</span> <span class="n">n_sec</span>
+            <span class="n">d_y</span> <span class="o">=</span> <span class="n">m_x_sec</span> <span class="o">/</span> <span class="n">n_sec</span>
+
+        <span class="k">return</span> <span class="n">sig</span><span class="p">,</span> <span class="n">n_sec</span><span class="p">,</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_y</span></div>
+
+<div class="viewcode-block" id="AnalysisSection.plot_mesh"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.plot_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">plot_mesh</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Finite Element Mesh&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="sd">&quot;&quot;&quot;Plots the finite element mesh.</span>
+
+<span class="sd">        :param alpha: Transparency of the mesh outlines</span>
+<span class="sd">        :param title: Plot title</span>
+<span class="sd">        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`</span>
+
+<span class="sd">        :return: Matplotlib axes object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">plotting_context</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+            <span class="n">colour_array</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Indices of elements for mapping colours</span>
+
+            <span class="c1"># create an array of finite element colours</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">el</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">):</span>
+                <span class="n">colour_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">colour</span><span class="p">)</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+            <span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colour_array</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+            <span class="c1"># plot the mesh colours</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">tripcolor</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mesh_elements</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+                <span class="n">c</span><span class="p">,</span>
+                <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># plot the mesh</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">triplot</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mesh_elements</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+                <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="AnalysisSection.plot_shape"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.plot_shape">[docs]</a>    <span class="k">def</span> <span class="nf">plot_shape</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">:</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plots the coloured shape of the mesh with no outlines on `ax`.</span>
+
+<span class="sd">        :param ax: Matplotlib axes object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">colour_array</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Indices of elements for mapping colours</span>
+
+        <span class="c1"># create an array of finite element colours</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">el</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">):</span>
+            <span class="n">colour_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">colour</span><span class="p">)</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colour_array</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+        <span class="c1"># plot the mesh colours</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">tripcolor</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mesh_nodes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mesh_elements</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+            <span class="n">c</span><span class="p">,</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Tri3"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Tri3</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for a three noded linear triangular element.</span>
+
+<span class="sd">    :param coords: A 2 x 3 array of the coordinates of the tri-3 nodes</span>
+<span class="sd">    :param node_ids: A list of the global node ids for the current element</span>
+<span class="sd">    :param material: Material object for the current finite element</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">node_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+    <span class="n">material</span><span class="p">:</span> <span class="n">Material</span>
+
+<div class="viewcode-block" id="Tri3.calculate_area"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_area">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the area of the finite element.</span>
+
+<span class="sd">        :return: Element area</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">area</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># get points for 1 point Gaussian integration</span>
+        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># loop through each gauss point</span>
+        <span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="n">gps</span><span class="p">:</span>
+            <span class="c1"># determine shape function and jacobian</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">shape_function</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">gauss_point</span><span class="o">=</span><span class="n">gp</span><span class="p">)</span>
+
+            <span class="n">area</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">j</span>
+
+        <span class="k">return</span> <span class="n">area</span></div>
+
+<div class="viewcode-block" id="Tri3.second_moments_of_area"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.second_moments_of_area">[docs]</a>    <span class="k">def</span> <span class="nf">second_moments_of_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the second moments of area of the finite element.</span>
+
+<span class="sd">        :return: Modulus weighted second moments of area *(e_ixx, e_iyy, e_ixy)*</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># initialise properties</span>
+        <span class="n">e_ixx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">e_iyy</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">e_ixy</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># get points for 3 point Gaussian integration</span>
+        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="c1"># loop through each gauss point</span>
+        <span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="n">gps</span><span class="p">:</span>
+            <span class="c1"># determine shape function and jacobian</span>
+            <span class="n">N</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">shape_function</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">gauss_point</span><span class="o">=</span><span class="n">gp</span><span class="p">)</span>
+
+            <span class="n">e_ixx</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
+                <span class="o">*</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]))</span> <span class="o">**</span> <span class="mi">2</span>
+                <span class="o">*</span> <span class="n">j</span>
+            <span class="p">)</span>
+            <span class="n">e_iyy</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
+                <span class="o">*</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))</span> <span class="o">**</span> <span class="mi">2</span>
+                <span class="o">*</span> <span class="n">j</span>
+            <span class="p">)</span>
+            <span class="n">e_ixy</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
+                <span class="o">*</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]))</span>
+                <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))</span>
+                <span class="o">*</span> <span class="n">j</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">e_ixx</span><span class="p">,</span> <span class="n">e_iyy</span><span class="p">,</span> <span class="n">e_ixy</span></div>
+
+<div class="viewcode-block" id="Tri3.calculate_elastic_actions"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_elastic_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_elastic_actions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">m_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">m_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">e_a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">cx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">cy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">e_ixx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">e_iyy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">e_ixy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Calculates elastic actions for the current finite element.</span>
+
+<span class="sd">        :param n: Axial force</span>
+<span class="sd">        :param m_x: Bending moment about the x-axis</span>
+<span class="sd">        :param m_y: Bending moment about the y-axis</span>
+<span class="sd">        :param e_a: Axial rigidity</span>
+<span class="sd">        :param cx: x-Centroid</span>
+<span class="sd">        :param cy: y-Centroid</span>
+<span class="sd">        :param e_ixx: Flexural rigidity about the x-axis</span>
+<span class="sd">        :param e_iyy: Flexural rigidity about the y-axis</span>
+<span class="sd">        :param e_ixy: Flexural rigidity about the xy-axis</span>
+
+<span class="sd">        :return: Elastic force and resultant moments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># initialise element results</span>
+        <span class="n">force_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_x_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_y_e</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># get points for 3 point Gaussian integration</span>
+        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="c1"># loop through each gauss point</span>
+        <span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="n">gps</span><span class="p">:</span>
+            <span class="c1"># determine shape function and jacobian</span>
+            <span class="n">N</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">shape_function</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">gauss_point</span><span class="o">=</span><span class="n">gp</span><span class="p">)</span>
+
+            <span class="c1"># get coordinates (wrt NA) of the gauss point</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))</span> <span class="o">-</span> <span class="n">cx</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]))</span> <span class="o">-</span> <span class="n">cy</span>
+
+            <span class="c1"># axial force</span>
+            <span class="n">force_gp</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">force_gp</span> <span class="o">+=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">/</span> <span class="n">e_a</span> <span class="o">*</span> <span class="n">j</span>
+
+            <span class="c1"># bending moment</span>
+            <span class="n">force_gp</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
+                <span class="o">*</span> <span class="p">(</span>
+                    <span class="o">-</span><span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                    <span class="o">+</span> <span class="p">(</span><span class="n">e_iyy</span> <span class="o">*</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+                <span class="p">)</span>
+                <span class="o">*</span> <span class="n">j</span>
+            <span class="p">)</span>
+            <span class="n">force_gp</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
+                <span class="o">*</span> <span class="p">(</span>
+                    <span class="o">+</span><span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+                    <span class="o">-</span> <span class="p">(</span><span class="n">e_ixy</span> <span class="o">*</span> <span class="n">m_y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_ixx</span> <span class="o">*</span> <span class="n">e_iyy</span> <span class="o">-</span> <span class="n">e_ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+                <span class="p">)</span>
+                <span class="o">*</span> <span class="n">j</span>
+            <span class="p">)</span>
+
+            <span class="c1"># add force and moment</span>
+            <span class="n">force_e</span> <span class="o">+=</span> <span class="n">force_gp</span>
+            <span class="n">m_x_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="n">y</span>
+            <span class="n">m_y_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">m_x_e</span><span class="p">,</span> <span class="n">m_y_e</span></div>
+
+<div class="viewcode-block" id="Tri3.calculate_service_actions"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_service_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_service_actions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">centroid</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates service actions for the current finite element.</span>
+
+<span class="sd">        :param point_na: Point on the neutral axis</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
+<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">        :param kappa: Curvature</span>
+<span class="sd">        :param centroid: Centroid about which to take moments</span>
+
+<span class="sd">        :return: Axial force, moments and min/max strain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># initialise element results</span>
+        <span class="n">force_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_x_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_y_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">min_strain_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_strain_e</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># get points for 3 point Gaussian integration</span>
+        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="c1"># loop through each gauss point</span>
+        <span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="n">gps</span><span class="p">:</span>
+            <span class="c1"># determine shape function and jacobian</span>
+            <span class="n">N</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">shape_function</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">gauss_point</span><span class="o">=</span><span class="n">gp</span><span class="p">)</span>
+
+            <span class="c1"># get coordinates of the gauss point</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]))</span>
+
+            <span class="c1"># get strain at gauss point</span>
+            <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_service_strain</span><span class="p">(</span>
+                <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">min_strain_e</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_strain_e</span><span class="p">,</span> <span class="n">strain</span><span class="p">)</span>
+            <span class="n">max_strain_e</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_strain_e</span><span class="p">,</span> <span class="n">strain</span><span class="p">)</span>
+
+            <span class="c1"># get stress at gauss point</span>
+            <span class="n">stress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">)</span>
+
+            <span class="c1"># calculate force (stress * area)</span>
+            <span class="n">force_gp</span> <span class="o">=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">stress</span> <span class="o">*</span> <span class="n">j</span>
+
+            <span class="c1"># add force and moment</span>
+            <span class="n">force_e</span> <span class="o">+=</span> <span class="n">force_gp</span>
+            <span class="n">m_x_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">m_y_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">m_x_e</span><span class="p">,</span> <span class="n">m_y_e</span><span class="p">,</span> <span class="n">min_strain_e</span><span class="p">,</span> <span class="n">max_strain_e</span></div>
+
+<div class="viewcode-block" id="Tri3.calculate_ultimate_actions"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_ultimate_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ultimate_actions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">centroid</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates ultimate actions for the current finite element.</span>
+
+<span class="sd">        :param point_na: Point on the neutral axis</span>
+<span class="sd">        :param d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
+<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">        :param ultimate_strain: Concrete strain at failure</span>
+<span class="sd">        :param centroid: Centroid about which to take moments</span>
+
+<span class="sd">        :return: Axial force and resultant moments about the global axes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># initialise element results</span>
+        <span class="n">force_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_x_e</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m_y_e</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># get points for 3 point Gaussian integration</span>
+        <span class="n">gps</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">gauss_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="c1"># loop through each gauss point</span>
+        <span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="n">gps</span><span class="p">:</span>
+            <span class="c1"># determine shape function and jacobian</span>
+            <span class="n">N</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">shape_function</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">gauss_point</span><span class="o">=</span><span class="n">gp</span><span class="p">)</span>
+
+            <span class="c1"># get coordinates of the gauss point</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]))</span>
+
+            <span class="c1"># get strain at gauss point</span>
+            <span class="k">if</span> <span class="n">isinf</span><span class="p">(</span><span class="n">d_n</span><span class="p">):</span>
+                <span class="n">strain</span> <span class="o">=</span> <span class="n">ultimate_strain</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ultimate_strain</span><span class="p">(</span>
+                    <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+                    <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                    <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                    <span class="n">ultimate_strain</span><span class="o">=</span><span class="n">ultimate_strain</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="c1"># get stress at gauss point</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="p">,</span> <span class="n">Concrete</span><span class="p">):</span>
+                <span class="n">stress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span>
+                    <span class="n">strain</span><span class="o">=</span><span class="n">strain</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">stress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="n">strain</span><span class="o">=</span><span class="n">strain</span><span class="p">)</span>
+
+            <span class="c1"># calculate force (stress * area)</span>
+            <span class="n">force_gp</span> <span class="o">=</span> <span class="n">gp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">stress</span> <span class="o">*</span> <span class="n">j</span>
+
+            <span class="c1"># add force and moment</span>
+            <span class="n">force_e</span> <span class="o">+=</span> <span class="n">force_gp</span>
+            <span class="n">m_x_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">m_y_e</span> <span class="o">+=</span> <span class="n">force_gp</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">force_e</span><span class="p">,</span> <span class="n">m_x_e</span><span class="p">,</span> <span class="n">m_y_e</span></div></div>
+</pre></div>
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Robbie van Leeuwen.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>
