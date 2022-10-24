@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3. Geometry &#8212; concreteproperties 0.3.1 documentation</title>
+    <title>2. Geometry &#8212; concreteproperties 0.3.1 documentation</title>
   <script>
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
@@ -48,8 +48,8 @@
         </script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. Analysis" href="analysis.html" />
-    <link rel="prev" title="2. Materials" href="materials.html" />
+    <link rel="next" title="3. Analysis" href="analysis.html" />
+    <link rel="prev" title="1. Materials" href="materials.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -329,15 +329,15 @@
   </p>
   <div class="bd-toc-item navbar-nav">
     <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="assumptions.html">1. Assumptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="materials.html">2. Materials</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Geometry</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analysis.html">4. Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="results.html">5. Results</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">6. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">6.1. AS 3600:2018</a></li>
+<li class="toctree-l1"><a class="reference internal" href="materials.html">1. Materials</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">3. Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">4. Results</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">5. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">5.1. AS 3600:2018</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="assumptions.html">6. Assumptions</a></li>
 </ul>
 
   </div>
@@ -367,7 +367,7 @@
             <article class="bd-article" role="main">
               
   <div class="section" id="geometry">
-<h1><span class="section-number">3. </span>Geometry<a class="headerlink" href="#geometry" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">2. </span>Geometry<a class="headerlink" href="#geometry" title="Permalink to this heading">#</a></h1>
 <p><em>concreteproperties</em> uses the pre-processor from <i><a href="https://github.com/robbievanleeuwen/section-properties" target="_blank">sectionproperties</a></i> to build reinforced
 concrete cross-sections as <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>
 objects. <em>concreteproperties</em> expects a
@@ -395,7 +395,7 @@ provided.</p>
 geometries to be used by <em>concreteproperties</em>. A more exhaustive overview can be found
 in the <em>sectionproperties</em> <a href="https://sectionproperties.readthedocs.io/" target="_blank">documentation</a>.</p>
 <div class="section" id="axis-conventions">
-<h2><span class="section-number">3.1. </span>Axis Conventions<a class="headerlink" href="#axis-conventions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.1. </span>Axis Conventions<a class="headerlink" href="#axis-conventions" title="Permalink to this heading">#</a></h2>
 <p>Concrete cross-sections in <em>concreteproperties</em> are constructed in the
 <code class="docutils literal notranslate"><span class="pre">x-y</span></code> plane. A key feature of <em>concreteproperties</em> is that the analyses are not
 restricted to bending about the <code class="docutils literal notranslate"><span class="pre">x</span></code> or <code class="docutils literal notranslate"><span class="pre">y</span></code> axis. All analysis types (where relevant)
@@ -424,7 +424,7 @@ defined by the angle <code class="docutils literal notranslate"><span class="pre
 </ul>
 </div>
 <div class="section" id="primitive-sections">
-<h2><span class="section-number">3.2. </span>Primitive Sections<a class="headerlink" href="#primitive-sections" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.2. </span>Primitive Sections<a class="headerlink" href="#primitive-sections" title="Permalink to this heading">#</a></h2>
 <p>The primitive sections library contains basic shapes describing common concrete
 cross-sections, and can also be used as building blocks for more complex geometries.</p>
 <p>The following code creates a rectangular concrete cross-section 600 mm deep and 300 mm
@@ -496,7 +496,7 @@ a circle with the correct area is generated:</p>
 </div>
 </div>
 <div class="section" id="standard-sections">
-<h2><span class="section-number">3.3. </span>Standard Sections<a class="headerlink" href="#standard-sections" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.3. </span>Standard Sections<a class="headerlink" href="#standard-sections" title="Permalink to this heading">#</a></h2>
 <p>The concrete and bridge sections library allow common reinforced concrete cross-sections
 to be quickly generated. The concrete section library also allows for the addition of
 simple reinforcing bars.</p>
@@ -560,7 +560,7 @@ this library. The following code creates a T5 Super-T section:</p>
 </div>
 </div>
 <div class="section" id="arbitrary-list-of-points">
-<span id="label-geom-list-of-points"></span><h2><span class="section-number">3.4. </span>Arbitrary List of Points<a class="headerlink" href="#arbitrary-list-of-points" title="Permalink to this heading">#</a></h2>
+<span id="label-geom-list-of-points"></span><h2><span class="section-number">2.4. </span>Arbitrary List of Points<a class="headerlink" href="#arbitrary-list-of-points" title="Permalink to this heading">#</a></h2>
 <p>Concrete geometry can also be created from an arbitrary list of points using the
 <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.from_points" title="(in sectionproperties v2.1.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_points()</span></code></a> method. The following
 example creates a 800 mm deep x 600 mm wide x 100 mm thick hollow box section:</p>
@@ -589,7 +589,7 @@ example creates a 800 mm deep x 600 mm wide x 100 mm thick hollow box section:</
 </div>
 </div>
 <div class="section" id="set-operations-and-manipulation">
-<h2><span class="section-number">3.5. </span>Set Operations and Manipulation<a class="headerlink" href="#set-operations-and-manipulation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.5. </span>Set Operations and Manipulation<a class="headerlink" href="#set-operations-and-manipulation" title="Permalink to this heading">#</a></h2>
 <p><em>sectionproperties</em> geometry objects can be manipulated using python’s set operators:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">|</span></code> bitwise <code class="docutils literal notranslate"><span class="pre">or</span></code></p></li>
@@ -698,7 +698,7 @@ concrete and demonstrates how composite sections can be created:</p>
 </div>
 </div>
 <div class="section" id="adding-reinforcing-bars">
-<h2><span class="section-number">3.6. </span>Adding Reinforcing Bars<a class="headerlink" href="#adding-reinforcing-bars" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.6. </span>Adding Reinforcing Bars<a class="headerlink" href="#adding-reinforcing-bars" title="Permalink to this heading">#</a></h2>
 <p>Reinforcing bars can be added to any <em>sectionproperties</em> geometry by using the following
 functions:</p>
 <ul class="simple">
@@ -710,7 +710,7 @@ to the geometry</p></li>
 </ul>
 <p>(<a class="reference external" href="../_plot_directive/add_bar_context.py">Source code</a>)</p>
 <div class="section" id="add-bar">
-<h3><span class="section-number">3.6.1. </span>add_bar()<a class="headerlink" href="#add-bar" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">2.6.1. </span>add_bar()<a class="headerlink" href="#add-bar" title="Permalink to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">add_bar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/pre.html#add_bar"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -753,7 +753,7 @@ to the geometry</p></li>
 </div>
 </div>
 <div class="section" id="add-bar-rectangular-array">
-<h3><span class="section-number">3.6.2. </span>add_bar_rectangular_array()<a class="headerlink" href="#add-bar-rectangular-array" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">2.6.2. </span>add_bar_rectangular_array()<a class="headerlink" href="#add-bar-rectangular-array" title="Permalink to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">add_bar_rectangular_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anchor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exterior_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/pre.html#add_bar_rectangular_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -803,7 +803,7 @@ to the geometry</p></li>
 </div>
 </div>
 <div class="section" id="add-bar-circular-array">
-<h3><span class="section-number">3.6.3. </span>add_bar_circular_array()<a class="headerlink" href="#add-bar-circular-array" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">2.6.3. </span>add_bar_circular_array()<a class="headerlink" href="#add-bar-circular-array" title="Permalink to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">add_bar_circular_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/pre.html#add_bar_circular_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -851,7 +851,7 @@ horizontal axis in the circular array</p></li>
 </div>
 </div>
 <div class="section" id="overlapping-geometry">
-<h3><span class="section-number">3.6.4. </span>Overlapping Geometry<a class="headerlink" href="#overlapping-geometry" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">2.6.4. </span>Overlapping Geometry<a class="headerlink" href="#overlapping-geometry" title="Permalink to this heading">#</a></h3>
 <p>Care should be taken when combing multiple geometries to avoid overlapping of regions.
 If this occurs, the area in these overlapping regions will be double counted and result
 in erroneous results. The add bar methods in the <a class="reference internal" href="../gen/concreteproperties.pre.html#module-concreteproperties.pre" title="concreteproperties.pre"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pre</span></code></a> module
@@ -881,13 +881,13 @@ locations and only then adding the bar geometry:</p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">2. </span>Materials</p>
+          <p class="prev-next-title"><span class="section-number">1. </span>Materials</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="analysis.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title"><span class="section-number">4. </span>Analysis</p>
+      <p class="prev-next-title"><span class="section-number">3. </span>Analysis</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>
@@ -909,52 +909,52 @@ locations and only then adding the bar geometry:</p>
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#axis-conventions">
-   3.1. Axis Conventions
+   2.1. Axis Conventions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#primitive-sections">
-   3.2. Primitive Sections
+   2.2. Primitive Sections
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#standard-sections">
-   3.3. Standard Sections
+   2.3. Standard Sections
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#arbitrary-list-of-points">
-   3.4. Arbitrary List of Points
+   2.4. Arbitrary List of Points
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#set-operations-and-manipulation">
-   3.5. Set Operations and Manipulation
+   2.5. Set Operations and Manipulation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#adding-reinforcing-bars">
-   3.6. Adding Reinforcing Bars
+   2.6. Adding Reinforcing Bars
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#add-bar">
-     3.6.1. add_bar()
+     2.6.1. add_bar()
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#add-bar-rectangular-array">
-     3.6.2. add_bar_rectangular_array()
+     2.6.2. add_bar_rectangular_array()
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#add-bar-circular-array">
-     3.6.3. add_bar_circular_array()
+     2.6.3. add_bar_circular_array()
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#overlapping-geometry">
-     3.6.4. Overlapping Geometry
+     2.6.4. Overlapping Geometry
     </a>
    </li>
   </ul>
@@ -1018,7 +1018,7 @@ locations and only then adding the bar geometry:</p>
   <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
 </p>
 
   </div>

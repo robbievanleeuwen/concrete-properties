@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3. Ultimate Bending Capacity &#8212; concreteproperties 0.3.1 documentation</title>
+    <title>4. Ultimate Bending Capacity &#8212; concreteproperties 0.3.1 documentation</title>
   <script>
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
@@ -38,6 +38,7 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/ultimate_bending';</script>
@@ -47,8 +48,8 @@
         </script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="API Reference" href="../api.html" />
-    <link rel="prev" title="2. Calculating Cracked Properties" href="cracked_properties.html" />
+    <link rel="next" title="5. Moment Interaction Diagram" href="moment_interaction.html" />
+    <link rel="prev" title="3. Moment Curvature Analysis" href="moment_curvature.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -330,7 +331,13 @@
     <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="area_properties.html">1. Calculating Area Properties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cracked_properties.html">2. Calculating Cracked Properties</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Ultimate Bending Capacity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moment_curvature.html">3. Moment Curvature Analysis</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">4. Ultimate Bending Capacity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moment_interaction.html">5. Moment Interaction Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="biaxial_bending.html">6. Biaxial Bending Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stress_analysis.html">7. Stress Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composite_section.html">8. Composite Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="as3600.html">9. AS3600 Design Code</a></li>
 </ul>
 
   </div>
@@ -616,7 +623,7 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <div class="section" id="Ultimate-Bending-Capacity">
-<h1><span class="section-number">3. </span>Ultimate Bending Capacity<a class="headerlink" href="#Ultimate-Bending-Capacity" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">4. </span>Ultimate Bending Capacity<a class="headerlink" href="#Ultimate-Bending-Capacity" title="Permalink to this heading">#</a></h1>
 <p>This example demonstrates how to calculate ultimate bending capacities using <em>concreteproperties</em>. We start by importing the necessary modules.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -632,7 +639,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="section" id="Assign-Materials">
-<h2><span class="section-number">3.1. </span>Assign Materials<a class="headerlink" href="#Assign-Materials" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.1. </span>Assign Materials<a class="headerlink" href="#Assign-Materials" title="Permalink to this heading">#</a></h2>
 <p>The materials used in this example will be 50 MPa concrete with 500 MPa steel, specified in accordance with AS 3600:2018.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -667,7 +674,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="section" id="Create-Geometry-and-Concrete-Section">
-<h2><span class="section-number">3.2. </span>Create Geometry and Concrete Section<a class="headerlink" href="#Create-Geometry-and-Concrete-Section" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.2. </span>Create Geometry and Concrete Section<a class="headerlink" href="#Create-Geometry-and-Concrete-Section" title="Permalink to this heading">#</a></h2>
 <p>The section being analysed in this example is a 1200D x 900W x 150THK hollow box beam with 50 mm chamfers. The reinforcement detailed is 9N20 top bars and 9N28 bottom bars with 6N16 side face. The bars are cast central to the walls. The geometry is generated using the <em>sectionproperties</em> primitive sections library and geometry manipulation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -745,7 +752,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="section" id="Calclulate-Ultimate-Properties-(N-=-0)">
-<h2><span class="section-number">3.3. </span>Calclulate Ultimate Properties (<span class="math notranslate nohighlight">\(N = 0\)</span>)<a class="headerlink" href="#Calclulate-Ultimate-Properties-(N-=-0)" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.3. </span>Calclulate Ultimate Properties (<span class="math notranslate nohighlight">\(N = 0\)</span>)<a class="headerlink" href="#Calclulate-Ultimate-Properties-(N-=-0)" title="Permalink to this heading">#</a></h2>
 <p>In this example we’ll calculate the ultimate bending capacity for sagging (<span class="math notranslate nohighlight">\(\theta = 0\)</span>), hogging (<span class="math notranslate nohighlight">\(\theta = \pi\)</span>) and weak axis bending (<span class="math notranslate nohighlight">\(\theta = \pi / 2\)</span>). To do this we call the <code class="docutils literal notranslate"><span class="pre">ultimate_bending_capacity()</span></code> method:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -759,7 +766,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="section" id="Displaying-the-Results-(N-=-0)">
-<h2><span class="section-number">3.4. </span>Displaying the Results (<span class="math notranslate nohighlight">\(N = 0\)</span>)<a class="headerlink" href="#Displaying-the-Results-(N-=-0)" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.4. </span>Displaying the Results (<span class="math notranslate nohighlight">\(N = 0\)</span>)<a class="headerlink" href="#Displaying-the-Results-(N-=-0)" title="Permalink to this heading">#</a></h2>
 <p>We can print the ultimate bending results to the terminal by using the <code class="docutils literal notranslate"><span class="pre">print_results()</span></code> method.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -862,7 +869,7 @@ M_y = 2225.48 kN.m
 </div>
 </div>
 <div class="section" id="Calclulate-Ultimate-Properties-(N-=-5000-kN)">
-<h2><span class="section-number">3.5. </span>Calclulate Ultimate Properties (<span class="math notranslate nohighlight">\(N = 5000\)</span> kN)<a class="headerlink" href="#Calclulate-Ultimate-Properties-(N-=-5000-kN)" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.5. </span>Calclulate Ultimate Properties (<span class="math notranslate nohighlight">\(N = 5000\)</span> kN)<a class="headerlink" href="#Calclulate-Ultimate-Properties-(N-=-5000-kN)" title="Permalink to this heading">#</a></h2>
 <p>Say our reinforced concrete cross-section has an axial compression of 5000 kN. We can also calculate the ultimate bending capacities given this axial load.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -877,7 +884,7 @@ M_y = 2225.48 kN.m
 </div>
 </div>
 <div class="section" id="Displaying-the-Results-(N-=-5000-kN)">
-<h2><span class="section-number">3.6. </span>Displaying the Results (<span class="math notranslate nohighlight">\(N = 5000\)</span> kN)<a class="headerlink" href="#Displaying-the-Results-(N-=-5000-kN)" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.6. </span>Displaying the Results (<span class="math notranslate nohighlight">\(N = 5000\)</span> kN)<a class="headerlink" href="#Displaying-the-Results-(N-=-5000-kN)" title="Permalink to this heading">#</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -915,17 +922,17 @@ M_y = 3717.88 kN.m with N = 5000 kN
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="cracked_properties.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="moment_curvature.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">2. </span>Calculating Cracked Properties</p>
+          <p class="prev-next-title"><span class="section-number">3. </span>Moment Curvature Analysis</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../api.html" title="next page">
+  <a class='right-next' id="next-link" href="moment_interaction.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">API Reference</p>
+      <p class="prev-next-title"><span class="section-number">5. </span>Moment Interaction Diagram</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>
@@ -947,17 +954,17 @@ M_y = 3717.88 kN.m with N = 5000 kN
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Assign-Materials">
-   3.1. Assign Materials
+   4.1. Assign Materials
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Create-Geometry-and-Concrete-Section">
-   3.2. Create Geometry and Concrete Section
+   4.2. Create Geometry and Concrete Section
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Calclulate-Ultimate-Properties-(N-=-0)">
-   3.3. Calclulate Ultimate Properties (
+   4.3. Calclulate Ultimate Properties (
    <span class="math notranslate nohighlight">
     \(N = 0\)
    </span>
@@ -966,7 +973,7 @@ M_y = 3717.88 kN.m with N = 5000 kN
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Displaying-the-Results-(N-=-0)">
-   3.4. Displaying the Results (
+   4.4. Displaying the Results (
    <span class="math notranslate nohighlight">
     \(N = 0\)
    </span>
@@ -975,7 +982,7 @@ M_y = 3717.88 kN.m with N = 5000 kN
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Calclulate-Ultimate-Properties-(N-=-5000-kN)">
-   3.5. Calclulate Ultimate Properties (
+   4.5. Calclulate Ultimate Properties (
    <span class="math notranslate nohighlight">
     \(N = 5000\)
    </span>
@@ -984,7 +991,7 @@ M_y = 3717.88 kN.m with N = 5000 kN
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Displaying-the-Results-(N-=-5000-kN)">
-   3.6. Displaying the Results (
+   4.6. Displaying the Results (
    <span class="math notranslate nohighlight">
     \(N = 5000\)
    </span>

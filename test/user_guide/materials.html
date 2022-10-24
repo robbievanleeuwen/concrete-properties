@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2. Materials &#8212; concreteproperties 0.3.1 documentation</title>
+    <title>1. Materials &#8212; concreteproperties 0.3.1 documentation</title>
   <script>
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
@@ -48,8 +48,8 @@
         </script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3. Geometry" href="geometry.html" />
-    <link rel="prev" title="1. Assumptions" href="assumptions.html" />
+    <link rel="next" title="2. Geometry" href="geometry.html" />
+    <link rel="prev" title="User Guide" href="../user_guide.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -329,15 +329,15 @@
   </p>
   <div class="bd-toc-item navbar-nav">
     <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="assumptions.html">1. Assumptions</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Materials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="geometry.html">3. Geometry</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analysis.html">4. Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="results.html">5. Results</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">6. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">6.1. AS 3600:2018</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Materials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html">2. Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">3. Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">4. Results</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">5. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">5.1. AS 3600:2018</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="assumptions.html">6. Assumptions</a></li>
 </ul>
 
   </div>
@@ -367,7 +367,7 @@
             <article class="bd-article" role="main">
               
   <div class="section" id="materials">
-<h1><span class="section-number">2. </span>Materials<a class="headerlink" href="#materials" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">1. </span>Materials<a class="headerlink" href="#materials" title="Permalink to this heading">#</a></h1>
 <p><em>concreteproperties</em> requires material properties to be defined for the concrete and
 steel components of the reinforced concrete section. Any number of different material
 properties can be used for a single cross-section. For example, higher strength precast
@@ -380,7 +380,7 @@ used in combination with normal grade reinforcing steel.</p>
 strains, while a negative sign is given to tensile forces, stresses and strains.</p>
 </div>
 <div class="section" id="material-classes">
-<h2><span class="section-number">2.1. </span>Material Classes<a class="headerlink" href="#material-classes" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">1.1. </span>Material Classes<a class="headerlink" href="#material-classes" title="Permalink to this heading">#</a></h2>
 <p><em>concreteproperties</em> ships with material objects describing the structural behaviour of
 both concrete and steel. The generic <a class="reference internal" href="../gen/concreteproperties.material.Material.html#concreteproperties.material.Material" title="concreteproperties.material.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>
 class can be used to describe the behaviour of any other material.</p>
@@ -395,7 +395,7 @@ and should be used when defining steel reinforcement. On the other hand, the
 when defining larger sections such as strucutral steel sections used in composite
 sections.</p>
 <div class="section" id="material">
-<h3><span class="section-number">2.1.1. </span>Material<a class="headerlink" href="#material" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">1.1.1. </span>Material<a class="headerlink" href="#material" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meshed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#Material"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -416,7 +416,7 @@ False, the material region is treated as a lumped circular mass at its centroid<
 
 </div>
 <div class="section" id="concrete">
-<h3><span class="section-number">2.1.2. </span>Concrete<a class="headerlink" href="#concrete" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">1.1.2. </span>Concrete<a class="headerlink" href="#concrete" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Concrete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flexural_tensile_strength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#Concrete"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -438,7 +438,7 @@ tensile strength</p></li>
 
 </div>
 <div class="section" id="steel">
-<h3><span class="section-number">2.1.3. </span>Steel<a class="headerlink" href="#steel" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">1.1.3. </span>Steel<a class="headerlink" href="#steel" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Steel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#Steel"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -458,7 +458,7 @@ variation across the section, e.g. structural steel profiles.</p>
 
 </div>
 <div class="section" id="steelbar">
-<h3><span class="section-number">2.1.4. </span>SteelBar<a class="headerlink" href="#steelbar" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">1.1.4. </span>SteelBar<a class="headerlink" href="#steelbar" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteelBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#SteelBar"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -479,7 +479,7 @@ strain.</p>
 </div>
 </div>
 <div class="section" id="stress-strain-profiles">
-<span id="id1"></span><h2><span class="section-number">2.2. </span>Stress-Strain Profiles<a class="headerlink" href="#stress-strain-profiles" title="Permalink to this heading">#</a></h2>
+<span id="id1"></span><h2><span class="section-number">1.2. </span>Stress-Strain Profiles<a class="headerlink" href="#stress-strain-profiles" title="Permalink to this heading">#</a></h2>
 <p><em>concreteproperties</em> uses stress-strain profiles to define material behaviour for both
 service and ultimate analyses. A <a class="reference internal" href="../gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> object
 requires both a <strong>service</strong> stress-strain profile (calculation of area properties,
@@ -539,7 +539,7 @@ compression.</p>
 </dd></dl>
 
 <div class="section" id="concrete-service-stress-strain-profiles">
-<h3><span class="section-number">2.2.1. </span>Concrete Service Stress-Strain Profiles<a class="headerlink" href="#concrete-service-stress-strain-profiles" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">1.2.1. </span>Concrete Service Stress-Strain Profiles<a class="headerlink" href="#concrete-service-stress-strain-profiles" title="Permalink to this heading">#</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Unless assigned in the class constructor, the <code class="docutils literal notranslate"><span class="pre">elastic_modulus</span></code> of the concrete is
@@ -548,7 +548,7 @@ determined by the initial compressive slope of the stress-strain profile. This
 analysis.</p>
 </div>
 <div class="section" id="generic-concrete-service-profile">
-<h4><span class="section-number">2.2.1.1. </span>Generic Concrete Service Profile<a class="headerlink" href="#generic-concrete-service-profile" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">1.2.1.1. </span>Generic Concrete Service Profile<a class="headerlink" href="#generic-concrete-service-profile" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteServiceProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strains</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stresses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#ConcreteServiceProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -581,7 +581,7 @@ analysis.</p>
 </div>
 </div>
 <div class="section" id="linear-concrete-service-profile">
-<h4><span class="section-number">2.2.1.2. </span>Linear Concrete Service Profile<a class="headerlink" href="#linear-concrete-service-profile" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">1.2.1.2. </span>Linear Concrete Service Profile<a class="headerlink" href="#linear-concrete-service-profile" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteLinear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#ConcreteLinear"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -615,7 +615,7 @@ as the concrete can resist large tensile stresses without fracture.</p>
 </div>
 </div>
 <div class="section" id="linear-concrete-no-tension-service-profile">
-<h4><span class="section-number">2.2.1.3. </span>Linear Concrete (No Tension) Service Profile<a class="headerlink" href="#linear-concrete-no-tension-service-profile" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">1.2.1.3. </span>Linear Concrete (No Tension) Service Profile<a class="headerlink" href="#linear-concrete-no-tension-service-profile" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteLinearNoTension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#ConcreteLinearNoTension"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -658,7 +658,7 @@ as the concrete can resist large tensile stresses without fracture.</p>
 </div>
 </div>
 <div class="section" id="eurocode-non-linear-concrete-service-profile">
-<h4><span class="section-number">2.2.1.4. </span>Eurocode Non-Linear Concrete Service Profile<a class="headerlink" href="#eurocode-non-linear-concrete-service-profile" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">1.2.1.4. </span>Eurocode Non-Linear Concrete Service Profile<a class="headerlink" href="#eurocode-non-linear-concrete-service-profile" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EurocodeNonLinear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressive_strain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tensile_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tension_softening_stiffness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#EurocodeNonLinear"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -705,7 +705,7 @@ branch</p></li>
 </div>
 </div>
 <div class="section" id="concrete-ultimate-stress-strain-profiles">
-<span id="label-conc-ult-profile"></span><h3><span class="section-number">2.2.2. </span>Concrete Ultimate Stress-Strain Profiles<a class="headerlink" href="#concrete-ultimate-stress-strain-profiles" title="Permalink to this heading">#</a></h3>
+<span id="label-conc-ult-profile"></span><h3><span class="section-number">1.2.2. </span>Concrete Ultimate Stress-Strain Profiles<a class="headerlink" href="#concrete-ultimate-stress-strain-profiles" title="Permalink to this heading">#</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Unless assigned in the class constructor, the <code class="docutils literal notranslate"><span class="pre">ultimate_strain</span></code> of the concrete is
@@ -723,7 +723,7 @@ ultimate analysis will use the smallest value of the <code class="docutils liter
 various concrete materials to define the strain profile at ultimate.</p>
 </div>
 <div class="section" id="generic-concrete-ultimate-profile">
-<h4><span class="section-number">2.2.2.1. </span>Generic Concrete Ultimate Profile<a class="headerlink" href="#generic-concrete-ultimate-profile" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">1.2.2.1. </span>Generic Concrete Ultimate Profile<a class="headerlink" href="#generic-concrete-ultimate-profile" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteUltimateProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strains</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stresses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#ConcreteUltimateProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -756,7 +756,7 @@ various concrete materials to define the strain profile at ultimate.</p>
 </div>
 </div>
 <div class="section" id="rectangular-stress-block">
-<h4><span class="section-number">2.2.2.2. </span>Rectangular Stress Block<a class="headerlink" href="#rectangular-stress-block" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">1.2.2.2. </span>Rectangular Stress Block<a class="headerlink" href="#rectangular-stress-block" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RectangularStressBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#RectangularStressBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -791,7 +791,7 @@ various concrete materials to define the strain profile at ultimate.</p>
 </div>
 </div>
 <div class="section" id="bilinear-ultimate-profile">
-<h4><span class="section-number">2.2.2.3. </span>Bilinear Ultimate Profile<a class="headerlink" href="#bilinear-ultimate-profile" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">1.2.2.3. </span>Bilinear Ultimate Profile<a class="headerlink" href="#bilinear-ultimate-profile" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BilinearStressStrain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressive_strain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#BilinearStressStrain"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -825,7 +825,7 @@ compressive strength</p></li>
 </div>
 </div>
 <div class="section" id="eurocode-parabolic-ultimate-profile">
-<h4><span class="section-number">2.2.2.4. </span>Eurocode Parabolic Ultimate Profile<a class="headerlink" href="#eurocode-parabolic-ultimate-profile" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">1.2.2.4. </span>Eurocode Parabolic Ultimate Profile<a class="headerlink" href="#eurocode-parabolic-ultimate-profile" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EurocodeParabolicUltimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressive_strain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#EurocodeParabolicUltimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -863,9 +863,9 @@ compressive strength</p></li>
 </div>
 </div>
 <div class="section" id="steel-stress-strain-profiles">
-<h3><span class="section-number">2.2.3. </span>Steel Stress-Strain Profiles<a class="headerlink" href="#steel-stress-strain-profiles" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">1.2.3. </span>Steel Stress-Strain Profiles<a class="headerlink" href="#steel-stress-strain-profiles" title="Permalink to this heading">#</a></h3>
 <div class="section" id="generic-steel-profile">
-<h4><span class="section-number">2.2.3.1. </span>Generic Steel Profile<a class="headerlink" href="#generic-steel-profile" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">1.2.3.1. </span>Generic Steel Profile<a class="headerlink" href="#generic-steel-profile" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteelProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strains</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stresses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracture_strain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#SteelProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -902,7 +902,7 @@ compressive strength</p></li>
 </div>
 </div>
 <div class="section" id="elastic-plastic-steel-profile">
-<h4><span class="section-number">2.2.3.2. </span>Elastic-Plastic Steel Profile<a class="headerlink" href="#elastic-plastic-steel-profile" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">1.2.3.2. </span>Elastic-Plastic Steel Profile<a class="headerlink" href="#elastic-plastic-steel-profile" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteelElasticPlastic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracture_strain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#SteelElasticPlastic"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -935,7 +935,7 @@ compressive strength</p></li>
 </div>
 </div>
 <div class="section" id="elastic-plastic-hardening-steel-profile">
-<h4><span class="section-number">2.2.3.3. </span>Elastic-Plastic Hardening Steel Profile<a class="headerlink" href="#elastic-plastic-hardening-steel-profile" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">1.2.3.3. </span>Elastic-Plastic Hardening Steel Profile<a class="headerlink" href="#elastic-plastic-hardening-steel-profile" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteelHardening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracture_strain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#SteelHardening"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -981,17 +981,17 @@ compressive strength</p></li>
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="assumptions.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="../user_guide.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">1. </span>Assumptions</p>
+          <p class="prev-next-title">User Guide</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="geometry.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title"><span class="section-number">3. </span>Geometry</p>
+      <p class="prev-next-title"><span class="section-number">2. </span>Geometry</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>
@@ -1013,108 +1013,108 @@ compressive strength</p></li>
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#material-classes">
-   2.1. Material Classes
+   1.1. Material Classes
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#material">
-     2.1.1. Material
+     1.1.1. Material
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#concrete">
-     2.1.2. Concrete
+     1.1.2. Concrete
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#steel">
-     2.1.3. Steel
+     1.1.3. Steel
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#steelbar">
-     2.1.4. SteelBar
+     1.1.4. SteelBar
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#stress-strain-profiles">
-   2.2. Stress-Strain Profiles
+   1.2. Stress-Strain Profiles
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#concrete-service-stress-strain-profiles">
-     2.2.1. Concrete Service Stress-Strain Profiles
+     1.2.1. Concrete Service Stress-Strain Profiles
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#generic-concrete-service-profile">
-       2.2.1.1. Generic Concrete Service Profile
+       1.2.1.1. Generic Concrete Service Profile
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#linear-concrete-service-profile">
-       2.2.1.2. Linear Concrete Service Profile
+       1.2.1.2. Linear Concrete Service Profile
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#linear-concrete-no-tension-service-profile">
-       2.2.1.3. Linear Concrete (No Tension) Service Profile
+       1.2.1.3. Linear Concrete (No Tension) Service Profile
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#eurocode-non-linear-concrete-service-profile">
-       2.2.1.4. Eurocode Non-Linear Concrete Service Profile
+       1.2.1.4. Eurocode Non-Linear Concrete Service Profile
       </a>
      </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#concrete-ultimate-stress-strain-profiles">
-     2.2.2. Concrete Ultimate Stress-Strain Profiles
+     1.2.2. Concrete Ultimate Stress-Strain Profiles
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#generic-concrete-ultimate-profile">
-       2.2.2.1. Generic Concrete Ultimate Profile
+       1.2.2.1. Generic Concrete Ultimate Profile
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#rectangular-stress-block">
-       2.2.2.2. Rectangular Stress Block
+       1.2.2.2. Rectangular Stress Block
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#bilinear-ultimate-profile">
-       2.2.2.3. Bilinear Ultimate Profile
+       1.2.2.3. Bilinear Ultimate Profile
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#eurocode-parabolic-ultimate-profile">
-       2.2.2.4. Eurocode Parabolic Ultimate Profile
+       1.2.2.4. Eurocode Parabolic Ultimate Profile
       </a>
      </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#steel-stress-strain-profiles">
-     2.2.3. Steel Stress-Strain Profiles
+     1.2.3. Steel Stress-Strain Profiles
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#generic-steel-profile">
-       2.2.3.1. Generic Steel Profile
+       1.2.3.1. Generic Steel Profile
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#elastic-plastic-steel-profile">
-       2.2.3.2. Elastic-Plastic Steel Profile
+       1.2.3.2. Elastic-Plastic Steel Profile
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#elastic-plastic-hardening-steel-profile">
-       2.2.3.3. Elastic-Plastic Hardening Steel Profile
+       1.2.3.3. Elastic-Plastic Hardening Steel Profile
       </a>
      </li>
     </ul>
@@ -1180,7 +1180,7 @@ compressive strength</p></li>
   <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
 </p>
 
   </div>

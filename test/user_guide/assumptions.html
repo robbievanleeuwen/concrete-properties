@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1. Assumptions &#8212; concreteproperties 0.3.1 documentation</title>
+    <title>6. Assumptions &#8212; concreteproperties 0.3.1 documentation</title>
   <script>
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
@@ -46,8 +46,8 @@
         </script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="2. Materials" href="materials.html" />
-    <link rel="prev" title="User Guide" href="../user_guide.html" />
+    <link rel="next" title="Examples" href="../examples.html" />
+    <link rel="prev" title="5.1. AS 3600:2018" href="design_codes/as3600.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -327,15 +327,15 @@
   </p>
   <div class="bd-toc-item navbar-nav">
     <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Assumptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="materials.html">2. Materials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="geometry.html">3. Geometry</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analysis.html">4. Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="results.html">5. Results</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">6. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">6.1. AS 3600:2018</a></li>
+<li class="toctree-l1"><a class="reference internal" href="materials.html">1. Materials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html">2. Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">3. Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">4. Results</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">5. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">5.1. AS 3600:2018</a></li>
 </ul>
 </li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Assumptions</a></li>
 </ul>
 
   </div>
@@ -365,8 +365,52 @@
             <article class="bd-article" role="main">
               
   <div class="section" id="assumptions">
-<h1><span class="section-number">1. </span>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this heading">#</a></h1>
-<p>asdlkajsdlkjsad</p>
+<h1><span class="section-number">6. </span>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this heading">#</a></h1>
+<p>Below are a list of assumptions and conventions used by <code class="docutils literal notranslate"><span class="pre">concreteproperties</span></code>:</p>
+<div class="section" id="general">
+<h2><span class="section-number">6.1. </span>General<a class="headerlink" href="#general" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Plane sections remain plane (Euler-Bernoulli) i.e. linear strain profile throughout</p></li>
+</ul>
+<p>the cross-section
+- For a given depth, the strain in the reinforcement is equal to the strain in the
+concrete, i.e. there is a perfect bond between concrete and reinforcement
+- Materials that have <code class="docutils literal notranslate"><span class="pre">meshed=False</span></code> (e.g.
+<a class="reference internal" href="../gen/concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a>) are characterised by a constant strain
+at it’s geometric centroid
+- Stresses in materials are determined from strains by linear interpolation from the
+corresponding stress-strain profile (linear extrapolation is used where the strains
+are outside the range of the profile)
+- Finite element assumptions and background can be found
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/theory.html">here</a></p>
+</div>
+<div class="section" id="cracked-analysis">
+<h2><span class="section-number">6.2. </span>Cracked Analysis<a class="headerlink" href="#cracked-analysis" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Concrete is assumed to have zero tensile strength</p></li>
+</ul>
+</div>
+<div class="section" id="ultimate-analysis">
+<h2><span class="section-number">6.3. </span>Ultimate Analysis<a class="headerlink" href="#ultimate-analysis" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The maximum strain at the extreme concrete compression fibre is assumed to reach a</p></li>
+</ul>
+<p>maximum limiting compressive strain, see note in <a class="reference internal" href="materials.html#label-conc-ult-profile"><span class="std std-ref">Concrete Ultimate Stress-Strain Profiles</span></a>
+- The tensile strength of the concrete is assumed to be zero
+- There are no geometric instabilities (e.g. buckling) prior to the cross-section
+reaching its ultimate strength
+- The stress-strain relationship for concrete may be assumed to be rectangular,
+trapezoidal, bilinear, parabolic, or any other arbitrary shape that results in the
+prediction of strength in substantial agreement with the results of comprehensive tests</p>
+</div>
+<div class="section" id="conventions">
+<h2><span class="section-number">6.4. </span>Conventions<a class="headerlink" href="#conventions" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Compressive stresses are positive, tensile stresses area negative</p></li>
+<li><p>Angles are measured in radians and are positive counter clockwise from the positive</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">x</span></code> axis</p>
+</div>
 </div>
 
 
@@ -377,17 +421,17 @@
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="../user_guide.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="design_codes/as3600.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">User Guide</p>
+          <p class="prev-next-title"><span class="section-number">5.1. </span>AS 3600:2018</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="materials.html" title="next page">
+  <a class='right-next' id="next-link" href="../examples.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title"><span class="section-number">2. </span>Materials</p>
+      <p class="prev-next-title">Examples</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>
@@ -400,6 +444,38 @@
           
             <div class="bd-sidebar-secondary bd-toc">
               
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#general">
+   6.1. General
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cracked-analysis">
+   6.2. Cracked Analysis
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ultimate-analysis">
+   6.3. Ultimate Analysis
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conventions">
+   6.4. Conventions
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
 <div class="toc-item">
   
 <div id="searchbox"></div>
@@ -454,7 +530,7 @@
   <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
 </p>
 
   </div>
