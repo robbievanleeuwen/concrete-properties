@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from math import inf
-from typing import TYPE_CHECKING, List, Tuple
+from typing import TYPE_CHECKING, List, Tuple, Union
 
 import concreteproperties.results as res
 import concreteproperties.stress_strain_profile as ssp
@@ -381,10 +381,37 @@ class AS3600(DesignCode):
 
     def moment_interaction_diagram(
         self,
+        theta: float = 0,
+        control_points: List[Tuple[str, float]] = [
+                ("D", 1.0),
+                ("fy", 1.0),
+                ("N", 0.0),
+            ],
+        labels: List[Union[str, None]] = [None],
+        n_points: Union[int, List[int]] = [12, 12],
         phi_0: float = 0.6,
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
-        """Generates a moment interaction diagram with capacity factors to AS 3600:2018.
+        r"""Generates a moment interaction diagram with capacity factors to AS 3600:2018.
 
+        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
+        :param control_points: List of control points over which to generate the
+            interaction diagram. Each entry in ``control_points`` is a ``Tuple`` with
+            the first item the type of control point and the second item defining the
+            location of the control point. Acceptable types of control points are
+            ``"D"`` (ratio of neutral axis depth to section depth), ``"d_n"`` (neutral
+            axis depth), ``"fy"`` (yield ratio of the most extreme tensile bar), ``"N"``
+            (axial force) and ``"kappa"`` (zero curvature compression - must be at start
+            of list, second value in tuple is not used). Control points must be defined
+            in an order which results in a decreasing neutral axis depth (decreasing
+            axial force). The default control points define an interaction diagram from
+            the decompression point to the pure bending point.
+        :param labels: List of labels to apply to the ``control_points`` for plotting
+            purposes, length must be the same as the length of ``control_points``. If a
+            single value is provided, will apply this label to all control points.
+        :param n_points: Number of neutral axis depths to compute between each control
+            point. Length must be one less than the length of ``control_points``. If an
+            integer is provided this will be used between all control points.
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
 
         :return: Factored and unfactored moment interaction results objects, and list of
@@ -392,12 +419,10 @@ class AS3600(DesignCode):
         """
 
         mi_res = self.concrete_section.moment_interaction_diagram(
-            control_points=[
-                ("D", 1.0),
-                ("fy", 1.0),
-                ("N", 0.0),
-            ],
-            n_points=[12, 12],
+            theta=theta,
+            control_points=control_points,
+            labels=labels,
+            n_points=n_points,
         )
 
         # get theta
