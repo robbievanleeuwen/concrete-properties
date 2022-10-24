@@ -7,17 +7,17 @@ General
 -------
 
 * Plane sections remain plane (Euler-Bernoulli) i.e. linear strain profile throughout
-the cross-section
+  the cross-section
 * For a given depth, the strain in the reinforcement is equal to the strain in the
-concrete, i.e. there is a perfect bond between concrete and reinforcement
+  concrete, i.e. there is a perfect bond between concrete and reinforcement
 * Materials that have ``meshed=False`` (e.g. 
-:class:`~concreteproperties.material.SteelBar`) are characterised by a constant strain
-at it's geometric centroid
+  :class:`~concreteproperties.material.SteelBar`) are characterised by a constant strain
+  at it's geometric centroid
 * Stresses in materials are determined from strains by linear interpolation from the
-corresponding stress-strain profile (linear extrapolation is used where the strains
-are outside the range of the profile)
+  corresponding stress-strain profile (linear extrapolation is used where the strains
+  are outside the range of the profile)
 * Finite element assumptions and background can be found 
-`here <https://sectionproperties.readthedocs.io/en/latest/rst/theory.html>`_
+  `here <https://sectionproperties.readthedocs.io/en/latest/rst/theory.html>`_
 
 Cracked Analysis
 ----------------
@@ -28,17 +28,17 @@ Ultimate Analysis
 -----------------
 
 * The maximum strain at the extreme concrete compression fibre is assumed to reach a
-maximum limiting compressive strain, see note in :ref:`label-conc-ult-profile`
+  maximum limiting compressive strain, see note in :ref:`label-conc-ult-profile`
 * The tensile strength of the concrete is assumed to be zero
 * There are no geometric instabilities (e.g. buckling) prior to the cross-section
-reaching its ultimate strength
+  reaching its ultimate strength
 * The stress-strain relationship for concrete may be assumed to be rectangular,
-trapezoidal, bilinear, parabolic, or any other arbitrary shape that results in the
-prediction of strength in substantial agreement with the results of comprehensive tests
+  trapezoidal, bilinear, parabolic, or any other arbitrary shape that results in the
+  prediction of strength in substantial agreement with the results of comprehensive tests
 
 Conventions
 -----------
 
 * Compressive stresses are positive, tensile stresses area negative
 * Angles are measured in radians and are positive counter clockwise from the positive
-``x`` axis
+  ``x`` axis
