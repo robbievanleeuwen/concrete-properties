@@ -1,0 +1,36 @@
+concreteproperties.results.BiaxialBendingResults
+================================================
+
+.. currentmodule:: concreteproperties.results
+
+.. autoclass:: BiaxialBendingResults
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BiaxialBendingResults.get_results_lists
+      ~BiaxialBendingResults.plot_diagram
+      ~BiaxialBendingResults.plot_multiple_diagrams_2d
+      ~BiaxialBendingResults.plot_multiple_diagrams_3d
+      ~BiaxialBendingResults.point_in_diagram
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BiaxialBendingResults.n
+      ~BiaxialBendingResults.results
+   
+   

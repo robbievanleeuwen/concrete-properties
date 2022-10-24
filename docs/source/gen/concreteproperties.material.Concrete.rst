@@ -1,0 +1,36 @@
+concreteproperties.material.Concrete
+====================================
+
+.. currentmodule:: concreteproperties.material
+
+.. autoclass:: Concrete
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Concrete.meshed
+      ~Concrete.name
+      ~Concrete.density
+      ~Concrete.stress_strain_profile
+      ~Concrete.ultimate_stress_strain_profile
+      ~Concrete.flexural_tensile_strength
+      ~Concrete.colour
+   
+   
