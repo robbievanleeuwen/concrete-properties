@@ -523,7 +523,7 @@ class AS3600(DesignCode):
 
                 if progress:
                     progress.update(task, advance=1)
- 
+
         if progress_bar:
             # create progress bar
             progress = utils.create_known_progress()
@@ -537,8 +537,8 @@ class AS3600(DesignCode):
                 bbcurve(progress=progress)
 
                 progress.update(
-                task,
-                description="[bold green]:white_check_mark: Biaxial bending diagram generated",
+                    task,
+                    description="[bold green]:white_check_mark: Biaxial bending diagram generated",
                 )
                 live.refresh()
         else:

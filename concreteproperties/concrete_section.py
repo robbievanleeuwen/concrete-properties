@@ -613,7 +613,6 @@ class ConcreteSection:
         else:
             mcurve()
 
-
         return moment_curvature
 
     def service_normal_force_convergence(
