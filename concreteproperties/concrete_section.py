@@ -511,6 +511,8 @@ class ConcreteSection:
         self,
         theta: float = 0,
         kappa_inc: float = 1e-7,
+        kappa_mult: float = 2,
+        kappa_inc_max: float = 5e-6,
         delta_m_min: float = 0.15,
         delta_m_max: float = 0.3,
     ) -> res.MomentCurvatureResults:
@@ -521,8 +523,14 @@ class ConcreteSection:
         :param: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
         :param kappa_inc: Initial curvature increment
-        :param delta_m_min: Relative change in moment at which to double step
-        :param delta_m_max: Relative change in moment at which to halve step
+        :param kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
+            when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied, the
+            inverse of this multipler is applied to ``kappa_inc``.
+        :param kappa_inc_max: Maximum curvature increment
+        :param delta_m_min: Relative change in moment at which to reduce the curvature
+            increment
+        :param delta_m_max: Relative change in moment at which to increase the curvature
+            increment
 
         :return: Moment curvature results object
         """
@@ -557,10 +565,15 @@ class ConcreteSection:
                         / moment_curvature.kappa[-1]
                     )
                     if moment_diff <= delta_m_min:
-                        kappa_inc *= 2
+                        kappa_inc *= kappa_mult
                     elif moment_diff >= delta_m_max:
-                        kappa_inc *= 0.5
+                        kappa_inc *= 1 / kappa_mult
 
+                    # enforce maximum curvature increment
+                    if kappa_inc > kappa_inc_max:
+                        kappa_inc = kappa_inc_max
+
+                # update curvature
                 kappa = 0 if iter == 0 else moment_curvature.kappa[-1] + kappa_inc
 
                 # find neutral axis that gives convergence of the axial force
