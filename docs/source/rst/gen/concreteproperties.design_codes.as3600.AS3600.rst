@@ -1,0 +1,42 @@
+concreteproperties.design\_codes.as3600.AS3600
+==============================================
+
+.. currentmodule:: concreteproperties.design_codes.as3600
+
+.. autoclass:: AS3600
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~AS3600.assign_concrete_section
+      ~AS3600.biaxial_bending_diagram
+      ~AS3600.calculate_cracked_properties
+      ~AS3600.calculate_cracked_stress
+      ~AS3600.calculate_service_stress
+      ~AS3600.calculate_ultimate_stress
+      ~AS3600.calculate_uncracked_stress
+      ~AS3600.capacity_reduction_factor
+      ~AS3600.create_concrete_material
+      ~AS3600.create_steel_material
+      ~AS3600.get_gross_properties
+      ~AS3600.get_k_uo
+      ~AS3600.get_n_ub
+      ~AS3600.get_transformed_gross_properties
+      ~AS3600.moment_curvature_analysis
+      ~AS3600.moment_interaction_diagram
+      ~AS3600.squash_tensile_load
+      ~AS3600.ultimate_bending_capacity
+   
+   
+
+   
+   
+   

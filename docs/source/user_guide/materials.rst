@@ -124,6 +124,12 @@ Linear Concrete Service Profile
   :noindex:
   :show-inheritance:
 
+.. warning::
+
+  This profile is not intended to be used in conjunction with a 
+  :meth:`~concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis`
+  as the concrete can resist large tensile stresses without fracture.
+
 .. plot::
   :include-source: True
   :caption: ConcreteLinear Stress-Strain Profile

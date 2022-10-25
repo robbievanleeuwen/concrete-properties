@@ -513,6 +513,7 @@ class ConcreteSection:
         kappa_inc: float = 1e-7,
         delta_m_min: float = 0.15,
         delta_m_max: float = 0.3,
+        progress_bar: bool = True,
     ) -> res.MomentCurvatureResults:
         r"""Performs a moment curvature analysis given a bending angle ``theta``.
 
@@ -523,13 +524,13 @@ class ConcreteSection:
         :param kappa_inc: Initial curvature increment
         :param delta_m_min: Relative change in moment at which to double step
         :param delta_m_max: Relative change in moment at which to halve step
+        :param progress_bar: If set to True, displays the progress bar
 
         :return: Moment curvature results object
         """
 
         # initialise variables
         moment_curvature = res.MomentCurvatureResults(theta=theta)
-        iter = 0
 
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
@@ -539,16 +540,10 @@ class ConcreteSection:
         a = 1e-6 * d_t  # sufficiently small depth of compressive zone
         b = d_t  # neutral axis at extreme tensile fibre
 
-        # create progress bar
-        progress = utils.create_unknown_progress()
+        # function that performs moment curvature analysis
+        def mcurve(kappa_inc=kappa_inc, progress=None):
+            iter = 0
 
-        with Live(progress, refresh_per_second=10) as live:
-            task = progress.add_task(
-                description="[red]Generating M-K diagram",
-                total=None,
-            )
-
-            # while there hasn't been a failure
             while not moment_curvature._failure:
                 # calculate adaptive step size for curvature
                 if iter > 1:
@@ -583,10 +578,10 @@ class ConcreteSection:
                     moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2
                 )
 
-                text_update = "[red]Generating M-K diagram: "
-                text_update += f"M={m_xy:.3e}"
-
-                progress.update(task, description=text_update)
+                if progress:
+                    text_update = "[red]Generating M-K diagram: "
+                    text_update += f"M={m_xy:.3e}"
+                    progress.update(task, description=text_update)
 
                 # save results
                 if not moment_curvature._failure:
@@ -597,11 +592,26 @@ class ConcreteSection:
                     moment_curvature.m_xy.append(m_xy)
                     iter += 1
 
-            progress.update(
-                task,
-                description="[bold green]:white_check_mark: M-K diagram generated",
-            )
-            live.refresh()
+        # create progress bar
+        if progress_bar:
+            # create progress bar
+            progress = utils.create_unknown_progress()
+
+            with Live(progress, refresh_per_second=10) as live:
+                task = progress.add_task(
+                    description="[red]Generating M-K diagram",
+                    total=None,
+                )
+
+                mcurve(progress=progress)
+
+                progress.update(
+                    task,
+                    description="[bold green]:white_check_mark: M-K diagram generated",
+                )
+                live.refresh()
+        else:
+            mcurve()
 
         return moment_curvature
 
@@ -952,6 +962,7 @@ class ConcreteSection:
         n_points: Union[int, List[int]] = [4, 12, 12, 4],
         max_comp: Optional[float] = None,
         max_comp_labels: List[Union[str, None]] = [None, None],
+        progress_bar: bool = True,
     ) -> res.MomentInteractionResults:
         r"""Generates a moment interaction diagram given a neutral axis angle `theta`
         and `n_points` calculation points between the decompression case and the pure
@@ -981,6 +992,7 @@ class ConcreteSection:
         :param max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
             first value is at zero moment, second value is at the intersection with the
             interaction diagram
+        :param progress_bar: If set to True, displays the progress bar
 
         :raises ValueError: If ``control_points``, ``labels`` or ``n_points`` is invalid
 
@@ -1096,16 +1108,8 @@ class ConcreteSection:
             msg += "tensile fibre to compressive fibre."
             raise ValueError(msg)
 
-        # create progress bar
-        progress = utils.create_known_progress()
-
-        with Live(progress, refresh_per_second=10) as live:
-            # add progress bar task
-            task = progress.add_task(
-                description="[red]Generating M-N diagram",
-                total=sum(n_points) - len(n_points) + 1,
-            )
-
+        # function that performs moment interaction analysis
+        def micurve(progress=None):
             # loop through all neutral axes
             for idx, d_n in enumerate(d_n_list):
                 # calculate ultimate results
@@ -1123,7 +1127,22 @@ class ConcreteSection:
                 ult_res.label = label_list[idx]
                 # add ultimate result to moment interactions results and update progress
                 mi_results.results.append(ult_res)
-                progress.update(task, advance=1)
+
+                if progress:
+                    progress.update(task, advance=1)
+
+        if progress_bar:
+            # create progress bar
+            progress = utils.create_known_progress()
+
+            with Live(progress, refresh_per_second=10) as live:
+                # add progress bar task
+                task = progress.add_task(
+                    description="[red]Generating M-N diagram",
+                    total=sum(n_points) - len(n_points) + 1,
+                )
+
+            micurve(progress=progress)
 
             # display finished progress bar
             progress.update(
@@ -1131,6 +1150,8 @@ class ConcreteSection:
                 description="[bold green]:white_check_mark: M-N diagram generated",
             )
             live.refresh()
+        else:
+            micurve()
 
         # cut diagram at max_comp
         if max_comp:
@@ -1201,12 +1222,14 @@ class ConcreteSection:
         self,
         n: float = 0,
         n_points: int = 48,
+        progress_bar: bool = True,
     ) -> res.BiaxialBendingResults:
         """Generates a biaxial bending diagram given a net axial force ``n`` and
         ``n_points`` calculation points.
 
         :param n: Net axial force
         :param n_points: Number of calculation points between the decompression
+        :param progress_bar: If set to True, displays the progress bar
 
         :return: Biaxial bending results
         """
@@ -1220,29 +1243,38 @@ class ConcreteSection:
         # generate list of thetas
         theta_list = np.linspace(start=-np.pi, stop=np.pi - d_theta, num=n_points)
 
-        # create progress bar
-        progress = utils.create_known_progress()
-
-        with Live(progress, refresh_per_second=10) as live:
-            task = progress.add_task(
-                description="[red]Generating biaxial bending diagram",
-                total=n_points,
-            )
-
+        # function that performs biaxial bending analysis
+        def bbcurve(progress=None):
             # loop through thetas
             for theta in theta_list:
                 ultimate_results = self.ultimate_bending_capacity(theta=theta, n=n)
                 bb_results.results.append(ultimate_results)
-                progress.update(task, advance=1)
+
+                if progress:
+                    progress.update(task, advance=1)
 
             # add first result to end of list top
             bb_results.results.append(bb_results.results[0])
 
-            progress.update(
-                task,
-                description="[bold green]:white_check_mark: Biaxial bending diagram generated",
-            )
-            live.refresh()
+        if progress_bar:
+            # create progress bar
+            progress = utils.create_known_progress()
+
+            with Live(progress, refresh_per_second=10) as live:
+                task = progress.add_task(
+                    description="[red]Generating biaxial bending diagram",
+                    total=n_points,
+                )
+
+                bbcurve(progress=progress)
+
+                progress.update(
+                    task,
+                    description="[bold green]:white_check_mark: Biaxial bending diagram generated",
+                )
+                live.refresh()
+        else:
+            bbcurve()
 
         return bb_results
 
