@@ -903,7 +903,7 @@ div.rendered_html tbody tr:hover {
 &lt;AxesSubplot: title={&#39;center&#39;: &#39;Moment-Curvature&#39;}, xlabel=&#39;Curvature&#39;, ylabel=&#39;Moment&#39;&gt;
 </pre></div></div>
 </div>
-<p>In the above plot, the linear concrete response does not show any yielding behaviour and exhibits a much stiffer response when compared to the other two plots. This is because there is no cracking behaviour modelled into the linear concrete stress-strain profile and the concrete fails in compression before the steel reaches its yield stress. This can be confirmed by examining the <code class="docutils literal notranslate"><span class="pre">failure_geometry</span></code> attribute.</p>
+<p>In the above plot, the linear concrete exhibits a much stiffer response when compared to the other two plots. This is because there is no cracking behaviour modelled into the linear concrete stress-strain profile and the concrete fails in compression just after the steel reaches its yield stress. The concrete stresses continue to increase after yielding of the steel until compression failure. This can be confirmed by examining the <code class="docutils literal notranslate"><span class="pre">failure_geometry</span></code> attribute.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -994,7 +994,7 @@ M_cr = 84.76 kN.m
 <div class="output_area docutils container">
 <img alt="../_images/notebooks_moment_curvature_22_0.svg" src="../_images/notebooks_moment_curvature_22_0.svg" /></div>
 </div>
-<p>It’s clear in the above plot that the softening due to initial cracking occurs between 80 kN.m and 100 kN.m, which aligns well with the elastic result.</p>
+<p>It’s clear in the above plot that the softening due to initial cracking occurs between 75 kN.m and 100 kN.m, which aligns well with the elastic result.</p>
 </div>
 </div>
 <div class="section" id="Varying-Steel-Properties">

@@ -759,12 +759,14 @@
     <span class="n">m_y</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
     <span class="n">m_xy</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
     <span class="n">failure_geometry</span><span class="p">:</span> <span class="n">CPGeom</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">convergence</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
 
     <span class="c1"># for analysis</span>
     <span class="n">_n_i</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">_m_x_i</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">_m_y_i</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">_failure</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">_failure_convergence</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MomentCurvatureResults.plot_results"><a class="viewcode-back" href="../../user_guide/results.html#concreteproperties.results.MomentCurvatureResults.plot_results">[docs]</a>    <span class="k">def</span> <span class="nf">plot_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1310,11 +1312,11 @@
             <span class="n">m_x_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m_x_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
             <span class="n">m_y_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m_y_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
 
-            <span class="n">ax</span><span class="o">.</span><span class="n">plot3D</span><span class="p">(</span><span class="n">m_x_list</span><span class="p">,</span> <span class="n">m_y_list</span><span class="p">,</span> <span class="n">n_list</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot3D</span><span class="p">(</span><span class="n">m_x_list</span><span class="p">,</span> <span class="n">m_y_list</span><span class="p">,</span> <span class="n">n_list</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_x$&quot;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_y$&quot;</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Axial Force $N$&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Axial Force $N$&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">ax</span></div>
@@ -1495,7 +1497,7 @@
                     <span class="c1"># plot the filled contour</span>
                     <span class="n">trictr_conc</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tricontourf</span><span class="p">(</span>
                         <span class="n">triang_conc</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">v_conc</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_conc</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">CenteredNorm</span><span class="p">()</span>
-                    <span class="p">)</span>
+                    <span class="p">)</span>  <span class="c1"># type: ignore</span>
 
                     <span class="c1"># plot a zero stress contour, supressing warning</span>
                     <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
@@ -1527,7 +1529,7 @@
                             <span class="p">[</span><span class="n">zero_level</span><span class="p">],</span>
                             <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                             <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span>
-                        <span class="p">)</span>
+                        <span class="p">)</span>  <span class="c1"># type: ignore</span>
 
             <span class="c1"># plot the meshed reinforcement stresses</span>
             <span class="n">trictr_reinf</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1545,7 +1547,7 @@
                     <span class="c1"># plot the filled contour</span>
                     <span class="n">trictr_reinf</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tricontourf</span><span class="p">(</span>
                         <span class="n">triang_reinf</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">v_reinf</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_reinf</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">CenteredNorm</span><span class="p">()</span>
-                    <span class="p">)</span>
+                    <span class="p">)</span>  <span class="c1"># type: ignore</span>
 
                     <span class="c1"># plot a zero stress contour, supressing warning</span>
                     <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
@@ -1577,7 +1579,7 @@
                             <span class="p">[</span><span class="n">zero_level</span><span class="p">],</span>
                             <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                             <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span>
-                        <span class="p">)</span>
+                        <span class="p">)</span>  <span class="c1"># type: ignore</span>
 
             <span class="c1"># plot the lumped reinforcement stresses</span>
             <span class="n">lumped_reinf_patches</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1594,10 +1596,10 @@
             <span class="n">patch</span> <span class="o">=</span> <span class="n">PatchCollection</span><span class="p">(</span><span class="n">lumped_reinf_patches</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_reinf</span><span class="p">)</span>
             <span class="n">patch</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span><span class="n">colours</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">reinf_tick_same</span><span class="p">:</span>
-                <span class="n">patch</span><span class="o">.</span><span class="n">set_clim</span><span class="p">([</span><span class="mf">0.99</span> <span class="o">*</span> <span class="n">v_reinf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">1.01</span> <span class="o">*</span> <span class="n">v_reinf</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+                <span class="n">patch</span><span class="o">.</span><span class="n">set_clim</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.99</span> <span class="o">*</span> <span class="n">v_reinf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.01</span> <span class="o">*</span> <span class="n">v_reinf</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">patch</span><span class="o">.</span><span class="n">set_clim</span><span class="p">([</span><span class="n">v_reinf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v_reinf</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
-            <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>
+                <span class="n">patch</span><span class="o">.</span><span class="n">set_clim</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">v_reinf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vmax</span><span class="o">=</span><span class="n">v_reinf</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
             <span class="c1"># add the colour bars</span>
             <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>

@@ -852,6 +852,8 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">kappa_inc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-7</span><span class="p">,</span>
+        <span class="n">kappa_mult</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">kappa_inc_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5e-6</span><span class="p">,</span>
         <span class="n">delta_m_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span>
         <span class="n">delta_m_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
         <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -860,11 +862,17 @@
 
 <span class="sd">        Analysis continues until a material reaches its ultimate strain.</span>
 
-<span class="sd">        :param: Angle (in radians) the neutral axis makes with the horizontal axis</span>
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
 <span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">        :param kappa_inc: Initial curvature increment</span>
-<span class="sd">        :param delta_m_min: Relative change in moment at which to double step</span>
-<span class="sd">        :param delta_m_max: Relative change in moment at which to halve step</span>
+<span class="sd">        :param kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``</span>
+<span class="sd">            when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied, the</span>
+<span class="sd">            inverse of this multipler is applied to ``kappa_inc``.</span>
+<span class="sd">        :param kappa_inc_max: Maximum curvature increment</span>
+<span class="sd">        :param delta_m_min: Relative change in moment at which to reduce the curvature</span>
+<span class="sd">            increment</span>
+<span class="sd">        :param delta_m_max: Relative change in moment at which to increase the curvature</span>
+<span class="sd">            increment</span>
 <span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
 
 <span class="sd">        :return: Moment curvature results object</span>
@@ -884,6 +892,7 @@
         <span class="c1"># function that performs moment curvature analysis</span>
         <span class="k">def</span> <span class="nf">mcurve</span><span class="p">(</span><span class="n">kappa_inc</span><span class="o">=</span><span class="n">kappa_inc</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
             <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">kappa</span> <span class="o">=</span> <span class="mi">0</span>
 
             <span class="k">while</span> <span class="ow">not</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure</span><span class="p">:</span>
                 <span class="c1"># calculate adaptive step size for curvature</span>
@@ -893,10 +902,15 @@
                         <span class="o">/</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                     <span class="p">)</span>
                     <span class="k">if</span> <span class="n">moment_diff</span> <span class="o">&lt;=</span> <span class="n">delta_m_min</span><span class="p">:</span>
-                        <span class="n">kappa_inc</span> <span class="o">*=</span> <span class="mi">2</span>
+                        <span class="n">kappa_inc</span> <span class="o">*=</span> <span class="n">kappa_mult</span>
                     <span class="k">elif</span> <span class="n">moment_diff</span> <span class="o">&gt;=</span> <span class="n">delta_m_max</span><span class="p">:</span>
-                        <span class="n">kappa_inc</span> <span class="o">*=</span> <span class="mf">0.5</span>
+                        <span class="n">kappa_inc</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">kappa_mult</span>
 
+                    <span class="c1"># enforce maximum curvature increment</span>
+                    <span class="k">if</span> <span class="n">kappa_inc</span> <span class="o">&gt;</span> <span class="n">kappa_inc_max</span><span class="p">:</span>
+                        <span class="n">kappa_inc</span> <span class="o">=</span> <span class="n">kappa_inc_max</span>
+
+                <span class="c1"># update curvature</span>
                 <span class="n">kappa</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="nb">iter</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">kappa_inc</span>
 
                 <span class="c1"># find neutral axis that gives convergence of the axial force</span>
@@ -931,7 +945,53 @@
                     <span class="n">moment_curvature</span><span class="o">.</span><span class="n">m_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_x_i</span><span class="p">)</span>
                     <span class="n">moment_curvature</span><span class="o">.</span><span class="n">m_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_y_i</span><span class="p">)</span>
                     <span class="n">moment_curvature</span><span class="o">.</span><span class="n">m_xy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m_xy</span><span class="p">)</span>
+                    <span class="n">moment_curvature</span><span class="o">.</span><span class="n">convergence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure_convergence</span>
+                    <span class="p">)</span>
                     <span class="nb">iter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># find kappa corresponding to failure strain:</span>
+            <span class="c1"># curvature before and after failure</span>
+            <span class="n">kappa_a</span> <span class="o">=</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">kappa_b</span> <span class="o">=</span> <span class="n">kappa</span>
+
+            <span class="c1"># this method (given a kappa) outputs the failure convergence</span>
+            <span class="c1"># (normalised to zero)</span>
+            <span class="k">def</span> <span class="nf">failure_kappa</span><span class="p">(</span><span class="n">kappa_fail</span><span class="p">):</span>
+                <span class="c1"># given kappa find equilibrium</span>
+                <span class="n">brentq</span><span class="p">(</span>
+                    <span class="n">f</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">service_normal_force_convergence</span><span class="p">,</span>
+                    <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
+                    <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span>
+                    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">kappa_fail</span><span class="p">,</span> <span class="n">moment_curvature</span><span class="p">),</span>
+                    <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+                    <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+                    <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure_convergence</span> <span class="o">-</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Finding failure curvature...&quot;</span><span class="p">)</span>
+
+            <span class="c1"># find curvature corresponding to failure</span>
+            <span class="n">brentq</span><span class="p">(</span>
+                <span class="n">f</span><span class="o">=</span><span class="n">failure_kappa</span><span class="p">,</span>
+                <span class="n">a</span><span class="o">=</span><span class="n">kappa_a</span><span class="p">,</span>
+                <span class="n">b</span><span class="o">=</span><span class="n">kappa_b</span><span class="p">,</span>
+                <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># save final results</span>
+            <span class="n">m_xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_x_i</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_y_i</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa</span><span class="p">)</span>
+            <span class="n">moment_curvature</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_n_i</span><span class="p">)</span>
+            <span class="n">moment_curvature</span><span class="o">.</span><span class="n">m_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_x_i</span><span class="p">)</span>
+            <span class="n">moment_curvature</span><span class="o">.</span><span class="n">m_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_y_i</span><span class="p">)</span>
+            <span class="n">moment_curvature</span><span class="o">.</span><span class="n">m_xy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m_xy</span><span class="p">)</span>
+            <span class="n">moment_curvature</span><span class="o">.</span><span class="n">convergence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure_convergence</span><span class="p">)</span>
 
         <span class="c1"># create progress bar</span>
         <span class="k">if</span> <span class="n">progress_bar</span><span class="p">:</span>
@@ -953,7 +1013,6 @@
                 <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">mcurve</span><span class="p">()</span>
-
 
         <span class="k">return</span> <span class="n">moment_curvature</span></div>
 
@@ -1010,6 +1069,7 @@
         <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">m_x</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">m_y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">failure_convergence</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># calculate meshed geometry actions</span>
         <span class="k">for</span> <span class="n">meshed_geom</span> <span class="ow">in</span> <span class="n">meshed_split_geoms</span><span class="p">:</span>
@@ -1042,6 +1102,15 @@
                 <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">moment_curvature</span><span class="o">.</span><span class="n">failure_geometry</span> <span class="o">=</span> <span class="n">meshed_geom</span>
 
+            <span class="c1"># update failure convergence</span>
+            <span class="c1"># compression failure</span>
+            <span class="n">failure_convergence</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_strain</span> <span class="o">/</span> <span class="n">ult_comp_strain</span><span class="p">,</span> <span class="n">failure_convergence</span><span class="p">)</span>
+            <span class="c1"># tensile failure (ignore concrete)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meshed_geom</span><span class="p">,</span> <span class="n">CPGeomConcrete</span><span class="p">):</span>
+                <span class="n">failure_convergence</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                    <span class="n">min_strain</span> <span class="o">/</span> <span class="n">ult_tens_strain</span><span class="p">,</span> <span class="n">failure_convergence</span>
+                <span class="p">)</span>
+
         <span class="c1"># calculate lumped geometry actions</span>
         <span class="k">for</span> <span class="n">lumped_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reinf_geometries_lumped</span><span class="p">:</span>
             <span class="c1"># calculate area and centroid</span>
@@ -1068,6 +1137,12 @@
                 <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">moment_curvature</span><span class="o">.</span><span class="n">failure_geometry</span> <span class="o">=</span> <span class="n">lumped_geom</span>
 
+            <span class="c1"># update failure convergence</span>
+            <span class="c1"># compression failure</span>
+            <span class="n">failure_convergence</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">strain</span> <span class="o">/</span> <span class="n">ult_comp_strain</span><span class="p">,</span> <span class="n">failure_convergence</span><span class="p">)</span>
+            <span class="c1"># tensile failure</span>
+            <span class="n">failure_convergence</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">strain</span> <span class="o">/</span> <span class="n">ult_tens_strain</span><span class="p">,</span> <span class="n">failure_convergence</span><span class="p">)</span>
+
             <span class="c1"># calculate stress and force</span>
             <span class="n">stress</span> <span class="o">=</span> <span class="n">lumped_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span>
                 <span class="n">strain</span><span class="o">=</span><span class="n">strain</span>
@@ -1082,6 +1157,7 @@
         <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_n_i</span> <span class="o">=</span> <span class="n">n</span>
         <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_x_i</span> <span class="o">=</span> <span class="n">m_x</span>
         <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_y_i</span> <span class="o">=</span> <span class="n">m_y</span>
+        <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure_convergence</span> <span class="o">=</span> <span class="n">failure_convergence</span>
 
         <span class="c1"># calculate convergence</span>
         <span class="k">return</span> <span class="n">n</span></div>
