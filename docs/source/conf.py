@@ -55,7 +55,7 @@ html_show_sourcelink = (
 )
 autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
 add_module_names = False  # Remove namespaces from class/method signatures
-nbsphinx_allow_errors = True  # Continue through Jupyter errors
+nbsphinx_allow_errors = False  # whether to continue through Jupyter errors
 nbsphinx_execute_arguments = [
     "--InlineBackend.figure_formats={'svg', 'pdf'}",
     "--InlineBackend.rc=figure.dpi=96",
