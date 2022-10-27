@@ -538,6 +538,7 @@ class ConcreteSection:
         # initialise variables
         moment_curvature = res.MomentCurvatureResults(theta=theta)
         iter = 0
+        kappa = 0
 
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
@@ -608,7 +609,52 @@ class ConcreteSection:
                     moment_curvature.m_x.append(moment_curvature._m_x_i)
                     moment_curvature.m_y.append(moment_curvature._m_y_i)
                     moment_curvature.m_xy.append(m_xy)
+                    moment_curvature.convergence.append(
+                        moment_curvature._failure_convergence
+                    )
                     iter += 1
+
+            # find kappa corresponding to failure strain:
+            # curvature before and after failure
+            kappa_a = moment_curvature.kappa[-1]
+            kappa_b = kappa
+            
+            # this method (given a kappa) outputs the failure convergence
+            # (normalised to zero)
+            def failure_kappa(kappa_fail):
+                # given kappa find equilibrium
+                brentq(
+                    f=self.service_normal_force_convergence,
+                    a=a,
+                    b=b,
+                    args=(kappa_fail, moment_curvature),
+                    xtol=1e-3,
+                    rtol=1e-6,  # type: ignore
+                    full_output=True,
+                    disp=False,
+                )
+
+                return moment_curvature._failure_convergence - 1
+
+            progress.update(task, description="[red]Finding failure curvature...")
+
+            # find curvature corresponding to failure
+            kappa_fail, r = brentq(
+                f=failure_kappa,
+                a=kappa_a,
+                b=kappa_b,
+                full_output=True,
+                disp=False,
+            )
+
+            # save final results
+            m_xy = np.sqrt(moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2)
+            moment_curvature.kappa.append(kappa)
+            moment_curvature.n.append(moment_curvature._n_i)
+            moment_curvature.m_x.append(moment_curvature._m_x_i)
+            moment_curvature.m_y.append(moment_curvature._m_y_i)
+            moment_curvature.m_xy.append(m_xy)
+            moment_curvature.convergence.append(moment_curvature._failure_convergence)
 
             progress.update(
                 task,
@@ -671,6 +717,7 @@ class ConcreteSection:
         n = 0
         m_x = 0
         m_y = 0
+        failure_convergence = 0
 
         # calculate meshed geometry actions
         for meshed_geom in meshed_split_geoms:
@@ -703,6 +750,15 @@ class ConcreteSection:
                 moment_curvature._failure = True
                 moment_curvature.failure_geometry = meshed_geom
 
+            # update failure convergence
+            # compression failure
+            failure_convergence = max(max_strain / ult_comp_strain, failure_convergence)
+            # tensile failure (ignore concrete)
+            if not isinstance(meshed_geom, CPGeomConcrete):
+                failure_convergence = max(
+                    min_strain / ult_tens_strain, failure_convergence
+                )
+
         # calculate lumped geometry actions
         for lumped_geom in self.reinf_geometries_lumped:
             # calculate area and centroid
@@ -729,6 +785,12 @@ class ConcreteSection:
                 moment_curvature._failure = True
                 moment_curvature.failure_geometry = lumped_geom
 
+            # update failure convergence
+            # compression failure
+            failure_convergence = max(strain / ult_comp_strain, failure_convergence)
+            # tensile failure
+            failure_convergence = max(strain / ult_tens_strain, failure_convergence)
+
             # calculate stress and force
             stress = lumped_geom.material.stress_strain_profile.get_stress(
                 strain=strain
@@ -743,6 +805,7 @@ class ConcreteSection:
         moment_curvature._n_i = n
         moment_curvature._m_x_i = m_x
         moment_curvature._m_y_i = m_y
+        moment_curvature._failure_convergence = failure_convergence
 
         # calculate convergence
         return n
