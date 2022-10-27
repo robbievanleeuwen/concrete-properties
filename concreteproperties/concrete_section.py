@@ -538,7 +538,7 @@ class ConcreteSection:
         """
 
         # initialise variables
-        moment_curvature = res.MomentCurvatureResults(theta=theta)        
+        moment_curvature = res.MomentCurvatureResults(theta=theta)
 
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
@@ -613,7 +613,7 @@ class ConcreteSection:
             # curvature before and after failure
             kappa_a = moment_curvature.kappa[-1]
             kappa_b = kappa
-            
+
             # this method (given a kappa) outputs the failure convergence
             # (normalised to zero)
             def failure_kappa(kappa_fail):
