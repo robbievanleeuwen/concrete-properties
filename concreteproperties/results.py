@@ -408,6 +408,9 @@ class MomentCurvatureResults:
     :param m_xy: List of resultant bending moments
     :param failure_geometry: Geometry object of the region of the cross-section that
         failed, ending the moment curvature analysis
+    :param convergence: The critical ratio between the strain and the failure strain
+        within the cross-section for each curvature step in the analysis. A value of one
+        indicates failure.
     """
 
     # results

@@ -684,7 +684,7 @@ class ConcreteSection:
         """Given a neutral axis depth ``d_n`` and curvature ``kappa``, returns the the
         net axial force.
 
-        :param d_nc: Trial cracked neutral axis
+        :param d_n: Trial neutral axis
         :param kappa: Curvature
         :param moment_curvature: Moment curvature results object
 
@@ -818,7 +818,7 @@ class ConcreteSection:
         moment_curvature._m_y_i = m_y
         moment_curvature._failure_convergence = failure_convergence
 
-        # calculate convergence
+        # return normal force convergence
         return n
 
     def ultimate_bending_capacity(
