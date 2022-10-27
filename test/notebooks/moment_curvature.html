@@ -1061,6 +1061,226 @@ M_cr = 84.76 kN.m
 <p>The above plot shows that the moment curvature response is identical up until the point of steel yielding, as expected. Beyond the yield point, the section with the hardening steel becomes slightly stiffer than the section with the perfectly plastic steel. This is because the stresses in the reinforcing steel continue to harden beyond the yield point, resulting in a slightly larger moment.</p>
 </div>
 </div>
+<div class="section" id="Finetuning-Analysis-Parameters">
+<h2><span class="section-number">3.6. </span>Finetuning Analysis Parameters<a class="headerlink" href="#Finetuning-Analysis-Parameters" title="Permalink to this heading">#</a></h2>
+<p>There are a number of analysis parameters that can be finetuned to control the moment curvature analysis. These will be explored in this example.</p>
+<p>We start by creating a simple geometry with relatively simple material properties (linear concrete with no tension &amp; elastic-plastic steel).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sectionproperties.pre.library.concrete_sections</span> <span class="kn">import</span> <span class="n">concrete_rectangular_section</span>
+
+<span class="n">concrete</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Concrete (No Tension)&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteLinearNoTension</span><span class="p">(</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">35e3</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">BilinearStressStrain</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.00175</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">geom</span> <span class="o">=</span> <span class="n">concrete_rectangular_section</span><span class="p">(</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">dia_top</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">n_top</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">dia_bot</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">n_bot</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">n_circle</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">cover</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">area_top</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+    <span class="n">area_bot</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+    <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete</span><span class="p">,</span>
+    <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel_ep</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_moment_curvature_30_0.svg" src="../_images/notebooks_moment_curvature_30_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Reinforced Concrete Section&#39;}&gt;
+</pre></div></div>
+</div>
+<div class="section" id="Default-Analysis-Parameters">
+<h3><span class="section-number">3.6.1. </span>Default Analysis Parameters<a class="headerlink" href="#Default-Analysis-Parameters" title="Permalink to this heading">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res1</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res1</span><span class="o">.</span><span class="n">plot_results</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;x-&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of calculations = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res1</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failure curvature = </span><span class="si">{</span><span class="n">res1</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_moment_curvature_33_0.svg" src="../_images/notebooks_moment_curvature_33_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Number of calculations = 38
+Failure curvature = 7.2023e-05
+</pre></div></div>
+</div>
+<p>In the above plot we waste a lot of time calculating the initial linear behaviour and do not capture the yielding behaviour particularly well. However, we don’t spend too much time in the yielded plateau region as the curvature increment is adaptively increased.</p>
+</div>
+<div class="section" id="Initial-Curvature-Increment">
+<h3><span class="section-number">3.6.2. </span>Initial Curvature Increment<a class="headerlink" href="#Initial-Curvature-Increment" title="Permalink to this heading">#</a></h3>
+<p>In this example we change the initial curvature increment from <code class="docutils literal notranslate"><span class="pre">1e-7</span></code> (default) to <code class="docutils literal notranslate"><span class="pre">1e-6</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res2</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">kappa_inc</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res2</span><span class="o">.</span><span class="n">plot_results</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;x-&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of calculations = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res2</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failure curvature = </span><span class="si">{</span><span class="n">res2</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_moment_curvature_37_0.svg" src="../_images/notebooks_moment_curvature_37_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Number of calculations = 26
+Failure curvature = 7.2023e-05
+</pre></div></div>
+</div>
+<p>We now save a lot of time in the initial linear region compared to the previous plot however the yielding behaviour is not super well described.</p>
+</div>
+<div class="section" id="Further-Refinement">
+<h3><span class="section-number">3.6.3. </span>Further Refinement<a class="headerlink" href="#Further-Refinement" title="Permalink to this heading">#</a></h3>
+<p>In this example we change the following parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">kappa_inc=3e-7</span></code> - a balance between the previous two examples</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kappa_mult=1.25</span></code> - smoother changes in curvature increment (default = <code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delta_m_min=0.05</span></code> - only increase the curvature increment if the change in moment is less than 5% (default = 15%)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kappa_inc_max=2e-5</span></code> - allow larger curvature increments, can be useful in the plateau region (default = <code class="docutils literal notranslate"><span class="pre">5e-6</span></code>)</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res3</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span>
+    <span class="n">kappa_inc</span><span class="o">=</span><span class="mf">3e-7</span><span class="p">,</span>
+    <span class="n">kappa_mult</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+    <span class="n">delta_m_min</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">kappa_inc_max</span><span class="o">=</span><span class="mf">2e-5</span><span class="p">,</span>
+    <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res3</span><span class="o">.</span><span class="n">plot_results</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;x-&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of calculations = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res3</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failure curvature = </span><span class="si">{</span><span class="n">res3</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_moment_curvature_41_0.svg" src="../_images/notebooks_moment_curvature_41_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Number of calculations = 70
+Failure curvature = 7.2023e-05
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Summary">
+<h3><span class="section-number">3.6.4. </span>Summary<a class="headerlink" href="#Summary" title="Permalink to this heading">#</a></h3>
+<p>Note that all failure curvatures are the same, regardless of the analysis parameters the failure point is always included in the results.</p>
+<p>Let’s compare the most granular result (<code class="docutils literal notranslate"><span class="pre">res3</span></code>) with the first example.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MomentCurvatureResults</span><span class="o">.</span><span class="n">plot_multiple_results</span><span class="p">(</span>
+    <span class="n">moment_curvature_results</span><span class="o">=</span><span class="p">[</span><span class="n">res1</span><span class="p">,</span> <span class="n">res3</span><span class="p">],</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Default&quot;</span><span class="p">,</span> <span class="s2">&quot;Refined&quot;</span><span class="p">],</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_moment_curvature_43_0.svg" src="../_images/notebooks_moment_curvature_43_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Moment-Curvature&#39;}, xlabel=&#39;Curvature&#39;, ylabel=&#39;Moment&#39;&gt;
+</pre></div></div>
+</div>
+<p>Note that the behaviour is largely similar, however the refined parameters do a better job of capturing initial yielding.</p>
+</div>
+</div>
 </div>
 
 
@@ -1151,6 +1371,33 @@ M_cr = 84.76 kN.m
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id3">
      3.5.2. Plotting Results
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Finetuning-Analysis-Parameters">
+   3.6. Finetuning Analysis Parameters
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Default-Analysis-Parameters">
+     3.6.1. Default Analysis Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Initial-Curvature-Increment">
+     3.6.2. Initial Curvature Increment
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Further-Refinement">
+     3.6.3. Further Refinement
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Summary">
+     3.6.4. Summary
     </a>
    </li>
   </ul>

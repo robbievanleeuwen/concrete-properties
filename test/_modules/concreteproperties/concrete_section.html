@@ -896,7 +896,7 @@
 
             <span class="k">while</span> <span class="ow">not</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure</span><span class="p">:</span>
                 <span class="c1"># calculate adaptive step size for curvature</span>
-                <span class="k">if</span> <span class="nb">iter</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">iter</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
                     <span class="n">moment_diff</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="nb">abs</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
                         <span class="o">/</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -986,7 +986,7 @@
 
             <span class="c1"># save final results</span>
             <span class="n">m_xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_x_i</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_y_i</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-            <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa</span><span class="p">)</span>
+            <span class="n">moment_curvature</span><span class="o">.</span><span class="n">kappa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_kappa</span><span class="p">)</span>
             <span class="n">moment_curvature</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_n_i</span><span class="p">)</span>
             <span class="n">moment_curvature</span><span class="o">.</span><span class="n">m_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_x_i</span><span class="p">)</span>
             <span class="n">moment_curvature</span><span class="o">.</span><span class="n">m_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_y_i</span><span class="p">)</span>
@@ -1025,7 +1025,7 @@
         <span class="sd">&quot;&quot;&quot;Given a neutral axis depth ``d_n`` and curvature ``kappa``, returns the the</span>
 <span class="sd">        net axial force.</span>
 
-<span class="sd">        :param d_nc: Trial cracked neutral axis</span>
+<span class="sd">        :param d_n: Trial neutral axis</span>
 <span class="sd">        :param kappa: Curvature</span>
 <span class="sd">        :param moment_curvature: Moment curvature results object</span>
 
@@ -1154,12 +1154,13 @@
             <span class="n">m_x</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy</span><span class="p">)</span>
             <span class="n">m_y</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx</span><span class="p">)</span>
 
+        <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_kappa</span> <span class="o">=</span> <span class="n">kappa</span>
         <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_n_i</span> <span class="o">=</span> <span class="n">n</span>
         <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_x_i</span> <span class="o">=</span> <span class="n">m_x</span>
         <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_y_i</span> <span class="o">=</span> <span class="n">m_y</span>
         <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure_convergence</span> <span class="o">=</span> <span class="n">failure_convergence</span>
 
-        <span class="c1"># calculate convergence</span>
+        <span class="c1"># return normal force convergence</span>
         <span class="k">return</span> <span class="n">n</span></div>
 
 <div class="viewcode-block" id="ConcreteSection.ultimate_bending_capacity"><a class="viewcode-back" href="../../user_guide/analysis.html#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_bending_capacity</span><span class="p">(</span>

@@ -451,6 +451,214 @@
    "source": [
     "The above plot shows that the moment curvature response is identical up until the point of steel yielding, as expected. Beyond the yield point, the section with the hardening steel becomes slightly stiffer than the section with the perfectly plastic steel. This is because the stresses in the reinforcing steel continue to harden beyond the yield point, resulting in a slightly larger moment."
    ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "637f1cb3",
+   "metadata": {},
+   "source": [
+    "## Finetuning Analysis Parameters\n",
+    "There are a number of analysis parameters that can be finetuned to control the moment curvature analysis. These will be explored in this example.\n",
+    "\n",
+    "We start by creating a simple geometry with relatively simple material properties (linear concrete with no tension & elastic-plastic steel)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0519bd2f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section\n",
+    "\n",
+    "concrete = Concrete(\n",
+    "    name=\"Concrete (No Tension)\",\n",
+    "    density=2.4e-6,\n",
+    "    stress_strain_profile=ssp.ConcreteLinearNoTension(\n",
+    "        elastic_modulus=35e3,\n",
+    "        ultimate_strain=0.003,\n",
+    "        compressive_strength=40,\n",
+    "    ),\n",
+    "    ultimate_stress_strain_profile=ssp.BilinearStressStrain(\n",
+    "        compressive_strength=40,\n",
+    "        compressive_strain=0.00175,\n",
+    "        ultimate_strain=0.0035,\n",
+    "    ),\n",
+    "    flexural_tensile_strength=3.5,\n",
+    "    colour=\"lightgrey\",\n",
+    ")\n",
+    "\n",
+    "geom = concrete_rectangular_section(\n",
+    "    b=400,\n",
+    "    d=600,\n",
+    "    dia_top=24,\n",
+    "    n_top=3,\n",
+    "    dia_bot=24,\n",
+    "    n_bot=3,\n",
+    "    n_circle=4,\n",
+    "    cover=30,\n",
+    "    area_top=450,\n",
+    "    area_bot=450,\n",
+    "    conc_mat=concrete,\n",
+    "    steel_mat=steel_ep,\n",
+    ")\n",
+    "\n",
+    "conc_sec = ConcreteSection(geom)\n",
+    "conc_sec.plot_section()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "25179a3b",
+   "metadata": {},
+   "source": [
+    "### Default Analysis Parameters"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "31158d1a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "res1 = conc_sec.moment_curvature_analysis(progress_bar=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b7619f91",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "res1.plot_results(fmt=\"x-\")\n",
+    "print(f\"Number of calculations = {len(res1.kappa)}\")\n",
+    "print(f\"Failure curvature = {res1.kappa[-1]:.4e}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "cea12ad1",
+   "metadata": {},
+   "source": [
+    "In the above plot we waste a lot of time calculating the initial linear behaviour and do not capture the yielding behaviour particularly well. However, we don't spend too much time in the yielded plateau region as the curvature increment is adaptively increased."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b61d059b",
+   "metadata": {},
+   "source": [
+    "### Initial Curvature Increment\n",
+    "In this example we change the initial curvature increment from ``1e-7`` (default) to ``1e-6``."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f07b6189",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "res2 = conc_sec.moment_curvature_analysis(kappa_inc=1e-6, progress_bar=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9b1f5b07",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "res2.plot_results(fmt=\"x-\")\n",
+    "print(f\"Number of calculations = {len(res2.kappa)}\")\n",
+    "print(f\"Failure curvature = {res2.kappa[-1]:.4e}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "100f5c13",
+   "metadata": {},
+   "source": [
+    "We now save a lot of time in the initial linear region compared to the previous plot however the yielding behaviour is not super well described."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9dd9a768",
+   "metadata": {},
+   "source": [
+    "### Further Refinement\n",
+    "In this example we change the following parameters:\n",
+    "\n",
+    "- ``kappa_inc=3e-7`` - a balance between the previous two examples\n",
+    "- ``kappa_mult=1.25`` - smoother changes in curvature increment (default = ``2``)\n",
+    "- ``delta_m_min=0.05`` - only increase the curvature increment if the change in moment is less than 5% (default = 15%)\n",
+    "- ``kappa_inc_max=2e-5`` - allow larger curvature increments, can be useful in the plateau region (default = ``5e-6``)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fa79f8de",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "res3 = conc_sec.moment_curvature_analysis(\n",
+    "    kappa_inc=3e-7,\n",
+    "    kappa_mult=1.25,\n",
+    "    delta_m_min=0.05,\n",
+    "    kappa_inc_max=2e-5,\n",
+    "    progress_bar=False,\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "122ad9e4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "res3.plot_results(fmt=\"x-\")\n",
+    "print(f\"Number of calculations = {len(res3.kappa)}\")\n",
+    "print(f\"Failure curvature = {res3.kappa[-1]:.4e}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "16a90b50",
+   "metadata": {},
+   "source": [
+    "### Summary\n",
+    "Note that all failure curvatures are the same, regardless of the analysis parameters the failure point is always included in the results.\n",
+    "\n",
+    "Let's compare the most granular result (``res3``) with the first example."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6044ca4b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "MomentCurvatureResults.plot_multiple_results(\n",
+    "    moment_curvature_results=[res1, res3],\n",
+    "    labels=[\"Default\", \"Refined\"],\n",
+    "    fmt=\"-\",\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9fa176bb",
+   "metadata": {},
+   "source": [
+    "Note that the behaviour is largely similar, however the refined parameters do a better job of capturing initial yielding."
+   ]
   }
  ],
  "metadata": {
