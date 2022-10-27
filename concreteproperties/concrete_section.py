@@ -555,7 +555,7 @@ class ConcreteSection:
 
             while not moment_curvature._failure:
                 # calculate adaptive step size for curvature
-                if iter > 1:
+                if iter > 2:
                     moment_diff = (
                         abs(moment_curvature.kappa[-1] - moment_curvature.kappa[-2])
                         / moment_curvature.kappa[-1]
