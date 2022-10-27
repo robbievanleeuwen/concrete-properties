@@ -645,7 +645,7 @@ class ConcreteSection:
 
             # save final results
             m_xy = np.sqrt(moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2)
-            moment_curvature.kappa.append(kappa)
+            moment_curvature.kappa.append(moment_curvature._kappa)
             moment_curvature.n.append(moment_curvature._n_i)
             moment_curvature.m_x.append(moment_curvature._m_x_i)
             moment_curvature.m_y.append(moment_curvature._m_y_i)
@@ -813,6 +813,7 @@ class ConcreteSection:
             m_x += force * (centroid[1] - self.gross_properties.cy)
             m_y += force * (centroid[0] - self.gross_properties.cx)
 
+        moment_curvature._kappa = kappa
         moment_curvature._n_i = n
         moment_curvature._m_x_i = m_x
         moment_curvature._m_y_i = m_y

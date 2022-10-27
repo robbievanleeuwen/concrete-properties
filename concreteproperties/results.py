@@ -424,6 +424,7 @@ class MomentCurvatureResults:
     convergence: List[float] = field(default_factory=list)
 
     # for analysis
+    _kappa: float = field(default=0, repr=False)
     _n_i: float = field(default=0, repr=False)
     _m_x_i: float = field(default=0, repr=False)
     _m_y_i: float = field(default=0, repr=False)
