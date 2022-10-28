@@ -553,7 +553,7 @@ class MomentCurvatureResults:
         return float(f_kappa(moment))
 
 
-@dataclass
+@dataclass(order=True)
 class UltimateBendingResults:
     r"""Class for storing ultimate bending results.
 
@@ -583,6 +583,9 @@ class UltimateBendingResults:
 
     # label
     label: Optional[str] = None
+
+    def __post_init__(self) -> None:
+        self.sort_index = self.n
 
     def print_results(
         self,
@@ -622,6 +625,11 @@ class MomentInteractionResults:
     """
 
     results: List[UltimateBendingResults] = field(default_factory=list)
+
+    def sort_results(self) -> None:
+        """Sorts the results by decreasing axial force."""
+
+        self.results.sort(reverse=True)
 
     def get_results_lists(
         self,
