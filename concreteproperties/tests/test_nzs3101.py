@@ -892,3 +892,109 @@ def test_max_ten_strength(analysis_type, rel_tol, calc_value):
         )
         == calc_value
     )
+
+
+@pytest.mark.parametrize(
+    "compressive_strength, steel_grade, pphr_class, analysis_type, theta, phi_Mn, d_n",
+    [
+        (40, "500e", "LDPR", "nom_chk", 0, 732.7142, 77.4952),
+        (40, "500e", "NDPR", "cpe_chk", 0, 862.0167, 77.4952),
+        (40, "500e", "DPR", "os_chk", 0, 1164.4308, 88.8817),
+        (40, "500e", "NDPR", "prob_chk", 0, 940.6050, 72.1093),
+        (40, "500e", "NDPR", "prob_os_chk", 0, 1166.9648, 85.1573),
+    ],
+)
+def test_ultimate_bending_capacity_beam_no_axial(
+    compressive_strength,
+    steel_grade,
+    pphr_class,
+    analysis_type,
+    theta,
+    phi_Mn,
+    d_n,
+):
+    design_code = NZS3101()
+    concrete = design_code.create_concrete_material(compressive_strength)
+    steel = design_code.create_steel_material(steel_grade)
+
+    dia_top = 20
+    dia_bot = 25
+    geometry = concrete_rectangular_section(
+        b=500,
+        d=800,
+        dia_top=dia_top,
+        n_top=5,
+        dia_bot=dia_bot,
+        n_bot=5,
+        n_circle=16,
+        cover=50,
+        area_top=dia_top**2 * np.pi / 4,
+        area_bot=dia_bot**2 * np.pi / 4,
+        conc_mat=concrete,
+        steel_mat=steel,
+    )
+    n = 0
+    conc_sec = ConcreteSection(geometry)
+    design_code.assign_concrete_section(conc_sec)
+    ultimate_results, _, _ = design_code.ultimate_bending_capacity(
+        pphr_class,
+        analysis_type,
+        theta,
+        n,
+    )
+    assert pytest.approx(ultimate_results.m_x / 1e6, rel=0.001) == phi_Mn
+    assert pytest.approx(ultimate_results.m_y / 1e6, rel=0.001) == 0
+    assert pytest.approx(ultimate_results.d_n, rel=0.001) == d_n
+
+
+@pytest.mark.parametrize(
+    "n, compressive_strength, steel_grade, pphr_class, analysis_type, theta, phi_Mn, d_n",
+    [
+        (1000, 40, "500e", "LDPR", "nom_chk", 0, 1053.2022, 145.4137),
+        (-500, 40, "500e", "NDPR", "cpe_chk", 0, 690.0205, 58.0155),
+        (2250, 40, "500e", "DPR", "os_chk", 0, 1852.6218, 217.0735),
+        (-1250, 40, "500e", "NDPR", "prob_chk", 0, 502.2989, 38.1082),
+        (3400, 40, "500e", "NDPR", "prob_os_chk", 0, 2153.6079, 271.8836),
+    ],
+)
+def test_ultimate_bending_capacity_beam_with_axial(
+    n,
+    compressive_strength,
+    steel_grade,
+    pphr_class,
+    analysis_type,
+    theta,
+    phi_Mn,
+    d_n,
+):
+    design_code = NZS3101()
+    concrete = design_code.create_concrete_material(compressive_strength)
+    steel = design_code.create_steel_material(steel_grade)
+
+    dia_top = 20
+    dia_bot = 25
+    geometry = concrete_rectangular_section(
+        b=500,
+        d=800,
+        dia_top=dia_top,
+        n_top=5,
+        dia_bot=dia_bot,
+        n_bot=5,
+        n_circle=16,
+        cover=50,
+        area_top=dia_top**2 * np.pi / 4,
+        area_bot=dia_bot**2 * np.pi / 4,
+        conc_mat=concrete,
+        steel_mat=steel,
+    )
+    conc_sec = ConcreteSection(geometry)
+    design_code.assign_concrete_section(conc_sec)
+    ultimate_results, _, _ = design_code.ultimate_bending_capacity(
+        pphr_class,
+        analysis_type,
+        theta,
+        n * 1e3,
+    )
+    assert pytest.approx(ultimate_results.m_x / 1e6, rel=0.001) == phi_Mn
+    assert pytest.approx(ultimate_results.m_y / 1e6, rel=0.001) == 0
+    assert pytest.approx(ultimate_results.d_n, rel=0.001) == d_n
