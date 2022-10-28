@@ -321,7 +321,9 @@ class ConcreteSection:
                 disp=False,
             )
         except ValueError:
-            warnings.warn("brentq algorithm failed.")
+            msg = "Analysis failed. Please raise an issue at "
+            msg += "https://github.com/robbievanleeuwen/concrete-properties/issues"
+            raise utils.AnalysisError(msg)
 
         # calculate cracked section properties
         # axial rigidity & first moments of area
@@ -616,7 +618,9 @@ class ConcreteSection:
                     )
                 except ValueError:
                     if not moment_curvature._failure:
-                        warnings.warn("brentq algorithm failed.")
+                        msg = "Analysis failed. Please raise an issue at "
+                        msg += "https://github.com/robbievanleeuwen/concrete-properties/issues"
+                        raise utils.AnalysisError(msg)
 
                 m_xy = np.sqrt(
                     moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2
@@ -893,7 +897,10 @@ class ConcreteSection:
                 disp=False,
             )
         except ValueError:
-            warnings.warn("brentq algorithm failed.")
+            msg = "Analysis failed. The solver could not find a neutral axis that "
+            msg += "satisfies equilibrium. This may be due to an axial force that "
+            msg += "exceeds the tensile or compressive capacity of the cross-section."
+            raise utils.AnalysisError(msg)
 
         return ultimate_results
 
@@ -1250,14 +1257,14 @@ class ConcreteSection:
                     total=sum(n_points) - len(n_points) + 1,
                 )
 
-            micurve(progress=progress)
+                micurve(progress=progress)
 
-            # display finished progress bar
-            progress.update(
-                task,
-                description="[bold green]:white_check_mark: M-N diagram generated",
-            )
-            live.refresh()
+                # display finished progress bar
+                progress.update(
+                    task,
+                    description="[bold green]:white_check_mark: M-N diagram generated",
+                )
+                live.refresh()
         else:
             micurve()
 
@@ -1710,8 +1717,9 @@ class ConcreteSection:
                 disp=False,
             )
         except ValueError:
-            warnings.warn("brentq algorithm failed.")
-            d_n = 0
+            msg = "Analysis failed. Confirm that the supplied moment/curvature is "
+            msg += "within the range of the moment-curvature analysis."
+            raise utils.AnalysisError(msg)
 
         # initialise stress results
         conc_sections = []

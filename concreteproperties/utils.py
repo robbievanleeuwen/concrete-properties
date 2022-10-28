@@ -451,3 +451,6 @@ def create_unknown_progress() -> Progress:
         CustomTimeElapsedColumn(),
         expand=True,
     )
+
+class AnalysisError(Exception):
+    pass
