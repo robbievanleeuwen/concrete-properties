@@ -56,7 +56,7 @@ def plotting_context(
 
         try:
             if axis_index is None:
-                axis_index = (0,) * ax.ndim
+                axis_index = (0,) * ax.ndim  # type: ignore
             ax = ax[axis_index]  # type: ignore
         except (AttributeError, TypeError):
             pass  # only 1 axis, not an array

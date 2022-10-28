@@ -1098,10 +1098,10 @@ class ConcreteSection:
                 "Length of n_points must be one less than the length of control_points."
             )
 
-        # validate n_points entries are all longer than 2
+        # validate n_points entries are all longer than 1
         for n_pt in n_points:
-            if n_pt < 3:
-                raise ValueError("n_points entries must be greater than 2.")
+            if n_pt < 2:
+                raise ValueError("n_points entries must be greater than 1.")
 
         # validate labels length
         if len(labels) != len(control_points):
