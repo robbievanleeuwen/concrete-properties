@@ -1160,10 +1160,16 @@ class ConcreteSection:
         # if we are spacing by axial force
         if n_spacing:
             # get axial force of the limits
-            start_res = self.calculate_ultimate_section_actions(
-                d_n=limits_dn[0],
-                ultimate_results=res.UltimateBendingResults(theta=theta),
-            )
+            if limits[0][0] == "kappa0":
+                start_res = self.calculate_ultimate_section_actions(
+                    d_n=inf,
+                    ultimate_results=res.UltimateBendingResults(theta=theta),
+                )
+            else:
+                start_res = self.calculate_ultimate_section_actions(
+                    d_n=limits_dn[0],
+                    ultimate_results=res.UltimateBendingResults(theta=theta),
+                )
             end_res = self.calculate_ultimate_section_actions(
                 d_n=limits_dn[1],
                 ultimate_results=res.UltimateBendingResults(theta=theta),
@@ -1181,7 +1187,9 @@ class ConcreteSection:
             # add end axial force
             analysis_list.append(end_res.n)
         else:
-            analysis_list = np.linspace(start=limits_dn[0], stop=limits_dn[1], num=n_points, dtype=float).tolist()
+            analysis_list = np.linspace(
+                start=limits_dn[0], stop=limits_dn[1], num=n_points, dtype=float
+            ).tolist()
 
         # generate label list
         label_list = [labels[0]]
@@ -1202,7 +1210,25 @@ class ConcreteSection:
                 else:
                     # if we have axial forces
                     if n_spacing:
-                        ult_res = self.ultimate_bending_capacity(theta=theta, n=analysis_point)
+                        # limits should be performed based on neutral axis values
+                        if idx == 0:
+                            ult_res = self.calculate_ultimate_section_actions(
+                                d_n=limits_dn[0],
+                                ultimate_results=res.UltimateBendingResults(
+                                    theta=theta
+                                ),
+                            )
+                        elif idx == len(analysis_list) - 1:
+                            ult_res = self.calculate_ultimate_section_actions(
+                                d_n=limits_dn[1],
+                                ultimate_results=res.UltimateBendingResults(
+                                    theta=theta
+                                ),
+                            )
+                        else:
+                            ult_res = self.ultimate_bending_capacity(
+                                theta=theta, n=analysis_point
+                            )
                     # if we have neutral axes
                     else:
                         ult_res = self.calculate_ultimate_section_actions(
@@ -1213,7 +1239,7 @@ class ConcreteSection:
                 # add label
                 ult_res.label = label_list[idx]
 
-                # add ultimate result to moment interactions results 
+                # add ultimate result to moment interactions results
                 mi_results.results.append(ult_res)
 
                 # update progress
@@ -1230,12 +1256,12 @@ class ConcreteSection:
                 # add label
                 ult_res.label = label_list[idx + 2]
 
-                # add ultimate result to moment interactions results 
+                # add ultimate result to moment interactions results
                 mi_results.results.append(ult_res)
 
                 # update progress
                 if progress:
-                    progress.update(task, advance=1) 
+                    progress.update(task, advance=1)
 
             # sort results
             mi_results.sort_results()
