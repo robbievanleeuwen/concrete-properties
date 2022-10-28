@@ -718,7 +718,7 @@
         <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">material</span>  <span class="c1"># type: ignore</span>
     <span class="p">)</span><span class="o">.</span><span class="n">shift_section</span><span class="p">(</span><span class="n">x_offset</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="n">geometry</span> <span class="o">-</span> <span class="n">bar</span><span class="p">)</span> <span class="o">+</span> <span class="n">bar</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">geometry</span> <span class="o">-</span> <span class="n">bar</span><span class="p">)</span> <span class="o">+</span> <span class="n">bar</span>  <span class="c1"># type: ignore</span></div>
 
 
 <div class="viewcode-block" id="add_bar_rectangular_array"><a class="viewcode-back" href="../../user_guide/geometry.html#concreteproperties.pre.add_bar_rectangular_array">[docs]</a><span class="k">def</span> <span class="nf">add_bar_rectangular_array</span><span class="p">(</span>
@@ -767,7 +767,7 @@
                 <span class="n">x</span> <span class="o">=</span> <span class="n">anchor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">i_idx</span> <span class="o">*</span> <span class="n">x_s</span>
                 <span class="n">y</span> <span class="o">=</span> <span class="n">anchor</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">j_idx</span> <span class="o">*</span> <span class="n">y_s</span>
                 <span class="n">bar</span> <span class="o">=</span> <span class="n">bar</span><span class="o">.</span><span class="n">shift_section</span><span class="p">(</span><span class="n">x_offset</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
-                <span class="n">geometry</span> <span class="o">=</span> <span class="p">(</span><span class="n">geometry</span> <span class="o">-</span> <span class="n">bar</span><span class="p">)</span> <span class="o">+</span> <span class="n">bar</span>
+                <span class="n">geometry</span> <span class="o">=</span> <span class="p">(</span><span class="n">geometry</span> <span class="o">-</span> <span class="n">bar</span><span class="p">)</span> <span class="o">+</span> <span class="n">bar</span>  <span class="c1"># type: ignore</span>
 
     <span class="k">return</span> <span class="n">geometry</span>  <span class="c1"># type: ignore</span></div>
 
@@ -807,7 +807,7 @@
         <span class="n">x</span> <span class="o">=</span> <span class="n">ctr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">r_array</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">ctr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">r_array</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         <span class="n">bar</span> <span class="o">=</span> <span class="n">bar</span><span class="o">.</span><span class="n">shift_section</span><span class="p">(</span><span class="n">x_offset</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
-        <span class="n">geometry</span> <span class="o">=</span> <span class="p">(</span><span class="n">geometry</span> <span class="o">-</span> <span class="n">bar</span><span class="p">)</span> <span class="o">+</span> <span class="n">bar</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="p">(</span><span class="n">geometry</span> <span class="o">-</span> <span class="n">bar</span><span class="p">)</span> <span class="o">+</span> <span class="n">bar</span>  <span class="c1"># type: ignore</span>
 
     <span class="k">return</span> <span class="n">geometry</span>  <span class="c1"># type: ignore</span></div>
 </pre></div>

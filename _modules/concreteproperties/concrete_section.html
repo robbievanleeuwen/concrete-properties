@@ -1439,10 +1439,10 @@
                 <span class="s2">&quot;Length of n_points must be one less than the length of control_points.&quot;</span>
             <span class="p">)</span>
 
-        <span class="c1"># validate n_points entries are all longer than 2</span>
+        <span class="c1"># validate n_points entries are all longer than 1</span>
         <span class="k">for</span> <span class="n">n_pt</span> <span class="ow">in</span> <span class="n">n_points</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">n_pt</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;n_points entries must be greater than 2.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_pt</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;n_points entries must be greater than 1.&quot;</span><span class="p">)</span>
 
         <span class="c1"># validate labels length</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">control_points</span><span class="p">):</span>
