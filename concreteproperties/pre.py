@@ -377,7 +377,7 @@ def add_bar(
         area=area, n=n, material=material  # type: ignore
     ).shift_section(x_offset=x, y_offset=y)
 
-    return (geometry - bar) + bar
+    return (geometry - bar) + bar  # type: ignore
 
 
 def add_bar_rectangular_array(
@@ -426,7 +426,7 @@ def add_bar_rectangular_array(
                 x = anchor[0] + i_idx * x_s
                 y = anchor[1] + j_idx * y_s
                 bar = bar.shift_section(x_offset=x, y_offset=y)
-                geometry = (geometry - bar) + bar
+                geometry = (geometry - bar) + bar  # type: ignore
 
     return geometry  # type: ignore
 
@@ -466,6 +466,6 @@ def add_bar_circular_array(
         x = ctr[0] + r_array * np.cos(theta)
         y = ctr[1] + r_array * np.sin(theta)
         bar = bar.shift_section(x_offset=x, y_offset=y)
-        geometry = (geometry - bar) + bar
+        geometry = (geometry - bar) + bar  # type: ignore
 
     return geometry  # type: ignore
