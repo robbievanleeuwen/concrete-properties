@@ -809,6 +809,10 @@ class ModifiedMander(ConcreteServiceProfile):
         # initiate ultimate compressive strain as maximum strain
         self.ultimate_strain = max(self.strains)
 
+        # add small horizontal compressive strain to improve interpolation
+        self.strains = np.append(self.strains, self.strains[-1] + 1e-12)
+        self.stresses = np.append(self.stresses, self.stresses[-1])
+
 
 @dataclass
 class ConcreteUltimateProfile(StressStrainProfile):
