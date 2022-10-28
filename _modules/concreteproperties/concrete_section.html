@@ -632,7 +632,9 @@
                 <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;brentq algorithm failed.&quot;</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Analysis failed. Please raise an issue at &quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;https://github.com/robbievanleeuwen/concrete-properties/issues&quot;</span>
+            <span class="k">raise</span> <span class="n">utils</span><span class="o">.</span><span class="n">AnalysisError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="c1"># calculate cracked section properties</span>
         <span class="c1"># axial rigidity &amp; first moments of area</span>
@@ -927,7 +929,9 @@
                     <span class="p">)</span>
                 <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_failure</span><span class="p">:</span>
-                        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;brentq algorithm failed.&quot;</span><span class="p">)</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Analysis failed. Please raise an issue at &quot;</span>
+                        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;https://github.com/robbievanleeuwen/concrete-properties/issues&quot;</span>
+                        <span class="k">raise</span> <span class="n">utils</span><span class="o">.</span><span class="n">AnalysisError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
                 <span class="n">m_xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
                     <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_x_i</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">moment_curvature</span><span class="o">.</span><span class="n">_m_y_i</span><span class="o">**</span><span class="mi">2</span>
@@ -1204,7 +1208,10 @@
                 <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;brentq algorithm failed.&quot;</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Analysis failed. The solver could not find a neutral axis that &quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;satisfies equilibrium. This may be due to an axial force that &quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;exceeds the tensile or compressive capacity of the cross-section.&quot;</span>
+            <span class="k">raise</span> <span class="n">utils</span><span class="o">.</span><span class="n">AnalysisError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">ultimate_results</span></div>
 
@@ -1561,14 +1568,14 @@
                     <span class="n">total</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">n_points</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_points</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
                 <span class="p">)</span>
 
-            <span class="n">micurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">)</span>
+                <span class="n">micurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">)</span>
 
-            <span class="c1"># display finished progress bar</span>
-            <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="n">task</span><span class="p">,</span>
-                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: M-N diagram generated&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+                <span class="c1"># display finished progress bar</span>
+                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="n">task</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: M-N diagram generated&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">micurve</span><span class="p">()</span>
 
@@ -2021,8 +2028,9 @@
                 <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;brentq algorithm failed.&quot;</span><span class="p">)</span>
-            <span class="n">d_n</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Analysis failed. Confirm that the supplied moment/curvature is &quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;within the range of the moment-curvature analysis.&quot;</span>
+            <span class="k">raise</span> <span class="n">utils</span><span class="o">.</span><span class="n">AnalysisError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="c1"># initialise stress results</span>
         <span class="n">conc_sections</span> <span class="o">=</span> <span class="p">[]</span>
