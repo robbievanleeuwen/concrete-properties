@@ -291,7 +291,9 @@ class ConcreteSection:
                 disp=False,
             )
         except ValueError:
-            warnings.warn("brentq algorithm failed.")
+            msg = "Analysis failed. Please raise an issue at "
+            msg += "https://github.com/robbievanleeuwen/concrete-properties/issues"
+            raise utils.AnalysisError(msg)
 
         # calculate cracked section properties
         # axial rigidity & first moments of area
@@ -511,6 +513,8 @@ class ConcreteSection:
         self,
         theta: float = 0,
         kappa_inc: float = 1e-7,
+        kappa_mult: float = 2,
+        kappa_inc_max: float = 5e-6,
         delta_m_min: float = 0.15,
         delta_m_max: float = 0.3,
         progress_bar: bool = True,
@@ -519,11 +523,17 @@ class ConcreteSection:
 
         Analysis continues until a material reaches its ultimate strain.
 
-        :param: Angle (in radians) the neutral axis makes with the horizontal axis
+        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
         :param kappa_inc: Initial curvature increment
-        :param delta_m_min: Relative change in moment at which to double step
-        :param delta_m_max: Relative change in moment at which to halve step
+        :param kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
+            when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied, the
+            inverse of this multipler is applied to ``kappa_inc``.
+        :param kappa_inc_max: Maximum curvature increment
+        :param delta_m_min: Relative change in moment at which to reduce the curvature
+            increment
+        :param delta_m_max: Relative change in moment at which to increase the curvature
+            increment
         :param progress_bar: If set to True, displays the progress bar
 
         :return: Moment curvature results object
@@ -543,19 +553,25 @@ class ConcreteSection:
         # function that performs moment curvature analysis
         def mcurve(kappa_inc=kappa_inc, progress=None):
             iter = 0
+            kappa = 0
 
             while not moment_curvature._failure:
                 # calculate adaptive step size for curvature
-                if iter > 1:
+                if iter > 2:
                     moment_diff = (
                         abs(moment_curvature.kappa[-1] - moment_curvature.kappa[-2])
                         / moment_curvature.kappa[-1]
                     )
                     if moment_diff <= delta_m_min:
-                        kappa_inc *= 2
+                        kappa_inc *= kappa_mult
                     elif moment_diff >= delta_m_max:
-                        kappa_inc *= 0.5
+                        kappa_inc *= 1 / kappa_mult
 
+                    # enforce maximum curvature increment
+                    if kappa_inc > kappa_inc_max:
+                        kappa_inc = kappa_inc_max
+
+                # update curvature
                 kappa = 0 if iter == 0 else moment_curvature.kappa[-1] + kappa_inc
 
                 # find neutral axis that gives convergence of the axial force
@@ -572,7 +588,9 @@ class ConcreteSection:
                     )
                 except ValueError:
                     if not moment_curvature._failure:
-                        warnings.warn("brentq algorithm failed.")
+                        msg = "Analysis failed. Please raise an issue at "
+                        msg += "https://github.com/robbievanleeuwen/concrete-properties/issues"
+                        raise utils.AnalysisError(msg)
 
                 m_xy = np.sqrt(
                     moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2
@@ -590,7 +608,53 @@ class ConcreteSection:
                     moment_curvature.m_x.append(moment_curvature._m_x_i)
                     moment_curvature.m_y.append(moment_curvature._m_y_i)
                     moment_curvature.m_xy.append(m_xy)
+                    moment_curvature.convergence.append(
+                        moment_curvature._failure_convergence
+                    )
                     iter += 1
+
+            # find kappa corresponding to failure strain:
+            # curvature before and after failure
+            kappa_a = moment_curvature.kappa[-1]
+            kappa_b = kappa
+
+            # this method (given a kappa) outputs the failure convergence
+            # (normalised to zero)
+            def failure_kappa(kappa_fail):
+                # given kappa find equilibrium
+                brentq(
+                    f=self.service_normal_force_convergence,
+                    a=a,
+                    b=b,
+                    args=(kappa_fail, moment_curvature),
+                    xtol=1e-3,
+                    rtol=1e-6,  # type: ignore
+                    full_output=True,
+                    disp=False,
+                )
+
+                return moment_curvature._failure_convergence - 1
+
+            if progress:
+                progress.update(task, description="[red]Finding failure curvature...")
+
+            # find curvature corresponding to failure
+            brentq(
+                f=failure_kappa,
+                a=kappa_a,
+                b=kappa_b,
+                full_output=True,
+                disp=False,
+            )
+
+            # save final results
+            m_xy = np.sqrt(moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2)
+            moment_curvature.kappa.append(moment_curvature._kappa)
+            moment_curvature.n.append(moment_curvature._n_i)
+            moment_curvature.m_x.append(moment_curvature._m_x_i)
+            moment_curvature.m_y.append(moment_curvature._m_y_i)
+            moment_curvature.m_xy.append(m_xy)
+            moment_curvature.convergence.append(moment_curvature._failure_convergence)
 
         # create progress bar
         if progress_bar:
@@ -624,7 +688,7 @@ class ConcreteSection:
         """Given a neutral axis depth ``d_n`` and curvature ``kappa``, returns the the
         net axial force.
 
-        :param d_n: Trial cracked neutral axis
+        :param d_n: Trial neutral axis
         :param kappa: Curvature
         :param moment_curvature: Moment curvature results object
 
@@ -668,6 +732,7 @@ class ConcreteSection:
         n = 0
         m_x = 0
         m_y = 0
+        failure_convergence = 0
 
         # calculate meshed geometry actions
         for meshed_geom in meshed_split_geoms:
@@ -700,6 +765,15 @@ class ConcreteSection:
                 moment_curvature._failure = True
                 moment_curvature.failure_geometry = meshed_geom
 
+            # update failure convergence
+            # compression failure
+            failure_convergence = max(max_strain / ult_comp_strain, failure_convergence)
+            # tensile failure (ignore concrete)
+            if not isinstance(meshed_geom, CPGeomConcrete):
+                failure_convergence = max(
+                    min_strain / ult_tens_strain, failure_convergence
+                )
+
         # calculate lumped geometry actions
         for lumped_geom in self.reinf_geometries_lumped:
             # calculate area and centroid
@@ -726,6 +800,12 @@ class ConcreteSection:
                 moment_curvature._failure = True
                 moment_curvature.failure_geometry = lumped_geom
 
+            # update failure convergence
+            # compression failure
+            failure_convergence = max(strain / ult_comp_strain, failure_convergence)
+            # tensile failure
+            failure_convergence = max(strain / ult_tens_strain, failure_convergence)
+
             # calculate stress and force
             stress = lumped_geom.material.stress_strain_profile.get_stress(
                 strain=strain
@@ -737,11 +817,13 @@ class ConcreteSection:
             m_x += force * (centroid[1] - self.gross_properties.cy)
             m_y += force * (centroid[0] - self.gross_properties.cx)
 
+        moment_curvature._kappa = kappa
         moment_curvature._n_i = n
         moment_curvature._m_x_i = m_x
         moment_curvature._m_y_i = m_y
+        moment_curvature._failure_convergence = failure_convergence
 
-        # calculate convergence
+        # return normal force convergence
         return n
 
     def ultimate_bending_capacity(
@@ -785,7 +867,10 @@ class ConcreteSection:
                 disp=False,
             )
         except ValueError:
-            warnings.warn("brentq algorithm failed.")
+            msg = "Analysis failed. The solver could not find a neutral axis that "
+            msg += "satisfies equilibrium. This may be due to an axial force that "
+            msg += "exceeds the tensile or compressive capacity of the cross-section."
+            raise utils.AnalysisError(msg)
 
         return ultimate_results
 
@@ -1013,10 +1098,10 @@ class ConcreteSection:
                 "Length of n_points must be one less than the length of control_points."
             )
 
-        # validate n_points entries are all longer than 2
+        # validate n_points entries are all longer than 1
         for n_pt in n_points:
-            if n_pt < 3:
-                raise ValueError("n_points entries must be greater than 2.")
+            if n_pt < 2:
+                raise ValueError("n_points entries must be greater than 1.")
 
         # validate labels length
         if len(labels) != len(control_points):
@@ -1142,14 +1227,14 @@ class ConcreteSection:
                     total=sum(n_points) - len(n_points) + 1,
                 )
 
-            micurve(progress=progress)
+                micurve(progress=progress)
 
-            # display finished progress bar
-            progress.update(
-                task,
-                description="[bold green]:white_check_mark: M-N diagram generated",
-            )
-            live.refresh()
+                # display finished progress bar
+                progress.update(
+                    task,
+                    description="[bold green]:white_check_mark: M-N diagram generated",
+                )
+                live.refresh()
         else:
             micurve()
 
@@ -1602,8 +1687,9 @@ class ConcreteSection:
                 disp=False,
             )
         except ValueError:
-            warnings.warn("brentq algorithm failed.")
-            d_n = 0
+            msg = "Analysis failed. Confirm that the supplied moment/curvature is "
+            msg += "within the range of the moment-curvature analysis."
+            raise utils.AnalysisError(msg)
 
         # initialise stress results
         conc_sections = []

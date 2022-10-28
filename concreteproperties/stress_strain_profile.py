@@ -68,7 +68,7 @@ class StressStrainProfile:
             x=self.strains,
             y=self.stresses,
             kind="linear",
-            fill_value="extrapolate",
+            fill_value="extrapolate",  # type: ignore
         )
 
         return stress_function(strain)

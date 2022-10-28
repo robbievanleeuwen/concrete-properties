@@ -375,10 +375,65 @@ class AS3600(DesignCode):
             disp=False,
         )
 
-        # calculate ultimate bending capacity
-        ult_res = self.concrete_section.ultimate_bending_capacity(
-            theta=theta, n=n / phi
+        # generate basic moment interaction diagram
+        f_mi_res, _, _ = self.moment_interaction_diagram(
+            theta=theta,
+            control_points=[
+                ("D", 1.0),
+                ("N", 0.0),
+            ],
+            n_points=2,
+            phi_0=phi_0,
+            progress_bar=False,
         )
+
+        # get significant axial loads
+        n_squash = f_mi_res.results[0].n
+        n_decomp = f_mi_res.results[1].n
+        n_tensile = f_mi_res.results[-1].n
+
+        # DETERMINE where we are on interaction diagram
+        # if we are above the squash load or tensile load
+        if n > n_squash:
+            raise utils.AnalysisError(
+                f"N = {n} is greater than the squash load, phiNc = {n_squash}."
+            )
+        elif n < n_tensile:
+            raise utils.AnalysisError(
+                f"N = {n} is greater than the tensile load, phiNt = {n_tensile}"
+            )
+        # compression linear interpolation
+        elif n > n_decomp:
+            factor = (n - n_decomp) / (n_squash - n_decomp)
+            squash = f_mi_res.results[0]
+            decomp = f_mi_res.results[1]
+            ult_res = res.UltimateBendingResults(
+                theta=theta,
+                d_n=inf,
+                k_u=0,
+                n=n,
+                m_x=(decomp.m_x + factor * (squash.m_x - decomp.m_x)) / phi,
+                m_y=(decomp.m_y + factor * (squash.m_y - decomp.m_y)) / phi,
+                m_xy=(decomp.m_xy + factor * (squash.m_xy - decomp.m_xy)) / phi,
+            )
+        # regular calculation
+        elif n > 0:
+            ult_res = self.concrete_section.ultimate_bending_capacity(
+                theta=theta, n=n / phi
+            )
+        # tensile linear interpolation
+        else:
+            factor = n / n_tensile
+            pure = f_mi_res.results[-2]
+            ult_res = res.UltimateBendingResults(
+                theta=theta,
+                d_n=inf,
+                k_u=0,
+                n=n,
+                m_x=(1 - factor) * pure.m_x / phi,
+                m_y=(1 - factor) * pure.m_y / phi,
+                m_xy=(1 - factor) * pure.m_xy / phi,
+            )
 
         # factor ultimate results
         f_ult_res = deepcopy(ult_res)

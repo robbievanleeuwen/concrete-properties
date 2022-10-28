@@ -408,6 +408,9 @@ class MomentCurvatureResults:
     :param m_xy: List of resultant bending moments
     :param failure_geometry: Geometry object of the region of the cross-section that
         failed, ending the moment curvature analysis
+    :param convergence: The critical ratio between the strain and the failure strain
+        within the cross-section for each curvature step in the analysis. A value of one
+        indicates failure.
     """
 
     # results
@@ -418,12 +421,15 @@ class MomentCurvatureResults:
     m_y: List[float] = field(default_factory=list)
     m_xy: List[float] = field(default_factory=list)
     failure_geometry: CPGeom = field(init=False)
+    convergence: List[float] = field(default_factory=list)
 
     # for analysis
+    _kappa: float = field(default=0, repr=False)
     _n_i: float = field(default=0, repr=False)
     _m_x_i: float = field(default=0, repr=False)
     _m_y_i: float = field(default=0, repr=False)
     _failure: bool = field(default=False, repr=False)
+    _failure_convergence: float = field(default=0, repr=False)
 
     def plot_results(
         self,
@@ -969,11 +975,11 @@ class BiaxialBendingResults:
             m_x_list = np.array(m_x_list) * m_scale
             m_y_list = np.array(m_y_list) * m_scale
 
-            ax.plot3D(m_x_list, m_y_list, n_list, fmt)
+            ax.plot3D(m_x_list, m_y_list, n_list, fmt)  # type: ignore
 
         ax.set_xlabel("Bending Moment $M_x$")
         ax.set_ylabel("Bending Moment $M_y$")
-        ax.set_zlabel("Axial Force $N$")
+        ax.set_zlabel("Axial Force $N$")  # type: ignore
         plt.show()
 
         return ax
@@ -1154,7 +1160,7 @@ class StressResult:
                     # plot the filled contour
                     trictr_conc = fig.axes[0].tricontourf(
                         triang_conc, sig, v_conc, cmap=cmap_conc, norm=CenteredNorm()
-                    )
+                    )  # type: ignore
 
                     # plot a zero stress contour, supressing warning
                     with warnings.catch_warnings():
@@ -1186,7 +1192,7 @@ class StressResult:
                             [zero_level],
                             linewidths=1,
                             linestyles="dashed",
-                        )
+                        )  # type: ignore
 
             # plot the meshed reinforcement stresses
             trictr_reinf = None
@@ -1204,7 +1210,7 @@ class StressResult:
                     # plot the filled contour
                     trictr_reinf = fig.axes[0].tricontourf(
                         triang_reinf, sig, v_reinf, cmap=cmap_reinf, norm=CenteredNorm()
-                    )
+                    )  # type: ignore
 
                     # plot a zero stress contour, supressing warning
                     with warnings.catch_warnings():
@@ -1236,7 +1242,7 @@ class StressResult:
                             [zero_level],
                             linewidths=1,
                             linestyles="dashed",
-                        )
+                        )  # type: ignore
 
             # plot the lumped reinforcement stresses
             lumped_reinf_patches = []
@@ -1253,10 +1259,10 @@ class StressResult:
             patch = PatchCollection(lumped_reinf_patches, cmap=cmap_reinf)
             patch.set_array(colours)
             if reinf_tick_same:
-                patch.set_clim([0.99 * v_reinf[0], 1.01 * v_reinf[-1]])
+                patch.set_clim(vmin=0.99 * v_reinf[0], vmax=1.01 * v_reinf[-1])
             else:
-                patch.set_clim([v_reinf[0], v_reinf[-1]])
-            fig.axes[0].add_collection(patch)
+                patch.set_clim(vmin=v_reinf[0], vmax=v_reinf[-1])
+            fig.axes[0].add_collection(patch)  # type: ignore
 
             # add the colour bars
             fig.colorbar(
