@@ -373,7 +373,7 @@ class AS3600(DesignCode):
                 ("N", 0.0),
             ],
             n_points=2,
-            phi_0=phi_0, 
+            phi_0=phi_0,
             progress_bar=False,
         )
 
