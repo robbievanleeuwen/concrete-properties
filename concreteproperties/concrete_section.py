@@ -1038,11 +1038,11 @@ class ConcreteSection:
         self,
         theta: float = 0,
         limits: List[Tuple[str, float]] = [
-            ("kappa0", 0.0),
+            ("D", 1.0),
             ("d_n", 1e-6),
         ],
         control_points: List[Tuple[str, float]] = [
-            ("D", 1.0),
+            ("kappa0", 0.0),
             ("fy", 1.0),
             ("N", 0.0),
         ],
@@ -1067,20 +1067,18 @@ class ConcreteSection:
           - ``"d_n"`` - neutral axis depth
           - ``"fy"`` - yield ratio of the most extreme tensile bar
           - ``"N"`` - axial force
-          - ``"kappa0"`` - zero curvature compression, may only be used as the first
-            value in ``limits`` ( N.B second item in tuple is not used)
+          - ``"kappa0"`` - zero curvature compression (N.B second item in tuple is not
+            used)
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
         :param limits: List of control points that define the start and end of the
-            interaction diagram. The first value of limits must have a larger (more
-            compressive) force than the second value. List length must equal two. The
-            default limits range from zero curvature compression to zero curvature
-            tension.
+            interaction diagram. List length must equal two. The default limits range
+            from decompression to zero curvature tension.
         :param control_points: List of additional control points to add to the moment
-            interatction diagram. The default control points include the decompression
-            point (``D=1``), the balanced point (``fy=1``) and the pure bending point
-            (``N=0``).
+            interatction diagram. The default control points include the full
+            compression point (``kappa0``), the balanced point (``fy=1``) and the pure
+            bending point (``N=0``).
         :param labels: List of labels to apply to the ``limits` and ``control_points``
             for plotting purposes. The first two values in ``labels`` apply labels to
             the ``limits``, the remaining values apply labels to the ``control_points``.
@@ -1117,23 +1115,13 @@ class ConcreteSection:
         limits_dn = []
 
         for cp in limits:
-            limits_dn.append(
-                self.decode_d_n(theta=theta, cp=cp, d_t=d_t, allow_kapp0=True)
-            )
-
-        # validate the limits input
-        if limits_dn[0] < limits_dn[1]:
-            msg = "The first value of limits must have a larger (more compressive) "
-            msg += "force than the second value."
-            raise ValueError(msg)
+            limits_dn.append(self.decode_d_n(theta=theta, cp=cp, d_t=d_t))
 
         # get neutral axis depths for additional control points
         add_cp_dn = []
 
         for cp in control_points:
-            add_cp_dn.append(
-                self.decode_d_n(theta=theta, cp=cp, d_t=d_t, allow_kapp0=False)
-            )
+            add_cp_dn.append(self.decode_d_n(theta=theta, cp=cp, d_t=d_t))
 
         # validate labels length
         if len(labels) != 1 and len(labels) != 2 + len(control_points):
@@ -1148,35 +1136,23 @@ class ConcreteSection:
         # initialise results
         mi_results = res.MomentInteractionResults()
 
-        # see if a kappa0 was used
-        has_kappa0 = False
-
-        for cp in limits:
-            if cp[0] == "kappa0":
-                has_kappa0 = True
-                break
-
         # generate list of neutral axis depths/axial forces to analyse
         # if we are spacing by axial force
         if n_spacing:
             # get axial force of the limits
-            if limits[0][0] == "kappa0":
-                start_res = self.calculate_ultimate_section_actions(
-                    d_n=inf,
-                    ultimate_results=res.UltimateBendingResults(theta=theta),
-                )
-            else:
-                start_res = self.calculate_ultimate_section_actions(
-                    d_n=limits_dn[0],
-                    ultimate_results=res.UltimateBendingResults(theta=theta),
-                )
+            start_res = self.calculate_ultimate_section_actions(
+                d_n=limits_dn[0],
+                ultimate_results=res.UltimateBendingResults(theta=theta),
+            )
             end_res = self.calculate_ultimate_section_actions(
                 d_n=limits_dn[1],
                 ultimate_results=res.UltimateBendingResults(theta=theta),
             )
 
             # correct n_spacing if sign is wrong
-            if n_spacing > 0:
+            if start_res.n > end_res.n and n_spacing > 0:
+                n_spacing = -1.0 * n_spacing
+            elif start_res.n < end_res.n and n_spacing < 0:
                 n_spacing = -1.0 * n_spacing
 
             # generate list of axial forces
@@ -1187,8 +1163,21 @@ class ConcreteSection:
             # add end axial force
             analysis_list.append(end_res.n)
         else:
+            # check for infinity in limits - this will not work with linspace
+            # for sake of distributing neutral axes let kappa0 ~= 2 * D
+            if limits_dn[0] == inf:
+                start = 2 * d_t
+            else:
+                start = limits_dn[0]
+
+            if limits_dn[1] == inf:
+                stop = 2 * d_t
+            else:
+                stop = limits_dn[1]
+
+            # generate list of neutral axes
             analysis_list = np.linspace(
-                start=limits_dn[0], stop=limits_dn[1], num=n_points, dtype=float
+                start=start, stop=stop, num=n_points, dtype=float
             ).tolist()
 
         # generate label list
@@ -1200,41 +1189,30 @@ class ConcreteSection:
         def micurve(progress=None):
             # loop through all analysis points
             for idx, analysis_point in enumerate(analysis_list):
-                # calculate ultimate results
-                # if we have a kappa0, it must be first in the list
-                if idx == 0 and has_kappa0:
-                    ult_res = self.calculate_ultimate_section_actions(
-                        d_n=inf,
-                        ultimate_results=res.UltimateBendingResults(theta=theta),
-                    )
-                else:
-                    # if we have axial forces
-                    if n_spacing:
-                        # limits should be performed based on neutral axis values
-                        if idx == 0:
-                            ult_res = self.calculate_ultimate_section_actions(
-                                d_n=limits_dn[0],
-                                ultimate_results=res.UltimateBendingResults(
-                                    theta=theta
-                                ),
-                            )
-                        elif idx == len(analysis_list) - 1:
-                            ult_res = self.calculate_ultimate_section_actions(
-                                d_n=limits_dn[1],
-                                ultimate_results=res.UltimateBendingResults(
-                                    theta=theta
-                                ),
-                            )
-                        else:
-                            ult_res = self.ultimate_bending_capacity(
-                                theta=theta, n=analysis_point
-                            )
-                    # if we have neutral axes
-                    else:
+                # calculate ultimate results:
+                # if we have axial forces
+                if n_spacing:
+                    # limits should be calculated based on neutral axis values
+                    if idx == 0:
                         ult_res = self.calculate_ultimate_section_actions(
-                            d_n=analysis_point,
+                            d_n=limits_dn[0],
                             ultimate_results=res.UltimateBendingResults(theta=theta),
                         )
+                    elif idx == len(analysis_list) - 1:
+                        ult_res = self.calculate_ultimate_section_actions(
+                            d_n=limits_dn[1],
+                            ultimate_results=res.UltimateBendingResults(theta=theta),
+                        )
+                    else:
+                        ult_res = self.ultimate_bending_capacity(
+                            theta=theta, n=analysis_point
+                        )
+                # if we have neutral axes
+                else:
+                    ult_res = self.calculate_ultimate_section_actions(
+                        d_n=analysis_point,
+                        ultimate_results=res.UltimateBendingResults(theta=theta),
+                    )
 
                 # add label
                 ult_res.label = label_list[idx]
@@ -2016,7 +1994,6 @@ class ConcreteSection:
         theta: float,
         cp: Tuple[str, float],
         d_t: float,
-        allow_kapp0: bool,
     ) -> float:
         r"""Decodes a neutral axis depth given a control point ``cp``.
 
@@ -2024,7 +2001,6 @@ class ConcreteSection:
             (:math:`-\pi \leq \theta \leq \pi`)
         :param cp: Control point to decode
         :param d_t: Depth to extreme tensile fibre
-        :param allow_kapp0: If True, allows kappa0 as an input
 
         :return: Decoded neutral axis depth
         """
@@ -2064,17 +2040,13 @@ class ConcreteSection:
             return ult_res.d_n
 
         # zero curvature
-        elif cp[0] == "kappa0" and allow_kapp0:
-            return 2 * d_t  # sufficient depth to capture rectangular block
+        elif cp[0] == "kappa0":
+            return inf
 
         # control point type not valid
         else:
-            if allow_kapp0:
-                msg = "First value of control point tuple must be D, d_n, fy, N or "
-                msg += "kappa0."
-            else:
-                msg = "First value of control point tuple must be D, d_n, fy or N."
-
+            msg = "First value of control point tuple must be D, d_n, fy, N or "
+            msg += "kappa0."
             raise ValueError(msg)
 
     def plot_section(
