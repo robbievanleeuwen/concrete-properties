@@ -101,7 +101,53 @@ class SteelBar(Steel):
     meshed: bool = field(default=False, init=False)
 
 
-# @dataclass
-# class SteelStrand(Steel):
-#     # placeholder
-#     pass
+@dataclass
+class SteelStrand(Steel):
+    """Class for a steel strand material, treated as a lumped circular mass with a
+    constant strain.
+
+    .. note::
+
+      The stramd is assumed to be bonded to the conrete.
+
+    :param name: Steel strand material name
+    :param density: Steel strand density (mass per unit volume)
+    :param stress_strain_profile: Steel strand stress-strain profile
+    :param colour: Colour of the material for rendering
+    :param prestress_force: Prestressing force applied to the strand
+    """
+
+    name: str
+    density: float
+    stress_strain_profile: ssp.StrandProfile
+    colour: str
+    prestress_force: float = 0
+    meshed: bool = field(default=False, init=False)
+
+    def get_prestress_stress(
+        self,
+        area: float,
+    ) -> float:
+        """Given the strand cross-sectional area, returns the prestress stress.
+
+        :param area: Strand cross-sectional area
+
+        :return: Prestress stress
+        """
+
+        return self.prestress_force / area
+
+    def get_prestress_strain(
+        self,
+        area: float,
+    ) -> float:
+        """Given the strand cross-sectional area, returns the prestress strain.
+
+        :param area: Strand cross-sectional area
+
+        :return: Prestress strain
+        """
+
+        stress = self.get_prestress_stress(area=area)
+
+        return self.stress_strain_profile.get_strain(stress=stress)

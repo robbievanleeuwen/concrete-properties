@@ -790,3 +790,110 @@ class SteelHardening(SteelProfile):
             self.yield_strength,
             self.ultimate_strength,
         ]
+
+
+@dataclass
+class StrandProfile(StressStrainProfile):
+    """Abstract class for a steel strand stress-strain profile.
+
+    :param yield_strength: Steel strand yield strength
+    :param elastic_modulus: Steel strand elastic modulus
+    :param fracture_strain: Steel strand fracture strain
+    :param breaking_strength: Steel strand breaking strength
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    yield_strength: float
+    elastic_modulus: float
+    fracture_strain: float
+    breaking_strength: float
+
+    def __post_init__(self):
+        yield_strain = self.yield_strength / self.elastic_modulus
+        self.strains = [
+            -self.fracture_strain,
+            -yield_strain,
+            0,
+            yield_strain,
+            self.fracture_strain,
+        ]
+        self.stresses = [
+            -self.breaking_strength,
+            -self.yield_strength,
+            0,
+            self.yield_strength,
+            self.breaking_strength,
+        ]
+
+    def get_elastic_modulus(
+        self,
+    ) -> float:
+        """Returns the elastic modulus of the stress-strain profile.
+
+        :return: Elastic modulus
+        """
+
+        return self.elastic_modulus
+
+    def get_yield_strength(
+        self,
+    ) -> float:
+        """Returns the yield strength of the stress-strain profile.
+
+        :return: Yield strength
+        """
+
+        return self.yield_strength
+
+    def get_strain(
+        self,
+        stress: float,
+    ) -> float:
+        """Returns a strain given a stress.
+
+        :param stress: Stress at which to return a strain.
+
+        :return: Strain
+        """
+
+        # create interpolation function
+        strain_function = interp1d(
+            x=self.stresses,
+            y=self.strains,
+            kind="linear",
+            fill_value="extrapolate",  # type: ignore
+        )
+
+        return strain_function(stress)
+
+    def print_properties(
+        self,
+        fmt: str = "8.6e",
+    ):
+        """Prints the stress-strain profile properties to the terminal.
+
+        :param fmt: Number format
+        """
+
+        table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
+        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
+        table.add_column("Value", justify="right", style="green")
+
+        table.add_row(
+            "Elastic Modulus", "{:>{fmt}}".format(self.get_elastic_modulus(), fmt=fmt)
+        )
+        table.add_row(
+            "Yield Strength", "{:>{fmt}}".format(self.yield_strength, fmt=fmt)
+        )
+        table.add_row(
+            "Breaking Strength",
+            "{:>{fmt}}".format(-self.get_tensile_strength(), fmt=fmt),
+        )
+        table.add_row(
+            "Fracture Strain",
+            "{:>{fmt}}".format(self.get_ultimate_tensile_strain(), fmt=fmt),
+        )
+
+        console = Console()
+        console.print(table)

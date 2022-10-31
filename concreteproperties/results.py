@@ -44,6 +44,7 @@ class GrossProperties:
     concrete_area: float = 0
     reinf_meshed_area: float = 0
     reinf_lumped_area: float = 0
+    strand_area: float = 0
     e_a: float = 0
 
     # section mass
@@ -109,6 +110,7 @@ class GrossProperties:
             "Lumped Reinforcement Area",
             "{:>{fmt}}".format(self.reinf_lumped_area, fmt=fmt),
         )
+        table.add_row("Strand Area", "{:>{fmt}}".format(self.strand_area, fmt=fmt))
         table.add_row("Axial Rigidity (EA)", "{:>{fmt}}".format(self.e_a, fmt=fmt))
         table.add_row("Mass (per unit length)", "{:>{fmt}}".format(self.mass, fmt=fmt))
         table.add_row("Perimeter", "{:>{fmt}}".format(self.perimeter, fmt=fmt))
@@ -1037,7 +1039,13 @@ class StressResult:
     :param lumped_reinforcement_strains: List of lumped reinforcement strains for each
         lumped geometry
     :param lumped_reinforcement_forces: List of net forces for each lumped reinforcement
-         geometry and its lever arm (``force``, ``d_x``, ``d_y``)
+        geometry and its lever arm (``force``, ``d_x``, ``d_y``)
+    :param strand_geometries: List of strand geometry objects present in the stress
+        analysis
+    :param strand_stresses: List of strand stresses for each strand
+    :param strand_strains: List of strand strains for each strand
+    :param strand_forces: List of net forces for each strand geometry and its lever arm
+        (``force``, ``d_x``, ``d_y``)
     """
 
     concrete_section: ConcreteSection
@@ -1051,6 +1059,10 @@ class StressResult:
     lumped_reinforcement_stresses: List[float]
     lumped_reinforcement_strains: List[float]
     lumped_reinforcement_forces: List[Tuple[float, float, float]]
+    strand_geometries: List[CPGeom]
+    strand_stresses: List[float]
+    strand_strains: List[float]
+    strand_forces: List[Tuple[float, float, float]]
 
     def plot_stress(
         self,
@@ -1103,9 +1115,13 @@ class StressResult:
                 meshed_reinf_sig_max = None
 
             # if there is lumped reinforcement, calculate min and max
-            if self.lumped_reinforcement_stresses:
-                lumped_reinf_sig_min = min(self.lumped_reinforcement_stresses)
-                lumped_reinf_sig_max = max(self.lumped_reinforcement_stresses)
+            if self.lumped_reinforcement_stresses or self.strand_stresses:
+                lumped_reinf_sig_min = min(
+                    self.lumped_reinforcement_stresses + self.strand_stresses
+                )
+                lumped_reinf_sig_max = max(
+                    self.lumped_reinforcement_stresses + self.strand_stresses
+                )
             else:
                 lumped_reinf_sig_min = None
                 lumped_reinf_sig_max = None
@@ -1256,6 +1272,14 @@ class StressResult:
                 )
                 colours.append(sig)
 
+            for idx, sig in enumerate(self.strand_stresses):
+                lumped_reinf_patches.append(
+                    mpatches.Polygon(
+                        xy=list(self.strand_geometries[idx].geom.exterior.coords)  # type: ignore
+                    )
+                )
+                colours.append(sig)
+
             patch = PatchCollection(lumped_reinf_patches, cmap=cmap_reinf)
             patch.set_array(colours)
             if reinf_tick_same:
@@ -1302,13 +1326,17 @@ class StressResult:
         for conc_force in self.concrete_forces:
             force_sum += conc_force[0]
 
-        # sum meshed reinf stresses
+        # sum meshed reinf forces
         for meshed_reinf_force in self.meshed_reinforcement_forces:
             force_sum += meshed_reinf_force[0]
 
         # sum lumped reinf forces
         for lumped_reinf_force in self.lumped_reinforcement_forces:
             force_sum += lumped_reinf_force[0]
+
+        # sum strand forces
+        for strand_force in self.strand_forces:
+            force_sum += strand_force[0]
 
         return force_sum
 
@@ -1324,20 +1352,25 @@ class StressResult:
         moment_sum_x = 0
         moment_sum_y = 0
 
-        # sum concrete forces
+        # sum concrete moments
         for conc_force in self.concrete_forces:
             moment_sum_x += conc_force[0] * conc_force[2]
             moment_sum_y += conc_force[0] * conc_force[1]
 
-        # sum meshed reinf stresses
+        # sum meshed reinf moments
         for meshed_reinf_force in self.meshed_reinforcement_forces:
             moment_sum_x += meshed_reinf_force[0] * meshed_reinf_force[2]
             moment_sum_y += meshed_reinf_force[0] * meshed_reinf_force[1]
 
-        # sum lumped reinf forces
+        # sum lumped reinf moments
         for lumped_reinf_force in self.lumped_reinforcement_forces:
             moment_sum_x += lumped_reinf_force[0] * lumped_reinf_force[2]
             moment_sum_y += lumped_reinf_force[0] * lumped_reinf_force[1]
+
+        # sum strand moments
+        for strand_force in self.strand_forces:
+            moment_sum_x += strand_force[0] * strand_force[2]
+            moment_sum_y += strand_force[0] * strand_force[1]
 
         moment_sum = np.sqrt(moment_sum_x * moment_sum_x + moment_sum_y * moment_sum_y)
 

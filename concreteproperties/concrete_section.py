@@ -14,7 +14,7 @@ from scipy.optimize import brentq
 import concreteproperties.results as res
 import concreteproperties.utils as utils
 from concreteproperties.analysis_section import AnalysisSection
-from concreteproperties.material import Concrete
+from concreteproperties.material import Concrete, SteelStrand
 from concreteproperties.post import plotting_context
 from concreteproperties.pre import CPGeom, CPGeomConcrete
 
@@ -45,12 +45,13 @@ class ConcreteSection:
                 "The provided geometry contains overlapping regions, results may be incorrect."
             )
 
-        # sort into concrete and reinforcement (meshed and lumped) geometries
+        # sort into concrete, reinforcement (meshed and lumped) and strand geometries
         self.all_geometries: List[Union[CPGeomConcrete, CPGeom]] = []
         self.meshed_geometries: List[Union[CPGeomConcrete, CPGeom]] = []
         self.concrete_geometries: List[CPGeomConcrete] = []
         self.reinf_geometries_meshed: List[CPGeom] = []
         self.reinf_geometries_lumped: List[CPGeom] = []
+        self.strand_geometries: List[CPGeom] = []
 
         # sort geometry into appropriate list
         for geom in self.compound_geometry.geoms:
@@ -58,6 +59,9 @@ class ConcreteSection:
                 cp_geom = CPGeomConcrete(geom=geom.geom, material=geom.material)
                 self.concrete_geometries.append(cp_geom)
                 self.meshed_geometries.append(cp_geom)
+            elif isinstance(geom.material, SteelStrand):
+                cp_geom = CPGeom(geom=geom.geom, material=geom.material)
+                self.strand_geometries.append(cp_geom)
             else:
                 cp_geom = CPGeom(geom=geom.geom, material=geom.material)  # type: ignore
 
@@ -108,6 +112,9 @@ class ConcreteSection:
         for lumped_geom in self.reinf_geometries_lumped:
             self.gross_properties.reinf_lumped_area += lumped_geom.calculate_area()
 
+        for strand_geom in self.strand_geometries:
+            self.gross_properties.strand_area += strand_geom.calculate_area()
+
         # perimeter
         self.gross_properties.perimeter = self.compound_geometry.calculate_perimeter()
 
@@ -130,8 +137,8 @@ class ConcreteSection:
                 self.gross_properties.e_iyy_g += el_e_iyy_g
                 self.gross_properties.e_ixy_g += el_e_ixy_g
 
-        # lumped geometries - treat as lumped circles
-        for geom in self.reinf_geometries_lumped:
+        # lumped and strand geometries - treat as lumped circles
+        for geom in self.reinf_geometries_lumped + self.strand_geometries:
             # area, diameter and centroid of geometry
             area = geom.calculate_area()
             diam = np.sqrt(4 * area / np.pi)
@@ -1393,6 +1400,10 @@ class ConcreteSection:
         lumped_reinf_sigs = []
         lumped_reinf_strains = []
         lumped_reinf_forces = []
+        strand_geoms = []
+        strand_sigs = []
+        strand_strains = []
+        strand_forces = []
 
         # get uncracked section properties
         e_a = self.gross_properties.e_a
@@ -1451,8 +1462,8 @@ class ConcreteSection:
                 meshed_reinf_forces.append((n_sec, d_x, d_y))
                 meshed_reinf_sections.append(analysis_section)
 
-        # loop through all lumped geometries and calculate stress
-        for lumped_geom in self.reinf_geometries_lumped:
+        # loop through all lumped and strand geometries and calculate stress
+        for lumped_geom in self.reinf_geometries_lumped + self.strand_geometries:
             # initialise stress and position
             sig = 0
             centroid = lumped_geom.calculate_centroid()
@@ -1471,15 +1482,29 @@ class ConcreteSection:
                 +(e_ixx * m_y) / (e_ixx * e_iyy - e_ixy**2) * x
                 - (e_ixy * m_y) / (e_ixx * e_iyy - e_ixy**2) * y
             )
+
+            # add initial prestress
+            if isinstance(lumped_geom.material, SteelStrand):
+                sig += (
+                    -lumped_geom.material.prestress_force / lumped_geom.calculate_area()
+                )
+
             strain = sig / lumped_geom.material.elastic_modulus
 
             # net force and point of action
             n_lumped = sig * lumped_geom.calculate_area()
 
-            lumped_reinf_sigs.append(sig)
-            lumped_reinf_strains.append(strain)
-            lumped_reinf_forces.append((n_lumped, x, y))
-            lumped_reinf_geoms.append(lumped_geom)
+            if isinstance(lumped_geom.material, SteelStrand):
+                strand_sigs.append(sig)
+                strand_strains.append(strain)
+                strand_forces.append((n_lumped, x, y))
+                strand_geoms.append(lumped_geom)
+
+            else:
+                lumped_reinf_sigs.append(sig)
+                lumped_reinf_strains.append(strain)
+                lumped_reinf_forces.append((n_lumped, x, y))
+                lumped_reinf_geoms.append(lumped_geom)
 
         return res.StressResult(
             concrete_section=self,
@@ -1493,6 +1518,10 @@ class ConcreteSection:
             lumped_reinforcement_stresses=lumped_reinf_sigs,
             lumped_reinforcement_strains=lumped_reinf_strains,
             lumped_reinforcement_forces=lumped_reinf_forces,
+            strand_geometries=strand_geoms,
+            strand_stresses=strand_sigs,
+            strand_strains=strand_strains,
+            strand_forces=strand_forces,
         )
 
     def calculate_cracked_stress(
@@ -2012,8 +2041,8 @@ class ConcreteSection:
                         linewidth=1.5,
                     )
 
-            # plot lumped geometries
-            for lumped_geom in self.reinf_geometries_lumped:
+            # plot lumped geometries and strands
+            for lumped_geom in self.reinf_geometries_lumped + self.strand_geometries:
                 if lumped_geom.material not in plotted_materials:
                     patch = mpatches.Patch(
                         color=lumped_geom.material.colour,
