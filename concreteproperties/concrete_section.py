@@ -1063,6 +1063,7 @@ class ConcreteSection:
         Types of control points are detailed below:
 
         .. admonition:: Control points
+
           - ``"D"`` - ratio of neutral axis depth to section depth
           - ``"d_n"`` - neutral axis depth
           - ``"fy"`` - yield ratio of the most extreme tensile bar
@@ -1076,10 +1077,11 @@ class ConcreteSection:
             interaction diagram. List length must equal two. The default limits range
             from decompression to zero curvature tension.
         :param control_points: List of additional control points to add to the moment
-            interatction diagram. The default control points include the full
+            interatction diagram. The default control points include the pure
             compression point (``kappa0``), the balanced point (``fy=1``) and the pure
-            bending point (``N=0``).
-        :param labels: List of labels to apply to the ``limits` and ``control_points``
+            bending point (``N=0``). Control points may lie outside the limits of the
+            moment interaction diagram as long as equilibrium can be found.
+        :param labels: List of labels to apply to the ``limits`` and ``control_points``
             for plotting purposes. The first two values in ``labels`` apply labels to
             the ``limits``, the remaining values apply labels to the ``control_points``.
             If a single value is provided, this value will be applied to both ``limits``
@@ -1180,11 +1182,6 @@ class ConcreteSection:
                 start=start, stop=stop, num=n_points, dtype=float
             ).tolist()
 
-        # generate label list
-        label_list = [labels[0]]
-        label_list.extend([None] * (len(analysis_list) - 2))
-        label_list.append(labels[1])
-
         # function that performs moment interaction analysis
         def micurve(progress=None):
             # loop through all analysis points
@@ -1214,8 +1211,11 @@ class ConcreteSection:
                         ultimate_results=res.UltimateBendingResults(theta=theta),
                     )
 
-                # add label
-                ult_res.label = label_list[idx]
+                # add labels for limits
+                if idx == 0:
+                    ult_res.label = labels[0]
+                elif idx == len(analysis_list) - 1:
+                    ult_res.label = labels[1]
 
                 # add ultimate result to moment interactions results
                 mi_results.results.append(ult_res)
@@ -1232,7 +1232,7 @@ class ConcreteSection:
                 )
 
                 # add label
-                ult_res.label = label_list[idx + 2]
+                ult_res.label = labels[idx + 2]
 
                 # add ultimate result to moment interactions results
                 mi_results.results.append(ult_res)
@@ -1273,7 +1273,7 @@ class ConcreteSection:
                 msg = f"max_comp={max_comp} is greater than the maximum axial load "
                 msg += f"{mi_results.results[0].n}."
                 raise ValueError(msg)
-            
+
             # find intersection of max comp with interaction diagram
             # and determine which points need to be removed from diagram
             x = []

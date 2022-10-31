@@ -582,10 +582,7 @@ class UltimateBendingResults:
     m_xy: float = 0
 
     # label
-    label: Optional[str] = None
-
-    def __post_init__(self) -> None:
-        self.sort_index = self.n
+    label: Optional[str] = field(default=None, compare=False)
 
     def print_results(
         self,

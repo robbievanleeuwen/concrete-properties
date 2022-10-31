@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from math import inf
-from typing import TYPE_CHECKING, List, Tuple, Union
+from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
 import concreteproperties.results as res
 import concreteproperties.stress_strain_profile as ssp
@@ -369,7 +369,6 @@ class AS3600(DesignCode):
         f_mi_res, _, _ = self.moment_interaction_diagram(
             theta=theta,
             control_points=[
-                ("D", 1.0),
                 ("N", 0.0),
             ],
             n_points=2,
@@ -437,37 +436,48 @@ class AS3600(DesignCode):
     def moment_interaction_diagram(
         self,
         theta: float = 0,
-        control_points: List[Tuple[str, float]] = [
+        limits: List[Tuple[str, float]] = [
             ("D", 1.0),
-            ("fy", 1.0),
             ("N", 0.0),
         ],
+        control_points: List[Tuple[str, float]] = [
+            ("fy", 1.0),
+        ],
         labels: List[Union[str, None]] = [None],
-        n_points: Union[int, List[int]] = [12, 12],
+        n_points: int = 24,
+        n_spacing: Optional[float] = None,
         phi_0: float = 0.6,
         progress_bar: bool = True,
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
-        r"""Generates a moment interaction diagram with capacity factors to AS 3600:2018.
+        r"""Generates a moment interaction diagram with capacity factors to
+        AS 3600:2018.
+
+        See :meth:`concreteproperties.concrete_section.moment_interaction_diagram` for
+        allowable control points.
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
-        :param control_points: List of control points over which to generate the
-            interaction diagram. Each entry in ``control_points`` is a ``Tuple`` with
-            the first item the type of control point and the second item defining the
-            location of the control point. Acceptable types of control points are
-            ``"D"`` (ratio of neutral axis depth to section depth), ``"d_n"`` (neutral
-            axis depth), ``"fy"`` (yield ratio of the most extreme tensile bar), ``"N"``
-            (axial force) and ``"kappa"`` (zero curvature compression - must be at start
-            of list, second value in tuple is not used). Control points must be defined
-            in an order which results in a decreasing neutral axis depth (decreasing
-            axial force). The default control points define an interaction diagram from
-            the decompression point to the pure bending point.
-        :param labels: List of labels to apply to the ``control_points`` for plotting
-            purposes, length must be the same as the length of ``control_points``. If a
-            single value is provided, will apply this label to all control points.
-        :param n_points: Number of neutral axis depths to compute between each control
-            point. Length must be one less than the length of ``control_points``. If an
-            integer is provided this will be used between all control points.
+        :param limits: List of control points that define the start and end of the
+            interaction diagram. List length must equal two. The default limits range
+            from decompression to zero curvature tension.
+        :param control_points: List of additional control points to add to the moment
+            interatction diagram. The default control points include the pure
+            compression point (``kappa0``), the balanced point (``fy=1``) and the pure
+            bending point (``N=0``). Control points may lie outside the limits of the
+            moment interaction diagram as long as equilibrium can be found.
+        :param labels: List of labels to apply to the ``limits`` and ``control_points``
+            for plotting purposes. The first two values in ``labels`` apply labels to
+            the ``limits``, the remaining values apply labels to the ``control_points``.
+            If a single value is provided, this value will be applied to both ``limits``
+            and all ``control_points``. The length of ``labels`` must equal ``1`` or
+            ``2 + len(control_points)``.
+        :param n_points: Number of points to compute including and between the
+            ``limits`` of the moment interaction diagram. Generates equally spaced
+            neutral axes between the ``limits``.
+        :param n_spacing: If provided, overrides ``n_points`` and spaces the points on
+            the moment interaction diagram by an axial force ``n_spacing``. Note that
+            using ``n_spacing`` negatively affects performance as the neutral axis depth
+            must be located for each point on the moment interaction diagram.
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
         :param progress_bar: If set to True, displays the progress bar
 
@@ -477,9 +487,11 @@ class AS3600(DesignCode):
 
         mi_res = self.concrete_section.moment_interaction_diagram(
             theta=theta,
+            limits=limits,
             control_points=control_points,
             labels=labels,
             n_points=n_points,
+            n_spacing=n_spacing,
             progress_bar=progress_bar,
         )
 
