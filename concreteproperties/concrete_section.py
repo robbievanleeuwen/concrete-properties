@@ -1046,11 +1046,11 @@ class ConcreteSection:
             ("fy", 1.0),
             ("N", 0.0),
         ],
-        labels: List[Union[str, None]] = [None],
+        labels: Optional[List[str]] = None,
         n_points: int = 24,
         n_spacing: Optional[float] = None,
         max_comp: Optional[float] = None,
-        max_comp_labels: List[Union[str, None]] = [None, None],
+        max_comp_labels: Optional[List[str]] = None,
         progress_bar: bool = True,
     ) -> res.MomentInteractionResults:
         r"""Generates a moment interaction diagram given a neutral axis angle ``theta``
@@ -1126,13 +1126,13 @@ class ConcreteSection:
             add_cp_dn.append(self.decode_d_n(theta=theta, cp=cp, d_t=d_t))
 
         # validate labels length
-        if len(labels) != 1 and len(labels) != 2 + len(control_points):
+        if labels and len(labels) != 1 and len(labels) != 2 + len(control_points):
             raise ValueError(
                 "Length of labels must be 1 or 2 + number of control points"
             )
 
         # if one label is provided, generate a list
-        if len(labels) == 1:
+        if labels and len(labels) == 1:
             labels = labels * (len(control_points) + 2)
 
         # initialise results
@@ -1212,10 +1212,11 @@ class ConcreteSection:
                     )
 
                 # add labels for limits
-                if idx == 0:
-                    ult_res.label = labels[0]
-                elif idx == len(analysis_list) - 1:
-                    ult_res.label = labels[1]
+                if labels:
+                    if idx == 0:
+                        ult_res.label = labels[0]
+                    elif idx == len(analysis_list) - 1:
+                        ult_res.label = labels[1]
 
                 # add ultimate result to moment interactions results
                 mi_results.results.append(ult_res)
@@ -1232,7 +1233,8 @@ class ConcreteSection:
                 )
 
                 # add label
-                ult_res.label = labels[idx + 2]
+                if labels:
+                    ult_res.label = labels[idx + 2]
 
                 # add ultimate result to moment interactions results
                 mi_results.results.append(ult_res)
@@ -1306,6 +1308,14 @@ class ConcreteSection:
             # remove points in diagram
             del mi_results.results[:idx_to_keep]
 
+            # get labels
+            if max_comp_labels:
+                pt1_label = max_comp_labels[0]
+                pt2_label = max_comp_labels[1]
+            else:
+                pt1_label = None
+                pt2_label = None
+
             # add first two points to diagram
             # (m_max_comp, max_comp)
             mi_results.results.insert(
@@ -1318,7 +1328,7 @@ class ConcreteSection:
                     m_x=float(m_max_comp_mx),
                     m_y=float(m_max_comp_my),
                     m_xy=float(m_max_comp_mxy),
-                    label=max_comp_labels[1],
+                    label=pt2_label,
                 ),
             )
             # (0, max_comp)
@@ -1332,7 +1342,7 @@ class ConcreteSection:
                     m_x=0,
                     m_y=0,
                     m_xy=0,
-                    label=max_comp_labels[0],
+                    label=pt1_label,
                 ),
             )
 

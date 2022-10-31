@@ -443,7 +443,7 @@ class AS3600(DesignCode):
         control_points: List[Tuple[str, float]] = [
             ("fy", 1.0),
         ],
-        labels: List[Union[str, None]] = [None],
+        labels: Optional[List[str]] = None,
         n_points: int = 24,
         n_spacing: Optional[float] = None,
         phi_0: float = 0.6,
