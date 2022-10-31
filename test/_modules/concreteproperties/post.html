@@ -397,7 +397,7 @@
 
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">axis_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">axis_index</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ax</span><span class="o">.</span><span class="n">ndim</span>
+                <span class="n">axis_index</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ax</span><span class="o">.</span><span class="n">ndim</span>  <span class="c1"># type: ignore</span>
             <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
             <span class="k">pass</span>  <span class="c1"># only 1 axis, not an array</span>

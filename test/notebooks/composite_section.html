@@ -1214,23 +1214,12 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="section" id="Compare-Moment-Interaction-Results">
 <h3><span class="section-number">8.3.3. </span>Compare Moment Interaction Results<a class="headerlink" href="#Compare-Moment-Interaction-Results" title="Permalink to this heading">#</a></h3>
-<p>Moment interaction diagrams can be produced for each section and compared. Extra points are generated on the tensile side of the composite curve to improve the fidelity of the curve.</p>
+<p>Moment interaction diagrams can be produced for each section and compared.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res_comp</span> <span class="o">=</span> <span class="n">conc_sec_comp</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span>
-    <span class="n">control_points</span><span class="o">=</span><span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;kappa0&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mf">2e6</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mf">3e6</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;d_n&quot;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">),</span>
-    <span class="p">],</span>
-    <span class="n">n_points</span><span class="o">=</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-    <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res_comp</span> <span class="o">=</span> <span class="n">conc_sec_comp</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">mi_res_conc</span> <span class="o">=</span> <span class="n">conc_sec_conc</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="o">.</span><span class="n">plot_multiple_diagrams</span><span class="p">(</span>
     <span class="n">moment_interaction_results</span><span class="o">=</span><span class="p">[</span><span class="n">mi_res_comp</span><span class="p">,</span> <span class="n">mi_res_conc</span><span class="p">],</span>

@@ -894,7 +894,7 @@
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">f_kappa</span><span class="p">(</span><span class="n">moment</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="UltimateBendingResults"><a class="viewcode-back" href="../../user_guide/results.html#concreteproperties.results.UltimateBendingResults">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="UltimateBendingResults"><a class="viewcode-back" href="../../user_guide/results.html#concreteproperties.results.UltimateBendingResults">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">UltimateBendingResults</span><span class="p">:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class for storing ultimate bending results.</span>
 
@@ -923,7 +923,7 @@
     <span class="n">m_xy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="c1"># label</span>
-    <span class="n">label</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">label</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <div class="viewcode-block" id="UltimateBendingResults.print_results"><a class="viewcode-back" href="../../user_guide/results.html#concreteproperties.results.UltimateBendingResults.print_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -963,6 +963,20 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">UltimateBendingResults</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MomentInteractionResults.sort_results"><a class="viewcode-back" href="../../gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults.sort_results">[docs]</a>    <span class="k">def</span> <span class="nf">sort_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Sorts the results by decreasing axial force.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># remove duplicates from sorted list</span>
+        <span class="n">new_results</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">res</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">new_results</span><span class="p">:</span>
+                <span class="n">new_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">new_results</span></div>
 
 <div class="viewcode-block" id="MomentInteractionResults.get_results_lists"><a class="viewcode-back" href="../../gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults.get_results_lists">[docs]</a>    <span class="k">def</span> <span class="nf">get_results_lists</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>

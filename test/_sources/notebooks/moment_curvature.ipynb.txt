@@ -470,8 +470,6 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section\n",
-    "\n",
     "concrete = Concrete(\n",
     "    name=\"Concrete (No Tension)\",\n",
     "    density=2.4e-6,\n",
@@ -489,19 +487,18 @@
     "    colour=\"lightgrey\",\n",
     ")\n",
     "\n",
-    "geom = concrete_rectangular_section(\n",
-    "    b=400,\n",
-    "    d=600,\n",
-    "    dia_top=24,\n",
-    "    n_top=3,\n",
-    "    dia_bot=24,\n",
-    "    n_bot=3,\n",
-    "    n_circle=4,\n",
-    "    cover=30,\n",
-    "    area_top=450,\n",
-    "    area_bot=450,\n",
-    "    conc_mat=concrete,\n",
-    "    steel_mat=steel_ep,\n",
+    "geom = rectangular_section(d=600, b=400, material=concrete)\n",
+    "\n",
+    "geom = add_bar_rectangular_array(\n",
+    "    geometry=geom,\n",
+    "    area=450,\n",
+    "    material=steel_ep,\n",
+    "    n_x=3,\n",
+    "    x_s=158,\n",
+    "    n_y=4,\n",
+    "    y_s=172,\n",
+    "    anchor=(42, 42),\n",
+    "    exterior_only=True,\n",
     ")\n",
     "\n",
     "conc_sec = ConcreteSection(geom)\n",
@@ -543,7 +540,7 @@
    "id": "cea12ad1",
    "metadata": {},
    "source": [
-    "In the above plot we waste a lot of time calculating the initial linear behaviour and do not capture the yielding behaviour particularly well. However, we don't spend too much time in the yielded plateau region as the curvature increment is adaptively increased."
+    "In the above plot we waste a lot of time calculating the initial linear behaviour and can not be super confident that we have captured the yielding behaviour well. However, we don't spend too much time in the yielded plateau region as the curvature increment is adaptively increased."
    ]
   },
   {
@@ -552,7 +549,7 @@
    "metadata": {},
    "source": [
     "### Initial Curvature Increment\n",
-    "In this example we change the initial curvature increment from ``1e-7`` (default) to ``1e-6``."
+    "In this example we change the initial curvature increment from ``1e-7`` (default) to ``5e-6``."
    ]
   },
   {
@@ -562,7 +559,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "res2 = conc_sec.moment_curvature_analysis(kappa_inc=1e-6, progress_bar=False)"
+    "res2 = conc_sec.moment_curvature_analysis(kappa_inc=5e-6, progress_bar=False)"
    ]
   },
   {
@@ -595,7 +592,7 @@
     "\n",
     "- ``kappa_inc=3e-7`` - a balance between the previous two examples\n",
     "- ``kappa_mult=1.25`` - smoother changes in curvature increment (default = ``2``)\n",
-    "- ``delta_m_min=0.05`` - only increase the curvature increment if the change in moment is less than 5% (default = 15%)\n",
+    "- ``delta_m_min=0.1`` - only increase the curvature increment if the change in moment is less than 10% (default = 15%)\n",
     "- ``kappa_inc_max=2e-5`` - allow larger curvature increments, can be useful in the plateau region (default = ``5e-6``)"
    ]
   },
@@ -609,7 +606,7 @@
     "res3 = conc_sec.moment_curvature_analysis(\n",
     "    kappa_inc=3e-7,\n",
     "    kappa_mult=1.25,\n",
-    "    delta_m_min=0.05,\n",
+    "    delta_m_min=0.1,\n",
     "    kappa_inc_max=2e-5,\n",
     "    progress_bar=False,\n",
     ")"
@@ -635,7 +632,7 @@
     "### Summary\n",
     "Note that all failure curvatures are the same, regardless of the analysis parameters the failure point is always included in the results.\n",
     "\n",
-    "Let's compare the most granular result (``res3``) with the first example."
+    "Let's compare the most granular result (``res3``) with the result with the fastest computation time (``res2``)."
    ]
   },
   {
@@ -646,8 +643,8 @@
    "outputs": [],
    "source": [
     "MomentCurvatureResults.plot_multiple_results(\n",
-    "    moment_curvature_results=[res1, res3],\n",
-    "    labels=[\"Default\", \"Refined\"],\n",
+    "    moment_curvature_results=[res2, res3],\n",
+    "    labels=[\"Coarse\", \"Refined\"],\n",
     "    fmt=\"-\",\n",
     ")"
    ]
@@ -657,7 +654,7 @@
    "id": "9fa176bb",
    "metadata": {},
    "source": [
-    "Note that the behaviour is largely similar, however the refined parameters do a better job of capturing initial yielding."
+    "Note that the behaviour is largely similar, however the refined parameters do a better job of capturing the yielding behaviour."
    ]
   }
  ],
