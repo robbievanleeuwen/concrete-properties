@@ -1266,68 +1266,75 @@ class ConcreteSection:
         else:
             micurve()
 
-        # # cut diagram at max_comp
-        # if max_comp:
-        #     # find intersection of max comp with interaction diagram
-        #     # and determine which points need to be removed from diagram
-        #     x = []
-        #     y_mx = []
-        #     y_my = []
-        #     y_mxy = []
-        #     idx_to_keep = 0
+        # cut diagram at max_comp
+        if max_comp:
+            # check input - if value greater than maximum compression
+            if max_comp > mi_results.results[0].n:
+                msg = f"max_comp={max_comp} is greater than the maximum axial load "
+                msg += f"{mi_results.results[0].n}."
+                raise ValueError(msg)
+            
+            # find intersection of max comp with interaction diagram
+            # and determine which points need to be removed from diagram
+            x = []
+            y_mx = []
+            y_my = []
+            y_mxy = []
+            idx_to_keep = 0
 
-        #     for idx, mi_res in enumerate(mi_results.results):
-        #         # create coordinates for interpolation
-        #         x.append(mi_res.n)
-        #         y_mx.append(mi_res.m_x)
-        #         y_my.append(mi_res.m_y)
-        #         y_mxy.append(mi_res.m_xy)
+            for idx, mi_res in enumerate(mi_results.results):
+                # create coordinates for interpolation
+                x.append(mi_res.n)
+                y_mx.append(mi_res.m_x)
+                y_my.append(mi_res.m_y)
+                y_mxy.append(mi_res.m_xy)
 
-        #         # determine which index is the first to keep
-        #         if idx_to_keep == 0 and mi_res.n < max_comp:
-        #             idx_to_keep = idx
+                # determine which index is the first to keep
+                if idx_to_keep == 0 and mi_res.n < max_comp:
+                    idx_to_keep = idx
+                    break
 
-        #     # create interpolation function and determine moment which corresponds to
-        #     # an axial force of max_comp
-        #     f_mx = interp1d(x=x, y=y_mx)
-        #     f_my = interp1d(x=x, y=y_my)
-        #     f_mxy = interp1d(x=x, y=y_mxy)
-        #     m_max_comp_mx = f_mx(max_comp)
-        #     m_max_comp_my = f_my(max_comp)
-        #     m_max_comp_mxy = f_mxy(max_comp)
+            # create interpolation function and determine moment which corresponds to
+            # an axial force of max_comp
+            f_mx = interp1d(x=x, y=y_mx)
+            f_my = interp1d(x=x, y=y_my)
+            f_mxy = interp1d(x=x, y=y_mxy)
+            m_max_comp_mx = f_mx(max_comp)
+            m_max_comp_my = f_my(max_comp)
+            m_max_comp_mxy = f_mxy(max_comp)
 
-        #     # remove points in diagram
-        #     del mi_results.results[:idx_to_keep]
+            # remove points in diagram
+            del mi_results.results[:idx_to_keep]
 
-        #     # add first two points to diagram
-        #     # (m_max_comp, max_comp)
-        #     mi_results.results.insert(
-        #         0,
-        #         res.UltimateBendingResults(
-        #             theta=theta,
-        #             d_n=nan,
-        #             k_u=nan,
-        #             n=max_comp,
-        #             m_x=m_max_comp_mx,
-        #             m_y=m_max_comp_my,
-        #             m_xy=m_max_comp_mxy,
-        #             label=max_comp_labels[1],
-        #         ),
-        #     )
-        #     # (0, max_comp)
-        #     mi_results.results.insert(
-        #         0,
-        #         res.UltimateBendingResults(
-        #             theta=theta,
-        #             d_n=inf,
-        #             k_u=0,
-        #             n=max_comp,
-        #             m_x=0,
-        #             m_y=0,
-        #             m_xy=0,
-        #             label=max_comp_labels[0],
-        #         ),
-        #     )
+            # add first two points to diagram
+            # (m_max_comp, max_comp)
+            mi_results.results.insert(
+                0,
+                res.UltimateBendingResults(
+                    theta=theta,
+                    d_n=nan,
+                    k_u=nan,
+                    n=max_comp,
+                    m_x=float(m_max_comp_mx),
+                    m_y=float(m_max_comp_my),
+                    m_xy=float(m_max_comp_mxy),
+                    label=max_comp_labels[1],
+                ),
+            )
+            # (0, max_comp)
+            mi_results.results.insert(
+                0,
+                res.UltimateBendingResults(
+                    theta=theta,
+                    d_n=inf,
+                    k_u=0,
+                    n=max_comp,
+                    m_x=0,
+                    m_y=0,
+                    m_xy=0,
+                    label=max_comp_labels[0],
+                ),
+            )
 
         return mi_results
 

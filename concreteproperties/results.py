@@ -631,6 +631,15 @@ class MomentInteractionResults:
 
         self.results.sort(reverse=True)
 
+        # remove duplicates from sorted list
+        new_results = []
+
+        for res in self.results:
+            if res not in new_results:
+                new_results.append(res)
+
+        self.results = new_results
+
     def get_results_lists(
         self,
         moment: str,
