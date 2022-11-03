@@ -4,11 +4,6 @@ from concreteproperties.design_codes.nzs3101 import NZS3101
 import concreteproperties.stress_strain_profile as ssp
 from concreteproperties.material import Concrete
 from concreteproperties.stress_strain_profile import ModifiedMander
-from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
-from concreteproperties.concrete_section import ConcreteSection
-from concreteproperties.results import MomentInteractionResults
-from concreteproperties.results import BiaxialBendingResults
-from concreteproperties.results import MomentCurvatureResults
 
 # this file creates images for docs for modified mander stress-strain profile
 # create unconfined concrete
@@ -194,7 +189,6 @@ concrete = Concrete(
         sect_type="rect",
         conc_confined=True,
         conc_tension=True,
-        conc_spalling=True,
         d=800,
         b=500,
         long_reinf_area=12 * 314,
