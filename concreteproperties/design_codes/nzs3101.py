@@ -29,10 +29,6 @@ class NZS3101(DesignCode):
         supported as this falls under the composite structures design code.
     """
 
-    # TODO - Implement phi=0.75 option for singly reinforced wall design
-    # TODO - Implement method for max_comp_strength for walls (currently only
-    #        implemented for columns to NZS3101 Chapter 10)
-
     def __init__(self):
         """Inits the NZS3101 class."""
         self.analysis_code = "NZS3101:2006"
@@ -64,19 +60,57 @@ class NZS3101(DesignCode):
         meshed: bool = field(default=False, init=False)
 
     def assign_concrete_section(
-        self,
-        concrete_section: ConcreteSection,
+        self, concrete_section: ConcreteSection, section_type="column"
     ):
-        """Assigns a concrete section to the design code.
+        """Assigns a concrete section and the section type for the concrete section to
+        the design code.
 
         :param concrete_section: Concrete section object to analyse
+        :param section_type: The type of member being analysed:-
+
+            - **column** - Analyses assigned concrete section object as a column (or
+              beam) member in accordance with NZS3101:2006 Chapter 9 or 10 as
+              appropriate
+
+            - **wall** - Analyses assigned concrete section object as a doubly
+              reinforced wall member in accordance with NZS3101:2006 Chapter 11
+
+            - **wall_sr_s** - Analyses assigned concrete section object as a singly
+              reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
+              design actions causing bending about the strong axis
+
+            - **wall_sr_m**- Analyses assigned concrete section object as a singly
+              reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
+              design actions causing bending about the minor axis
+
+        :raises ValueError: If the concrete section contains meshed reinforcement
+        :raises ValueError: If section type for the analysis of the concrete section is
+            not valid
         """
+        # assign concrete section
         self.concrete_section = concrete_section
+
+        # assign section type
+        self.section_type = section_type
 
         # check to make sure there are no meshed reinforcement regions
         if self.concrete_section.reinf_geometries_meshed:
             raise ValueError(
-                "Meshed reinforcement is not supported in this design code"
+                f"Meshed reinforcement is not supported in the {self.analysis_code} "
+                f"code"
+            )
+
+        # check section type is valid
+        if not self.section_type.lower() in [
+            "column",
+            "wall",
+            "wall_sr_s",
+            "wall_sr_m",
+        ]:
+            raise ValueError(
+                f"The specified section type of '{self.section_type}' should be either "
+                f"'column', 'wall', 'wall_sr_s' or 'wall_sr_m' for a "
+                f"{self.analysis_code} code analysis"
             )
 
     def e_conc(self, compressive_strength: float, density: float = 2300) -> float:
@@ -187,8 +221,20 @@ class NZS3101(DesignCode):
         prob_design: bool = False,
         add_compressive_strength: float = 15,
     ) -> float:
-        """Function to return the nominal concrete capacity or the overstrength concrete
+        """Function to return the nominal, overstrength or probable concrete capacity
         capacity of a concrete section.
+
+        - Note for a column section type outputs the unfactored concrete yield force
+          for a column member designed in accordance with NZS3101:2006 Chapter 10
+          based on net concrete area:-
+
+          :math:`\quad N_c = \\alpha_1A_nf'_c`
+
+        - Note for a wall section type outputs the unfactored concrete yield force for
+          a doubly or singly reinforced wall member designed in accordance with
+          NZS3101:2006 Chapter 11 based on gross concrete area:-
+
+          :math:`\quad N_c = A_gf'_c`
 
         :param os_design: True if an overstrength capacity of a concrete section is
             required, then the material properties for concrete are scaled to reflect
@@ -200,14 +246,15 @@ class NZS3101(DesignCode):
             specified 28 day compressive strength of concrete to reflect the likely
             maximum material strength, defaults to an additional 15 MPa as per
             NZS3101:2006 CL 2.6.5.5(c)
-        :return: Nominal, overstrength or probable concrete yield force (N)
+        :return: Nominal, overstrength or probable concrete yield force (N) for the
+            defined section/member type provided
         """
         # initiate force variable
         force = 0
 
         # loop through all concrete geometries
         for conc_geom in self.concrete_section.concrete_geometries:
-            # calculate concrete area & compressive strength
+            # calculate net concrete area & compressive strength
             concrete_area = conc_geom.calculate_area()
             compressive_strength = (
                 conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
@@ -220,20 +267,30 @@ class NZS3101(DesignCode):
             elif os_design:
                 compressive_strength += add_compressive_strength
 
-            # calculate cumulative concrete force
-            force += (
-                self.alpha_1(compressive_strength)
-                * concrete_area
-                * compressive_strength
-            )
+            if self.section_type.lower() in ["column"]:
+                # calculate cumulative net concrete force
+                force += (
+                    self.alpha_1(compressive_strength)
+                    * concrete_area
+                    * compressive_strength
+                )
+            elif self.section_type.lower() in ["wall", "wall_sr_s", "wall_sr_m"]:
+                # calculate gross concrete area (area of concrete & reinforcement)
+                for steel_geom in self.concrete_section.reinf_geometries_lumped:
+                    for bar_hole in conc_geom.geom.interiors:
+                        if steel_geom.geom.exterior.equals(bar_hole):
+                            concrete_area += steel_geom.calculate_area()
+
+                # calculate cumulative gross concrete force
+                force += concrete_area * compressive_strength
 
         return force
 
     def steel_capacity(
         self, os_design: bool = False, prob_design: bool = False
     ) -> float:
-        """Function to return the nominal steel reinforcement capacity or the
-        overstrength steel reinforcement capacity of a concrete section.
+        """Function to return the nominal, overstrength or probable steel reinforcement
+        capacity of a concrete section.
 
         :param os_design: True if an overstrength capacity of a concrete section is
             required, then the material properties for lumped reinforcement are scaled
@@ -278,8 +335,11 @@ class NZS3101(DesignCode):
         os_design: bool = False,
         prob_design: bool = False,
     ) -> float:
-        """Function to return the nominal axial load compressive strength of a concrete
-        section when the load is applied with zero eccentricity.
+        """Function to return the nominal, overstrength or probable axial load
+        compressive strength of a concrete section when the load is applied with zero
+        eccentricity.
+
+        For column members, the maximum design load in compression is as follows:-
 
         For non-capacity design situations, refer to NZS3101:2006 CL 10.3.4.2:-
 
@@ -292,6 +352,44 @@ class NZS3101(DesignCode):
         Where:-
 
         :math:`\quad N_{n,max} = \\alpha_1f'_c(A_g-A_{st})+f_yA_{st}`
+
+        For doubly reinforced wall members, the maximum design load in compression is as
+        follows:-
+
+        For non-capacity design situations, refer to NZS3101:2006 CL 11.3.1.6:-
+
+        :math:`\quad\displaystyle{\\frac{N^*}{\phi} < 0.3A_gf'_c}`
+
+        For ductile wall design situations within potential plastic regions, refer to
+        NZS3101:2006 CL 11.4.1.1:-
+
+        :math:`\quad N^*_o < 0.3A_gf'_c`
+
+        For singly reinforced wall members, the maximum design load in compression
+        depends on the axis the design actions are causing bending about:-
+
+        .. warning::
+          Note singly reinforced walls are only allowed in nominally ductile structures
+          designed in accordance with NZS3101:2006.
+
+          Note refer NZS3101:2006 Chapter 2 & 11 for other limitations on the use of
+          singly reinforced walls.
+
+          Note because of the different maximum axial compression load limits and
+          strength reduction factors for singly reinforced walls depending upon the
+          bending axis, care should be taken to only analyse a singly reinforced wall
+          member about the appropriate axis. Engineering judgement should be exercised
+          when analysing a singly reinforced wall about non-principal axes.
+
+        For design situations where the design actions cause bending about the strong
+        axis of a singly reinforced wall, refer to NZS3101:2006 CL 11.3.1.6:-
+
+        :math:`\quad N^* < 0.015A_gf'_c`
+
+        For design situations where the design actions cause bending about the minor
+        axis of a singly reinforced wall, refer to NZS3101:2006 CL 11.3.5:-
+
+        :math:`\quad N^* < 0.06A_gf'_c`
 
         :param cpe_design: True if the capacity protected element capacity of a concrete
             section is required (i.e. design capacity being checked against O/S
@@ -306,15 +404,32 @@ class NZS3101(DesignCode):
         :return: Returns the nominal, overstrength or probable axial load compressive
             strength of a concrete section :math:`N_{n,max}`
         """
-        # Calculate maximum axial compression strength
-        n_n_max = self.steel_capacity(os_design, prob_design) + self.concrete_capacity(
-            os_design, prob_design
+        # concrete capacity
+        conc_capacity = self.concrete_capacity(
+            self.section_type, os_design, prob_design
         )
 
-        if cpe_design:
-            max_comp = 0.7 * n_n_max
-        else:
-            max_comp = 0.85 * n_n_max
+        if self.section_type in ["column"]:
+            # Calculate maximum axial compression strength for a column member
+            n_n_max = self.steel_capacity(os_design, prob_design) + conc_capacity
+
+            if cpe_design:
+                max_comp = 0.7 * n_n_max
+            else:
+                max_comp = 0.85 * n_n_max
+
+        elif self.section_type in ["wall"]:
+            # Calculate maximum axial compression strength for a wall member
+            max_comp = 0.3 * conc_capacity
+        elif self.section_type in ["wall_sr_s"]:
+            # Calculate maximum axial compression strength for a singly reinf wall
+            # member about strong axis
+            max_comp = 0.015 * conc_capacity
+        elif self.section_type in ["wall_sr_m"]:
+            # Calculate maximum axial compression strength for a singly reinf wall
+            # member about minor axis
+            max_comp = 0.06 * conc_capacity
+
         return max_comp
 
     def max_ten_strength(
@@ -829,8 +944,12 @@ class NZS3101(DesignCode):
               undertakes the cross section analysis based on the following
               assumptions:-
 
-              - Using a strength reduction factor of :math:`\phi` = 0.85 in
-                accordance with NZS3101:2006 CL 2.3.2.2.
+              - Using a strength reduction factor of :math:`\phi` = 0.85 in accordance
+                with NZS3101:2006 CL 2.3.2.2.
+
+                - Except that for a singly reinforced wall for in-plane actions (flexure
+                  about the strong axis) a strength reduction factor of :math:`\phi` =
+                  0.7 applies in accordance with NZS3101:2006 CL 2.3.2.2.
 
               - Using the lower 5% characteristic reinforcement yield strengths.
 
@@ -939,8 +1058,12 @@ class NZS3101(DesignCode):
         :return: Returns the appropriate strength reduction factor :math:`\\phi` and
             variables to indicate the type of analysis being requested.
         """
+        # determine analysis parameters
         if analysis_type.lower() in ["nom_chk"]:
-            phi = 0.85
+            if self.section_type.lower() in ["wall_sr_s"]:
+                phi = 0.7
+            else:
+                phi = 0.85
             cpe_design = False
             os_design = False
             prob_design = False
@@ -1219,6 +1342,7 @@ class NZS3101(DesignCode):
         pphr_class: str = "NDPR",
         analysis_type: str = "nom_chk",
         theta: float = 0,
+        progress_bar: bool = True,
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
         """Generates a moment interaction diagram with capacity factors and material
         strengths to NZS3101:2006 or the NZSEE C5 assessment guidelines dependant
@@ -1239,6 +1363,7 @@ class NZS3101(DesignCode):
             further information on analysis types.
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \\theta \leq \pi`)
+        :param progress_bar: If set to True, displays the progress bar
         :return: Factored and unfactored moment interaction results objects, and list of
             capacity reduction factors *(factored_results, unfactored_results, phis)*
         """
@@ -1264,7 +1389,9 @@ class NZS3101(DesignCode):
 
         # determine NZS3101:2006 maximum compression capacity
         max_comp = phi * self.max_comp_strength(
-            cpe_design=cpe_design, os_design=os_design, prob_design=prob_design
+            cpe_design=cpe_design,
+            os_design=os_design,
+            prob_design=prob_design,
         )
 
         # analyse the concrete section to create the M/N interaction curve
@@ -1283,6 +1410,7 @@ class NZS3101(DesignCode):
             # ],
             # n_points=[3, 8, 10, 12, 12, 3],
             max_comp=max_comp,
+            progress_bar=progress_bar,
         )
 
         # make a copy of the results to factor
@@ -1307,6 +1435,7 @@ class NZS3101(DesignCode):
         analysis_type: str = "nom_chk",
         n: float = 0.0,
         n_points: int = 48,
+        progress_bar: bool = True,
     ) -> Tuple[res.BiaxialBendingResults, List[float]]:
         """Generates a biaxial bending with capacity factors to NZS3101:2006 or the
         NZSEE C5 assessment guidelines dependant on analysis type.
@@ -1326,6 +1455,7 @@ class NZS3101(DesignCode):
             further information on analysis types.
         :param n: Net axial force
         :param n_points: Number of calculation points for neutral axis orientation
+        :param progress_bar: If set to True, displays the progress bar
         :return: Factored biaxial bending results object and list of capacity reduction
             factors *(factored_results, phis)*.
         """
@@ -1349,15 +1479,8 @@ class NZS3101(DesignCode):
         # generate list of thetas
         theta_list = np.linspace(start=-np.pi, stop=np.pi - d_theta, num=n_points)
 
-        # create progress bar
-        progress = utils.create_known_progress()
-
-        with Live(progress, refresh_per_second=10) as live:
-            task = progress.add_task(
-                description="[red]Generating biaxial bending diagram",
-                total=n_points,
-            )
-
+        # function that performs biaxial bending analysis
+        def bbcurve(progress=None):
             # loop through thetas
             for theta in theta_list:
                 # factored capacity
@@ -1370,19 +1493,34 @@ class NZS3101(DesignCode):
                 f_bb_res.results.append(f_ult_res)
                 phis.append(phi)
 
-                progress.update(task, advance=1)
+                if progress:
+                    progress.update(task, advance=1)
 
-            # add first result to end of list top
-            f_bb_res.results.append(f_bb_res.results[0])
-            phis.append(phis[0])
+        if progress_bar:
+            # create progress bar
+            progress = utils.create_known_progress()
 
-            progress.update(
-                task,
-                description=(
-                    "[bold green]:white_check_mark: Biaxial bending diagram"
-                    " generated"
-                ),
-            )
-            live.refresh()
+            with Live(progress, refresh_per_second=10) as live:
+                task = progress.add_task(
+                    description="[red]Generating biaxial bending diagram",
+                    total=n_points,
+                )
+
+                bbcurve(progress=progress)
+
+                progress.update(
+                    task,
+                    description=(
+                        "[bold green]:white_check_mark: Biaxial bending diagram"
+                        " generated"
+                    ),
+                )
+                live.refresh()
+        else:
+            bbcurve()
+
+        # add first result to end of list top
+        f_bb_res.results.append(f_bb_res.results[0])
+        phis.append(phis[0])
 
         return f_bb_res, phis
