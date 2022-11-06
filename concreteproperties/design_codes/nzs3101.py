@@ -405,11 +405,9 @@ class NZS3101(DesignCode):
             strength of a concrete section :math:`N_{n,max}`
         """
         # concrete capacity
-        conc_capacity = self.concrete_capacity(
-            self.section_type, os_design, prob_design
-        )
+        conc_capacity = self.concrete_capacity(os_design, prob_design)
 
-        if self.section_type in ["column"]:
+        if self.section_type.lower() in ["column"]:
             # Calculate maximum axial compression strength for a column member
             n_n_max = self.steel_capacity(os_design, prob_design) + conc_capacity
 
@@ -418,14 +416,14 @@ class NZS3101(DesignCode):
             else:
                 max_comp = 0.85 * n_n_max
 
-        elif self.section_type in ["wall"]:
+        elif self.section_type.lower() in ["wall"]:
             # Calculate maximum axial compression strength for a wall member
             max_comp = 0.3 * conc_capacity
-        elif self.section_type in ["wall_sr_s"]:
+        elif self.section_type.lower() in ["wall_sr_s"]:
             # Calculate maximum axial compression strength for a singly reinf wall
             # member about strong axis
             max_comp = 0.015 * conc_capacity
-        elif self.section_type in ["wall_sr_m"]:
+        elif self.section_type.lower() in ["wall_sr_m"]:
             # Calculate maximum axial compression strength for a singly reinf wall
             # member about minor axis
             max_comp = 0.06 * conc_capacity
