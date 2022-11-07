@@ -1388,14 +1388,12 @@
         <span class="p">],</span>
         <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
-        <span class="n">n_spacing</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_spacing</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">max_comp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">max_comp_labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram given a neutral axis angle ``theta``</span>
-<span class="sd">        and ``n_points`` calculation points between the decompression case and the pure</span>
-<span class="sd">        bending case.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram given a neutral axis angle ``theta``.</span>
 
 <span class="sd">        ``limits`` and ``control_points`` accept a list of tuples that define points on</span>
 <span class="sd">        the moment interaction diagram. The first item in the tuple defines the type of</span>
@@ -1415,7 +1413,7 @@
 <span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">        :param limits: List of control points that define the start and end of the</span>
 <span class="sd">            interaction diagram. List length must equal two. The default limits range</span>
-<span class="sd">            from decompression to zero curvature tension.</span>
+<span class="sd">            from concrete decompression strain to zero curvature tension.</span>
 <span class="sd">        :param control_points: List of additional control points to add to the moment</span>
 <span class="sd">            interatction diagram. The default control points include the pure</span>
 <span class="sd">            compression point (``kappa0``), the balanced point (``fy=1``) and the pure</span>
@@ -1429,11 +1427,12 @@
 <span class="sd">            ``2 + len(control_points)``.</span>
 <span class="sd">        :param n_points: Number of points to compute including and between the</span>
 <span class="sd">            ``limits`` of the moment interaction diagram. Generates equally spaced</span>
-<span class="sd">            neutral axes between the ``limits``.</span>
-<span class="sd">        :param n_spacing: If provided, overrides ``n_points`` and spaces the points on</span>
-<span class="sd">            the moment interaction diagram by an axial force ``n_spacing``. Note that</span>
-<span class="sd">            using ``n_spacing`` negatively affects performance as the neutral axis depth</span>
-<span class="sd">            must be located for each point on the moment interaction diagram.</span>
+<span class="sd">            neutral axis depths between the ``limits``.</span>
+<span class="sd">        :param n_spacing: If provided, overrides ``n_points`` and generates the moment</span>
+<span class="sd">            interaction diagram using ``n_spacing`` equally spaced axial loads. Note</span>
+<span class="sd">            that using ``n_spacing`` negatively affects performance, as the neutral axis</span>
+<span class="sd">            depth must first be located for each point on the moment interaction</span>
+<span class="sd">            diagram.</span>
 <span class="sd">        :param max_comp: If provided, limits the maximum compressive force in the moment</span>
 <span class="sd">            interaction diagram to ``max_comp``</span>
 <span class="sd">        :param max_comp_labels: Labels to apply to the ``max_comp`` intersection points,</span>
@@ -1491,19 +1490,10 @@
                 <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">),</span>
             <span class="p">)</span>
 
-            <span class="c1"># correct n_spacing if sign is wrong</span>
-            <span class="k">if</span> <span class="n">start_res</span><span class="o">.</span><span class="n">n</span> <span class="o">&gt;</span> <span class="n">end_res</span><span class="o">.</span><span class="n">n</span> <span class="ow">and</span> <span class="n">n_spacing</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">n_spacing</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">n_spacing</span>
-            <span class="k">elif</span> <span class="n">start_res</span><span class="o">.</span><span class="n">n</span> <span class="o">&lt;</span> <span class="n">end_res</span><span class="o">.</span><span class="n">n</span> <span class="ow">and</span> <span class="n">n_spacing</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">n_spacing</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">n_spacing</span>
-
             <span class="c1"># generate list of axial forces</span>
-            <span class="n">analysis_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-                <span class="n">start</span><span class="o">=</span><span class="n">start_res</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">end_res</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">n_spacing</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+            <span class="n">analysis_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                <span class="n">start</span><span class="o">=</span><span class="n">start_res</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">end_res</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_spacing</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
             <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-
-            <span class="c1"># add end axial force</span>
-            <span class="n">analysis_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end_res</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># check for infinity in limits - this will not work with linspace</span>
             <span class="c1"># for sake of distributing neutral axes let kappa0 ~= 2 * D</span>
@@ -1612,7 +1602,7 @@
         <span class="k">if</span> <span class="n">max_comp</span><span class="p">:</span>
             <span class="c1"># check input - if value greater than maximum compression</span>
             <span class="k">if</span> <span class="n">max_comp</span> <span class="o">&gt;</span> <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;max_comp=</span><span class="si">{</span><span class="n">max_comp</span><span class="si">}</span><span class="s2"> is greater than the maximum axial load &quot;</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;max_comp=</span><span class="si">{</span><span class="n">max_comp</span><span class="si">}</span><span class="s2"> is greater than the maximum axial capacity &quot;</span>
                 <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n</span><span class="si">}</span><span class="s2">.&quot;</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
@@ -1698,7 +1688,7 @@
 <span class="sd">        ``n_points`` calculation points.</span>
 
 <span class="sd">        :param n: Net axial force</span>
-<span class="sd">        :param n_points: Number of calculation points between the decompression</span>
+<span class="sd">        :param n_points: Number of calculation points</span>
 <span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
 
 <span class="sd">        :return: Biaxial bending results</span>

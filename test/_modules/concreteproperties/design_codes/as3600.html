@@ -786,7 +786,7 @@
         <span class="p">],</span>
         <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
-        <span class="n">n_spacing</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_spacing</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">phi_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
         <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
@@ -800,9 +800,9 @@
 <span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">        :param limits: List of control points that define the start and end of the</span>
 <span class="sd">            interaction diagram. List length must equal two. The default limits range</span>
-<span class="sd">            from decompression to zero curvature tension.</span>
+<span class="sd">            from concrete decompression strain to zero curvature tension.</span>
 <span class="sd">        :param control_points: List of additional control points to add to the moment</span>
-<span class="sd">            interatction diagram. The default control points include the pure</span>
+<span class="sd">            interaction diagram. The default control points include the pure</span>
 <span class="sd">            compression point (``kappa0``), the balanced point (``fy=1``) and the pure</span>
 <span class="sd">            bending point (``N=0``). Control points may lie outside the limits of the</span>
 <span class="sd">            moment interaction diagram as long as equilibrium can be found.</span>
@@ -815,10 +815,11 @@
 <span class="sd">        :param n_points: Number of points to compute including and between the</span>
 <span class="sd">            ``limits`` of the moment interaction diagram. Generates equally spaced</span>
 <span class="sd">            neutral axes between the ``limits``.</span>
-<span class="sd">        :param n_spacing: If provided, overrides ``n_points`` and spaces the points on</span>
-<span class="sd">            the moment interaction diagram by an axial force ``n_spacing``. Note that</span>
-<span class="sd">            using ``n_spacing`` negatively affects performance as the neutral axis depth</span>
-<span class="sd">            must be located for each point on the moment interaction diagram.</span>
+<span class="sd">        :param n_spacing: If provided, overrides ``n_points`` and generates the moment</span>
+<span class="sd">            interaction diagram using ``n_spacing`` equally spaced axial loads. Note</span>
+<span class="sd">            that using ``n_spacing`` negatively affects performance, as the neutral axis</span>
+<span class="sd">            depth must first be located for each point on the moment interaction</span>
+<span class="sd">            diagram.</span>
 <span class="sd">        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)</span>
 <span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
 
@@ -900,7 +901,7 @@
         <span class="sd">&quot;&quot;&quot;Generates a biaxial bending with capacity factors to AS 3600:2018.</span>
 
 <span class="sd">        :param n: Net axial force</span>
-<span class="sd">        :param n_points: Number of calculation points between the decompression</span>
+<span class="sd">        :param n_points: Number of calculation points</span>
 <span class="sd">        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)</span>
 <span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
 

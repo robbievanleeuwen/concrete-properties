@@ -286,7 +286,7 @@
     "\n",
     "1. ``D`` - ratio of neutral axis depth to section depth, e.g. the (``\"D\"``, ``0.5``) control point will ensure a neutral axis at mid-depth is analysed.\n",
     "\n",
-    "2. ``d_n`` - neutral axis depth, e.g. the (``\"d_n\"``, ``200``) control point will ensure a netural axis at 200 is analysed.\n",
+    "2. ``d_n`` - neutral axis depth, e.g. the (``\"d_n\"``, ``200``) control point will ensure a neutral axis at 200 is analysed.\n",
     "\n",
     "3. ``fy`` - yield ratio of the most extreme tensile bar, e.g. the (``\"fy\"``, ``0.5``) control point will ensure a neutral axis corresponding to a strain of half the yield strain in the extreme tensile bar is analysed. The (``\"fy\"``, ``1.0``) control point is the balanced point.\n",
     "\n",
@@ -296,16 +296,16 @@
     "\n",
     "The following parameters can be used to modify the moment interaction diagram:\n",
     "\n",
-    "1. ``limits`` - List of control points that define the start and end of the interaction diagram. List length must equal two. The default limits range from decompression ``(\"D\", 1.0)`` to zero curvature tension ``(\"d_n\", 1e-6)``.\n",
+    "1. ``limits`` - List of control points that define the start and end of the interaction diagram. List length must equal two. The default limits range from concrete decompression strain ``(\"D\", 1.0)`` to zero curvature tension ``(\"d_n\", 1e-6)``.\n",
     "\n",
     "2. ``control_points`` - adding control points to the moment interaction diagram allows the user to ensure certain points are captured on the moment interaction diagram.  The default argument for ``control_points`` is ``[(\"kappa0\", 0.0), (\"fy\", 1.0), (\"N\", 0.0)]`` which produces control points at the pure compression point, the balanced point and the pure bending point. \n",
     "    \n",
     "\n",
     "3. ``labels`` - A list of labels to apply to the ``limits`` and ``control_points`` for plotting purposes. The first two values in ``labels`` apply labels to the ``limits``, the remaining values apply labels to the ``control_points``.\n",
     "\n",
-    "4. ``n_points`` - The number of points to compute including and between the ``limits`` of the moment interaction diagram.\n",
+    "4. ``n_points`` - The number of points to compute including and between the ``limits`` of the moment interaction diagram. Generates equally spaced neutral axis depths between the ``limits``.\n",
     "\n",
-    "5. ``n_spacing`` - If provided, overrides ``n_points`` and spaces the points on the moment interaction diagram by an axial force ``n_spacing``.\n",
+    "5. ``n_spacing`` - If provided, overrides ``n_points`` and generates the moment interaction diagram using ``n_spacing`` equally spaced axial loads.\n",
     "\n",
     "6. ``max_comp`` - Limits the maximum compressive force in the moment interaction diagram by cutting off the top of the diagram."
    ]
@@ -317,20 +317,20 @@
    "source": [
     "The below example will use these features, creating additional control points at:\n",
     "\n",
-    "- Decompression of the concrete ``(\"D\", 1.0)`` - label ``C``\n",
-    "- Decompression of the steel ``(\"fy\", 0.0)`` - label ``D``\n",
+    "- Decompression point for the concrete ``(\"D\", 1.0)`` - label ``C``\n",
+    "- Decompression point for the steel ``(\"fy\", 0.0)`` - label ``D``\n",
     "- 50% yield strain in the steel ``(\"fy\", 0.5)`` - label ``E``\n",
     "- 100% yield strain in the steel ``(\"fy\", 1.0)`` - label ``F``\n",
     "- Neutral axis depth of 200 mm ``(\"d_n\", 200.0)`` - label ``G``\n",
     "\n",
-    "A maximum compressive force of 6800 kN is provided. Label ``A`` is placed at zero axial force and label ``B`` is placed at the intersection with the moment interaction diagram.\n",
+    "A maximum compressive force of 6800 kN is provided. Label ``A`` is placed at zero bending moment and label ``B`` is placed at the intersection with the moment interaction diagram.\n",
     "\n",
     "The limits of the moment interaction diagram are taken from:\n",
     "\n",
     "- Pure compression ``(\"kappa0\", 0)`` - note label ``NA`` is removed by ``max_comp``\n",
     "- Pure tension ``(\"d_n\", 1e-6)`` - label ``I``\n",
     "\n",
-    "The interaction diagram is generated with a constant axial force spacing of ``200 kN``."
+    "The interaction diagram is generated with constant axial force spacing using 36 points."
    ]
   },
   {
@@ -356,7 +356,7 @@
     "        (\"N\", 0.0),\n",
     "    ],\n",
     "    labels=[\"NA\", \"I\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\"],\n",
-    "    n_spacing=200e3,\n",
+    "    n_spacing=36,\n",
     "    max_comp=6.8e6,\n",
     "    max_comp_labels=[\"A\", \"B\"],\n",
     "    progress_bar=False,\n",
@@ -409,7 +409,7 @@
   },
   "vscode": {
    "interpreter": {
-    "hash": "893b3ef6d13023afab4be8c5000be38ce11a760491bcfa4047435852657817d1"
+    "hash": "cbcd46708823968cdeec8140ad70b4bb10e53ceac96cecaaf557485e336f0189"
    }
   }
  },
