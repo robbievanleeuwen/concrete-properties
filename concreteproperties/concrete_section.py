@@ -1047,7 +1047,7 @@ class ConcreteSection:
         ],
         labels: Optional[List[str]] = None,
         n_points: int = 24,
-        n_spacing: Optional[float] = None,
+        n_spacing: Optional[int] = None,
         max_comp: Optional[float] = None,
         max_comp_labels: Optional[List[str]] = None,
         progress_bar: bool = True,
@@ -1087,10 +1087,11 @@ class ConcreteSection:
         :param n_points: Number of points to compute including and between the
             ``limits`` of the moment interaction diagram. Generates equally spaced
             neutral axis depths between the ``limits``.
-        :param n_spacing: If provided, overrides ``n_points`` and spaces the points on
-            the moment interaction diagram by an axial force ``n_spacing``. Note that
-            using ``n_spacing`` negatively affects performance as the neutral axis depth
-            must be located for each point on the moment interaction diagram.
+        :param n_spacing: If provided, overrides ``n_points`` and generates the moment
+            interaction diagram using ``n_spacing`` equally spaced axial loads. Note
+            that using ``n_spacing`` negatively affects performance, as the neutral axis
+            depth must first be located for each point on the moment interaction
+            diagram.
         :param max_comp: If provided, limits the maximum compressive force in the moment
             interaction diagram to ``max_comp``
         :param max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
@@ -1148,19 +1149,10 @@ class ConcreteSection:
                 ultimate_results=res.UltimateBendingResults(theta=theta),
             )
 
-            # correct n_spacing if sign is wrong
-            if start_res.n > end_res.n and n_spacing > 0:
-                n_spacing = -1.0 * n_spacing
-            elif start_res.n < end_res.n and n_spacing < 0:
-                n_spacing = -1.0 * n_spacing
-
             # generate list of axial forces
-            analysis_list = np.arange(
-                start=start_res.n, stop=end_res.n, step=n_spacing, dtype=float
+            analysis_list = np.linspace(
+                start=start_res.n, stop=end_res.n, num=n_spacing, dtype=float
             ).tolist()
-
-            # add end axial force
-            analysis_list.append(end_res.n)
         else:
             # check for infinity in limits - this will not work with linspace
             # for sake of distributing neutral axes let kappa0 ~= 2 * D

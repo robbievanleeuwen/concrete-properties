@@ -200,11 +200,15 @@ def test_label_validation():
 
 
 def test_n_spacing():
-    spacing = 200e3
-    mi_res = conc_sec.moment_interaction_diagram(n_spacing=spacing, control_points=[])
+    n_spacing = 24
+    mi_res = conc_sec.moment_interaction_diagram(n_spacing=n_spacing, control_points=[])
+
+    spacing = 0
 
     for idx, res in enumerate(mi_res.results):
-        if idx > 0 and idx != len(mi_res.results) - 1:
+        if idx == 1:
+            spacing = mi_res.results[idx - 1].n - res.n
+        elif idx > 1:
             assert pytest.approx(mi_res.results[idx - 1].n - res.n, rel=1e-3) == spacing
 
 

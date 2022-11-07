@@ -445,7 +445,7 @@ class AS3600(DesignCode):
         ],
         labels: Optional[List[str]] = None,
         n_points: int = 24,
-        n_spacing: Optional[float] = None,
+        n_spacing: Optional[int] = None,
         phi_0: float = 0.6,
         progress_bar: bool = True,
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
@@ -474,10 +474,11 @@ class AS3600(DesignCode):
         :param n_points: Number of points to compute including and between the
             ``limits`` of the moment interaction diagram. Generates equally spaced
             neutral axes between the ``limits``.
-        :param n_spacing: If provided, overrides ``n_points`` and spaces the points on
-            the moment interaction diagram by a constant axial force ``n_spacing``. Note
-            that using ``n_spacing`` negatively affects performance as the neutral axis
-            depth must be located for each point on the moment interaction diagram.
+        :param n_spacing: If provided, overrides ``n_points`` and generates the moment
+            interaction diagram using ``n_spacing`` equally spaced axial loads. Note
+            that using ``n_spacing`` negatively affects performance, as the neutral axis
+            depth must first be located for each point on the moment interaction
+            diagram.
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
         :param progress_bar: If set to True, displays the progress bar
 
