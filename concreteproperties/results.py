@@ -11,7 +11,6 @@ import matplotlib.tri as tri
 import numpy as np
 from matplotlib.collections import PatchCollection
 from matplotlib.colors import CenteredNorm  # type: ignore
-from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
 from rich.console import Console
 from rich.table import Table
 from scipy.interpolate import interp1d
@@ -86,6 +85,9 @@ class GrossProperties:
 
     # other properties
     conc_ultimate_strain: float = 0
+    n_prestress: float = 0
+    m_x_prestress: float = 0
+    m_y_prestress: float = 0
 
     def print_results(
         self,
@@ -139,6 +141,12 @@ class GrossProperties:
             "Ultimate Concrete Strain",
             "{:>{fmt}}".format(self.conc_ultimate_strain, fmt=fmt),
         )
+
+        # add prestressed results if they exist
+        if self.n_prestress:
+            table.add_row("n_prestress", "{:>{fmt}}".format(self.n_prestress, fmt=fmt))
+            table.add_row("m_x_prestress", "{:>{fmt}}".format(self.m_x_prestress, fmt=fmt))
+            table.add_row("m_y_prestress", "{:>{fmt}}".format(self.m_y_prestress, fmt=fmt))
 
         console = Console()
         console.print(table)

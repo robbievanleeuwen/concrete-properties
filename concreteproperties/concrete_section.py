@@ -28,14 +28,18 @@ class ConcreteSection:
     def __init__(
         self,
         geometry: sp_geom.CompoundGeometry,
+        calculate_prestress_actions: bool = True,
     ):
         """Inits the ConcreteSection class.
 
         :param geometry: *sectionproperties* CompoundGeometry object describing the
             reinforced concrete section
+        :param calculate_prestress_actions: If set to True, adds the prestressed axial
+            load and induced moment to all actions
         """
 
         self.compound_geometry = geometry
+        self.calculate_prestressed_actions = calculate_prestress_actions
 
         # check overlapping regions
         polygons = [sec_geom.geom for sec_geom in self.compound_geometry.geoms]
@@ -236,6 +240,27 @@ class ConcreteSection:
                 conc_ult_strain = min(conc_ult_strain, ult_strain)
 
         self.gross_properties.conc_ultimate_strain = conc_ult_strain
+
+        # calculate prestressed actions
+        n_prestress = 0
+        m_x_prestress = 0
+        m_y_prestress = 0
+
+        for strand in self.strand_geometries:
+            if isinstance(strand.material, SteelStrand):
+                # add axial force
+                n_strand = strand.material.prestress_force
+                n_prestress += n_strand
+
+                # add moment
+                centroid = strand.calculate_centroid()
+                # TODO: fix with moment_centroid
+                m_x_prestress += n_strand * (centroid[1] - self.gross_properties.cy)
+                m_y_prestress += n_strand * (centroid[0] - self.gross_properties.cx)
+
+        self.gross_properties.n_prestress = n_prestress
+        self.gross_properties.m_x_prestress = m_x_prestress
+        self.gross_properties.m_y_prestress = m_y_prestress
 
     def get_gross_properties(
         self,
@@ -1412,6 +1437,12 @@ class ConcreteSection:
         e_ixx = self.gross_properties.e_ixx_c
         e_iyy = self.gross_properties.e_iyy_c
         e_ixy = self.gross_properties.e_ixy_c
+
+        # add prestressed actions
+        if self.calculate_prestressed_actions:
+            n += self.gross_properties.n_prestress
+            m_x += self.gross_properties.m_x_prestress
+            m_y += self.gross_properties.m_y_prestress
 
         # calculate neutral axis rotation
         grad = (e_ixy * m_x - e_ixx * m_y) / (e_iyy * m_x - e_ixy * m_y)
