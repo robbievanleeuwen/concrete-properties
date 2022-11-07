@@ -1086,7 +1086,7 @@ class ConcreteSection:
             ``2 + len(control_points)``.
         :param n_points: Number of points to compute including and between the
             ``limits`` of the moment interaction diagram. Generates equally spaced
-            neutral axes between the ``limits``.
+            neutral axis depths between the ``limits``.
         :param n_spacing: If provided, overrides ``n_points`` and spaces the points on
             the moment interaction diagram by an axial force ``n_spacing``. Note that
             using ``n_spacing`` negatively affects performance as the neutral axis depth
@@ -1269,7 +1269,7 @@ class ConcreteSection:
         if max_comp:
             # check input - if value greater than maximum compression
             if max_comp > mi_results.results[0].n:
-                msg = f"max_comp={max_comp} is greater than the maximum axial load "
+                msg = f"max_comp={max_comp} is greater than the maximum axial capacity "
                 msg += f"{mi_results.results[0].n}."
                 raise ValueError(msg)
 

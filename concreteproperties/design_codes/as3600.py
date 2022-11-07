@@ -461,7 +461,7 @@ class AS3600(DesignCode):
             interaction diagram. List length must equal two. The default limits range
             from concrete decompression strain to zero curvature tension.
         :param control_points: List of additional control points to add to the moment
-            interatction diagram. The default control points include the pure
+            interaction diagram. The default control points include the pure
             compression point (``kappa0``), the balanced point (``fy=1``) and the pure
             bending point (``N=0``). Control points may lie outside the limits of the
             moment interaction diagram as long as equilibrium can be found.
@@ -475,9 +475,9 @@ class AS3600(DesignCode):
             ``limits`` of the moment interaction diagram. Generates equally spaced
             neutral axes between the ``limits``.
         :param n_spacing: If provided, overrides ``n_points`` and spaces the points on
-            the moment interaction diagram by an axial force ``n_spacing``. Note that
-            using ``n_spacing`` negatively affects performance as the neutral axis depth
-            must be located for each point on the moment interaction diagram.
+            the moment interaction diagram by a constant axial force ``n_spacing``. Note
+            that using ``n_spacing`` negatively affects performance as the neutral axis
+            depth must be located for each point on the moment interaction diagram.
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
         :param progress_bar: If set to True, displays the progress bar
 
