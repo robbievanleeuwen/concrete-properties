@@ -86,8 +86,7 @@ class GrossProperties:
     # other properties
     conc_ultimate_strain: float = 0
     n_prestress: float = 0
-    m_x_prestress: float = 0
-    m_y_prestress: float = 0
+    m_prestress: float = 0
 
     def print_results(
         self,
@@ -104,15 +103,21 @@ class GrossProperties:
 
         table.add_row("Total Area", "{:>{fmt}}".format(self.total_area, fmt=fmt))
         table.add_row("Concrete Area", "{:>{fmt}}".format(self.concrete_area, fmt=fmt))
-        table.add_row(
-            "Meshed Reinforcement Area",
-            "{:>{fmt}}".format(self.reinf_meshed_area, fmt=fmt),
-        )
+
+        if self.reinf_meshed_area:
+            table.add_row(
+                "Meshed Reinforcement Area",
+                "{:>{fmt}}".format(self.reinf_meshed_area, fmt=fmt),
+            )
+
         table.add_row(
             "Lumped Reinforcement Area",
             "{:>{fmt}}".format(self.reinf_lumped_area, fmt=fmt),
         )
-        table.add_row("Strand Area", "{:>{fmt}}".format(self.strand_area, fmt=fmt))
+
+        if self.strand_area:
+            table.add_row("Strand Area", "{:>{fmt}}".format(self.strand_area, fmt=fmt))
+
         table.add_row("Axial Rigidity (EA)", "{:>{fmt}}".format(self.e_a, fmt=fmt))
         table.add_row("Mass (per unit length)", "{:>{fmt}}".format(self.mass, fmt=fmt))
         table.add_row("Perimeter", "{:>{fmt}}".format(self.perimeter, fmt=fmt))
@@ -145,8 +150,7 @@ class GrossProperties:
         # add prestressed results if they exist
         if self.n_prestress:
             table.add_row("n_prestress", "{:>{fmt}}".format(self.n_prestress, fmt=fmt))
-            table.add_row("m_x_prestress", "{:>{fmt}}".format(self.m_x_prestress, fmt=fmt))
-            table.add_row("m_y_prestress", "{:>{fmt}}".format(self.m_y_prestress, fmt=fmt))
+            table.add_row("m_prestress", "{:>{fmt}}".format(self.m_prestress, fmt=fmt))
 
         console = Console()
         console.print(table)
@@ -1067,10 +1071,10 @@ class StressResult:
     lumped_reinforcement_stresses: List[float]
     lumped_reinforcement_strains: List[float]
     lumped_reinforcement_forces: List[Tuple[float, float, float]]
-    strand_geometries: List[CPGeom]
-    strand_stresses: List[float]
-    strand_strains: List[float]
-    strand_forces: List[Tuple[float, float, float]]
+    strand_geometries: List[CPGeom] = field(default_factory=list)
+    strand_stresses: List[float] = field(default_factory=list)
+    strand_strains: List[float] = field(default_factory=list)
+    strand_forces: List[Tuple[float, float, float]] = field(default_factory=list)
 
     def plot_stress(
         self,
@@ -1320,9 +1324,7 @@ class StressResult:
 
         return ax
 
-    def sum_forces(
-        self,
-    ) -> float:
+    def sum_forces(self) -> float:
         """Returns the sum of the internal forces.
 
         :return: Sum of internal forces
@@ -1348,9 +1350,7 @@ class StressResult:
 
         return force_sum
 
-    def sum_moments(
-        self,
-    ) -> Tuple[float, float, float]:
+    def sum_moments(self) -> Tuple[float, float, float]:
         """Returns the sum of the internal moments.
 
         :return: Sum of internal moments about each axis and resultant moment
@@ -1383,3 +1383,22 @@ class StressResult:
         moment_sum = np.sqrt(moment_sum_x * moment_sum_x + moment_sum_y * moment_sum_y)
 
         return moment_sum_x, moment_sum_y, moment_sum
+
+    def get_concrete_stress_limits(self) -> Tuple[float, float]:
+        """Returns the minimum and maximum concrete stress.
+
+        :return: Minimum concrete stress, maximum concrete stress
+        """
+
+        min_stress = 0
+        max_stress = 0
+
+        for idx, stress_list in enumerate(self.concrete_stresses):
+            if idx == 0:
+                min_stress = stress_list.min()
+                max_stress = stress_list.max()
+            else:
+                min_stress = min(min_stress, stress_list.min())
+                max_stress = max(max_stress, stress_list.max())
+
+        return min_stress, max_stress

@@ -28,18 +28,14 @@ class ConcreteSection:
     def __init__(
         self,
         geometry: sp_geom.CompoundGeometry,
-        calculate_prestress_actions: bool = True,
-    ):
+    ) -> None:
         """Inits the ConcreteSection class.
 
         :param geometry: *sectionproperties* CompoundGeometry object describing the
             reinforced concrete section
-        :param calculate_prestress_actions: If set to True, adds the prestressed axial
-            load and induced moment to all actions
         """
 
         self.compound_geometry = geometry
-        self.calculate_prestressed_actions = calculate_prestress_actions
 
         # check overlapping regions
         polygons = [sec_geom.geom for sec_geom in self.compound_geometry.geoms]
@@ -64,8 +60,14 @@ class ConcreteSection:
                 self.concrete_geometries.append(cp_geom)
                 self.meshed_geometries.append(cp_geom)
             elif isinstance(geom.material, SteelStrand):
-                cp_geom = CPGeom(geom=geom.geom, material=geom.material)
-                self.strand_geometries.append(cp_geom)
+                # SteelStrand materials can only be in PrestressedSection
+                if type(self) == ConcreteSection:
+                    raise ValueError(
+                        "SteelStrand material detected. Use PrestressedSection instead."
+                    )
+                else:
+                    cp_geom = CPGeom(geom=geom.geom, material=geom.material)
+                    self.strand_geometries.append(cp_geom)
             else:
                 cp_geom = CPGeom(geom=geom.geom, material=geom.material)  # type: ignore
 
@@ -77,15 +79,11 @@ class ConcreteSection:
 
             self.all_geometries.append(cp_geom)
 
-        # initialise gross properties results class
+        # calculate gross properties
         self.gross_properties = res.GrossProperties()
-
-        # calculate gross area properties
         self.calculate_gross_area_properties()
 
-    def calculate_gross_area_properties(
-        self,
-    ):
+    def calculate_gross_area_properties(self) -> None:
         """Calculates and stores gross section area properties."""
 
         # loop through all geometries
@@ -116,9 +114,6 @@ class ConcreteSection:
         for lumped_geom in self.reinf_geometries_lumped:
             self.gross_properties.reinf_lumped_area += lumped_geom.calculate_area()
 
-        for strand_geom in self.strand_geometries:
-            self.gross_properties.strand_area += strand_geom.calculate_area()
-
         # perimeter
         self.gross_properties.perimeter = self.compound_geometry.calculate_perimeter()
 
@@ -141,7 +136,7 @@ class ConcreteSection:
                 self.gross_properties.e_iyy_g += el_e_iyy_g
                 self.gross_properties.e_ixy_g += el_e_ixy_g
 
-        # lumped and strand geometries - treat as lumped circles
+        # lumped geometries - treat as lumped circles
         for geom in self.reinf_geometries_lumped + self.strand_geometries:
             # area, diameter and centroid of geometry
             area = geom.calculate_area()
@@ -240,27 +235,6 @@ class ConcreteSection:
                 conc_ult_strain = min(conc_ult_strain, ult_strain)
 
         self.gross_properties.conc_ultimate_strain = conc_ult_strain
-
-        # calculate prestressed actions
-        n_prestress = 0
-        m_x_prestress = 0
-        m_y_prestress = 0
-
-        for strand in self.strand_geometries:
-            if isinstance(strand.material, SteelStrand):
-                # add axial force
-                n_strand = strand.material.prestress_force
-                n_prestress += n_strand
-
-                # add moment
-                centroid = strand.calculate_centroid()
-                # TODO: fix with moment_centroid
-                m_x_prestress += n_strand * (centroid[1] - self.gross_properties.cy)
-                m_y_prestress += n_strand * (centroid[0] - self.gross_properties.cx)
-
-        self.gross_properties.n_prestress = n_prestress
-        self.gross_properties.m_x_prestress = m_x_prestress
-        self.gross_properties.m_y_prestress = m_y_prestress
 
     def get_gross_properties(
         self,
@@ -1425,10 +1399,6 @@ class ConcreteSection:
         lumped_reinf_sigs = []
         lumped_reinf_strains = []
         lumped_reinf_forces = []
-        strand_geoms = []
-        strand_sigs = []
-        strand_strains = []
-        strand_forces = []
 
         # get uncracked section properties
         e_a = self.gross_properties.e_a
@@ -1437,12 +1407,6 @@ class ConcreteSection:
         e_ixx = self.gross_properties.e_ixx_c
         e_iyy = self.gross_properties.e_iyy_c
         e_ixy = self.gross_properties.e_ixy_c
-
-        # add prestressed actions
-        if self.calculate_prestressed_actions:
-            n += self.gross_properties.n_prestress
-            m_x += self.gross_properties.m_x_prestress
-            m_y += self.gross_properties.m_y_prestress
 
         # calculate neutral axis rotation
         grad = (e_ixy * m_x - e_ixx * m_y) / (e_iyy * m_x - e_ixy * m_y)
@@ -1524,18 +1488,10 @@ class ConcreteSection:
 
             # net force and point of action
             n_lumped = sig * lumped_geom.calculate_area()
-
-            if isinstance(lumped_geom.material, SteelStrand):
-                strand_sigs.append(sig)
-                strand_strains.append(strain)
-                strand_forces.append((n_lumped, x, y))
-                strand_geoms.append(lumped_geom)
-
-            else:
-                lumped_reinf_sigs.append(sig)
-                lumped_reinf_strains.append(strain)
-                lumped_reinf_forces.append((n_lumped, x, y))
-                lumped_reinf_geoms.append(lumped_geom)
+            lumped_reinf_sigs.append(sig)
+            lumped_reinf_strains.append(strain)
+            lumped_reinf_forces.append((n_lumped, x, y))
+            lumped_reinf_geoms.append(lumped_geom)
 
         return res.StressResult(
             concrete_section=self,
@@ -1549,10 +1505,6 @@ class ConcreteSection:
             lumped_reinforcement_stresses=lumped_reinf_sigs,
             lumped_reinforcement_strains=lumped_reinf_strains,
             lumped_reinforcement_forces=lumped_reinf_forces,
-            strand_geometries=strand_geoms,
-            strand_stresses=strand_sigs,
-            strand_strains=strand_strains,
-            strand_forces=strand_forces,
         )
 
     def calculate_cracked_stress(
@@ -2095,3 +2047,240 @@ class ConcreteSection:
                 )
 
         return ax
+
+
+class PrestressedSection(ConcreteSection):
+    """Class for a prestressed concrete section.
+
+    Note that the section must be symmetric about its vertical (``y``) axis and all
+    bending is assumed to be about the ``x`` axis.
+
+    The only meshed geometries that are permitted are concrete geometries.
+    """
+
+    def __init__(
+        self,
+        geometry: sp_geom.CompoundGeometry,
+        calculate_prestress_actions: bool = True,
+    ) -> None:
+        """Inits the ConcreteSection class.
+
+        :param geometry: *sectionproperties* CompoundGeometry object describing the
+            prestressed concrete section
+        :param calculate_prestress_actions: If set to True, adds the prestressed axial
+            load and induced moment to all actions
+        """
+
+        super().__init__(geometry=geometry)
+
+        self.calculate_prestressed_actions = calculate_prestress_actions
+
+        # check symmetry about y-axis
+        if not np.isclose(
+            self.gross_properties.e_zyy_minus, self.gross_properties.e_zyy_plus
+        ):
+            raise ValueError("PrestressedSection must be symmetric about y-axis.")
+
+        # check for any meshed geometries
+        if self.reinf_geometries_meshed:
+            msg = "Meshed reinforcement geometries are not permitted in "
+            msg += "PrestressedSection."
+            raise ValueError(msg)
+
+    def calculate_gross_area_properties(self) -> None:
+        """Calculates and stores gross section area properties."""
+
+        super().calculate_gross_area_properties()
+
+        # sum strand areas
+        for strand_geom in self.strand_geometries:
+            self.gross_properties.strand_area += strand_geom.calculate_area()
+
+        # calculate prestressed actions
+        n_prestress = 0
+        m_prestress = 0
+
+        for strand in self.strand_geometries:
+            if isinstance(strand.material, SteelStrand):
+                # add axial force
+                n_strand = strand.material.prestress_force
+                n_prestress += n_strand
+
+                # add moment
+                centroid = strand.calculate_centroid()
+                # TODO: fix with moment_centroid
+                m_prestress += n_strand * (centroid[1] - self.gross_properties.cy)
+
+        self.gross_properties.n_prestress = n_prestress
+        self.gross_properties.m_prestress = m_prestress
+
+    def calculate_cracked_properties(self):
+        raise NotImplementedError
+
+    def moment_curvature_analysis(self):
+        raise NotImplementedError
+
+    def ultimate_bending_capacity(self):
+        raise NotImplementedError
+
+    def moment_interaction_diagram(self):
+        raise NotImplementedError
+
+    def biaxial_bending_diagram(self):
+        raise NotImplementedError
+
+    def calculate_uncracked_stress(
+        self,
+        n: float = 0,
+        m: float = 0,
+    ) -> res.StressResult:
+        """Calculates stresses within the prestressed concrete section assuming an
+        uncracked section.
+
+        Uses gross area section properties to determine concrete, reinforcement and
+        strand stresses given an externally applied axial force ``n`` and bending moment
+        ``m``.
+
+        If ``self.calculate_prestressed_actions=True``, prestressed
+        actions are included in the analysis. If
+        ``self.calculate_prestressed_actions=False``, prestressed actions must be added
+        to ``n`` and ``m``.
+
+        :param n: Axial force
+        :param m: Bending moment
+
+        :return: Stress results object
+        """
+
+        # initialise stress results
+        conc_sections = []
+        conc_sigs = []
+        conc_forces = []
+        lumped_reinf_geoms = []
+        lumped_reinf_sigs = []
+        lumped_reinf_strains = []
+        lumped_reinf_forces = []
+        strand_geoms = []
+        strand_sigs = []
+        strand_strains = []
+        strand_forces = []
+
+        # get uncracked section properties
+        e_a = self.gross_properties.e_a
+        cx = self.gross_properties.cx
+        cy = self.gross_properties.cy
+        e_ixx = self.gross_properties.e_ixx_c
+        e_iyy = self.gross_properties.e_iyy_c
+        e_ixy = self.gross_properties.e_ixy_c
+
+        # add prestressed actions
+        if self.calculate_prestressed_actions:
+            n += self.gross_properties.n_prestress
+            m += self.gross_properties.m_prestress
+
+        # calculate neutral axis rotation
+        theta = 0
+
+        # point on neutral axis is centroid
+        point_na = (cx, cy)
+
+        # split meshed geometries above and below neutral axis
+        split_meshed_geoms = []
+
+        for meshed_geom in self.meshed_geometries:
+            top_geoms, bot_geoms = meshed_geom.split_section(
+                point=point_na,
+                theta=theta,
+            )
+
+            split_meshed_geoms.extend(top_geoms)
+            split_meshed_geoms.extend(bot_geoms)
+
+        # loop through all concrete geometries and calculate stress
+        # for conc_geom in self.concrete_geometries:
+        for conc_geom in split_meshed_geoms:
+            analysis_section = AnalysisSection(geometry=conc_geom)
+
+            # calculate stress, force and point of action
+            sig, n_sec, d_x, d_y = analysis_section.get_elastic_stress(
+                n=n,
+                m_x=m,
+                m_y=0,
+                e_a=e_a,
+                cx=cx,
+                cy=cy,
+                e_ixx=e_ixx,
+                e_iyy=e_iyy,
+                e_ixy=e_ixy,
+            )
+
+            # save results
+            conc_sigs.append(sig)
+            conc_forces.append((n_sec, d_x, d_y))
+            conc_sections.append(analysis_section)
+
+        # loop through all lumped and strand geometries and calculate stress
+        for lumped_geom in self.reinf_geometries_lumped + self.strand_geometries:
+            # initialise stress and position
+            sig = 0
+            centroid = lumped_geom.calculate_centroid()
+            x = centroid[0] - cx
+            y = centroid[1] - cy
+
+            # axial stress
+            sig += n * lumped_geom.material.elastic_modulus / e_a
+
+            # bending moment stress
+            sig += lumped_geom.material.elastic_modulus * (
+                -(e_ixy * m) / (e_ixx * e_iyy - e_ixy**2) * x
+                + (e_iyy * m) / (e_ixx * e_iyy - e_ixy**2) * y
+            )
+
+            # add initial prestress
+            if isinstance(lumped_geom.material, SteelStrand):
+                sig += (
+                    -lumped_geom.material.prestress_force / lumped_geom.calculate_area()
+                )
+
+            strain = sig / lumped_geom.material.elastic_modulus
+
+            # net force and point of action
+            n_lumped = sig * lumped_geom.calculate_area()
+
+            if isinstance(lumped_geom.material, SteelStrand):
+                strand_sigs.append(sig)
+                strand_strains.append(strain)
+                strand_forces.append((n_lumped, x, y))
+                strand_geoms.append(lumped_geom)
+            else:
+                lumped_reinf_sigs.append(sig)
+                lumped_reinf_strains.append(strain)
+                lumped_reinf_forces.append((n_lumped, x, y))
+                lumped_reinf_geoms.append(lumped_geom)
+
+        return res.StressResult(
+            concrete_section=self,
+            concrete_analysis_sections=conc_sections,
+            concrete_stresses=conc_sigs,
+            concrete_forces=conc_forces,
+            meshed_reinforcement_sections=[],
+            meshed_reinforcement_stresses=[],
+            meshed_reinforcement_forces=[],
+            lumped_reinforcement_geometries=lumped_reinf_geoms,
+            lumped_reinforcement_stresses=lumped_reinf_sigs,
+            lumped_reinforcement_strains=lumped_reinf_strains,
+            lumped_reinforcement_forces=lumped_reinf_forces,
+            strand_geometries=strand_geoms,
+            strand_stresses=strand_sigs,
+            strand_strains=strand_strains,
+            strand_forces=strand_forces,
+        )
+
+    def calculate_cracked_stress(self):
+        raise NotImplementedError
+
+    def calculate_service_stress(self):
+        raise NotImplementedError
+
+    def calculate_ultimate_stress(self):
+        raise NotImplementedError

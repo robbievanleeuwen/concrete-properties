@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     import matplotlib
     from sectionproperties.pre.geometry import CompoundGeometry
 
-    from concreteproperties.material import Material, SteelBar
+    from concreteproperties.material import Material, SteelBar, SteelStrand
 
 
 class CPGeom:
@@ -354,7 +354,7 @@ class CPGeomConcrete(CPGeom):
 def add_bar(
     geometry: Union[Geometry, CompoundGeometry],
     area: float,
-    material: SteelBar,
+    material: Union[SteelBar, SteelStrand],
     x: float,
     y: float,
     n: int = 4,
@@ -383,7 +383,7 @@ def add_bar(
 def add_bar_rectangular_array(
     geometry: Union[Geometry, CompoundGeometry],
     area: float,
-    material: SteelBar,
+    material: Union[SteelBar, SteelStrand],
     n_x: int,
     x_s: float,
     n_y: int = 1,
@@ -434,7 +434,7 @@ def add_bar_rectangular_array(
 def add_bar_circular_array(
     geometry: Union[Geometry, CompoundGeometry],
     area: float,
-    material: SteelBar,
+    material: Union[SteelBar, SteelStrand],
     n_bar: int,
     r_array: float,
     theta_0: float = 0,
