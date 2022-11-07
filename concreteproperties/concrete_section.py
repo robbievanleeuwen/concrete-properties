@@ -1052,9 +1052,7 @@ class ConcreteSection:
         max_comp_labels: Optional[List[str]] = None,
         progress_bar: bool = True,
     ) -> res.MomentInteractionResults:
-        r"""Generates a moment interaction diagram given a neutral axis angle ``theta``
-        and ``n_points`` calculation points between the decompression case and the pure
-        bending case.
+        r"""Generates a moment interaction diagram given a neutral axis angle ``theta``.
 
         ``limits`` and ``control_points`` accept a list of tuples that define points on
         the moment interaction diagram. The first item in the tuple defines the type of
@@ -1074,7 +1072,7 @@ class ConcreteSection:
             (:math:`-\pi \leq \theta \leq \pi`)
         :param limits: List of control points that define the start and end of the
             interaction diagram. List length must equal two. The default limits range
-            from decompression to zero curvature tension.
+            from concrete decompression strain to zero curvature tension.
         :param control_points: List of additional control points to add to the moment
             interatction diagram. The default control points include the pure
             compression point (``kappa0``), the balanced point (``fy=1``) and the pure
@@ -1357,7 +1355,7 @@ class ConcreteSection:
         ``n_points`` calculation points.
 
         :param n: Net axial force
-        :param n_points: Number of calculation points between the decompression
+        :param n_points: Number of calculation points
         :param progress_bar: If set to True, displays the progress bar
 
         :return: Biaxial bending results

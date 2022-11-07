@@ -459,7 +459,7 @@ class AS3600(DesignCode):
             (:math:`-\pi \leq \theta \leq \pi`)
         :param limits: List of control points that define the start and end of the
             interaction diagram. List length must equal two. The default limits range
-            from decompression to zero curvature tension.
+            from concrete decompression strain to zero curvature tension.
         :param control_points: List of additional control points to add to the moment
             interatction diagram. The default control points include the pure
             compression point (``kappa0``), the balanced point (``fy=1``) and the pure
@@ -559,7 +559,7 @@ class AS3600(DesignCode):
         """Generates a biaxial bending with capacity factors to AS 3600:2018.
 
         :param n: Net axial force
-        :param n_points: Number of calculation points between the decompression
+        :param n_points: Number of calculation points
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
         :param progress_bar: If set to True, displays the progress bar
 
