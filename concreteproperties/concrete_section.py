@@ -302,93 +302,7 @@ class ConcreteSection:
             raise utils.AnalysisError(msg)
 
         # calculate cracked section properties
-        # axial rigidity & first moments of area
-        for geom in cracked_results.cracked_geometries:
-            area = geom.calculate_area()
-            centroid = geom.calculate_centroid()
-
-            cracked_results.e_a_cr += area * geom.material.elastic_modulus
-            cracked_results.e_qx_cr += (
-                area * geom.material.elastic_modulus * centroid[1]
-            )
-            cracked_results.e_qy_cr += (
-                area * geom.material.elastic_modulus * centroid[0]
-            )
-
-        # centroids
-        cracked_results.cx = cracked_results.e_qy_cr / cracked_results.e_a_cr
-        cracked_results.cy = cracked_results.e_qx_cr / cracked_results.e_a_cr
-
-        # global second moments of area
-        for geom in cracked_results.cracked_geometries:
-            # if meshed
-            if geom.material.meshed:
-                sec = AnalysisSection(geometry=geom)
-
-                for el in sec.elements:
-                    el_e_ixx_g, el_e_iyy_g, el_e_ixy_g = el.second_moments_of_area()
-                    cracked_results.e_ixx_g_cr += el_e_ixx_g
-                    cracked_results.e_iyy_g_cr += el_e_iyy_g
-                    cracked_results.e_ixy_g_cr += el_e_ixy_g
-            # if lumped
-            else:
-                # area, diameter and centroid of geometry
-                area = geom.calculate_area()
-                diam = np.sqrt(4 * area / np.pi)
-                centroid = geom.calculate_centroid()
-
-                cracked_results.e_ixx_g_cr += geom.material.elastic_modulus * (
-                    np.pi * pow(diam, 4) / 64 + area * centroid[1] * centroid[1]
-                )
-                cracked_results.e_iyy_g_cr += geom.material.elastic_modulus * (
-                    np.pi * pow(diam, 4) / 64 + area * centroid[0] * centroid[0]
-                )
-                cracked_results.e_ixy_g_cr += geom.material.elastic_modulus * (
-                    area * centroid[0] * centroid[1]
-                )
-
-        # centroidal second moments of area
-        cracked_results.e_ixx_c_cr = (
-            cracked_results.e_ixx_g_cr
-            - cracked_results.e_qx_cr**2 / cracked_results.e_a_cr
-        )
-        cracked_results.e_iyy_c_cr = (
-            cracked_results.e_iyy_g_cr
-            - cracked_results.e_qy_cr**2 / cracked_results.e_a_cr
-        )
-        cracked_results.e_ixy_c_cr = (
-            cracked_results.e_ixy_g_cr
-            - cracked_results.e_qx_cr * cracked_results.e_qy_cr / cracked_results.e_a_cr
-        )
-        cracked_results.e_iuu_cr = (
-            cracked_results.e_iyy_c_cr * (np.sin(theta)) ** 2
-            + cracked_results.e_ixx_c_cr * (np.cos(theta)) ** 2
-            - 2 * cracked_results.e_ixy_c_cr * np.sin(theta) * np.cos(theta)
-        )
-
-        # principal 2nd moments of area about the centroidal xy axis
-        Delta = (
-            ((cracked_results.e_ixx_c_cr - cracked_results.e_iyy_c_cr) / 2) ** 2
-            + cracked_results.e_ixy_c_cr**2
-        ) ** 0.5
-        cracked_results.e_i11_cr = (
-            cracked_results.e_ixx_c_cr + cracked_results.e_iyy_c_cr
-        ) / 2 + Delta
-        cracked_results.e_i22_cr = (
-            cracked_results.e_ixx_c_cr + cracked_results.e_iyy_c_cr
-        ) / 2 - Delta
-
-        # principal axis angle
-        if (
-            abs(cracked_results.e_ixx_c_cr - cracked_results.e_i11_cr)
-            < 1e-12 * cracked_results.e_i11_cr
-        ):
-            cracked_results.phi_cr = 0
-        else:
-            cracked_results.phi_cr = np.arctan2(
-                cracked_results.e_ixx_c_cr - cracked_results.e_i11_cr,
-                cracked_results.e_ixy_c_cr,
-            )
+        self.cracked_section_properties(cracked_results=cracked_results)
 
         return cracked_results
 
@@ -514,6 +428,107 @@ class ConcreteSection:
         cracked_results.cracked_geometries = cracked_geoms
 
         return e_qu
+
+    def cracked_section_properties(
+        self,
+        cracked_results: res.CrackedResults,
+    ) -> None:
+        """Given a list of cracked geometries (stored in ``cracked_results``),
+        determines the cracked section properties and stores in ``cracked_results``.
+        
+        :param cracked_results: Cracked results object with stored cracked geometries
+        """
+
+        # reset results
+        cracked_results.reset_results()
+
+        # axial rigidity & first moments of area
+        for geom in cracked_results.cracked_geometries:
+            area = geom.calculate_area()
+            centroid = geom.calculate_centroid()
+
+            cracked_results.e_a_cr += area * geom.material.elastic_modulus
+            cracked_results.e_qx_cr += (
+                area * geom.material.elastic_modulus * centroid[1]
+            )
+            cracked_results.e_qy_cr += (
+                area * geom.material.elastic_modulus * centroid[0]
+            )
+
+        # centroids
+        cracked_results.cx = cracked_results.e_qy_cr / cracked_results.e_a_cr
+        cracked_results.cy = cracked_results.e_qx_cr / cracked_results.e_a_cr
+
+        # global second moments of area
+        for geom in cracked_results.cracked_geometries:
+            # if meshed
+            if geom.material.meshed:
+                sec = AnalysisSection(geometry=geom)
+
+                for el in sec.elements:
+                    el_e_ixx_g, el_e_iyy_g, el_e_ixy_g = el.second_moments_of_area()
+                    cracked_results.e_ixx_g_cr += el_e_ixx_g
+                    cracked_results.e_iyy_g_cr += el_e_iyy_g
+                    cracked_results.e_ixy_g_cr += el_e_ixy_g
+            # if lumped
+            else:
+                # area, diameter and centroid of geometry
+                area = geom.calculate_area()
+                diam = np.sqrt(4 * area / np.pi)
+                centroid = geom.calculate_centroid()
+
+                cracked_results.e_ixx_g_cr += geom.material.elastic_modulus * (
+                    np.pi * pow(diam, 4) / 64 + area * centroid[1] * centroid[1]
+                )
+                cracked_results.e_iyy_g_cr += geom.material.elastic_modulus * (
+                    np.pi * pow(diam, 4) / 64 + area * centroid[0] * centroid[0]
+                )
+                cracked_results.e_ixy_g_cr += geom.material.elastic_modulus * (
+                    area * centroid[0] * centroid[1]
+                )
+
+        # centroidal second moments of area
+        cracked_results.e_ixx_c_cr = (
+            cracked_results.e_ixx_g_cr
+            - cracked_results.e_qx_cr**2 / cracked_results.e_a_cr
+        )
+        cracked_results.e_iyy_c_cr = (
+            cracked_results.e_iyy_g_cr
+            - cracked_results.e_qy_cr**2 / cracked_results.e_a_cr
+        )
+        cracked_results.e_ixy_c_cr = (
+            cracked_results.e_ixy_g_cr
+            - cracked_results.e_qx_cr * cracked_results.e_qy_cr / cracked_results.e_a_cr
+        )
+        cracked_results.e_iuu_cr = (
+            cracked_results.e_iyy_c_cr * (np.sin(cracked_results.theta)) ** 2
+            + cracked_results.e_ixx_c_cr * (np.cos(cracked_results.theta)) ** 2
+            - 2 * cracked_results.e_ixy_c_cr * np.sin(cracked_results.theta) * np.cos(cracked_results.theta)
+        )
+
+        # principal 2nd moments of area about the centroidal xy axis
+        Delta = (
+            ((cracked_results.e_ixx_c_cr - cracked_results.e_iyy_c_cr) / 2) ** 2
+            + cracked_results.e_ixy_c_cr**2
+        ) ** 0.5
+        cracked_results.e_i11_cr = (
+            cracked_results.e_ixx_c_cr + cracked_results.e_iyy_c_cr
+        ) / 2 + Delta
+        cracked_results.e_i22_cr = (
+            cracked_results.e_ixx_c_cr + cracked_results.e_iyy_c_cr
+        ) / 2 - Delta
+
+        # principal axis angle
+        if (
+            abs(cracked_results.e_ixx_c_cr - cracked_results.e_i11_cr)
+            < 1e-12 * cracked_results.e_i11_cr
+        ):
+            cracked_results.phi_cr = 0
+        else:
+            cracked_results.phi_cr = np.arctan2(
+                cracked_results.e_ixx_c_cr - cracked_results.e_i11_cr,
+                cracked_results.e_ixy_c_cr,
+            )
 
     def moment_curvature_analysis(
         self,
@@ -2047,240 +2062,3 @@ class ConcreteSection:
                 )
 
         return ax
-
-
-class PrestressedSection(ConcreteSection):
-    """Class for a prestressed concrete section.
-
-    Note that the section must be symmetric about its vertical (``y``) axis and all
-    bending is assumed to be about the ``x`` axis.
-
-    The only meshed geometries that are permitted are concrete geometries.
-    """
-
-    def __init__(
-        self,
-        geometry: sp_geom.CompoundGeometry,
-        calculate_prestress_actions: bool = True,
-    ) -> None:
-        """Inits the ConcreteSection class.
-
-        :param geometry: *sectionproperties* CompoundGeometry object describing the
-            prestressed concrete section
-        :param calculate_prestress_actions: If set to True, adds the prestressed axial
-            load and induced moment to all actions
-        """
-
-        super().__init__(geometry=geometry)
-
-        self.calculate_prestressed_actions = calculate_prestress_actions
-
-        # check symmetry about y-axis
-        if not np.isclose(
-            self.gross_properties.e_zyy_minus, self.gross_properties.e_zyy_plus
-        ):
-            raise ValueError("PrestressedSection must be symmetric about y-axis.")
-
-        # check for any meshed geometries
-        if self.reinf_geometries_meshed:
-            msg = "Meshed reinforcement geometries are not permitted in "
-            msg += "PrestressedSection."
-            raise ValueError(msg)
-
-    def calculate_gross_area_properties(self) -> None:
-        """Calculates and stores gross section area properties."""
-
-        super().calculate_gross_area_properties()
-
-        # sum strand areas
-        for strand_geom in self.strand_geometries:
-            self.gross_properties.strand_area += strand_geom.calculate_area()
-
-        # calculate prestressed actions
-        n_prestress = 0
-        m_prestress = 0
-
-        for strand in self.strand_geometries:
-            if isinstance(strand.material, SteelStrand):
-                # add axial force
-                n_strand = strand.material.prestress_force
-                n_prestress += n_strand
-
-                # add moment
-                centroid = strand.calculate_centroid()
-                # TODO: fix with moment_centroid
-                m_prestress += n_strand * (centroid[1] - self.gross_properties.cy)
-
-        self.gross_properties.n_prestress = n_prestress
-        self.gross_properties.m_prestress = m_prestress
-
-    def calculate_cracked_properties(self):
-        raise NotImplementedError
-
-    def moment_curvature_analysis(self):
-        raise NotImplementedError
-
-    def ultimate_bending_capacity(self):
-        raise NotImplementedError
-
-    def moment_interaction_diagram(self):
-        raise NotImplementedError
-
-    def biaxial_bending_diagram(self):
-        raise NotImplementedError
-
-    def calculate_uncracked_stress(
-        self,
-        n: float = 0,
-        m: float = 0,
-    ) -> res.StressResult:
-        """Calculates stresses within the prestressed concrete section assuming an
-        uncracked section.
-
-        Uses gross area section properties to determine concrete, reinforcement and
-        strand stresses given an externally applied axial force ``n`` and bending moment
-        ``m``.
-
-        If ``self.calculate_prestressed_actions=True``, prestressed
-        actions are included in the analysis. If
-        ``self.calculate_prestressed_actions=False``, prestressed actions must be added
-        to ``n`` and ``m``.
-
-        :param n: Axial force
-        :param m: Bending moment
-
-        :return: Stress results object
-        """
-
-        # initialise stress results
-        conc_sections = []
-        conc_sigs = []
-        conc_forces = []
-        lumped_reinf_geoms = []
-        lumped_reinf_sigs = []
-        lumped_reinf_strains = []
-        lumped_reinf_forces = []
-        strand_geoms = []
-        strand_sigs = []
-        strand_strains = []
-        strand_forces = []
-
-        # get uncracked section properties
-        e_a = self.gross_properties.e_a
-        cx = self.gross_properties.cx
-        cy = self.gross_properties.cy
-        e_ixx = self.gross_properties.e_ixx_c
-        e_iyy = self.gross_properties.e_iyy_c
-        e_ixy = self.gross_properties.e_ixy_c
-
-        # add prestressed actions
-        if self.calculate_prestressed_actions:
-            n += self.gross_properties.n_prestress
-            m += self.gross_properties.m_prestress
-
-        # calculate neutral axis rotation
-        theta = 0
-
-        # point on neutral axis is centroid
-        point_na = (cx, cy)
-
-        # split meshed geometries above and below neutral axis
-        split_meshed_geoms = []
-
-        for meshed_geom in self.meshed_geometries:
-            top_geoms, bot_geoms = meshed_geom.split_section(
-                point=point_na,
-                theta=theta,
-            )
-
-            split_meshed_geoms.extend(top_geoms)
-            split_meshed_geoms.extend(bot_geoms)
-
-        # loop through all concrete geometries and calculate stress
-        # for conc_geom in self.concrete_geometries:
-        for conc_geom in split_meshed_geoms:
-            analysis_section = AnalysisSection(geometry=conc_geom)
-
-            # calculate stress, force and point of action
-            sig, n_sec, d_x, d_y = analysis_section.get_elastic_stress(
-                n=n,
-                m_x=m,
-                m_y=0,
-                e_a=e_a,
-                cx=cx,
-                cy=cy,
-                e_ixx=e_ixx,
-                e_iyy=e_iyy,
-                e_ixy=e_ixy,
-            )
-
-            # save results
-            conc_sigs.append(sig)
-            conc_forces.append((n_sec, d_x, d_y))
-            conc_sections.append(analysis_section)
-
-        # loop through all lumped and strand geometries and calculate stress
-        for lumped_geom in self.reinf_geometries_lumped + self.strand_geometries:
-            # initialise stress and position
-            sig = 0
-            centroid = lumped_geom.calculate_centroid()
-            x = centroid[0] - cx
-            y = centroid[1] - cy
-
-            # axial stress
-            sig += n * lumped_geom.material.elastic_modulus / e_a
-
-            # bending moment stress
-            sig += lumped_geom.material.elastic_modulus * (
-                -(e_ixy * m) / (e_ixx * e_iyy - e_ixy**2) * x
-                + (e_iyy * m) / (e_ixx * e_iyy - e_ixy**2) * y
-            )
-
-            # add initial prestress
-            if isinstance(lumped_geom.material, SteelStrand):
-                sig += (
-                    -lumped_geom.material.prestress_force / lumped_geom.calculate_area()
-                )
-
-            strain = sig / lumped_geom.material.elastic_modulus
-
-            # net force and point of action
-            n_lumped = sig * lumped_geom.calculate_area()
-
-            if isinstance(lumped_geom.material, SteelStrand):
-                strand_sigs.append(sig)
-                strand_strains.append(strain)
-                strand_forces.append((n_lumped, x, y))
-                strand_geoms.append(lumped_geom)
-            else:
-                lumped_reinf_sigs.append(sig)
-                lumped_reinf_strains.append(strain)
-                lumped_reinf_forces.append((n_lumped, x, y))
-                lumped_reinf_geoms.append(lumped_geom)
-
-        return res.StressResult(
-            concrete_section=self,
-            concrete_analysis_sections=conc_sections,
-            concrete_stresses=conc_sigs,
-            concrete_forces=conc_forces,
-            meshed_reinforcement_sections=[],
-            meshed_reinforcement_stresses=[],
-            meshed_reinforcement_forces=[],
-            lumped_reinforcement_geometries=lumped_reinf_geoms,
-            lumped_reinforcement_stresses=lumped_reinf_sigs,
-            lumped_reinforcement_strains=lumped_reinf_strains,
-            lumped_reinforcement_forces=lumped_reinf_forces,
-            strand_geometries=strand_geoms,
-            strand_stresses=strand_sigs,
-            strand_strains=strand_strains,
-            strand_forces=strand_forces,
-        )
-
-    def calculate_cracked_stress(self):
-        raise NotImplementedError
-
-    def calculate_service_stress(self):
-        raise NotImplementedError
-
-    def calculate_ultimate_stress(self):
-        raise NotImplementedError

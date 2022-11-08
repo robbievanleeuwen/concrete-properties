@@ -269,6 +269,8 @@ class CrackedResults:
     """
 
     theta: float
+    n: float = 0
+    m: float = 0
     m_cr: float = 0
     d_nc: float = 0
     cracked_geometries: List[CPGeom] = field(default_factory=list, repr=False)
@@ -302,6 +304,25 @@ class CrackedResults:
     iuu_cr: Optional[float] = None
     i11_cr: Optional[float] = None
     i22_cr: Optional[float] = None
+
+    def reset_results(self) -> None:
+        """Resets the analysis results."""
+
+        self.e_a_cr = 0
+        self.e_qx_cr = 0
+        self.e_qy_cr = 0
+        self.cx = 0
+        self.cy = 0
+        self.e_ixx_g_cr = 0
+        self.e_iyy_g_cr = 0
+        self.e_ixy_g_cr = 0
+        self.e_ixx_c_cr = 0
+        self.e_iyy_c_cr = 0
+        self.e_ixy_c_cr = 0
+        self.e_iuu_cr = 0
+        self.e_i11_cr = 0
+        self.e_i22_cr = 0
+        self.phi_cr = 0
 
     def calculate_transformed_properties(
         self,
@@ -360,6 +381,12 @@ class CrackedResults:
         table.add_column("Value", justify="right", style="green")
 
         table.add_row("theta", "{:>{fmt}}".format(self.theta, fmt=fmt))
+        
+        if self.n:
+            table.add_row("n", "{:>{fmt}}".format(self.n, fmt=fmt))
+        
+        if self.m:
+            table.add_row("m", "{:>{fmt}}".format(self.m, fmt=fmt))
 
         if self.elastic_modulus_ref:
             table.add_row(

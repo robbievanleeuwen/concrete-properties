@@ -245,7 +245,7 @@ def calculate_max_bending_depth(
     :param theta: Angle (in radians) the bending axis makes with the horizontal
         axis (:math:`-\pi \leq \theta \leq \pi`)
 
-    :return: Maximum bending depth
+    :return: Maximum bending depth, returns zero if distance is negative
     """
 
     max_bending_depth = 0
