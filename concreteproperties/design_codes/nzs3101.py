@@ -87,8 +87,11 @@ class NZS3101(DesignCode):
         :raises ValueError: If section type for the analysis of the concrete section is
             not valid
         """
-        # assign concrete section
+        # assign concrete sections relevant to each analysis type
         self.concrete_section = concrete_section
+        self.os_concrete_section = self.create_os_section()
+        self.prob_concrete_section = self.create_prob_section()
+        self.prob_os_concrete_section = self.create_prob_section(os_design=True)
 
         # assign section type
         self.section_type = section_type
@@ -1319,9 +1322,11 @@ class NZS3101(DesignCode):
         if analysis_type.lower() in ["nom_chk", "cpe_chk"]:
             analysis_section = self.concrete_section
         elif analysis_type.lower() in ["os_chk"]:
-            analysis_section = self.create_os_section()
-        else:
-            analysis_section = self.create_prob_section(os_design)
+            analysis_section = self.os_concrete_section
+        elif analysis_type.lower() in ["prob_chk"]:
+            analysis_section = self.prob_concrete_section
+        elif analysis_type.lower() in ["prob_os_chk"]:
+            analysis_section = self.prob_os_concrete_section
 
         # calculate ultimate bending capacity
         ult_res = analysis_section.ultimate_bending_capacity(theta=theta, n=n / phi)
@@ -1381,9 +1386,11 @@ class NZS3101(DesignCode):
         if analysis_type.lower() in ["nom_chk", "cpe_chk"]:
             analysis_section = self.concrete_section
         elif analysis_type.lower() in ["os_chk"]:
-            analysis_section = self.create_os_section()
-        else:
-            analysis_section = self.create_prob_section(os_design)
+            analysis_section = self.os_concrete_section
+        elif analysis_type.lower() in ["prob_chk"]:
+            analysis_section = self.prob_concrete_section
+        elif analysis_type.lower() in ["prob_os_chk"]:
+            analysis_section = self.prob_os_concrete_section
 
         # determine NZS3101:2006 maximum compression capacity
         max_comp = phi * self.max_comp_strength(
