@@ -116,6 +116,29 @@ class NZS3101(DesignCode):
                 f"{self.analysis_code} code analysis"
             )
 
+    def assign_analysis_section(self, analysis_type: str = "nom_chk"):
+        """Assigns the appropriate concrete section to be analysed depending on the
+        analysis type requested.
+
+        :param analysis_type: The type of cross section analysis to undertake on the
+            defined concrete section, by default a normal nominal strength design check
+            is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor` for
+            further information on analysis types.
+        :return: Returns the appropriate concrete section object for the analysis
+            depending on the analysis type
+        """
+        # determine the section to analyse
+        if analysis_type.lower() in ["nom_chk", "cpe_chk"]:
+            analysis_section = self.concrete_section
+        elif analysis_type.lower() in ["os_chk"]:
+            analysis_section = self.os_concrete_section
+        elif analysis_type.lower() in ["prob_chk"]:
+            analysis_section = self.prob_concrete_section
+        elif analysis_type.lower() in ["prob_os_chk"]:
+            analysis_section = self.prob_os_concrete_section
+
+        return analysis_section
+
     def e_conc(self, compressive_strength: float, density: float = 2300) -> float:
         """Calculates Youngs Modulus (:math:`E_c`) for concrete in accordance with
         NZS3101:2006 CL 5.2.3(b).
@@ -455,6 +478,52 @@ class NZS3101(DesignCode):
         max_ten = self.steel_capacity(os_design, prob_design)
 
         return max_ten
+
+    def check_axial_limits(
+        self,
+        n: float,
+        phi: float,
+        cpe_design: bool = False,
+        os_design: bool = False,
+        prob_design: bool = False,
+        n_scale: float = 1e-3,
+    ):
+        """Checks that the specified axial load is within the maximum tensile and
+        compressive capacity of the concrete cross section.
+
+        :param n: Net axial force
+        :param phi: Strength reduction factor :math:`\\phi`
+        :param cpe_design: True if the capacity protected element capacity of a concrete
+            section is required (i.e. design capacity being checked against O/S
+            actions)
+        :param os_design: True if the overstrength capacity of a concrete section is
+            required, then the material properties for concrete and lumped reinforcement
+            are scaled to reflect the likely maximum material strength properties
+        :param prob_design: True if the probable capacity of a concrete
+            section is required, then the material properties for concrete and lumped
+            reinforcement are scaled to reflect the probable material strength
+            properties
+        :param n_scale: Scaling factor to apply to axial load
+        :raises ValueError: If the supplied axial load is less than or greater than the
+            the tensile or compressive strength of a concrete section
+        """
+        # determine NZS3101:2006 maximum tension and compression capacity
+        max_ten = -self.max_ten_strength(os_design, prob_design)
+        max_comp = self.max_comp_strength(cpe_design, os_design, prob_design)
+
+        # compare to axial load
+        if n < phi * max_ten:
+            raise ValueError(
+                f"The specified axial load of {n*n_scale:.2f} kN, is less than the "
+                f"tension capacity of the concrete section, phiN_t = "
+                f"{phi*max_ten*n_scale:.2f} kN"
+            )
+        elif n > phi * max_comp:
+            raise ValueError(
+                f"The specified axial load of {n*n_scale:.2f} kN, is greater than "
+                f"the compression capacity of the concrete section, phiN_c = "
+                f"{phi*max_comp*n_scale:.2f} kN"
+            )
 
     def check_f_y_limit(self):
         """Checks that the specified steel reinforcement strengths for all defined
@@ -1316,17 +1385,16 @@ class NZS3101(DesignCode):
         self.check_f_y_limit()
 
         # determine strength reduction factor based on analysis type specified
-        phi, _, os_design, _ = self.capacity_reduction_factor(analysis_type)
+        phi, cpe_design, os_design, prob_design = self.capacity_reduction_factor(
+            analysis_type
+        )
 
         # determine the section to analyse
-        if analysis_type.lower() in ["nom_chk", "cpe_chk"]:
-            analysis_section = self.concrete_section
-        elif analysis_type.lower() in ["os_chk"]:
-            analysis_section = self.os_concrete_section
-        elif analysis_type.lower() in ["prob_chk"]:
-            analysis_section = self.prob_concrete_section
-        elif analysis_type.lower() in ["prob_os_chk"]:
-            analysis_section = self.prob_os_concrete_section
+        analysis_section = self.assign_analysis_section(analysis_type)
+
+        # Check if axial load is within the axial tension and compression capacity
+        # limits of the analysis section
+        self.check_axial_limits(n, phi, cpe_design, os_design, prob_design)
 
         # calculate ultimate bending capacity
         ult_res = analysis_section.ultimate_bending_capacity(theta=theta, n=n / phi)
@@ -1383,14 +1451,7 @@ class NZS3101(DesignCode):
         )
 
         # determine the section to analyse
-        if analysis_type.lower() in ["nom_chk", "cpe_chk"]:
-            analysis_section = self.concrete_section
-        elif analysis_type.lower() in ["os_chk"]:
-            analysis_section = self.os_concrete_section
-        elif analysis_type.lower() in ["prob_chk"]:
-            analysis_section = self.prob_concrete_section
-        elif analysis_type.lower() in ["prob_os_chk"]:
-            analysis_section = self.prob_os_concrete_section
+        analysis_section = self.assign_analysis_section(analysis_type)
 
         # determine NZS3101:2006 maximum compression capacity
         max_comp = phi * self.max_comp_strength(
