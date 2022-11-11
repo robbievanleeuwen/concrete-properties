@@ -533,6 +533,7 @@ class ConcreteSection:
     def moment_curvature_analysis(
         self,
         theta: float = 0,
+        n: float = 0,
         kappa_inc: float = 1e-7,
         kappa_mult: float = 2,
         kappa_inc_max: float = 5e-6,
@@ -546,6 +547,7 @@ class ConcreteSection:
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
+        :param n: Axial force
         :param kappa_inc: Initial curvature increment
         :param kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
             when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied, the
@@ -562,14 +564,6 @@ class ConcreteSection:
 
         # initialise variables
         moment_curvature = res.MomentCurvatureResults(theta=theta)
-
-        # set neutral axis depth limits
-        # depth of neutral axis at extreme tensile fibre
-        _, d_t = utils.calculate_extreme_fibre(
-            points=self.compound_geometry.points, theta=theta
-        )
-        a = 1e-6 * d_t  # sufficiently small depth of compressive zone
-        b = d_t  # neutral axis at extreme tensile fibre
 
         # function that performs moment curvature analysis
         def mcurve(kappa_inc=kappa_inc, progress=None):
@@ -597,13 +591,11 @@ class ConcreteSection:
 
                 # find neutral axis that gives convergence of the axial force
                 try:
-                    (d_n, r) = brentq(
+                    brentq(
                         f=self.service_normal_force_convergence,
-                        a=a,
-                        b=b,
-                        args=(kappa, moment_curvature),
-                        xtol=1e-3,
-                        rtol=1e-6,  # type: ignore
+                        a=-0.1,
+                        b=0.1,
+                        args=(n, kappa, moment_curvature),
                         full_output=True,
                         disp=False,
                     )
@@ -645,11 +637,9 @@ class ConcreteSection:
                 # given kappa find equilibrium
                 brentq(
                     f=self.service_normal_force_convergence,
-                    a=a,
-                    b=b,
-                    args=(kappa_fail, moment_curvature),
-                    xtol=1e-3,
-                    rtol=1e-6,  # type: ignore
+                    a=-0.1,
+                    b=0.1,
+                    args=(n, kappa_fail, moment_curvature),
                     full_output=True,
                     disp=False,
                 )
@@ -702,14 +692,16 @@ class ConcreteSection:
 
     def service_normal_force_convergence(
         self,
-        d_n: float,
+        eps0: float,
+        n_target: float,
         kappa: float,
         moment_curvature: res.MomentCurvatureResults,
     ) -> float:
         """Given a neutral axis depth ``d_n`` and curvature ``kappa``, returns the the
         net axial force.
 
-        :param d_n: Trial neutral axis
+        :param eps0: Strain at top fibre
+        :param n_target: Target axial force
         :param kappa: Curvature
         :param moment_curvature: Moment curvature results object
 
@@ -719,31 +711,20 @@ class ConcreteSection:
         # reset failure
         moment_curvature._failure = False
 
-        # calculate extreme fibre in global coordinates
-        extreme_fibre, d_t = utils.calculate_extreme_fibre(
+        # get global coordinates of extreme compressive fibre
+        ecf, _ = utils.calculate_extreme_fibre(
             points=self.compound_geometry.points, theta=moment_curvature.theta
-        )
-
-        # validate d_n input
-        if d_n <= 0:
-            raise ValueError("d_n must be positive.")
-        elif d_n > d_t:
-            raise ValueError("d_n must lie within the section, i.e. d_n <= d_t")
-
-        # find point on neutral axis by shifting by d_n
-        point_na = utils.point_on_neutral_axis(
-            extreme_fibre=extreme_fibre, d_n=d_n, theta=moment_curvature.theta
         )
 
         # create splits in meshed geometries at points in stress-strain profiles
         meshed_split_geoms: List[Union[CPGeom, CPGeomConcrete]] = []
 
         for meshed_geom in self.meshed_geometries:
-            split_geoms = utils.split_geom_at_strains(
+            split_geoms = utils.split_geom_at_strains_service(
                 geom=meshed_geom,
                 theta=moment_curvature.theta,
-                point_na=point_na,
-                ultimate=False,
+                ecf=ecf,
+                eps0=eps0,
                 kappa=kappa,
             )
 
@@ -760,7 +741,8 @@ class ConcreteSection:
             sec = AnalysisSection(geometry=meshed_geom)
 
             n_sec, m_x_sec, m_y_sec, min_strain, max_strain = sec.service_analysis(
-                point_na=point_na,
+                ecf=ecf,
+                eps0=eps0,
                 theta=moment_curvature.theta,
                 kappa=kappa,
                 centroid=(self.gross_properties.cx, self.gross_properties.cy),
@@ -804,7 +786,8 @@ class ConcreteSection:
             # get strain at centroid of lump
             strain = utils.get_service_strain(
                 point=(centroid[0], centroid[1]),
-                point_na=point_na,
+                ecf=ecf,
+                eps0=eps0,
                 theta=moment_curvature.theta,
                 kappa=kappa,
             )
@@ -844,8 +827,10 @@ class ConcreteSection:
         moment_curvature._m_y_i = m_y
         moment_curvature._failure_convergence = failure_convergence
 
+        # print(f"eps0: {eps0:.3e}; n: {n:.3e}")
+
         # return normal force convergence
-        return n
+        return n - n_target
 
     def ultimate_bending_capacity(
         self,
@@ -969,11 +954,10 @@ class ConcreteSection:
             meshed_split_geoms = self.meshed_geometries
         else:
             for meshed_geom in self.meshed_geometries:
-                split_geoms = utils.split_geom_at_strains(
+                split_geoms = utils.split_geom_at_strains_ultimate(
                     geom=meshed_geom,
                     theta=ultimate_results.theta,
                     point_na=point_na,
-                    ultimate=True,
                     ultimate_strain=self.gross_properties.conc_ultimate_strain,
                     d_n=d_n,
                 )
@@ -1859,11 +1843,10 @@ class ConcreteSection:
             meshed_split_geoms = self.meshed_geometries
         else:
             for meshed_geom in self.meshed_geometries:
-                split_geoms = utils.split_geom_at_strains(
+                split_geoms = utils.split_geom_at_strains_ultimate(
                     geom=meshed_geom,
                     theta=ultimate_results.theta,
                     point_na=point_na,
-                    ultimate=True,
                     ultimate_strain=self.gross_properties.conc_ultimate_strain,
                     d_n=ultimate_results.d_n,
                 )

@@ -172,15 +172,16 @@ class AnalysisSection:
 
     def service_analysis(
         self,
-        point_na: Tuple[float, float],
+        ecf: Tuple[float, float],
+        eps0: float,
         theta: float,
         kappa: float,
         centroid: Tuple[float, float],
     ) -> Tuple[float, float, float, float, float]:
         r"""Performs a service stress analysis on the section.
 
-        :param point_na: Point on the neutral axis
-        :param d_n: Depth of the neutral axis from the extreme compression fibre
+        :param ecf: Global coordinate of the extreme compressive fibre
+        :param eps0: Strain at top fibre
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param kappa: Curvature
@@ -204,7 +205,8 @@ class AnalysisSection:
                 el_min_strain,
                 el_max_strain,
             ) = el.calculate_service_actions(
-                point_na=point_na,
+                ecf=ecf,
+                eps0=eps0,
                 theta=theta,
                 kappa=kappa,
                 centroid=centroid,
@@ -607,14 +609,16 @@ class Tri3:
 
     def calculate_service_actions(
         self,
-        point_na: Tuple[float, float],
+        ecf: Tuple[float, float],
+        eps0: float,
         theta: float,
         kappa: float,
         centroid: Tuple[float, float],
     ) -> Tuple[float, float, float, float, float]:
         r"""Calculates service actions for the current finite element.
 
-        :param point_na: Point on the neutral axis
+        :param ecf: Global coordinate of the extreme compressive fibre
+        :param eps0: Strain at top fibre
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param kappa: Curvature
@@ -645,7 +649,8 @@ class Tri3:
             # get strain at gauss point
             strain = utils.get_service_strain(
                 point=(x, y),
-                point_na=point_na,
+                ecf=ecf,
+                eps0=eps0,
                 theta=theta,
                 kappa=kappa,
             )
