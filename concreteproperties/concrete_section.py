@@ -435,7 +435,7 @@ class ConcreteSection:
     ) -> None:
         """Given a list of cracked geometries (stored in ``cracked_results``),
         determines the cracked section properties and stores in ``cracked_results``.
-        
+
         :param cracked_results: Cracked results object with stored cracked geometries
         """
 
@@ -503,7 +503,10 @@ class ConcreteSection:
         cracked_results.e_iuu_cr = (
             cracked_results.e_iyy_c_cr * (np.sin(cracked_results.theta)) ** 2
             + cracked_results.e_ixx_c_cr * (np.cos(cracked_results.theta)) ** 2
-            - 2 * cracked_results.e_ixy_c_cr * np.sin(cracked_results.theta) * np.cos(cracked_results.theta)
+            - 2
+            * cracked_results.e_ixy_c_cr
+            * np.sin(cracked_results.theta)
+            * np.cos(cracked_results.theta)
         )
 
         # principal 2nd moments of area about the centroidal xy axis
@@ -563,7 +566,7 @@ class ConcreteSection:
         """
 
         # initialise variables
-        moment_curvature = res.MomentCurvatureResults(theta=theta)
+        moment_curvature = res.MomentCurvatureResults(theta=theta, n_target=n)
 
         # function that performs moment curvature analysis
         def mcurve(kappa_inc=kappa_inc, progress=None):
@@ -1675,25 +1678,17 @@ class ConcreteSection:
         theta = moment_curvature_results.theta
 
         # initialise variables
-        mk = res.MomentCurvatureResults(theta=theta)
-
-        # set neutral axis depth limits
-        # depth of neutral axis at extreme tensile fibre
-        extreme_fibre, d_t = utils.calculate_extreme_fibre(
-            points=self.compound_geometry.points, theta=theta
+        mk = res.MomentCurvatureResults(
+            theta=theta, n_target=moment_curvature_results.n_target
         )
-        a = 1e-6 * d_t  # sufficiently small depth of compressive zone
-        b = d_t  # neutral axis at extreme tensile fibre
 
         # find neutral axis that gives convergence of the axial force
         try:
-            (d_n, r) = brentq(
+            eps0, r = brentq(
                 f=self.service_normal_force_convergence,
-                a=a,
-                b=b,
-                args=(kappa, mk),
-                xtol=1e-3,
-                rtol=1e-6,  # type: ignore
+                a=-0.1,
+                b=0.1,
+                args=(moment_curvature_results.n_target, kappa, mk),
                 full_output=True,
                 disp=False,
             )
@@ -1714,20 +1709,20 @@ class ConcreteSection:
         lumped_reinf_strains = []
         lumped_reinf_forces = []
 
-        # find point on neutral axis by shifting by d_n
-        point_na = utils.point_on_neutral_axis(
-            extreme_fibre=extreme_fibre, d_n=d_n, theta=theta
+        # get global coordinates of extreme compressive fibre
+        ecf, _ = utils.calculate_extreme_fibre(
+            points=self.compound_geometry.points, theta=theta
         )
 
         # create splits in meshed geometries at points in stress-strain profiles
         meshed_split_geoms: List[Union[CPGeom, CPGeomConcrete]] = []
 
         for meshed_geom in self.meshed_geometries:
-            split_geoms = utils.split_geom_at_strains(
+            split_geoms = utils.split_geom_at_strains_service(
                 geom=meshed_geom,
                 theta=theta,
-                point_na=point_na,
-                ultimate=False,
+                ecf=ecf,
+                eps0=eps0,
                 kappa=kappa,
             )
 
@@ -1739,9 +1734,9 @@ class ConcreteSection:
 
             # calculate stress, force and point of action
             sig, n_sec, d_x, d_y = analysis_section.get_service_stress(
-                d_n=d_n,
                 kappa=kappa,
-                point_na=point_na,
+                ecf=ecf,
+                eps0=eps0,
                 theta=theta,
                 centroid=(self.gross_properties.cx, self.gross_properties.cy),
             )
@@ -1764,7 +1759,8 @@ class ConcreteSection:
             # get strain at centroid of lump
             strain = utils.get_service_strain(
                 point=(centroid[0], centroid[1]),
-                point_na=point_na,
+                ecf=ecf,
+                eps0=eps0,
                 theta=theta,
                 kappa=kappa,
             )

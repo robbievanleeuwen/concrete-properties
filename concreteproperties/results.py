@@ -381,10 +381,10 @@ class CrackedResults:
         table.add_column("Value", justify="right", style="green")
 
         table.add_row("theta", "{:>{fmt}}".format(self.theta, fmt=fmt))
-        
+
         if self.n:
             table.add_row("n", "{:>{fmt}}".format(self.n, fmt=fmt))
-        
+
         if self.m:
             table.add_row("m", "{:>{fmt}}".format(self.m, fmt=fmt))
 
@@ -441,6 +441,7 @@ class MomentCurvatureResults:
     r"""Class for storing moment curvature results.
 
     :param theta: Angle (in radians) the neutral axis makes with the horizontal
+    :param n_target: Target axial force
         axis (:math:`-\pi \leq \theta \leq \pi`)
     :param kappa: List of curvatures
     :param n: List of axial forces
@@ -456,6 +457,7 @@ class MomentCurvatureResults:
 
     # results
     theta: float
+    n_target: float
     kappa: List[float] = field(default_factory=list)
     n: List[float] = field(default_factory=list)
     m_x: List[float] = field(default_factory=list)

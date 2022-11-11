@@ -104,6 +104,7 @@ def point_on_neutral_axis(
     # convert point back to global coordinates
     return local_to_global(theta=theta, u=u, v=v)
 
+
 def split_geom_at_strains_service(
     geom: Union[CPGeom, CPGeomConcrete],
     theta: float,
@@ -148,7 +149,7 @@ def split_geom_at_strains_service(
         dx, dy = local_to_global(theta=theta, u=0, v=d)
 
         # calculate location of point
-        pt = ecf[0] + dx, ecf[1] + dy
+        pt = ecf[0] - dx, ecf[1] - dy
 
         # make list of geometries that will need to continue to be split after the
         # split operation, i.e. those above the split
@@ -161,7 +162,7 @@ def split_geom_at_strains_service(
                 theta=theta,
             )
 
-            if kappa > 0:
+            if kappa < 0:
                 # save top geoms
                 split_geoms.extend(top_geoms)
 
@@ -181,6 +182,7 @@ def split_geom_at_strains_service(
     split_geoms.extend(continuing_geoms)
 
     return split_geoms
+
 
 def split_geom_at_strains_ultimate(
     geom: Union[CPGeom, CPGeomConcrete],

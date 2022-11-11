@@ -98,14 +98,14 @@ class PrestressedSection(ConcreteSection):
 
         # initialise cracked results object
         cracked_results = res.CrackedResults(
-            theta=0, 
-            n=self.gross_properties.n_prestress+n_ext,
+            theta=0,
+            n=self.gross_properties.n_prestress + n_ext,
             m=m_ext,
         )
 
         # calculate cracking moment
         cracked_results.m_cr = self.calculate_cracking_moment(
-            n=self.gross_properties.n_prestress+n_ext, 
+            n=self.gross_properties.n_prestress + n_ext,
             m_int=self.gross_properties.m_prestress,
         )
 
@@ -188,8 +188,8 @@ class PrestressedSection(ConcreteSection):
         return m_c
 
     def cracked_neutral_axis_convergence(
-        self, 
-        d_nc: float, 
+        self,
+        d_nc: float,
         cracked_results: res.CrackedResults,
     ) -> float:
         """Given a trial cracked neutral axis depth ``d_nc``, determines the minimum
@@ -437,7 +437,7 @@ class PrestressedSection(ConcreteSection):
         e_iyy = cracked_results.e_iyy_c_cr
         e_ixy = cracked_results.e_ixy_c_cr
 
-        # determine net moment 
+        # determine net moment
         # (recalculate moment due to prestressing force about cracked centroid)
         m_net = 0
 
