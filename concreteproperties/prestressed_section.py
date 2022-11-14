@@ -4,7 +4,7 @@ from typing import List, Union
 
 import numpy as np
 import sectionproperties.pre.geometry as sp_geom
-from scipy.optimize import brentq
+from scipy.optimize import brentq, root_scalar
 
 import concreteproperties.results as res
 import concreteproperties.utils as utils
@@ -26,19 +26,14 @@ class PrestressedSection(ConcreteSection):
     def __init__(
         self,
         geometry: sp_geom.CompoundGeometry,
-        calculate_prestress_actions: bool = True,
     ) -> None:
         """Inits the ConcreteSection class.
 
         :param geometry: *sectionproperties* CompoundGeometry object describing the
             prestressed concrete section
-        :param calculate_prestress_actions: If set to True, adds the prestressed axial
-            load and induced moment to all actions
         """
 
         super().__init__(geometry=geometry)
-
-        self.calculate_prestressed_actions = calculate_prestress_actions
 
         # check symmetry about y-axis
         if not np.isclose(
@@ -86,9 +81,6 @@ class PrestressedSection(ConcreteSection):
     ) -> res.CrackedResults:
         """Calculates cracked section properties given an axial loading and bending
         moment.
-
-        For a cracked analysis, prestressing actions are included irrespective of the
-        value of ``self.calculate_prestressed_actions``.
 
         :param n_ext: External axial force
         :param m_ext: External bending moment
@@ -243,8 +235,74 @@ class PrestressedSection(ConcreteSection):
 
         return min_stress
 
-    def moment_curvature_analysis(self):
-        raise NotImplementedError
+    def moment_curvature_analysis(
+        self,
+        n: float = 0,
+        kappa_inc: float = 1e-7,
+        kappa_mult: float = 2,
+        kappa_inc_max: float = 5e-6,
+        delta_m_min: float = 0.15,
+        delta_m_max: float = 0.3,
+        progress_bar: bool = True,
+    ) -> res.MomentCurvatureResults:
+        """Performs a moment curvature analysis given an applied axial force ``n``.
+
+        Analysis continues until a material reaches its ultimate strain.
+
+        :param n: Axial force
+        :param kappa_inc: Initial curvature increment
+        :param kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
+            when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied, the
+            inverse of this multipler is applied to ``kappa_inc``.
+        :param kappa_inc_max: Maximum curvature increment
+        :param delta_m_min: Relative change in moment at which to reduce the curvature
+            increment
+        :param delta_m_max: Relative change in moment at which to increase the curvature
+            increment
+        :param progress_bar: If set to True, displays the progress bar
+
+        :return: Moment curvature results object
+        """
+
+        # determine initial curvature that gives zero moment
+        def find_intial_curvature(kappa0):
+            # initialise moment curvature result
+            mk_res = res.MomentCurvatureResults(theta=0, n_target=n)
+
+            # find neutral axis that gives convergence of axial force
+            eps0 = brentq(
+                f=self.service_normal_force_convergence,
+                a=-0.1,
+                b=0.1,
+                args=(kappa0, mk_res),
+            )
+
+            # print(f"eps0={eps0:.3e}; kappa0={kappa0:.3e}; n_i={mk_res._n_i:.3e}; m_i={mk_res._m_x_i:.3e}")
+
+            # calculate moment convergence
+            return mk_res._m_x_i
+            
+        # find initial curvature
+        kappa0 = root_scalar(
+            f=find_intial_curvature,
+            x0=0,
+            x1=-1e-6
+        )
+
+        # print(kappa0)
+        
+
+        return super().moment_curvature_analysis(
+            theta=0,
+            n=n,
+            kappa0=kappa0.root,
+            kappa_inc=kappa_inc,
+            kappa_mult=kappa_mult,
+            kappa_inc_max=kappa_inc_max,
+            delta_m_min=delta_m_min,
+            delta_m_max=delta_m_max,
+            progress_bar=progress_bar,
+        )
 
     def ultimate_bending_capacity(self):
         raise NotImplementedError
@@ -265,11 +323,6 @@ class PrestressedSection(ConcreteSection):
 
         Uses gross area section properties to determine concrete, reinforcement and
         strand stresses given an axial force ``n`` and bending moment ``m``.
-
-        If ``self.calculate_prestressed_actions=True``, prestressed
-        actions are included in the analysis. If
-        ``self.calculate_prestressed_actions=False``, prestressed actions must be added
-        to ``n`` and ``m``.
 
         :param n: Axial force
         :param m: Bending moment
@@ -299,9 +352,8 @@ class PrestressedSection(ConcreteSection):
         e_ixy = self.gross_properties.e_ixy_c
 
         # add prestressed actions
-        if self.calculate_prestressed_actions:
-            n += self.gross_properties.n_prestress
-            m += self.gross_properties.m_prestress
+        n += self.gross_properties.n_prestress
+        m += self.gross_properties.m_prestress
 
         # calculate neutral axis rotation
         theta = 0

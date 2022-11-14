@@ -537,6 +537,7 @@ class ConcreteSection:
         self,
         theta: float = 0,
         n: float = 0,
+        kappa0: float = 0,
         kappa_inc: float = 1e-7,
         kappa_mult: float = 2,
         kappa_inc_max: float = 5e-6,
@@ -544,13 +545,15 @@ class ConcreteSection:
         delta_m_max: float = 0.3,
         progress_bar: bool = True,
     ) -> res.MomentCurvatureResults:
-        r"""Performs a moment curvature analysis given a bending angle ``theta``.
+        r"""Performs a moment curvature analysis given a bending angle ``theta`` and
+        applied axial force ``n``.
 
         Analysis continues until a material reaches its ultimate strain.
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
         :param n: Axial force
+        :param kappa0: Initial curvature
         :param kappa_inc: Initial curvature increment
         :param kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
             when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied, the
@@ -571,7 +574,7 @@ class ConcreteSection:
         # function that performs moment curvature analysis
         def mcurve(kappa_inc=kappa_inc, progress=None):
             iter = 0
-            kappa = 0
+            kappa = kappa0
 
             while not moment_curvature._failure:
                 # calculate adaptive step size for curvature
@@ -590,7 +593,7 @@ class ConcreteSection:
                         kappa_inc = kappa_inc_max
 
                 # update curvature
-                kappa = 0 if iter == 0 else moment_curvature.kappa[-1] + kappa_inc
+                kappa = kappa0 if iter == 0 else moment_curvature.kappa[-1] + kappa_inc
 
                 # find neutral axis that gives convergence of the axial force
                 try:
@@ -598,7 +601,7 @@ class ConcreteSection:
                         f=self.service_normal_force_convergence,
                         a=-0.1,
                         b=0.1,
-                        args=(n, kappa, moment_curvature),
+                        args=(kappa, moment_curvature),
                         full_output=True,
                         disp=False,
                     )
@@ -642,7 +645,7 @@ class ConcreteSection:
                     f=self.service_normal_force_convergence,
                     a=-0.1,
                     b=0.1,
-                    args=(n, kappa_fail, moment_curvature),
+                    args=(kappa_fail, moment_curvature),
                     full_output=True,
                     disp=False,
                 )
@@ -696,7 +699,6 @@ class ConcreteSection:
     def service_normal_force_convergence(
         self,
         eps0: float,
-        n_target: float,
         kappa: float,
         moment_curvature: res.MomentCurvatureResults,
     ) -> float:
@@ -704,7 +706,6 @@ class ConcreteSection:
         net axial force.
 
         :param eps0: Strain at top fibre
-        :param n_target: Target axial force
         :param kappa: Curvature
         :param moment_curvature: Moment curvature results object
 
@@ -781,7 +782,7 @@ class ConcreteSection:
                 )
 
         # calculate lumped geometry actions
-        for lumped_geom in self.reinf_geometries_lumped:
+        for lumped_geom in self.reinf_geometries_lumped + self.strand_geometries:
             # calculate area and centroid
             area = lumped_geom.calculate_area()
             centroid = lumped_geom.calculate_centroid()
@@ -818,6 +819,11 @@ class ConcreteSection:
                 strain=strain
             )
             force = stress * area
+
+            # add initial prestress
+            if isinstance(lumped_geom.material, SteelStrand):
+                force += -lumped_geom.material.prestress_force
+            
             n += force
 
             # calculate moment
@@ -833,7 +839,7 @@ class ConcreteSection:
         # print(f"eps0: {eps0:.3e}; n: {n:.3e}")
 
         # return normal force convergence
-        return n - n_target
+        return n - moment_curvature.n_target
 
     def ultimate_bending_capacity(
         self,
@@ -1688,7 +1694,7 @@ class ConcreteSection:
                 f=self.service_normal_force_convergence,
                 a=-0.1,
                 b=0.1,
-                args=(moment_curvature_results.n_target, kappa, mk),
+                args=(kappa, mk),
                 full_output=True,
                 disp=False,
             )

@@ -463,7 +463,7 @@ class MomentCurvatureResults:
     m_x: List[float] = field(default_factory=list)
     m_y: List[float] = field(default_factory=list)
     m_xy: List[float] = field(default_factory=list)
-    failure_geometry: CPGeom = field(init=False)
+    failure_geometry: CPGeom = field(init=False, repr=False)
     convergence: List[float] = field(default_factory=list)
 
     # for analysis
