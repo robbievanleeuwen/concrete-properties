@@ -823,7 +823,7 @@ class ConcreteSection:
             # add initial prestress
             if isinstance(lumped_geom.material, SteelStrand):
                 force += -lumped_geom.material.prestress_force
-            
+
             n += force
 
             # calculate moment
@@ -835,8 +835,6 @@ class ConcreteSection:
         moment_curvature._m_x_i = m_x
         moment_curvature._m_y_i = m_y
         moment_curvature._failure_convergence = failure_convergence
-
-        # print(f"eps0: {eps0:.3e}; n: {n:.3e}")
 
         # return normal force convergence
         return n - moment_curvature.n_target

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Union
+from typing import List, Optional, Union
 
 import numpy as np
 import sectionproperties.pre.geometry as sp_geom
@@ -270,27 +270,18 @@ class PrestressedSection(ConcreteSection):
             mk_res = res.MomentCurvatureResults(theta=0, n_target=n)
 
             # find neutral axis that gives convergence of axial force
-            eps0 = brentq(
+            brentq(
                 f=self.service_normal_force_convergence,
                 a=-0.1,
                 b=0.1,
                 args=(kappa0, mk_res),
             )
 
-            # print(f"eps0={eps0:.3e}; kappa0={kappa0:.3e}; n_i={mk_res._n_i:.3e}; m_i={mk_res._m_x_i:.3e}")
-
             # calculate moment convergence
             return mk_res._m_x_i
-            
-        # find initial curvature
-        kappa0 = root_scalar(
-            f=find_intial_curvature,
-            x0=0,
-            x1=-1e-6
-        )
 
-        # print(kappa0)
-        
+        # find initial curvature
+        kappa0 = root_scalar(f=find_intial_curvature, x0=0, x1=-1e-6)
 
         return super().moment_curvature_analysis(
             theta=0,
@@ -581,8 +572,169 @@ class PrestressedSection(ConcreteSection):
             strand_forces=strand_forces,
         )
 
-    def calculate_service_stress(self):
-        raise NotImplementedError
+    def calculate_service_stress(
+        self,
+        moment_curvature_results: res.MomentCurvatureResults,
+        m: float,
+        kappa: Optional[float] = None,
+    ) -> res.StressResult:
+        """Calculates service stresses within the prestressed concrete section.
+
+        Uses linear interpolation of the moment-curvature results to determine the
+        curvature of the section given the user supplied moment, and thus the stresses
+        within the section. Otherwise, a curvature can be provided which overrides the
+        supplied moment.
+
+        :param moment_curvature_results: Moment-curvature results objects
+        :param m: Bending moment
+        :param kappa: Curvature, if provided overrides the supplied bending moment and
+            calculates the stress at the given curvature
+
+        :return: Stress results object
+        """
+
+        if kappa is None:
+            # get curvature
+            kappa = moment_curvature_results.get_curvature(moment=m)
+
+        # initialise variables
+        mk = res.MomentCurvatureResults(
+            theta=0, n_target=moment_curvature_results.n_target
+        )
+
+        # find neutral axis that gives convergence of the axial force
+        try:
+            eps0, r = brentq(
+                f=self.service_normal_force_convergence,
+                a=-0.1,
+                b=0.1,
+                args=(kappa, mk),
+                full_output=True,
+                disp=False,
+            )
+        except ValueError:
+            msg = "Analysis failed. Confirm that the supplied moment/curvature is "
+            msg += "within the range of the moment-curvature analysis."
+            raise utils.AnalysisError(msg)
+
+        # initialise stress results
+        conc_sections = []
+        conc_sigs = []
+        conc_forces = []
+        lumped_reinf_geoms = []
+        lumped_reinf_sigs = []
+        lumped_reinf_strains = []
+        lumped_reinf_forces = []
+        strand_geoms = []
+        strand_sigs = []
+        strand_strains = []
+        strand_forces = []
+
+        # get global coordinates of extreme compressive fibre
+        ecf, _ = utils.calculate_extreme_fibre(
+            points=self.compound_geometry.points, theta=0
+        )
+
+        # create splits in meshed geometries at points in stress-strain profiles
+        meshed_split_geoms: List[Union[CPGeom, CPGeomConcrete]] = []
+
+        for meshed_geom in self.meshed_geometries:
+            split_geoms = utils.split_geom_at_strains_service(
+                geom=meshed_geom,
+                theta=0,
+                ecf=ecf,
+                eps0=eps0,
+                kappa=kappa,
+            )
+
+            meshed_split_geoms.extend(split_geoms)
+
+        # loop through all meshed geometries and calculate stress
+        for meshed_geom in meshed_split_geoms:
+            analysis_section = AnalysisSection(geometry=meshed_geom)
+
+            # calculate stress, force and point of action
+            sig, n_sec, d_x, d_y = analysis_section.get_service_stress(
+                kappa=kappa,
+                ecf=ecf,
+                eps0=eps0,
+                theta=0,
+                centroid=(
+                    self.gross_properties.cx,
+                    self.gross_properties.cy,
+                ),  # TODO: moment centroid
+            )
+
+            # save results
+            conc_sigs.append(sig)
+            conc_forces.append((n_sec, d_x, d_y))
+            conc_sections.append(analysis_section)
+
+        # loop through all lumped and strand geometries and calculate stress
+        for lumped_geom in self.reinf_geometries_lumped + self.strand_geometries:
+            # get position of geometry
+            centroid = lumped_geom.calculate_centroid()
+
+            # get strain at centroid of lump
+            strain = utils.get_service_strain(
+                point=(centroid[0], centroid[1]),
+                ecf=ecf,
+                eps0=eps0,
+                theta=0,
+                kappa=kappa,
+            )
+
+            # calculate stress, force and point of action
+            sig = lumped_geom.material.stress_strain_profile.get_stress(strain=strain)
+
+            # add initial prestress
+            if isinstance(lumped_geom.material, SteelStrand):
+                sig += (
+                    -lumped_geom.material.prestress_force / lumped_geom.calculate_area()
+                )
+
+            n_lumped = sig * lumped_geom.calculate_area()
+
+            if isinstance(lumped_geom.material, SteelStrand):
+                strand_sigs.append(sig)
+                strand_strains.append(strain)
+                strand_forces.append(
+                    (
+                        n_lumped,
+                        centroid[0] - self.gross_properties.cx,
+                        centroid[1] - self.gross_properties.cy,
+                    )
+                )
+                strand_geoms.append(lumped_geom)
+            else:
+                lumped_reinf_sigs.append(sig)
+                lumped_reinf_strains.append(strain)
+                lumped_reinf_forces.append(
+                    (
+                        n_lumped,
+                        centroid[0] - self.gross_properties.cx,
+                        centroid[1] - self.gross_properties.cy,
+                    )
+                )
+                lumped_reinf_geoms.append(lumped_geom)
+
+        return res.StressResult(
+            concrete_section=self,
+            concrete_analysis_sections=conc_sections,
+            concrete_stresses=conc_sigs,
+            concrete_forces=conc_forces,
+            meshed_reinforcement_sections=[],
+            meshed_reinforcement_stresses=[],
+            meshed_reinforcement_forces=[],
+            lumped_reinforcement_geometries=lumped_reinf_geoms,
+            lumped_reinforcement_stresses=lumped_reinf_sigs,
+            lumped_reinforcement_strains=lumped_reinf_strains,
+            lumped_reinforcement_forces=lumped_reinf_forces,
+            strand_geometries=strand_geoms,
+            strand_stresses=strand_sigs,
+            strand_strains=strand_strains,
+            strand_forces=strand_forces,
+        )
 
     def calculate_ultimate_stress(self):
         raise NotImplementedError
