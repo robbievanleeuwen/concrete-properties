@@ -368,20 +368,20 @@
   <div class="section" id="geometry">
 <h1><span class="section-number">2. </span>Geometry<a class="headerlink" href="#geometry" title="Permalink to this heading">#</a></h1>
 <p><em>concreteproperties</em> uses the pre-processor from <i><a href="https://github.com/robbievanleeuwen/section-properties" target="_blank">sectionproperties</a></i> to build reinforced
-concrete cross-sections as <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>
+concrete cross-sections as <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>
 objects. <em>concreteproperties</em> expects a
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> object to contain geometry
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> object to contain geometry
 information describing both the concrete and reinforcement components of the
 cross-section. The concrete portion of the cross-section can be constructed in many
 ways:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/section_library.html#label-primitive-library" title="(in sectionproperties v2.1.3)"><span>Primitive Sections Library</span></a> (e.g. rectangles, circles etc.)</p></li>
-<li><p>Standards Sections Library (e.g. <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/section_library.html#label-concrete-library" title="(in sectionproperties v2.1.3)"><span>Concrete Sections Library</span></a>,
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/section_library.html#label-bridge-library" title="(in sectionproperties v2.1.3)"><span>Bridge Sections Library</span></a>)</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-from-points" title="(in sectionproperties v2.1.3)"><span>Geometry from points, facets, holes, and control points</span></a></p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-geometry-dxf" title="(in sectionproperties v2.1.3)"><span>Geometry from .dxf Files</span></a> and
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-geometry-3dm" title="(in sectionproperties v2.1.3)"><span>Geometry from Rhino</span></a></p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-geometry-set" title="(in sectionproperties v2.1.3)"><span>Combining Geometries Using Set Operations</span></a></p></li>
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/section_library.html#label-primitive-library" title="(in sectionproperties v2.1.4)"><span>Primitive Sections Library</span></a> (e.g. rectangles, circles etc.)</p></li>
+<li><p>Standards Sections Library (e.g. <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/section_library.html#label-concrete-library" title="(in sectionproperties v2.1.4)"><span>Concrete Sections Library</span></a>,
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/section_library.html#label-bridge-library" title="(in sectionproperties v2.1.4)"><span>Bridge Sections Library</span></a>)</p></li>
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-from-points" title="(in sectionproperties v2.1.4)"><span>Geometry from points, facets, holes, and control points</span></a></p></li>
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-geometry-dxf" title="(in sectionproperties v2.1.4)"><span>Geometry from .dxf Files</span></a> and
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-geometry-3dm" title="(in sectionproperties v2.1.4)"><span>Geometry from Rhino</span></a></p></li>
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-geometry-set" title="(in sectionproperties v2.1.4)"><span>Combining Geometries Using Set Operations</span></a></p></li>
 </ul>
 <p>Next, reinforcing bars can be added to the concrete geometry using the methods in the
 <a class="reference internal" href="../gen/concreteproperties.pre.html#module-concreteproperties.pre" title="concreteproperties.pre"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pre</span></code></a> module, and are also included in geometries generated by
@@ -468,7 +468,7 @@ circle:</p>
 </pre></div>
 </div>
 <p>This discretisation error can be avoided by using the
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.library.primitive_sections.circular_section_by_area" title="(in sectionproperties v2.1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">circular_section_by_area()</span></code></a>
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.library.primitive_sections.circular_section_by_area" title="(in sectionproperties v2.1.4)"><code class="xref py py-func docutils literal notranslate"><span class="pre">circular_section_by_area()</span></code></a>
 function, which adjusts the diameter based on the number of discrete points to ensure
 a circle with the correct area is generated:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
@@ -561,7 +561,7 @@ this library. The following code creates a T5 Super-T section:</p>
 <div class="section" id="arbitrary-list-of-points">
 <span id="label-geom-list-of-points"></span><h2><span class="section-number">2.4. </span>Arbitrary List of Points<a class="headerlink" href="#arbitrary-list-of-points" title="Permalink to this heading">#</a></h2>
 <p>Concrete geometry can also be created from an arbitrary list of points using the
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.from_points" title="(in sectionproperties v2.1.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_points()</span></code></a> method. The following
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.from_points" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_points()</span></code></a> method. The following
 example creates a 800 mm deep x 600 mm wide x 100 mm thick hollow box section:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span>
 
@@ -599,21 +599,21 @@ example creates a 800 mm deep x 600 mm wide x 100 mm thick hollow box section:</
 </ul>
 <p>Further geometry manipulation can be performed with the following methods:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.align_center" title="(in sectionproperties v2.1.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">align_center()</span></code></a> - aligns the centroid of
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.align_center" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">align_center()</span></code></a> - aligns the centroid of
 the geometry with the centroid of another
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a> object.</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.align_to" title="(in sectionproperties v2.1.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">align_to()</span></code></a> - aligns an edge of the
-geometry with the edge of another <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a> object.</p></li>
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.align_to" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">align_to()</span></code></a> - aligns an edge of the
+geometry with the edge of another <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>
 object or point.</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.mirror_section" title="(in sectionproperties v2.1.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mirror_section()</span></code></a> - mirrors the geometry
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.mirror_section" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mirror_section()</span></code></a> - mirrors the geometry
 about the <code class="docutils literal notranslate"><span class="pre">x</span></code> or <code class="docutils literal notranslate"><span class="pre">y</span></code> axis.</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.rotate_section" title="(in sectionproperties v2.1.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rotate_section()</span></code></a> - rotates the geometry
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.rotate_section" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rotate_section()</span></code></a> - rotates the geometry
 by a certain angle.</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.shift_section" title="(in sectionproperties v2.1.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">shift_section()</span></code></a> - translates the
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.shift_section" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">shift_section()</span></code></a> - translates the
 geometry by a certain distance in the <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> directions.</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.split_section" title="(in sectionproperties v2.1.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">split_section()</span></code></a> - splits the geometry
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.split_section" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">split_section()</span></code></a> - splits the geometry
 above and below a line.</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.offset_perimeter" title="(in sectionproperties v2.1.3)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">offset_perimeter()</span></code></a> - dilates or erodes
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.offset_perimeter" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">offset_perimeter()</span></code></a> - dilates or erodes
 the perimeter of the geometry by a discrete amount.</p></li>
 </ul>
 <p>The following code creates an L-shaped beam:</p>
@@ -718,7 +718,7 @@ to the geometry</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>geometry</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>, <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>]) – Reinforced concrete geometry to which the new bar will be added</p></li>
+<li><p><strong>geometry</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>, <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>]) – Reinforced concrete geometry to which the new bar will be added</p></li>
 <li><p><strong>area</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Bar cross-sectional area</p></li>
 <li><p><strong>material</strong> (<a class="reference internal" href="../gen/concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a>) – Material object for the bar</p></li>
 <li><p><strong>x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – x-position of the bar</p></li>
@@ -727,7 +727,7 @@ to the geometry</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> – Reinforced concrete geometry with added bar</p>
+<dd class="field-even"><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> – Reinforced concrete geometry with added bar</p>
 </dd>
 </dl>
 </dd></dl>
@@ -761,7 +761,7 @@ to the geometry</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>geometry</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>, <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>]) – Reinforced concrete geometry to which the new bar will be added</p></li>
+<li><p><strong>geometry</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>, <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>]) – Reinforced concrete geometry to which the new bar will be added</p></li>
 <li><p><strong>area</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Bar cross-sectional area</p></li>
 <li><p><strong>material</strong> (<a class="reference internal" href="../gen/concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a>) – Material object for the bar</p></li>
 <li><p><strong>n_x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of bars in the x-direction</p></li>
@@ -774,7 +774,7 @@ to the geometry</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> – Reinforced concrete geometry with added bar</p>
+<dd class="field-even"><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> – Reinforced concrete geometry with added bar</p>
 </dd>
 </dl>
 </dd></dl>
@@ -811,7 +811,7 @@ to the geometry</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>geometry</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>, <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>]) – Reinforced concrete geometry to which the news bar will be added</p></li>
+<li><p><strong>geometry</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>, <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>]) – Reinforced concrete geometry to which the news bar will be added</p></li>
 <li><p><strong>area</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Bar cross-sectional area</p></li>
 <li><p><strong>material</strong> (<a class="reference internal" href="../gen/concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a>) – Material object for the bar</p></li>
 <li><p><strong>n_bar</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of bars in the array</p></li>
@@ -823,7 +823,7 @@ horizontal axis in the circular array</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> – Reinforced concrete geometry with added bar</p>
+<dd class="field-even"><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> – Reinforced concrete geometry with added bar</p>
 </dd>
 </dl>
 </dd></dl>

@@ -475,10 +475,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -893,7 +894,7 @@ div.rendered_html tbody tr:hover {
 │<span style="color: #008080; text-decoration-color: #008080"> Neutral Axis Parameter - k_u </span>│<span style="color: #008000; text-decoration-color: #008000">  3.041040e-01 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Axial Force                  </span>│<span style="color: #008000; text-decoration-color: #008000"> -1.865555e+01 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_x       </span>│<span style="color: #008000; text-decoration-color: #008000">  9.499048e+08 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_y       </span>│<span style="color: #008000; text-decoration-color: #008000"> -7.823110e-08 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_y       </span>│<span style="color: #008000; text-decoration-color: #008000"> -7.450581e-08 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_xy      </span>│<span style="color: #008000; text-decoration-color: #008000">  9.499048e+08 </span>│
 └──────────────────────────────┴───────────────┘
 </pre></div>
@@ -910,7 +911,7 @@ div.rendered_html tbody tr:hover {
 │<span style="color: #008080; text-decoration-color: #008080"> Neutral Axis Depth - d_n     </span>│<span style="color: #008000; text-decoration-color: #008000">  1.714567e+02 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Neutral Axis Parameter - k_u </span>│<span style="color: #008000; text-decoration-color: #008000">  3.827159e-01 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Axial Force                  </span>│<span style="color: #008000; text-decoration-color: #008000"> -2.996934e+01 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_x       </span>│<span style="color: #008000; text-decoration-color: #008000">  9.685755e-08 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_x       </span>│<span style="color: #008000; text-decoration-color: #008000">  1.192093e-07 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_y       </span>│<span style="color: #008000; text-decoration-color: #008000"> -8.622400e+08 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_xy      </span>│<span style="color: #008000; text-decoration-color: #008000">  8.622400e+08 </span>│
 └──────────────────────────────┴───────────────┘
@@ -1284,7 +1285,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Next we construct the composite geometry.</p>
+<p>Next we construct the composite geometry. Note that we set <code class="docutils literal notranslate"><span class="pre">geometric_centroid_override=True</span></code> to ensure that moments are calculated about the geometric centroid rather than the gross centroid. In previous examples the geometry was symmetric so setting this made no difference to the results.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
@@ -1318,7 +1319,7 @@ div.rendered_html tbody tr:hover {
 <span class="n">geom</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">rotate_section</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">use_radians</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># create concrete section and plot</span>
-<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">geometric_centroid_override</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1338,11 +1339,34 @@ div.rendered_html tbody tr:hover {
 &lt;AxesSubplot: title={&#39;center&#39;: &#39;Reinforced Concrete Section&#39;}&gt;
 </pre></div></div>
 </div>
+<p>We can compare the gross and geometric centroids. The geometric centroid takes into account the difference elastic moduli of each material, whereas the gross centroid does not.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;cx_geom = </span><span class="si">{</span><span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">; cy_geom = </span><span class="si">{</span><span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;cx_gross = </span><span class="si">{</span><span class="n">conc_sec</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cx_gross</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">; cy_gross = </span><span class="si">{</span><span class="n">conc_sec</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">cy_gross</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+cx_geom = -62.86; cy_geom = 326.50
+cx_gross = -141.89; cy_gross = 326.50
+</pre></div></div>
+</div>
 <div class="section" id="Moment-Curvature-Response">
 <h3><span class="section-number">8.4.1. </span>Moment Curvature Response<a class="headerlink" href="#Moment-Curvature-Response" title="Permalink to this heading">#</a></h3>
 <p>Calculate the moment curvature response of the composite section. The section should show a gradual yielding response as plasticity develops over the depth of the steel beam.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1350,7 +1374,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res</span><span class="o">.</span><span class="n">plot_results</span><span class="p">()</span>
@@ -1361,10 +1385,10 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_composite_section_39_0.svg" src="../_images/notebooks_composite_section_39_0.svg" /></div>
+<img alt="../_images/notebooks_composite_section_41_0.svg" src="../_images/notebooks_composite_section_41_0.svg" /></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1374,7 +1398,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>We can examine the stresses at various point within the moment-curvature response.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">el_stress</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_service_stress</span><span class="p">(</span><span class="n">moment_curvature_results</span><span class="o">=</span><span class="n">mk_res</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mf">500e6</span><span class="p">)</span>
@@ -1388,7 +1412,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">el_stress</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
@@ -1401,22 +1425,22 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_composite_section_42_0.svg" src="../_images/notebooks_composite_section_42_0.svg" /></div>
+<img alt="../_images/notebooks_composite_section_44_0.svg" src="../_images/notebooks_composite_section_44_0.svg" /></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_composite_section_42_1.svg" src="../_images/notebooks_composite_section_42_1.svg" /></div>
+<img alt="../_images/notebooks_composite_section_44_1.svg" src="../_images/notebooks_composite_section_44_1.svg" /></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_composite_section_42_2.svg" src="../_images/notebooks_composite_section_42_2.svg" /></div>
+<img alt="../_images/notebooks_composite_section_44_2.svg" src="../_images/notebooks_composite_section_44_2.svg" /></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1429,7 +1453,7 @@ div.rendered_html tbody tr:hover {
 <h3><span class="section-number">8.4.2. </span>Ultimate Bending Capacity<a class="headerlink" href="#Ultimate-Bending-Capacity" title="Permalink to this heading">#</a></h3>
 <p>The ultimate bending capacity can be calculated and compared to the result obtained from the moment curvature analysis.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ult_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
@@ -1449,7 +1473,7 @@ div.rendered_html tbody tr:hover {
 │<span style="color: #008080; text-decoration-color: #008080"> Neutral Axis Depth - d_n     </span>│<span style="color: #008000; text-decoration-color: #008000">  9.472512e+01 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Neutral Axis Parameter - k_u </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000000e+00 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Axial Force                  </span>│<span style="color: #008000; text-decoration-color: #008000">  3.399405e+01 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_x       </span>│<span style="color: #008000; text-decoration-color: #008000"> -5.744732e-08 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_x       </span>│<span style="color: #008000; text-decoration-color: #008000"> -3.010791e-08 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_y       </span>│<span style="color: #008000; text-decoration-color: #008000"> -1.195122e+09 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_xy      </span>│<span style="color: #008000; text-decoration-color: #008000">  1.195122e+09 </span>│
 └──────────────────────────────┴───────────────┘

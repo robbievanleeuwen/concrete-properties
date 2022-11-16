@@ -372,17 +372,26 @@
 display the results obtained from these analyses.</p>
 <p>An analysis in <em>concreteproperties</em> begins by creating a
 <a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> object from a
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> object with assigned
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> object with assigned
 material properties.</p>
 <dl class="py class">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteSection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteSection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moment_centroid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometric_centroid_override</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Class for a reinforced concrete section.</p>
 <p>Inits the ConcreteSection class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>) – <em>sectionproperties</em> CompoundGeometry object describing the
-reinforced concrete section</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>) – <em>sectionproperties</em> CompoundGeometry object describing the
+reinforced concrete section</p></li>
+<li><p><strong>moment_centroid</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If specified, all moments for service and ultimate
+analyses are calculated about this point. If not specified, all moments are
+calculated about the gross cross-section centroid, i.e. no material
+properties applied.</p></li>
+<li><p><strong>geometric_centroid_override</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – If set to True, sets <code class="docutils literal notranslate"><span class="pre">moment_centroid</span></code> to
+the geometric centroid i.e. material properties applied (useful for
+composite section analysis)</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -405,7 +414,7 @@ visualised by calling the
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> – Matplotlib axes object</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> – Matplotlib axes object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -673,6 +682,12 @@ stresses given an axial force <code class="docutils literal notranslate"><span c
 </dl>
 </dd></dl>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Forces/moments are assumed to be acting at the geometric centroid, i.e. <code class="docutils literal notranslate"><span class="pre">cx</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cy</span></code> in
+<a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a></p>
+</div>
 </div>
 <div class="section" id="cracked-stress">
 <h3><span class="section-number">3.8.2. </span>Cracked Stress<a class="headerlink" href="#cracked-stress" title="Permalink to this heading">#</a></h3>
@@ -705,6 +720,12 @@ axis stored in <code class="docutils literal notranslate"><span class="pre">crac
 </dl>
 </dd></dl>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Forces/moments are assumed to be acting at the geometric centroid, i.e. <code class="docutils literal notranslate"><span class="pre">cx</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cy</span></code> in
+<a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a></p>
+</div>
 </div>
 <div class="section" id="service-stress">
 <h3><span class="section-number">3.8.3. </span>Service Stress<a class="headerlink" href="#service-stress" title="Permalink to this heading">#</a></h3>
@@ -739,6 +760,12 @@ calculates the stress at the given curvature</p></li>
 </dl>
 </dd></dl>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Forces/moments are assumed to be acting at the gross centroid, i.e. <code class="docutils literal notranslate"><span class="pre">cx_gross</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cy_gross</span></code> in
+<a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a></p>
+</div>
 </div>
 <div class="section" id="ultimate-stress">
 <h3><span class="section-number">3.8.4. </span>Ultimate Stress<a class="headerlink" href="#ultimate-stress" title="Permalink to this heading">#</a></h3>
@@ -764,6 +791,12 @@ method and these results passed to
 </dl>
 </dd></dl>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Forces/moments are assumed to be acting at the gross centroid, i.e. <code class="docutils literal notranslate"><span class="pre">cx_gross</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cy_gross</span></code> in
+<a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a></p>
+</div>
 </div>
 </div>
 </div>

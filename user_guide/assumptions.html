@@ -379,6 +379,13 @@ at it’s geometric centroid</p></li>
 <li><p>Stresses in materials are determined from strains by linear interpolation from the
 corresponding stress-strain profile (linear extrapolation is used where the strains
 are outside the range of the profile)</p></li>
+<li><p>All moments in service and ultimate analyses (moment-curvature, ultimate bending,
+moment interaction, biaxial bending, service stress, ultimate stress) are calculated
+about, or assumed to be about the gross centroid (no material properties applied),
+unless otherwise specified in the intitialisation of
+<a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a></p></li>
+<li><p>Moment inputs for elastic stress analysis (cracked and uncracked), are assumed to be
+taken to be about the geometric centroid (material properties applied)</p></li>
 <li><p>Finite element assumptions and background can be found
 <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/theory.html">here</a></p></li>
 </ul>
@@ -399,7 +406,8 @@ maximum limiting compressive strain, see note in <a class="reference internal" h
 reaching its ultimate strength</p></li>
 <li><p>The stress-strain relationship for concrete may be assumed to be rectangular,
 trapezoidal, bilinear, parabolic, or any other arbitrary shape that results in the
-prediction of strength in substantial agreement with the results of comprehensive tests</p></li>
+prediction of strength in substantial agreement with the results of comprehensive
+tests</p></li>
 </ul>
 </div>
 <div class="section" id="conventions">
