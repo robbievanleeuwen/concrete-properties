@@ -28,11 +28,20 @@ class ConcreteSection:
     def __init__(
         self,
         geometry: sp_geom.CompoundGeometry,
+        moment_centroid: Optional[Tuple[float, float]] = None,
+        geometric_centroid_override: bool = False,
     ):
         """Inits the ConcreteSection class.
 
         :param geometry: *sectionproperties* CompoundGeometry object describing the
             reinforced concrete section
+        :param moment_centroid: If specified, all moments for service and ultimate
+            analyses are calculated about this point. If not specified, all moments are
+            calculated about the gross cross-section centroid, i.e. no material
+            properties applied.
+        :param geometric_centroid_override: If set to True, sets ``moment_centroid`` to
+            the geometric centroid i.e. material properties applied (useful for
+            composite section analysis)
         """
 
         self.compound_geometry = geometry
@@ -75,6 +84,19 @@ class ConcreteSection:
         # calculate gross area properties
         self.calculate_gross_area_properties()
 
+        # set moment centroid
+        if moment_centroid:
+            self.moment_centroid = moment_centroid
+        else:
+            self.moment_centroid = (
+                self.gross_properties.cx_gross,
+                self.gross_properties.cy_gross,
+            )
+
+        # if moment centroid overriden
+        if geometric_centroid_override:
+            self.moment_centroid = self.gross_properties.cx, self.gross_properties.cy
+
     def calculate_gross_area_properties(
         self,
     ):
@@ -95,6 +117,8 @@ class ConcreteSection:
             self.gross_properties.e_qy += (
                 area * geom.material.elastic_modulus * centroid[0]
             )
+            self.gross_properties.qx_gross += area * centroid[1]
+            self.gross_properties.qy_gross += area * centroid[0]
 
         # sum concrete areas
         for conc_geom in self.concrete_geometries:
@@ -117,6 +141,12 @@ class ConcreteSection:
         )
         self.gross_properties.cy = (
             self.gross_properties.e_qx / self.gross_properties.e_a
+        )
+        self.gross_properties.cx_gross = (
+            self.gross_properties.qy_gross / self.gross_properties.total_area
+        )
+        self.gross_properties.cy_gross = (
+            self.gross_properties.qx_gross / self.gross_properties.total_area
         )
 
         # global second moments of area
@@ -742,7 +772,7 @@ class ConcreteSection:
                 point_na=point_na,
                 theta=moment_curvature.theta,
                 kappa=kappa,
-                centroid=(self.gross_properties.cx, self.gross_properties.cy),
+                centroid=self.moment_centroid,
             )
 
             n += n_sec
@@ -814,8 +844,8 @@ class ConcreteSection:
             n += force
 
             # calculate moment
-            m_x += force * (centroid[1] - self.gross_properties.cy)
-            m_y += force * (centroid[0] - self.gross_properties.cx)
+            m_x += force * (centroid[1] - self.moment_centroid[1])
+            m_y += force * (centroid[0] - self.moment_centroid[0])
 
         moment_curvature._kappa = kappa
         moment_curvature._n_i = n
@@ -973,7 +1003,7 @@ class ConcreteSection:
                 d_n=d_n,
                 theta=ultimate_results.theta,
                 ultimate_strain=self.gross_properties.conc_ultimate_strain,
-                centroid=(self.gross_properties.cx, self.gross_properties.cy),
+                centroid=self.moment_centroid,
             )
 
             n += n_sec
@@ -1011,8 +1041,8 @@ class ConcreteSection:
             )
 
             # calculate moment
-            m_x += force * (centroid[1] - self.gross_properties.cy)
-            m_y += force * (centroid[0] - self.gross_properties.cx)
+            m_x += force * (centroid[1] - self.moment_centroid[1])
+            m_y += force * (centroid[0] - self.moment_centroid[0])
 
             # calculate k_u
             d = ef_v - c_v
@@ -1732,7 +1762,7 @@ class ConcreteSection:
                 kappa=kappa,
                 point_na=point_na,
                 theta=theta,
-                centroid=(self.gross_properties.cx, self.gross_properties.cy),
+                centroid=self.moment_centroid,
             )
 
             # save results
@@ -1767,8 +1797,8 @@ class ConcreteSection:
             lumped_reinf_forces.append(
                 (
                     n_lumped,
-                    centroid[0] - self.gross_properties.cx,
-                    centroid[1] - self.gross_properties.cy,
+                    centroid[0] - self.moment_centroid[0],
+                    centroid[1] - self.moment_centroid[1],
                 )
             )
             lumped_reinf_geoms.append(lumped_geom)
@@ -1853,7 +1883,7 @@ class ConcreteSection:
                 point_na=point_na,
                 theta=ultimate_results.theta,
                 ultimate_strain=self.gross_properties.conc_ultimate_strain,
-                centroid=(self.gross_properties.cx, self.gross_properties.cy),
+                centroid=self.moment_centroid,
             )
 
             # save results
@@ -1892,8 +1922,8 @@ class ConcreteSection:
             lumped_reinf_forces.append(
                 (
                     n_lumped,
-                    centroid[0] - self.gross_properties.cx,
-                    centroid[1] - self.gross_properties.cy,
+                    centroid[0] - self.moment_centroid[0],
+                    centroid[1] - self.moment_centroid[1],
                 )
             )
             lumped_reinf_geoms.append(lumped_geom)
