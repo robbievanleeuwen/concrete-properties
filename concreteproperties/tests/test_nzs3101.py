@@ -400,7 +400,7 @@ def test_nzs3101_create_steel_material_meshed_valueerror():
 
     concrete_section = ConcreteSection(geom)
 
-    with pytest.raises(ValueError)
+    with pytest.raises(ValueError):
         design_code.assign_concrete_section(concrete_section=concrete_section)
 
 
