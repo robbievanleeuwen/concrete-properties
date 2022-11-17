@@ -182,9 +182,9 @@ def test_nzs3101_capacity_reduction_factor_valueerror(analysis_type):
 )
 def test_nzs3101_capacity_reduction_factor_exception(analysis_type):
     design_code = NZS3101()
-    create_dummy_section(design_code)
+    create_dummy_section(design_code, prob_section=True)
     with pytest.raises(Exception):
-        design_code.capacity_reduction_factor(analysis_type, prob_section=True)
+        design_code.capacity_reduction_factor(analysis_type)
 
 
 @pytest.mark.parametrize(
