@@ -27,8 +27,6 @@ def create_dummy_section(design_code, prob_section=False):
         n_bot=n,
         n_circle=16,
         cover=cvr,
-        area_top=dia**2 * np.pi / 4,
-        area_bot=dia**2 * np.pi / 4,
         conc_mat=concrete,
         steel_mat=steel,
     )
