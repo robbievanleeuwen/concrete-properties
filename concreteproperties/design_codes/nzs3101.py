@@ -174,9 +174,7 @@ class NZS3101(DesignCode):
         :raises ValueError: If density is outside of the limits within NZS3101:2006 CL
             5.2.2
         """
-        if low_limit <= density <= high_limit:
-            pass
-        else:
+        if not (low_limit <= density <= high_limit):
             raise ValueError(
                 f"The specified concrete density of {density}kg/m^3 is not within the "
                 f"bounds of {low_limit}kg/m^3 & {high_limit}kg/m^3 for the "
@@ -599,9 +597,7 @@ class NZS3101(DesignCode):
             compressive_strength = (
                 conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
             )
-            if f_c_lower <= compressive_strength <= f_c_upper:
-                pass
-            else:
+            if not (f_c_lower <= compressive_strength <= f_c_upper):
                 raise ValueError(
                     f"Concrete compressive strength for '{conc_geom.material.name}' "
                     f"material must be between {f_c_lower} MPa & {f_c_upper} MPa for a "

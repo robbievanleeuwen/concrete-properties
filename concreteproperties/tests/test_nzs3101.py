@@ -2,7 +2,11 @@ import pytest
 import numpy as np
 from concreteproperties.design_codes.nzs3101 import NZS3101
 from concreteproperties.concrete_section import ConcreteSection
+from concreteproperties.material import Concrete, Steel
+import concreteproperties.stress_strain_profile as ssp
 from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
+import sectionproperties.pre.library.primitive_sections as sp_ps
+import sectionproperties.pre.library.steel_sections as sp_ss
 
 # TODO - moment interaction tests
 # TODO - biaxial bending checks
@@ -342,6 +346,62 @@ def test_nzs3101_create_steel_material_user_defined(
         pytest.approx(steel_mat.__getattribute__("steel_grade"))
         == f"user_{yield_strength:.0f}"
     )
+
+
+def test_nzs3101_create_steel_material_meshed_valueerror():
+    # create concrete material
+    concrete = Concrete(
+        name="50 MPa Concrete",
+        density=2.4e-6,
+        stress_strain_profile=ssp.ConcreteLinearNoTension(
+            elastic_modulus=34.8e3,
+            ultimate_strain=0.003,
+            compressive_strength=0.9 * 50,
+        ),
+        ultimate_stress_strain_profile=ssp.RectangularStressBlock(
+            compressive_strength=50,
+            alpha=0.775,
+            gamma=0.845,
+            ultimate_strain=0.003,
+        ),
+        flexural_tensile_strength=4.2,
+        colour="lightgrey",
+    )
+
+    # create meshed steel material
+    steel = Steel(
+        name="Meshed Steel",
+        density=7.85e-6,
+        stress_strain_profile=ssp.SteelElasticPlastic(
+            yield_strength=300,
+            elastic_modulus=200e3,
+            fracture_strain=0.05,
+        ),
+        colour="tan",
+    )
+
+    # create concrete section
+    conc = sp_ps.rectangular_section(d=1000, b=1000, material=concrete)
+
+    # create UC section and centre to concrete section
+    uc = sp_ss.i_section(
+        d=308,
+        b=305,
+        t_f=15.4,
+        t_w=9.9,
+        r=16.5,
+        n_r=8,
+        material=steel,
+    ).align_center(align_to=conc)
+
+    # create geometry
+    geom = conc - uc + uc
+
+    design_code = NZS3101()
+    concrete_section = ConcreteSection(geom)
+
+    with pytest.raises(ValueError):
+        design_code.assign_concrete_section(concrete_section=concrete_section)
 
 
 @pytest.mark.parametrize(
