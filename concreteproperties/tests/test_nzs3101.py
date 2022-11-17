@@ -349,29 +349,30 @@ def test_nzs3101_create_steel_material_user_defined(
 
 
 def test_nzs3101_create_steel_material_meshed_valueerror():
+    design_code = NZS3101()
     # create concrete material
     concrete = Concrete(
         name="50 MPa Concrete",
-        density=2.4e-6,
+        density=2300,
         stress_strain_profile=ssp.ConcreteLinearNoTension(
-            elastic_modulus=34.8e3,
+            elastic_modulus=design_code.e_conc(50),
             ultimate_strain=0.003,
-            compressive_strength=0.9 * 50,
+            compressive_strength=50,
         ),
         ultimate_stress_strain_profile=ssp.RectangularStressBlock(
             compressive_strength=50,
-            alpha=0.775,
-            gamma=0.845,
+            alpha=design_code.alpha_1(50),
+            gamma=design_code.beta_1(50),
             ultimate_strain=0.003,
         ),
-        flexural_tensile_strength=4.2,
+        flexural_tensile_strength=0.6 * 50**2,
         colour="lightgrey",
     )
 
     # create meshed steel material
     steel = Steel(
         name="Meshed Steel",
-        density=7.85e-6,
+        density=7850,
         stress_strain_profile=ssp.SteelElasticPlastic(
             yield_strength=300,
             elastic_modulus=200e3,
@@ -397,10 +398,9 @@ def test_nzs3101_create_steel_material_meshed_valueerror():
     # create geometry
     geom = conc - uc + uc
 
-    design_code = NZS3101()
     concrete_section = ConcreteSection(geom)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError)
         design_code.assign_concrete_section(concrete_section=concrete_section)
 
 
