@@ -4,8 +4,11 @@ from concreteproperties.design_codes.nzs3101 import NZS3101
 from concreteproperties.concrete_section import ConcreteSection
 from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
 
+# TODO - moment interaction tests
+# TODO - biaxial bending checks
 
-def create_dummy_section(design_code, prob_section=False):
+
+def create_dummy_section(design_code, prob_section=False, section_type="column"):
     # dummy beam section with fixed properties to fulfil design_code.concrete_section
     # checks, not utilised for any section analysis
     concrete = design_code.create_concrete_material(compressive_strength=40)
@@ -31,9 +34,25 @@ def create_dummy_section(design_code, prob_section=False):
         steel_mat=steel,
     )
     concrete_section = ConcreteSection(geom)
-    design_code.assign_concrete_section(concrete_section=concrete_section)
+    design_code.assign_concrete_section(
+        concrete_section=concrete_section, section_type=section_type
+    )
 
     return design_code.concrete_section
+
+
+@pytest.mark.parametrize(
+    "section_type",
+    [
+        ("this_is_not_a_valid_section_type"),
+    ],
+)
+def test_nzs3101_assign_concrete_section_valueerror(section_type):
+    design_code = NZS3101()
+    conc_sec = create_dummy_section(design_code)
+
+    with pytest.raises(ValueError):
+        design_code.assign_concrete_section(conc_sec, section_type)
 
 
 @pytest.mark.parametrize(
@@ -115,18 +134,21 @@ def test_nzs3101_e_conc(compressive_strength, density, rel_tol, calc_value):
 
 
 @pytest.mark.parametrize(
-    "analysis_type, calc_value",
+    "analysis_type, section_type, calc_value",
     [
-        ("nom_chk", (0.85, False, False, False)),
-        ("cpe_chk", (1.0, True, False, False)),
-        ("os_chk", (1.0, False, True, False)),
-        ("prob_chk", (1.0, False, False, True)),
-        ("prob_os_chk", (1.0, False, True, True)),
+        ("nom_chk", "column", (0.85, False, False, False)),
+        ("nom_chk", "wall", (0.85, False, False, False)),
+        ("nom_chk", "wall_sr_s", (0.7, False, False, False)),
+        ("nom_chk", "wall_sr_m", (0.85, False, False, False)),
+        ("cpe_chk", "column", (1.0, True, False, False)),
+        ("os_chk", "column", (1.0, False, True, False)),
+        ("prob_chk", "column", (1.0, False, False, True)),
+        ("prob_os_chk", "column", (1.0, False, True, True)),
     ],
 )
-def test_nzs3101_capacity_reduction_factor(analysis_type, calc_value):
+def test_nzs3101_capacity_reduction_factor(analysis_type, section_type, calc_value):
     design_code = NZS3101()
-    create_dummy_section(design_code)
+    create_dummy_section(design_code, section_type=section_type)
     assert (
         pytest.approx(design_code.capacity_reduction_factor(analysis_type))
         == calc_value
@@ -247,6 +269,20 @@ def test_nzs3101_check_f_y_limit_valid(yield_strength):
         design_code.check_f_y_limit()
     except ValueError:
         assert False
+
+
+@pytest.mark.parametrize(
+    "n",
+    [
+        (1000000000),
+        (-1000000000),
+    ],
+)
+def test_nzs3101_check_axial_limits_valueerror(n):
+    design_code = NZS3101()
+    create_dummy_section(design_code)
+    with pytest.raises(ValueError):
+        design_code.check_axial_limits(n, 1)
 
 
 @pytest.mark.parametrize(
@@ -845,18 +881,21 @@ def test_nzs3101_create_prob_os_section(
 
 
 @pytest.mark.parametrize(
-    "analysis_type, rel_tol, calc_value",
+    "analysis_type, section_type, rel_tol, calc_value",
     [
-        ("nom_chk", 0.1, 15549884.85),
-        ("cpe_chk", 0.1, 12805787.52),
-        ("os_chk", 0.1, 21347712.25),
-        ("prob_chk", 0.1, 22262357.41),
-        ("prob_os_chk", 0.1, 22622855.17),
+        ("nom_chk", "column", 0.1, 15549884.85),
+        ("cpe_chk", "column", 0.1, 12805787.52),
+        ("os_chk", "column", 0.1, 21347712.25),
+        ("prob_chk", "column", 0.1, 22262357.41),
+        ("prob_os_chk", "column", 0.1, 22622855.17),
+        ("nom_chk", "wall", 0.1, 5940000),
+        ("nom_chk", "wall_sr_s", 0.1, 297000),
+        ("nom_chk", "wall_sr_m", 0.1, 1188000),
     ],
 )
-def test_max_comp_strength(analysis_type, rel_tol, calc_value):
+def test_nzs3101_max_comp_strength(analysis_type, section_type, rel_tol, calc_value):
     design_code = NZS3101()
-    create_dummy_section(design_code)
+    create_dummy_section(design_code, section_type=section_type)
     _, cpe_design, os_design, prob_design = design_code.capacity_reduction_factor(
         analysis_type
     )
@@ -879,7 +918,7 @@ def test_max_comp_strength(analysis_type, rel_tol, calc_value):
         ("prob_os_chk", 0.1, 2120575.04),
     ],
 )
-def test_max_ten_strength(analysis_type, rel_tol, calc_value):
+def test_nzs3101_max_ten_strength(analysis_type, rel_tol, calc_value):
     design_code = NZS3101()
     create_dummy_section(design_code)
     _, _, os_design, prob_design = design_code.capacity_reduction_factor(analysis_type)
@@ -902,7 +941,7 @@ def test_max_ten_strength(analysis_type, rel_tol, calc_value):
         (40, "500e", "NDPR", "prob_os_chk", 0, 1166.9648, 85.1573),
     ],
 )
-def test_ultimate_bending_capacity_beam_no_axial(
+def test_nzs3101_ultimate_bending_capacity_beam_no_axial(
     compressive_strength,
     steel_grade,
     pphr_class,
@@ -926,8 +965,6 @@ def test_ultimate_bending_capacity_beam_no_axial(
         n_bot=5,
         n_circle=16,
         cover=50,
-        area_top=dia_top**2 * np.pi / 4,
-        area_bot=dia_bot**2 * np.pi / 4,
         conc_mat=concrete,
         steel_mat=steel,
     )
@@ -956,7 +993,7 @@ def test_ultimate_bending_capacity_beam_no_axial(
         (3400, 40, "500e", "NDPR", "prob_os_chk", 0, 2153.6079, 271.8836),
     ],
 )
-def test_ultimate_bending_capacity_beam_with_axial(
+def test_nzs3101_ultimate_bending_capacity_beam_with_axial(
     n,
     compressive_strength,
     steel_grade,
@@ -981,8 +1018,6 @@ def test_ultimate_bending_capacity_beam_with_axial(
         n_bot=5,
         n_circle=16,
         cover=50,
-        area_top=dia_top**2 * np.pi / 4,
-        area_bot=dia_bot**2 * np.pi / 4,
         conc_mat=concrete,
         steel_mat=steel,
     )
