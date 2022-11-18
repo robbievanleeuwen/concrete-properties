@@ -173,6 +173,11 @@ method.
 ..  automethod:: concreteproperties.concrete_section.ConcreteSection.calculate_uncracked_stress
   :noindex:
 
+.. note::
+  Forces/moments are assumed to be acting at the geometric centroid, i.e. ``cx`` and
+  ``cy`` in
+  :meth:`~concreteproperties.concrete_section.ConcreteSection.get_gross_properties`
+
 
 Cracked Stress
 ^^^^^^^^^^^^^^
@@ -188,6 +193,11 @@ method and these results passed to
 
 ..  automethod:: concreteproperties.concrete_section.ConcreteSection.calculate_cracked_stress
   :noindex:
+
+.. note::
+  Forces/moments are assumed to be acting at the geometric centroid, i.e. ``cx`` and
+  ``cy`` in
+  :meth:`~concreteproperties.concrete_section.ConcreteSection.get_gross_properties`
 
 
 Service Stress
@@ -206,6 +216,11 @@ method and these results passed to
 ..  automethod:: concreteproperties.concrete_section.ConcreteSection.calculate_service_stress
   :noindex:
 
+.. note::
+  Forces/moments are assumed to be acting at the gross centroid, i.e. ``cx_gross`` and
+  ``cy_gross`` in
+  :meth:`~concreteproperties.concrete_section.ConcreteSection.get_gross_properties`
+
 
 Ultimate Stress
 ^^^^^^^^^^^^^^^
@@ -222,3 +237,8 @@ method and these results passed to
 
 ..  automethod:: concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_stress
   :noindex:
+
+.. note::
+  Forces/moments are assumed to be acting at the gross centroid, i.e. ``cx_gross`` and
+  ``cy_gross`` in
+  :meth:`~concreteproperties.concrete_section.ConcreteSection.get_gross_properties`

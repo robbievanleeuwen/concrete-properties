@@ -55,10 +55,14 @@ class GrossProperties:
     # first moments of area
     e_qx: float = 0
     e_qy: float = 0
+    qx_gross: float = 0
+    qy_gross: float = 0
 
     # centroids
     cx: float = 0
     cy: float = 0
+    cx_gross: float = 0
+    cy_gross: float = 0
 
     # second moments of area
     e_ixx_g: float = 0
@@ -116,6 +120,8 @@ class GrossProperties:
         table.add_row("E.Qy", "{:>{fmt}}".format(self.e_qy, fmt=fmt))
         table.add_row("x-Centroid", "{:>{fmt}}".format(self.cx, fmt=fmt))
         table.add_row("y-Centroid", "{:>{fmt}}".format(self.cy, fmt=fmt))
+        table.add_row("x-Centroid (Gross)", "{:>{fmt}}".format(self.cx_gross, fmt=fmt))
+        table.add_row("y-Centroid (Gross)", "{:>{fmt}}".format(self.cy_gross, fmt=fmt))
         table.add_row("E.Ixx_g", "{:>{fmt}}".format(self.e_ixx_g, fmt=fmt))
         table.add_row("E.Iyy_g", "{:>{fmt}}".format(self.e_iyy_g, fmt=fmt))
         table.add_row("E.Ixy_g", "{:>{fmt}}".format(self.e_ixy_g, fmt=fmt))
