@@ -1066,42 +1066,62 @@ class ConcreteSection:
     def moment_interaction_diagram(
         self,
         theta: float = 0,
-        control_points: List[Tuple[str, float]] = [
-            ("kappa0", 0.0),
+        limits: List[Tuple[str, float]] = [
             ("D", 1.0),
-            ("fy", 1.0),
-            ("N", 0.0),
             ("d_n", 1e-6),
         ],
-        labels: List[Union[str, None]] = [None],
-        n_points: Union[int, List[int]] = [4, 12, 12, 4],
+        control_points: List[Tuple[str, float]] = [
+            ("kappa0", 0.0),
+            ("fy", 1.0),
+            ("N", 0.0),
+        ],
+        labels: Optional[List[str]] = None,
+        n_points: int = 24,
+        n_spacing: Optional[int] = None,
         max_comp: Optional[float] = None,
-        max_comp_labels: List[Union[str, None]] = [None, None],
+        max_comp_labels: Optional[List[str]] = None,
         progress_bar: bool = True,
     ) -> res.MomentInteractionResults:
-        r"""Generates a moment interaction diagram given a neutral axis angle `theta`
-        and `n_points` calculation points between the decompression case and the pure
-        bending case.
+        r"""Generates a moment interaction diagram given a neutral axis angle ``theta``.
+
+        ``limits`` and ``control_points`` accept a list of tuples that define points on
+        the moment interaction diagram. The first item in the tuple defines the type of
+        control points, while the second item defines the location of the control point.
+        Types of control points are detailed below:
+
+        .. admonition:: Control points
+
+          - ``"D"`` - ratio of neutral axis depth to section depth
+          - ``"d_n"`` - neutral axis depth
+          - ``"fy"`` - yield ratio of the most extreme tensile bar
+          - ``"N"`` - axial force
+          - ``"kappa0"`` - zero curvature compression (N.B second item in tuple is not
+            used)
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
-        :param control_points: List of control points over which to generate the
-            interaction diagram. Each entry in ``control_points`` is a ``Tuple`` with
-            the first item the type of control point and the second item defining the
-            location of the control point. Acceptable types of control points are
-            ``"D"`` (ratio of neutral axis depth to section depth), ``"d_n"`` (neutral
-            axis depth), ``"fy"`` (yield ratio of the most extreme tensile bar), ``"N"``
-            (axial force) and ``"kappa"`` (zero curvature compression - must be at start
-            of list, second value in tuple is not used). Control points must be defined
-            in an order which results in a decreasing neutral axis depth (decreasing
-            axial force). The default control points define an interaction diagram from
-            the decompression point to the pure bending point.
-        :param labels: List of labels to apply to the ``control_points`` for plotting
-            purposes, length must be the same as the length of ``control_points``. If a
-            single value is provided, will apply this label to all control points.
-        :param n_points: Number of neutral axis depths to compute between each control
-            point. Length must be one less than the length of ``control_points``. If an
-            integer is provided this will be used between all control points.
+        :param limits: List of control points that define the start and end of the
+            interaction diagram. List length must equal two. The default limits range
+            from concrete decompression strain to zero curvature tension.
+        :param control_points: List of additional control points to add to the moment
+            interatction diagram. The default control points include the pure
+            compression point (``kappa0``), the balanced point (``fy=1``) and the pure
+            bending point (``N=0``). Control points may lie outside the limits of the
+            moment interaction diagram as long as equilibrium can be found.
+        :param labels: List of labels to apply to the ``limits`` and ``control_points``
+            for plotting purposes. The first two values in ``labels`` apply labels to
+            the ``limits``, the remaining values apply labels to the ``control_points``.
+            If a single value is provided, this value will be applied to both ``limits``
+            and all ``control_points``. The length of ``labels`` must equal ``1`` or
+            ``2 + len(control_points)``.
+        :param n_points: Number of points to compute including and between the
+            ``limits`` of the moment interaction diagram. Generates equally spaced
+            neutral axis depths between the ``limits``.
+        :param n_spacing: If provided, overrides ``n_points`` and generates the moment
+            interaction diagram using ``n_spacing`` equally spaced axial loads. Note
+            that using ``n_spacing`` negatively affects performance, as the neutral axis
+            depth must first be located for each point on the moment interaction
+            diagram.
         :param max_comp: If provided, limits the maximum compressive force in the moment
             interaction diagram to ``max_comp``
         :param max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
@@ -1109,142 +1129,141 @@ class ConcreteSection:
             interaction diagram
         :param progress_bar: If set to True, displays the progress bar
 
-        :raises ValueError: If ``control_points``, ``labels`` or ``n_points`` is invalid
-
         :return: Moment interaction results object
         """
-
-        # if an integer is provided for n_points, generate a list
-        if isinstance(n_points, int):
-            n_points = [n_points] * (len(control_points) - 1)
-
-        # if there are no labels provided, generate a list
-        if len(labels) == 1:
-            labels = labels * len(control_points)
-
-        # validate n_points length
-        if len(n_points) != len(control_points) - 1:
-            raise ValueError(
-                "Length of n_points must be one less than the length of control_points."
-            )
-
-        # validate n_points entries are all longer than 1
-        for n_pt in n_points:
-            if n_pt < 2:
-                raise ValueError("n_points entries must be greater than 1.")
-
-        # validate labels length
-        if len(labels) != len(control_points):
-            raise ValueError("Length of labels must equal length of control_points.")
-
-        # initialise results
-        mi_results = res.MomentInteractionResults()
 
         # compute extreme tensile fibre
         _, d_t = utils.calculate_extreme_fibre(
             points=self.compound_geometry.points, theta=theta
         )
 
-        # function to decode d_n from control_point
-        def decode_d_n(cp):
-            # multiple of section depth
-            if cp[0] == "D":
-                # check D
-                if cp[1] <= 0:
-                    raise ValueError(
-                        f"Provided section depth (D) {cp[1]:.3f} must be greater than 0."
-                    )
-                return cp[1] * d_t
-            # neutral axis depth
-            elif cp[0] == "d_n":
-                # check d_n
-                if cp[1] <= 0:
-                    raise ValueError(
-                        f"Provided d_n {cp[1]:.3f} must be greater than zero."
-                    )
-                return cp[1]
-            # extreme tensile reinforcement yield ratio
-            elif cp[0] == "fy":
-                # get extreme tensile bar
-                d_ext, eps_sy = self.extreme_bar(theta=theta)
-                # get compressive strain at extreme fibre
-                eps_cu = self.gross_properties.conc_ultimate_strain
-                return d_ext * (eps_cu) / (cp[1] * eps_sy + eps_cu)
-            # provided axial force
-            elif cp[0] == "N":
-                ult_res = self.ultimate_bending_capacity(theta=theta, n=cp[1])
-                return ult_res.d_n
-            # zero curvature
-            elif cp[0] == "kappa0":
-                return 2 * d_t  # sufficient depth to capture rectangular block
-            # control point type not valid
-            else:
-                raise ValueError(
-                    "First value of control_point tuple must be D, d_n, fy, N or kappa0."
-                )
+        # validate limits length
+        if len(limits) != 2:
+            raise ValueError("Length of limits must equal 2.")
 
-        # see if a kappa0 was used
-        has_kappa0 = False
+        # get neutral axis depths for limits
+        limits_dn = []
+
+        for cp in limits:
+            limits_dn.append(self.decode_d_n(theta=theta, cp=cp, d_t=d_t))
+
+        # get neutral axis depths for additional control points
+        add_cp_dn = []
 
         for cp in control_points:
-            if cp[0] == "kappa0":
-                has_kappa0 = True
-                break
+            add_cp_dn.append(self.decode_d_n(theta=theta, cp=cp, d_t=d_t))
 
-        # generate list of neutral axis depths to analyse and list of labels to save
-        d_n_list = []
-        label_list = []
-        start_d_n = 0
-        end_d_n = 0
-
-        for idx, n_pt in enumerate(n_points):
-            # get netural axis depths from control_points
-            start_d_n = decode_d_n(control_points[idx])
-            end_d_n = decode_d_n(control_points[idx + 1])
-
-            # generate list of neutral axis depths for this interval
-            d_n_list.extend(
-                np.linspace(
-                    start=start_d_n, stop=end_d_n, num=n_pt - 1, endpoint=False
-                ).tolist()
+        # validate labels length
+        if labels and len(labels) != 1 and len(labels) != 2 + len(control_points):
+            raise ValueError(
+                "Length of labels must be 1 or 2 + number of control points"
             )
 
-            # add labels
-            label_list.append(labels[idx])
-            label_list.extend([None] * (n_pt - 2))
+        # if one label is provided, generate a list
+        if labels and len(labels) == 1:
+            labels = labels * (len(control_points) + 2)
 
-        # add final d_n and label
-        d_n_list.append(end_d_n)
-        label_list.append(labels[-1])
+        # initialise results
+        mi_results = res.MomentInteractionResults()
 
-        # check d_n_list is ordered
-        if not all(d_n_list[i] >= d_n_list[i + 1] for i in range(len(d_n_list) - 1)):
-            msg = "control_points must create an ordered list of neutral axes from "
-            msg += "tensile fibre to compressive fibre."
-            raise ValueError(msg)
+        # generate list of neutral axis depths/axial forces to analyse
+        # if we are spacing by axial force
+        if n_spacing:
+            # get axial force of the limits
+            start_res = self.calculate_ultimate_section_actions(
+                d_n=limits_dn[0],
+                ultimate_results=res.UltimateBendingResults(theta=theta),
+            )
+            end_res = self.calculate_ultimate_section_actions(
+                d_n=limits_dn[1],
+                ultimate_results=res.UltimateBendingResults(theta=theta),
+            )
+
+            # generate list of axial forces
+            analysis_list = np.linspace(
+                start=start_res.n, stop=end_res.n, num=n_spacing, dtype=float
+            ).tolist()
+        else:
+            # check for infinity in limits - this will not work with linspace
+            # for sake of distributing neutral axes let kappa0 ~= 2 * D
+            if limits_dn[0] == inf:
+                start = 2 * d_t
+            else:
+                start = limits_dn[0]
+
+            if limits_dn[1] == inf:
+                stop = 2 * d_t
+            else:
+                stop = limits_dn[1]
+
+            # generate list of neutral axes
+            analysis_list = np.linspace(
+                start=start, stop=stop, num=n_points, dtype=float
+            ).tolist()
 
         # function that performs moment interaction analysis
         def micurve(progress=None):
-            # loop through all neutral axes
-            for idx, d_n in enumerate(d_n_list):
-                # calculate ultimate results
-                if idx == 0 and has_kappa0:
-                    ult_res = self.calculate_ultimate_section_actions(
-                        d_n=inf,
-                        ultimate_results=res.UltimateBendingResults(theta=theta),
-                    )
+            # loop through all analysis points
+            for idx, analysis_point in enumerate(analysis_list):
+                # calculate ultimate results:
+                # if we have axial forces
+                if n_spacing:
+                    # limits should be calculated based on neutral axis values
+                    if idx == 0:
+                        ult_res = self.calculate_ultimate_section_actions(
+                            d_n=limits_dn[0],
+                            ultimate_results=res.UltimateBendingResults(theta=theta),
+                        )
+                    elif idx == len(analysis_list) - 1:
+                        ult_res = self.calculate_ultimate_section_actions(
+                            d_n=limits_dn[1],
+                            ultimate_results=res.UltimateBendingResults(theta=theta),
+                        )
+                    else:
+                        ult_res = self.ultimate_bending_capacity(
+                            theta=theta, n=analysis_point
+                        )
+                # if we have neutral axes
                 else:
                     ult_res = self.calculate_ultimate_section_actions(
-                        d_n=d_n,
+                        d_n=analysis_point,
                         ultimate_results=res.UltimateBendingResults(theta=theta),
                     )
-                # add label
-                ult_res.label = label_list[idx]
-                # add ultimate result to moment interactions results and update progress
+
+                # add labels for limits
+                if labels:
+                    if idx == 0:
+                        ult_res.label = labels[0]
+                    elif idx == len(analysis_list) - 1:
+                        ult_res.label = labels[1]
+
+                # add ultimate result to moment interactions results
                 mi_results.results.append(ult_res)
 
+                # update progress
                 if progress:
                     progress.update(task, advance=1)
+
+            # add control points
+            for idx, d_n in enumerate(add_cp_dn):
+                ult_res = self.calculate_ultimate_section_actions(
+                    d_n=d_n,
+                    ultimate_results=res.UltimateBendingResults(theta=theta),
+                )
+
+                # add label
+                if labels:
+                    ult_res.label = labels[idx + 2]
+
+                # add ultimate result to moment interactions results
+                mi_results.results.append(ult_res)
+
+                # update progress
+                if progress:
+                    progress.update(task, advance=1)
+
+            # sort results
+            mi_results.sort_results()
 
         if progress_bar:
             # create progress bar
@@ -1254,7 +1273,7 @@ class ConcreteSection:
                 # add progress bar task
                 task = progress.add_task(
                     description="[red]Generating M-N diagram",
-                    total=sum(n_points) - len(n_points) + 1,
+                    total=len(analysis_list) + len(control_points),
                 )
 
                 micurve(progress=progress)
@@ -1270,55 +1289,44 @@ class ConcreteSection:
 
         # cut diagram at max_comp
         if max_comp:
-            # find intersection of max comp with interaction diagram
-            # and determine which points need to be removed from diagram
-            x = []
-            y_mx = []
-            y_my = []
-            y_mxy = []
+            # check input - if value greater than maximum compression
+            if max_comp > mi_results.results[0].n:
+                msg = f"max_comp={max_comp} is greater than the maximum axial capacity "
+                msg += f"{mi_results.results[0].n}."
+                raise ValueError(msg)
+
+            # get max_comp point
+            ult_res = self.ultimate_bending_capacity(theta=theta, n=max_comp)
+
+            # determine which results to delete
             idx_to_keep = 0
 
             for idx, mi_res in enumerate(mi_results.results):
-                # create coordinates for interpolation
-                x.append(mi_res.n)
-                y_mx.append(mi_res.m_x)
-                y_my.append(mi_res.m_y)
-                y_mxy.append(mi_res.m_xy)
-
                 # determine which index is the first to keep
                 if idx_to_keep == 0 and mi_res.n < max_comp:
                     idx_to_keep = idx
-
-            # create interpolation function and determine moment which corresponds to
-            # an axial force of max_comp
-            f_mx = interp1d(x=x, y=y_mx)
-            f_my = interp1d(x=x, y=y_my)
-            f_mxy = interp1d(x=x, y=y_mxy)
-            m_max_comp_mx = f_mx(max_comp)
-            m_max_comp_my = f_my(max_comp)
-            m_max_comp_mxy = f_mxy(max_comp)
+                    break
 
             # remove points in diagram
             del mi_results.results[:idx_to_keep]
 
+            # get labels
+            if max_comp_labels:
+                pt1_label = max_comp_labels[0]
+                pt2_label = max_comp_labels[1]
+            else:
+                pt1_label = None
+                pt2_label = None
+
             # add first two points to diagram
             # (m_max_comp, max_comp)
-            mi_results.results.insert(
-                0,
-                res.UltimateBendingResults(
-                    theta=theta,
-                    d_n=nan,
-                    k_u=nan,
-                    n=max_comp,
-                    m_x=m_max_comp_mx,
-                    m_y=m_max_comp_my,
-                    m_xy=m_max_comp_mxy,
-                    label=max_comp_labels[1],
-                ),
-            )
+            # apply label
+            ult_res.label = pt2_label
+            mi_results.results.insert(0, ult_res)
+
             # (0, max_comp)
             mi_results.results.insert(
-                0,
+                0,  # insertion index
                 res.UltimateBendingResults(
                     theta=theta,
                     d_n=inf,
@@ -1327,7 +1335,7 @@ class ConcreteSection:
                     m_x=0,
                     m_y=0,
                     m_xy=0,
-                    label=max_comp_labels[0],
+                    label=pt1_label,
                 ),
             )
 
@@ -1343,7 +1351,7 @@ class ConcreteSection:
         ``n_points`` calculation points.
 
         :param n: Net axial force
-        :param n_points: Number of calculation points between the decompression
+        :param n_points: Number of calculation points
         :param progress_bar: If set to True, displays the progress bar
 
         :return: Biaxial bending results
@@ -1990,6 +1998,66 @@ class ConcreteSection:
         )
 
         return d_ext, yield_strain
+
+    def decode_d_n(
+        self,
+        theta: float,
+        cp: Tuple[str, float],
+        d_t: float,
+    ) -> float:
+        r"""Decodes a neutral axis depth given a control point ``cp``.
+
+        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
+        :param cp: Control point to decode
+        :param d_t: Depth to extreme tensile fibre
+
+        :return: Decoded neutral axis depth
+        """
+
+        # multiple of section depth
+        if cp[0] == "D":
+            # check D
+            if cp[1] <= 0:
+                raise ValueError(
+                    f"Provided section depth (D) {cp[1]:.3f} must be greater than 0."
+                )
+
+            return cp[1] * d_t
+
+        # neutral axis depth
+        elif cp[0] == "d_n":
+            # check d_n
+            if cp[1] <= 0:
+                raise ValueError(f"Provided d_n {cp[1]:.3f} must be greater than zero.")
+
+            return cp[1]
+
+        # extreme tensile reinforcement yield ratio
+        elif cp[0] == "fy":
+            # get extreme tensile bar
+            d_ext, eps_sy = self.extreme_bar(theta=theta)
+
+            # get compressive strain at extreme fibre
+            eps_cu = self.gross_properties.conc_ultimate_strain
+
+            return d_ext * (eps_cu) / (cp[1] * eps_sy + eps_cu)
+
+        # provided axial force
+        elif cp[0] == "N":
+            ult_res = self.ultimate_bending_capacity(theta=theta, n=cp[1])
+
+            return ult_res.d_n
+
+        # zero curvature
+        elif cp[0] == "kappa0":
+            return inf
+
+        # control point type not valid
+        else:
+            msg = "First value of control point tuple must be D, d_n, fy, N or "
+            msg += "kappa0."
+            raise ValueError(msg)
 
     def plot_section(
         self,
