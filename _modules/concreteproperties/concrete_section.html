@@ -6,30 +6,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>concreteproperties.concrete_section &#8212; concreteproperties 0.3.1 documentation</title>
-  <script>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -51,6 +52,10 @@
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -124,32 +129,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../user_guide.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user_guide.html">
                         User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../examples.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../examples.html">
                         Examples
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../api.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
                         API Reference
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -158,19 +163,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
   <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
-    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -205,11 +212,13 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
   <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
@@ -239,32 +248,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../user_guide.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user_guide.html">
                         User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../examples.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../examples.html">
                         Examples
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../api.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
                         API Reference
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -278,11 +287,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
-    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -324,8 +333,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -1407,42 +1419,62 @@
 <div class="viewcode-block" id="ConcreteSection.moment_interaction_diagram"><a class="viewcode-back" href="../../user_guide/analysis.html#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">moment_interaction_diagram</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">control_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="s2">&quot;kappa0&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+        <span class="n">limits</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;fy&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;d_n&quot;</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">),</span>
         <span class="p">],</span>
-        <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
-        <span class="n">n_points</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+        <span class="n">control_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;kappa0&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;fy&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
+        <span class="n">n_spacing</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">max_comp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">max_comp_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">max_comp_labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram given a neutral axis angle `theta`</span>
-<span class="sd">        and `n_points` calculation points between the decompression case and the pure</span>
-<span class="sd">        bending case.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram given a neutral axis angle ``theta``.</span>
+
+<span class="sd">        ``limits`` and ``control_points`` accept a list of tuples that define points on</span>
+<span class="sd">        the moment interaction diagram. The first item in the tuple defines the type of</span>
+<span class="sd">        control points, while the second item defines the location of the control point.</span>
+<span class="sd">        Types of control points are detailed below:</span>
+
+<span class="sd">        .. admonition:: Control points</span>
+
+<span class="sd">          - ``&quot;D&quot;`` - ratio of neutral axis depth to section depth</span>
+<span class="sd">          - ``&quot;d_n&quot;`` - neutral axis depth</span>
+<span class="sd">          - ``&quot;fy&quot;`` - yield ratio of the most extreme tensile bar</span>
+<span class="sd">          - ``&quot;N&quot;`` - axial force</span>
+<span class="sd">          - ``&quot;kappa0&quot;`` - zero curvature compression (N.B second item in tuple is not</span>
+<span class="sd">            used)</span>
 
 <span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
 <span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
-<span class="sd">        :param control_points: List of control points over which to generate the</span>
-<span class="sd">            interaction diagram. Each entry in ``control_points`` is a ``Tuple`` with</span>
-<span class="sd">            the first item the type of control point and the second item defining the</span>
-<span class="sd">            location of the control point. Acceptable types of control points are</span>
-<span class="sd">            ``&quot;D&quot;`` (ratio of neutral axis depth to section depth), ``&quot;d_n&quot;`` (neutral</span>
-<span class="sd">            axis depth), ``&quot;fy&quot;`` (yield ratio of the most extreme tensile bar), ``&quot;N&quot;``</span>
-<span class="sd">            (axial force) and ``&quot;kappa&quot;`` (zero curvature compression - must be at start</span>
-<span class="sd">            of list, second value in tuple is not used). Control points must be defined</span>
-<span class="sd">            in an order which results in a decreasing neutral axis depth (decreasing</span>
-<span class="sd">            axial force). The default control points define an interaction diagram from</span>
-<span class="sd">            the decompression point to the pure bending point.</span>
-<span class="sd">        :param labels: List of labels to apply to the ``control_points`` for plotting</span>
-<span class="sd">            purposes, length must be the same as the length of ``control_points``. If a</span>
-<span class="sd">            single value is provided, will apply this label to all control points.</span>
-<span class="sd">        :param n_points: Number of neutral axis depths to compute between each control</span>
-<span class="sd">            point. Length must be one less than the length of ``control_points``. If an</span>
-<span class="sd">            integer is provided this will be used between all control points.</span>
+<span class="sd">        :param limits: List of control points that define the start and end of the</span>
+<span class="sd">            interaction diagram. List length must equal two. The default limits range</span>
+<span class="sd">            from concrete decompression strain to zero curvature tension.</span>
+<span class="sd">        :param control_points: List of additional control points to add to the moment</span>
+<span class="sd">            interatction diagram. The default control points include the pure</span>
+<span class="sd">            compression point (``kappa0``), the balanced point (``fy=1``) and the pure</span>
+<span class="sd">            bending point (``N=0``). Control points may lie outside the limits of the</span>
+<span class="sd">            moment interaction diagram as long as equilibrium can be found.</span>
+<span class="sd">        :param labels: List of labels to apply to the ``limits`` and ``control_points``</span>
+<span class="sd">            for plotting purposes. The first two values in ``labels`` apply labels to</span>
+<span class="sd">            the ``limits``, the remaining values apply labels to the ``control_points``.</span>
+<span class="sd">            If a single value is provided, this value will be applied to both ``limits``</span>
+<span class="sd">            and all ``control_points``. The length of ``labels`` must equal ``1`` or</span>
+<span class="sd">            ``2 + len(control_points)``.</span>
+<span class="sd">        :param n_points: Number of points to compute including and between the</span>
+<span class="sd">            ``limits`` of the moment interaction diagram. Generates equally spaced</span>
+<span class="sd">            neutral axis depths between the ``limits``.</span>
+<span class="sd">        :param n_spacing: If provided, overrides ``n_points`` and generates the moment</span>
+<span class="sd">            interaction diagram using ``n_spacing`` equally spaced axial loads. Note</span>
+<span class="sd">            that using ``n_spacing`` negatively affects performance, as the neutral axis</span>
+<span class="sd">            depth must first be located for each point on the moment interaction</span>
+<span class="sd">            diagram.</span>
 <span class="sd">        :param max_comp: If provided, limits the maximum compressive force in the moment</span>
 <span class="sd">            interaction diagram to ``max_comp``</span>
 <span class="sd">        :param max_comp_labels: Labels to apply to the ``max_comp`` intersection points,</span>
@@ -1450,142 +1482,141 @@
 <span class="sd">            interaction diagram</span>
 <span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
 
-<span class="sd">        :raises ValueError: If ``control_points``, ``labels`` or ``n_points`` is invalid</span>
-
 <span class="sd">        :return: Moment interaction results object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># if an integer is provided for n_points, generate a list</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="n">n_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">n_points</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">control_points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-
-        <span class="c1"># if there are no labels provided, generate a list</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">control_points</span><span class="p">)</span>
-
-        <span class="c1"># validate n_points length</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_points</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">control_points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Length of n_points must be one less than the length of control_points.&quot;</span>
-            <span class="p">)</span>
-
-        <span class="c1"># validate n_points entries are all longer than 1</span>
-        <span class="k">for</span> <span class="n">n_pt</span> <span class="ow">in</span> <span class="n">n_points</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">n_pt</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;n_points entries must be greater than 1.&quot;</span><span class="p">)</span>
-
-        <span class="c1"># validate labels length</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">control_points</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of labels must equal length of control_points.&quot;</span><span class="p">)</span>
-
-        <span class="c1"># initialise results</span>
-        <span class="n">mi_results</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">()</span>
 
         <span class="c1"># compute extreme tensile fibre</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">d_t</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calculate_extreme_fibre</span><span class="p">(</span>
             <span class="n">points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compound_geometry</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span>
         <span class="p">)</span>
 
-        <span class="c1"># function to decode d_n from control_point</span>
-        <span class="k">def</span> <span class="nf">decode_d_n</span><span class="p">(</span><span class="n">cp</span><span class="p">):</span>
-            <span class="c1"># multiple of section depth</span>
-            <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span>
-                <span class="c1"># check D</span>
-                <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Provided section depth (D) </span><span class="si">{</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> must be greater than 0.&quot;</span>
-                    <span class="p">)</span>
-                <span class="k">return</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">d_t</span>
-            <span class="c1"># neutral axis depth</span>
-            <span class="k">elif</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;d_n&quot;</span><span class="p">:</span>
-                <span class="c1"># check d_n</span>
-                <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Provided d_n </span><span class="si">{</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> must be greater than zero.&quot;</span>
-                    <span class="p">)</span>
-                <span class="k">return</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="c1"># extreme tensile reinforcement yield ratio</span>
-            <span class="k">elif</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;fy&quot;</span><span class="p">:</span>
-                <span class="c1"># get extreme tensile bar</span>
-                <span class="n">d_ext</span><span class="p">,</span> <span class="n">eps_sy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extreme_bar</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
-                <span class="c1"># get compressive strain at extreme fibre</span>
-                <span class="n">eps_cu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span>
-                <span class="k">return</span> <span class="n">d_ext</span> <span class="o">*</span> <span class="p">(</span><span class="n">eps_cu</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">eps_sy</span> <span class="o">+</span> <span class="n">eps_cu</span><span class="p">)</span>
-            <span class="c1"># provided axial force</span>
-            <span class="k">elif</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;N&quot;</span><span class="p">:</span>
-                <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-                <span class="k">return</span> <span class="n">ult_res</span><span class="o">.</span><span class="n">d_n</span>
-            <span class="c1"># zero curvature</span>
-            <span class="k">elif</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kappa0&quot;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">d_t</span>  <span class="c1"># sufficient depth to capture rectangular block</span>
-            <span class="c1"># control point type not valid</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;First value of control_point tuple must be D, d_n, fy, N or kappa0.&quot;</span>
-                <span class="p">)</span>
+        <span class="c1"># validate limits length</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">limits</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of limits must equal 2.&quot;</span><span class="p">)</span>
 
-        <span class="c1"># see if a kappa0 was used</span>
-        <span class="n">has_kappa0</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># get neutral axis depths for limits</span>
+        <span class="n">limits_dn</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">limits</span><span class="p">:</span>
+            <span class="n">limits_dn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decode_d_n</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">cp</span><span class="o">=</span><span class="n">cp</span><span class="p">,</span> <span class="n">d_t</span><span class="o">=</span><span class="n">d_t</span><span class="p">))</span>
+
+        <span class="c1"># get neutral axis depths for additional control points</span>
+        <span class="n">add_cp_dn</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">control_points</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kappa0&quot;</span><span class="p">:</span>
-                <span class="n">has_kappa0</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">break</span>
+            <span class="n">add_cp_dn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decode_d_n</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">cp</span><span class="o">=</span><span class="n">cp</span><span class="p">,</span> <span class="n">d_t</span><span class="o">=</span><span class="n">d_t</span><span class="p">))</span>
 
-        <span class="c1"># generate list of neutral axis depths to analyse and list of labels to save</span>
-        <span class="n">d_n_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">label_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">start_d_n</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">end_d_n</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">n_pt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">n_points</span><span class="p">):</span>
-            <span class="c1"># get netural axis depths from control_points</span>
-            <span class="n">start_d_n</span> <span class="o">=</span> <span class="n">decode_d_n</span><span class="p">(</span><span class="n">control_points</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-            <span class="n">end_d_n</span> <span class="o">=</span> <span class="n">decode_d_n</span><span class="p">(</span><span class="n">control_points</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
-
-            <span class="c1"># generate list of neutral axis depths for this interval</span>
-            <span class="n">d_n_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
-                    <span class="n">start</span><span class="o">=</span><span class="n">start_d_n</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">end_d_n</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_pt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="c1"># validate labels length</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">control_points</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Length of labels must be 1 or 2 + number of control points&quot;</span>
             <span class="p">)</span>
 
-            <span class="c1"># add labels</span>
-            <span class="n">label_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-            <span class="n">label_list</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_pt</span> <span class="o">-</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="c1"># if one label is provided, generate a list</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">control_points</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
 
-        <span class="c1"># add final d_n and label</span>
-        <span class="n">d_n_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end_d_n</span><span class="p">)</span>
-        <span class="n">label_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="c1"># initialise results</span>
+        <span class="n">mi_results</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">()</span>
 
-        <span class="c1"># check d_n_list is ordered</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">d_n_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">d_n_list</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d_n_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)):</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;control_points must create an ordered list of neutral axes from &quot;</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;tensile fibre to compressive fibre.&quot;</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="c1"># generate list of neutral axis depths/axial forces to analyse</span>
+        <span class="c1"># if we are spacing by axial force</span>
+        <span class="k">if</span> <span class="n">n_spacing</span><span class="p">:</span>
+            <span class="c1"># get axial force of the limits</span>
+            <span class="n">start_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">limits_dn</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">end_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">limits_dn</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">),</span>
+            <span class="p">)</span>
+
+            <span class="c1"># generate list of axial forces</span>
+            <span class="n">analysis_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                <span class="n">start</span><span class="o">=</span><span class="n">start_res</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">end_res</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_spacing</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># check for infinity in limits - this will not work with linspace</span>
+            <span class="c1"># for sake of distributing neutral axes let kappa0 ~= 2 * D</span>
+            <span class="k">if</span> <span class="n">limits_dn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">inf</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">d_t</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">limits_dn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">limits_dn</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">inf</span><span class="p">:</span>
+                <span class="n">stop</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">d_t</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">stop</span> <span class="o">=</span> <span class="n">limits_dn</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># generate list of neutral axes</span>
+            <span class="n">analysis_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
         <span class="c1"># function that performs moment interaction analysis</span>
         <span class="k">def</span> <span class="nf">micurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-            <span class="c1"># loop through all neutral axes</span>
-            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">d_n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d_n_list</span><span class="p">):</span>
-                <span class="c1"># calculate ultimate results</span>
-                <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">has_kappa0</span><span class="p">:</span>
-                    <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
-                        <span class="n">d_n</span><span class="o">=</span><span class="n">inf</span><span class="p">,</span>
-                        <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">),</span>
-                    <span class="p">)</span>
+            <span class="c1"># loop through all analysis points</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">analysis_point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">analysis_list</span><span class="p">):</span>
+                <span class="c1"># calculate ultimate results:</span>
+                <span class="c1"># if we have axial forces</span>
+                <span class="k">if</span> <span class="n">n_spacing</span><span class="p">:</span>
+                    <span class="c1"># limits should be calculated based on neutral axis values</span>
+                    <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
+                            <span class="n">d_n</span><span class="o">=</span><span class="n">limits_dn</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                            <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">),</span>
+                        <span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">analysis_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
+                            <span class="n">d_n</span><span class="o">=</span><span class="n">limits_dn</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                            <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">),</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span>
+                            <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">analysis_point</span>
+                        <span class="p">)</span>
+                <span class="c1"># if we have neutral axes</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
-                        <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+                        <span class="n">d_n</span><span class="o">=</span><span class="n">analysis_point</span><span class="p">,</span>
                         <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">),</span>
                     <span class="p">)</span>
-                <span class="c1"># add label</span>
-                <span class="n">ult_res</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-                <span class="c1"># add ultimate result to moment interactions results and update progress</span>
+
+                <span class="c1"># add labels for limits</span>
+                <span class="k">if</span> <span class="n">labels</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">ult_res</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="n">idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">analysis_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">ult_res</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="c1"># add ultimate result to moment interactions results</span>
                 <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ult_res</span><span class="p">)</span>
 
+                <span class="c1"># update progress</span>
                 <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
                     <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="c1"># add control points</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">d_n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">add_cp_dn</span><span class="p">):</span>
+                <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
+                    <span class="n">d_n</span><span class="o">=</span><span class="n">d_n</span><span class="p">,</span>
+                    <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">),</span>
+                <span class="p">)</span>
+
+                <span class="c1"># add label</span>
+                <span class="k">if</span> <span class="n">labels</span><span class="p">:</span>
+                    <span class="n">ult_res</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+
+                <span class="c1"># add ultimate result to moment interactions results</span>
+                <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ult_res</span><span class="p">)</span>
+
+                <span class="c1"># update progress</span>
+                <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                    <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="c1"># sort results</span>
+            <span class="n">mi_results</span><span class="o">.</span><span class="n">sort_results</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">progress_bar</span><span class="p">:</span>
             <span class="c1"># create progress bar</span>
@@ -1595,7 +1626,7 @@
                 <span class="c1"># add progress bar task</span>
                 <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
                     <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Generating M-N diagram&quot;</span><span class="p">,</span>
-                    <span class="n">total</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">n_points</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_points</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">analysis_list</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">control_points</span><span class="p">),</span>
                 <span class="p">)</span>
 
                 <span class="n">micurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">)</span>
@@ -1611,55 +1642,44 @@
 
         <span class="c1"># cut diagram at max_comp</span>
         <span class="k">if</span> <span class="n">max_comp</span><span class="p">:</span>
-            <span class="c1"># find intersection of max comp with interaction diagram</span>
-            <span class="c1"># and determine which points need to be removed from diagram</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">y_mx</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">y_my</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">y_mxy</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="c1"># check input - if value greater than maximum compression</span>
+            <span class="k">if</span> <span class="n">max_comp</span> <span class="o">&gt;</span> <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;max_comp=</span><span class="si">{</span><span class="n">max_comp</span><span class="si">}</span><span class="s2"> is greater than the maximum axial capacity &quot;</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="c1"># get max_comp point</span>
+            <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">max_comp</span><span class="p">)</span>
+
+            <span class="c1"># determine which results to delete</span>
             <span class="n">idx_to_keep</span> <span class="o">=</span> <span class="mi">0</span>
 
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">mi_res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="p">):</span>
-                <span class="c1"># create coordinates for interpolation</span>
-                <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mi_res</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
-                <span class="n">y_mx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mi_res</span><span class="o">.</span><span class="n">m_x</span><span class="p">)</span>
-                <span class="n">y_my</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mi_res</span><span class="o">.</span><span class="n">m_y</span><span class="p">)</span>
-                <span class="n">y_mxy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mi_res</span><span class="o">.</span><span class="n">m_xy</span><span class="p">)</span>
-
                 <span class="c1"># determine which index is the first to keep</span>
                 <span class="k">if</span> <span class="n">idx_to_keep</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">mi_res</span><span class="o">.</span><span class="n">n</span> <span class="o">&lt;</span> <span class="n">max_comp</span><span class="p">:</span>
                     <span class="n">idx_to_keep</span> <span class="o">=</span> <span class="n">idx</span>
-
-            <span class="c1"># create interpolation function and determine moment which corresponds to</span>
-            <span class="c1"># an axial force of max_comp</span>
-            <span class="n">f_mx</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_mx</span><span class="p">)</span>
-            <span class="n">f_my</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_my</span><span class="p">)</span>
-            <span class="n">f_mxy</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_mxy</span><span class="p">)</span>
-            <span class="n">m_max_comp_mx</span> <span class="o">=</span> <span class="n">f_mx</span><span class="p">(</span><span class="n">max_comp</span><span class="p">)</span>
-            <span class="n">m_max_comp_my</span> <span class="o">=</span> <span class="n">f_my</span><span class="p">(</span><span class="n">max_comp</span><span class="p">)</span>
-            <span class="n">m_max_comp_mxy</span> <span class="o">=</span> <span class="n">f_mxy</span><span class="p">(</span><span class="n">max_comp</span><span class="p">)</span>
+                    <span class="k">break</span>
 
             <span class="c1"># remove points in diagram</span>
             <span class="k">del</span> <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="p">[:</span><span class="n">idx_to_keep</span><span class="p">]</span>
 
+            <span class="c1"># get labels</span>
+            <span class="k">if</span> <span class="n">max_comp_labels</span><span class="p">:</span>
+                <span class="n">pt1_label</span> <span class="o">=</span> <span class="n">max_comp_labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">pt2_label</span> <span class="o">=</span> <span class="n">max_comp_labels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pt1_label</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">pt2_label</span> <span class="o">=</span> <span class="kc">None</span>
+
             <span class="c1"># add first two points to diagram</span>
             <span class="c1"># (m_max_comp, max_comp)</span>
-            <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-                <span class="mi">0</span><span class="p">,</span>
-                <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
-                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
-                    <span class="n">d_n</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
-                    <span class="n">k_u</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span>
-                    <span class="n">n</span><span class="o">=</span><span class="n">max_comp</span><span class="p">,</span>
-                    <span class="n">m_x</span><span class="o">=</span><span class="n">m_max_comp_mx</span><span class="p">,</span>
-                    <span class="n">m_y</span><span class="o">=</span><span class="n">m_max_comp_my</span><span class="p">,</span>
-                    <span class="n">m_xy</span><span class="o">=</span><span class="n">m_max_comp_mxy</span><span class="p">,</span>
-                    <span class="n">label</span><span class="o">=</span><span class="n">max_comp_labels</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                <span class="p">),</span>
-            <span class="p">)</span>
+            <span class="c1"># apply label</span>
+            <span class="n">ult_res</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">pt2_label</span>
+            <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ult_res</span><span class="p">)</span>
+
             <span class="c1"># (0, max_comp)</span>
             <span class="n">mi_results</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-                <span class="mi">0</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span>  <span class="c1"># insertion index</span>
                 <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
                     <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
                     <span class="n">d_n</span><span class="o">=</span><span class="n">inf</span><span class="p">,</span>
@@ -1668,7 +1688,7 @@
                     <span class="n">m_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                     <span class="n">m_y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                     <span class="n">m_xy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                    <span class="n">label</span><span class="o">=</span><span class="n">max_comp_labels</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">label</span><span class="o">=</span><span class="n">pt1_label</span><span class="p">,</span>
                 <span class="p">),</span>
             <span class="p">)</span>
 
@@ -1684,7 +1704,7 @@
 <span class="sd">        ``n_points`` calculation points.</span>
 
 <span class="sd">        :param n: Net axial force</span>
-<span class="sd">        :param n_points: Number of calculation points between the decompression</span>
+<span class="sd">        :param n_points: Number of calculation points</span>
 <span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
 
 <span class="sd">        :return: Biaxial bending results</span>
@@ -2332,6 +2352,66 @@
 
         <span class="k">return</span> <span class="n">d_ext</span><span class="p">,</span> <span class="n">yield_strain</span></div>
 
+<div class="viewcode-block" id="ConcreteSection.decode_d_n"><a class="viewcode-back" href="../../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.decode_d_n">[docs]</a>    <span class="k">def</span> <span class="nf">decode_d_n</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">cp</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">d_t</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Decodes a neutral axis depth given a control point ``cp``.</span>
+
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
+<span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">        :param cp: Control point to decode</span>
+<span class="sd">        :param d_t: Depth to extreme tensile fibre</span>
+
+<span class="sd">        :return: Decoded neutral axis depth</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># multiple of section depth</span>
+        <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span>
+            <span class="c1"># check D</span>
+            <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Provided section depth (D) </span><span class="si">{</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> must be greater than 0.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">d_t</span>
+
+        <span class="c1"># neutral axis depth</span>
+        <span class="k">elif</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;d_n&quot;</span><span class="p">:</span>
+            <span class="c1"># check d_n</span>
+            <span class="k">if</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Provided d_n </span><span class="si">{</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> must be greater than zero.&quot;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># extreme tensile reinforcement yield ratio</span>
+        <span class="k">elif</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;fy&quot;</span><span class="p">:</span>
+            <span class="c1"># get extreme tensile bar</span>
+            <span class="n">d_ext</span><span class="p">,</span> <span class="n">eps_sy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extreme_bar</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+
+            <span class="c1"># get compressive strain at extreme fibre</span>
+            <span class="n">eps_cu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span>
+
+            <span class="k">return</span> <span class="n">d_ext</span> <span class="o">*</span> <span class="p">(</span><span class="n">eps_cu</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">eps_sy</span> <span class="o">+</span> <span class="n">eps_cu</span><span class="p">)</span>
+
+        <span class="c1"># provided axial force</span>
+        <span class="k">elif</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;N&quot;</span><span class="p">:</span>
+            <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="k">return</span> <span class="n">ult_res</span><span class="o">.</span><span class="n">d_n</span>
+
+        <span class="c1"># zero curvature</span>
+        <span class="k">elif</span> <span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kappa0&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">inf</span>
+
+        <span class="c1"># control point type not valid</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;First value of control point tuple must be D, d_n, fy, N or &quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;kappa0.&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="ConcreteSection.plot_section"><a class="viewcode-back" href="../../user_guide/analysis.html#concreteproperties.concrete_section.ConcreteSection.plot_section">[docs]</a>    <span class="k">def</span> <span class="nf">plot_section</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Reinforced Concrete Section&quot;</span><span class="p">,</span>
@@ -2454,7 +2534,8 @@
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -2466,6 +2547,16 @@
 
 </p>
 
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
   </div>
   
   <div class="footer-item">

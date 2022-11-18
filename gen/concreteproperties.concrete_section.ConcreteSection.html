@@ -6,30 +6,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>concreteproperties.concrete_section.ConcreteSection &#8212; concreteproperties 0.3.1 documentation</title>
-  <script>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -55,6 +56,10 @@
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -128,32 +133,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../user_guide.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
                         User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../examples.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples.html">
                         Examples
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="../api.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../api.html">
                         API Reference
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -162,19 +167,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
   <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
-    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -209,11 +216,13 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
   <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
@@ -243,32 +252,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../user_guide.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
                         User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../examples.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples.html">
                         Examples
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="../api.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../api.html">
                         API Reference
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -282,11 +291,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
-    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -426,8 +435,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -500,31 +512,34 @@ composite section analysis)</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence" title="concreteproperties.concrete_section.ConcreteSection.cracked_neutral_axis_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cracked_neutral_axis_convergence</span></code></a></p></td>
 <td><p>Given a trial cracked neutral axis depth <code class="docutils literal notranslate"><span class="pre">d_nc</span></code>, determines the difference between the first moments of area above and below the trial axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.extreme_bar" title="concreteproperties.concrete_section.ConcreteSection.extreme_bar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extreme_bar</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.decode_d_n" title="concreteproperties.concrete_section.ConcreteSection.decode_d_n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode_d_n</span></code></a></p></td>
+<td><p>Decodes a neutral axis depth given a control point <code class="docutils literal notranslate"><span class="pre">cp</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.extreme_bar" title="concreteproperties.concrete_section.ConcreteSection.extreme_bar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extreme_bar</span></code></a></p></td>
 <td><p>Given neutral axis angle <code class="docutils literal notranslate"><span class="pre">theta</span></code>, determines the depth of the furthest lumped reinforcement from the extreme compressive fibre and also returns its yield strain.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gross_properties</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gross_properties</span></code></a></p></td>
 <td><p>Returns the gross section properties of the reinforced concrete section.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_transformed_gross_properties</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_transformed_gross_properties</span></code></a></p></td>
 <td><p>Transforms gross section properties given a reference elastic modulus.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis" title="concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_curvature_analysis</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis" title="concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_curvature_analysis</span></code></a></p></td>
 <td><p>Performs a moment curvature analysis given a bending angle <code class="docutils literal notranslate"><span class="pre">theta</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_interaction_diagram</span></code></a></p></td>
-<td><p>Generates a moment interaction diagram given a neutral axis angle <cite>theta</cite> and <cite>n_points</cite> calculation points between the decompression case and the pure bending case.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_interaction_diagram</span></code></a></p></td>
+<td><p>Generates a moment interaction diagram given a neutral axis angle <code class="docutils literal notranslate"><span class="pre">theta</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.plot_section" title="concreteproperties.concrete_section.ConcreteSection.plot_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_section</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.plot_section" title="concreteproperties.concrete_section.ConcreteSection.plot_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_section</span></code></a></p></td>
 <td><p>Plots the reinforced concrete section.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_normal_force_convergence</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.service_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_normal_force_convergence</span></code></a></p></td>
 <td><p>Given a neutral axis depth <code class="docutils literal notranslate"><span class="pre">d_n</span></code> and curvature <code class="docutils literal notranslate"><span class="pre">kappa</span></code>, returns the the net axial force.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_bending_capacity</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_bending_capacity</span></code></a></p></td>
 <td><p>Given a neutral axis angle <code class="docutils literal notranslate"><span class="pre">theta</span></code> and an axial force <code class="docutils literal notranslate"><span class="pre">n</span></code>, calculates the ultimate bending capacity.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_normal_force_convergence</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence" title="concreteproperties.concrete_section.ConcreteSection.ultimate_normal_force_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_normal_force_convergence</span></code></a></p></td>
 <td><p>Given a neutral axis depth <code class="docutils literal notranslate"><span class="pre">d_n</span></code> and neutral axis angle <code class="docutils literal notranslate"><span class="pre">theta</span></code>, calculates the difference between the target net axial force <code class="docutils literal notranslate"><span class="pre">n</span></code> and the calculated axial force.</p></td>
 </tr>
 </tbody>
@@ -716,45 +731,60 @@ axial force <code class="docutils literal notranslate"><span class="pre">n</span
 
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram">
-<span class="sig-name descname"><span class="pre">moment_interaction_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[('kappa0',</span> <span class="pre">0.0),</span> <span class="pre">('D',</span> <span class="pre">1.0),</span> <span class="pre">('fy',</span> <span class="pre">1.0),</span> <span class="pre">('N',</span> <span class="pre">0.0),</span> <span class="pre">('d_n',</span> <span class="pre">1e-06)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[None]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[4,</span> <span class="pre">12,</span> <span class="pre">12,</span> <span class="pre">4]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_comp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_comp_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[None,</span> <span class="pre">None]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.moment_interaction_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="Permalink to this definition">#</a></dt>
-<dd><p>Generates a moment interaction diagram given a neutral axis angle <cite>theta</cite>
-and <cite>n_points</cite> calculation points between the decompression case and the pure
-bending case.</p>
+<span class="sig-name descname"><span class="pre">moment_interaction_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[('D',</span> <span class="pre">1.0),</span> <span class="pre">('d_n',</span> <span class="pre">1e-06)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[('kappa0',</span> <span class="pre">0.0),</span> <span class="pre">('fy',</span> <span class="pre">1.0),</span> <span class="pre">('N',</span> <span class="pre">0.0)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_comp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_comp_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.moment_interaction_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram" title="Permalink to this definition">#</a></dt>
+<dd><p>Generates a moment interaction diagram given a neutral axis angle <code class="docutils literal notranslate"><span class="pre">theta</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">limits</span></code> and <code class="docutils literal notranslate"><span class="pre">control_points</span></code> accept a list of tuples that define points on
+the moment interaction diagram. The first item in the tuple defines the type of
+control points, while the second item defines the location of the control point.
+Types of control points are detailed below:</p>
+<div class="admonition-control-points admonition">
+<p class="admonition-title">Control points</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;D&quot;</span></code> - ratio of neutral axis depth to section depth</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;d_n&quot;</span></code> - neutral axis depth</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;fy&quot;</span></code> - yield ratio of the most extreme tensile bar</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;N&quot;</span></code> - axial force</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;kappa0&quot;</span></code> - zero curvature compression (N.B second item in tuple is not
+used)</p></li>
+</ul>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Angle (in radians) the neutral axis makes with the horizontal axis
 (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
-<li><p><strong>control_points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">[('kappa0',</span> <span class="pre">0.0),</span> <span class="pre">('D',</span> <span class="pre">1.0),</span> <span class="pre">('fy',</span> <span class="pre">1.0),</span> <span class="pre">('N',</span> <span class="pre">0.0),</span> <span class="pre">('d_n',</span> <span class="pre">1e-06)]</span></code>) – List of control points over which to generate the
-interaction diagram. Each entry in <code class="docutils literal notranslate"><span class="pre">control_points</span></code> is a <code class="docutils literal notranslate"><span class="pre">Tuple</span></code> with
-the first item the type of control point and the second item defining the
-location of the control point. Acceptable types of control points are
-<code class="docutils literal notranslate"><span class="pre">&quot;D&quot;</span></code> (ratio of neutral axis depth to section depth), <code class="docutils literal notranslate"><span class="pre">&quot;d_n&quot;</span></code> (neutral
-axis depth), <code class="docutils literal notranslate"><span class="pre">&quot;fy&quot;</span></code> (yield ratio of the most extreme tensile bar), <code class="docutils literal notranslate"><span class="pre">&quot;N&quot;</span></code>
-(axial force) and <code class="docutils literal notranslate"><span class="pre">&quot;kappa&quot;</span></code> (zero curvature compression - must be at start
-of list, second value in tuple is not used). Control points must be defined
-in an order which results in a decreasing neutral axis depth (decreasing
-axial force). The default control points define an interaction diagram from
-the decompression point to the pure bending point.</p></li>
-<li><p><strong>labels</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">[None]</span></code>) – List of labels to apply to the <code class="docutils literal notranslate"><span class="pre">control_points</span></code> for plotting
-purposes, length must be the same as the length of <code class="docutils literal notranslate"><span class="pre">control_points</span></code>. If a
-single value is provided, will apply this label to all control points.</p></li>
-<li><p><strong>n_points</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">[4,</span> <span class="pre">12,</span> <span class="pre">12,</span> <span class="pre">4]</span></code>) – Number of neutral axis depths to compute between each control
-point. Length must be one less than the length of <code class="docutils literal notranslate"><span class="pre">control_points</span></code>. If an
-integer is provided this will be used between all control points.</p></li>
+<li><p><strong>limits</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">[('D',</span> <span class="pre">1.0),</span> <span class="pre">('d_n',</span> <span class="pre">1e-06)]</span></code>) – List of control points that define the start and end of the
+interaction diagram. List length must equal two. The default limits range
+from concrete decompression strain to zero curvature tension.</p></li>
+<li><p><strong>control_points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">[('kappa0',</span> <span class="pre">0.0),</span> <span class="pre">('fy',</span> <span class="pre">1.0),</span> <span class="pre">('N',</span> <span class="pre">0.0)]</span></code>) – List of additional control points to add to the moment
+interatction diagram. The default control points include the pure
+compression point (<code class="docutils literal notranslate"><span class="pre">kappa0</span></code>), the balanced point (<code class="docutils literal notranslate"><span class="pre">fy=1</span></code>) and the pure
+bending point (<code class="docutils literal notranslate"><span class="pre">N=0</span></code>). Control points may lie outside the limits of the
+moment interaction diagram as long as equilibrium can be found.</p></li>
+<li><p><strong>labels</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – List of labels to apply to the <code class="docutils literal notranslate"><span class="pre">limits</span></code> and <code class="docutils literal notranslate"><span class="pre">control_points</span></code>
+for plotting purposes. The first two values in <code class="docutils literal notranslate"><span class="pre">labels</span></code> apply labels to
+the <code class="docutils literal notranslate"><span class="pre">limits</span></code>, the remaining values apply labels to the <code class="docutils literal notranslate"><span class="pre">control_points</span></code>.
+If a single value is provided, this value will be applied to both <code class="docutils literal notranslate"><span class="pre">limits</span></code>
+and all <code class="docutils literal notranslate"><span class="pre">control_points</span></code>. The length of <code class="docutils literal notranslate"><span class="pre">labels</span></code> must equal <code class="docutils literal notranslate"><span class="pre">1</span></code> or
+<code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">+</span> <span class="pre">len(control_points)</span></code>.</p></li>
+<li><p><strong>n_points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">24</span></code>) – Number of points to compute including and between the
+<code class="docutils literal notranslate"><span class="pre">limits</span></code> of the moment interaction diagram. Generates equally spaced
+neutral axis depths between the <code class="docutils literal notranslate"><span class="pre">limits</span></code>.</p></li>
+<li><p><strong>n_spacing</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If provided, overrides <code class="docutils literal notranslate"><span class="pre">n_points</span></code> and generates the moment
+interaction diagram using <code class="docutils literal notranslate"><span class="pre">n_spacing</span></code> equally spaced axial loads. Note
+that using <code class="docutils literal notranslate"><span class="pre">n_spacing</span></code> negatively affects performance, as the neutral axis
+depth must first be located for each point on the moment interaction
+diagram.</p></li>
 <li><p><strong>max_comp</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If provided, limits the maximum compressive force in the moment
 interaction diagram to <code class="docutils literal notranslate"><span class="pre">max_comp</span></code></p></li>
-<li><p><strong>max_comp_labels</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">[None,</span> <span class="pre">None]</span></code>) – Labels to apply to the <code class="docutils literal notranslate"><span class="pre">max_comp</span></code> intersection points,
+<li><p><strong>max_comp_labels</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Labels to apply to the <code class="docutils literal notranslate"><span class="pre">max_comp</span></code> intersection points,
 first value is at zero moment, second value is at the intersection with the
 interaction diagram</p></li>
 <li><p><strong>progress_bar</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – If set to True, displays the progress bar</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">control_points</span></code>, <code class="docutils literal notranslate"><span class="pre">labels</span></code> or <code class="docutils literal notranslate"><span class="pre">n_points</span></code> is invalid</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code></a> – Moment interaction results object</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code></a> – Moment interaction results object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -768,7 +798,7 @@ interaction diagram</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Net axial force</p></li>
-<li><p><strong>n_points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">48</span></code>) – Number of calculation points between the decompression</p></li>
+<li><p><strong>n_points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">48</span></code>) – Number of calculation points</p></li>
 <li><p><strong>progress_bar</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – If set to True, displays the progress bar</p></li>
 </ul>
 </dd>
@@ -871,6 +901,25 @@ axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Depth of furthest bar and its yield strain</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.concrete_section.ConcreteSection.decode_d_n">
+<span class="sig-name descname"><span class="pre">decode_d_n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.decode_d_n"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.decode_d_n" title="Permalink to this definition">#</a></dt>
+<dd><p>Decodes a neutral axis depth given a control point <code class="docutils literal notranslate"><span class="pre">cp</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Angle (in radians) the neutral axis makes with the horizontal axis
+(<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
+<li><p><strong>cp</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – Control point to decode</p></li>
+<li><p><strong>d_t</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Depth to extreme tensile fibre</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Decoded neutral axis depth</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1107,6 +1156,15 @@ axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.concrete_section.ConcreteSection.decode_d_n">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       ConcreteSection.decode_d_n()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#concreteproperties.concrete_section.ConcreteSection.plot_section">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -1159,7 +1217,8 @@ axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -1171,6 +1230,16 @@ axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</
 
 </p>
 
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
   </div>
   
   <div class="footer-item">
