@@ -233,10 +233,11 @@ def test_max_comp():
     my = pt2.m_y + factor * (pt1.m_y - pt2.m_y)
     mxy = pt2.m_xy + factor * (pt1.m_xy - pt2.m_xy)
 
-    assert mi_res_mc.results[1].n == mc
-    assert mi_res_mc.results[1].m_x == mx
-    assert mi_res_mc.results[1].m_y == my
-    assert mi_res_mc.results[1].m_xy == mxy
+    assert pytest.approx(mi_res_mc.results[1].n) == mc
+    # check moment with interpolated values to 3%
+    assert pytest.approx(mi_res_mc.results[1].m_x, rel=3e-2) == mx
+    assert pytest.approx(mi_res_mc.results[1].m_y, abs=1, rel=3e-2) == my
+    assert pytest.approx(mi_res_mc.results[1].m_xy, rel=3e-2) == mxy
 
     # test max_comp larger than squash load
     with pytest.raises(ValueError):
@@ -247,9 +248,9 @@ def test_max_comp():
         control_points=[("N", 4500e3)], max_comp=mc
     )
 
-    # check max axial load is less than or equal to mc
+    # check max axial load (with buffer) is less than or equal to mc
     for res in mi_res.results:
-        assert res.n <= mc
+        assert res.n <= (1 + 1e-6) * mc
 
 
 def test_labels():
