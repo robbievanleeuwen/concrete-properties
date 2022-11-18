@@ -1,0 +1,1057 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>concreteproperties.design_codes.as3600 &#8212; concreteproperties 0.4.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/concreteproperties/design_codes/as3600';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.4.0';
+        </script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../../_static/cp_logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+    <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
+        0.4.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <h1>Source code for concreteproperties.design_codes.as3600</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">inf</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">concreteproperties.results</span> <span class="k">as</span> <span class="nn">res</span>
+<span class="kn">import</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="k">as</span> <span class="nn">ssp</span>
+<span class="kn">import</span> <span class="nn">concreteproperties.utils</span> <span class="k">as</span> <span class="nn">utils</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.design_codes.design_code</span> <span class="kn">import</span> <span class="n">DesignCode</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">SteelBar</span>
+<span class="kn">from</span> <span class="nn">rich.live</span> <span class="kn">import</span> <span class="n">Live</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">brentq</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
+
+
+<div class="viewcode-block" id="AS3600"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600">[docs]</a><span class="k">class</span> <span class="nc">AS3600</span><span class="p">(</span><span class="n">DesignCode</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Design code class for Australian standard AS 3600:2018.</span>
+
+<span class="sd">    Note that this design code only supports :class:`~concreteproperties.pre.Concrete`</span>
+<span class="sd">    and :class:`~concreteproperties.pre.SteelBar` material objects. Meshed</span>
+<span class="sd">    :class:`~concreteproperties.pre.Steel` material objects are **not** supported</span>
+<span class="sd">    as this falls under the composite structures design code.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits the AS3600 class.&quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AS3600.assign_concrete_section"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.assign_concrete_section">[docs]</a>    <span class="k">def</span> <span class="nf">assign_concrete_section</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">concrete_section</span><span class="p">:</span> <span class="n">ConcreteSection</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Assigns a concrete section to the design code.</span>
+
+<span class="sd">        :param concrete_section: Concrete section object to analyse</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span> <span class="o">=</span> <span class="n">concrete_section</span>
+
+        <span class="c1"># check to make sure there are no meshed reinforcement regions</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">reinf_geometries_meshed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Meshed reinforcement is not supported in this design code.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># determine reinforcement class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reinforcement_class</span> <span class="o">=</span> <span class="s2">&quot;N&quot;</span>
+
+        <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">reinf_geometries_lumped</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">abs</span><span class="p">(</span>
+                    <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_ultimate_tensile_strain</span><span class="p">()</span>
+                <span class="p">)</span>
+                <span class="o">&lt;</span> <span class="mf">0.05</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reinforcement_class</span> <span class="o">=</span> <span class="s2">&quot;L&quot;</span>
+
+        <span class="c1"># calculate squash and tensile load</span>
+        <span class="n">squash</span><span class="p">,</span> <span class="n">tensile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">squash_tensile_load</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">squash_load</span> <span class="o">=</span> <span class="n">squash</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tensile_load</span> <span class="o">=</span> <span class="n">tensile</span></div>
+
+<div class="viewcode-block" id="AS3600.create_concrete_material"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.create_concrete_material">[docs]</a>    <span class="k">def</span> <span class="nf">create_concrete_material</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">compressive_strength</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Concrete</span><span class="p">:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a concrete material object to AS 3600:2018.</span>
+
+<span class="sd">        | **Material assumptions:**</span>
+<span class="sd">        | - *Density*: 2400 kg/m\ :sup:`3`</span>
+<span class="sd">        | - *Elastic modulus*: Interpolated from Table 3.1.2</span>
+<span class="sd">        | - *Service stress-strain profile*: Linear with no tension, compressive strength</span>
+<span class="sd">          at 0.9 * f&#39;c</span>
+<span class="sd">        | - *Ultimate stress-strain profile*: Rectangular stress block, parameters from</span>
+<span class="sd">          Cl. 8.1.3</span>
+<span class="sd">        | - *Alpha squash*: From Cl. 10.6.2.2</span>
+<span class="sd">        | - *Flexural tensile strength*: From Cl. 3.1.1.3</span>
+
+<span class="sd">        :param compressive_strength: Characteristic compressive strength of</span>
+<span class="sd">            concrete at 28 days in megapascals (MPa)</span>
+<span class="sd">        :param colour: Colour of the concrete for rendering</span>
+
+<span class="sd">        :raises ValueError: If ``compressive_strength`` is not between 20 MPa and</span>
+<span class="sd">            100 MPa.</span>
+
+<span class="sd">        :return: Concrete material object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">compressive_strength</span> <span class="o">&lt;</span> <span class="mi">20</span> <span class="ow">or</span> <span class="n">compressive_strength</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;compressive_strength must be between 20 MPa and 100 MPa.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># create concrete name</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">compressive_strength</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> MPa Concrete (AS 3600:2018)&quot;</span>
+
+        <span class="c1"># calculate elastic modulus</span>
+        <span class="n">fc_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+        <span class="n">Ec_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">24000</span><span class="p">,</span> <span class="mi">26700</span><span class="p">,</span> <span class="mi">30100</span><span class="p">,</span> <span class="mi">32800</span><span class="p">,</span> <span class="mi">34800</span><span class="p">,</span> <span class="mi">37400</span><span class="p">,</span> <span class="mi">39600</span><span class="p">,</span> <span class="mi">42200</span><span class="p">]</span>
+        <span class="n">f_Ec</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">fc_list</span><span class="p">,</span> <span class="n">Ec_list</span><span class="p">)</span>
+        <span class="n">elastic_modulus</span> <span class="o">=</span> <span class="n">f_Ec</span><span class="p">(</span><span class="n">compressive_strength</span><span class="p">)</span>
+
+        <span class="c1"># calculate stress block parameters</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.85</span> <span class="o">-</span> <span class="mf">0.0015</span> <span class="o">*</span> <span class="n">compressive_strength</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="mf">0.67</span><span class="p">)</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.97</span> <span class="o">-</span> <span class="mf">0.0025</span> <span class="o">*</span> <span class="n">compressive_strength</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="mf">0.67</span><span class="p">)</span>
+
+        <span class="c1"># calculate flexural_tensile_strength</span>
+        <span class="n">flexural_tensile_strength</span> <span class="o">=</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">compressive_strength</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Concrete</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+            <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteLinearNoTension</span><span class="p">(</span>
+                <span class="n">elastic_modulus</span><span class="o">=</span><span class="n">elastic_modulus</span><span class="p">,</span>
+                <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+                <span class="n">compressive_strength</span><span class="o">=</span><span class="mf">0.9</span> <span class="o">*</span> <span class="n">compressive_strength</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">RectangularStressBlock</span><span class="p">(</span>
+                <span class="n">compressive_strength</span><span class="o">=</span><span class="n">compressive_strength</span><span class="p">,</span>
+                <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+                <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span>
+                <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="n">flexural_tensile_strength</span><span class="p">,</span>
+            <span class="n">colour</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="AS3600.create_steel_material"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.create_steel_material">[docs]</a>    <span class="k">def</span> <span class="nf">create_steel_material</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>
+        <span class="n">ductility_class</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span>
+        <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SteelBar</span><span class="p">:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a steel bar material object.</span>
+
+<span class="sd">        | **Material assumptions:**</span>
+<span class="sd">        | - *Density*: 7850 kg/m\ :sup:`3`</span>
+<span class="sd">        | - *Elastic modulus*: 200,000 MPa</span>
+<span class="sd">        | - *Stress-strain profile:* Elastic-plastic, fracture strain from Table 3.2.1</span>
+
+<span class="sd">        :param yield_strength: Steel yield strength</span>
+<span class="sd">        :param ductility_class: Steel ductility class (&quot;N&quot; or &quot;L&quot;)</span>
+<span class="sd">        :param colour: Colour of the steel for rendering</span>
+
+<span class="sd">        :raises ValueError: If ``ductility_class`` is not &quot;N&quot; or &quot;L&quot;</span>
+
+<span class="sd">        :return: Steel material object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">ductility_class</span> <span class="o">==</span> <span class="s2">&quot;N&quot;</span><span class="p">:</span>
+            <span class="n">fracture_strain</span> <span class="o">=</span> <span class="mf">0.05</span>
+        <span class="k">elif</span> <span class="n">ductility_class</span> <span class="o">==</span> <span class="s2">&quot;L&quot;</span><span class="p">:</span>
+            <span class="n">fracture_strain</span> <span class="o">=</span> <span class="mf">0.015</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ductility_class must be N or L.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">SteelBar</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">yield_strength</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> MPa Steel (AS 3600:2018)&quot;</span><span class="p">,</span>
+            <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
+            <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
+                <span class="n">yield_strength</span><span class="o">=</span><span class="n">yield_strength</span><span class="p">,</span>
+                <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
+                <span class="n">fracture_strain</span><span class="o">=</span><span class="n">fracture_strain</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">colour</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="AS3600.squash_tensile_load"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.squash_tensile_load">[docs]</a>    <span class="k">def</span> <span class="nf">squash_tensile_load</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the squash and tensile load of the reinforced concrete section.</span>
+
+<span class="sd">        :return: Squash and tensile load</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># initialise the squash load, tensile load and squash moment variables</span>
+        <span class="n">squash_load</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">tensile_load</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># loop through all concrete geometries</span>
+        <span class="k">for</span> <span class="n">conc_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">concrete_geometries</span><span class="p">:</span>
+            <span class="c1"># calculate area</span>
+            <span class="n">area</span> <span class="o">=</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
+
+            <span class="c1"># calculate alpha_squash</span>
+            <span class="n">comp_strength</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_compressive_strength</span><span class="p">()</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">comp_strength</span><span class="p">:</span>
+                <span class="n">alpha_squash</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">0.003</span> <span class="o">*</span> <span class="n">comp_strength</span>
+                <span class="n">alpha_squash</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">alpha_squash</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
+                <span class="n">alpha_squash</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">alpha_squash</span><span class="p">,</span> <span class="mf">0.72</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">alpha_squash</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="c1"># calculate compressive force</span>
+            <span class="n">force_c</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">area</span>
+                <span class="o">*</span> <span class="n">alpha_squash</span>
+                <span class="o">*</span> <span class="n">conc_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_compressive_strength</span><span class="p">()</span>
+            <span class="p">)</span>
+
+            <span class="c1"># add to totals</span>
+            <span class="n">squash_load</span> <span class="o">+=</span> <span class="n">force_c</span>
+
+        <span class="c1"># loop through all steel geometries</span>
+        <span class="k">for</span> <span class="n">steel_geom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">reinf_geometries_lumped</span><span class="p">:</span>
+            <span class="c1"># calculate area</span>
+            <span class="n">area</span> <span class="o">=</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
+
+            <span class="c1"># calculate compressive and tensile force</span>
+            <span class="n">force_c</span> <span class="o">=</span> <span class="n">area</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span>
+                <span class="n">strain</span><span class="o">=</span><span class="mf">0.025</span>
+            <span class="p">)</span>
+
+            <span class="n">force_t</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="o">-</span><span class="n">area</span> <span class="o">*</span> <span class="n">steel_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_yield_strength</span><span class="p">()</span>
+            <span class="p">)</span>
+
+            <span class="c1"># add to totals</span>
+            <span class="n">squash_load</span> <span class="o">+=</span> <span class="n">force_c</span>
+            <span class="n">tensile_load</span> <span class="o">+=</span> <span class="n">force_t</span>
+
+        <span class="k">return</span> <span class="n">squash_load</span><span class="p">,</span> <span class="n">tensile_load</span></div>
+
+<div class="viewcode-block" id="AS3600.capacity_reduction_factor"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.capacity_reduction_factor">[docs]</a>    <span class="k">def</span> <span class="nf">capacity_reduction_factor</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n_u</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">n_ub</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">n_uot</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">k_uo</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">phi_0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the AS 3600:2018 capacity reduction factor (Table 2.2.2).</span>
+
+<span class="sd">        ``n_ub`` and ``phi_0`` only required for compression, ``n_uot`` only required</span>
+<span class="sd">        for tension.</span>
+
+<span class="sd">        :param n_u: Axial force in member</span>
+<span class="sd">        :param n_ub: Axial force at balanced point</span>
+<span class="sd">        :param n_uot: Axial force at ultimate tension load</span>
+<span class="sd">        :param k_uo: Neutral axis parameter at pure bending</span>
+<span class="sd">        :param phi_0: Capacity reduction factor for dominant compression</span>
+
+<span class="sd">        :return: Capacity reduction factor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># pure bending phi</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reinforcement_class</span> <span class="o">==</span> <span class="s2">&quot;N&quot;</span><span class="p">:</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="mf">1.24</span> <span class="o">-</span> <span class="mi">13</span> <span class="o">*</span> <span class="n">k_uo</span> <span class="o">/</span> <span class="mi">12</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="mf">0.65</span>
+
+        <span class="c1"># compression</span>
+        <span class="k">if</span> <span class="n">n_u</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">n_u</span> <span class="o">&gt;=</span> <span class="n">n_ub</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">phi_0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">phi_0</span> <span class="o">+</span> <span class="p">(</span><span class="n">phi</span> <span class="o">-</span> <span class="n">phi_0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">n_u</span> <span class="o">/</span> <span class="n">n_ub</span><span class="p">)</span>
+        <span class="c1"># tension</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reinforcement_class</span> <span class="o">==</span> <span class="s2">&quot;N&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">phi</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.85</span> <span class="o">-</span> <span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_u</span> <span class="o">/</span> <span class="n">n_uot</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">0.65</span></div>
+
+<div class="viewcode-block" id="AS3600.get_k_uo"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.get_k_uo">[docs]</a>    <span class="k">def</span> <span class="nf">get_k_uo</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns k_uo for the reinforced concrete cross-section given ``theta``.</span>
+
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
+<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+
+<span class="sd">        :return: Bending parameter k_uo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pure_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pure_res</span><span class="o">.</span><span class="n">k_u</span></div>
+
+<div class="viewcode-block" id="AS3600.get_n_ub"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.as3600.AS3600.html#concreteproperties.design_codes.as3600.AS3600.get_n_ub">[docs]</a>    <span class="k">def</span> <span class="nf">get_n_ub</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns n_ub for the reinforced concrete cross-section given ``theta``.</span>
+
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
+<span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+
+<span class="sd">        :return: Balanced axial force n_ub</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># get depth to extreme tensile bar and its yield strain</span>
+        <span class="n">d_0</span><span class="p">,</span> <span class="n">eps_sy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">extreme_bar</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+
+        <span class="c1"># get compressive strain at extreme fibre</span>
+        <span class="n">eps_cu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">gross_properties</span><span class="o">.</span><span class="n">conc_ultimate_strain</span>
+
+        <span class="c1"># calculate d_n at balanced load</span>
+        <span class="n">d_nb</span> <span class="o">=</span> <span class="n">d_0</span> <span class="o">*</span> <span class="p">(</span><span class="n">eps_cu</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">eps_sy</span> <span class="o">+</span> <span class="n">eps_cu</span><span class="p">)</span>
+
+        <span class="c1"># calculate axial force at balanced load</span>
+        <span class="n">balanced_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">calculate_ultimate_section_actions</span><span class="p">(</span>
+            <span class="n">d_n</span><span class="o">=</span><span class="n">d_nb</span><span class="p">,</span> <span class="n">ultimate_results</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">balanced_res</span><span class="o">.</span><span class="n">n</span></div>
+
+<div class="viewcode-block" id="AS3600.ultimate_bending_capacity"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.ultimate_bending_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">ultimate_bending_capacity</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">phi_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the ultimate bending capacity with capacity factors to</span>
+<span class="sd">        AS 3600:2018.</span>
+
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
+<span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">        :param n: Net axial force</span>
+<span class="sd">        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)</span>
+
+<span class="sd">        :return: Factored and unfactored ultimate bending results objects, and capacity</span>
+<span class="sd">            reduction factor *(factored_results, unfactored_results, phi)*</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># get parameters to determine phi</span>
+        <span class="n">n_uot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensile_load</span>
+        <span class="n">k_uo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_k_uo</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">n_ub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_n_ub</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+
+        <span class="c1"># non-linear calculation of phi</span>
+        <span class="k">def</span> <span class="nf">non_linear_phi</span><span class="p">(</span><span class="n">phi_guess</span><span class="p">):</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity_reduction_factor</span><span class="p">(</span>
+                <span class="n">n_u</span><span class="o">=</span><span class="n">n</span> <span class="o">/</span> <span class="n">phi_guess</span><span class="p">,</span>
+                <span class="n">n_ub</span><span class="o">=</span><span class="n">n_ub</span><span class="p">,</span>
+                <span class="n">n_uot</span><span class="o">=</span><span class="n">n_uot</span><span class="p">,</span>
+                <span class="n">k_uo</span><span class="o">=</span><span class="n">k_uo</span><span class="p">,</span>
+                <span class="n">phi_0</span><span class="o">=</span><span class="n">phi_0</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">phi</span> <span class="o">-</span> <span class="n">phi_guess</span>
+
+        <span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span>
+            <span class="n">f</span><span class="o">=</span><span class="n">non_linear_phi</span><span class="p">,</span>
+            <span class="n">a</span><span class="o">=</span><span class="n">phi_0</span><span class="p">,</span>
+            <span class="n">b</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>
+            <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+            <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># generate basic moment interaction diagram</span>
+        <span class="n">f_mi_res</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span>
+            <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+            <span class="n">control_points</span><span class="o">=</span><span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">],</span>
+            <span class="n">n_points</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">phi_0</span><span class="o">=</span><span class="n">phi_0</span><span class="p">,</span>
+            <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># get significant axial loads</span>
+        <span class="n">n_squash</span> <span class="o">=</span> <span class="n">f_mi_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n</span>
+        <span class="n">n_decomp</span> <span class="o">=</span> <span class="n">f_mi_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">n</span>
+        <span class="n">n_tensile</span> <span class="o">=</span> <span class="n">f_mi_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">n</span>
+
+        <span class="c1"># DETERMINE where we are on interaction diagram</span>
+        <span class="c1"># if we are above the squash load or tensile load</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">n_squash</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">utils</span><span class="o">.</span><span class="n">AnalysisError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;N = </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> is greater than the squash load, phiNc = </span><span class="si">{</span><span class="n">n_squash</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">n_tensile</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">utils</span><span class="o">.</span><span class="n">AnalysisError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;N = </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> is greater than the tensile load, phiNt = </span><span class="si">{</span><span class="n">n_tensile</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># compression linear interpolation</span>
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">n_decomp</span><span class="p">:</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">n_decomp</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_squash</span> <span class="o">-</span> <span class="n">n_decomp</span><span class="p">)</span>
+            <span class="n">squash</span> <span class="o">=</span> <span class="n">f_mi_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">decomp</span> <span class="o">=</span> <span class="n">f_mi_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">ult_res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">inf</span><span class="p">,</span>
+                <span class="n">k_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                <span class="n">m_x</span><span class="o">=</span><span class="p">(</span><span class="n">decomp</span><span class="o">.</span><span class="n">m_x</span> <span class="o">+</span> <span class="n">factor</span> <span class="o">*</span> <span class="p">(</span><span class="n">squash</span><span class="o">.</span><span class="n">m_x</span> <span class="o">-</span> <span class="n">decomp</span><span class="o">.</span><span class="n">m_x</span><span class="p">))</span> <span class="o">/</span> <span class="n">phi</span><span class="p">,</span>
+                <span class="n">m_y</span><span class="o">=</span><span class="p">(</span><span class="n">decomp</span><span class="o">.</span><span class="n">m_y</span> <span class="o">+</span> <span class="n">factor</span> <span class="o">*</span> <span class="p">(</span><span class="n">squash</span><span class="o">.</span><span class="n">m_y</span> <span class="o">-</span> <span class="n">decomp</span><span class="o">.</span><span class="n">m_y</span><span class="p">))</span> <span class="o">/</span> <span class="n">phi</span><span class="p">,</span>
+                <span class="n">m_xy</span><span class="o">=</span><span class="p">(</span><span class="n">decomp</span><span class="o">.</span><span class="n">m_xy</span> <span class="o">+</span> <span class="n">factor</span> <span class="o">*</span> <span class="p">(</span><span class="n">squash</span><span class="o">.</span><span class="n">m_xy</span> <span class="o">-</span> <span class="n">decomp</span><span class="o">.</span><span class="n">m_xy</span><span class="p">))</span> <span class="o">/</span> <span class="n">phi</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="c1"># regular calculation</span>
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ult_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span> <span class="o">/</span> <span class="n">phi</span>
+            <span class="p">)</span>
+        <span class="c1"># tensile linear interpolation</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="n">n_tensile</span>
+            <span class="n">pure</span> <span class="o">=</span> <span class="n">f_mi_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">ult_res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">inf</span><span class="p">,</span>
+                <span class="n">k_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                <span class="n">m_x</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">factor</span><span class="p">)</span> <span class="o">*</span> <span class="n">pure</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="n">phi</span><span class="p">,</span>
+                <span class="n">m_y</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">factor</span><span class="p">)</span> <span class="o">*</span> <span class="n">pure</span><span class="o">.</span><span class="n">m_y</span> <span class="o">/</span> <span class="n">phi</span><span class="p">,</span>
+                <span class="n">m_xy</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">factor</span><span class="p">)</span> <span class="o">*</span> <span class="n">pure</span><span class="o">.</span><span class="n">m_xy</span> <span class="o">/</span> <span class="n">phi</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># factor ultimate results</span>
+        <span class="n">factored_ult_res</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">ult_res</span><span class="p">)</span>
+        <span class="n">factored_ult_res</span><span class="o">.</span><span class="n">n</span> <span class="o">*=</span> <span class="n">phi</span>
+        <span class="n">factored_ult_res</span><span class="o">.</span><span class="n">m_x</span> <span class="o">*=</span> <span class="n">phi</span>
+        <span class="n">factored_ult_res</span><span class="o">.</span><span class="n">m_y</span> <span class="o">*=</span> <span class="n">phi</span>
+        <span class="n">factored_ult_res</span><span class="o">.</span><span class="n">m_xy</span> <span class="o">*=</span> <span class="n">phi</span>
+
+        <span class="k">return</span> <span class="n">factored_ult_res</span><span class="p">,</span> <span class="n">ult_res</span><span class="p">,</span> <span class="n">phi</span></div>
+
+<div class="viewcode-block" id="AS3600.moment_interaction_diagram"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.moment_interaction_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">moment_interaction_diagram</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">limits</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">control_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;fy&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
+        <span class="n">n_spacing</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">phi_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram with capacity factors to</span>
+<span class="sd">        AS 3600:2018.</span>
+
+<span class="sd">        See :meth:`concreteproperties.concrete_section.moment_interaction_diagram` for</span>
+<span class="sd">        allowable control points.</span>
+
+<span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
+<span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">        :param limits: List of control points that define the start and end of the</span>
+<span class="sd">            interaction diagram. List length must equal two. The default limits range</span>
+<span class="sd">            from concrete decompression strain to zero curvature tension.</span>
+<span class="sd">        :param control_points: List of additional control points to add to the moment</span>
+<span class="sd">            interaction diagram. The default control points include the pure</span>
+<span class="sd">            compression point (``kappa0``), the balanced point (``fy=1``) and the pure</span>
+<span class="sd">            bending point (``N=0``). Control points may lie outside the limits of the</span>
+<span class="sd">            moment interaction diagram as long as equilibrium can be found.</span>
+<span class="sd">        :param labels: List of labels to apply to the ``limits`` and ``control_points``</span>
+<span class="sd">            for plotting purposes. The first two values in ``labels`` apply labels to</span>
+<span class="sd">            the ``limits``, the remaining values apply labels to the ``control_points``.</span>
+<span class="sd">            If a single value is provided, this value will be applied to both ``limits``</span>
+<span class="sd">            and all ``control_points``. The length of ``labels`` must equal ``1`` or</span>
+<span class="sd">            ``2 + len(control_points)``.</span>
+<span class="sd">        :param n_points: Number of points to compute including and between the</span>
+<span class="sd">            ``limits`` of the moment interaction diagram. Generates equally spaced</span>
+<span class="sd">            neutral axes between the ``limits``.</span>
+<span class="sd">        :param n_spacing: If provided, overrides ``n_points`` and generates the moment</span>
+<span class="sd">            interaction diagram using ``n_spacing`` equally spaced axial loads. Note</span>
+<span class="sd">            that using ``n_spacing`` negatively affects performance, as the neutral axis</span>
+<span class="sd">            depth must first be located for each point on the moment interaction</span>
+<span class="sd">            diagram.</span>
+<span class="sd">        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)</span>
+<span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
+
+<span class="sd">        :return: Factored and unfactored moment interaction results objects, and list of</span>
+<span class="sd">            capacity reduction factors *(factored_results, unfactored_results, phis)*</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">mi_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span>
+            <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+            <span class="n">limits</span><span class="o">=</span><span class="n">limits</span><span class="p">,</span>
+            <span class="n">control_points</span><span class="o">=</span><span class="n">control_points</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+            <span class="n">n_points</span><span class="o">=</span><span class="n">n_points</span><span class="p">,</span>
+            <span class="n">n_spacing</span><span class="o">=</span><span class="n">n_spacing</span><span class="p">,</span>
+            <span class="n">progress_bar</span><span class="o">=</span><span class="n">progress_bar</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># get theta</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">mi_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">theta</span>
+
+        <span class="c1"># add squash load</span>
+        <span class="n">mi_res</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="n">inf</span><span class="p">,</span>
+                <span class="n">k_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">squash_load</span><span class="p">,</span>
+                <span class="n">m_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">m_y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">m_xy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="c1"># add tensile load</span>
+        <span class="n">mi_res</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">(</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+                <span class="n">d_n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">k_u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tensile_load</span><span class="p">,</span>
+                <span class="n">m_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">m_y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">m_xy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># make a copy of the results to factor</span>
+        <span class="n">factored_mi_res</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">mi_res</span><span class="p">)</span>
+
+        <span class="c1"># list to store phis</span>
+        <span class="n">phis</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># get required constants for phi</span>
+        <span class="n">n_uot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensile_load</span>
+        <span class="n">k_uo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_k_uo</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">n_ub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_n_ub</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+
+        <span class="c1"># factor results</span>
+        <span class="k">for</span> <span class="n">ult_res</span> <span class="ow">in</span> <span class="n">factored_mi_res</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity_reduction_factor</span><span class="p">(</span>
+                <span class="n">n_u</span><span class="o">=</span><span class="n">ult_res</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">n_ub</span><span class="o">=</span><span class="n">n_ub</span><span class="p">,</span> <span class="n">n_uot</span><span class="o">=</span><span class="n">n_uot</span><span class="p">,</span> <span class="n">k_uo</span><span class="o">=</span><span class="n">k_uo</span><span class="p">,</span> <span class="n">phi_0</span><span class="o">=</span><span class="n">phi_0</span>
+            <span class="p">)</span>
+            <span class="n">ult_res</span><span class="o">.</span><span class="n">n</span> <span class="o">*=</span> <span class="n">phi</span>
+            <span class="n">ult_res</span><span class="o">.</span><span class="n">m_x</span> <span class="o">*=</span> <span class="n">phi</span>
+            <span class="n">ult_res</span><span class="o">.</span><span class="n">m_y</span> <span class="o">*=</span> <span class="n">phi</span>
+            <span class="n">ult_res</span><span class="o">.</span><span class="n">m_xy</span> <span class="o">*=</span> <span class="n">phi</span>
+            <span class="n">phis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">factored_mi_res</span><span class="p">,</span> <span class="n">mi_res</span><span class="p">,</span> <span class="n">phis</span></div>
+
+<div class="viewcode-block" id="AS3600.biaxial_bending_diagram"><a class="viewcode-back" href="../../../user_guide/design_codes/as3600.html#concreteproperties.design_codes.as3600.AS3600.biaxial_bending_diagram">[docs]</a>    <span class="k">def</span> <span class="nf">biaxial_bending_diagram</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">48</span><span class="p">,</span>
+        <span class="n">phi_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">BiaxialBendingResults</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Generates a biaxial bending with capacity factors to AS 3600:2018.</span>
+
+<span class="sd">        :param n: Net axial force</span>
+<span class="sd">        :param n_points: Number of calculation points</span>
+<span class="sd">        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)</span>
+<span class="sd">        :param progress_bar: If set to True, displays the progress bar</span>
+
+<span class="sd">        :return: Factored biaxial bending results object and list of capacity reduction</span>
+<span class="sd">            factors *(factored_results, phis)*</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># initialise results</span>
+        <span class="n">f_bb_res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">BiaxialBendingResults</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">phis</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># calculate d_theta</span>
+        <span class="n">d_theta</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">n_points</span>
+
+        <span class="c1"># generate list of thetas</span>
+        <span class="n">theta_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">d_theta</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
+
+        <span class="c1"># function that performs biaxial bending analysis</span>
+        <span class="k">def</span> <span class="nf">bbcurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># loop through thetas</span>
+            <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">theta_list</span><span class="p">:</span>
+                <span class="c1"># factored capacity</span>
+                <span class="n">f_ult_res</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span>
+                    <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">phi_0</span><span class="o">=</span><span class="n">phi_0</span>
+                <span class="p">)</span>
+                <span class="n">f_bb_res</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_ult_res</span><span class="p">)</span>
+                <span class="n">phis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                    <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">progress_bar</span><span class="p">:</span>
+            <span class="c1"># create progress bar</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_known_progress</span><span class="p">()</span>
+
+            <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">refresh_per_second</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[red]Generating biaxial bending diagram&quot;</span><span class="p">,</span>
+                    <span class="n">total</span><span class="o">=</span><span class="n">n_points</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="n">bbcurve</span><span class="p">(</span><span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">)</span>
+
+                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="n">task</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bold green]:white_check_mark: Biaxial bending diagram generated&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">live</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bbcurve</span><span class="p">()</span>
+
+        <span class="c1"># add first result to end of list top</span>
+        <span class="n">f_bb_res</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_bb_res</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">phis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phis</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">f_bb_res</span><span class="p">,</span> <span class="n">phis</span></div></div>
+</pre></div>
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Robbie van Leeuwen.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>
