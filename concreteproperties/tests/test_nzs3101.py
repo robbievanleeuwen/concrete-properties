@@ -1092,3 +1092,66 @@ def test_nzs3101_ultimate_bending_capacity_beam_with_axial(
     assert pytest.approx(ultimate_results.m_x / 1e6, rel=0.001) == phi_Mn
     assert pytest.approx(ultimate_results.m_y / 1e6, rel=0.001) == 0
     assert pytest.approx(ultimate_results.d_n, rel=0.001) == d_n
+
+
+@pytest.mark.parametrize(
+    "compressive_strength, steel_grade, pphr_class, analysis_type, n_design, progress_bar, phi_Mn, d_n",
+    [
+        (40, "500e", "LDPR", "nom_chk", 1000, True, 742.4384, 140.6187),
+        (40, "500e", "NDPR", "cpe_chk", -500, False, 519.5037, 69.7683),
+        (40, "500e", "DPR", "os_chk", 2250, True, 1254.3396, 185.8820),
+        (40, "500e", "NDPR", "prob_chk", -1250, True, 391.8097, 46.2072),
+        (40, "500e", "NDPR", "prob_os_chk", 3400, True, 1424.9388, 219.6921),
+    ],
+)
+def test_nzs3101_biaxial_bending_diagram(
+    compressive_strength,
+    steel_grade,
+    pphr_class,
+    analysis_type,
+    n_design,
+    progress_bar,
+    phi_Mn,
+    d_n,
+):
+    design_code = NZS3101()
+    concrete = design_code.create_concrete_material(compressive_strength)
+    steel = design_code.create_steel_material(steel_grade)
+
+    dia = 20
+    geometry = concrete_rectangular_section(
+        b=600,
+        d=600,
+        dia_top=dia,
+        n_top=5,
+        dia_bot=dia,
+        n_bot=5,
+        dia_side=dia,
+        n_side=3,
+        n_circle=16,
+        cover=50,
+        conc_mat=concrete,
+        steel_mat=steel,
+    )
+    conc_sec = ConcreteSection(geometry)
+    design_code.assign_concrete_section(conc_sec)
+
+    n_points = 4
+    bb_results, _ = design_code.biaxial_bending_diagram(
+        pphr_class,
+        analysis_type,
+        n_design * 1e3,
+        n_points,
+        progress_bar,
+    )
+
+    m_x_list, m_y_list = bb_results.get_results_lists()
+
+    assert pytest.approx(m_x_list[0] / 1e6, rel=0.001) == -phi_Mn
+    assert pytest.approx(m_y_list[0] / 1e6, rel=0.001) == 0
+    assert pytest.approx(m_x_list[1] / 1e6, rel=0.001) == 0
+    assert pytest.approx(m_y_list[1] / 1e6, rel=0.001) == phi_Mn
+    assert pytest.approx(m_x_list[2] / 1e6, rel=0.001) == phi_Mn
+    assert pytest.approx(m_y_list[2] / 1e6, rel=0.001) == 0
+    assert pytest.approx(m_x_list[3] / 1e6, rel=0.001) == 0
+    assert pytest.approx(m_y_list[3] / 1e6, rel=0.001) == -phi_Mn
