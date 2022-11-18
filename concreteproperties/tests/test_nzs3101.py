@@ -276,17 +276,17 @@ def test_nzs3101_check_f_y_limit_valid(yield_strength):
 
 
 @pytest.mark.parametrize(
-    "n",
+    "n_design",
     [
         (1000000000),
         (-1000000000),
     ],
 )
-def test_nzs3101_check_axial_limits_valueerror(n):
+def test_nzs3101_check_axial_limits_valueerror(n_design):
     design_code = NZS3101()
     create_dummy_section(design_code)
     with pytest.raises(ValueError):
-        design_code.check_axial_limits(n, 1)
+        design_code.check_axial_limits(n_design, 1)
 
 
 @pytest.mark.parametrize(
@@ -1028,14 +1028,14 @@ def test_nzs3101_ultimate_bending_capacity_beam_no_axial(
         conc_mat=concrete,
         steel_mat=steel,
     )
-    n = 0
+    n_design = 0
     conc_sec = ConcreteSection(geometry)
     design_code.assign_concrete_section(conc_sec)
     ultimate_results, _, _ = design_code.ultimate_bending_capacity(
         pphr_class,
         analysis_type,
         theta,
-        n,
+        n_design,
     )
     assert pytest.approx(ultimate_results.m_x / 1e6, rel=0.001) == phi_Mn
     assert pytest.approx(ultimate_results.m_y / 1e6, rel=0.001) == 0
@@ -1044,7 +1044,7 @@ def test_nzs3101_ultimate_bending_capacity_beam_no_axial(
 
 
 @pytest.mark.parametrize(
-    "n, compressive_strength, steel_grade, pphr_class, analysis_type, theta, phi_Mn, d_n",
+    "n_design, compressive_strength, steel_grade, pphr_class, analysis_type, theta, phi_Mn, d_n",
     [
         (1000, 40, "500e", "LDPR", "nom_chk", 0, 1053.2022, 145.4137),
         (-500, 40, "500e", "NDPR", "cpe_chk", 0, 690.0205, 58.0155),
@@ -1054,7 +1054,7 @@ def test_nzs3101_ultimate_bending_capacity_beam_no_axial(
     ],
 )
 def test_nzs3101_ultimate_bending_capacity_beam_with_axial(
-    n,
+    n_design,
     compressive_strength,
     steel_grade,
     pphr_class,
@@ -1087,7 +1087,7 @@ def test_nzs3101_ultimate_bending_capacity_beam_with_axial(
         pphr_class,
         analysis_type,
         theta,
-        n * 1e3,
+        n_design * 1e3,
     )
     assert pytest.approx(ultimate_results.m_x / 1e6, rel=0.001) == phi_Mn
     assert pytest.approx(ultimate_results.m_y / 1e6, rel=0.001) == 0

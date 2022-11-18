@@ -479,7 +479,7 @@ class NZS3101(DesignCode):
 
     def check_axial_limits(
         self,
-        n: float,
+        n_design: float,
         phi: float,
         cpe_design: bool = False,
         os_design: bool = False,
@@ -489,7 +489,7 @@ class NZS3101(DesignCode):
         """Checks that the specified axial load is within the maximum tensile and
         compressive capacity of the concrete cross section.
 
-        :param n: Net axial force
+        :param n_design: Axial design force (:math:`N^*`)
         :param phi: Strength reduction factor :math:`\\phi`
         :param cpe_design: True if the capacity protected element capacity of a concrete
             section is required (i.e. design capacity being checked against O/S
@@ -510,16 +510,16 @@ class NZS3101(DesignCode):
         max_comp = self.max_comp_strength(cpe_design, os_design, prob_design)
 
         # compare to axial load
-        if n < phi * max_ten:
+        if n_design < phi * max_ten:
             raise ValueError(
-                f"The specified axial load of {n*n_scale:.2f} kN, is less than the "
-                f"tension capacity of the concrete section, phiN_t = "
+                f"The specified axial load of {n_design*n_scale:.2f} kN, is less than "
+                f"the tension capacity of the concrete section, phiN_t = "
                 f"{phi*max_ten*n_scale:.2f} kN"
             )
-        elif n > phi * max_comp:
+        elif n_design > phi * max_comp:
             raise ValueError(
-                f"The specified axial load of {n*n_scale:.2f} kN, is greater than "
-                f"the compression capacity of the concrete section, phiN_c = "
+                f"The specified axial load of {n_design*n_scale:.2f} kN, is greater "
+                f"than the compression capacity of the concrete section, phiN_c = "
                 f"{phi*max_comp*n_scale:.2f} kN"
             )
 
@@ -1330,8 +1330,8 @@ class NZS3101(DesignCode):
             prev_phi_os = steel_geom.material.phi_os
             prev_colour_steel = steel_geom.material.colour
 
-            # determine appropriate scaling factor for yield strength depen depending on
-            # defined mmaterial and anlysis type
+            # determine appropriate scaling factor for yield strength depending on
+            # defined material and analysis type
             if prev_steel_grade not in prob_properties and os_design:
                 mult_prob_strength = prev_phi_os
             elif prev_steel_grade not in prob_properties and not os_design:
@@ -1358,7 +1358,7 @@ class NZS3101(DesignCode):
         pphr_class: str = "NDPR",
         analysis_type: str = "nom_chk",
         theta: float = 0,
-        n: float = 0,
+        n_design: float = 0,
     ) -> Tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]:
         """Calculates the ultimate bending capacity with capacity factors to
         NZS3101:2006 or the NZSEE C5 assessment guidelines dependant on analysis type.
@@ -1369,7 +1369,7 @@ class NZS3101(DesignCode):
             further information on analysis types.
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \\theta \leq \pi`)
-        :param n: Net axial force
+        :param n_design: Axial design force (:math:`N^*`)
         :return: Factored and unfactored ultimate bending results objects, and capacity
             reduction factor *(factored_results, unfactored_results, phi)*
         """
@@ -1390,10 +1390,12 @@ class NZS3101(DesignCode):
 
         # Check if axial load is within the axial tension and compression capacity
         # limits of the analysis section
-        self.check_axial_limits(n, phi, cpe_design, os_design, prob_design)
+        self.check_axial_limits(n_design, phi, cpe_design, os_design, prob_design)
 
         # calculate ultimate bending capacity
-        ult_res = analysis_section.ultimate_bending_capacity(theta=theta, n=n / phi)
+        ult_res = analysis_section.ultimate_bending_capacity(
+            theta=theta, n=n_design / phi
+        )
 
         # factor ultimate results
         f_ult_res = deepcopy(ult_res)
@@ -1495,7 +1497,7 @@ class NZS3101(DesignCode):
         self,
         pphr_class: str = "NDPR",
         analysis_type: str = "nom_chk",
-        n: float = 0.0,
+        n_design: float = 0.0,
         n_points: int = 48,
         progress_bar: bool = True,
     ) -> Tuple[res.BiaxialBendingResults, List[float]]:
@@ -1515,7 +1517,7 @@ class NZS3101(DesignCode):
             defined concrete section, by default a normal nominal strength design check
             is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor` for
             further information on analysis types.
-        :param n: Net axial force
+        :param n_design: Axial design force (:math:`N^*`)
         :param n_points: Number of calculation points for neutral axis orientation
         :param progress_bar: If set to True, displays the progress bar
         :return: Factored biaxial bending results object and list of capacity reduction
@@ -1530,7 +1532,7 @@ class NZS3101(DesignCode):
         self.check_f_y_limit()
 
         # initialise results
-        f_bb_res = res.BiaxialBendingResults(n=n)
+        f_bb_res = res.BiaxialBendingResults(n=n_design)
 
         # list to store phis
         phis = []
@@ -1550,7 +1552,7 @@ class NZS3101(DesignCode):
                     pphr_class,
                     analysis_type,
                     theta=theta,
-                    n=n,
+                    n_design=n_design,
                 )
                 f_bb_res.results.append(f_ult_res)
                 phis.append(phi)
