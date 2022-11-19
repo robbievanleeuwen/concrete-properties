@@ -230,10 +230,7 @@ def test_nzs3101_check_f_c_limits_valid(pphr_class, compressive_strength):
         conc_geom.material.ultimate_stress_strain_profile.__setattr__(
             "compressive_strength", compressive_strength
         )
-    try:
-        design_code.check_f_c_limits(pphr_class)
-    except ValueError:
-        assert False
+    assert pytest.approx(design_code.check_f_c_limits(pphr_class)) == None
 
 
 @pytest.mark.parametrize(
@@ -269,10 +266,7 @@ def test_nzs3101_check_f_y_limit_valid(yield_strength):
         steel_geom.material.stress_strain_profile.__setattr__(
             "yield_strength", yield_strength
         )
-    try:
-        design_code.check_f_y_limit()
-    except ValueError:
-        assert False
+    assert pytest.approx(design_code.check_f_y_limit()) == None
 
 
 @pytest.mark.parametrize(
