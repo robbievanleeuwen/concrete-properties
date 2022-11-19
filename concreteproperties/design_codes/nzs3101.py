@@ -396,7 +396,7 @@ class NZS3101(DesignCode):
           Note singly reinforced walls are only allowed in nominally ductile structures
           designed in accordance with NZS3101:2006.
 
-          Note refer NZS3101:2006 Chapter 2 & 11 for other limitations on the use of
+          Refer NZS3101:2006 Chapter 2 & 11 for other limitations on the use of
           singly reinforced walls.
 
           Note because of the different maximum axial compression load limits and
@@ -1443,9 +1443,11 @@ class NZS3101(DesignCode):
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \\theta \leq \pi`)
         :param control_points: List of additional control points to add to the moment
-            interaction diagram. The default control points include the balanced point, the reinforcement strain points and the 0% reinforcement strain point (``fy=1``, ``fy=0.5``, ``fy=0``), and the pure
-            bending point (``N=0``). Control points may lie outside the limits of the
-            moment interaction diagram as long as equilibrium can be found.
+            interaction diagram. The default control points include the balanced point,
+            the 50% reinforcement strain point, the 0% reinforcement strain point
+            (``fy=1``, ``fy=0.5``, ``fy=0``), and the pure bending point (``N=0``).
+            Control points may lie outside the limits of the moment interaction diagram
+            as long as equilibrium can be found.
         :param labels: List of labels to apply to the ``limits`` and ``control_points``
             for plotting purposes. The first two values in ``labels`` apply labels to
             the ``limits``, the remaining values apply labels to the ``control_points``.

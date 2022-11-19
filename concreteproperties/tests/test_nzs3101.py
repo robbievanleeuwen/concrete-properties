@@ -1038,7 +1038,8 @@ def test_nzs3101_ultimate_bending_capacity_beam_no_axial(
 
 
 @pytest.mark.parametrize(
-    "n_design, compressive_strength, steel_grade, pphr_class, analysis_type, theta, phi_Mn, d_n",
+    "n_design, compressive_strength, steel_grade, pphr_class, analysis_type, theta, "
+    "phi_Mn, d_n",
     [
         (1000, 40, "500e", "LDPR", "nom_chk", 0, 1053.2022, 145.4137),
         (-500, 40, "500e", "NDPR", "cpe_chk", 0, 690.0205, 58.0155),
@@ -1089,7 +1090,8 @@ def test_nzs3101_ultimate_bending_capacity_beam_with_axial(
 
 
 @pytest.mark.parametrize(
-    "compressive_strength, steel_grade, pphr_class, analysis_type, theta, n_design, progress_bar, phi_Mn, d_n",
+    "compressive_strength, steel_grade, pphr_class, analysis_type, theta, n_design, "
+    "progress_bar, phi_Mn, d_n",
     [
         (40, "500e", "LDPR", "nom_chk", 0, 1000, False, 742.4384, 140.6187),
         (40, "500e", "NDPR", "cpe_chk", 0, -500, True, 519.5037, 69.7683),
@@ -1148,7 +1150,8 @@ def test_nzs3101_moment_interaction_diagram(
 
 
 @pytest.mark.parametrize(
-    "compressive_strength, steel_grade, pphr_class, analysis_type, n_design, progress_bar, phi_Mn, d_n",
+    "compressive_strength, steel_grade, pphr_class, analysis_type, n_design, "
+    "progress_bar, phi_Mn, d_n",
     [
         (40, "500e", "LDPR", "nom_chk", 1000, True, 742.4384, 140.6187),
         (40, "500e", "NDPR", "cpe_chk", -500, False, 519.5037, 69.7683),

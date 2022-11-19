@@ -485,7 +485,8 @@ class ModifiedMander(ConcreteServiceProfile):
       Mander et al. [1]_ can predict high levels of confined concrete strain dependant
       on the assumed value for the ultimate steel strain for the transverse
       reinforcement. The modified expression given the NZSEE C5 assesment guidelines
-      [3]_ provides a correction and is directly implemented in the :class:`ModifiedMander` material class.
+      [3]_ provides a correction and is directly implemented in the
+      :class:`ModifiedMander` material class.
 
       These corrections to avoid overestimating the confined concrete limiting strain
       consist of three allowances:-
