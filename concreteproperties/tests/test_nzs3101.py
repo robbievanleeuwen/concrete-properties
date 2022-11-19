@@ -8,9 +8,6 @@ from sectionproperties.pre.library.concrete_sections import concrete_rectangular
 import sectionproperties.pre.library.primitive_sections as sp_ps
 import sectionproperties.pre.library.steel_sections as sp_ss
 
-# TODO - moment interaction tests
-# TODO - biaxial bending checks
-
 
 def create_dummy_section(design_code, prob_section=False, section_type="column"):
     # dummy beam section with fixed properties to fulfil design_code.concrete_section
