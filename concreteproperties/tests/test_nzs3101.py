@@ -1095,6 +1095,65 @@ def test_nzs3101_ultimate_bending_capacity_beam_with_axial(
 
 
 @pytest.mark.parametrize(
+    "compressive_strength, steel_grade, pphr_class, analysis_type, theta, n_design, progress_bar, phi_Mn, d_n",
+    [
+        (40, "500e", "LDPR", "nom_chk", 0, 1000, False, 742.4384, 140.6187),
+        (40, "500e", "NDPR", "cpe_chk", 0, -500, True, 519.5037, 69.7683),
+        (40, "500e", "DPR", "os_chk", 0, 2250, False, 1254.3396, 185.8820),
+        (40, "500e", "NDPR", "prob_chk", 0, -1250, True, 391.8097, 46.2072),
+        (40, "500e", "NDPR", "prob_os_chk", 0, 3400, True, 1424.9388, 219.6921),
+    ],
+)
+def test_nzs3101_moment_interaction_diagram(
+    compressive_strength,
+    steel_grade,
+    pphr_class,
+    analysis_type,
+    theta,
+    n_design,
+    progress_bar,
+    phi_Mn,
+    d_n,
+):
+    design_code = NZS3101()
+    concrete = design_code.create_concrete_material(compressive_strength)
+    steel = design_code.create_steel_material(steel_grade)
+
+    dia = 20
+    geometry = concrete_rectangular_section(
+        b=600,
+        d=600,
+        dia_top=dia,
+        n_top=5,
+        dia_bot=dia,
+        n_bot=5,
+        dia_side=dia,
+        n_side=3,
+        n_circle=16,
+        cover=50,
+        conc_mat=concrete,
+        steel_mat=steel,
+    )
+    conc_sec = ConcreteSection(geometry)
+    design_code.assign_concrete_section(conc_sec)
+
+    phi, _, _, _ = design_code.capacity_reduction_factor(analysis_type)
+
+    mi_results, _, _ = design_code.moment_interaction_diagram(
+        pphr_class=pphr_class,
+        analysis_type=analysis_type,
+        theta=theta,
+        control_points=[("N", n_design / phi * 1e3)],
+        progress_bar=progress_bar,
+    )
+
+    n_list, m_list = mi_results.get_results_lists(moment="m_x")
+
+    n_list = np.abs(np.asarray(n_list) / 1e3 - n_design)
+    assert pytest.approx(m_list[n_list.argmin()] / 1e6, rel=0.001) == phi_Mn
+
+
+@pytest.mark.parametrize(
     "compressive_strength, steel_grade, pphr_class, analysis_type, n_design, progress_bar, phi_Mn, d_n",
     [
         (40, "500e", "LDPR", "nom_chk", 1000, True, 742.4384, 140.6187),

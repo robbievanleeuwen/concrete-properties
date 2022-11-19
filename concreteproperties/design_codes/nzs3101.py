@@ -1411,6 +1411,16 @@ class NZS3101(DesignCode):
         pphr_class: str = "NDPR",
         analysis_type: str = "nom_chk",
         theta: float = 0,
+        control_points: List[Tuple[str, float]] = [
+            ("fy", 1.0),
+            ("fy", 0.5),
+            ("fy", 0.0),
+            ("N", 0.0),
+        ],
+        labels: Optional[List[str]] = None,
+        n_points: int = 24,
+        n_spacing: Optional[int] = None,
+        max_comp_labels: Optional[List[str]] = None,
         progress_bar: bool = True,
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
         """Generates a moment interaction diagram with capacity factors and material
@@ -1432,6 +1442,27 @@ class NZS3101(DesignCode):
             further information on analysis types.
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \\theta \leq \pi`)
+        :param control_points: List of additional control points to add to the moment
+            interaction diagram. The default control points include the balanced point, the reinforcement strain points and the 0% reinforcement strain point (``fy=1``, ``fy=0.5``, ``fy=0``), and the pure
+            bending point (``N=0``). Control points may lie outside the limits of the
+            moment interaction diagram as long as equilibrium can be found.
+        :param labels: List of labels to apply to the ``limits`` and ``control_points``
+            for plotting purposes. The first two values in ``labels`` apply labels to
+            the ``limits``, the remaining values apply labels to the ``control_points``.
+            If a single value is provided, this value will be applied to both ``limits``
+            and all ``control_points``. The length of ``labels`` must equal ``1`` or
+            ``2 + len(control_points)``.
+        :param n_points: Number of points to compute including and between the
+            ``limits`` of the moment interaction diagram. Generates equally spaced
+            neutral axes between the ``limits``.
+        :param n_spacing: If provided, overrides ``n_points`` and generates the moment
+            interaction diagram using ``n_spacing`` equally spaced axial loads. Note
+            that using ``n_spacing`` negatively affects performance, as the neutral axis
+            depth must first be located for each point on the moment interaction
+            diagram.
+        :param max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
+            first value is at zero moment, second value is at the intersection with the
+            interaction diagram.
         :param progress_bar: If set to True, displays the progress bar
         :return: Factored and unfactored moment interaction results objects, and list of
             capacity reduction factors *(factored_results, unfactored_results, phis)*
@@ -1461,19 +1492,13 @@ class NZS3101(DesignCode):
         # analyse the concrete section to create the M/N interaction curve
         mi_res = analysis_section.moment_interaction_diagram(
             theta=theta,
-            # Utilise default control points until this issue is addressed
-            # https://github.com/robbievanleeuwen/concrete-properties/issues/39
-            # control_points=[
-            #     ("kappa0", 0.0),
-            #     ("N", max_comp),
-            #     ("fy", 0),
-            #     ("fy", 0.5),
-            #     ("fy", 1.0),
-            #     ("N", 0.0),
-            #     ("d_n", 1e-6),
-            # ],
-            # n_points=[3, 8, 10, 12, 12, 3],
+            limits=[("kappa0", 0.0), ("d_n", 1e-6)],
+            control_points=control_points,
+            labels=labels,
+            n_points=n_points,
+            n_spacing=n_spacing,
             max_comp=max_comp,
+            max_comp_labels=max_comp_labels,
             progress_bar=progress_bar,
         )
 
