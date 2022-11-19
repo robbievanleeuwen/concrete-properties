@@ -522,12 +522,13 @@ class ModifiedMander(ConcreteServiceProfile):
         - Note that the 0.6 factor applied to the ultimate tensile failure strain can
           be modified as noted above.
 
-    .. figure:: /_static/mander_unconfined.png
-       :align: center
-       :scale: 75 %
-    .. figure:: /_static/mander_confined.png
-       :align: center
-       :scale: 75 %
+    .. plot:: ./_static/doc_plots/mander_unconfined_plot.py mander_unconfined_plot
+      :include-source: False
+      :caption: ModifiedMander Parameters for Unconfined Concrete
+
+    .. plot:: ./_static/doc_plots/mander_confined_plot.py mander_confined_plot
+      :include-source: False
+      :caption: ModifiedMander Parameters for Confined Concrete
 
     .. [1] Theoretical Stress-Strain Model For Confined Concrete - Mander, Priestley,
       Park (1988)
@@ -543,7 +544,8 @@ class ModifiedMander(ConcreteServiceProfile):
     :param sect_type: The type of concrete cross section for which to create a confined
         concrete stress-strain relationship for:-
 
-        - **rect** = Rectangular section
+        - **rect** = Rectangular section with closed stirrups and/or tie transverse
+          reinforcement
 
         - **circ_hoop** = Circular section with closed hoop transverse reinforcement
 
