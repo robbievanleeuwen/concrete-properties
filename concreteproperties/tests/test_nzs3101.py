@@ -159,6 +159,22 @@ def test_nzs3101_modulus_of_rupture(compressive_strength, density, calc_value):
 
 
 @pytest.mark.parametrize(
+    "compressive_strength, ",
+    [
+        (20),
+        (30),
+        (40),
+        (50),
+    ],
+)
+def test_nzs3101_prob_compressive_strength(compressive_strength):
+    design_code = NZS3101()
+    assert pytest.approx(
+        design_code.prob_compressive_strength(compressive_strength), rel=0.01
+    ) == compressive_strength * (1.5 if compressive_strength <= 40 else 1.4)
+
+
+@pytest.mark.parametrize(
     "compressive_strength, density, rel_tol, calc_value",
     [
         (30, 2300, 0.01, 25742.960),
@@ -169,14 +185,20 @@ def test_nzs3101_modulus_of_rupture(compressive_strength, density, calc_value):
         (20, 2100, 0.01, 18337.918),
     ],
 )
-def test_nzs3101_e_conc(compressive_strength, density, rel_tol, calc_value):
+def test_nzs3101_e_conc_valid(compressive_strength, density, rel_tol, calc_value):
     design_code = NZS3101()
     assert (
         pytest.approx(design_code.e_conc(compressive_strength, density), rel=rel_tol)
         == calc_value
     )
+
+
+def test_nzs3101_e_conc_valueerror():
+    design_code = NZS3101()
     with pytest.raises(ValueError):
-        design_code.e_conc(20, 1500)
+        design_code.e_conc(20, 1799)
+    with pytest.raises(ValueError):
+        design_code.e_conc(20, 2801)
 
 
 @pytest.mark.parametrize(

@@ -237,6 +237,7 @@ class NZS3101(DesignCode):
         :return: :math:`\lambda` factor
         """
         lamda = min(0.4 + 0.6 * density / 2200, 1)
+
         return lamda
 
     def concrete_tensile_strength(
@@ -247,16 +248,16 @@ class NZS3101(DesignCode):
     ) -> float:
         """Calculates the lower characteristic tensile strength of concrete
         (:math:`f_t`) in accordance with NZS3101:2006 CL 5.2.4, or calculates the
-        probable tensile strength of concrete in accordance with NZSEE C5 assessemnt
+        probable tensile strength of concrete in accordance with NZSEE C5 assessment
         guidelines C5.4.2.4.
 
         For design to NZS3101:2006:-
 
-        :math:`\quad f_t=0.38\lambda\sqrt{f'_c}
+        :math:`\quad f_t=0.38\lambda({f'_c})^{0.5}`
 
         For design to NZSEE C5 assessment guidelines:-
 
-        :math:`\quad f_{ct}=0.55\sqrt{f'_{cp}}
+        :math:`\quad f_{ct}=0.55({f'_{cp}})^{0.5}`
 
         :param compressive_strength: 28 day compressive design strength (MPa)
         :param density: Saturated surface dry density of concrete material
@@ -266,10 +267,13 @@ class NZS3101(DesignCode):
             strength of concrete
         """
         if prob_design:
-            mult_compressive_strength = 1.5 if compressive_strength <= 40 else 1.4
-            f_t = 0.55 * np.sqrt(compressive_strength * mult_compressive_strength)
+            prob_compressive_strength = self.prob_compressive_strength(
+                compressive_strength
+            )
+            f_t = 0.55 * np.sqrt(prob_compressive_strength)
         else:
             f_t = 0.38 * self.lamda(density) * np.sqrt(compressive_strength)
+
         return f_t
 
     def modulus_of_rupture(
@@ -280,14 +284,33 @@ class NZS3101(DesignCode):
         """Calculates the average modulus of rupture of concrete (:math:`f_r`) in
         accordance with NZS3101:2006 CL 5.2.5 for deflection calculations.
 
-        :math:`\quad f_r=0.6\lambda\sqrt{f'_c}
+        :math:`\quad f_r=0.6\lambda({f'_c})^{0.5}`
 
         :param compressive_strength: 28 day compressive design strength (MPa)
         :param density: Saturated surface dry density of concrete material
         :return: Modulus of rupture (:math:`f_r`)
         """
         f_r = 0.6 * self.lamda(density) * np.sqrt(compressive_strength)
+
         return f_r
+
+    def prob_compressive_strength(self, compressive_strength: float) -> float:
+        """Calculate the probable compressive strength of concrete in accordance with
+        NZSEE C5 assessement guidelines C5.4.2.2.
+
+        Taken as the nominal 28-day compressive strenght of the concrete specified for
+        the original construciton, multiplied by 1.5 for strengths less than or equal to
+        40 MPa, and 1.4 for strengths greater than 40 MPa.
+
+        :param compressive_strength: 28 day compressive design strength (MPa)
+        :return: Probable comopressive strength of concrete (:math:`f'_{cp}`)
+        """
+        # convert lower characteristic compressive strength to probable concrete
+        # compressive strength
+        mult_compressive_strength = 1.5 if compressive_strength <= 40 else 1.4
+        f_cp = mult_compressive_strength * compressive_strength
+
+        return f_cp
 
     def concrete_capacity(
         self,
@@ -336,8 +359,9 @@ class NZS3101(DesignCode):
 
             # scale concrete compressive strength for overstrength if specified
             if prob_design:
-                mult_compressive_strength = 1.5 if compressive_strength <= 40 else 1.4
-                compressive_strength *= mult_compressive_strength
+                compressive_strength = self.prob_compressive_strength(
+                    compressive_strength
+                )
             elif os_design:
                 compressive_strength += add_compressive_strength
 
@@ -577,11 +601,11 @@ class NZS3101(DesignCode):
         """Checks that the specified steel reinforcement strengths for all defined
         steel geometries comply with NZS3101:2006 CL 5.3.3.
 
-        .. note:: Check does not apply to predefined steel materials based on probable
-            strength properties
+        .. note:: Note this check does not apply to predefined steel materials based on
+            probable strength properties.
 
-        :raises ValueError: If steel reinforcement yield strength is greater than 500MPa
-            limit in NZS3101:2006 CL 5.3.3
+        :raises ValueError: If characteristic steel reinforcement yield strength is
+            greater than the 500MPa limit in NZS3101:2006 CL 5.3.3
         """
         # Retrieve predefined names of probable strength based materials
         _, _, prob_properties = self.predefined_steel_materials()
@@ -1348,10 +1372,11 @@ class NZS3101(DesignCode):
             prev_colour_conc = conc_geom.material.colour
 
             # update concrete material to new material with probable strength properties
-            mult_compressive_strength = 1.5 if prev_compressive_strength <= 40 else 1.4
+            prob_compressive_strength = self.prob_compressive_strength(
+                prev_compressive_strength
+            )
             conc_geom.material = self.create_concrete_material(
-                compressive_strength=prev_compressive_strength
-                * mult_compressive_strength,
+                compressive_strength=prob_compressive_strength,
                 ultimate_strain=prev_ultimate_strain,
                 density=prev_density,
                 colour=prev_colour_conc,
