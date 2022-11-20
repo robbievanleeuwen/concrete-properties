@@ -544,7 +544,7 @@ class ModifiedMander(ConcreteServiceProfile):
     :param sect_type: The type of concrete cross section for which to create a confined
         concrete stress-strain relationship for:-
 
-        - **rect** = Rectangular section with closed stirrups and/or tie transverse
+        - **rect** = Rectangular section with closed stirrup/tie transverse
           reinforcement
 
         - **circ_hoop** = Circular section with closed hoop transverse reinforcement
