@@ -16,12 +16,14 @@ def mander_confined_plot(render=False):
     design_code = NZS3101()
     compressive_strength = 30
     elastic_modulus = design_code.e_conc(compressive_strength)
-    flexural_tensile_strength = 0.55 * np.sqrt(compressive_strength)
-    tensile_failure_strain = flexural_tensile_strength / elastic_modulus
+    concrete_tensile_strength = design_code.concrete_tensile_strength(
+        compressive_strength
+    )
+    tensile_failure_strain = concrete_tensile_strength / elastic_modulus
     stress_strain_profile = ssp.ModifiedMander(
         elastic_modulus=elastic_modulus,
         compressive_strength=compressive_strength,
-        tensile_strength=flexural_tensile_strength,
+        tensile_strength=concrete_tensile_strength,
         sect_type="rect",
         conc_confined=True,
         conc_tension=True,
@@ -91,7 +93,7 @@ def mander_confined_plot(render=False):
         max(stress_strain_profile.strains),
     ]
     y = [
-        -flexural_tensile_strength,
+        -concrete_tensile_strength,
         f_cc,
         stress_strain_profile.stresses[-2],
     ]
@@ -101,7 +103,7 @@ def mander_confined_plot(render=False):
         "$\\varepsilon_{cu}$",
     ]
     y_label = [
-        -flexural_tensile_strength,
+        -concrete_tensile_strength,
         f_cc,
     ]
     y_annotation = [
@@ -125,7 +127,7 @@ def mander_confined_plot(render=False):
     # add line to maximum tension strength f_t at esp_t
     plt.plot(
         [xmin, -tensile_failure_strain, -tensile_failure_strain],
-        [-flexural_tensile_strength, -flexural_tensile_strength, ymin],
+        [-concrete_tensile_strength, -concrete_tensile_strength, ymin],
         "k",
         linewidth=0.75,
         dashes=[6, 6],

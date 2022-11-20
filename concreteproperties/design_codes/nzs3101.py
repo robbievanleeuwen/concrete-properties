@@ -239,6 +239,56 @@ class NZS3101(DesignCode):
         lamda = min(0.4 + 0.6 * density / 2200, 1)
         return lamda
 
+    def concrete_tensile_strength(
+        self,
+        compressive_strength: float,
+        density: float = 2300,
+        prob_design: bool = False,
+    ) -> float:
+        """Calculates the lower characteristic tensile strength of concrete
+        (:math:`f_t`) in accordance with NZS3101:2006 CL 5.2.4, or calculates the
+        probable tensile strength of concrete in accordance with NZSEE C5 assessemnt
+        guidelines C5.4.2.4.
+
+        For design to NZS3101:2006:-
+
+        :math:`\quad f_t=0.38\lambda\sqrt{f'_c}
+
+        For design to NZSEE C5 assessment guidelines:-
+
+        :math:`\quad f_{ct}=0.55\sqrt{f'_{cp}}
+
+        :param compressive_strength: 28 day compressive design strength (MPa)
+        :param density: Saturated surface dry density of concrete material
+        :param prob_design: True if the probable tensile strength of concrete is to be
+            calculated in accordance with NZSEE C5 assessment guidelines
+        :return: Lower characteristic (:math:`f_t`) or probable (:math:`f_{ct}`) tensile
+            strength of concrete
+        """
+        if prob_design:
+            mult_compressive_strength = 1.5 if compressive_strength <= 40 else 1.4
+            f_t = 0.55 * np.sqrt(compressive_strength * mult_compressive_strength)
+        else:
+            f_t = 0.38 * self.lamda(density) * np.sqrt(compressive_strength)
+        return f_t
+
+    def modulus_of_rupture(
+        self,
+        compressive_strength: float,
+        density: float = 2300,
+    ) -> float:
+        """Calculates the average modulus of rupture of concrete (:math:`f_r`) in
+        accordance with NZS3101:2006 CL 5.2.5 for deflection calculations.
+
+        :math:`\quad f_r=0.6\lambda\sqrt{f'_c}
+
+        :param compressive_strength: 28 day compressive design strength (MPa)
+        :param density: Saturated surface dry density of concrete material
+        :return: Modulus of rupture (:math:`f_r`)
+        """
+        f_r = 0.6 * self.lamda(density) * np.sqrt(compressive_strength)
+        return f_r
+
     def concrete_capacity(
         self,
         os_design: bool = False,
@@ -625,7 +675,8 @@ class NZS3101(DesignCode):
           - *Ultimate stress-strain profile*: Rectangular stress block, parameters from
             NZS3101:2006 CL 7.4.2.7, maximum compressive strain of 0.003
 
-          - *Modulus of rupture*: Calculated from NZS3101:2006 Eq. 5-4
+          - *Lower characteristic tensile strength of concrete*: Calculated from
+            NZS3101:2006 Eq. 5-2
 
         :param compressive_strength: 28 day compressive design strength (MPa)
         :param ultimate_strain: Maximum concrete compressive strain at crushing of the
@@ -647,9 +698,10 @@ class NZS3101(DesignCode):
         alpha_1 = self.alpha_1(compressive_strength)
         beta_1 = self.beta_1(compressive_strength)
 
-        # calculate modulus of rupture in accordance with NZS3101:2006 CL 5.2.5
-        lamda = self.lamda(density)
-        modulus_of_rupture = 0.6 * lamda * np.sqrt(compressive_strength)
+        # calculate concrete tensile strength in accordance with NZS3101:2006 CL 5.2.4
+        concrete_tensile_strength = self.concrete_tensile_strength(
+            compressive_strength, density
+        )
 
         return Concrete(
             name=name,
@@ -665,7 +717,7 @@ class NZS3101(DesignCode):
                 gamma=beta_1,
                 ultimate_strain=ultimate_strain,
             ),
-            flexural_tensile_strength=modulus_of_rupture,
+            flexural_tensile_strength=concrete_tensile_strength,
             colour=colour,
         )
 
@@ -1305,11 +1357,13 @@ class NZS3101(DesignCode):
                 colour=prev_colour_conc,
             )
 
-            # update modulus of rupture to probable strength based value
-            conc_geom.material.flexural_tensile_strength = 0.55 * np.sqrt(
-                prev_compressive_strength * mult_compressive_strength
+            # update concrete tensile strength to probable strength based value
+            conc_geom.material.flexural_tensile_strength = (
+                self.concrete_tensile_strength(
+                    prev_compressive_strength,
+                    prob_design=True,
+                )
             )
-
         # populate list with predefined probable strength based steel grades
         _, _, prob_properties = self.predefined_steel_materials()
 

@@ -114,6 +114,51 @@ def test_nzs3101_lamda(density, rel_tol, calc_value):
 
 
 @pytest.mark.parametrize(
+    "compressive_strength, density, prob_design, calc_value",
+    [
+        (25, 2800, True, 3.36805),
+        (35, 2400, False, 2.24811),
+        (45, 2199, False, 2.54842),
+        (45, 2000, True, 4.36549),
+        (75, 1800, False, 2.93189),
+    ],
+)
+def test_nzs3101_concrete_tensile_strength(
+    compressive_strength, density, prob_design, calc_value
+):
+    design_code = NZS3101()
+    assert (
+        pytest.approx(
+            design_code.concrete_tensile_strength(
+                compressive_strength, density, prob_design
+            ),
+            rel=0.0001,
+        )
+        == calc_value
+    )
+
+
+@pytest.mark.parametrize(
+    "compressive_strength, density, calc_value",
+    [
+        (25, 2800, 3.00000),
+        (35, 2400, 3.54965),
+        (45, 2199, 4.02382),
+        (45, 2000, 3.80538),
+        (75, 1800, 4.62930),
+    ],
+)
+def test_nzs3101_modulus_of_rupture(compressive_strength, density, calc_value):
+    design_code = NZS3101()
+    assert (
+        pytest.approx(
+            design_code.modulus_of_rupture(compressive_strength, density), rel=0.0001
+        )
+        == calc_value
+    )
+
+
+@pytest.mark.parametrize(
     "compressive_strength, density, rel_tol, calc_value",
     [
         (30, 2300, 0.01, 25742.960),
@@ -356,7 +401,7 @@ def test_nzs3101_create_steel_material_meshed_valueerror():
             gamma=design_code.beta_1(50),
             ultimate_strain=0.003,
         ),
-        flexural_tensile_strength=0.6 * 50**2,
+        flexural_tensile_strength=design_code.concrete_tensile_strength(50),
         colour="lightgrey",
     )
 
@@ -422,16 +467,16 @@ def test_nzs3101_create_steel_material_exception(
 
 @pytest.mark.parametrize(
     "compressive_strength, ultimate_strain, density, calc_value_e_conc, "
-    "calc_value_alpha_1, calc_value_beta_1, calc_value_modulus_of_rupture",
+    "calc_value_alpha_1, calc_value_beta_1, calc_value_tensile_strength",
     [
-        (20, 0.004, 2400, 22404.639, 0.85, 0.85, 2.68328),
-        (30, 0.004, 2200, 24082.454, 0.85, 0.85, 3.28633),
-        (40, 0.004, 2100, 25933.733, 0.85, 0.77, 3.69124),
-        (50, 0.004, 1800, 23009.112, 0.85, 0.69, 3.77980),
-        (60, 0.004, 1950, 28420.626, 0.83, 0.65, 4.3306),
-        (70, 0.004, 2700, 50015.057, 0.79, 0.65, 5.01996),
-        (80, 0.004, 2000, 34087.573, 0.75, 0.65, 5.0738),
-        (90, 0.004, 2400, 47527.417, 0.75, 0.65, 5.69209),
+        (20, 0.004, 2400, 22404.639, 0.85, 0.85, 1.69941),
+        (30, 0.004, 2200, 24082.454, 0.85, 0.85, 2.08135),
+        (40, 0.004, 2100, 25933.733, 0.85, 0.77, 2.33779),
+        (50, 0.004, 1800, 23009.112, 0.85, 0.69, 2.39388),
+        (60, 0.004, 1950, 28420.626, 0.83, 0.65, 2.74278),
+        (70, 0.004, 2700, 50015.057, 0.79, 0.65, 3.17931),
+        (80, 0.004, 2000, 34087.573, 0.75, 0.65, 3.21343),
+        (90, 0.004, 2400, 47527.417, 0.75, 0.65, 3.60500),
     ],
 )
 def test_nzs3101_create_concrete_material(
@@ -441,7 +486,7 @@ def test_nzs3101_create_concrete_material(
     calc_value_e_conc,
     calc_value_alpha_1,
     calc_value_beta_1,
-    calc_value_modulus_of_rupture,
+    calc_value_tensile_strength,
 ):
     design_code = NZS3101()
     concrete_mat = design_code.create_concrete_material(
@@ -452,7 +497,7 @@ def test_nzs3101_create_concrete_material(
         pytest.approx(
             concrete_mat.__getattribute__("flexural_tensile_strength"), rel=0.001
         )
-        == calc_value_modulus_of_rupture
+        == calc_value_tensile_strength
     )
     assert (
         pytest.approx(
@@ -506,22 +551,22 @@ def test_nzs3101_create_concrete_material(
 @pytest.mark.parametrize(
     "yield_strength, fracture_strain, phi_os, compressive_strength, "
     "ultimate_strain, density, calc_value_e_conc, calc_value_alpha_1, "
-    "calc_value_beta_1, calc_value_modulus_of_rupture",
+    "calc_value_beta_1, calc_value_tensile_strength",
     [
-        (280, 0.1, 1.25, 20, 0.003, 2400, 29638.552, 0.85, 0.81, 3.54965),
-        (280, 0.1, 1.25, 27.5, 0.003, 2200, 28663.854, 0.85, 0.75, 3.91152),
-        (324, 0.15, 1.25, 30, 0.003, 2100, 27506.878, 0.85, 0.73, 3.91515),
-        (324, 0.15, 1.25, 45, 0.003, 1800, 25205.219, 0.83, 0.65, 4.14057),
-        (455, 0.12, 1.5, 35, 0.003, 1950, 25944.363, 0.85, 0.69, 3.95337),
-        (455, 0.12, 1.5, 55, 0.003, 2700, 50015.057, 0.79, 0.65, 5.01996),
-        (464, 0.12, 1.25, 32, 0.003, 2000, 26127.630, 0.85, 0.714, 3.88903),
-        (324, 0.15, 1.25, 65, 0.003, 2400, 44809.279, 0.75, 0.65, 5.36656),
-        (500, 0.05, 1.5, 25, 0.003, 1875, 21879.531, 0.85, 0.77, 3.45838),
-        (540, 0.1, 1.25, 50, 0.003, 2125, 33651.248, 0.81, 0.65, 4.73841),
-        (600, 0.015, 1.2, 65, 0.003, 2300, 42038.078, 0.75, 0.65, 5.36656),
-        (540, 0.03, 1.2, 37.5, 0.003, 2100, 29710.824, 0.85, 0.67, 4.22885),
-        (300, 0.15, 1.35, 52.5, 0.003, 2025, 31900.356, 0.80, 0.65, 4.69423),
-        (500, 0.1, 1.35, 62.5, 0.003, 2600, 49729.830, 0.76, 0.65, 5.28205),
+        (280, 0.1, 1.25, 20, 0.003, 2400, 29638.552, 0.85, 0.81, 2.24811),
+        (280, 0.1, 1.25, 27.5, 0.003, 2200, 28663.854, 0.85, 0.75, 2.47730),
+        (324, 0.15, 1.25, 30, 0.003, 2100, 27506.878, 0.85, 0.73, 2.47960),
+        (324, 0.15, 1.25, 45, 0.003, 1800, 25205.219, 0.83, 0.65, 2.62236),
+        (455, 0.12, 1.5, 35, 0.003, 1950, 25944.363, 0.85, 0.69, 2.50380),
+        (455, 0.12, 1.5, 55, 0.003, 2700, 50015.057, 0.79, 0.65, 3.17931),
+        (464, 0.12, 1.25, 32, 0.003, 2000, 26127.630, 0.85, 0.714, 2.46305),
+        (324, 0.15, 1.25, 65, 0.003, 2400, 44809.279, 0.75, 0.65, 3.39882),
+        (500, 0.05, 1.5, 25, 0.003, 1875, 21879.531, 0.85, 0.77, 2.19031),
+        (540, 0.1, 1.25, 50, 0.003, 2125, 33651.248, 0.81, 0.65, 3.00099),
+        (600, 0.015, 1.2, 65, 0.003, 2300, 42038.078, 0.75, 0.65, 3.39882),
+        (540, 0.03, 1.2, 37.5, 0.003, 2100, 29710.824, 0.85, 0.67, 2.67827),
+        (300, 0.15, 1.35, 52.5, 0.003, 2025, 31900.356, 0.80, 0.65, 2.97301),
+        (500, 0.1, 1.35, 62.5, 0.003, 2600, 49729.830, 0.76, 0.65, 3.34530),
     ],
 )
 def test_nzs3101_create_os_section(
@@ -534,7 +579,7 @@ def test_nzs3101_create_os_section(
     calc_value_e_conc,
     calc_value_alpha_1,
     calc_value_beta_1,
-    calc_value_modulus_of_rupture,
+    calc_value_tensile_strength,
 ):
     design_code = NZS3101()
     create_dummy_section(design_code)
@@ -590,7 +635,7 @@ def test_nzs3101_create_os_section(
                 conc_geom.material.__getattribute__("flexural_tensile_strength"),
                 rel=0.001,
             )
-            == calc_value_modulus_of_rupture
+            == calc_value_tensile_strength
         )
         assert (
             pytest.approx(
@@ -654,7 +699,7 @@ def test_nzs3101_create_os_section(
 @pytest.mark.parametrize(
     "yield_strength, fracture_strain, phi_os, compressive_strength, "
     "ultimate_strain, calc_value_e_conc, calc_value_alpha_1, calc_value_beta_1, "
-    "calc_value_modulus_of_rupture",
+    "calc_value_tensile_strength",
     [
         (280, 0.1, 1.25, 20, 0.003, 25742.960, 0.85, 0.85, 3.01247),
         (280, 0.1, 1.25, 27.5, 0.003, 30186.297, 0.85, 0.76, 3.53243),
@@ -681,7 +726,7 @@ def test_nzs3101_create_prob_section(
     calc_value_e_conc,
     calc_value_alpha_1,
     calc_value_beta_1,
-    calc_value_modulus_of_rupture,
+    calc_value_tensile_strength,
 ):
     design_code = NZS3101()
     create_dummy_section(design_code)
@@ -736,7 +781,7 @@ def test_nzs3101_create_prob_section(
                 conc_geom.material.__getattribute__("flexural_tensile_strength"),
                 rel=0.001,
             )
-            == calc_value_modulus_of_rupture
+            == calc_value_tensile_strength
         )
         assert pytest.approx(
             conc_geom.material.ultimate_stress_strain_profile.__getattribute__(
@@ -794,7 +839,7 @@ def test_nzs3101_create_prob_section(
 @pytest.mark.parametrize(
     "yield_strength, fracture_strain, phi_os, compressive_strength, "
     "ultimate_strain, calc_value_e_conc, calc_value_alpha_1, calc_value_beta_1, "
-    "calc_value_modulus_of_rupture",
+    "calc_value_tensile_strength",
     [
         (280, 0.1, 1.25, 20, 0.003, 25742.960, 0.85, 0.85, 3.01247),
         (280, 0.1, 1.25, 27.5, 0.003, 30186.297, 0.85, 0.76, 3.53243),
@@ -821,7 +866,7 @@ def test_nzs3101_create_prob_os_section(
     calc_value_e_conc,
     calc_value_alpha_1,
     calc_value_beta_1,
-    calc_value_modulus_of_rupture,
+    calc_value_tensile_strength,
 ):
     design_code = NZS3101()
     create_dummy_section(design_code)
@@ -876,7 +921,7 @@ def test_nzs3101_create_prob_os_section(
                 conc_geom.material.__getattribute__("flexural_tensile_strength"),
                 rel=0.001,
             )
-            == calc_value_modulus_of_rupture
+            == calc_value_tensile_strength
         )
         assert pytest.approx(
             conc_geom.material.ultimate_stress_strain_profile.__getattribute__(

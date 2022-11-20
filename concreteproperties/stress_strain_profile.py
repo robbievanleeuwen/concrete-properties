@@ -539,8 +539,7 @@ class ModifiedMander(ConcreteServiceProfile):
 
     :param elastic_modulus: Concrete elastic modulus (:math:`E_c`)
     :param compressive_strength: Concrete compressive strength (:math:`f'_c`)
-    :param tensile_strength: Concrete tensile strength (modulus of rupture)
-        (:math:`f_r`)
+    :param tensile_strength: Concrete tensile strength (:math:`f_t`)
     :param sect_type: The type of concrete cross section for which to create a confined
         concrete stress-strain relationship for:-
 
