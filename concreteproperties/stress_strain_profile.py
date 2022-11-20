@@ -586,11 +586,13 @@ class ModifiedMander(ConcreteServiceProfile):
         (:math:`\\varepsilon_{su}`)
     :param n_points: Number of points to discretise the compression part of the
         stress-strain curve between :math:`\\varepsilon_{c}=0` & :math:`\\varepsilon_{c}
-        =\\varepsilon_{co}`
+        =2\\varepsilon_{co} for an unconfined concrete, or between
+        `:math:`\\varepsilon_{c}=0` & :math:`\\varepsilon_{c}=\\varepsilon_{cu} for a
+        confined concrete
     :param n_steel_strain: Modifier for maximum steel reinforcement strain. Steel
         reinforcement material within the concrete cross section should also be defined
         with the same limit for the fracture strain
-    :param n_confinement: Modifier for volumetric ratio of confinement reinforcement.
+    :param n_confinement: Modifier for volumetric ratio of confinement reinforcement
     :raises ValueError: If specified section type is not rect, circ_hoop or circ_spiral
     """
 
