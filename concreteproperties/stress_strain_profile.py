@@ -791,16 +791,92 @@ class SteelHardening(SteelProfile):
             self.ultimate_strength,
         ]
 
-
-# TODO: actually make this abstract!
 @dataclass
 class StrandProfile(StressStrainProfile):
     """Abstract class for a steel strand stress-strain profile.
 
-    :param yield_strength: Steel strand yield strength
-    :param elastic_modulus: Steel strand elastic modulus
-    :param fracture_strain: Steel strand fracture strain
-    :param breaking_strength: Steel strand breaking strength
+    Implements a piecewise linear stress-strain profile. Positive stresses & strains are
+    compression.
+
+    :param strains: List of strains (must be increasing or equal)
+    :param stresses: List of stresses
+    :param yield_strength: Strand yield strength
+    """
+
+    strains: List[float]
+    stresses: List[float]
+    yield_strength: float
+
+    def get_strain(
+        self,
+        stress: float,
+    ) -> float:
+        """Returns a strain given a stress.
+
+        :param stress: Stress at which to return a strain.
+
+        :return: Strain
+        """
+
+        # create interpolation function
+        strain_function = interp1d(
+            x=self.stresses,
+            y=self.strains,
+            kind="linear",
+            fill_value="extrapolate",  # type: ignore
+        )
+
+        return strain_function(stress)
+    
+    def get_yield_strength(
+        self,
+    ) -> float:
+        """Returns the yield strength of the stress-strain profile.
+
+        :return: Yield strength
+        """
+
+        return self.yield_strength
+
+    def print_properties(
+        self,
+        fmt: str = "8.6e",
+    ):
+        """Prints the stress-strain profile properties to the terminal.
+
+        :param fmt: Number format
+        """
+
+        table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
+        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
+        table.add_column("Value", justify="right", style="green")
+
+        table.add_row(
+            "Elastic Modulus", "{:>{fmt}}".format(self.get_elastic_modulus(), fmt=fmt)
+        )
+        table.add_row(
+            "Yield Strength", "{:>{fmt}}".format(self.yield_strength, fmt=fmt)
+        )
+        table.add_row(
+            "Breaking Strength",
+            "{:>{fmt}}".format(-self.get_tensile_strength(), fmt=fmt),
+        )
+        table.add_row(
+            "Fracture Strain",
+            "{:>{fmt}}".format(self.get_ultimate_tensile_strain(), fmt=fmt),
+        )
+
+        console = Console()
+        console.print(table)
+
+@dataclass
+class StrandHardening(StrandProfile):
+    """Class for a strand stress-strain profile with strain hardening.
+
+    :param yield_strength: Strand yield strength
+    :param elastic_modulus: Strand elastic modulus
+    :param fracture_strain: Strand fracture strain
+    :param breaking_strength: Strand breaking strength
     """
 
     strains: List[float] = field(init=False)
@@ -837,64 +913,44 @@ class StrandProfile(StressStrainProfile):
 
         return self.elastic_modulus
 
-    def get_yield_strength(
-        self,
-    ) -> float:
-        """Returns the yield strength of the stress-strain profile.
+@dataclass
+class StrandPCI1992(StrandProfile):
+    """Class for a strand stress-strain profile by R. Devalapura and M. Tadros from the
+    March-April issue of the PCI Journal: https://shorturl.at/rNQV3
 
-        :return: Yield strength
-        """
+    :param yield_strength: Strand yield strength
+    :param elastic_modulus: Strand elastic modulus
+    :param fracture_strain: Strand fracture strain
+    :param breaking_strength: Strand breaking strength
+    :param bilinear_yield_ratio: Ratio between the stress at the intersection of a
+        bilinear profile, and the yield strength
+    :param n_points: Number of points to discretise the stress-strain profile
+    """
 
-        return self.yield_strength
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    yield_strength: float
+    elastic_modulus: float
+    fracture_strain: float
+    breaking_strength: float
+    bilinear_yield_ratio: float = 1.04
+    n_points: int = 24
 
-    def get_strain(
-        self,
-        stress: float,
-    ) -> float:
-        """Returns a strain given a stress.
+    def __post_init__(self):
+        # determine constants
+        f_so = self.bilinear_yield_ratio * self.yield_strength
+        const_c = self.elastic_modulus / f_so
+        const_a = self.elastic_modulus * (self.breaking_strength - f_so) / (self.fracture_strain * self.elastic_modulus - f_so)
+        const_b = self.elastic_modulus - const_a
 
-        :param stress: Stress at which to return a strain.
+        # function that determines the stress
+        def stress_eq(a, b, c, d, eps_ps, f_pu):
+            sign = eps_ps / abs(eps_ps)  # get sign of strain
+            eps_ps = abs(eps_ps)  # ensure strain is positive
+            denom = pow(1 + pow(c * eps_ps, d), 1 / d)  # calculate denominator
+            stress = min(eps_ps * (a + b / denom), f_pu)  # calculate stress
 
-        :return: Strain
-        """
-
-        # create interpolation function
-        strain_function = interp1d(
-            x=self.stresses,
-            y=self.strains,
-            kind="linear",
-            fill_value="extrapolate",  # type: ignore
-        )
-
-        return strain_function(stress)
-
-    def print_properties(
-        self,
-        fmt: str = "8.6e",
-    ):
-        """Prints the stress-strain profile properties to the terminal.
-
-        :param fmt: Number format
-        """
-
-        table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
-        table.add_column("Property", justify="left", style="cyan", no_wrap=True)
-        table.add_column("Value", justify="right", style="green")
-
-        table.add_row(
-            "Elastic Modulus", "{:>{fmt}}".format(self.get_elastic_modulus(), fmt=fmt)
-        )
-        table.add_row(
-            "Yield Strength", "{:>{fmt}}".format(self.yield_strength, fmt=fmt)
-        )
-        table.add_row(
-            "Breaking Strength",
-            "{:>{fmt}}".format(-self.get_tensile_strength(), fmt=fmt),
-        )
-        table.add_row(
-            "Fracture Strain",
-            "{:>{fmt}}".format(self.get_ultimate_tensile_strain(), fmt=fmt),
-        )
-
-        console = Console()
-        console.print(table)
+            return sign * stress
+        
+        # determine constant D that yields the yield strength at a strain of 0.01
+        
