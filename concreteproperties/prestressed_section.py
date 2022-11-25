@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from math import isinf
 from typing import List, Optional, Union
 
 import numpy as np
@@ -294,9 +295,6 @@ class PrestressedSection(ConcreteSection):
             delta_m_max=delta_m_max,
             progress_bar=progress_bar,
         )
-
-    def ultimate_bending_capacity(self):
-        raise NotImplementedError
 
     def moment_interaction_diagram(self):
         raise NotImplementedError
@@ -672,7 +670,8 @@ class PrestressedSection(ConcreteSection):
 
         # loop through all lumped and strand geometries and calculate stress
         for lumped_geom in self.reinf_geometries_lumped + self.strand_geometries:
-            # get position of geometry
+            # calculate area and centroid
+            area = lumped_geom.calculate_area()
             centroid = lumped_geom.calculate_centroid()
 
             # get strain at centroid of lump
@@ -684,16 +683,14 @@ class PrestressedSection(ConcreteSection):
                 kappa=kappa,
             )
 
+            # add initial prestress strain
+            if isinstance(lumped_geom.material, SteelStrand):
+                eps_pe = -lumped_geom.material.get_prestress_strain(area=area)
+                strain += eps_pe
+
             # calculate stress, force and point of action
             sig = lumped_geom.material.stress_strain_profile.get_stress(strain=strain)
-
-            # add initial prestress
-            if isinstance(lumped_geom.material, SteelStrand):
-                sig += (
-                    -lumped_geom.material.prestress_force / lumped_geom.calculate_area()
-                )
-
-            n_lumped = sig * lumped_geom.calculate_area()
+            n_lumped = sig * area
 
             if isinstance(lumped_geom.material, SteelStrand):
                 strand_sigs.append(sig)
@@ -736,5 +733,145 @@ class PrestressedSection(ConcreteSection):
             strand_forces=strand_forces,
         )
 
-    def calculate_ultimate_stress(self):
-        raise NotImplementedError
+    def calculate_ultimate_stress(
+        self,
+        ultimate_results: res.UltimateBendingResults,
+    ) -> res.StressResult:
+        """Calculates ultimate stresses within the prestressed concrete section.
+
+        :param ultimate_results: Ultimate bending results objects
+
+        :return: Stress results object
+        """
+
+        # depth of neutral axis at extreme tensile fibre
+        extreme_fibre, _ = utils.calculate_extreme_fibre(
+            points=self.compound_geometry.points, theta=ultimate_results.theta
+        )
+
+        # find point on neutral axis by shifting by d_n
+        if isinf(ultimate_results.d_n):
+            point_na = (0, 0)
+        else:
+            point_na = utils.point_on_neutral_axis(
+                extreme_fibre=extreme_fibre,
+                d_n=ultimate_results.d_n,
+                theta=ultimate_results.theta,
+            )
+
+        # initialise stress results
+        conc_sections = []
+        conc_sigs = []
+        conc_forces = []
+        lumped_reinf_geoms = []
+        lumped_reinf_sigs = []
+        lumped_reinf_strains = []
+        lumped_reinf_forces = []
+        strand_geoms = []
+        strand_sigs = []
+        strand_strains = []
+        strand_forces = []
+
+        # create splits in meshed geometries at points in stress-strain profiles
+        meshed_split_geoms: List[Union[CPGeom, CPGeomConcrete]] = []
+
+        if isinf(ultimate_results.d_n):
+            meshed_split_geoms = self.meshed_geometries
+        else:
+            for meshed_geom in self.meshed_geometries:
+                split_geoms = utils.split_geom_at_strains_ultimate(
+                    geom=meshed_geom,
+                    theta=ultimate_results.theta,
+                    point_na=point_na,
+                    ultimate_strain=self.gross_properties.conc_ultimate_strain,
+                    d_n=ultimate_results.d_n,
+                )
+
+                meshed_split_geoms.extend(split_geoms)
+
+        # loop through all concrete geometries and calculate stress
+        for meshed_geom in meshed_split_geoms:
+            analysis_section = AnalysisSection(geometry=meshed_geom)
+
+            # calculate stress, force and point of action
+            sig, n_sec, d_x, d_y = analysis_section.get_ultimate_stress(
+                d_n=ultimate_results.d_n,
+                point_na=point_na,
+                theta=ultimate_results.theta,
+                ultimate_strain=self.gross_properties.conc_ultimate_strain,
+                centroid=(self.gross_properties.cx, self.gross_properties.cy),
+            )
+
+            # save results
+            if isinstance(meshed_geom, CPGeomConcrete):
+                conc_sigs.append(sig)
+                conc_forces.append((n_sec, d_x, d_y))
+                conc_sections.append(analysis_section)
+
+        # loop through all lumped and strand geometries and calculate stress
+        for lumped_geom in self.reinf_geometries_lumped + self.strand_geometries:
+            # calculate area and centroid
+            area = lumped_geom.calculate_area()
+            centroid = lumped_geom.calculate_centroid()
+
+            # get strain at centroid of lump
+            if isinf(ultimate_results.d_n):
+                strain = self.gross_properties.conc_ultimate_strain
+            else:
+                strain = utils.get_ultimate_strain(
+                    point=(centroid[0], centroid[1]),
+                    point_na=point_na,
+                    d_n=ultimate_results.d_n,
+                    theta=ultimate_results.theta,
+                    ultimate_strain=self.gross_properties.conc_ultimate_strain,
+                )
+
+            # add initial prestress strain
+            if isinstance(lumped_geom.material, SteelStrand):
+                eps_pe = -lumped_geom.material.get_prestress_strain(area=area)
+                strain += eps_pe
+
+            # calculate stress, force and point of action
+            sig = lumped_geom.material.stress_strain_profile.get_stress(strain=strain)
+            n_lumped = sig * lumped_geom.calculate_area()
+
+            if isinstance(lumped_geom.material, SteelStrand):
+                strand_sigs.append(sig)
+                strand_strains.append(strain)
+                strand_forces.append(
+                    (
+                        n_lumped,
+                        centroid[0] - self.gross_properties.cx,
+                        centroid[1] - self.gross_properties.cy,
+                    )
+                )
+                strand_geoms.append(lumped_geom)
+            else:
+                lumped_reinf_sigs.append(sig)
+                lumped_reinf_strains.append(strain)
+                lumped_reinf_forces.append(
+                    (
+                        n_lumped,
+                        centroid[0] - self.gross_properties.cx,
+                        centroid[1] - self.gross_properties.cy,
+                    )
+                )
+                lumped_reinf_geoms.append(lumped_geom)
+
+        return res.StressResult(
+            concrete_section=self,
+            concrete_analysis_sections=conc_sections,
+            concrete_stresses=conc_sigs,
+            concrete_forces=conc_forces,
+            meshed_reinforcement_sections=[],
+            meshed_reinforcement_stresses=[],
+            meshed_reinforcement_forces=[],
+            lumped_reinforcement_geometries=lumped_reinf_geoms,
+            lumped_reinforcement_stresses=lumped_reinf_sigs,
+            lumped_reinforcement_strains=lumped_reinf_strains,
+            lumped_reinforcement_forces=lumped_reinf_forces,
+            strand_geometries=strand_geoms,
+            strand_stresses=strand_sigs,
+            strand_strains=strand_strains,
+            strand_forces=strand_forces,
+        )

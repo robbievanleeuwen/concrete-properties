@@ -792,6 +792,7 @@ class SteelHardening(SteelProfile):
         ]
 
 
+# TODO: actually make this abstract!
 @dataclass
 class StrandProfile(StressStrainProfile):
     """Abstract class for a steel strand stress-strain profile.

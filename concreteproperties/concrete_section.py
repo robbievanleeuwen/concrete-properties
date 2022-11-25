@@ -796,6 +796,11 @@ class ConcreteSection:
                 kappa=kappa,
             )
 
+            # add initial prestress strain
+            if isinstance(lumped_geom.material, SteelStrand):
+                eps_pe = -lumped_geom.material.get_prestress_strain(area=area)
+                strain += eps_pe
+
             # check for failure
             ult_comp_strain = (
                 lumped_geom.material.stress_strain_profile.get_ultimate_compressive_strain()
@@ -819,10 +824,6 @@ class ConcreteSection:
                 strain=strain
             )
             force = stress * area
-
-            # add initial prestress
-            if isinstance(lumped_geom.material, SteelStrand):
-                force += -lumped_geom.material.prestress_force
 
             n += force
 
@@ -993,7 +994,7 @@ class ConcreteSection:
             m_y += m_y_sec
 
         # calculate lumped actions
-        for lumped_geom in self.reinf_geometries_lumped:
+        for lumped_geom in self.reinf_geometries_lumped + self.strand_geometries:
             # calculate area and centroid
             area = lumped_geom.calculate_area()
             centroid = lumped_geom.calculate_centroid()
@@ -1009,6 +1010,11 @@ class ConcreteSection:
                     theta=ultimate_results.theta,
                     ultimate_strain=self.gross_properties.conc_ultimate_strain,
                 )
+
+                # add initial prestress strain (N.B. ignore eps_ce)
+                if isinstance(lumped_geom.material, SteelStrand):
+                    eps_pe = -lumped_geom.material.get_prestress_strain(area=area)
+                    strain += eps_pe
 
             # calculate stress and force
             stress = lumped_geom.material.stress_strain_profile.get_stress(
@@ -1463,8 +1469,8 @@ class ConcreteSection:
                 meshed_reinf_forces.append((n_sec, d_x, d_y))
                 meshed_reinf_sections.append(analysis_section)
 
-        # loop through all lumped and strand geometries and calculate stress
-        for lumped_geom in self.reinf_geometries_lumped + self.strand_geometries:
+        # loop through all lumped geometries and calculate stress
+        for lumped_geom in self.reinf_geometries_lumped:
             # initialise stress and position
             sig = 0
             centroid = lumped_geom.calculate_centroid()
@@ -1483,12 +1489,6 @@ class ConcreteSection:
                 +(e_ixx * m_y) / (e_ixx * e_iyy - e_ixy**2) * x
                 - (e_ixy * m_y) / (e_ixx * e_iyy - e_ixy**2) * y
             )
-
-            # add initial prestress
-            if isinstance(lumped_geom.material, SteelStrand):
-                sig += (
-                    -lumped_geom.material.prestress_force / lumped_geom.calculate_area()
-                )
 
             strain = sig / lumped_geom.material.elastic_modulus
 
