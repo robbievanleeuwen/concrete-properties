@@ -9,6 +9,7 @@ import numpy as np
 from rich.console import Console
 from rich.table import Table
 from scipy.interpolate import interp1d
+from scipy.optimize import brentq
 
 from concreteproperties.post import plotting_context
 
@@ -791,6 +792,7 @@ class SteelHardening(SteelProfile):
             self.ultimate_strength,
         ]
 
+
 @dataclass
 class StrandProfile(StressStrainProfile):
     """Abstract class for a steel strand stress-strain profile.
@@ -806,6 +808,9 @@ class StrandProfile(StressStrainProfile):
     strains: List[float]
     stresses: List[float]
     yield_strength: float
+
+    def __post_init__(self) -> None:
+        return super().__post_init__()
 
     def get_strain(
         self,
@@ -827,10 +832,8 @@ class StrandProfile(StressStrainProfile):
         )
 
         return strain_function(stress)
-    
-    def get_yield_strength(
-        self,
-    ) -> float:
+
+    def get_yield_strength(self) -> float:
         """Returns the yield strength of the stress-strain profile.
 
         :return: Yield strength
@@ -841,7 +844,7 @@ class StrandProfile(StressStrainProfile):
     def print_properties(
         self,
         fmt: str = "8.6e",
-    ):
+    ) -> None:
         """Prints the stress-strain profile properties to the terminal.
 
         :param fmt: Number format
@@ -869,6 +872,7 @@ class StrandProfile(StressStrainProfile):
         console = Console()
         console.print(table)
 
+
 @dataclass
 class StrandHardening(StrandProfile):
     """Class for a strand stress-strain profile with strain hardening.
@@ -886,7 +890,7 @@ class StrandHardening(StrandProfile):
     fracture_strain: float
     breaking_strength: float
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         yield_strain = self.yield_strength / self.elastic_modulus
         self.strains = [
             -self.fracture_strain,
@@ -903,6 +907,8 @@ class StrandHardening(StrandProfile):
             self.breaking_strength,
         ]
 
+        return super().__post_init__()
+
     def get_elastic_modulus(
         self,
     ) -> float:
@@ -913,10 +919,11 @@ class StrandHardening(StrandProfile):
 
         return self.elastic_modulus
 
+
 @dataclass
 class StrandPCI1992(StrandProfile):
     """Class for a strand stress-strain profile by R. Devalapura and M. Tadros from the
-    March-April issue of the PCI Journal: https://shorturl.at/rNQV3
+    March-April issue of the PCI Journal.
 
     :param yield_strength: Strand yield strength
     :param elastic_modulus: Strand elastic modulus
@@ -924,7 +931,11 @@ class StrandPCI1992(StrandProfile):
     :param breaking_strength: Strand breaking strength
     :param bilinear_yield_ratio: Ratio between the stress at the intersection of a
         bilinear profile, and the yield strength
-    :param n_points: Number of points to discretise the stress-strain profile
+    :param strain_cps: Additional strain control points, generates the following strain
+        segments: ``[0, strain_cps[0], strain_cps[1], fracture_strain]``. Length must be
+        equal to 2.
+    :param n_points: Number of points to discretise within each strain segment. Length
+        must be equal to 3.
     """
 
     strains: List[float] = field(init=False)
@@ -934,23 +945,94 @@ class StrandPCI1992(StrandProfile):
     fracture_strain: float
     breaking_strength: float
     bilinear_yield_ratio: float = 1.04
-    n_points: int = 24
+    strain_cps: List[float] = field(default_factory=lambda: [0.005, 0.015])
+    n_points: List[int] = field(default_factory=lambda: [5, 14, 5])
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
+        # validate control points
+        if len(self.strain_cps) != 2:
+            raise ValueError("Length of strain_cps must be equal to 2.")
+
+        if len(self.n_points) != 3:
+            raise ValueError("Length of n_points must be equal to 3.")
+
         # determine constants
         f_so = self.bilinear_yield_ratio * self.yield_strength
         const_c = self.elastic_modulus / f_so
-        const_a = self.elastic_modulus * (self.breaking_strength - f_so) / (self.fracture_strain * self.elastic_modulus - f_so)
+        const_a = (
+            self.elastic_modulus
+            * (self.breaking_strength - f_so)
+            / (self.fracture_strain * self.elastic_modulus - f_so)
+        )
         const_b = self.elastic_modulus - const_a
 
         # function that determines the stress
         def stress_eq(a, b, c, d, eps_ps, f_pu):
-            sign = eps_ps / abs(eps_ps)  # get sign of strain
+            if eps_ps != 0:
+                sign = eps_ps / abs(eps_ps)  # get sign of strain
+            else:
+                sign = 1
+
             eps_ps = abs(eps_ps)  # ensure strain is positive
             denom = pow(1 + pow(c * eps_ps, d), 1 / d)  # calculate denominator
             stress = min(eps_ps * (a + b / denom), f_pu)  # calculate stress
 
             return sign * stress
-        
+
         # determine constant D that yields the yield strength at a strain of 0.01
-        
+        def find_d(const_d):
+            return (
+                stress_eq(
+                    a=const_a,
+                    b=const_b,
+                    c=const_c,
+                    d=const_d,
+                    eps_ps=0.01,
+                    f_pu=self.breaking_strength,
+                )
+                - self.yield_strength
+            )
+
+        const_d = brentq(f=find_d, a=1, b=20)
+
+        # generate stresses and strains
+        seg1 = np.linspace(
+            start=0, stop=self.strain_cps[0], num=self.n_points[0], endpoint=False
+        )
+        seg2 = np.linspace(
+            start=self.strain_cps[0],
+            stop=self.strain_cps[1],
+            num=self.n_points[1],
+            endpoint=False,
+        )
+        seg3 = np.linspace(
+            start=self.strain_cps[1], stop=self.fracture_strain, num=self.n_points[2]
+        )
+        strain_list = seg1.tolist() + seg2.tolist() + seg3.tolist()
+
+        # generate compressive region of profile
+        strains_c = []
+        stresses_c = []
+
+        for strain in strain_list:
+            strains_c.append(strain)
+            stresses_c.append(
+                stress_eq(
+                    a=const_a,
+                    b=const_b,
+                    c=const_c,
+                    d=const_d,
+                    eps_ps=strain,
+                    f_pu=self.breaking_strength,
+                )
+            )
+
+        # generate tensile region of profile
+        strains_t = [eps * -1.0 for eps in strains_c[:0:-1]]
+        stresses_t = [sig * -1.0 for sig in stresses_c[:0:-1]]
+
+        # combine lists
+        self.strains = strains_t + strains_c
+        self.stresses = stresses_t + stresses_c
+
+        return super().__post_init__()
