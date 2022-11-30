@@ -864,11 +864,18 @@ class ConcreteSection:
         r"""Given a neutral axis angle ``theta`` and an axial force ``n``, calculates
         the ultimate bending capacity.
 
+        .. note::
+
+            This calculation is code agnostic and no capacity reduction factors are
+            applied. If design capacities are required, use the applicable
+            ``design_code`` module or consult your local design code on how to treat
+            nominal axial loads in ultimate bending calculations.
+
         Note that ``k_u`` is calculated only for lumped (non-meshed) geometries.
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
-        :param n: Net axial force
+        :param n: Net axial force (nominal axial load)
 
         :return: Ultimate bending results object
         """
@@ -1094,7 +1101,7 @@ class ConcreteSection:
           - ``"D"`` - ratio of neutral axis depth to section depth
           - ``"d_n"`` - neutral axis depth
           - ``"fy"`` - yield ratio of the most extreme tensile bar
-          - ``"N"`` - axial force
+          - ``"N"`` - net (nominal) axial force
           - ``"kappa0"`` - zero curvature compression (N.B second item in tuple is not
             used)
 
