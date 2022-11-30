@@ -641,16 +641,16 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
-from concreteproperties.material import Concrete, SteelBar
-import concreteproperties.stress_strain_profile as ssp
-from sectionproperties.pre.library.primitive_sections import (
-    rectangular_section,
-    circular_section,
-)
-from concreteproperties.pre import add_bar_rectangular_array
-from concreteproperties.concrete_section import ConcreteSection
-from concreteproperties.results import MomentCurvatureResults
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">SteelBar</span>
+<span class="kn">import</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="k">as</span> <span class="nn">ssp</span>
+<span class="kn">from</span> <span class="nn">sectionproperties.pre.library.primitive_sections</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">rectangular_section</span><span class="p">,</span>
+    <span class="n">circular_section</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">add_bar_rectangular_array</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.results</span> <span class="kn">import</span> <span class="n">MomentCurvatureResults</span>
 </pre></div>
 </div>
 </div>
@@ -661,90 +661,90 @@ from concreteproperties.results import MomentCurvatureResults
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>conc_linear = Concrete(
-    name=&quot;Linear Concrete&quot;,
-    density=2.4e-6,
-    stress_strain_profile=ssp.ConcreteLinear(
-        elastic_modulus=35e3, ultimate_strain=0.0035
-    ),
-    ultimate_stress_strain_profile=ssp.BilinearStressStrain(
-        compressive_strength=40,
-        compressive_strain=0.00175,
-        ultimate_strain=0.0035,
-    ),
-    flexural_tensile_strength=3.5,
-    colour=&quot;lightgrey&quot;,
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conc_linear</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Linear Concrete&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteLinear</span><span class="p">(</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">35e3</span><span class="p">,</span> <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span>
+    <span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">BilinearStressStrain</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.00175</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-conc_linear_no_tension = Concrete(
-    name=&quot;Linear Concrete (No T)&quot;,
-    density=2.4e-6,
-    stress_strain_profile=ssp.ConcreteLinearNoTension(
-        elastic_modulus=35e3, ultimate_strain=0.0035
-    ),
-    ultimate_stress_strain_profile=ssp.BilinearStressStrain(
-        compressive_strength=40,
-        compressive_strain=0.00175,
-        ultimate_strain=0.0035,
-    ),
-    flexural_tensile_strength=3.5,
-    colour=&quot;lightgrey&quot;,
-)
+<span class="n">conc_linear_no_tension</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Linear Concrete (No T)&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteLinearNoTension</span><span class="p">(</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">35e3</span><span class="p">,</span> <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span>
+    <span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">BilinearStressStrain</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.00175</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
 
-conc_nonlinear = Concrete(
-    name=&quot;Non-Linear Concrete&quot;,
-    density=2.4e-6,
-    stress_strain_profile=ssp.EurocodeNonLinear(
-        elastic_modulus=35e3,
-        ultimate_strain=0.0035,
-        compressive_strength=40,
-        compressive_strain=0.0023,
-        tensile_strength=3.5,
-        tension_softening_stiffness=10e3,
-    ),
-    ultimate_stress_strain_profile=ssp.BilinearStressStrain(
-        compressive_strength=40,
-        compressive_strain=0.00175,
-        ultimate_strain=0.0035,
-    ),
-    flexural_tensile_strength=3.5,
-    colour=&quot;lightgrey&quot;,
-)
+<span class="n">conc_nonlinear</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Non-Linear Concrete&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">EurocodeNonLinear</span><span class="p">(</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">35e3</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.0023</span><span class="p">,</span>
+        <span class="n">tensile_strength</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
+        <span class="n">tension_softening_stiffness</span><span class="o">=</span><span class="mf">10e3</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">BilinearStressStrain</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.00175</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-conc_material_list = [
-    conc_linear,
-    conc_linear_no_tension,
-    conc_nonlinear,
-]
+<span class="n">conc_material_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">conc_linear</span><span class="p">,</span>
+    <span class="n">conc_linear_no_tension</span><span class="p">,</span>
+    <span class="n">conc_nonlinear</span><span class="p">,</span>
+<span class="p">]</span>
 
-steel_ep = SteelBar(
-    name=&quot;Steel - Elastic-Plastic&quot;,
-    density=7.85e-6,
-    stress_strain_profile=ssp.SteelElasticPlastic(
-        yield_strength=500,
-        elastic_modulus=200e3,
-        fracture_strain=0.05,
-    ),
-    colour=&quot;grey&quot;,
-)
+<span class="n">steel_ep</span> <span class="o">=</span> <span class="n">SteelBar</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Steel - Elastic-Plastic&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
+        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
+        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-steel_hd = SteelBar(
-    name=&quot;Steel - Hardening&quot;,
-    density=7.85e-6,
-    stress_strain_profile=ssp.SteelHardening(
-        yield_strength=500,
-        elastic_modulus=200e3,
-        fracture_strain=0.05,
-        ultimate_strength=600,
-    ),
-    colour=&quot;grey&quot;,
-)
+<span class="n">steel_hd</span> <span class="o">=</span> <span class="n">SteelBar</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Steel - Hardening&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">SteelHardening</span><span class="p">(</span>
+        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
+        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">ultimate_strength</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-steel_material_list = [
-    steel_ep,
-    steel_hd,
-]
+<span class="n">steel_material_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">steel_ep</span><span class="p">,</span>
+    <span class="n">steel_hd</span><span class="p">,</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -756,8 +756,8 @@ steel_material_list = [
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for conc in conc_material_list:
-    conc.stress_strain_profile.plot_stress_strain(title=conc.name)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">conc</span> <span class="ow">in</span> <span class="n">conc_material_list</span><span class="p">:</span>
+    <span class="n">conc</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">conc</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -783,8 +783,8 @@ steel_material_list = [
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for steel in steel_material_list:
-    steel.stress_strain_profile.plot_stress_strain(title=steel.name)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">steel</span> <span class="ow">in</span> <span class="n">steel_material_list</span><span class="p">:</span>
+    <span class="n">steel</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">steel</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -808,24 +808,24 @@ steel_material_list = [
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>col = rectangular_section(d=350, b=600)
-void = circular_section(d=125, n=16).align_center(align_to=col)
-col = col - void  # subtract void from column
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">col</span> <span class="o">=</span> <span class="n">rectangular_section</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<span class="n">void</span> <span class="o">=</span> <span class="n">circular_section</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">align_center</span><span class="p">(</span><span class="n">align_to</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+<span class="n">col</span> <span class="o">=</span> <span class="n">col</span> <span class="o">-</span> <span class="n">void</span>  <span class="c1"># subtract void from column</span>
 
-# add bars to column
-geom = add_bar_rectangular_array(
-    geometry=col,
-    area=450,
-    material=steel_ep,
-    n_x=6,
-    x_s=492 / 5,
-    n_y=3,
-    y_s=121,
-    anchor=(54, 54),
-    exterior_only=True,
-)
+<span class="c1"># add bars to column</span>
+<span class="n">geom</span> <span class="o">=</span> <span class="n">add_bar_rectangular_array</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">col</span><span class="p">,</span>
+    <span class="n">area</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+    <span class="n">material</span><span class="o">=</span><span class="n">steel_ep</span><span class="p">,</span>
+    <span class="n">n_x</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">x_s</span><span class="o">=</span><span class="mi">492</span> <span class="o">/</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n">n_y</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">y_s</span><span class="o">=</span><span class="mi">121</span><span class="p">,</span>
+    <span class="n">anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">54</span><span class="p">,</span> <span class="mi">54</span><span class="p">),</span>
+    <span class="n">exterior_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
 
-geom.plot_geometry(labels=[], cp=False, legend=False)
+<span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -855,29 +855,29 @@ geom.plot_geometry(labels=[], cp=False, legend=False)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># initialise list to store results and list to store labels
-moment_curvature_results = []
-labels = []
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialise list to store results and list to store labels</span>
+<span class="n">moment_curvature_results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
 
-# loop through each concrete material
-for idx, conc in enumerate(conc_material_list):
-    # assign concrete material to first geometry in CompoundGeometry object
-    geom.geoms[0].material = conc
+<span class="c1"># loop through each concrete material</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">conc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">conc_material_list</span><span class="p">):</span>
+    <span class="c1"># assign concrete material to first geometry in CompoundGeometry object</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">geoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="n">conc</span>
 
-    # create ConcreteSection object
-    conc_sec = ConcreteSection(geom)
+    <span class="c1"># create ConcreteSection object</span>
+    <span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
 
-    # plot section first time only
-    if idx == 0:
-        conc_sec.plot_section()
+    <span class="c1"># plot section first time only</span>
+    <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
 
-    # perform moment curvature analysis and store results
-    # bending about major axis so theta = pi/2
-    res = conc_sec.moment_curvature_analysis(theta=np.pi / 2, progress_bar=False)
-    moment_curvature_results.append(res)
+    <span class="c1"># perform moment curvature analysis and store results</span>
+    <span class="c1"># bending about major axis so theta = pi/2</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">moment_curvature_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 
-    # create plot label
-    labels.append(conc.name)
+    <span class="c1"># create plot label</span>
+    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conc</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -895,9 +895,9 @@ for idx, conc in enumerate(conc_material_list):
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>MomentCurvatureResults.plot_multiple_results(
-    moment_curvature_results=moment_curvature_results, labels=labels, fmt=&quot;-&quot;
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MomentCurvatureResults</span><span class="o">.</span><span class="n">plot_multiple_results</span><span class="p">(</span>
+    <span class="n">moment_curvature_results</span><span class="o">=</span><span class="n">moment_curvature_results</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -921,7 +921,7 @@ for idx, conc in enumerate(conc_material_list):
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(moment_curvature_results[0].failure_geometry.material.name)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">moment_curvature_results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">failure_geometry</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -938,9 +938,9 @@ Linear Concrete
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>MomentCurvatureResults.plot_multiple_results(
-    moment_curvature_results=moment_curvature_results[1:], labels=labels[1:], fmt=&quot;-&quot;
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MomentCurvatureResults</span><span class="o">.</span><span class="n">plot_multiple_results</span><span class="p">(</span>
+    <span class="n">moment_curvature_results</span><span class="o">=</span><span class="n">moment_curvature_results</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -972,9 +972,9 @@ Linear Concrete
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(
-    f&quot;M_cr = {conc_sec.calculate_cracked_properties(theta=np.pi / 2).m_cr / 1e6:.2f} kN.m&quot;
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;M_cr = </span><span class="si">{</span><span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_cracked_properties</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">m_cr</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -991,13 +991,13 @@ M_cr = 84.76 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-fix, ax = plt.subplots()
-kappa = np.array(moment_curvature_results[-1].kappa)
-moment = np.array(moment_curvature_results[-1].m_xy) / 1e6
-ax.plot(kappa[:16], moment[:16], &quot;x-&quot;)
-plt.show()
+<span class="n">fix</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">kappa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">moment_curvature_results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span>
+<span class="n">moment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">moment_curvature_results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">m_xy</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kappa</span><span class="p">[:</span><span class="mi">16</span><span class="p">],</span> <span class="n">moment</span><span class="p">[:</span><span class="mi">16</span><span class="p">],</span> <span class="s2">&quot;x-&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1020,25 +1020,25 @@ plt.show()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># initialise list to store results and list to store labels
-moment_curvature_results = [moment_curvature_results[-1]]
-labels = [steel_material_list[0].name]
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialise list to store results and list to store labels</span>
+<span class="n">moment_curvature_results</span> <span class="o">=</span> <span class="p">[</span><span class="n">moment_curvature_results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">steel_material_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
 
-# assign hardening steel material to rest of geometries in CompoundGeometry object
-steel = steel_material_list[-1]
-for g in geom.geoms[1:]:
-    g.material = steel
+<span class="c1"># assign hardening steel material to rest of geometries in CompoundGeometry object</span>
+<span class="n">steel</span> <span class="o">=</span> <span class="n">steel_material_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">geom</span><span class="o">.</span><span class="n">geoms</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="n">steel</span>
 
-# create ConcreteSection object
-conc_sec = ConcreteSection(geom)
+<span class="c1"># create ConcreteSection object</span>
+<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
 
-# perform moment curvature analysis and store results
-# bending about major axis so theta = pi/2
-res = conc_sec.moment_curvature_analysis(theta=np.pi / 2, progress_bar=False)
-moment_curvature_results.append(res)
+<span class="c1"># perform moment curvature analysis and store results</span>
+<span class="c1"># bending about major axis so theta = pi/2</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">moment_curvature_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 
-# create plot label
-labels.append(steel.name)
+<span class="c1"># create plot label</span>
+<span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">steel</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1050,9 +1050,9 @@ labels.append(steel.name)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>MomentCurvatureResults.plot_multiple_results(
-    moment_curvature_results=moment_curvature_results, labels=labels, fmt=&quot;-&quot;
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MomentCurvatureResults</span><span class="o">.</span><span class="n">plot_multiple_results</span><span class="p">(</span>
+    <span class="n">moment_curvature_results</span><span class="o">=</span><span class="n">moment_curvature_results</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1082,39 +1082,39 @@ labels.append(steel.name)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>concrete = Concrete(
-    name=&quot;Concrete (No Tension)&quot;,
-    density=2.4e-6,
-    stress_strain_profile=ssp.ConcreteLinearNoTension(
-        elastic_modulus=35e3,
-        ultimate_strain=0.003,
-        compressive_strength=40,
-    ),
-    ultimate_stress_strain_profile=ssp.BilinearStressStrain(
-        compressive_strength=40,
-        compressive_strain=0.00175,
-        ultimate_strain=0.0035,
-    ),
-    flexural_tensile_strength=3.5,
-    colour=&quot;lightgrey&quot;,
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concrete</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Concrete (No Tension)&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteLinearNoTension</span><span class="p">(</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">35e3</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">BilinearStressStrain</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.00175</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-geom = rectangular_section(d=600, b=400, material=concrete)
+<span class="n">geom</span> <span class="o">=</span> <span class="n">rectangular_section</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">concrete</span><span class="p">)</span>
 
-geom = add_bar_rectangular_array(
-    geometry=geom,
-    area=450,
-    material=steel_ep,
-    n_x=3,
-    x_s=158,
-    n_y=4,
-    y_s=172,
-    anchor=(42, 42),
-    exterior_only=True,
-)
+<span class="n">geom</span> <span class="o">=</span> <span class="n">add_bar_rectangular_array</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span>
+    <span class="n">area</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+    <span class="n">material</span><span class="o">=</span><span class="n">steel_ep</span><span class="p">,</span>
+    <span class="n">n_x</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">x_s</span><span class="o">=</span><span class="mi">158</span><span class="p">,</span>
+    <span class="n">n_y</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">y_s</span><span class="o">=</span><span class="mi">172</span><span class="p">,</span>
+    <span class="n">anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="mi">42</span><span class="p">),</span>
+    <span class="n">exterior_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
 
-conc_sec = ConcreteSection(geom)
-conc_sec.plot_section()
+<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1139,7 +1139,7 @@ conc_sec.plot_section()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res1 = conc_sec.moment_curvature_analysis(progress_bar=False)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res1</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1147,9 +1147,9 @@ conc_sec.plot_section()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res1.plot_results(fmt=&quot;x-&quot;)
-print(f&quot;Number of calculations = {len(res1.kappa)}&quot;)
-print(f&quot;Failure curvature = {res1.kappa[-1]:.4e}&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res1</span><span class="o">.</span><span class="n">plot_results</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;x-&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of calculations = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res1</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failure curvature = </span><span class="si">{</span><span class="n">res1</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1177,7 +1177,7 @@ Failure curvature = 3.5212e-05
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res2 = conc_sec.moment_curvature_analysis(kappa_inc=5e-6, progress_bar=False)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res2</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">kappa_inc</span><span class="o">=</span><span class="mf">5e-6</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1185,9 +1185,9 @@ Failure curvature = 3.5212e-05
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res2.plot_results(fmt=&quot;x-&quot;)
-print(f&quot;Number of calculations = {len(res2.kappa)}&quot;)
-print(f&quot;Failure curvature = {res2.kappa[-1]:.4e}&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res2</span><span class="o">.</span><span class="n">plot_results</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;x-&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of calculations = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res2</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failure curvature = </span><span class="si">{</span><span class="n">res2</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1221,13 +1221,13 @@ Failure curvature = 3.5212e-05
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res3 = conc_sec.moment_curvature_analysis(
-    kappa_inc=3e-7,
-    kappa_mult=1.25,
-    delta_m_min=0.1,
-    kappa_inc_max=2e-5,
-    progress_bar=False,
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res3</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span>
+    <span class="n">kappa_inc</span><span class="o">=</span><span class="mf">3e-7</span><span class="p">,</span>
+    <span class="n">kappa_mult</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+    <span class="n">delta_m_min</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">kappa_inc_max</span><span class="o">=</span><span class="mf">2e-5</span><span class="p">,</span>
+    <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1235,9 +1235,9 @@ Failure curvature = 3.5212e-05
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res3.plot_results(fmt=&quot;x-&quot;)
-print(f&quot;Number of calculations = {len(res3.kappa)}&quot;)
-print(f&quot;Failure curvature = {res3.kappa[-1]:.4e}&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res3</span><span class="o">.</span><span class="n">plot_results</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;x-&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of calculations = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res3</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failure curvature = </span><span class="si">{</span><span class="n">res3</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1265,11 +1265,11 @@ Failure curvature = 3.5212e-05
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>MomentCurvatureResults.plot_multiple_results(
-    moment_curvature_results=[res2, res3],
-    labels=[&quot;Coarse&quot;, &quot;Refined&quot;],
-    fmt=&quot;-&quot;,
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MomentCurvatureResults</span><span class="o">.</span><span class="n">plot_multiple_results</span><span class="p">(</span>
+    <span class="n">moment_curvature_results</span><span class="o">=</span><span class="p">[</span><span class="n">res2</span><span class="p">,</span> <span class="n">res3</span><span class="p">],</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Coarse&quot;</span><span class="p">,</span> <span class="s2">&quot;Refined&quot;</span><span class="p">],</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>

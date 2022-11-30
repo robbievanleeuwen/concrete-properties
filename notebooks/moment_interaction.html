@@ -641,16 +641,16 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
-from concreteproperties.material import Concrete, SteelBar
-from concreteproperties.stress_strain_profile import (
-    ConcreteLinear,
-    RectangularStressBlock,
-    SteelElasticPlastic,
-)
-from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
-from concreteproperties.concrete_section import ConcreteSection
-from concreteproperties.results import MomentInteractionResults
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">SteelBar</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConcreteLinear</span><span class="p">,</span>
+    <span class="n">RectangularStressBlock</span><span class="p">,</span>
+    <span class="n">SteelElasticPlastic</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sectionproperties.pre.library.concrete_sections</span> <span class="kn">import</span> <span class="n">concrete_rectangular_section</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.results</span> <span class="kn">import</span> <span class="n">MomentInteractionResults</span>
 </pre></div>
 </div>
 </div>
@@ -661,30 +661,30 @@ from concreteproperties.results import MomentInteractionResults
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>concrete = Concrete(
-    name=&quot;32 MPa Concrete&quot;,
-    density=2.4e-6,
-    stress_strain_profile=ConcreteLinear(elastic_modulus=30.1e3),
-    ultimate_stress_strain_profile=RectangularStressBlock(
-        compressive_strength=32,
-        alpha=0.802,
-        gamma=0.89,
-        ultimate_strain=0.003,
-    ),
-    flexural_tensile_strength=3.4,
-    colour=&quot;lightgrey&quot;,
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concrete</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;32 MPa Concrete&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ConcreteLinear</span><span class="p">(</span><span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">30.1e3</span><span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">RectangularStressBlock</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.802</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.89</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.4</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-steel = SteelBar(
-    name=&quot;500 MPa Steel&quot;,
-    density=7.85e-6,
-    stress_strain_profile=SteelElasticPlastic(
-        yield_strength=500,
-        elastic_modulus=200e3,
-        fracture_strain=0.05,
-    ),
-    colour=&quot;grey&quot;,
-)
+<span class="n">steel</span> <span class="o">=</span> <span class="n">SteelBar</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;500 MPa Steel&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
+        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
+        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -696,23 +696,23 @@ steel = SteelBar(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>geom = concrete_rectangular_section(
-    b=400,
-    d=600,
-    dia_top=20,
-    n_top=3,
-    dia_bot=24,
-    n_bot=3,
-    n_circle=4,
-    cover=30,
-    area_top=310,
-    area_bot=450,
-    conc_mat=concrete,
-    steel_mat=steel,
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">geom</span> <span class="o">=</span> <span class="n">concrete_rectangular_section</span><span class="p">(</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">dia_top</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">n_top</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">dia_bot</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">n_bot</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">n_circle</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">cover</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">area_top</span><span class="o">=</span><span class="mi">310</span><span class="p">,</span>
+    <span class="n">area_bot</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+    <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete</span><span class="p">,</span>
+    <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
+<span class="p">)</span>
 
-conc_sec = ConcreteSection(geom)
-conc_sec.plot_section()
+<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -739,7 +739,7 @@ conc_sec.plot_section()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mi_res = conc_sec.moment_interaction_diagram(progress_bar=False)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -748,7 +748,7 @@ conc_sec.plot_section()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mi_res.plot_diagram()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -772,8 +772,8 @@ conc_sec.plot_section()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mi_res = conc_sec.moment_interaction_diagram(theta=np.pi / 2, progress_bar=False)
-mi_res.plot_diagram(moment=&quot;m_y&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">mi_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">(</span><span class="n">moment</span><span class="o">=</span><span class="s2">&quot;m_y&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -800,31 +800,31 @@ mi_res.plot_diagram(moment=&quot;m_y&quot;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># create lists to hold results and labels
-mi_results = []
-labels = []
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create lists to hold results and labels</span>
+<span class="n">mi_results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
 
-# create four different sections with increasing reinforcement
-# and peform a moment interaction analysis
-for idx in range(4):
-    geom = concrete_rectangular_section(
-        b=400,
-        d=600,
-        dia_top=16,
-        n_top=6,
-        dia_bot=16,
-        n_bot=6,
-        n_circle=4,
-        cover=66,
-        area_top=200 * (idx + 1),
-        area_bot=200 * (idx + 1),
-        conc_mat=concrete,
-        steel_mat=steel,
-    )
+<span class="c1"># create four different sections with increasing reinforcement</span>
+<span class="c1"># and peform a moment interaction analysis</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">concrete_rectangular_section</span><span class="p">(</span>
+        <span class="n">b</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+        <span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+        <span class="n">dia_top</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+        <span class="n">n_top</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">dia_bot</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+        <span class="n">n_bot</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">n_circle</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">cover</span><span class="o">=</span><span class="mi">66</span><span class="p">,</span>
+        <span class="n">area_top</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="p">(</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">area_bot</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="p">(</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete</span><span class="p">,</span>
+        <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    conc_sec = ConcreteSection(geom)
-    mi_results.append(conc_sec.moment_interaction_diagram(progress_bar=False))
-    labels.append(&quot;p = {0}&quot;.format(0.01 * (idx + 1)))
+    <span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+    <span class="n">mi_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;p = </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mf">0.01</span> <span class="o">*</span> <span class="p">(</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -832,10 +832,10 @@ for idx in range(4):
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># plot all the diagrams on one image
-MomentInteractionResults.plot_multiple_diagrams(
-    moment_interaction_results=mi_results, labels=labels, fmt=&quot;-&quot;
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot all the diagrams on one image</span>
+<span class="n">MomentInteractionResults</span><span class="o">.</span><span class="n">plot_multiple_diagrams</span><span class="p">(</span>
+    <span class="n">moment_interaction_results</span><span class="o">=</span><span class="n">mi_results</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -862,30 +862,30 @@ MomentInteractionResults.plot_multiple_diagrams(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>geom = concrete_rectangular_section(
-    b=400,
-    d=600,
-    dia_top=20,
-    n_top=3,
-    dia_bot=24,
-    n_bot=3,
-    n_circle=4,
-    cover=30,
-    area_top=310,
-    area_bot=450,
-    conc_mat=concrete,
-    steel_mat=steel,
-)
-conc_sec = ConcreteSection(geom)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">geom</span> <span class="o">=</span> <span class="n">concrete_rectangular_section</span><span class="p">(</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">dia_top</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">n_top</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">dia_bot</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">n_bot</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">n_circle</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">cover</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">area_top</span><span class="o">=</span><span class="mi">310</span><span class="p">,</span>
+    <span class="n">area_bot</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+    <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete</span><span class="p">,</span>
+    <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
 
-mi_res_pos = conc_sec.moment_interaction_diagram(progress_bar=False)
-mi_res_neg = conc_sec.moment_interaction_diagram(theta=np.pi, progress_bar=False)
+<span class="n">mi_res_pos</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">mi_res_neg</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-MomentInteractionResults.plot_multiple_diagrams(
-    moment_interaction_results=[mi_res_pos, mi_res_neg],
-    labels=[&quot;Positive&quot;, &quot;Negative&quot;],
-    fmt=&quot;-&quot;,
-)
+<span class="n">MomentInteractionResults</span><span class="o">.</span><span class="n">plot_multiple_diagrams</span><span class="p">(</span>
+    <span class="n">moment_interaction_results</span><span class="o">=</span><span class="p">[</span><span class="n">mi_res_pos</span><span class="p">,</span> <span class="n">mi_res_neg</span><span class="p">],</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Positive&quot;</span><span class="p">,</span> <span class="s2">&quot;Negative&quot;</span><span class="p">],</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -945,25 +945,25 @@ MomentInteractionResults.plot_multiple_diagrams(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mi_res = conc_sec.moment_interaction_diagram(
-    limits=[
-        (&quot;kappa0&quot;, 0.0),
-        (&quot;d_n&quot;, 1e-6),
-    ],
-    control_points=[
-        (&quot;D&quot;, 1.0),
-        (&quot;fy&quot;, 0.0),
-        (&quot;fy&quot;, 0.5),
-        (&quot;fy&quot;, 1.0),
-        (&quot;d_n&quot;, 200.0),
-        (&quot;N&quot;, 0.0),
-    ],
-    labels=[&quot;NA&quot;, &quot;I&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;, &quot;G&quot;, &quot;H&quot;],
-    n_spacing=36,
-    max_comp=6.8e6,
-    max_comp_labels=[&quot;A&quot;, &quot;B&quot;],
-    progress_bar=False,
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span>
+    <span class="n">limits</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;kappa0&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;d_n&quot;</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">control_points</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;fy&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;fy&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;fy&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;d_n&quot;</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">],</span>
+    <span class="n">n_spacing</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
+    <span class="n">max_comp</span><span class="o">=</span><span class="mf">6.8e6</span><span class="p">,</span>
+    <span class="n">max_comp_labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">],</span>
+    <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -972,14 +972,14 @@ MomentInteractionResults.plot_multiple_diagrams(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax = mi_res.plot_diagram(fmt=&quot;-kx&quot;, labels=True, label_offset=True, render=False)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">mi_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-kx&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label_offset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-# reset axis limits to ensure labels are within plot
-import matplotlib.pyplot as plt
+<span class="c1"># reset axis limits to ensure labels are within plot</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-ax.set_xlim(-20, 850)
-ax.set_ylim(-3000, 9000)
-plt.show()
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">850</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">3000</span><span class="p">,</span> <span class="mi">9000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

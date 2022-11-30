@@ -641,14 +641,14 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from concreteproperties.material import Concrete, SteelBar
-from concreteproperties.stress_strain_profile import (
-    ConcreteLinear,
-    RectangularStressBlock,
-    SteelElasticPlastic,
-)
-from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
-from concreteproperties.concrete_section import ConcreteSection
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">SteelBar</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConcreteLinear</span><span class="p">,</span>
+    <span class="n">RectangularStressBlock</span><span class="p">,</span>
+    <span class="n">SteelElasticPlastic</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sectionproperties.pre.library.concrete_sections</span> <span class="kn">import</span> <span class="n">concrete_rectangular_section</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
 </pre></div>
 </div>
 </div>
@@ -659,30 +659,30 @@ from concreteproperties.concrete_section import ConcreteSection
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>concrete = Concrete(
-    name=&quot;32 MPa Concrete&quot;,
-    density=2.4e-6,
-    stress_strain_profile=ConcreteLinear(elastic_modulus=30.1e3),
-    ultimate_stress_strain_profile=RectangularStressBlock(
-        compressive_strength=32,
-        alpha=0.802,
-        gamma=0.89,
-        ultimate_strain=0.003,
-    ),
-    flexural_tensile_strength=3.4,
-    colour=&quot;lightgrey&quot;,
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concrete</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;32 MPa Concrete&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ConcreteLinear</span><span class="p">(</span><span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">30.1e3</span><span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">RectangularStressBlock</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.802</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.89</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.4</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-steel = SteelBar(
-    name=&quot;500 MPa Steel&quot;,
-    density=7.85e-6,
-    stress_strain_profile=SteelElasticPlastic(
-        yield_strength=500,
-        elastic_modulus=200e3,
-        fracture_strain=0.05,
-    ),
-    colour=&quot;grey&quot;,
-)
+<span class="n">steel</span> <span class="o">=</span> <span class="n">SteelBar</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;500 MPa Steel&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
+        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
+        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -694,23 +694,23 @@ steel = SteelBar(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>geom = concrete_rectangular_section(
-    b=400,
-    d=600,
-    dia_top=20,
-    n_top=3,
-    dia_bot=24,
-    n_bot=3,
-    n_circle=4,
-    cover=30,
-    area_top=310,
-    area_bot=450,
-    conc_mat=concrete,
-    steel_mat=steel,
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">geom</span> <span class="o">=</span> <span class="n">concrete_rectangular_section</span><span class="p">(</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">dia_top</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">n_top</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">dia_bot</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">n_bot</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">n_circle</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">cover</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">area_top</span><span class="o">=</span><span class="mi">310</span><span class="p">,</span>
+    <span class="n">area_bot</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+    <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete</span><span class="p">,</span>
+    <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
+<span class="p">)</span>
 
-conc_sec = ConcreteSection(geom)
-conc_sec.plot_section()
+<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -737,8 +737,8 @@ conc_sec.plot_section()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>gross_props = conc_sec.get_gross_properties()
-gross_props.print_results(fmt=&quot;.3e&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gross_props</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">get_gross_properties</span><span class="p">()</span>
+<span class="n">gross_props</span><span class="o">.</span><span class="n">print_results</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.3e&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -792,8 +792,8 @@ gross_props.print_results(fmt=&quot;.3e&quot;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>transformed_props = conc_sec.get_transformed_gross_properties(elastic_modulus=30.1e3)
-transformed_props.print_results(fmt=&quot;.3e&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transformed_props</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">get_transformed_gross_properties</span><span class="p">(</span><span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">30.1e3</span><span class="p">)</span>
+<span class="n">transformed_props</span><span class="o">.</span><span class="n">print_results</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.3e&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
