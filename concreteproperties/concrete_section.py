@@ -862,8 +862,8 @@ class ConcreteSection:
         n: float = 0,
     ) -> res.UltimateBendingResults:
         r"""Given a neutral axis angle ``theta`` and an axial force ``n``, calculates
-        the ultimate bending capacity. 
-        
+        the ultimate bending capacity.
+
         .. note::
 
             This calculation is code agnostic and no capacity reduction factors are

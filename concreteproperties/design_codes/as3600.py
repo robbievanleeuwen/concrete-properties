@@ -449,8 +449,8 @@ class AS3600(DesignCode):
         AS 3600:2018.
 
         See :meth:`concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram`
-        for allowable control points. 
-        
+        for allowable control points.
+
         .. note::
 
             When providing ``"N"`` to ``limits`` or ``control_points``, ``"N"`` is taken
