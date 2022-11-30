@@ -641,12 +641,12 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">SteelBar</span>
-<span class="kn">import</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="k">as</span> <span class="nn">ssp</span>
-<span class="kn">import</span> <span class="nn">sectionproperties.pre.library.primitive_sections</span> <span class="k">as</span> <span class="nn">sp_ps</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">add_bar_rectangular_array</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
+from concreteproperties.material import Concrete, SteelBar
+import concreteproperties.stress_strain_profile as ssp
+import sectionproperties.pre.library.primitive_sections as sp_ps
+from concreteproperties.pre import add_bar_rectangular_array
+from concreteproperties.concrete_section import ConcreteSection
 </pre></div>
 </div>
 </div>
@@ -657,30 +657,30 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concrete</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;50 MPa Concrete&quot;</span><span class="p">,</span>
-    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
-    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteLinear</span><span class="p">(</span><span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">34.8e3</span><span class="p">),</span>
-    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">RectangularStressBlock</span><span class="p">(</span>
-        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.775</span><span class="p">,</span>
-        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.845</span><span class="p">,</span>
-        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">4.2</span><span class="p">,</span>
-    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>concrete = Concrete(
+    name=&quot;50 MPa Concrete&quot;,
+    density=2.4e-6,
+    stress_strain_profile=ssp.ConcreteLinear(elastic_modulus=34.8e3),
+    ultimate_stress_strain_profile=ssp.RectangularStressBlock(
+        compressive_strength=50,
+        alpha=0.775,
+        gamma=0.845,
+        ultimate_strain=0.003,
+    ),
+    flexural_tensile_strength=4.2,
+    colour=&quot;lightgrey&quot;,
+)
 
-<span class="n">steel</span> <span class="o">=</span> <span class="n">SteelBar</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;500 MPa Steel&quot;</span><span class="p">,</span>
-    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
-    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
-        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
-        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+steel = SteelBar(
+    name=&quot;500 MPa Steel&quot;,
+    density=7.85e-6,
+    stress_strain_profile=ssp.SteelElasticPlastic(
+        yield_strength=500,
+        elastic_modulus=200e3,
+        fracture_strain=0.05,
+    ),
+    colour=&quot;grey&quot;,
+)
 </pre></div>
 </div>
 </div>
@@ -692,58 +692,58 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct box by subtracting an inner rectangle from an outer rectangle</span>
-<span class="n">outer</span> <span class="o">=</span> <span class="n">sp_ps</span><span class="o">.</span><span class="n">rectangular_section</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">concrete</span><span class="p">)</span>
-<span class="n">inner</span> <span class="o">=</span> <span class="n">sp_ps</span><span class="o">.</span><span class="n">rectangular_section</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span><span class="o">.</span><span class="n">align_center</span><span class="p">(</span><span class="n">align_to</span><span class="o">=</span><span class="n">outer</span><span class="p">)</span>
-<span class="n">box</span> <span class="o">=</span> <span class="n">outer</span> <span class="o">-</span> <span class="n">inner</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># construct box by subtracting an inner rectangle from an outer rectangle
+outer = sp_ps.rectangular_section(d=1200, b=900, material=concrete)
+inner = sp_ps.rectangular_section(d=900, b=600).align_center(align_to=outer)
+box = outer - inner
 
-<span class="c1"># generate four chamfers</span>
-<span class="n">chamfer1</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">sp_ps</span><span class="o">.</span><span class="n">triangular_section</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">concrete</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">align_to</span><span class="p">(</span><span class="n">other</span><span class="o">=</span><span class="n">inner</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">inner</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">align_to</span><span class="p">(</span><span class="n">other</span><span class="o">=</span><span class="n">inner</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="n">inner</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="p">)</span>
-<span class="n">chamfer2</span> <span class="o">=</span> <span class="n">chamfer1</span><span class="o">.</span><span class="n">mirror_section</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">mirror_point</span><span class="o">=</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
-<span class="n">chamfer3</span> <span class="o">=</span> <span class="n">chamfer1</span><span class="o">.</span><span class="n">mirror_section</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">mirror_point</span><span class="o">=</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
-<span class="n">chamfer4</span> <span class="o">=</span> <span class="n">chamfer2</span><span class="o">.</span><span class="n">mirror_section</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">mirror_point</span><span class="o">=</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
+# generate four chamfers
+chamfer1 = (
+    sp_ps.triangular_section(b=50, h=50, material=concrete)
+    .align_to(other=inner, on=&quot;left&quot;, inner=True)
+    .align_to(other=inner, on=&quot;bottom&quot;, inner=True)
+)
+chamfer2 = chamfer1.mirror_section(axis=&quot;y&quot;, mirror_point=(450, 600))
+chamfer3 = chamfer1.mirror_section(axis=&quot;x&quot;, mirror_point=(450, 600))
+chamfer4 = chamfer2.mirror_section(axis=&quot;x&quot;, mirror_point=(450, 600))
 
-<span class="c1"># add chamfers to box</span>
-<span class="n">geom</span> <span class="o">=</span> <span class="n">box</span> <span class="o">+</span> <span class="n">chamfer1</span> <span class="o">+</span> <span class="n">chamfer2</span> <span class="o">+</span> <span class="n">chamfer3</span> <span class="o">+</span> <span class="n">chamfer4</span>
+# add chamfers to box
+geom = box + chamfer1 + chamfer2 + chamfer3 + chamfer4
 
-<span class="c1"># add bottom bars</span>
-<span class="n">geom</span> <span class="o">=</span> <span class="n">add_bar_rectangular_array</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span>
-    <span class="n">area</span><span class="o">=</span><span class="mi">620</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
-    <span class="n">n_x</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
-    <span class="n">x_s</span><span class="o">=</span><span class="mi">750</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span>
-    <span class="n">anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span>
-<span class="p">)</span>
+# add bottom bars
+geom = add_bar_rectangular_array(
+    geometry=geom,
+    area=620,
+    material=steel,
+    n_x=9,
+    x_s=750 / 8,
+    anchor=(75, 75),
+)
 
-<span class="c1"># add top bars</span>
-<span class="n">geom</span> <span class="o">=</span> <span class="n">add_bar_rectangular_array</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span>
-    <span class="n">area</span><span class="o">=</span><span class="mi">310</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
-    <span class="n">n_x</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
-    <span class="n">x_s</span><span class="o">=</span><span class="mi">750</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span>
-    <span class="n">anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="mi">1125</span><span class="p">),</span>
-<span class="p">)</span>
+# add top bars
+geom = add_bar_rectangular_array(
+    geometry=geom,
+    area=310,
+    material=steel,
+    n_x=9,
+    x_s=750 / 8,
+    anchor=(75, 1125),
+)
 
-<span class="c1"># add side bars</span>
-<span class="n">geom</span> <span class="o">=</span> <span class="n">add_bar_rectangular_array</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span>
-    <span class="n">area</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
-    <span class="n">n_x</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">x_s</span><span class="o">=</span><span class="mi">750</span><span class="p">,</span>
-    <span class="n">n_y</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-    <span class="n">y_s</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
-    <span class="n">anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="mi">225</span><span class="p">),</span>
-<span class="p">)</span>
+# add side bars
+geom = add_bar_rectangular_array(
+    geometry=geom,
+    area=200,
+    material=steel,
+    n_x=2,
+    x_s=750,
+    n_y=6,
+    y_s=150,
+    anchor=(75, 225),
+)
 
-<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
-<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+conc_sec = ConcreteSection(geom)
+conc_sec.plot_section()
 </pre></div>
 </div>
 </div>
@@ -770,9 +770,9 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sag_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">()</span>
-<span class="n">hog_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-<span class="n">weak_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sag_res = conc_sec.ultimate_bending_capacity()
+hog_res = conc_sec.ultimate_bending_capacity(theta=np.pi)
+weak_res = conc_sec.ultimate_bending_capacity(theta=np.pi / 2)
 </pre></div>
 </div>
 </div>
@@ -784,7 +784,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sag_res</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sag_res.print_results()
 </pre></div>
 </div>
 </div>
@@ -810,7 +810,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hog_res</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>hog_res.print_results()
 </pre></div>
 </div>
 </div>
@@ -836,7 +836,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">weak_res</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>weak_res.print_results()
 </pre></div>
 </div>
 </div>
@@ -863,9 +863,9 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_x+ = </span><span class="si">{</span><span class="n">sag_res</span><span class="o">.</span><span class="n">m_xy</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_x- = </span><span class="si">{</span><span class="n">hog_res</span><span class="o">.</span><span class="n">m_xy</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_y = </span><span class="si">{</span><span class="n">weak_res</span><span class="o">.</span><span class="n">m_xy</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(f&quot;M_x+ = {sag_res.m_xy / 1e6:.2f} kN.m&quot;)
+print(f&quot;M_x- = {hog_res.m_xy / 1e6:.2f} kN.m&quot;)
+print(f&quot;M_y = {weak_res.m_xy / 1e6:.2f} kN.m&quot;)
 </pre></div>
 </div>
 </div>
@@ -887,10 +887,10 @@ M_y = 2225.48 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mf">5000e3</span>
-<span class="n">sag_axial_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
-<span class="n">hog_axial_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
-<span class="n">weak_axial_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>n = 5000e3
+sag_axial_res = conc_sec.ultimate_bending_capacity(n=n)
+hog_axial_res = conc_sec.ultimate_bending_capacity(theta=np.pi, n=n)
+weak_axial_res = conc_sec.ultimate_bending_capacity(theta=np.pi / 2, n=n)
 </pre></div>
 </div>
 </div>
@@ -901,15 +901,15 @@ M_y = 2225.48 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">&quot;M_x+ = </span><span class="si">{</span><span class="n">sag_axial_res</span><span class="o">.</span><span class="n">m_xy</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m with N = </span><span class="si">{</span><span class="n">sag_axial_res</span><span class="o">.</span><span class="n">n</span> <span class="o">/</span> <span class="mf">1e3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN&quot;</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">&quot;M_x- = </span><span class="si">{</span><span class="n">hog_axial_res</span><span class="o">.</span><span class="n">m_xy</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m with N = </span><span class="si">{</span><span class="n">hog_axial_res</span><span class="o">.</span><span class="n">n</span> <span class="o">/</span> <span class="mf">1e3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN&quot;</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">&quot;M_y = </span><span class="si">{</span><span class="n">weak_axial_res</span><span class="o">.</span><span class="n">m_xy</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m with N = </span><span class="si">{</span><span class="n">weak_axial_res</span><span class="o">.</span><span class="n">n</span> <span class="o">/</span> <span class="mf">1e3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN&quot;</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(
+    f&quot;M_x+ = {sag_axial_res.m_xy / 1e6:.2f} kN.m with N = {sag_axial_res.n / 1e3:.0f} kN&quot;
+)
+print(
+    f&quot;M_x- = {hog_axial_res.m_xy / 1e6:.2f} kN.m with N = {hog_axial_res.n / 1e3:.0f} kN&quot;
+)
+print(
+    f&quot;M_y = {weak_axial_res.m_xy / 1e6:.2f} kN.m with N = {weak_axial_res.n / 1e3:.0f} kN&quot;
+)
 </pre></div>
 </div>
 </div>
@@ -1080,7 +1080,7 @@ M_y = 3711.01 kN.m with N = 5000 kN
   <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

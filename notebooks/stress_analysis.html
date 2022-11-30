@@ -641,16 +641,16 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">rich.pretty</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">SteelBar</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">EurocodeNonLinear</span><span class="p">,</span>
-    <span class="n">RectangularStressBlock</span><span class="p">,</span>
-    <span class="n">SteelElasticPlastic</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">sectionproperties.pre.library.concrete_sections</span> <span class="kn">import</span> <span class="n">concrete_circular_section</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
+from rich.pretty import pprint
+from concreteproperties.material import Concrete, SteelBar
+from concreteproperties.stress_strain_profile import (
+    EurocodeNonLinear,
+    RectangularStressBlock,
+    SteelElasticPlastic,
+)
+from sectionproperties.pre.library.concrete_sections import concrete_circular_section
+from concreteproperties.concrete_section import ConcreteSection
 </pre></div>
 </div>
 </div>
@@ -661,37 +661,37 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concrete</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;40 MPa Concrete&quot;</span><span class="p">,</span>
-    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
-    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">EurocodeNonLinear</span><span class="p">(</span>
-        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">32.8e3</span><span class="p">,</span>
-        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
-        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
-        <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.0023</span><span class="p">,</span>
-        <span class="n">tensile_strength</span><span class="o">=</span><span class="mf">3.8</span><span class="p">,</span>
-        <span class="n">tension_softening_stiffness</span><span class="o">=</span><span class="mf">10e3</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">RectangularStressBlock</span><span class="p">(</span>
-        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
-        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.79</span><span class="p">,</span>
-        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.87</span><span class="p">,</span>
-        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.8</span><span class="p">,</span>
-    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>concrete = Concrete(
+    name=&quot;40 MPa Concrete&quot;,
+    density=2.4e-6,
+    stress_strain_profile=EurocodeNonLinear(
+        elastic_modulus=32.8e3,
+        ultimate_strain=0.0035,
+        compressive_strength=40,
+        compressive_strain=0.0023,
+        tensile_strength=3.8,
+        tension_softening_stiffness=10e3,
+    ),
+    ultimate_stress_strain_profile=RectangularStressBlock(
+        compressive_strength=40,
+        alpha=0.79,
+        gamma=0.87,
+        ultimate_strain=0.003,
+    ),
+    flexural_tensile_strength=3.8,
+    colour=&quot;lightgrey&quot;,
+)
 
-<span class="n">steel</span> <span class="o">=</span> <span class="n">SteelBar</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;500 MPa Steel&quot;</span><span class="p">,</span>
-    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
-    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
-        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
-        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+steel = SteelBar(
+    name=&quot;500 MPa Steel&quot;,
+    density=7.85e-6,
+    stress_strain_profile=SteelElasticPlastic(
+        yield_strength=500,
+        elastic_modulus=200e3,
+        fracture_strain=0.05,
+    ),
+    colour=&quot;grey&quot;,
+)
 </pre></div>
 </div>
 </div>
@@ -703,21 +703,21 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">geom</span> <span class="o">=</span> <span class="n">concrete_circular_section</span><span class="p">(</span>
-    <span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
-    <span class="n">n</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
-    <span class="n">dia</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
-    <span class="n">n_bar</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-    <span class="n">n_circle</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-    <span class="n">area_conc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span>
-    <span class="n">area_bar</span><span class="o">=</span><span class="mi">310</span><span class="p">,</span>
-    <span class="n">cover</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
-    <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete</span><span class="p">,</span>
-    <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>geom = concrete_circular_section(
+    d=600,
+    n=32,
+    dia=20,
+    n_bar=10,
+    n_circle=4,
+    area_conc=np.pi * 600 * 600 / 4,
+    area_bar=310,
+    cover=45,
+    conc_mat=concrete,
+    steel_mat=steel,
+)
 
-<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
-<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+conc_sec = ConcreteSection(geom)
+conc_sec.plot_section()
 </pre></div>
 </div>
 </div>
@@ -744,8 +744,8 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uncr_stress_res_1</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_uncracked_stress</span><span class="p">(</span><span class="n">m_x</span><span class="o">=</span><span class="mf">50e6</span><span class="p">)</span>
-<span class="n">uncr_stress_res_2</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_uncracked_stress</span><span class="p">(</span><span class="n">m_x</span><span class="o">=</span><span class="mf">25e6</span><span class="p">,</span> <span class="n">m_y</span><span class="o">=</span><span class="mf">35e6</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mf">200e3</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>uncr_stress_res_1 = conc_sec.calculate_uncracked_stress(m_x=50e6)
+uncr_stress_res_2 = conc_sec.calculate_uncracked_stress(m_x=25e6, m_y=35e6, n=200e3)
 </pre></div>
 </div>
 </div>
@@ -754,7 +754,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uncr_stress_res_1</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>uncr_stress_res_1.plot_stress()
 </pre></div>
 </div>
 </div>
@@ -777,7 +777,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uncr_stress_res_2</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>uncr_stress_res_2.plot_stress()
 </pre></div>
 </div>
 </div>
@@ -804,9 +804,9 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cracked_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_cracked_properties</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_cr = </span><span class="si">{</span><span class="n">cracked_res</span><span class="o">.</span><span class="n">m_cr</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;d_n,c = </span><span class="si">{</span><span class="n">cracked_res</span><span class="o">.</span><span class="n">d_nc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>cracked_res = conc_sec.calculate_cracked_properties(theta=0)
+print(f&quot;M_cr = {cracked_res.m_cr / 1e6:.2f} kN.m&quot;)
+print(f&quot;d_n,c = {cracked_res.d_nc:.2f} mm&quot;)
 </pre></div>
 </div>
 </div>
@@ -824,11 +824,11 @@ d_n,c = 143.81 mm
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_ext</span> <span class="o">=</span> <span class="mf">150e6</span>
-<span class="n">cracked_stress_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_cracked_stress</span><span class="p">(</span>
-    <span class="n">cracked_results</span><span class="o">=</span><span class="n">cracked_res</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m_ext</span>
-<span class="p">)</span>
-<span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>m_ext = 150e6
+cracked_stress_res = conc_sec.calculate_cracked_stress(
+    cracked_results=cracked_res, m=m_ext
+)
+cracked_stress_res.plot_stress()
 </pre></div>
 </div>
 </div>
@@ -856,30 +856,30 @@ d_n,c = 143.81 mm
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">an_sec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">concrete_analysis_sections</span><span class="p">):</span>
-    <span class="c1"># Label section and plot section mesh</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Analysis Section </span><span class="si">{</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">an_sec</span><span class="o">.</span><span class="n">plot_mesh</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for idx, an_sec in enumerate(cracked_stress_res.concrete_analysis_sections):
+    # Label section and plot section mesh
+    print(f&quot;Analysis Section {idx + 1}&quot;)
+    an_sec.plot_mesh()
 
-    <span class="c1"># get concrete results</span>
-    <span class="n">sigs_conc</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">concrete_stresses</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-    <span class="n">f_conc</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">concrete_forces</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">d_x_conc</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">concrete_forces</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">d_y_conc</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">concrete_forces</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">m_x_conc</span> <span class="o">=</span> <span class="n">f_conc</span> <span class="o">*</span> <span class="n">d_y_conc</span>
-    <span class="n">m_y_conc</span> <span class="o">=</span> <span class="n">f_conc</span> <span class="o">*</span> <span class="n">d_x_conc</span>
-    <span class="n">m_conc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">m_x_conc</span> <span class="o">*</span> <span class="n">m_x_conc</span> <span class="o">+</span> <span class="n">m_y_conc</span> <span class="o">*</span> <span class="n">m_y_conc</span><span class="p">)</span>
+    # get concrete results
+    sigs_conc = cracked_stress_res.concrete_stresses[idx]
+    f_conc = cracked_stress_res.concrete_forces[idx][0]
+    d_x_conc = cracked_stress_res.concrete_forces[idx][1]
+    d_y_conc = cracked_stress_res.concrete_forces[idx][2]
+    m_x_conc = f_conc * d_y_conc
+    m_y_conc = f_conc * d_x_conc
+    m_conc = np.sqrt(m_x_conc * m_x_conc + m_y_conc * m_y_conc)
 
-    <span class="c1"># print results</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Concrete Stresses:&quot;</span><span class="p">)</span>
-    <span class="n">pprint</span><span class="p">(</span><span class="n">sigs_conc</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Concrete Net Force &amp; Lever Arm:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;F_c = </span><span class="si">{</span><span class="n">f_conc</span> <span class="o">/</span> <span class="mf">1e3</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;d_x_n = </span><span class="si">{</span><span class="n">d_x_conc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;d_y_n = </span><span class="si">{</span><span class="n">d_y_conc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_x_c = </span><span class="si">{</span><span class="n">m_x_conc</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_y_c = </span><span class="si">{</span><span class="n">m_y_conc</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_c = </span><span class="si">{</span><span class="n">m_conc</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+    # print results
+    print(&quot;Concrete Stresses:&quot;)
+    pprint(sigs_conc)
+    print(&quot;Concrete Net Force &amp; Lever Arm:&quot;)
+    print(f&quot;F_c = {f_conc / 1e3:.2f} kN&quot;)
+    print(f&quot;d_x_n = {d_x_conc:.2f} mm&quot;)
+    print(f&quot;d_y_n = {d_y_conc:.2f} mm&quot;)
+    print(f&quot;M_x_c = {m_x_conc / 1e6:.2f} kN.m&quot;)
+    print(f&quot;M_y_c = {m_y_conc / 1e6:.2f} kN.m&quot;)
+    print(f&quot;M_c = {m_conc / 1e6:.2f} kN.m&quot;)
 </pre></div>
 </div>
 </div>
@@ -939,51 +939,51 @@ M_c = 28.80 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rich.table</span> <span class="kn">import</span> <span class="n">Table</span>
-<span class="kn">from</span> <span class="nn">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from rich.table import Table
+from rich.console import Console
 
-<span class="c1"># store forces &amp; moments for later</span>
-<span class="n">forces</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">moments_x</span> <span class="o">=</span> <span class="p">[]</span>
+# store forces &amp; moments for later
+forces = []
+moments_x = []
 
-<span class="c1"># create a Rich table for pretty printing</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Reinforcement Results&quot;</span><span class="p">)</span>
-<span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Bar No.&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">no_wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Location (x, y) (mm)&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
-<span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Stress (MPa)&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
-<span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Force (kN)&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
-<span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Lever Arm (mm)&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
-<span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Moment (kN.m)&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+# create a Rich table for pretty printing
+table = Table(title=&quot;Reinforcement Results&quot;)
+table.add_column(&quot;Bar No.&quot;, justify=&quot;center&quot;, style=&quot;cyan&quot;, no_wrap=True)
+table.add_column(&quot;Location (x, y) (mm)&quot;, justify=&quot;center&quot;, style=&quot;green&quot;)
+table.add_column(&quot;Stress (MPa)&quot;, justify=&quot;center&quot;, style=&quot;green&quot;)
+table.add_column(&quot;Force (kN)&quot;, justify=&quot;center&quot;, style=&quot;green&quot;)
+table.add_column(&quot;Lever Arm (mm)&quot;, justify=&quot;center&quot;, style=&quot;green&quot;)
+table.add_column(&quot;Moment (kN.m)&quot;, justify=&quot;center&quot;, style=&quot;green&quot;)
 
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">reinf_geom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">lumped_reinforcement_geometries</span><span class="p">):</span>
-    <span class="c1"># get the reinforcement results</span>
-    <span class="n">centroid</span> <span class="o">=</span> <span class="n">reinf_geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
-    <span class="n">stress</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">lumped_reinforcement_stresses</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-    <span class="n">strain</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">lumped_reinforcement_strains</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-    <span class="n">force</span><span class="p">,</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_y</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">lumped_reinforcement_forces</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+for idx, reinf_geom in enumerate(cracked_stress_res.lumped_reinforcement_geometries):
+    # get the reinforcement results
+    centroid = reinf_geom.calculate_centroid()
+    stress = cracked_stress_res.lumped_reinforcement_stresses[idx]
+    strain = cracked_stress_res.lumped_reinforcement_strains[idx]
+    force, d_x, d_y = cracked_stress_res.lumped_reinforcement_forces[idx]
 
-    <span class="c1"># calculate the moment each bar creates and store the results</span>
-    <span class="n">moment_x</span> <span class="o">=</span> <span class="n">force</span> <span class="o">*</span> <span class="n">d_y</span>
-    <span class="n">forces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">force</span><span class="p">)</span>
-    <span class="n">moments_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_x</span><span class="p">)</span>
+    # calculate the moment each bar creates and store the results
+    moment_x = force * d_y
+    forces.append(force)
+    moments_x.append(moment_x)
 
-    <span class="c1"># print compression or tension</span>
-    <span class="k">if</span> <span class="n">strain</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">t_or_c</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">t_or_c</span> <span class="o">=</span> <span class="s2">&quot;T&quot;</span>
+    # print compression or tension
+    if strain &gt; 0:
+        t_or_c = &quot;C&quot;
+    else:
+        t_or_c = &quot;T&quot;
 
-    <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">stress</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">t_or_c</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">force</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e3</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d_y</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">moment_x</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
+    table.add_row(
+        f&quot;{idx + 1}&quot;,
+        f&quot;({centroid[0]:.1f}, {centroid[1]:.1f})&quot;,
+        f&quot;{abs(stress):.1f} ({t_or_c})&quot;,
+        f&quot;{abs(force) / 1e3:.1f}&quot;,
+        f&quot;{d_y:.1f}&quot;,
+        f&quot;{moment_x / 1e6:.2f}&quot;,
+    )
 
-<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
-<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+console = Console()
+console.print(table)
 </pre></div>
 </div>
 </div>
@@ -1013,14 +1013,14 @@ M_c = 28.80 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sum of forces</span>
-<span class="n">int_force</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">forces</span><span class="p">)</span> <span class="o">+</span> <span class="n">f_conc</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sum of Internal Forces: </span><span class="si">{</span><span class="n">int_force</span> <span class="o">/</span> <span class="mf">1e3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># sum of forces
+int_force = sum(forces) + f_conc
+print(f&quot;Sum of Internal Forces: {int_force / 1e3:.0f} kN&quot;)
 
-<span class="c1"># sum of moments</span>
-<span class="n">int_moment</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">moments_x</span><span class="p">)</span> <span class="o">+</span> <span class="n">m_conc</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sum of Internal Moments: </span><span class="si">{</span><span class="n">int_moment</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;External Moment: </span><span class="si">{</span><span class="n">m_ext</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+# sum of moments
+int_moment = sum(moments_x) + m_conc
+print(f&quot;Sum of Internal Moments: {int_moment / 1e6:.0f} kN.m&quot;)
+print(f&quot;External Moment: {m_ext / 1e6:.0f} kN.m&quot;)
 </pre></div>
 </div>
 </div>
@@ -1043,7 +1043,7 @@ External Moment: 150 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mk_res = conc_sec.moment_curvature_analysis(progress_bar=False)
 </pre></div>
 </div>
 </div>
@@ -1052,7 +1052,7 @@ External Moment: 150 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res</span><span class="o">.</span><span class="n">plot_results</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mk_res.plot_results()
 </pre></div>
 </div>
 </div>
@@ -1076,17 +1076,17 @@ External Moment: 150 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a list of inputs (either moments [m] or curvatures [k])</span>
-<span class="n">stress_inputs</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">50e6</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="n">cracked_res</span><span class="o">.</span><span class="n">m_cr</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">7.5e-07</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">1.15e-06</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">2.15e-06</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">250e6</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">300e6</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">360e6</span><span class="p">},</span>
-<span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># create a list of inputs (either moments [m] or curvatures [k])
+stress_inputs = [
+    {&quot;m_or_k&quot;: &quot;m&quot;, &quot;val&quot;: 50e6},
+    {&quot;m_or_k&quot;: &quot;m&quot;, &quot;val&quot;: cracked_res.m_cr},
+    {&quot;m_or_k&quot;: &quot;k&quot;, &quot;val&quot;: 7.5e-07},
+    {&quot;m_or_k&quot;: &quot;k&quot;, &quot;val&quot;: 1.15e-06},
+    {&quot;m_or_k&quot;: &quot;k&quot;, &quot;val&quot;: 2.15e-06},
+    {&quot;m_or_k&quot;: &quot;m&quot;, &quot;val&quot;: 250e6},
+    {&quot;m_or_k&quot;: &quot;m&quot;, &quot;val&quot;: 300e6},
+    {&quot;m_or_k&quot;: &quot;m&quot;, &quot;val&quot;: 360e6},
+]
 </pre></div>
 </div>
 </div>
@@ -1094,23 +1094,23 @@ External Moment: 150 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># loop through each input</span>
-<span class="k">for</span> <span class="n">s_in</span> <span class="ow">in</span> <span class="n">stress_inputs</span><span class="p">:</span>
-    <span class="c1"># determine if the input is a moment or curvature</span>
-    <span class="k">if</span> <span class="n">s_in</span><span class="p">[</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span>
-        <span class="n">m_stress</span> <span class="o">=</span> <span class="n">s_in</span><span class="p">[</span><span class="s2">&quot;val&quot;</span><span class="p">]</span>
-        <span class="n">service_stress_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_service_stress</span><span class="p">(</span>
-            <span class="n">moment_curvature_results</span><span class="o">=</span><span class="n">mk_res</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m_stress</span>
-        <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">s_in</span><span class="p">[</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;k&quot;</span><span class="p">:</span>
-        <span class="n">service_stress_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_service_stress</span><span class="p">(</span>
-            <span class="n">moment_curvature_results</span><span class="o">=</span><span class="n">mk_res</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="n">s_in</span><span class="p">[</span><span class="s2">&quot;val&quot;</span><span class="p">]</span>
-        <span class="p">)</span>
-        <span class="n">m_stress</span> <span class="o">=</span> <span class="n">service_stress_res</span><span class="o">.</span><span class="n">sum_moments</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># loop through each input
+for s_in in stress_inputs:
+    # determine if the input is a moment or curvature
+    if s_in[&quot;m_or_k&quot;] == &quot;m&quot;:
+        m_stress = s_in[&quot;val&quot;]
+        service_stress_res = conc_sec.calculate_service_stress(
+            moment_curvature_results=mk_res, m=m_stress
+        )
+    elif s_in[&quot;m_or_k&quot;] == &quot;k&quot;:
+        service_stress_res = conc_sec.calculate_service_stress(
+            moment_curvature_results=mk_res, m=None, kappa=s_in[&quot;val&quot;]
+        )
+        m_stress = service_stress_res.sum_moments()[2]
 
-    <span class="c1"># create plot title and plot stress</span>
-    <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Moment = </span><span class="si">{</span><span class="n">m_stress</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span>
-    <span class="n">service_stress_res</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+    # create plot title and plot stress
+    label = f&quot;Moment = {m_stress / 1e6:.0f} kN.m&quot;
+    service_stress_res.plot_stress(title=label)
 </pre></div>
 </div>
 </div>
@@ -1171,8 +1171,8 @@ External Moment: 150 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">mi_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mi_res = conc_sec.moment_interaction_diagram(progress_bar=False)
+mi_res.plot_diagram()
 </pre></div>
 </div>
 </div>
@@ -1196,9 +1196,9 @@ External Moment: 150 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ultimate_res_pure</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">()</span>
-<span class="n">ultimate_res_bal</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mf">3500e3</span><span class="p">)</span>
-<span class="n">ultimate_res_decomp</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mf">9000e3</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ultimate_res_pure = conc_sec.ultimate_bending_capacity()
+ultimate_res_bal = conc_sec.ultimate_bending_capacity(n=3500e3)
+ultimate_res_decomp = conc_sec.ultimate_bending_capacity(n=9000e3)
 </pre></div>
 </div>
 </div>
@@ -1207,15 +1207,15 @@ External Moment: 150 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ultimate_stress_pure</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_ultimate_stress</span><span class="p">(</span>
-    <span class="n">ultimate_results</span><span class="o">=</span><span class="n">ultimate_res_pure</span>
-<span class="p">)</span>
-<span class="n">ultimate_stress_bal</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_ultimate_stress</span><span class="p">(</span>
-    <span class="n">ultimate_results</span><span class="o">=</span><span class="n">ultimate_res_bal</span>
-<span class="p">)</span>
-<span class="n">ultimate_stress_decomp</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_ultimate_stress</span><span class="p">(</span>
-    <span class="n">ultimate_results</span><span class="o">=</span><span class="n">ultimate_res_decomp</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ultimate_stress_pure = conc_sec.calculate_ultimate_stress(
+    ultimate_results=ultimate_res_pure
+)
+ultimate_stress_bal = conc_sec.calculate_ultimate_stress(
+    ultimate_results=ultimate_res_bal
+)
+ultimate_stress_decomp = conc_sec.calculate_ultimate_stress(
+    ultimate_results=ultimate_res_decomp
+)
 </pre></div>
 </div>
 </div>
@@ -1223,9 +1223,9 @@ External Moment: 150 kN.m
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ultimate_stress_pure</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Pure Bending&quot;</span><span class="p">)</span>
-<span class="n">ultimate_stress_bal</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Balanced&quot;</span><span class="p">)</span>
-<span class="n">ultimate_stress_decomp</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Decompression&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ultimate_stress_pure.plot_stress(title=&quot;Pure Bending&quot;)
+ultimate_stress_bal.plot_stress(title=&quot;Balanced&quot;)
+ultimate_stress_decomp.plot_stress(title=&quot;Decompression&quot;)
 </pre></div>
 </div>
 </div>
@@ -1410,7 +1410,7 @@ External Moment: 150 kN.m
   <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

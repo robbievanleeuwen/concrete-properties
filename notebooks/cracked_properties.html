@@ -641,15 +641,15 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">SteelBar</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ConcreteLinear</span><span class="p">,</span>
-    <span class="n">RectangularStressBlock</span><span class="p">,</span>
-    <span class="n">SteelElasticPlastic</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">sectionproperties.pre.library.concrete_sections</span> <span class="kn">import</span> <span class="n">concrete_tee_section</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
+from concreteproperties.material import Concrete, SteelBar
+from concreteproperties.stress_strain_profile import (
+    ConcreteLinear,
+    RectangularStressBlock,
+    SteelElasticPlastic,
+)
+from sectionproperties.pre.library.concrete_sections import concrete_tee_section
+from concreteproperties.concrete_section import ConcreteSection
 </pre></div>
 </div>
 </div>
@@ -660,30 +660,30 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concrete</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;40 MPa Concrete&quot;</span><span class="p">,</span>
-    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
-    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ConcreteLinear</span><span class="p">(</span><span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">32.8e3</span><span class="p">),</span>
-    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">RectangularStressBlock</span><span class="p">(</span>
-        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
-        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.79</span><span class="p">,</span>
-        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.87</span><span class="p">,</span>
-        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.8</span><span class="p">,</span>
-    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>concrete = Concrete(
+    name=&quot;40 MPa Concrete&quot;,
+    density=2.4e-6,
+    stress_strain_profile=ConcreteLinear(elastic_modulus=32.8e3),
+    ultimate_stress_strain_profile=RectangularStressBlock(
+        compressive_strength=40,
+        alpha=0.79,
+        gamma=0.87,
+        ultimate_strain=0.003,
+    ),
+    flexural_tensile_strength=3.8,
+    colour=&quot;lightgrey&quot;,
+)
 
-<span class="n">steel</span> <span class="o">=</span> <span class="n">SteelBar</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;500 MPa Steel&quot;</span><span class="p">,</span>
-    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
-    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
-        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
-        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+steel = SteelBar(
+    name=&quot;500 MPa Steel&quot;,
+    density=7.85e-6,
+    stress_strain_profile=SteelElasticPlastic(
+        yield_strength=500,
+        elastic_modulus=200e3,
+        fracture_strain=0.05,
+    ),
+    colour=&quot;grey&quot;,
+)
 </pre></div>
 </div>
 </div>
@@ -695,25 +695,25 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">geom</span> <span class="o">=</span> <span class="n">concrete_tee_section</span><span class="p">(</span>
-    <span class="n">b</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
-    <span class="n">d</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span>
-    <span class="n">b_f</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
-    <span class="n">d_f</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-    <span class="n">dia_top</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
-    <span class="n">n_top</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-    <span class="n">dia_bot</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
-    <span class="n">n_bot</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="n">n_circle</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-    <span class="n">cover</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-    <span class="n">area_top</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-    <span class="n">area_bot</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
-    <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete</span><span class="p">,</span>
-    <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>geom = concrete_tee_section(
+    b=300,
+    d=900,
+    b_f=1200,
+    d_f=200,
+    dia_top=16,
+    n_top=6,
+    dia_bot=32,
+    n_bot=3,
+    n_circle=4,
+    cover=30,
+    area_top=200,
+    area_bot=800,
+    conc_mat=concrete,
+    steel_mat=steel,
+)
 
-<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
-<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+conc_sec = ConcreteSection(geom)
+conc_sec.plot_section()
 </pre></div>
 </div>
 </div>
@@ -740,8 +740,8 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cracked_res_sag</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_cracked_properties</span><span class="p">()</span>
-<span class="n">cracked_res_hog</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_cracked_properties</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>cracked_res_sag = conc_sec.calculate_cracked_properties()
+cracked_res_hog = conc_sec.calculate_cracked_properties(theta=np.pi)
 </pre></div>
 </div>
 </div>
@@ -750,8 +750,8 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cracked_res_sag</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
-<span class="n">cracked_res_hog</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>cracked_res_sag.print_results()
+cracked_res_hog.print_results()
 </pre></div>
 </div>
 </div>
@@ -823,11 +823,11 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cracked_res_sag</span><span class="o">.</span><span class="n">calculate_transformed_properties</span><span class="p">(</span><span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">32.8e3</span><span class="p">)</span>
-<span class="n">cracked_res_hog</span><span class="o">.</span><span class="n">calculate_transformed_properties</span><span class="p">(</span><span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">32.8e3</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>cracked_res_sag.calculate_transformed_properties(elastic_modulus=32.8e3)
+cracked_res_hog.calculate_transformed_properties(elastic_modulus=32.8e3)
 
-<span class="n">cracked_res_sag</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
-<span class="n">cracked_res_hog</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
+cracked_res_sag.print_results()
+cracked_res_hog.print_results()
 </pre></div>
 </div>
 </div>
@@ -922,13 +922,13 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cracking_moment</span> <span class="o">=</span> <span class="n">cracked_res_sag</span><span class="o">.</span><span class="n">m_cr</span>
-<span class="n">neutral_axis_depth</span> <span class="o">=</span> <span class="n">cracked_res_sag</span><span class="o">.</span><span class="n">d_nc</span>
-<span class="n">cracked_i</span> <span class="o">=</span> <span class="n">cracked_res_sag</span><span class="o">.</span><span class="n">iuu_cr</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>cracking_moment = cracked_res_sag.m_cr
+neutral_axis_depth = cracked_res_sag.d_nc
+cracked_i = cracked_res_sag.iuu_cr
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_cr = </span><span class="si">{</span><span class="n">cracking_moment</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;d_nc = </span><span class="si">{</span><span class="n">neutral_axis_depth</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;I_cr = </span><span class="si">{</span><span class="n">cracked_i</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2"> mm^4&quot;</span><span class="p">)</span>
+print(f&quot;M_cr = {cracking_moment / 1e6:.2f} kN.m&quot;)
+print(f&quot;d_nc = {neutral_axis_depth:.2f} mm&quot;)
+print(f&quot;I_cr = {cracked_i:.3e} mm^4&quot;)
 </pre></div>
 </div>
 </div>
@@ -950,7 +950,7 @@ I_cr = 8.602e+09 mm^4
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cracked_res_sag</span><span class="o">.</span><span class="n">plot_cracked_geometries</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>cracked_res_sag.plot_cracked_geometries(labels=[], cp=False, legend=False)
 </pre></div>
 </div>
 </div>
@@ -973,7 +973,7 @@ I_cr = 8.602e+09 mm^4
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cracked_res_hog</span><span class="o">.</span><span class="n">plot_cracked_geometries</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>cracked_res_hog.plot_cracked_geometries(labels=[], cp=False, legend=False)
 </pre></div>
 </div>
 </div>
@@ -1128,7 +1128,7 @@ I_cr = 8.602e+09 mm^4
   <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

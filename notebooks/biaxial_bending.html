@@ -641,17 +641,17 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">SteelBar</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ConcreteLinear</span><span class="p">,</span>
-    <span class="n">RectangularStressBlock</span><span class="p">,</span>
-    <span class="n">SteelElasticPlastic</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">sectionproperties.pre.library.primitive_sections</span> <span class="kn">import</span> <span class="n">rectangular_section</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">add_bar_rectangular_array</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
-<span class="kn">from</span> <span class="nn">concreteproperties.results</span> <span class="kn">import</span> <span class="n">BiaxialBendingResults</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
+from concreteproperties.material import Concrete, SteelBar
+from concreteproperties.stress_strain_profile import (
+    ConcreteLinear,
+    RectangularStressBlock,
+    SteelElasticPlastic,
+)
+from sectionproperties.pre.library.primitive_sections import rectangular_section
+from concreteproperties.pre import add_bar_rectangular_array
+from concreteproperties.concrete_section import ConcreteSection
+from concreteproperties.results import BiaxialBendingResults
 </pre></div>
 </div>
 </div>
@@ -662,30 +662,30 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concrete</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;40 MPa Concrete&quot;</span><span class="p">,</span>
-    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
-    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ConcreteLinear</span><span class="p">(</span><span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">32.8e3</span><span class="p">),</span>
-    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">RectangularStressBlock</span><span class="p">(</span>
-        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
-        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.79</span><span class="p">,</span>
-        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.87</span><span class="p">,</span>
-        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.8</span><span class="p">,</span>
-    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>concrete = Concrete(
+    name=&quot;40 MPa Concrete&quot;,
+    density=2.4e-6,
+    stress_strain_profile=ConcreteLinear(elastic_modulus=32.8e3),
+    ultimate_stress_strain_profile=RectangularStressBlock(
+        compressive_strength=40,
+        alpha=0.79,
+        gamma=0.87,
+        ultimate_strain=0.003,
+    ),
+    flexural_tensile_strength=3.8,
+    colour=&quot;lightgrey&quot;,
+)
 
-<span class="n">steel</span> <span class="o">=</span> <span class="n">SteelBar</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;500 MPa Steel&quot;</span><span class="p">,</span>
-    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
-    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
-        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
-        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+steel = SteelBar(
+    name=&quot;500 MPa Steel&quot;,
+    density=7.85e-6,
+    stress_strain_profile=SteelElasticPlastic(
+        yield_strength=500,
+        elastic_modulus=200e3,
+        fracture_strain=0.05,
+    ),
+    colour=&quot;grey&quot;,
+)
 </pre></div>
 </div>
 </div>
@@ -697,23 +697,23 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">col</span> <span class="o">=</span> <span class="n">rectangular_section</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">concrete</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>col = rectangular_section(d=350, b=600, material=concrete)
 
-<span class="c1"># add bars to column</span>
-<span class="n">geom</span> <span class="o">=</span> <span class="n">add_bar_rectangular_array</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">col</span><span class="p">,</span>
-    <span class="n">area</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
-    <span class="n">n_x</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-    <span class="n">x_s</span><span class="o">=</span><span class="mi">492</span> <span class="o">/</span> <span class="mi">5</span><span class="p">,</span>
-    <span class="n">n_y</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="n">y_s</span><span class="o">=</span><span class="mi">121</span><span class="p">,</span>
-    <span class="n">anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">54</span><span class="p">,</span> <span class="mi">54</span><span class="p">),</span>
-    <span class="n">exterior_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
+# add bars to column
+geom = add_bar_rectangular_array(
+    geometry=col,
+    area=450,
+    material=steel,
+    n_x=6,
+    x_s=492 / 5,
+    n_y=3,
+    y_s=121,
+    anchor=(54, 54),
+    exterior_only=True,
+)
 
-<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
-<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+conc_sec = ConcreteSection(geom)
+conc_sec.plot_section()
 </pre></div>
 </div>
 </div>
@@ -740,7 +740,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bb_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">biaxial_bending_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>bb_res = conc_sec.biaxial_bending_diagram(progress_bar=False)
 </pre></div>
 </div>
 </div>
@@ -749,7 +749,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bb_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>bb_res.plot_diagram()
 </pre></div>
 </div>
 </div>
@@ -773,8 +773,8 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bb_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">biaxial_bending_diagram</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mf">1000e3</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">bb_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>bb_res = conc_sec.biaxial_bending_diagram(n=1000e3, progress_bar=False)
+bb_res.plot_diagram()
 </pre></div>
 </div>
 </div>
@@ -801,12 +801,12 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_x</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">mi_y</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">mi_x</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">()</span>
-<span class="n">mi_y</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">(</span><span class="n">moment</span><span class="o">=</span><span class="s2">&quot;m_y&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Decompression point for M_x is N = </span><span class="si">{</span><span class="n">mi_x</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">n</span> <span class="o">/</span> <span class="mf">1e3</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Decompression point for M_y is N = </span><span class="si">{</span><span class="n">mi_y</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">n</span> <span class="o">/</span> <span class="mf">1e3</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mi_x = conc_sec.moment_interaction_diagram(progress_bar=False)
+mi_y = conc_sec.moment_interaction_diagram(theta=np.pi / 2, progress_bar=False)
+mi_x.plot_diagram()
+mi_y.plot_diagram(moment=&quot;m_y&quot;)
+print(f&quot;Decompression point for M_x is N = {mi_x.results[1].n / 1e3:.2f} kN&quot;)
+print(f&quot;Decompression point for M_y is N = {mi_y.results[1].n / 1e3:.2f} kN&quot;)
 </pre></div>
 </div>
 </div>
@@ -836,11 +836,11 @@ Decompression point for M_y is N = 7444.80 kN
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">7400e3</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
-<span class="n">biaxial_results</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>n_list = np.linspace(0, 7400e3, 11)
+biaxial_results = []
 
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">n_list</span><span class="p">:</span>
-    <span class="n">biaxial_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conc_sec</span><span class="o">.</span><span class="n">biaxial_bending_diagram</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+for n in n_list:
+    biaxial_results.append(conc_sec.biaxial_bending_diagram(n=n, progress_bar=False))
 </pre></div>
 </div>
 </div>
@@ -849,7 +849,7 @@ Decompression point for M_y is N = 7444.80 kN
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BiaxialBendingResults</span><span class="o">.</span><span class="n">plot_multiple_diagrams_3d</span><span class="p">(</span><span class="n">biaxial_results</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>BiaxialBendingResults.plot_multiple_diagrams_3d(biaxial_results)
 </pre></div>
 </div>
 </div>
@@ -873,7 +873,7 @@ Decompression point for M_y is N = 7444.80 kN
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BiaxialBendingResults</span><span class="o">.</span><span class="n">plot_multiple_diagrams_2d</span><span class="p">(</span><span class="n">biaxial_results</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>BiaxialBendingResults.plot_multiple_diagrams_2d(biaxial_results[::2], fmt=&quot;-&quot;)
 </pre></div>
 </div>
 </div>
@@ -897,19 +897,19 @@ Decompression point for M_y is N = 7444.80 kN
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>labels = []
 
-<span class="k">for</span> <span class="n">bb_res</span> <span class="ow">in</span> <span class="n">biaxial_results</span><span class="p">[::</span><span class="mi">2</span><span class="p">]:</span>
-    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;N = </span><span class="si">{</span><span class="n">bb_res</span><span class="o">.</span><span class="n">n</span> <span class="o">/</span> <span class="mf">1e3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+for bb_res in biaxial_results[::2]:
+    labels.append(f&quot;N = {bb_res.n / 1e3:.0f} kN&quot;)
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">BiaxialBendingResults</span><span class="o">.</span><span class="n">plot_multiple_diagrams_2d</span><span class="p">(</span>
-    <span class="n">biaxial_results</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">render</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_x$ [kN.m]&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_y$ [kN.m]&quot;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+ax = BiaxialBendingResults.plot_multiple_diagrams_2d(
+    biaxial_results[::2], fmt=&quot;-&quot;, labels=labels, render=False
+)
+ax.set_xlabel(&quot;Bending Moment $M_x$ [kN.m]&quot;)
+ax.set_ylabel(&quot;Bending Moment $M_y$ [kN.m]&quot;)
+import matplotlib.pyplot as plt
 
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+plt.show()
 </pre></div>
 </div>
 </div>
@@ -1050,7 +1050,7 @@ Decompression point for M_y is N = 7444.80 kN
   <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

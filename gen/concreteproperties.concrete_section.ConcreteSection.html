@@ -675,13 +675,20 @@ net axial force.</p>
 <span class="sig-name descname"><span class="pre">ultimate_bending_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.ultimate_bending_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a neutral axis angle <code class="docutils literal notranslate"><span class="pre">theta</span></code> and an axial force <code class="docutils literal notranslate"><span class="pre">n</span></code>, calculates
 the ultimate bending capacity.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This calculation is code agnostic and no capacity reduction factors are
+applied. If design capacities are required, use the applicable
+<code class="docutils literal notranslate"><span class="pre">design_code</span></code> module or consult your local design code on how to treat
+nominal axial loads in ultimate bending calculations.</p>
+</div>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">k_u</span></code> is calculated only for lumped (non-meshed) geometries.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Angle (in radians) the neutral axis makes with the horizontal axis
 (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
-<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Net axial force</p></li>
+<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Net axial force (nominal axial load)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -743,7 +750,7 @@ Types of control points are detailed below:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;D&quot;</span></code> - ratio of neutral axis depth to section depth</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;d_n&quot;</span></code> - neutral axis depth</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;fy&quot;</span></code> - yield ratio of the most extreme tensile bar</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;N&quot;</span></code> - axial force</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;N&quot;</span></code> - net (nominal) axial force</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;kappa0&quot;</span></code> - zero curvature compression (N.B second item in tuple is not
 used)</p></li>
 </ul>
@@ -1245,7 +1252,7 @@ axis (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</
   <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

@@ -1217,11 +1217,18 @@
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Given a neutral axis angle ``theta`` and an axial force ``n``, calculates</span>
 <span class="sd">        the ultimate bending capacity.</span>
 
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This calculation is code agnostic and no capacity reduction factors are</span>
+<span class="sd">            applied. If design capacities are required, use the applicable</span>
+<span class="sd">            ``design_code`` module or consult your local design code on how to treat</span>
+<span class="sd">            nominal axial loads in ultimate bending calculations.</span>
+
 <span class="sd">        Note that ``k_u`` is calculated only for lumped (non-meshed) geometries.</span>
 
 <span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis</span>
 <span class="sd">            (:math:`-\pi \leq \theta \leq \pi`)</span>
-<span class="sd">        :param n: Net axial force</span>
+<span class="sd">        :param n: Net axial force (nominal axial load)</span>
 
 <span class="sd">        :return: Ultimate bending results object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1447,7 +1454,7 @@
 <span class="sd">          - ``&quot;D&quot;`` - ratio of neutral axis depth to section depth</span>
 <span class="sd">          - ``&quot;d_n&quot;`` - neutral axis depth</span>
 <span class="sd">          - ``&quot;fy&quot;`` - yield ratio of the most extreme tensile bar</span>
-<span class="sd">          - ``&quot;N&quot;`` - axial force</span>
+<span class="sd">          - ``&quot;N&quot;`` - net (nominal) axial force</span>
 <span class="sd">          - ``&quot;kappa0&quot;`` - zero curvature compression (N.B second item in tuple is not</span>
 <span class="sd">            used)</span>
 
@@ -2562,7 +2569,7 @@
   <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>
