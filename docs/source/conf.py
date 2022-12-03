@@ -44,6 +44,7 @@ extensions = [
     "sphinx_autorun",
     "matplotlib.sphinxext.plot_directive",
     "nbsphinx",
+    "IPython.sphinxext.ipython_console_highlighting",
 ]
 
 autodoc_member_order = "bysource"
@@ -120,8 +121,8 @@ html_theme_options = {
     "navbar_start": ["navbar-logo", "version-switcher"],
     "switcher": {
         "json_url": json_url,
-        # "version_match": "latest",
-        "version_match": release,
+        "version_match": "latest",
+        # "version_match": release,
     },
 }
 
