@@ -459,7 +459,7 @@ class EurocodeNonLinear(ConcreteServiceProfile):
 
 @dataclass
 class ModifiedMander(ConcreteServiceProfile):
-    """Class for a non-linear stress-strain relationship based on the Mander
+    r"""Class for a non-linear stress-strain relationship based on the Mander
     stress-strain model for confined & unconfined concrete for a rectangular cross
     section. Intended for use with moment-curvature analyses with rectangular or
     circular cross sections.

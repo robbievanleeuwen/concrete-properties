@@ -1,4 +1,5 @@
 import pytest
+
 from concreteproperties.stress_strain_profile import *
 
 
@@ -131,7 +132,7 @@ def test_modifiedmander_confined_stress_strain(
         d=800,
         b=500,
         long_reinf_area=12 * 314,
-        w_dash=[150] * 12,
+        w_dash=[150.0] * 12,
         cvr=30 + 10,
         trans_spacing=125,
         trans_d_b=10,

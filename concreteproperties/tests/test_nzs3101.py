@@ -1,12 +1,13 @@
-import pytest
 import numpy as np
-from concreteproperties.design_codes.nzs3101 import NZS3101
-from concreteproperties.concrete_section import ConcreteSection
-from concreteproperties.material import Concrete, Steel
-import concreteproperties.stress_strain_profile as ssp
-from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
+import pytest
 import sectionproperties.pre.library.primitive_sections as sp_ps
 import sectionproperties.pre.library.steel_sections as sp_ss
+from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
+
+import concreteproperties.stress_strain_profile as ssp
+from concreteproperties.concrete_section import ConcreteSection
+from concreteproperties.design_codes.nzs3101 import NZS3101
+from concreteproperties.material import Concrete, Steel
 
 
 def create_dummy_section(design_code, prob_section=False, section_type="column"):
@@ -440,7 +441,7 @@ def test_nzs3101_create_steel_material_meshed_valueerror():
     )
 
     # create concrete section
-    conc = sp_ps.rectangular_section(d=1000, b=1000, material=concrete)
+    conc = sp_ps.rectangular_section(d=1000, b=1000, material=concrete)  # type: ignore
 
     # create UC section and centre to concrete section
     uc = sp_ss.i_section(
@@ -450,11 +451,11 @@ def test_nzs3101_create_steel_material_meshed_valueerror():
         t_w=9.9,
         r=16.5,
         n_r=8,
-        material=steel,
+        material=steel,  # type: ignore
     ).align_center(align_to=conc)
 
     # create geometry
-    geom = conc - uc + uc
+    geom = conc - uc + uc  # type: ignore
 
     concrete_section = ConcreteSection(geom)
 
@@ -1083,8 +1084,8 @@ def test_nzs3101_ultimate_bending_capacity_beam_no_axial(
         n_bot=5,
         n_circle=16,
         cover=50,
-        conc_mat=concrete,
-        steel_mat=steel,
+        conc_mat=concrete,  # type: ignore
+        steel_mat=steel,  # type: ignore
     )
     n_design = 0
     conc_sec = ConcreteSection(geometry)
@@ -1137,8 +1138,8 @@ def test_nzs3101_ultimate_bending_capacity_beam_with_axial(
         n_bot=5,
         n_circle=16,
         cover=50,
-        conc_mat=concrete,
-        steel_mat=steel,
+        conc_mat=concrete,  # type: ignore
+        steel_mat=steel,  # type: ignore
     )
     conc_sec = ConcreteSection(geometry)
     design_code.assign_concrete_section(conc_sec)
@@ -1191,8 +1192,8 @@ def test_nzs3101_moment_interaction_diagram(
         n_side=3,
         n_circle=16,
         cover=50,
-        conc_mat=concrete,
-        steel_mat=steel,
+        conc_mat=concrete,  # type: ignore
+        steel_mat=steel,  # type: ignore
     )
     conc_sec = ConcreteSection(geometry)
     design_code.assign_concrete_section(conc_sec)
@@ -1250,8 +1251,8 @@ def test_nzs3101_biaxial_bending_diagram(
         n_side=3,
         n_circle=16,
         cover=50,
-        conc_mat=concrete,
-        steel_mat=steel,
+        conc_mat=concrete,  # type: ignore
+        steel_mat=steel,  # type: ignore
     )
     conc_sec = ConcreteSection(geometry)
     design_code.assign_concrete_section(conc_sec)

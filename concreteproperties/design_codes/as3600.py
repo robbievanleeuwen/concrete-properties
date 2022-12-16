@@ -4,15 +4,16 @@ from copy import deepcopy
 from math import inf
 from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
-import concreteproperties.results as res
-import concreteproperties.stress_strain_profile as ssp
-import concreteproperties.utils as utils
 import numpy as np
-from concreteproperties.design_codes.design_code import DesignCode
-from concreteproperties.material import Concrete, SteelBar
 from rich.live import Live
 from scipy.interpolate import interp1d
 from scipy.optimize import brentq
+
+import concreteproperties.results as res
+import concreteproperties.stress_strain_profile as ssp
+import concreteproperties.utils as utils
+from concreteproperties.design_codes.design_code import DesignCode
+from concreteproperties.material import Concrete, SteelBar
 
 if TYPE_CHECKING:
     from concreteproperties.concrete_section import ConcreteSection
@@ -39,6 +40,7 @@ class AS3600(DesignCode):
         concrete_section: ConcreteSection,
     ):
         """Assigns a concrete section to the design code.
+
         :param concrete_section: Concrete section object to analyse
         """
 
@@ -72,7 +74,7 @@ class AS3600(DesignCode):
         compressive_strength: float,
         colour: str = "lightgrey",
     ) -> Concrete:
-        """Returns a concrete material object to AS 3600:2018.
+        r"""Returns a concrete material object to AS 3600:2018.
 
         .. admonition:: Material assumptions
 
@@ -145,7 +147,7 @@ class AS3600(DesignCode):
         ductility_class: str = "N",
         colour: str = "grey",
     ) -> SteelBar:
-        """Returns a steel bar material object.
+        r"""Returns a steel bar material object.
 
         .. admonition:: Material assumptions
 
