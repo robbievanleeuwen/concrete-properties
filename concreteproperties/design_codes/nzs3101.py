@@ -152,10 +152,10 @@ class NZS3101(DesignCode):
         r"""Calculates Youngs Modulus (:math:`E_c`) for concrete in accordance with
         NZS3101:2006 CL 5.2.3(b).
 
-        :math:`E_c=\displaystyle{4700\sqrt{f'_c}\\frac{\\rho}{2300}}`
+        :math:`E_c=\displaystyle{4700\sqrt{f'_c}\frac{\rho}{2300}}`
 
         :param compressive_strength: 28 day compressive concrete strength (MPa)
-        :param density: Concrete density :math:`\\rho` in accordance with NZS3101:2006
+        :param density: Concrete density :math:`\rho` in accordance with NZS3101:2006
             CL 5.2.2, defaults to 2300 kg/m\ :sup:`3` for normal weight concrete
         :return: :math:`E_c`, Youngs Modulus (MPa)
         """
@@ -174,11 +174,11 @@ class NZS3101(DesignCode):
     def check_density_limits(
         self, density: float, low_limit: float, high_limit: float
     ) -> None:
-        """Checks that the density is within the bounds outlined within NZS3101:2006
+        r"""Checks that the density is within the bounds outlined within NZS3101:2006
         CL 5.2.2 for the elastic modulus expression within NZS3101:2006 CL 5.2.3(b) to
         be valid.
 
-        :param density: Concrete density :math:`\\rho` in accordance with NZS3101:2006
+        :param density: Concrete density :math:`\rho` in accordance with NZS3101:2006
             CL 5.2.2
         :param low_limit: Lower limit for density from NZS3101:2006 CL 5.2.2
         :param high_limit: Upper limit for density from NZS3101:2006 CL 5.2.2
@@ -196,18 +196,18 @@ class NZS3101(DesignCode):
         r"""Scaling factor relating the nominal 28 day concrete compressive strength to
         the effective concrete compressive strength used for design purposes within the
         concrete stress block. For an equivalent rectangular compressive stress block it
-        relates the 28 day concrete compressive strength (:math:`f'c`) to the average
+        relates the 28 day concrete compressive strength (:math:`f'_c`) to the average
         concrete compressive design strength (:math:`f_{ave}`). A function of the
         concrete compressive strength.
 
-        :math:`\quad\\alpha_1=\displaystyle{\\frac{f_{ave}}{f'_c}}`
+        :math:`\quad\alpha_1=\displaystyle{\frac{f_{ave}}{f'_c}}`
 
         Where:-
 
-        :math:`\quad\\alpha_1=0.85-0.004(f'_c-55)\quad:0.75\leq\\alpha_1\leq0.85`
+        :math:`\quad\alpha_1=0.85-0.004(f'_c-55)\quad:0.75\leq\alpha_1\leq0.85`
 
         :param compressive_strength: 28 day compressive design strength (MPa)
-        :return: :math:`\\alpha_1` factor
+        :return: :math:`\alpha_1` factor
         """
         if compressive_strength <= 55:
             alpha_1 = 0.85
@@ -221,14 +221,14 @@ class NZS3101(DesignCode):
         stress block (:math:`a`) to the depth of the neutral axis (:math:`c`).
         A function of the concrete compressive strength.
 
-        :math:`\quad\\beta_1=\displaystyle{\\frac{a}{c}}`
+        :math:`\quad\beta_1=\displaystyle{\frac{a}{c}}`
 
         Where:-
 
-        :math:`\quad\\beta_1=0.85-0.008(f'_c-30)\quad:0.65\leq\\beta_1\leq0.85`
+        :math:`\quad\beta_1=0.85-0.008(f'_c-30)\quad:0.65\leq\beta_1\leq0.85`
 
         :param compressive_strength: 28 day compressive design strength (MPa)
-        :return: :math:`\\beta_1` factor
+        :return: :math:`\beta_1` factor
         """
         if compressive_strength <= 30:
             beta_1 = 0.85
@@ -242,7 +242,7 @@ class NZS3101(DesignCode):
         lightweight concrete relative to normal weight concrete of the same compression
         strength.
 
-        :math:`\quad\lambda=0.4+\displaystyle{\\frac{0.6\\rho}{2200}}\\leq1.0`
+        :math:`\quad\lambda=0.4+\displaystyle{\frac{0.6\rho}{2200}}\leq1.0`
 
         :param density: Saturated surface dry density of concrete material
         :return: :math:`\lambda` factor
@@ -336,7 +336,7 @@ class NZS3101(DesignCode):
           for a column member designed in accordance with NZS3101:2006 Chapter 10
           based on net concrete area:-
 
-          :math:`\quad N_c = \\alpha_1A_nf'_c`
+          :math:`\quad N_c = \alpha_1A_nf'_c`
 
         - Note for a wall section type outputs the unfactored concrete yield force for
           a doubly or singly reinforced wall member designed in accordance with
@@ -456,7 +456,7 @@ class NZS3101(DesignCode):
 
         For non-capacity design situations, refer to NZS3101:2006 CL 10.3.4.2:-
 
-        :math:`\quad\displaystyle{\\frac{N^*}{\phi} < 0.85N_{n,max}}`
+        :math:`\quad\displaystyle{\frac{N^*}{\phi} < 0.85N_{n,max}}`
 
         For capacity design situations, refer to NZS3101:2006 CL 10.4.4:-
 
@@ -464,14 +464,14 @@ class NZS3101(DesignCode):
 
         Where:-
 
-        :math:`\quad N_{n,max} = \\alpha_1f'_c(A_g-A_{st})+f_yA_{st}`
+        :math:`\quad N_{n,max} = \alpha_1f'_c(A_g-A_{st})+f_yA_{st}`
 
         For doubly reinforced wall members, the maximum design load in compression is as
         follows:-
 
         For non-capacity design situations, refer to NZS3101:2006 CL 11.3.1.6:-
 
-        :math:`\quad\displaystyle{\\frac{N^*}{\phi} < 0.3A_gf'_c}`
+        :math:`\quad\displaystyle{\frac{N^*}{\phi} < 0.3A_gf'_c}`
 
         For ductile wall design situations within potential plastic regions, refer to
         NZS3101:2006 CL 11.4.1.1:-
@@ -578,11 +578,11 @@ class NZS3101(DesignCode):
         prob_design: bool = False,
         n_scale: float = 1e-3,
     ) -> None:
-        """Checks that the specified axial load is within the maximum tensile and
+        r"""Checks that the specified axial load is within the maximum tensile and
         compressive capacity of the concrete cross section.
 
         :param n_design: Axial design force (:math:`N^*`)
-        :param phi: Strength reduction factor :math:`\\phi`
+        :param phi: Strength reduction factor :math:`\phi`
         :param cpe_design: True if the capacity protected element capacity of a concrete
             section is required (i.e. design capacity being checked against O/S
             actions)
@@ -794,7 +794,7 @@ class NZS3101(DesignCode):
           | 1          | Charateristic yield strength (:math:`f_y`)                   |
           |            | or probable yield strength (:math:`f_{yp}`)                  |
           +------------+--------------------------------------------------------------+
-          | 2          | Fracture strain (:math:`\\varepsilon_{su}`)                  |
+          | 2          | Fracture strain (:math:`\varepsilon_{su}`)                   |
           +------------+--------------------------------------------------------------+
           | 3          | Overstrength factor (:math:`\phi_{o,f_y}` or :math:`\phi_o`) |
           |            | (note if probable strength based material                    |
@@ -856,7 +856,7 @@ class NZS3101(DesignCode):
           - *Elastic modulus*: 200000 MPa
 
           - *Stress-strain profile*: Elastic-plastic, fracture strain
-            :math:`\\varepsilon_{su}` from AS/NZS4671 Table 7.2(A) or NZSEE C5
+            :math:`\varepsilon_{su}` from AS/NZS4671 Table 7.2(A) or NZSEE C5
             assessment guidelines (for historic reinforcement grades)
 
         :param steel_grade: Designation of the grade of reinforcement bar to be
@@ -881,7 +881,7 @@ class NZS3101(DesignCode):
 
             - Characteristic yield strength :math:`f_y` = 300 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 15% or 0.15
+            - Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
 
             - Overstrength factor :math:`\phi_{o,f_y}` = 1.35
 
@@ -889,7 +889,7 @@ class NZS3101(DesignCode):
 
             - Characteristic yield strength :math:`f_y` = 500 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 10% or 0.10
+            - Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
 
             - Overstrength factor :math:`\phi_{o,f_y}` = 1.35
 
@@ -900,7 +900,7 @@ class NZS3101(DesignCode):
 
             - Probable yield strength :math:`f_{yp}` = 280 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 10% or 0.10
+            - Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
@@ -909,7 +909,7 @@ class NZS3101(DesignCode):
 
             - Probable yield strength :math:`f_{yp}` = 280 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 10% or 0.10
+            - Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
@@ -918,7 +918,7 @@ class NZS3101(DesignCode):
 
             - Probable yield strength :math:`f_{yp}` = 324 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 15% or 0.15
+            - Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
@@ -927,7 +927,7 @@ class NZS3101(DesignCode):
 
             - Probable yield strength :math:`f_{yp}` = 324 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 15% or 0.15
+            - Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
@@ -936,7 +936,7 @@ class NZS3101(DesignCode):
 
             - Probable yield strength :math:`f_{yp}` = 455 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 12% or 0.12
+            - Fracture strain :math:`\varepsilon_{su}` = 12% or 0.12
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.5
 
@@ -945,7 +945,7 @@ class NZS3101(DesignCode):
 
             - Probable yield strength :math:`f_{yp}` = 455 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 12% or 0.12
+            - Fracture strain :math:`\varepsilon_{su}` = 12% or 0.12
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.5
 
@@ -954,7 +954,7 @@ class NZS3101(DesignCode):
 
             - Probable yield strength :math:`f_{yp}` = 464 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 12% or 0.12
+            - Fracture strain :math:`\varepsilon_{su}` = 12% or 0.12
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
@@ -963,7 +963,7 @@ class NZS3101(DesignCode):
 
             - Probable yield strength :math:`f_{yp}` = 324 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 15% or 0.15
+            - Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
@@ -972,7 +972,7 @@ class NZS3101(DesignCode):
 
             - Probable yield strength :math:`f_{yp}` = 500 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 5% or 0.05
+            - Fracture strain :math:`\varepsilon_{su}` = 5% or 0.05
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.5
 
@@ -981,7 +981,7 @@ class NZS3101(DesignCode):
 
             - Probable yield strength :math:`f_{yp}` = 540 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 10% or 0.10
+            - Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
@@ -990,7 +990,7 @@ class NZS3101(DesignCode):
 
             - Probable yield strength :math:`f_{yp}` = 600 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 1.5% or 0.015
+            - Fracture strain :math:`\varepsilon_{su}` = 1.5% or 0.015
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.2
 
@@ -999,7 +999,7 @@ class NZS3101(DesignCode):
 
             - Probable yield strength :math:`f_{yp}` = 500 MPa
 
-            - Fracture strain :math:`\\varepsilon_{su}` = 3% or 0.03
+            - Fracture strain :math:`\varepsilon_{su}` = 3% or 0.03
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.2
 
@@ -1014,7 +1014,7 @@ class NZS3101(DesignCode):
               characteristic yield stress by 1.08 as per NZSEE C5 assessment guidelines
               C5.4.3.
 
-        :param fracture_strain: Lower bound tensile strain (:math:`\\varepsilon_{su}`),
+        :param fracture_strain: Lower bound tensile strain (:math:`\varepsilon_{su}`),
             based on characteristic uniform elongation limit from AS/NZS4671 Table
             7.2(A) or NZSEE C5 assessment guidelines Table C5.4.
         :param phi_os: Overstrength factor depending on reinforcement grade
@@ -1198,7 +1198,7 @@ class NZS3101(DesignCode):
                 then the overstrength factor being applied to the yield strength
                 is inclusive of the 1.08 factor on the lower bound yield strength.
 
-                :math:`\quad\phi_o=\displaystyle{\\frac{f_o}{f_{yp}}}`
+                :math:`\quad\phi_o=\displaystyle{\frac{f_o}{f_{yp}}}`
 
                 Where:-
 
@@ -1219,7 +1219,7 @@ class NZS3101(DesignCode):
             Undertaking a non NZSEE C5 assessment guidelines analysis on a probable
             strength based steel grade is not consistent with an analysis to
             NZS3101:2006.
-        :return: Returns the appropriate strength reduction factor :math:`\\phi` and
+        :return: Returns the appropriate strength reduction factor :math:`\phi` and
             variables to indicate the type of analysis being requested.
         """
         # determine analysis parameters
@@ -1481,7 +1481,7 @@ class NZS3101(DesignCode):
             is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor` for
             further information on analysis types.
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
-            (:math:`-\pi \leq \\theta \leq \pi`)
+            (:math:`-\pi \leq \theta \leq \pi`)
         :param n_design: Axial design force (:math:`N^*`)
         :return: Factored and unfactored ultimate bending results objects, and capacity
             reduction factor *(factored_results, unfactored_results, phi)*
@@ -1554,7 +1554,7 @@ class NZS3101(DesignCode):
             is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor` for
             further information on analysis types.
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
-            (:math:`-\pi \leq \\theta \leq \pi`)
+            (:math:`-\pi \leq \theta \leq \pi`)
         :param control_points: List of additional control points to add to the moment
             interaction diagram. The default control points include the balanced point,
             the 50% reinforcement strain point, the 0% reinforcement strain point

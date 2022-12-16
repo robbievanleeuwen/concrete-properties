@@ -493,7 +493,7 @@ class ModifiedMander(ConcreteServiceProfile):
 
       - Modifying the maximum steel strain by a factor of 0.6:-
 
-        - :math:`\\varepsilon_{s,max}= 0.6\\varepsilon_{su} \leq 0.06`
+        - :math:`\varepsilon_{s,max}= 0.6\varepsilon_{su} \leq 0.06`
 
         - Note this 0.6 modifier can be altered via the ``n_steel_strain`` parameter.
 
@@ -505,19 +505,19 @@ class ModifiedMander(ConcreteServiceProfile):
 
         - For rectangular sections
 
-          - :math:`\displaystyle{\\rho_{st}=\\frac{0.75}{s}\left[\\frac{A_{v,d}}
-            {b_{core}}+\\frac{A_{v,b}}{d_{core}}\\right]}`
+          - :math:`\displaystyle{\rho_{st}=\frac{0.75}{s}\left[\frac{A_{v,d}}
+            {b_{core}}+\frac{A_{v,b}}{d_{core}}\right]}`
 
         - For circular sections
 
-          - :math:`\displaystyle{\\rho_{st}=\\frac{0.75}{s}\\frac{4A_v}{d_s}}`
+          - :math:`\displaystyle{\rho_{st}=\frac{0.75}{s}\frac{4A_v}{d_s}}`
 
         - Note this 0.75 modifier can be altered via the ``n_confinement`` parameter.
 
       - For confined concrete utilising a maximum concrete compressive strain of:-
 
-        - :math:`\displaystyle{\\varepsilon_{c,max}=0.004+\\frac{0.6\\rho_{st}f_{yh}
-          \\varepsilon_{su}}{f'_{cc}}\leq0.05}`
+        - :math:`\displaystyle{\varepsilon_{c,max}=0.004+\frac{0.6\rho_{st}f_{yh}
+          \varepsilon_{su}}{f'_{cc}}\leq0.05}`
 
         - Note that the 0.6 factor applied to the ultimate tensile failure strain can
           be modified as noted above.
@@ -558,13 +558,13 @@ class ModifiedMander(ConcreteServiceProfile):
         reached), False to not consider any tension behaviour in the concrete
     :param conc_spalling: True to consider the spalling effect for unconfined concrete,
         False to not consider the spalling branch and truncate the unconfined concrete
-        curve at min(2 :math:`\\varepsilon_{co},\\varepsilon_{c,max}`)
+        curve at min(:math:`2 \varepsilon_{co},\varepsilon_{c,max}`)
     :param eps_co: Strain at which the maximum concrete stress is obtained for an
-        unconfined concrete material (:math:`\\varepsilon_{co}`)
+        unconfined concrete material (:math:`\varepsilon_{co}`)
     :param eps_c_max_unconfined: Maximum strain that is able to be supported within
-        unconfined concrete (:math:`\\varepsilon_{c,max}`)
+        unconfined concrete (:math:`\varepsilon_{c,max}`)
     :param eps_sp: Spalling strain, the strain at which the stress returns to zero for
-        unconfined concrete (:math:`\\varepsilon_{sp}`)
+        unconfined concrete (:math:`\varepsilon_{sp}`)
     :param d: Depth of a rectangular concrete cross section, or diameter of circular
         concrete cross section (:math:`d`)
     :param b: Breadth of a rectangular concrete cross section (:math:`b`)
@@ -582,11 +582,11 @@ class ModifiedMander(ConcreteServiceProfile):
     :param trans_f_y: Yield strength of the transverse confining reinforcement
         (:math:`f_{yh}`)
     :param eps_su: Strain at the ultimate tensile strength of the reinforcement
-        (:math:`\\varepsilon_{su}`)
+        (:math:`\varepsilon_{su}`)
     :param n_points: Number of points to discretise the compression part of the
-        stress-strain curve between :math:`\\varepsilon_{c}=0` & :math:`\\varepsilon_{c}
-        =2\\varepsilon_{co}` for an unconfined concrete, or between
-        :math:`\\varepsilon_{c}=0` & :math:`\\varepsilon_{c}=\\varepsilon_{cu}` for a
+        stress-strain curve between :math:`\varepsilon_{c}=0` & :math:`\varepsilon_{c}
+        =2\varepsilon_{co}` for an unconfined concrete, or between
+        :math:`\varepsilon_{c}=0` & :math:`\varepsilon_{c}=\varepsilon_{cu}` for a
         confined concrete
     :param n_steel_strain: Modifier for maximum steel reinforcement strain. Steel
         reinforcement material within the concrete cross section should also be defined
