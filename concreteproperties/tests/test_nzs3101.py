@@ -253,6 +253,19 @@ def test_nzs3101_capacity_reduction_factor_exception(analysis_type):
 
 
 @pytest.mark.parametrize(
+    "analysis_type",
+    [
+        ("this_is_not_a_valid_analysis_type"),
+    ],
+)
+def test_nzs3101_assign_analysis_section_valueerror(analysis_type):
+    design_code = NZS3101()
+    create_dummy_section(design_code)
+    with pytest.raises(ValueError):
+        design_code.assign_analysis_section(analysis_type)
+
+
+@pytest.mark.parametrize(
     "pphr_class, compressive_strength",
     [
         ("this_is_not_a_valid_pphr_class", 20),

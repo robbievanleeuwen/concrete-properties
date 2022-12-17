@@ -144,7 +144,11 @@ class NZS3101(DesignCode):
             analysis_section = self.prob_os_concrete_section
         else:
             # ensure analysis_section is bound
-            raise ValueError("analysis_type invalid.")
+            raise ValueError(
+                f"The specified analysis type of '{analysis_type}' should be either "
+                f"'nom_chk', 'cpe_chk', 'os_chk', 'prob_chk' or 'prob_os_chk'"
+                f"for a {self.analysis_code} code analysis"
+            )
 
         return analysis_section
 
