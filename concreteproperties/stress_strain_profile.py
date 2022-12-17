@@ -642,7 +642,7 @@ class ModifiedMander(ConcreteServiceProfile):
 
         if self.conc_confined and self.sect_type in ["circ_hoop", "circ_spiral"]:
             self.b = 0
-            self.w_dash = 0
+            self.w_dash = [0]
             self.trans_num_b = 0
             self.trans_num_d = 0
 
@@ -704,13 +704,13 @@ class ModifiedMander(ConcreteServiceProfile):
                     / (1 - rho_cc)
                 )
 
-                # calculate tranverse reinforcement ratios and confining pressures across
-                # defined depth
+                # calculate tranverse reinforcement ratios and confining pressures
+                # across defined depth
                 rho_d = A_vd / (self.trans_spacing * b_core)
                 f_ld = k_e * rho_d * self.trans_f_y
 
-                # calculate tranverse reinforcement ratios and confining pressures across
-                # defined width
+                # calculate tranverse reinforcement ratios and confining pressures
+                # across defined width
                 rho_b = A_vb / (self.trans_spacing * d_core)
                 f_lb = k_e * rho_b * self.trans_f_y
 
@@ -783,15 +783,16 @@ class ModifiedMander(ConcreteServiceProfile):
         # sort strains numerically
         self.strains.sort()
 
-        # calculate stresses from strains
+        # calculate stresses from strains & convert to List
         r = self.elastic_modulus / (self.elastic_modulus - E_sec)
         x = self.strains / eps_cc
-        self.stresses = f_cc * x * r / (r - 1 + x**r)
+        self.strains = self.strains.tolist()
+        self.stresses = (f_cc * x * r / (r - 1 + x**r)).tolist()
 
         # add spalling branch if specified for unconfined curve
         if not self.conc_confined and self.conc_spalling:
-            self.strains = np.append(self.strains, self.eps_sp)
-            self.stresses = np.append(self.stresses, 0)
+            self.strains.append(self.eps_sp)
+            self.stresses.append(0)
 
         # calculate max tension strain based on modulus of rupture/concrete tension
         # strength
@@ -799,23 +800,23 @@ class ModifiedMander(ConcreteServiceProfile):
 
         if self.conc_tension:
             # add tension stress/strain limit
-            self.strains = np.insert(self.strains, 0, -eps_t)
-            self.stresses = np.insert(self.stresses, 0, -self.tensile_strength)
-            self.strains = np.insert(self.strains, 0, self.strains[0])
-            self.stresses = np.insert(self.stresses, 0, 0)
-            self.strains = np.insert(self.strains, 0, 2 * self.strains[0])
-            self.stresses = np.insert(self.stresses, 0, 0)
+            self.strains.insert(0, -eps_t)
+            self.stresses.insert(0, -self.tensile_strength)
+            self.strains.insert(0, self.strains[0])
+            self.stresses.insert(0, 0)
+            self.strains.insert(0, 2 * self.strains[0])
+            self.stresses.insert(0, 0)
         else:
             # add flat horizontal tension stress/strain branch
-            self.strains = np.insert(self.strains, 0, -eps_t)
-            self.stresses = np.insert(self.stresses, 0, 0)
+            self.strains.insert(0, -eps_t)
+            self.stresses.insert(0, 0)
 
         # initiate ultimate compressive strain as maximum strain
         self.ultimate_strain = max(self.strains)
 
         # add small horizontal compressive strain to improve interpolation
-        self.strains = np.append(self.strains, self.strains[-1] + 1e-12)
-        self.stresses = np.append(self.stresses, self.stresses[-1])
+        self.strains.append(self.strains[-1] + 1e-12)
+        self.stresses.append(self.stresses[-1])
 
 
 @dataclass
