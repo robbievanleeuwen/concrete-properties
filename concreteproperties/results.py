@@ -55,10 +55,14 @@ class GrossProperties:
     # first moments of area
     e_qx: float = 0
     e_qy: float = 0
+    qx_gross: float = 0
+    qy_gross: float = 0
 
     # centroids
     cx: float = 0
     cy: float = 0
+    cx_gross: float = 0
+    cy_gross: float = 0
 
     # second moments of area
     e_ixx_g: float = 0
@@ -125,6 +129,8 @@ class GrossProperties:
         table.add_row("E.Qy", "{:>{fmt}}".format(self.e_qy, fmt=fmt))
         table.add_row("x-Centroid", "{:>{fmt}}".format(self.cx, fmt=fmt))
         table.add_row("y-Centroid", "{:>{fmt}}".format(self.cy, fmt=fmt))
+        table.add_row("x-Centroid (Gross)", "{:>{fmt}}".format(self.cx_gross, fmt=fmt))
+        table.add_row("y-Centroid (Gross)", "{:>{fmt}}".format(self.cy_gross, fmt=fmt))
         table.add_row("E.Ixx_g", "{:>{fmt}}".format(self.e_ixx_g, fmt=fmt))
         table.add_row("E.Iyy_g", "{:>{fmt}}".format(self.e_iyy_g, fmt=fmt))
         table.add_row("E.Ixy_g", "{:>{fmt}}".format(self.e_ixy_g, fmt=fmt))
@@ -597,7 +603,7 @@ class MomentCurvatureResults:
         return float(f_kappa(moment))
 
 
-@dataclass
+@dataclass(order=True)
 class UltimateBendingResults:
     r"""Class for storing ultimate bending results.
 
@@ -626,7 +632,7 @@ class UltimateBendingResults:
     m_xy: float = 0
 
     # label
-    label: Optional[str] = None
+    label: Optional[str] = field(default=None, compare=False)
 
     def print_results(
         self,
@@ -666,6 +672,20 @@ class MomentInteractionResults:
     """
 
     results: List[UltimateBendingResults] = field(default_factory=list)
+
+    def sort_results(self) -> None:
+        """Sorts the results by decreasing axial force."""
+
+        self.results.sort(reverse=True)
+
+        # remove duplicates from sorted list
+        new_results = []
+
+        for res in self.results:
+            if res not in new_results:
+                new_results.append(res)
+
+        self.results = new_results
 
     def get_results_lists(
         self,

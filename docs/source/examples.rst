@@ -17,3 +17,4 @@ The following examples complement the structured documentation presented thus fa
    notebooks/composite_section
    notebooks/prestressed_section
    notebooks/as3600
+   notebooks/nzs3101

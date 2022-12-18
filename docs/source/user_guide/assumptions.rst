@@ -16,6 +16,13 @@ General
 * Stresses in materials are determined from strains by linear interpolation from the
   corresponding stress-strain profile (linear extrapolation is used where the strains
   are outside the range of the profile)
+* All moments in service and ultimate analyses (moment-curvature, ultimate bending,
+  moment interaction, biaxial bending, service stress, ultimate stress) are calculated
+  about, or assumed to be about the gross centroid (no material properties applied),
+  unless otherwise specified in the intitialisation of
+  :class:`~concreteproperties.concrete_section.ConcreteSection`
+* Moment inputs for elastic stress analysis (cracked and uncracked), are assumed to be
+  taken to be about the geometric centroid (material properties applied)
 * Finite element assumptions and background can be found 
   `here <https://sectionproperties.readthedocs.io/en/latest/rst/theory.html>`_
 
@@ -34,7 +41,8 @@ Ultimate Analysis
   reaching its ultimate strength
 * The stress-strain relationship for concrete may be assumed to be rectangular,
   trapezoidal, bilinear, parabolic, or any other arbitrary shape that results in the
-  prediction of strength in substantial agreement with the results of comprehensive tests
+  prediction of strength in substantial agreement with the results of comprehensive
+  tests
 
 Conventions
 -----------

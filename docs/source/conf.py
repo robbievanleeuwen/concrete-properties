@@ -44,6 +44,7 @@ extensions = [
     "sphinx_autorun",
     "matplotlib.sphinxext.plot_directive",
     "nbsphinx",
+    "IPython.sphinxext.ipython_console_highlighting",
 ]
 
 autodoc_member_order = "bysource"

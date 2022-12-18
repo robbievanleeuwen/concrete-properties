@@ -26,7 +26,7 @@ By default, all geometries in *concreteproperties* are meshed to capture strain
 variation across the section. However, for smaller geometries (such as reinforcement),
 *concreteproperties* can treat the area as having a constant strain with a lumped mass,
 which increases the performance of the analysis with almost no loss in fidelity. The
-meshing can be switched off by setting the attribute ``meshed=False``. 
+meshing can be switched off by setting the attribute ``meshed=False``.
 
 The :class:`~concreteproperties.material.SteelBar` class has meshing disabled by default
 and should be used when defining steel reinforcement. On the other hand, the
@@ -134,7 +134,7 @@ Linear Concrete Service Profile
 
 .. warning::
 
-  This profile is not intended to be used in conjunction with a 
+  This profile is not intended to be used in conjunction with a
   :meth:`~concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis`
   as the concrete can resist large tensile stresses without fracture.
 
@@ -197,6 +197,53 @@ Eurocode Non-Linear Concrete Service Profile
       tension_softening_stiffness=7e3,
   ).plot_stress_strain()
 
+Modified Mander Non-Linear Unconfined & Confined Concrete Service Profile
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+..  autoclass:: concreteproperties.stress_strain_profile.ModifiedMander
+  :noindex:
+  :show-inheritance:
+
+.. plot::
+  :include-source: True
+  :caption: ModifiedMander NonLinear Stress-Strain Profile for Unconfined Concrete
+
+  from concreteproperties.stress_strain_profile import ModifiedMander
+
+  ModifiedMander(elastic_modulus=30e3,
+        compressive_strength=30,
+        tensile_strength=4.5,
+        sect_type="rect",
+        conc_tension=True,
+        conc_spalling=True,
+        n_points=25
+  ).plot_stress_strain()
+
+.. plot::
+  :include-source: True
+  :caption: ModifiedMander NonLinear Stress-Strain Profile for Confined Concrete
+
+  from concreteproperties.stress_strain_profile import ModifiedMander
+  ModifiedMander(
+        elastic_modulus=30e3,
+        compressive_strength=30,
+        tensile_strength=4.5,
+        sect_type="rect",
+        conc_confined=True,
+        conc_tension=True,
+        d=800,
+        b=500,
+        long_reinf_area=12 * 314,
+        w_dash=[150] * 12,
+        cvr=30 + 10,
+        trans_spacing=125,
+        trans_d_b=10,
+        trans_num_d=4,
+        trans_num_b=4,
+        trans_f_y=500,
+        eps_su=0.15,
+        n_points=25,
+    ).plot_stress_strain()
 
 .. _label-conc-ult-profile:
 

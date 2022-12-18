@@ -74,8 +74,7 @@ class PrestressedSection(ConcreteSection):
 
                 # add moment
                 centroid = strand.calculate_centroid()
-                # TODO: fix with moment_centroid
-                m_prestress += n_strand * (centroid[1] - self.gross_properties.cy)
+                m_prestress += n_strand * (centroid[1] - self.moment_centroid[1])
 
         self.gross_properties.n_prestress = n_prestress
         self.gross_properties.m_prestress = m_prestress
@@ -718,10 +717,7 @@ class PrestressedSection(ConcreteSection):
                 ecf=ecf,
                 eps0=eps0,
                 theta=0,
-                centroid=(
-                    self.gross_properties.cx,
-                    self.gross_properties.cy,
-                ),  # TODO: moment centroid
+                centroid=self.moment_centroid,
             )
 
             # save results
@@ -759,8 +755,8 @@ class PrestressedSection(ConcreteSection):
                 strand_forces.append(
                     (
                         n_lumped,
-                        centroid[0] - self.gross_properties.cx,
-                        centroid[1] - self.gross_properties.cy,
+                        centroid[0] - self.moment_centroid[0],
+                        centroid[1] - self.moment_centroid[1],
                     )
                 )
                 strand_geoms.append(lumped_geom)
@@ -770,8 +766,8 @@ class PrestressedSection(ConcreteSection):
                 lumped_reinf_forces.append(
                     (
                         n_lumped,
-                        centroid[0] - self.gross_properties.cx,
-                        centroid[1] - self.gross_properties.cy,
+                        centroid[0] - self.moment_centroid[0],
+                        centroid[1] - self.moment_centroid[1],
                     )
                 )
                 lumped_reinf_geoms.append(lumped_geom)
@@ -860,7 +856,7 @@ class PrestressedSection(ConcreteSection):
                 point_na=point_na,
                 theta=ultimate_results.theta,
                 ultimate_strain=self.gross_properties.conc_ultimate_strain,
-                centroid=(self.gross_properties.cx, self.gross_properties.cy),
+                centroid=self.moment_centroid,
             )
 
             # save results
@@ -902,8 +898,8 @@ class PrestressedSection(ConcreteSection):
                 strand_forces.append(
                     (
                         n_lumped,
-                        centroid[0] - self.gross_properties.cx,
-                        centroid[1] - self.gross_properties.cy,
+                        centroid[0] - self.moment_centroid[0],
+                        centroid[1] - self.moment_centroid[1],
                     )
                 )
                 strand_geoms.append(lumped_geom)
@@ -913,8 +909,8 @@ class PrestressedSection(ConcreteSection):
                 lumped_reinf_forces.append(
                     (
                         n_lumped,
-                        centroid[0] - self.gross_properties.cx,
-                        centroid[1] - self.gross_properties.cy,
+                        centroid[0] - self.moment_centroid[0],
+                        centroid[1] - self.moment_centroid[1],
                     )
                 )
                 lumped_reinf_geoms.append(lumped_geom)

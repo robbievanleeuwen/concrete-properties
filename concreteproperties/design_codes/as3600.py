@@ -2,17 +2,18 @@ from __future__ import annotations
 
 from copy import deepcopy
 from math import inf
-from typing import TYPE_CHECKING, List, Tuple, Union
+from typing import TYPE_CHECKING, List, Optional, Tuple, Union
+
+import numpy as np
+from rich.live import Live
+from scipy.interpolate import interp1d
+from scipy.optimize import brentq
 
 import concreteproperties.results as res
 import concreteproperties.stress_strain_profile as ssp
 import concreteproperties.utils as utils
-import numpy as np
 from concreteproperties.design_codes.design_code import DesignCode
 from concreteproperties.material import Concrete, SteelBar
-from rich.live import Live
-from scipy.interpolate import interp1d
-from scipy.optimize import brentq
 
 if TYPE_CHECKING:
     from concreteproperties.concrete_section import ConcreteSection
@@ -21,15 +22,15 @@ if TYPE_CHECKING:
 class AS3600(DesignCode):
     """Design code class for Australian standard AS 3600:2018.
 
-    Note that this design code only supports :class:`~concreteproperties.pre.Concrete`
-    and :class:`~concreteproperties.pre.SteelBar` material objects. Meshed
-    :class:`~concreteproperties.pre.Steel` material objects are **not** supported
-    as this falls under the composite structures design code.
+    .. note::
+        Note that this design code only supports
+        :class:`~concreteproperties.material.Concrete` and
+        :class:`~concreteproperties.material.SteelBar` material objects. Meshed
+        :class:`~concreteproperties.material.Steel` material objects are **not**
+        supported as this falls under the composite structures design code.
     """
 
-    def __init__(
-        self,
-    ):
+    def __init__(self):
         """Inits the AS3600 class."""
 
         super().__init__()
@@ -75,15 +76,21 @@ class AS3600(DesignCode):
     ) -> Concrete:
         r"""Returns a concrete material object to AS 3600:2018.
 
-        | **Material assumptions:**
-        | - *Density*: 2400 kg/m\ :sup:`3`
-        | - *Elastic modulus*: Interpolated from Table 3.1.2
-        | - *Service stress-strain profile*: Linear with no tension, compressive strength
-          at 0.9 * f'c
-        | - *Ultimate stress-strain profile*: Rectangular stress block, parameters from
-          Cl. 8.1.3
-        | - *Alpha squash*: From Cl. 10.6.2.2
-        | - *Flexural tensile strength*: From Cl. 3.1.1.3
+        .. admonition:: Material assumptions
+
+          - *Density*: 2400 kg/m\ :sup:`3`
+
+          - *Elastic modulus*: Interpolated from Table 3.1.2
+
+          - *Service stress-strain profile*: Linear with no tension, compressive
+            strength at :math:`0.9f'_c`
+
+          - *Ultimate stress-strain profile*: Rectangular stress block, parameters from
+            Cl. 8.1.3
+
+          - *Alpha squash*: From Cl. 10.6.2.2
+
+          - *Flexural tensile strength*: From Cl. 3.1.1.3
 
         :param compressive_strength: Characteristic compressive strength of
             concrete at 28 days in megapascals (MPa)
@@ -142,10 +149,13 @@ class AS3600(DesignCode):
     ) -> SteelBar:
         r"""Returns a steel bar material object.
 
-        | **Material assumptions:**
-        | - *Density*: 7850 kg/m\ :sup:`3`
-        | - *Elastic modulus*: 200,000 MPa
-        | - *Stress-strain profile:* Elastic-plastic, fracture strain from Table 3.2.1
+        .. admonition:: Material assumptions
+
+          - *Density*: 7850 kg/m\ :sup:`3`
+
+          - *Elastic modulus*: 200000 MPa
+
+          - *Stress-strain profile*: Elastic-plastic, fracture strain from Table 3.2.1
 
         :param yield_strength: Steel yield strength
         :param ductility_class: Steel ductility class ("N" or "L")
@@ -174,9 +184,7 @@ class AS3600(DesignCode):
             colour=colour,
         )
 
-    def squash_tensile_load(
-        self,
-    ) -> Tuple[float, float]:
+    def squash_tensile_load(self) -> Tuple[float, float]:
         """Calculates the squash and tensile load of the reinforced concrete section.
 
         :return: Squash and tensile load
@@ -323,7 +331,7 @@ class AS3600(DesignCode):
     def ultimate_bending_capacity(
         self,
         theta: float = 0,
-        n: float = 0,
+        n_design: float = 0,
         phi_0: float = 0.6,
     ) -> Tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]:
         r"""Calculates the ultimate bending capacity with capacity factors to
@@ -331,7 +339,7 @@ class AS3600(DesignCode):
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
-        :param n: Net axial force
+        :param n_design: Design axial force, N*
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
 
         :return: Factored and unfactored ultimate bending results objects, and capacity
@@ -346,7 +354,7 @@ class AS3600(DesignCode):
         # non-linear calculation of phi
         def non_linear_phi(phi_guess):
             phi = self.capacity_reduction_factor(
-                n_u=n / phi_guess,
+                n_u=n_design / phi_guess,
                 n_ub=n_ub,
                 n_uot=n_uot,
                 k_uo=k_uo,
@@ -355,7 +363,7 @@ class AS3600(DesignCode):
 
             return phi - phi_guess
 
-        (phi, r) = brentq(
+        phi, _ = brentq(
             f=non_linear_phi,
             a=phi_0,
             b=0.85,
@@ -369,7 +377,6 @@ class AS3600(DesignCode):
         f_mi_res, _, _ = self.moment_interaction_diagram(
             theta=theta,
             control_points=[
-                ("D", 1.0),
                 ("N", 0.0),
             ],
             n_points=2,
@@ -384,90 +391,106 @@ class AS3600(DesignCode):
 
         # DETERMINE where we are on interaction diagram
         # if we are above the squash load or tensile load
-        if n > n_squash:
+        if n_design > n_squash:
             raise utils.AnalysisError(
-                f"N = {n} is greater than the squash load, phiNc = {n_squash}."
+                f"N = {n_design} is greater than the squash load, phiNc = {n_squash}."
             )
-        elif n < n_tensile:
+        elif n_design < n_tensile:
             raise utils.AnalysisError(
-                f"N = {n} is greater than the tensile load, phiNt = {n_tensile}"
+                f"N = {n_design} is greater than the tensile load, phiNt = {n_tensile}"
             )
         # compression linear interpolation
-        elif n > n_decomp:
-            factor = (n - n_decomp) / (n_squash - n_decomp)
+        elif n_design > n_decomp:
+            factor = (n_design - n_decomp) / (n_squash - n_decomp)
             squash = f_mi_res.results[0]
             decomp = f_mi_res.results[1]
             ult_res = res.UltimateBendingResults(
                 theta=theta,
                 d_n=inf,
                 k_u=0,
-                n=n,
+                n=n_design / phi,
                 m_x=(decomp.m_x + factor * (squash.m_x - decomp.m_x)) / phi,
                 m_y=(decomp.m_y + factor * (squash.m_y - decomp.m_y)) / phi,
                 m_xy=(decomp.m_xy + factor * (squash.m_xy - decomp.m_xy)) / phi,
             )
         # regular calculation
-        elif n > 0:
+        elif n_design > 0:
             ult_res = self.concrete_section.ultimate_bending_capacity(
-                theta=theta, n=n / phi
+                theta=theta, n=n_design / phi
             )
         # tensile linear interpolation
         else:
-            factor = n / n_tensile
+            factor = n_design / n_tensile
             pure = f_mi_res.results[-2]
             ult_res = res.UltimateBendingResults(
                 theta=theta,
                 d_n=inf,
                 k_u=0,
-                n=n,
+                n=n_design / phi,
                 m_x=(1 - factor) * pure.m_x / phi,
                 m_y=(1 - factor) * pure.m_y / phi,
                 m_xy=(1 - factor) * pure.m_xy / phi,
             )
 
         # factor ultimate results
-        factored_ult_res = deepcopy(ult_res)
-        factored_ult_res.n *= phi
-        factored_ult_res.m_x *= phi
-        factored_ult_res.m_y *= phi
-        factored_ult_res.m_xy *= phi
+        f_ult_res = deepcopy(ult_res)
+        f_ult_res.n *= phi
+        f_ult_res.m_x *= phi
+        f_ult_res.m_y *= phi
+        f_ult_res.m_xy *= phi
 
-        return factored_ult_res, ult_res, phi
+        return f_ult_res, ult_res, phi
 
     def moment_interaction_diagram(
         self,
         theta: float = 0,
-        control_points: List[Tuple[str, float]] = [
+        limits: List[Tuple[str, float]] = [
             ("D", 1.0),
-            ("fy", 1.0),
             ("N", 0.0),
         ],
-        labels: List[Union[str, None]] = [None],
-        n_points: Union[int, List[int]] = [12, 12],
+        control_points: List[Tuple[str, float]] = [
+            ("fy", 1.0),
+        ],
+        labels: Optional[List[str]] = None,
+        n_points: int = 24,
+        n_spacing: Optional[int] = None,
         phi_0: float = 0.6,
         progress_bar: bool = True,
     ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
-        r"""Generates a moment interaction diagram with capacity factors to AS 3600:2018.
+        r"""Generates a moment interaction diagram with capacity factors to
+        AS 3600:2018.
+
+        See :meth:`concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram`
+        for allowable control points.
+
+        .. note::
+
+            When providing ``"N"`` to ``limits`` or ``control_points``, ``"N"`` is taken
+            to be the unfactored net (nominal) axial load :math:`N^{*} / \phi`.
 
         :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
-        :param control_points: List of control points over which to generate the
-            interaction diagram. Each entry in ``control_points`` is a ``Tuple`` with
-            the first item the type of control point and the second item defining the
-            location of the control point. Acceptable types of control points are
-            ``"D"`` (ratio of neutral axis depth to section depth), ``"d_n"`` (neutral
-            axis depth), ``"fy"`` (yield ratio of the most extreme tensile bar), ``"N"``
-            (axial force) and ``"kappa"`` (zero curvature compression - must be at start
-            of list, second value in tuple is not used). Control points must be defined
-            in an order which results in a decreasing neutral axis depth (decreasing
-            axial force). The default control points define an interaction diagram from
-            the decompression point to the pure bending point.
-        :param labels: List of labels to apply to the ``control_points`` for plotting
-            purposes, length must be the same as the length of ``control_points``. If a
-            single value is provided, will apply this label to all control points.
-        :param n_points: Number of neutral axis depths to compute between each control
-            point. Length must be one less than the length of ``control_points``. If an
-            integer is provided this will be used between all control points.
+        :param limits: List of control points that define the start and end of the
+            interaction diagram. List length must equal two. The default limits range
+            from concrete decompression strain to the pure bending point.
+        :param control_points: List of additional control points to add to the moment
+            interaction diagram. The default control points include the balanced point
+            (``fy=1``). Control points may lie outside the limits of the moment
+            interaction diagram as long as equilibrium can be found.
+        :param labels: List of labels to apply to the ``limits`` and ``control_points``
+            for plotting purposes. The first two values in ``labels`` apply labels to
+            the ``limits``, the remaining values apply labels to the ``control_points``.
+            If a single value is provided, this value will be applied to both ``limits``
+            and all ``control_points``. The length of ``labels`` must equal ``1`` or
+            ``2 + len(control_points)``.
+        :param n_points: Number of points to compute including and between the
+            ``limits`` of the moment interaction diagram. Generates equally spaced
+            neutral axes between the ``limits``.
+        :param n_spacing: If provided, overrides ``n_points`` and generates the moment
+            interaction diagram using ``n_spacing`` equally spaced axial loads. Note
+            that using ``n_spacing`` negatively affects performance, as the neutral axis
+            depth must first be located for each point on the moment interaction
+            diagram.
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
         :param progress_bar: If set to True, displays the progress bar
 
@@ -477,9 +500,11 @@ class AS3600(DesignCode):
 
         mi_res = self.concrete_section.moment_interaction_diagram(
             theta=theta,
+            limits=limits,
             control_points=control_points,
             labels=labels,
             n_points=n_points,
+            n_spacing=n_spacing,
             progress_bar=progress_bar,
         )
 
@@ -514,7 +539,7 @@ class AS3600(DesignCode):
         )
 
         # make a copy of the results to factor
-        factored_mi_res = deepcopy(mi_res)
+        f_mi_res = deepcopy(mi_res)
 
         # list to store phis
         phis = []
@@ -525,7 +550,7 @@ class AS3600(DesignCode):
         n_ub = self.get_n_ub(theta=theta)
 
         # factor results
-        for ult_res in factored_mi_res.results:
+        for ult_res in f_mi_res.results:
             phi = self.capacity_reduction_factor(
                 n_u=ult_res.n, n_ub=n_ub, n_uot=n_uot, k_uo=k_uo, phi_0=phi_0
             )
@@ -535,19 +560,19 @@ class AS3600(DesignCode):
             ult_res.m_xy *= phi
             phis.append(phi)
 
-        return factored_mi_res, mi_res, phis
+        return f_mi_res, mi_res, phis
 
     def biaxial_bending_diagram(
         self,
-        n: float = 0,
+        n_design: float = 0,
         n_points: int = 48,
         phi_0: float = 0.6,
         progress_bar: bool = True,
     ) -> Tuple[res.BiaxialBendingResults, List[float]]:
         """Generates a biaxial bending with capacity factors to AS 3600:2018.
 
-        :param n: Net axial force
-        :param n_points: Number of calculation points between the decompression
+        :param n_design: Design axial force, N*
+        :param n_points: Number of calculation points
         :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
         :param progress_bar: If set to True, displays the progress bar
 
@@ -556,7 +581,7 @@ class AS3600(DesignCode):
         """
 
         # initialise results
-        f_bb_res = res.BiaxialBendingResults(n=n)
+        f_bb_res = res.BiaxialBendingResults(n=n_design)
         phis = []
 
         # calculate d_theta
@@ -571,7 +596,7 @@ class AS3600(DesignCode):
             for theta in theta_list:
                 # factored capacity
                 f_ult_res, _, phi = self.ultimate_bending_capacity(
-                    theta=theta, n=n, phi_0=phi_0
+                    theta=theta, n_design=n_design, phi_0=phi_0
                 )
                 f_bb_res.results.append(f_ult_res)
                 phis.append(phi)
