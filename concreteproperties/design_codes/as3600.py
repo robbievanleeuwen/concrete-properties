@@ -4,15 +4,16 @@ from copy import deepcopy
 from math import inf
 from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
-import concreteproperties.results as res
-import concreteproperties.stress_strain_profile as ssp
-import concreteproperties.utils as utils
 import numpy as np
-from concreteproperties.design_codes.design_code import DesignCode
-from concreteproperties.material import Concrete, SteelBar
 from rich.live import Live
 from scipy.interpolate import interp1d
 from scipy.optimize import brentq
+
+import concreteproperties.results as res
+import concreteproperties.stress_strain_profile as ssp
+import concreteproperties.utils as utils
+from concreteproperties.design_codes.design_code import DesignCode
+from concreteproperties.material import Concrete, SteelBar
 
 if TYPE_CHECKING:
     from concreteproperties.concrete_section import ConcreteSection
@@ -21,10 +22,12 @@ if TYPE_CHECKING:
 class AS3600(DesignCode):
     """Design code class for Australian standard AS 3600:2018.
 
-    Note that this design code only supports :class:`~concreteproperties.pre.Concrete`
-    and :class:`~concreteproperties.pre.SteelBar` material objects. Meshed
-    :class:`~concreteproperties.pre.Steel` material objects are **not** supported
-    as this falls under the composite structures design code.
+    .. note::
+        Note that this design code only supports
+        :class:`~concreteproperties.material.Concrete` and
+        :class:`~concreteproperties.material.SteelBar` material objects. Meshed
+        :class:`~concreteproperties.material.Steel` material objects are **not**
+        supported as this falls under the composite structures design code.
     """
 
     def __init__(self):
@@ -73,15 +76,21 @@ class AS3600(DesignCode):
     ) -> Concrete:
         r"""Returns a concrete material object to AS 3600:2018.
 
-        | **Material assumptions:**
-        | - *Density*: 2400 kg/m\ :sup:`3`
-        | - *Elastic modulus*: Interpolated from Table 3.1.2
-        | - *Service stress-strain profile*: Linear with no tension, compressive strength
-          at 0.9 * f'c
-        | - *Ultimate stress-strain profile*: Rectangular stress block, parameters from
-          Cl. 8.1.3
-        | - *Alpha squash*: From Cl. 10.6.2.2
-        | - *Flexural tensile strength*: From Cl. 3.1.1.3
+        .. admonition:: Material assumptions
+
+          - *Density*: 2400 kg/m\ :sup:`3`
+
+          - *Elastic modulus*: Interpolated from Table 3.1.2
+
+          - *Service stress-strain profile*: Linear with no tension, compressive
+            strength at :math:`0.9f'_c`
+
+          - *Ultimate stress-strain profile*: Rectangular stress block, parameters from
+            Cl. 8.1.3
+
+          - *Alpha squash*: From Cl. 10.6.2.2
+
+          - *Flexural tensile strength*: From Cl. 3.1.1.3
 
         :param compressive_strength: Characteristic compressive strength of
             concrete at 28 days in megapascals (MPa)
@@ -140,10 +149,13 @@ class AS3600(DesignCode):
     ) -> SteelBar:
         r"""Returns a steel bar material object.
 
-        | **Material assumptions:**
-        | - *Density*: 7850 kg/m\ :sup:`3`
-        | - *Elastic modulus*: 200,000 MPa
-        | - *Stress-strain profile:* Elastic-plastic, fracture strain from Table 3.2.1
+        .. admonition:: Material assumptions
+
+          - *Density*: 7850 kg/m\ :sup:`3`
+
+          - *Elastic modulus*: 200000 MPa
+
+          - *Stress-strain profile*: Elastic-plastic, fracture strain from Table 3.2.1
 
         :param yield_strength: Steel yield strength
         :param ductility_class: Steel ductility class ("N" or "L")
@@ -421,13 +433,13 @@ class AS3600(DesignCode):
             )
 
         # factor ultimate results
-        factored_ult_res = deepcopy(ult_res)
-        factored_ult_res.n *= phi
-        factored_ult_res.m_x *= phi
-        factored_ult_res.m_y *= phi
-        factored_ult_res.m_xy *= phi
+        f_ult_res = deepcopy(ult_res)
+        f_ult_res.n *= phi
+        f_ult_res.m_x *= phi
+        f_ult_res.m_y *= phi
+        f_ult_res.m_xy *= phi
 
-        return factored_ult_res, ult_res, phi
+        return f_ult_res, ult_res, phi
 
     def moment_interaction_diagram(
         self,
@@ -527,7 +539,7 @@ class AS3600(DesignCode):
         )
 
         # make a copy of the results to factor
-        factored_mi_res = deepcopy(mi_res)
+        f_mi_res = deepcopy(mi_res)
 
         # list to store phis
         phis = []
@@ -538,7 +550,7 @@ class AS3600(DesignCode):
         n_ub = self.get_n_ub(theta=theta)
 
         # factor results
-        for ult_res in factored_mi_res.results:
+        for ult_res in f_mi_res.results:
             phi = self.capacity_reduction_factor(
                 n_u=ult_res.n, n_ub=n_ub, n_uot=n_uot, k_uo=k_uo, phi_0=phi_0
             )
@@ -548,7 +560,7 @@ class AS3600(DesignCode):
             ult_res.m_xy *= phi
             phis.append(phi)
 
-        return factored_mi_res, mi_res, phis
+        return f_mi_res, mi_res, phis
 
     def biaxial_bending_diagram(
         self,

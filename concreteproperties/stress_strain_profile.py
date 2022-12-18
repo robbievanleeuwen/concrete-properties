@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, List, Union
+from typing import TYPE_CHECKING, List, Optional, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -455,6 +455,368 @@ class EurocodeNonLinear(ConcreteServiceProfile):
         # close off final stress
         self.strains.append(1.01 * conc_strain)
         self.stresses.append(conc_stress)
+
+
+@dataclass
+class ModifiedMander(ConcreteServiceProfile):
+    r"""Class for a non-linear stress-strain relationship based on the Mander
+    stress-strain model for confined & unconfined concrete for a rectangular cross
+    section. Intended for use with moment-curvature analyses with rectangular or
+    circular cross sections.
+
+    Refer to references [1]_ [2]_ [3]_ for further information on the Mander
+    stress-strain models for confined and unconfined concrete.
+
+    This stress strain relationship has been specifically modified for use as per the
+    modified implementation documented within the NZSEE C5 assessment guidelines.
+    However input parameters can also be customised to suit other implementations if
+    desired.
+
+    .. tip::
+      Optional input variables are only required for defining a confined concrete
+      stress-strain relationship. Note if any variables are missed when attempting to
+      define a confined concrete stress-strain relationship (using
+      ``conc_confined=True``), then the material will default to being defined as an
+      unconfined concrete stress-strain relationship with a warning given.
+
+    .. admonition:: Modifications to Mander confined concrete model:-
+
+      The original formulation of the expression for confined concrete presented by
+      Mander et al. [1]_ can predict high levels of confined concrete strain dependant
+      on the assumed value for the ultimate steel strain for the transverse
+      reinforcement. The modified expression given the NZSEE C5 assesment guidelines
+      [3]_ provides a correction and is directly implemented in the
+      :class:`ModifiedMander` material class.
+
+      These corrections to avoid overestimating the confined concrete limiting strain
+      consist of three allowances:-
+
+      - Modifying the maximum steel strain by a factor of 0.6:-
+
+        - :math:`\varepsilon_{s,max}= 0.6\varepsilon_{su} \leq 0.06`
+
+        - Note this 0.6 modifier can be altered via the ``n_steel_strain`` parameter.
+
+        - Note the steel material used for reinforcement is also required to be defined
+          with this same limiting fracture strain for a moment-curvature analysis.
+
+      - Modifying the volumetric ratio of confinement reinforcement by a factor of
+        0.75. i.e.:-
+
+        - For rectangular sections
+
+          - :math:`\displaystyle{\rho_{st}=\frac{0.75}{s}\left[\frac{A_{v,d}}
+            {b_{core}}+\frac{A_{v,b}}{d_{core}}\right]}`
+
+        - For circular sections
+
+          - :math:`\displaystyle{\rho_{st}=\frac{0.75}{s}\frac{4A_v}{d_s}}`
+
+        - Note this 0.75 modifier can be altered via the ``n_confinement`` parameter.
+
+      - For confined concrete utilising a maximum concrete compressive strain of:-
+
+        - :math:`\displaystyle{\varepsilon_{c,max}=0.004+\frac{0.6\rho_{st}f_{yh}
+          \varepsilon_{su}}{f'_{cc}}\leq0.05}`
+
+        - Note that the 0.6 factor applied to the ultimate tensile failure strain can
+          be modified as noted above.
+
+    .. plot:: ./_static/doc_plots/mander_unconfined_plot.py mander_unconfined_plot
+      :include-source: False
+      :caption: ModifiedMander Parameters for Unconfined Concrete
+
+    .. plot:: ./_static/doc_plots/mander_confined_plot.py mander_confined_plot
+      :include-source: False
+      :caption: ModifiedMander Parameters for Confined Concrete
+
+    .. [1] Theoretical Stress-Strain Model For Confined Concrete - Mander, Priestley,
+      Park (1988)
+    .. [2] Observed Stress-Strain Behavior of Confined Concrete - Mander, Priestley,
+      Park (1988)
+    .. [3] NZSEE C5 Assessment Guidelines - Part C5 - Concrete Buildings - Technical
+      Proposal to Revise the Engineering Assessment Guidelines (2018)
+
+    :param elastic_modulus: Concrete elastic modulus (:math:`E_c`)
+    :param compressive_strength: Concrete compressive strength (:math:`f'_c`)
+    :param tensile_strength: Concrete tensile strength (:math:`f_t`)
+    :param sect_type: The type of concrete cross section for which to create a confined
+        concrete stress-strain relationship for:-
+
+        - **rect** = Rectangular section with closed stirrup/tie transverse
+          reinforcement
+
+        - **circ_hoop** = Circular section with closed hoop transverse reinforcement
+
+        - **circ_spiral** = Circular section with spiral transverse reinforcement
+
+    :param conc_confined: True to return a confined concrete stress-strain relationship
+        based on provided reinforcing parameters, False to return an unconfined concrete
+        stress-strain relationship
+    :param conc_tension: True to include tension in the concrete within the
+        stress-strain relationship (up to the tensile strength of the concrete is
+        reached), False to not consider any tension behaviour in the concrete
+    :param conc_spalling: True to consider the spalling effect for unconfined concrete,
+        False to not consider the spalling branch and truncate the unconfined concrete
+        curve at min(:math:`2 \varepsilon_{co},\varepsilon_{c,max}`)
+    :param eps_co: Strain at which the maximum concrete stress is obtained for an
+        unconfined concrete material (:math:`\varepsilon_{co}`)
+    :param eps_c_max_unconfined: Maximum strain that is able to be supported within
+        unconfined concrete (:math:`\varepsilon_{c,max}`)
+    :param eps_sp: Spalling strain, the strain at which the stress returns to zero for
+        unconfined concrete (:math:`\varepsilon_{sp}`)
+    :param d: Depth of a rectangular concrete cross section, or diameter of circular
+        concrete cross section (:math:`d`)
+    :param b: Breadth of a rectangular concrete cross section (:math:`b`)
+    :param long_reinf_area: Total area of the longitudinal reinforcement in the concrete
+        cross section (:math:`A_{st}`)
+    :param w_dash: List of clear spacing between longitudinal reinforcement
+        around the full perimeter of a rectangular concrete cross section (:math:`w'`)
+    :param cvr: Concrete cover (to confining reinforcement)
+    :param trans_spacing: Spacing of transverse confining reinforcement (:math:`s`)
+    :param trans_d_b: Diameter of the transverse confining reinforcement (:math:`d_b`)
+    :param trans_num_d: Number of legs/cross links parallel to the depth of a
+        rectangular concrete cross section
+    :param trans_num_b: Number of legs/cross links parallel to the breadth of a
+        rectangular concrete cross section
+    :param trans_f_y: Yield strength of the transverse confining reinforcement
+        (:math:`f_{yh}`)
+    :param eps_su: Strain at the ultimate tensile strength of the reinforcement
+        (:math:`\varepsilon_{su}`)
+    :param n_points: Number of points to discretise the compression part of the
+        stress-strain curve between :math:`\varepsilon_{c}=0` & :math:`\varepsilon_{c}
+        =2\varepsilon_{co}` for an unconfined concrete, or between
+        :math:`\varepsilon_{c}=0` & :math:`\varepsilon_{c}=\varepsilon_{cu}` for a
+        confined concrete
+    :param n_steel_strain: Modifier for maximum steel reinforcement strain. Steel
+        reinforcement material within the concrete cross section should also be defined
+        with the same limit for the fracture strain
+    :param n_confinement: Modifier for volumetric ratio of confinement reinforcement
+    :raises ValueError: If specified section type is not rect, circ_hoop or circ_spiral
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    elastic_modulus: float
+    ultimate_strain: float = field(init=False, default=0)
+    compressive_strength: float
+    tensile_strength: float
+    sect_type: Optional[str] = None
+    conc_confined: bool = False
+    conc_tension: bool = False
+    conc_spalling: bool = False
+    eps_co: float = 0.002
+    eps_c_max_unconfined: float = 0.004
+    eps_sp: float = 0.006
+    d: Optional[float] = None
+    b: Optional[float] = None
+    long_reinf_area: Optional[float] = None
+    w_dash: Optional[List[float]] = None
+    cvr: Optional[float] = None
+    trans_spacing: Optional[float] = None
+    trans_d_b: Optional[float] = None
+    trans_num_d: Optional[int] = None
+    trans_num_b: Optional[int] = None
+    trans_f_y: Optional[float] = None
+    eps_su: Optional[float] = None
+    n_points: int = field(default=50)
+    n_steel_strain: float = 0.6
+    n_confinement: float = 0.75
+
+    def __post_init__(
+        self,
+    ):
+        self.strains = []
+        self.stresses = []
+
+        # check section type is valid
+        if self.conc_confined and str(self.sect_type).lower() not in [
+            "rect",
+            "circ_hoop",
+            "circ_spiral",
+        ]:
+            raise ValueError(
+                f"The specified section type '{str(self.sect_type).lower()}' should be "
+                f"'rect', 'circ_hoop' or 'circ_spiral'."
+            )
+
+        if self.conc_confined and self.sect_type in ["circ_hoop", "circ_spiral"]:
+            self.b = 0
+            self.w_dash = [0]
+            self.trans_num_b = 0
+            self.trans_num_d = 0
+
+        # if confined concrete required, check that all inputs have been provided,
+        # otherwise reset to unconfined stress-strain relationship and provide warning
+        input_not_provided = [
+            i
+            for i in self.__dataclass_fields__.keys()
+            if self.__getattribute__(i) is None
+        ]
+        if self.conc_confined and input_not_provided:
+            self.conc_confined = False
+            warnings.warn(
+                f"Reverting analysis to utilise an unconfined concrete Mander "
+                f"stress-strain model, as the following input variables required for a "
+                f"confined concrete Mander stress-strain model have not been "
+                f"provided:-\n{input_not_provided}"
+            )
+
+        # calculate confined/unconfined compressive strength
+        if self.conc_confined:
+            # calculate clear distance between transverse reinforcement
+            s_dash = self.trans_spacing - self.trans_d_b
+
+            if self.sect_type.lower() in ["rect"]:
+                # calculate core dimensions (between centrelines of confining transverse
+                # reinforcement)
+                d_core = self.d - 2 * self.cvr - self.trans_d_b
+                b_core = self.b - 2 * self.cvr - self.trans_d_b
+
+                # calculate core area
+                A_c = d_core * b_core
+
+                # calculate area of transverse reinforcement in each direction within a depth s
+                A_vd = self.trans_num_d * self.trans_d_b**2 * np.pi / 4
+                A_vb = self.trans_num_b * self.trans_d_b**2 * np.pi / 4
+
+                # calculate volumetric ratio of confinement reinforcement
+                rho_st = (
+                    self.n_confinement
+                    / self.trans_spacing
+                    * (A_vd / b_core + A_vb / d_core)
+                )
+
+                # calculate ratio of reinforcement area to core area
+                rho_cc = self.long_reinf_area / A_c
+
+                # calculate plan area of ineffectually confined core concrete at the level of
+                # the transverse reinforcement
+                A_i = 0
+                for w in self.w_dash:
+                    A_i = A_i + pow(w, 2)
+
+                # calculate confinement effectiveness coefficient
+                k_e = (
+                    (1 - A_i / (6 * A_c))
+                    * (1 - s_dash / (2 * b_core))
+                    * (1 - s_dash / (2 * d_core))
+                    / (1 - rho_cc)
+                )
+
+                # calculate tranverse reinforcement ratios and confining pressures
+                # across defined depth
+                rho_d = A_vd / (self.trans_spacing * b_core)
+                f_ld = k_e * rho_d * self.trans_f_y
+
+                # calculate tranverse reinforcement ratios and confining pressures
+                # across defined width
+                rho_b = A_vb / (self.trans_spacing * d_core)
+                f_lb = k_e * rho_b * self.trans_f_y
+
+                # calculate confined concrete strength
+                f_cc = self.compressive_strength * (
+                    -1.254
+                    + 2.254
+                    * (1 + 7.94 * min(f_lb, f_ld) / self.compressive_strength) ** 0.5
+                    - 2 * min(f_lb, f_ld) / self.compressive_strength
+                )
+            else:
+                # calculate core diameter
+                d_s = self.d - 2 * self.cvr - self.trans_d_b
+
+                # calculate core area
+                A_c = d_s**2 * np.pi / 4
+
+                # calculate volumetric ratio of confinement reinforcement
+                rho_st = (
+                    self.n_confinement
+                    / self.trans_spacing
+                    * (4 * self.trans_d_b**2 * np.pi / 4 / d_s)
+                )
+                # calculate ratio of reinforcement area to core area
+                rho_cc = self.long_reinf_area / A_c
+
+                # calculate confinement effectiveness coefficient
+                exp = 2 if self.sect_type in ["circ_hoop"] else 1
+                k_e = (1 - s_dash / (2 * d_s)) ** exp / (1 - rho_cc)
+
+                # calculate tranverse confining pressures
+                # rho_b = A_vb / (self.trans_spacing * d_core)
+                f_l = k_e * rho_st * self.trans_f_y
+
+                # calculate confined concrete strength
+                f_cc = self.compressive_strength * (
+                    -1.254
+                    + 2.254 * (1 + 7.94 * f_l / self.compressive_strength) ** 0.5
+                    - 2 * f_l / self.compressive_strength
+                )
+        else:
+            # calculate unconfined concrete strength
+            f_cc = self.compressive_strength
+
+        # calculate strain associated with max confined/unconfined concrete strength
+        eps_cc = self.eps_co * (1 + 5 * (f_cc / self.compressive_strength - 1))
+
+        # calculate maximum confined/unconfined compressive strain
+        if self.conc_confined:
+            eps_c_max = min(
+                0.004
+                + self.n_steel_strain * rho_st * self.trans_f_y * self.eps_su / f_cc,
+                0.05,
+            )
+        else:
+            eps_c_max = self.eps_c_max_unconfined
+
+        # calculate secant modulus
+        E_sec = f_cc / eps_cc
+
+        if self.conc_confined:
+            self.strains = np.linspace(0, eps_c_max, self.n_points)
+            # add eps_cc point corresponding to max stress point at end
+            self.strains = np.append(self.strains, eps_cc)
+        else:
+            self.strains = np.linspace(0, min(2 * eps_cc, eps_c_max), self.n_points)
+            # add eps_cc point corresponding to max stress point at end
+            self.strains = np.append(self.strains, eps_cc)
+
+        # sort strains numerically
+        self.strains.sort()
+
+        # calculate stresses from strains & convert to List
+        r = self.elastic_modulus / (self.elastic_modulus - E_sec)
+        x = self.strains / eps_cc
+        self.strains = self.strains.tolist()
+        self.stresses = (f_cc * x * r / (r - 1 + x**r)).tolist()
+
+        # add spalling branch if specified for unconfined curve
+        if not self.conc_confined and self.conc_spalling:
+            self.strains.append(self.eps_sp)
+            self.stresses.append(0)
+
+        # calculate max tension strain based on modulus of rupture/concrete tension
+        # strength
+        eps_t = self.tensile_strength / self.elastic_modulus
+
+        if self.conc_tension:
+            # add tension stress/strain limit
+            self.strains.insert(0, -eps_t)
+            self.stresses.insert(0, -self.tensile_strength)
+            self.strains.insert(0, self.strains[0])
+            self.stresses.insert(0, 0)
+            self.strains.insert(0, 2 * self.strains[0])
+            self.stresses.insert(0, 0)
+        else:
+            # add flat horizontal tension stress/strain branch
+            self.strains.insert(0, -eps_t)
+            self.stresses.insert(0, 0)
+
+        # initiate ultimate compressive strain as maximum strain
+        self.ultimate_strain = max(self.strains)
+
+        # add small horizontal compressive strain to improve interpolation
+        self.strains.append(self.strains[-1] + 1e-12)
+        self.stresses.append(self.stresses[-1])
 
 
 @dataclass
