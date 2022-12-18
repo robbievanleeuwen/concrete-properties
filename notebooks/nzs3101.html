@@ -1,0 +1,1832 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>10. NZS3101 Design Code &#8212; concreteproperties 0.4.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/nzs3101';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../api.html" />
+    <link rel="prev" title="9. AS3600 Design Code" href="as3600.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../_static/cp_logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+    <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
+        latest  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">
+    Section Navigation
+  </p>
+  <div class="bd-toc-item navbar-nav">
+    <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="area_properties.html">1. Calculating Area Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cracked_properties.html">2. Calculating Cracked Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moment_curvature.html">3. Moment Curvature Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ultimate_bending.html">4. Ultimate Bending Capacity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moment_interaction.html">5. Moment Interaction Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="biaxial_bending.html">6. Biaxial Bending Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stress_analysis.html">7. Stress Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composite_section.html">8. Composite Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="as3600.html">9. AS3600 Design Code</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. NZS3101 Design Code</a></li>
+</ul>
+
+  </div>
+</nav>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars and line breaks on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+    white-space: pre;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="NZS3101-Design-Code">
+<h1><span class="section-number">10. </span>NZS3101 Design Code<a class="headerlink" href="#NZS3101-Design-Code" title="Permalink to this heading">#</a></h1>
+<p>This example demonstrates how to work with the NZS3101 concrete design code. We start by importing the necessary modules: -</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.design_codes.nzs3101</span> <span class="kn">import</span> <span class="n">NZS3101</span>
+<span class="kn">import</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="k">as</span> <span class="nn">ssp</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span>
+<span class="kn">from</span> <span class="nn">sectionproperties.pre.library.concrete_sections</span> <span class="kn">import</span> <span class="n">concrete_rectangular_section</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.results</span> <span class="kn">import</span> <span class="n">MomentInteractionResults</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.results</span> <span class="kn">import</span> <span class="n">BiaxialBendingResults</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.results</span> <span class="kn">import</span> <span class="n">MomentCurvatureResults</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Create-Design-Code-and-Materials">
+<h2><span class="section-number">10.1. </span>Create Design Code and Materials<a class="headerlink" href="#Create-Design-Code-and-Materials" title="Permalink to this heading">#</a></h2>
+<p>In this example, we’ll use the NZS3101:2006 design code. Creating a concrete cross-section geometry with a 40 MPa concrete, with a default density of 2300 kg/m3 and with reinforcement consisting of a grade 300E reinforcing steel: -</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design_code</span> <span class="o">=</span> <span class="n">NZS3101</span><span class="p">()</span>
+<span class="n">concrete_40</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">create_concrete_material</span><span class="p">(</span><span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">steel_300E</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">create_steel_material</span><span class="p">(</span><span class="n">steel_grade</span><span class="o">=</span><span class="s2">&quot;300E&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We can confirm the concrete material properties as follows: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">concrete_40</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Concrete Flexural Tensile Strength: </span><span class="si">{</span><span class="n">concrete_40</span><span class="o">.</span><span class="n">flexural_tensile_strength</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MPa&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Ultimate Compressive Strain: </span><span class="si">{</span><span class="n">concrete_40</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_ultimate_compressive_strain</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+<span class="n">concrete_40</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Concrete Serviceability Stress-Strain Profile&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-r&quot;</span>
+<span class="p">)</span>
+<span class="n">concrete_40</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Concrete Ultimate Stress-Strain Profile&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-r&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+40 MPa Conc [2300 kg/m$^{3}$]
+(NZS3101:2006)
+Concrete Flexural Tensile Strength: 2.40 MPa
+Ultimate Compressive Strain: 0.0030
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_5_1.svg" src="../_images/notebooks_nzs3101_5_1.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_5_2.svg" src="../_images/notebooks_nzs3101_5_2.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Concrete Ultimate Stress-Strain Profile&#39;}, xlabel=&#39;Strain&#39;, ylabel=&#39;Stress&#39;&gt;
+</pre></div></div>
+</div>
+<p>We can confirm the steel material properties as follows: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">steel_300E</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Density = </span><span class="si">{</span><span class="n">steel_300E</span><span class="o">.</span><span class="n">density</span><span class="si">}</span><span class="s2"> kg/m^3&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Ultimate Tensile Strain = </span><span class="si">{</span><span class="n">steel_300E</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_ultimate_tensile_strain</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Overstrength Factor = </span><span class="si">{</span><span class="n">steel_300E</span><span class="o">.</span><span class="n">phi_os</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">steel_300E</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Steel Stress-Strain Profile&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-r&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+300 MPa Steel
+(NZS3101:2006)
+Density = 7850 kg/m^3
+Ultimate Tensile Strain = -0.15
+Overstrength Factor = 1.35
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_7_1.svg" src="../_images/notebooks_nzs3101_7_1.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Steel Stress-Strain Profile&#39;}, xlabel=&#39;Strain&#39;, ylabel=&#39;Stress&#39;&gt;
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Assigning-Geometry-to-the-Design-Code">
+<h2><span class="section-number">10.2. </span>Assigning Geometry to the Design Code<a class="headerlink" href="#Assigning-Geometry-to-the-Design-Code" title="Permalink to this heading">#</a></h2>
+<p>This example will analyse an 800D x 500W concrete beam with 6-D25 top and 6-D20 bottom bars with an assumed R12 stirrup size with a specified 35 concrete cover all around. It is assumed the analysis of the concrete frame containing the beam in question is based on a maximum global ductility demand of <span class="math notranslate nohighlight">\(\mu\)</span> = 3. An assessment of the Potential Plastic Hinge Region (PPHR) curvature has shown that the PPHR can be designated as a Limited Ductile Plastic Region (LDPR).</p>
+<p>After creating the geometry, it must be assigned to the design code object. When assigning the geometry to the design code we can also specify what type of member the geometry is: -</p>
+<p>The NZS3101 design code class includes four valid section types that can be assigned to the geometry, the <code class="docutils literal notranslate"><span class="pre">section_type</span></code> parameter impacts the strength reduction factor and defines the maximum axial load in compression that the concrete cross section can sustain: -</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">column</span></code> - Analyses assigned geometry as a column (or beam) member in accordance with NZS3101:2006 Chapter 9 or 10 as appropriate (default if not specified)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wall</span></code> - Analyses assigned geometry as a doubly reinforced wall member in accordance with NZS3101:2006 Chapter 11</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wall_sr_s</span></code> - Analyses assigned geometry as a singly reinforced wall member in accordance with NZS3101:2006 Chapter 11 for design actions causing bending about the strong axis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wall_sr_m</span></code> - Analyses assigned concrete section object as a singly reinforced wall member in accordance with NZS3101:2006 Chapter 11 for design actions causing bending about the minor axis</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">geom_beam</span> <span class="o">=</span> <span class="n">concrete_rectangular_section</span><span class="p">(</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">d</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">dia_top</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">n_top</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">dia_bot</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">n_bot</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">n_circle</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">cover</span><span class="o">=</span><span class="mi">35</span> <span class="o">+</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete_40</span><span class="p">,</span>
+    <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel_300E</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">conc_sec_beam</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom_beam</span><span class="p">)</span>
+<span class="n">conc_sec_beam</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+<span class="n">design_code</span><span class="o">.</span><span class="n">assign_concrete_section</span><span class="p">(</span>
+    <span class="n">concrete_section</span><span class="o">=</span><span class="n">conc_sec_beam</span><span class="p">,</span> <span class="n">section_type</span><span class="o">=</span><span class="s2">&quot;column&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_9_0.svg" src="../_images/notebooks_nzs3101_9_0.svg" /></div>
+</div>
+</div>
+<div class="section" id="Area-Properties">
+<h2><span class="section-number">10.3. </span>Area Properties<a class="headerlink" href="#Area-Properties" title="Permalink to this heading">#</a></h2>
+<p>Obtaining the area properties is identical to that of a <code class="docutils literal notranslate"><span class="pre">ConcreteSection</span></code> object: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gross_props</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">get_gross_properties</span><span class="p">()</span>
+<span class="n">transformed_props</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">get_transformed_gross_properties</span><span class="p">(</span>
+    <span class="n">elastic_modulus</span><span class="o">=</span><span class="n">concrete_40</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">elastic_modulus</span>
+<span class="p">)</span>
+<span class="n">cracked_props</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">calculate_cracked_properties</span><span class="p">()</span>
+
+<span class="n">gross_props</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
+<span class="n">cracked_props</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">     Gross Concrete Section Properties      </span>
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold"> Property                  </span>┃<span style="font-weight: bold">        Value </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━┩
+│<span style="color: #008080; text-decoration-color: #008080"> Total Area                </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.000000e+05 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Concrete Area             </span>│<span style="color: #008000; text-decoration-color: #008000"> 3.959748e+05 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Meshed Reinforcement Area </span>│<span style="color: #008000; text-decoration-color: #008000"> 0.000000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Lumped Reinforcement Area </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.025166e+03 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Axial Rigidity (EA)       </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.257555e+10 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Mass (per unit length)    </span>│<span style="color: #008000; text-decoration-color: #008000"> 9.423397e+08 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Perimeter                 </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.600000e+03 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Qx                      </span>│<span style="color: #008000; text-decoration-color: #008000"> 5.080779e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Qy                      </span>│<span style="color: #008000; text-decoration-color: #008000"> 3.143887e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> x-Centroid                </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.500000e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> y-Centroid                </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.040205e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> x-Centroid (Gross)        </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.500000e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> y-Centroid (Gross)        </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.000000e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_g                   </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.766621e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_g                   </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.046271e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g                   </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.270195e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_c                   </span>│<span style="color: #008000; text-decoration-color: #008000"> 7.138824e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_c                   </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.602993e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c                   </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.000000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.I11                     </span>│<span style="color: #008000; text-decoration-color: #008000"> 7.138824e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.I22                     </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.602993e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Principal Axis Angle      </span>│<span style="color: #008000; text-decoration-color: #008000"> 0.000000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Zxx+                    </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.802826e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Zxx-                    </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.766946e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Zyy+                    </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.041197e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Zyy-                    </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.041197e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Z11+                    </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.802826e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Z11-                    </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.766946e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Z22+                    </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.041197e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Z22-                    </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.041197e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Ultimate Concrete Strain  </span>│<span style="color: #008000; text-decoration-color: #008000"> 3.000000e-03 </span>│
+└───────────────────────────┴──────────────┘
+</pre></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">   Cracked Concrete Section   </span>
+<span style="font-style: italic">          Properties          </span>
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold"> Property   </span>┃<span style="font-weight: bold">         Value </span>┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│<span style="color: #008080; text-decoration-color: #008080"> theta      </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> M_cr       </span>│<span style="color: #008000; text-decoration-color: #008000">  1.428595e+08 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> d_nc       </span>│<span style="color: #008000; text-decoration-color: #008000">  1.435716e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.A_cr     </span>│<span style="color: #008000; text-decoration-color: #008000">  2.865930e+09 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Qx_cr    </span>│<span style="color: #008000; text-decoration-color: #008000">  1.881278e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Qy_cr    </span>│<span style="color: #008000; text-decoration-color: #008000">  7.164825e+11 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> x-Centroid </span>│<span style="color: #008000; text-decoration-color: #008000">  2.500000e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> y-Centroid </span>│<span style="color: #008000; text-decoration-color: #008000">  6.564284e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  1.365446e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  2.370343e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  4.703195e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  1.305216e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  5.791368e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> -1.062500e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Iuu_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  1.305216e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.I11_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  1.305216e+14 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.I22_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  5.791368e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> phi_cr     </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000000e+00 </span>│
+└────────────┴───────────────┘
+</pre></div>
+</div>
+</div>
+<div class="section" id="Ultimate-Bending-Capacity">
+<h2><span class="section-number">10.4. </span>Ultimate Bending Capacity<a class="headerlink" href="#Ultimate-Bending-Capacity" title="Permalink to this heading">#</a></h2>
+<p>The factored ultimate bending capacity can be found by calling the <code class="docutils literal notranslate"><span class="pre">ultimate_bending_capacity()</span></code> method. This method returns a factored and unfactored <code class="docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code> object, as well as the capacity reduction factor <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p>
+<p>The NZS3101 design code class includes five valid analysis types that can be provided to the analysis method: -</p>
+<ul class="simple">
+<li><p>NZS3101-based design checks</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">nom_chk</span></code> - Nominal design capacity check - undertake an analysis with <span class="math notranslate nohighlight">\(\phi\)</span> = 0.85, and lower characteristic material properties (default if not specified)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cpe_chk</span></code> - Capacity protected element check - undertake an analysis with <span class="math notranslate nohighlight">\(\phi\)</span> = 1.00, and lower characteristic material properties</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">os_chk</span></code> - Overstrength capacity check - undertake an analysis with <span class="math notranslate nohighlight">\(\phi\)</span> = 1.00, and likely maximum material properties</p></li>
+</ul>
+</li>
+<li><p>NZSEE C5 assessment guideline-based design checks</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">prob_chk</span></code> - Probable capacity check - undertake an analysis with <span class="math notranslate nohighlight">\(\phi\)</span> = 1.00, and probable material properties</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prob_os_chk</span></code> - Probable overstrength capacity check - undertake an analysis with <span class="math notranslate nohighlight">\(\phi\)</span> = 1.00, and probable overstrength material properties</p></li>
+</ul>
+</li>
+</ul>
+<p>Based on an analysis of the concrete frame the column face beam moment demands are <span class="math notranslate nohighlight">\(M^*_{pos}\)</span> = 300 kNm, and <span class="math notranslate nohighlight">\(M^*_{neg}\)</span> = 450 kNm, the column is an exterior column with a single beam framing into it on one face.</p>
+<p>Therefore we need to undertake a nominal design check analysis utilising an <code class="docutils literal notranslate"><span class="pre">analysis_type</span></code> of <code class="docutils literal notranslate"><span class="pre">nom_chk</span></code> for both positive and negative flexure to compare with the <span class="math notranslate nohighlight">\(\mu\)</span> = 3 demands, and match the flexural strength provided as closely as possible to the demands: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M_star_pos</span> <span class="o">=</span> <span class="mf">280.0</span>
+<span class="n">M_star_neg</span> <span class="o">=</span> <span class="o">-</span><span class="mf">442.0</span>
+
+<span class="n">f_ult_res_pos</span><span class="p">,</span> <span class="n">ult_res_pos</span><span class="p">,</span> <span class="n">phi_pos</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span>
+    <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pphr_class</span><span class="o">=</span><span class="s2">&quot;LDPR&quot;</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;nom_chk&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Positive flexure capacity:-&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_star_pos = </span><span class="si">{</span><span class="n">M_star_pos</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mn_pos = </span><span class="si">{</span><span class="n">ult_res_pos</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phi = </span><span class="si">{</span><span class="n">phi_pos</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phi.Mn_pos = </span><span class="si">{</span><span class="n">f_ult_res_pos</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="n">dc_ratio_pos</span> <span class="o">=</span> <span class="n">M_star_pos</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="o">/</span> <span class="n">f_ult_res_pos</span><span class="o">.</span><span class="n">m_x</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Demand/Capacity ratio = </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">dc_ratio_pos</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">f_ult_res_neg</span><span class="p">,</span> <span class="n">ult_res_neg</span><span class="p">,</span> <span class="n">phi_neg</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span>
+    <span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+    <span class="n">pphr_class</span><span class="o">=</span><span class="s2">&quot;LDPR&quot;</span><span class="p">,</span>
+    <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;nom_chk&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Negative flexure capacity:-&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_star_neg = </span><span class="si">{</span><span class="n">M_star_neg</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mn_neg = </span><span class="si">{</span><span class="n">ult_res_neg</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phi = </span><span class="si">{</span><span class="n">phi_neg</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phi.Mn_neg = </span><span class="si">{</span><span class="n">f_ult_res_neg</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="n">dc_ratio_neg</span> <span class="o">=</span> <span class="n">M_star_neg</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="o">/</span> <span class="n">f_ult_res_neg</span><span class="o">.</span><span class="n">m_x</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Demand/Capacity ratio = </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">dc_ratio_neg</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Positive flexure capacity:-
+M_star_pos = 280.0 kN.m
+Mn_pos = 348.99 kN.m
+phi = 0.850
+phi.Mn_pos = 296.64 kN.m
+Demand/Capacity ratio = 0.944
+
+Negative flexure capacity:-
+M_star_neg = -442.0 kN.m
+Mn_neg = -529.36 kN.m
+phi = 0.850
+phi.Mn_neg = -449.96 kN.m
+Demand/Capacity ratio = 0.982
+</pre></div></div>
+</div>
+<p>We can see the nominal design capacity is a close match to the ductile design demands (as the ratio is close to 1.000), so the proposed reinforcement is deemed adequate for the proposed beam size without being overly conservative which would otherwise unnecessarily push up our overstrength demands that the columns would be required to resist.</p>
+<p>Because we are undertaking a ductile design, we must now determine the overstrength capacity of the beam section so we can undertake the necessary capacity design checks on the columns that support the beam. We undertake this check using an <code class="docutils literal notranslate"><span class="pre">analysis_type</span></code> of <code class="docutils literal notranslate"><span class="pre">os_chk</span></code>, this internally factors up the concrete and steel materials to reflect the likely upper limit strengths (overstrength material properties) before undertaking the cross-section analysis.</p>
+<p>For an analysis to NZS3101:2006, this typically means the concrete strength increase is based on <span class="math notranslate nohighlight">\(f'_c\)</span> + 15 MPa, and steel reinforcement strength increase is based on a strength of <span class="math notranslate nohighlight">\(\phi_{o,f_y}f_y\)</span>, where typically <span class="math notranslate nohighlight">\(\phi_{o,f_y}\)</span> = 1.35 for grade 300E &amp; 500E steel reinforcement materials that comply with AS/NZS4671.</p>
+<p>This is intended to capture the maximum possible actual capacity of the beam to ensure that the columns have sufficient strength for these likely upper-bound actions based on applying capacity design principles. Note a strength reduction factor of <span class="math notranslate nohighlight">\(\phi\)</span> = 1.0 is utilised for this check following NZS3101:2006: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f_ult_res_pos_os</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span>
+    <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pphr_class</span><span class="o">=</span><span class="s2">&quot;LDPR&quot;</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;os_chk&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Positive overstrength demand:-&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phi_o.Mo = </span><span class="si">{</span><span class="n">f_ult_res_pos_os</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="n">os_ratio_pos</span> <span class="o">=</span> <span class="n">f_ult_res_pos_os</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="p">(</span><span class="n">M_star_pos</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Actual positive flexure overstrength ratio = </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">os_ratio_pos</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">f_ult_res_neg_os</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span>
+    <span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">pphr_class</span><span class="o">=</span><span class="s2">&quot;LDPR&quot;</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;os_chk&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Negative overstrength demand:-&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phi_o.Mo = </span><span class="si">{</span><span class="n">f_ult_res_neg_os</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="n">os_ratio_neg</span> <span class="o">=</span> <span class="n">f_ult_res_neg_os</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="p">(</span><span class="n">M_star_neg</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Actual negative flexure overstrength ratio = </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">os_ratio_neg</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Positive overstrength demand:-
+phi_o.Mo = 468.97 kN.m
+Actual positive flexure overstrength ratio = 1.675
+
+Negative overstrength demand:-
+phi_o.Mo = -713.91 kN.m
+Actual negative flexure overstrength ratio = 1.615
+</pre></div></div>
+</div>
+<p>This shows that our original nominal analysis moments based on <span class="math notranslate nohighlight">\(\mu\)</span> = 3 actions are factored up by a total of 1.675 &amp; 1.615 ratios for positive and negative flexure respectively for determining the overstrength beam moments applied at the face of the supporting columns.</p>
+<p>Now that we have our beam overstrength demand, we can check a proposed column design. Note in this example we will assume half of the beam overstrength demand as a moment is distributed to the column above and below the beam-column joint. In an actual design, this ratio would be determined from the analysis and may require to be factored up further by dynamic amplification factors. Note that as well in a real capacity design scenario the face beam overstrength moments would need to be converted
+to centreline moments before distributing to the columns to determine the column face moments at the top and bottom of the beam/column joint. But for simplicity here to demonstrate a column analysis we will simply distribute the beam overstrength moment evenly above and below the beam/column joint as a simplification.</p>
+<p>Firstly, we must define our column section: -</p>
+<p>This example will analyse a 600D x 600W concrete column with 12-DH20 bars evenly distributed around the perimeter with an assumed R12 stirrup size with a specified 35 concrete cover all around. Since the columns in this scenario are a Capacity Protected Element (CPE) an <code class="docutils literal notranslate"><span class="pre">analysis_type</span></code> of <code class="docutils literal notranslate"><span class="pre">cpe_chk</span></code> can be utilised. This means the analysis is based on normal characteristic material strengths, but a strength reduction factor of <span class="math notranslate nohighlight">\(\phi\)</span> = 1.0 can be utilised since the demands being checked
+against was derived on a capacity design basis (i.e., considering overstrength effects).</p>
+<p>An assessment of the curvatures in the PPHRs of the columns indicates that they would be within the Nominally Ductile Plastic Region (NDPR) curvature limits, note that this is the default PPHR region classification so does not need to be specifically entered, but is provided here for completeness when undertaking the analysis.</p>
+<p>Under the negative flexure case, the column has an axial tension load of <span class="math notranslate nohighlight">\(N_{o,T}\)</span> of -165 kN under the joint, and under the positive flexure case the column has an axial compression overstrength derived load of <span class="math notranslate nohighlight">\(N_{o,C}\)</span> = 1100 kN under the joint.</p>
+<p>Based on the assumption of half of the beam overstrength moment distributing to the column above and below the beam/column joint this lead to a design moment for the column combined with the tension load of <span class="math notranslate nohighlight">\(M_{o,T}\)</span> = -713.9/2 = -356.95 kNm, and combined with the overstrength compression load of <span class="math notranslate nohighlight">\(M_{o,C}\)</span> = 469.0/2 = 234.5 kNm.</p>
+<p>Since we are utilising higher strength grade 500E reinforcement in the column, we must first define a new steel material. Note that the same 40 MPa concrete material is being used in the columns: -</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">steel_500E</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">create_steel_material</span><span class="p">(</span><span class="n">steel_grade</span><span class="o">=</span><span class="s2">&quot;500E&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We can now create the column section and assign it to the design code, and plot the section to check the geometry: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bar_dia</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="n">geom_col</span> <span class="o">=</span> <span class="n">concrete_rectangular_section</span><span class="p">(</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">dia_top</span><span class="o">=</span><span class="n">bar_dia</span><span class="p">,</span>
+    <span class="n">n_top</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">dia_bot</span><span class="o">=</span><span class="n">bar_dia</span><span class="p">,</span>
+    <span class="n">n_bot</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">dia_side</span><span class="o">=</span><span class="n">bar_dia</span><span class="p">,</span>
+    <span class="n">n_side</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">n_circle</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">cover</span><span class="o">=</span><span class="mi">35</span> <span class="o">+</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete_40</span><span class="p">,</span>
+    <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel_500E</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">conc_sec_col</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom_col</span><span class="p">)</span>
+<span class="n">conc_sec_col</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+<span class="n">design_code</span><span class="o">.</span><span class="n">assign_concrete_section</span><span class="p">(</span><span class="n">concrete_section</span><span class="o">=</span><span class="n">conc_sec_col</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_19_0.svg" src="../_images/notebooks_nzs3101_19_0.svg" /></div>
+</div>
+<p>We can now analyse the section to determine at the axial load required under tension and compression cases what the design moment capacity will be. Since the section is symmetrical, we can just look at the positive result, but if the opposite bending direction was required this can be determined by utilising the <code class="docutils literal notranslate"><span class="pre">theta</span></code> parameter to rotate the neutral axis 180 <span class="math notranslate nohighlight">\(^{\circ}\)</span> or <span class="math notranslate nohighlight">\(\pi\)</span> radians for the analysis: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M_o_T</span> <span class="o">=</span> <span class="o">-</span><span class="mf">713.91</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">N_o_T</span> <span class="o">=</span> <span class="o">-</span><span class="mi">165</span>
+<span class="n">M_o_C</span> <span class="o">=</span> <span class="mf">468.97</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">N_o_C</span> <span class="o">=</span> <span class="mi">1100</span>
+
+<span class="n">f_ult_res_T</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span>
+    <span class="n">pphr_class</span><span class="o">=</span><span class="s2">&quot;NDPR&quot;</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;cpe_chk&quot;</span><span class="p">,</span> <span class="n">n_design</span><span class="o">=</span><span class="n">N_o_T</span> <span class="o">*</span> <span class="mf">1e3</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tension case capacity:-&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phi.Mn = </span><span class="si">{</span><span class="n">f_ult_res_T</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m at axial load of </span><span class="si">{</span><span class="n">N_o_T</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mo = </span><span class="si">{</span><span class="n">M_o_T</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="n">col_ratio_T</span> <span class="o">=</span> <span class="n">M_o_T</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="o">/</span> <span class="n">f_ult_res_T</span><span class="o">.</span><span class="n">m_x</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Actual design ratio = </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">col_ratio_T</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">f_ult_res_C</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span>
+    <span class="n">pphr_class</span><span class="o">=</span><span class="s2">&quot;NDPR&quot;</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;cpe_chk&quot;</span><span class="p">,</span> <span class="n">n_design</span><span class="o">=</span><span class="n">N_o_C</span> <span class="o">*</span> <span class="mf">1e3</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Compression case capacity:-&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phi.Mn = </span><span class="si">{</span><span class="n">f_ult_res_C</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m at axial load of </span><span class="si">{</span><span class="n">N_o_C</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mo = </span><span class="si">{</span><span class="n">M_o_C</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="n">col_ratio_C</span> <span class="o">=</span> <span class="n">M_o_C</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="o">/</span> <span class="n">f_ult_res_C</span><span class="o">.</span><span class="n">m_x</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Actual design ratio = </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">col_ratio_C</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Tension case capacity:-
+phi.Mn = 450.48 kN.m at axial load of -165.00 kN
+Mo = -356.955 kN.m
+Actual design ratio = 0.792
+
+Compression case capacity:-
+phi.Mn = 738.11 kN.m at axial load of 1100.00 kN
+Mo = 234.485 kN.m
+Actual design ratio = 0.318
+</pre></div></div>
+</div>
+<p>Therefore, we can see that the flexural design would be sufficient for the proposed column.</p>
+<p>We can also plot these points on an M/N interaction diagram and a biaxial Mx/My interaction diagram to show that at the target design axial loads, that the design moments lie within the interaction surface.</p>
+</div>
+<div class="section" id="Moment/Axial-Interaction-Diagram">
+<h2><span class="section-number">10.5. </span>Moment/Axial Interaction Diagram<a class="headerlink" href="#Moment/Axial-Interaction-Diagram" title="Permalink to this heading">#</a></h2>
+<p>We can plot these points on M/N interaction diagrams and Mx/My interaction diagrams to illustrate that the target axial and moment actions for the design are within the interaction surface.</p>
+<p>We can compute unfactored and factored axial/moment interaction diagrams by calling the <code class="docutils literal notranslate"><span class="pre">moment_interaction_diagram()</span></code> method. This method returns a <code class="docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code> object with factored and unfactored results, as well as a list of the capacity reduction factors <code class="docutils literal notranslate"><span class="pre">phis</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f_mi_res</span><span class="p">,</span> <span class="n">mi_res</span><span class="p">,</span> <span class="n">phis</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span>
+    <span class="n">pphr_class</span><span class="o">=</span><span class="s2">&quot;NDPR&quot;</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;cpe_chk&quot;</span><span class="p">,</span> <span class="n">n_spacing</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We can compare the factored and unfactored moment interaction diagrams. Since <span class="math notranslate nohighlight">\(\phi\)</span> = 1.0, the factored and unfactored interaction curves should coincide: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MomentInteractionResults</span><span class="o">.</span><span class="n">plot_multiple_diagrams</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">f_mi_res</span><span class="p">,</span> <span class="n">mi_res</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Factored M/N&quot;</span><span class="p">,</span> <span class="s2">&quot;Unfactored M/N&quot;</span><span class="p">],</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;or&quot;</span><span class="p">,</span>
+    <span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">moment</span><span class="o">=</span><span class="s2">&quot;m_xy&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_linestyle</span><span class="p">(</span><span class="s2">&quot;solid&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_marker</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_markersize</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_26_0.svg" src="../_images/notebooks_nzs3101_26_0.svg" /></div>
+</div>
+<p>We can check to see if a combination of axial force and bending moment lies within the moment interaction diagram using the <code class="docutils literal notranslate"><span class="pre">point_in_diagram()</span></code> method: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># design load cases</span>
+<span class="n">n_stars</span> <span class="o">=</span> <span class="p">[</span><span class="n">N_o_T</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">N_o_C</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">]</span>
+<span class="n">m_stars</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">M_o_T</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">,</span> <span class="n">M_o_C</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">]</span>
+<span class="n">marker_styles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">]</span>
+<span class="n">n_cases</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_stars</span><span class="p">)</span>
+
+<span class="c1"># plot moment interaction diagram</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">f_mi_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-r&quot;</span><span class="p">,</span> <span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># check to see if combination is within diagram and plot result</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cases</span><span class="p">):</span>
+    <span class="n">case</span> <span class="o">=</span> <span class="n">f_mi_res</span><span class="o">.</span><span class="n">point_in_diagram</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_stars</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">m</span><span class="o">=</span><span class="n">m_stars</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Case </span><span class="si">{num}</span><span class="s2">: </span><span class="si">{status}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num</span><span class="o">=</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;OK&quot;</span> <span class="k">if</span> <span class="n">case</span> <span class="k">else</span> <span class="s2">&quot;FAIL&quot;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">m_stars</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">,</span>
+        <span class="n">n_stars</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e3</span><span class="p">,</span>
+        <span class="s2">&quot;k&quot;</span> <span class="o">+</span> <span class="n">marker_styles</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+        <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Case </span><span class="si">{</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Case 1: OK
+Case 2: OK
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_28_1.svg" src="../_images/notebooks_nzs3101_28_1.svg" /></div>
+</div>
+</div>
+<div class="section" id="Biaxial-Bending-Interaction-Diagram">
+<h2><span class="section-number">10.6. </span>Biaxial Bending Interaction Diagram<a class="headerlink" href="#Biaxial-Bending-Interaction-Diagram" title="Permalink to this heading">#</a></h2>
+<p>We can also compute factored biaxial bending diagrams by calling the <code class="docutils literal notranslate"><span class="pre">biaxial_bending_diagram()</span></code> method. This method returns a factored <code class="docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code> object as well as a list of the capacity reduction factors <code class="docutils literal notranslate"><span class="pre">phis</span></code>: -</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create biaxial bending diagram</span>
+<span class="n">f_bb_res1</span><span class="p">,</span> <span class="n">phis1</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">biaxial_bending_diagram</span><span class="p">(</span>
+    <span class="n">n_design</span><span class="o">=</span><span class="n">N_o_T</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">f_bb_res2</span><span class="p">,</span> <span class="n">phis2</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">biaxial_bending_diagram</span><span class="p">(</span>
+    <span class="n">n_design</span><span class="o">=</span><span class="n">N_o_C</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot case 1</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">f_bb_res1</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-r&quot;</span><span class="p">,</span> <span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">M_o_T</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;sk&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># plot case 2</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">f_bb_res2</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-r&quot;</span><span class="p">,</span> <span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">M_o_C</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_31_0.svg" src="../_images/notebooks_nzs3101_31_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_31_1.svg" src="../_images/notebooks_nzs3101_31_1.svg" /></div>
+</div>
+</div>
+<div class="section" id="Creating-a-3D-interaction-surface">
+<h2><span class="section-number">10.7. </span>Creating a 3D interaction surface<a class="headerlink" href="#Creating-a-3D-interaction-surface" title="Permalink to this heading">#</a></h2>
+<p>We can create more complex representations of the entire interaction surface by stringing together the <code class="docutils literal notranslate"><span class="pre">moment_interaction_diagram()</span></code> and <code class="docutils literal notranslate"><span class="pre">biaxial_bending_diagram()</span></code> methods and plotting the results on a 3D plot: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># determine maximum compression load for the column section</span>
+<span class="n">max_comp</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">max_comp_strength</span><span class="p">(</span><span class="n">cpe_design</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">max_ten</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">max_ten_strength</span><span class="p">()</span>
+<span class="n">steps_axial</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">steps_moment</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="c1"># generate axial load list</span>
+<span class="n">n_design_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">max_ten</span> <span class="o">+</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">max_comp</span><span class="p">,</span> <span class="n">steps_axial</span><span class="p">)</span>
+<span class="n">theta_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">steps_moment</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="n">results_bb</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">results_mi</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">theta_list</span><span class="p">:</span>
+    <span class="n">f_mi_res</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span>
+        <span class="n">pphr_class</span><span class="o">=</span><span class="s2">&quot;NDPR&quot;</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;cpe_chk&quot;</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">results_mi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_mi_res</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">n_design</span> <span class="ow">in</span> <span class="n">n_design_list</span><span class="p">:</span>
+    <span class="n">f_bb_res</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">biaxial_bending_diagram</span><span class="p">(</span>
+        <span class="n">pphr_class</span><span class="o">=</span><span class="s2">&quot;NDPR&quot;</span><span class="p">,</span>
+        <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;cpe_chk&quot;</span><span class="p">,</span>
+        <span class="n">n_design</span><span class="o">=</span><span class="n">n_design</span><span class="p">,</span>
+        <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">results_bb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_bb_res</span><span class="p">)</span>
+    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;N* = </span><span class="si">{</span><span class="n">n_design</span><span class="o">/</span><span class="mf">1e3</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># plot all the M/N and M/M diagrams on one plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+<span class="n">n_scale</span> <span class="o">=</span> <span class="mf">1e-3</span>
+<span class="n">m_scale</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+<span class="k">for</span> <span class="n">mi_res</span> <span class="ow">in</span> <span class="n">results_mi</span><span class="p">:</span>
+    <span class="n">n_design</span><span class="p">,</span> <span class="n">m_x_list</span> <span class="o">=</span> <span class="n">mi_res</span><span class="o">.</span><span class="n">get_results_lists</span><span class="p">(</span><span class="n">moment</span><span class="o">=</span><span class="s2">&quot;m_x&quot;</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">m_y_list</span> <span class="o">=</span> <span class="n">mi_res</span><span class="o">.</span><span class="n">get_results_lists</span><span class="p">(</span><span class="n">moment</span><span class="o">=</span><span class="s2">&quot;m_y&quot;</span><span class="p">)</span>
+    <span class="n">n_design</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n_design</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_scale</span>
+    <span class="n">m_x_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m_x_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+    <span class="n">m_y_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m_y_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot3D</span><span class="p">(</span><span class="n">m_x_list</span><span class="p">,</span> <span class="n">m_y_list</span><span class="p">,</span> <span class="n">n_design</span><span class="p">,</span> <span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bb_res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results_bb</span><span class="p">):</span>
+    <span class="n">m_x_list</span><span class="p">,</span> <span class="n">m_y_list</span> <span class="o">=</span> <span class="n">bb_res</span><span class="o">.</span><span class="n">get_results_lists</span><span class="p">()</span>
+    <span class="n">m_x_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m_x_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+    <span class="n">m_y_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m_y_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_scale</span>
+
+    <span class="n">n_design</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n_design_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">n_scale</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot3D</span><span class="p">(</span><span class="n">m_x_list</span><span class="p">,</span> <span class="n">m_y_list</span><span class="p">,</span> <span class="n">n_design</span><span class="p">,</span> <span class="s2">&quot;-r&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_x$ (kNm)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Bending Moment $M_y$ (kNm)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Axial Force $N$ (kN)&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">pad</span><span class="o">=-</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_33_0.svg" src="../_images/notebooks_nzs3101_33_0.svg" /></div>
+</div>
+</div>
+<div class="section" id="NZSEE-Probable-Strength-Analyses">
+<h2><span class="section-number">10.8. </span>NZSEE Probable Strength Analyses<a class="headerlink" href="#NZSEE-Probable-Strength-Analyses" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">NZS3101</span></code> design code also allows for the analysis of concrete cross-sections in accordance with the NZSEE C5 Assessment Guideline provisions.</p>
+<p>These guidelines are intended for the assessment of existing structures based on probable material strength assumptions for the steel and concrete materials. The probable strength of materials is intended to represent more of an average strength approach, recognising that in the real world structures the material strengths are less likely to all be measured to be 5% characteristic strength value.</p>
+<p>To utilise these types of analyses within <code class="docutils literal notranslate"><span class="pre">ultimate_bending_capacity()</span></code>, <code class="docutils literal notranslate"><span class="pre">moment_interaction_diagram()</span></code> and <code class="docutils literal notranslate"><span class="pre">biaxial_bending_diagram()</span></code> methods we can specify an <code class="docutils literal notranslate"><span class="pre">analysis_type</span></code> of <code class="docutils literal notranslate"><span class="pre">prob_chk</span></code> or <code class="docutils literal notranslate"><span class="pre">prob_os_chk</span></code> to undertake a normal or overstrength probable strength based analysis.</p>
+<p>We can specify predefined probable strength steel materials that are based on common historic material probable strength properties from the NZSEE C5 guidelines, or we can specify a steel material based on characteristic properties and the analysis will internally scale these to appropriate probable strength-based material properties. Similarly, concrete strengths are specified based on characteristic strengths and are internally scaled to the appropriate probable strength-based concrete
+material when a probable strength based <code class="docutils literal notranslate"><span class="pre">analysis_type</span></code> is specified.</p>
+</div>
+<div class="section" id="Moment-Curvature-Analysis">
+<h2><span class="section-number">10.9. </span>Moment-Curvature Analysis<a class="headerlink" href="#Moment-Curvature-Analysis" title="Permalink to this heading">#</a></h2>
+<p>Note we will undertake a moment-curvature analysis based on an unconfined probable strength based analysis to the NZSEE C5 assessment guidelines.</p>
+<p>The section we will analyse will be a 600D x 400W beam section with 5-D28 grade 275 bars top and bottom, and D10 stirrups with 30 cover and an original specified characteristic concrete strength of 25 MPa.</p>
+<p>We utilise these parameters to create a new concrete cross-section with a predefined steel material with probable strength properties and a characteristic concrete strength properties.</p>
+<p>For the results to be valid we need to utilise a stress/strain model for the concrete that accurately reflects the behaviour of the concrete. The NZSEE C5 Assessment Guidelines utilised a modified Mander concrete model for this purpose for moment-curvature analyses.</p>
+<p>Note it may not be appropriate to utilise a concrete stress/strain relationship that was deemed suitable for an analysis to determine the ultimate capacity of a concrete cross section as these typically do not model the degradation of the concrete strength at higher strains.</p>
+<p>Note that for a moment-curvature analysis to NZSEE C5 assessment guidelines, we can utilise a higher ultimate concrete strain of <span class="math notranslate nohighlight">\(\varepsilon_{c,max}\)</span> = 0.004 for an unconfined analysis. Note also for a moment-curvature analysis to the NZSEE C5 assessment guidelines that the limiting strain in the reinforcement is taken as <span class="math notranslate nohighlight">\(\varepsilon_{c,max}\)</span> = 0.6 <span class="math notranslate nohighlight">\(\varepsilon_{cu}\)</span> but <span class="math notranslate nohighlight">\(\leq\)</span> 0.06 (or 6% strain).</p>
+<p>Note if the section can be classified as being confined, the concrete limiting strain can be even higher leading to increased ductility of the cross-section (refer to NZSEE C5 assessment guidelines for further discussion). However, for a confined analysis the section is typically analysed assuming the cover concrete has spalled as the cover concrete is unconfined (so a concrete section corresponding to this particular scenario would need to be created if a confined concrete stress-strain
+relationship ws being utilised).</p>
+<p>We will undertake the moment-curvature analysis assuming the concrete can resist tension up to the modulus of rupture defined in the NZSEE C5 guidelines.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create new materials overriding default ultimate strains with values appropriate for</span>
+<span class="c1"># the moment-curvature analysis</span>
+<span class="n">steel_275</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">create_steel_material</span><span class="p">(</span>
+    <span class="n">steel_grade</span><span class="o">=</span><span class="s2">&quot;275&quot;</span><span class="p">,</span> <span class="n">fracture_strain</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="mf">0.06</span><span class="p">,</span> <span class="p">(</span><span class="mi">15</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.6</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># determine the concrete probable strength in compresison and tension</span>
+<span class="n">compressive_strength</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">prob_tensile_strength</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">concrete_tensile_strength</span><span class="p">(</span>
+    <span class="n">compressive_strength</span><span class="o">=</span><span class="n">compressive_strength</span><span class="p">,</span> <span class="n">prob_design</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">prob_compressive_strength</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">prob_compressive_strength</span><span class="p">(</span><span class="n">compressive_strength</span><span class="p">)</span>
+
+<span class="c1"># create a probable strength concrete material with properties suitable for a</span>
+<span class="c1"># moment-curvature analysis</span>
+<span class="n">concrete_25_prob</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Mander Concrete&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mi">2300</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">ModifiedMander</span><span class="p">(</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="n">design_code</span><span class="o">.</span><span class="n">e_conc</span><span class="p">(</span><span class="n">prob_compressive_strength</span><span class="p">),</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="n">prob_compressive_strength</span><span class="p">,</span>
+        <span class="n">tensile_strength</span><span class="o">=</span><span class="n">prob_tensile_strength</span><span class="p">,</span>
+        <span class="n">conc_tension</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">RectangularStressBlock</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="n">prob_compressive_strength</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="n">design_code</span><span class="o">.</span><span class="n">alpha_1</span><span class="p">(</span><span class="n">prob_compressive_strength</span><span class="p">),</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="n">design_code</span><span class="o">.</span><span class="n">beta_1</span><span class="p">(</span><span class="n">prob_compressive_strength</span><span class="p">),</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="n">prob_tensile_strength</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">concrete_25_prob</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Mander Unconfined Stress-Strain Profile&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-r&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_35_0.svg" src="../_images/notebooks_nzs3101_35_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Mander Unconfined Stress-Strain Profile&#39;}, xlabel=&#39;Strain&#39;, ylabel=&#39;Stress&#39;&gt;
+</pre></div></div>
+</div>
+<p>We can show that the predefined grade 275 (<span class="math notranslate nohighlight">\(f_y\)</span> = 275 MPa) steel material has a (probable) yield strength of 324 MPa: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">steel_275</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Density = </span><span class="si">{</span><span class="n">steel_275</span><span class="o">.</span><span class="n">density</span><span class="si">}</span><span class="s2"> kg/m^3&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Probable yield strength = </span><span class="si">{</span><span class="n">steel_275</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_yield_strength</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot; MPa&quot;</span>
+<span class="p">)</span>
+<span class="n">steel_275</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Steel Stress-Strain Profile&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-r&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+324 MPa Steel
+(NZS3101:2006)
+Density = 7850 kg/m^3
+Probable yield strength = 324.0 MPa
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_37_1.svg" src="../_images/notebooks_nzs3101_37_1.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Steel Stress-Strain Profile&#39;}, xlabel=&#39;Strain&#39;, ylabel=&#39;Stress&#39;&gt;
+</pre></div></div>
+</div>
+<p>Next we create our beam section and assign it to the design code: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bar_dia</span> <span class="o">=</span> <span class="mi">28</span>
+
+<span class="n">geom_beam</span> <span class="o">=</span> <span class="n">concrete_rectangular_section</span><span class="p">(</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">dia_top</span><span class="o">=</span><span class="n">bar_dia</span><span class="p">,</span>
+    <span class="n">n_top</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">dia_bot</span><span class="o">=</span><span class="n">bar_dia</span><span class="p">,</span>
+    <span class="n">n_bot</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">n_circle</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">cover</span><span class="o">=</span><span class="mi">30</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete_25_prob</span><span class="p">,</span>
+    <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel_275</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom_beam</span><span class="p">)</span>
+<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+<span class="n">design_code</span><span class="o">.</span><span class="n">assign_concrete_section</span><span class="p">(</span><span class="n">concrete_section</span><span class="o">=</span><span class="n">conc_sec</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_39_0.svg" src="../_images/notebooks_nzs3101_39_0.svg" /></div>
+</div>
+<p>You will note that when using a predefined probable strength based steel grade/material that the reinforcing bars are plotted with a blue colour by default to distinguish them from a characteristic strength based material.</p>
+<p>Given we now have the probable strength-based section assigned to the design code, we can undertake the moment-curvature analysis: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">moment_curvature_results</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span>
+    <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;The failure material is:-</span><span class="se">\n</span><span class="si">{</span><span class="n">moment_curvature_results</span><span class="o">.</span><span class="n">failure_geometry</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+
+<span class="n">MomentCurvatureResults</span><span class="o">.</span><span class="n">plot_results</span><span class="p">(</span><span class="n">moment_curvature_results</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-r&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Cracking moment is M_cr = </span><span class="si">{</span><span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_cracked_properties</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">m_cr</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kNm&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+The failure material is:-
+Mander Concrete
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_42_1.svg" src="../_images/notebooks_nzs3101_42_1.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Cracking moment is M_cr = 105.74 kNm
+</pre></div></div>
+</div>
+<p>We can see from the moment curvature analysis that section initially remains uncracked and displays a stiffer initial response. Once cracked, because the uncracked moment capacity is higher than the reinforced capacity at that curvature we see a dip in the moment-curvature diagram.</p>
+<p>We can see that the cracked behaviour results in a lower stiffness as evidenced by the shallower slope of the curve after cracking occurs. The engagement and yielding of the tension face bars can be appreciated by the change in direction of the slope of the moment-curvature diagram at higher moment capacities.</p>
+<p>We can determine from the moment-curvature analysis the maximum moment capacity achieved and the maximum curvature:-</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_moment</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">moment_curvature_results</span><span class="o">.</span><span class="n">m_xy</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-6</span>
+<span class="n">max_curvature</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">moment_curvature_results</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Moment = </span><span class="si">{</span><span class="n">max_moment</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Curvature = </span><span class="si">{</span><span class="n">max_curvature</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2"> rads&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Maximum Moment = 510.90 kN.m
+Maximum Curvature = 0.00006357 rads
+</pre></div></div>
+</div>
+<p>We can assess the same sections probable strength utilising the NZS3101 rectangular stress block. Note we must recreate the materials and hence section due to the previously specified custom limiting strains defined for the moment-curvature analysis: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concrete_25</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">create_concrete_material</span><span class="p">(</span><span class="n">compressive_strength</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">steel_275</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">create_steel_material</span><span class="p">(</span><span class="n">steel_grade</span><span class="o">=</span><span class="s2">&quot;275&quot;</span><span class="p">)</span>
+
+<span class="n">bar_dia</span> <span class="o">=</span> <span class="mi">28</span>
+
+<span class="n">geom_beam</span> <span class="o">=</span> <span class="n">concrete_rectangular_section</span><span class="p">(</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">dia_top</span><span class="o">=</span><span class="n">bar_dia</span><span class="p">,</span>
+    <span class="n">n_top</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">dia_bot</span><span class="o">=</span><span class="n">bar_dia</span><span class="p">,</span>
+    <span class="n">n_bot</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">n_circle</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">cover</span><span class="o">=</span><span class="mi">30</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete_25</span><span class="p">,</span>
+    <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel_275</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom_beam</span><span class="p">)</span>
+<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+<span class="n">design_code</span><span class="o">.</span><span class="n">assign_concrete_section</span><span class="p">(</span><span class="n">concrete_section</span><span class="o">=</span><span class="n">conc_sec</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_nzs3101_46_0.svg" src="../_images/notebooks_nzs3101_46_0.svg" /></div>
+</div>
+<p>Note by undertaking the <code class="docutils literal notranslate"><span class="pre">ultimate_bending_capacity()</span></code> utilising an <code class="docutils literal notranslate"><span class="pre">analysis_type</span></code> of <code class="docutils literal notranslate"><span class="pre">prob_chk</span></code> the concrete strength is appropriately scaled internally (that is why we specified the lower characteristic concrete strength).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_design</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="mf">1e3</span>
+<span class="n">f_ult_res</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span>
+    <span class="n">pphr_class</span><span class="o">=</span><span class="s2">&quot;NDPR&quot;</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s2">&quot;prob_chk&quot;</span><span class="p">,</span> <span class="n">n_design</span><span class="o">=</span><span class="n">n_design</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Probable Moment Capacity from ultimate strength check: -&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Mp = </span><span class="si">{</span><span class="n">f_ult_res</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m at an axial load of </span><span class="si">{</span><span class="n">n_design</span><span class="o">/</span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum Moment Capacity from moment-curvature analysis: -&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Moment = </span><span class="si">{</span><span class="n">max_moment</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Probable Moment Capacity from ultimate strength check: -
+Mp = 509.08 kN.m at an axial load of 0.00 kN
+
+Maximum Moment Capacity from moment-curvature analysis: -
+Maximum Moment = 510.90 kN.m
+</pre></div></div>
+</div>
+<p>This shows excellent agreement between the moment-curvature analysis results and the probable moment capacity analysis results when there is no axial load. It is interesting to note that there is a gradual strength gain to the final probable strength capacity over the entire curvature range after the reinforcement yields.</p>
+<p>We can also calculate the probable curvature capacity from the NZSEE C5 assessment guidelines utilising the results from the probable capacity analysis:-</p>
+<p>i.e.: - Lesser of <span class="math notranslate nohighlight">\(\phi_{cap}\)</span> = <span class="math notranslate nohighlight">\(\displaystyle{\frac{\varepsilon_{c,max}}{c_{prob}}}\)</span> or <span class="math notranslate nohighlight">\(\phi_{cap}\)</span> = <span class="math notranslate nohighlight">\(\displaystyle{\frac{\varepsilon_{s,max}}{d-c_{prob}}}\)</span></p>
+<p>We can therefore evaluate the effective depth of the tension reinforcment at the probable capacity and then evaluate <span class="math notranslate nohighlight">\(\phi_{cap}\)</span> according to the NZSEE C5 assessment guidelines and compare this result to the maximum curvature obtained within the moment-curvature analysis results: -</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># section depth</span>
+<span class="n">h</span> <span class="o">=</span> <span class="mi">600</span>
+
+<span class="c1"># determine neutral access depth at the probable moment capacity</span>
+<span class="n">c_prob</span> <span class="o">=</span> <span class="n">f_ult_res</span><span class="o">.</span><span class="n">d_n</span>
+
+<span class="c1"># determine stress results for the reinforcement based on the probable strength</span>
+<span class="n">stress_res</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">concrete_section</span><span class="o">.</span><span class="n">calculate_ultimate_stress</span><span class="p">(</span>
+    <span class="n">f_ult_res</span>
+<span class="p">)</span><span class="o">.</span><span class="n">lumped_reinforcement_forces</span>
+
+<span class="n">sum_force</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">sum_force_lever</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># determine the effective depth d from extreme compressive fibre of the section</span>
+<span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="n">stress_res</span><span class="p">:</span>
+    <span class="n">force</span><span class="p">,</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_y</span> <span class="o">=</span> <span class="n">bar</span>
+    <span class="k">if</span> <span class="n">force</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sum_force</span> <span class="o">+=</span> <span class="n">force</span>
+        <span class="n">sum_force_lever</span> <span class="o">+=</span> <span class="n">force</span> <span class="o">*</span> <span class="p">(</span><span class="n">h</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">d_y</span><span class="p">)</span>
+
+<span class="n">eff_depth</span> <span class="o">=</span> <span class="n">sum_force_lever</span> <span class="o">/</span> <span class="n">sum_force</span>
+
+<span class="c1"># determine the probable curvature capacity</span>
+<span class="n">phi_cap</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.004</span> <span class="o">/</span> <span class="n">c_prob</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.06</span><span class="p">,</span> <span class="p">(</span><span class="mi">15</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.6</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">eff_depth</span> <span class="o">-</span> <span class="n">c_prob</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Neutral axis depth at the probable capacity = </span><span class="si">{</span><span class="n">c_prob</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Effective depth of tension reinforcement = </span><span class="si">{</span><span class="n">eff_depth</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Probable Curvature Capacity = </span><span class="si">{</span><span class="n">phi_cap</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2"> rads&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Curvature from moment-curvature analysis = </span><span class="si">{</span><span class="n">max_curvature</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2"> rads&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ratio of results = </span><span class="si">{</span><span class="n">phi_cap</span><span class="o">/</span><span class="n">max_curvature</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Neutral axis depth at the probable capacity = 67.29 mm
+Effective depth of tension reinforcement = 546.00 mm
+Probable Curvature Capacity = 0.00005944 rads
+Maximum Curvature from moment-curvature analysis = 0.00006357 rads
+Ratio of results = 0.94
+</pre></div></div>
+</div>
+<p>This calculated ratio shows that the NZSEE assessment guidelines formulas have slightly underestimated the maximum curvature obtained when compared with that from the moment-curvature analysis. This highlights the importance of undertaking a moment-curvature analyses to capture the behaviour of the concrete cross-section, rather than placing sole reliance on empirical formulas.</p>
+</div>
+</div>
+
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="as3600.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title"><span class="section-number">9. </span>AS3600 Design Code</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../api.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">API Reference</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Create-Design-Code-and-Materials">
+   10.1. Create Design Code and Materials
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Assigning-Geometry-to-the-Design-Code">
+   10.2. Assigning Geometry to the Design Code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Area-Properties">
+   10.3. Area Properties
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Ultimate-Bending-Capacity">
+   10.4. Ultimate Bending Capacity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Moment/Axial-Interaction-Diagram">
+   10.5. Moment/Axial Interaction Diagram
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Biaxial-Bending-Interaction-Diagram">
+   10.6. Biaxial Bending Interaction Diagram
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Creating-a-3D-interaction-surface">
+   10.7. Creating a 3D interaction surface
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#NZSEE-Probable-Strength-Analyses">
+   10.8. NZSEE Probable Strength Analyses
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Moment-Curvature-Analysis">
+   10.9. Moment-Curvature Analysis
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/notebooks/nzs3101.ipynb">
+        <i class="fa-solid fa-pencil"></i> Edit this page
+    </a>
+</div>
+
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Robbie van Leeuwen.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>

@@ -1,7 +1,8 @@
-from concreteproperties.stress_strain_profile import SteelElasticPlastic
+from concreteproperties.stress_strain_profile import EurocodeParabolicUltimate
 
-SteelElasticPlastic(
-  yield_strength=500,
-  elastic_modulus=200e3,
-  fracture_strain=0.05,
+EurocodeParabolicUltimate(
+    compressive_strength=40,
+    compressive_strain=0.00175,
+    ultimate_strain=0.0035,
+    n=2,
 ).plot_stress_strain()

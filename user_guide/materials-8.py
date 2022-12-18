@@ -1,7 +1,7 @@
-from concreteproperties.stress_strain_profile import BilinearStressStrain
+from concreteproperties.stress_strain_profile import ConcreteUltimateProfile
 
-BilinearStressStrain(
-    compressive_strength=40,
-    compressive_strain=0.00175,
-    ultimate_strain=0.0035,
+ConcreteUltimateProfile(
+  strains=[-20 / 30e3, 0, 20 / 30e3, 30 / 25e3, 40 / 20e3, 0.003],
+  stresses=[0, 0, 20, 30, 40, 40],
+  compressive_strength=32,
 ).plot_stress_strain()

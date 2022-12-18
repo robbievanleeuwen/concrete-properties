@@ -1,8 +1,21 @@
-from concreteproperties.stress_strain_profile import RectangularStressBlock
-
-RectangularStressBlock(
-    compressive_strength=40,
-    alpha=0.85,
-    gamma=0.77,
-    ultimate_strain=0.003,
-).plot_stress_strain()
+from concreteproperties.stress_strain_profile import ModifiedMander
+ModifiedMander(
+      elastic_modulus=30e3,
+      compressive_strength=30,
+      tensile_strength=4.5,
+      sect_type="rect",
+      conc_confined=True,
+      conc_tension=True,
+      d=800,
+      b=500,
+      long_reinf_area=12 * 314,
+      w_dash=[150] * 12,
+      cvr=30 + 10,
+      trans_spacing=125,
+      trans_d_b=10,
+      trans_num_d=4,
+      trans_num_b=4,
+      trans_f_y=500,
+      eps_su=0.15,
+      n_points=25,
+  ).plot_stress_strain()

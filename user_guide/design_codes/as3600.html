@@ -48,7 +48,7 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="6. Assumptions" href="../assumptions.html" />
+    <link rel="next" title="5.2. NZS3101:2006" href="nzs3101.html" />
     <link rel="prev" title="5. Design Codes" href="../design_codes.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
@@ -343,6 +343,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../results.html">4. Results</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../design_codes.html">5. Design Codes</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">5.1. AS 3600:2018</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nzs3101.html">5.2. NZS3101:2006</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../assumptions.html">6. Assumptions</a></li>
@@ -383,10 +384,14 @@
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AS3600</span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes/as3600.html#AS3600"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Design code class for Australian standard AS 3600:2018.</p>
-<p>Note that this design code only supports <code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code>
-and <code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code> material objects. Meshed
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code> material objects are <strong>not</strong> supported
-as this falls under the composite structures design code.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that this design code only supports
+<a class="reference internal" href="../../gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> and
+<a class="reference internal" href="../../gen/concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a> material objects. Meshed
+<a class="reference internal" href="../../gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> material objects are <strong>not</strong>
+supported as this falls under the composite structures design code.</p>
+</div>
 <p>Inits the AS3600 class.</p>
 </dd></dl>
 
@@ -426,16 +431,18 @@ material objects whose attributes comply with the standard.</p>
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">AS3600.</span></span><span class="sig-name descname"><span class="pre">create_concrete_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lightgrey'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes/as3600.html#AS3600.create_concrete_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns a concrete material object to AS 3600:2018.</p>
-<div class="line-block">
-<div class="line"><strong>Material assumptions:</strong></div>
-<div class="line">- <em>Density</em>: 2400 kg/m<sup>3</sup></div>
-<div class="line">- <em>Elastic modulus</em>: Interpolated from Table 3.1.2</div>
-<div class="line">- <em>Service stress-strain profile</em>: Linear with no tension, compressive strength
-at 0.9 * f’c</div>
-<div class="line">- <em>Ultimate stress-strain profile</em>: Rectangular stress block, parameters from
-Cl. 8.1.3</div>
-<div class="line">- <em>Alpha squash</em>: From Cl. 10.6.2.2</div>
-<div class="line">- <em>Flexural tensile strength</em>: From Cl. 3.1.1.3</div>
+<div class="admonition-material-assumptions admonition">
+<p class="admonition-title">Material assumptions</p>
+<ul class="simple">
+<li><p><em>Density</em>: 2400 kg/m<sup>3</sup></p></li>
+<li><p><em>Elastic modulus</em>: Interpolated from Table 3.1.2</p></li>
+<li><p><em>Service stress-strain profile</em>: Linear with no tension, compressive
+strength at <span class="math notranslate nohighlight">\(0.9f'_c\)</span></p></li>
+<li><p><em>Ultimate stress-strain profile</em>: Rectangular stress block, parameters from
+Cl. 8.1.3</p></li>
+<li><p><em>Alpha squash</em>: From Cl. 10.6.2.2</p></li>
+<li><p><em>Flexural tensile strength</em>: From Cl. 3.1.1.3</p></li>
+</ul>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -481,11 +488,13 @@ concrete at 28 days in megapascals (MPa)</p></li>
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">AS3600.</span></span><span class="sig-name descname"><span class="pre">create_steel_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ductility_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'grey'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes/as3600.html#AS3600.create_steel_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns a steel bar material object.</p>
-<div class="line-block">
-<div class="line"><strong>Material assumptions:</strong></div>
-<div class="line">- <em>Density</em>: 7850 kg/m<sup>3</sup></div>
-<div class="line">- <em>Elastic modulus</em>: 200,000 MPa</div>
-<div class="line">- <em>Stress-strain profile:</em> Elastic-plastic, fracture strain from Table 3.2.1</div>
+<div class="admonition-material-assumptions admonition">
+<p class="admonition-title">Material assumptions</p>
+<ul class="simple">
+<li><p><em>Density</em>: 7850 kg/m<sup>3</sup></p></li>
+<li><p><em>Elastic modulus</em>: 200000 MPa</p></li>
+<li><p><em>Stress-strain profile</em>: Elastic-plastic, fracture strain from Table 3.2.1</p></li>
+</ul>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -652,10 +661,10 @@ factors <em>(factored_results, phis)</em></p>
           <p class="prev-next-title"><span class="section-number">5. </span>Design Codes</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../assumptions.html" title="next page">
+  <a class='right-next' id="next-link" href="nzs3101.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title"><span class="section-number">6. </span>Assumptions</p>
+      <p class="prev-next-title"><span class="section-number">5.2. </span>NZS3101:2006</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>

@@ -1,0 +1,2236 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>concreteproperties.design_codes.nzs3101.NZS3101 &#8212; concreteproperties 0.4.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gen/concreteproperties.design_codes.nzs3101.NZS3101';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="concreteproperties.post" href="concreteproperties.post.html" />
+    <link rel="prev" title="concreteproperties.design_codes.nzs3101" href="concreteproperties.design_codes.nzs3101.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../_static/cp_logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+    <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
+        latest  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">
+    Section Navigation
+  </p>
+  <div class="bd-toc-item navbar-nav">
+    <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.pre.html">concreteproperties.pre</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.add_bar.html">concreteproperties.pre.add_bar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.add_bar_circular_array.html">concreteproperties.pre.add_bar_circular_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.add_bar_rectangular_array.html">concreteproperties.pre.add_bar_rectangular_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.CPGeom.html">concreteproperties.pre.CPGeom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.CPGeomConcrete.html">concreteproperties.pre.CPGeomConcrete</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.material.html">concreteproperties.material</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.Concrete.html">concreteproperties.material.Concrete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.Material.html">concreteproperties.material.Material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.Steel.html">concreteproperties.material.Steel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.SteelBar.html">concreteproperties.material.SteelBar</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.stress_strain_profile.html">concreteproperties.stress_strain_profile</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearStressStrain.html">concreteproperties.stress_strain_profile.BilinearStressStrain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinear.html">concreteproperties.stress_strain_profile.ConcreteLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearNoTension.html">concreteproperties.stress_strain_profile.ConcreteLinearNoTension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html">concreteproperties.stress_strain_profile.ConcreteServiceProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">concreteproperties.stress_strain_profile.ConcreteUltimateProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeNonLinear.html">concreteproperties.stress_strain_profile.EurocodeNonLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeParabolicUltimate.html">concreteproperties.stress_strain_profile.EurocodeParabolicUltimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ModifiedMander.html">concreteproperties.stress_strain_profile.ModifiedMander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.RectangularStressBlock.html">concreteproperties.stress_strain_profile.RectangularStressBlock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelElasticPlastic.html">concreteproperties.stress_strain_profile.SteelElasticPlastic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelHardening.html">concreteproperties.stress_strain_profile.SteelHardening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelProfile.html">concreteproperties.stress_strain_profile.SteelProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html">concreteproperties.stress_strain_profile.StressStrainProfile</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.concrete_section.html">concreteproperties.concrete_section</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html">concreteproperties.concrete_section.ConcreteSection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.analysis_section.html">concreteproperties.analysis_section</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.analysis_section.AnalysisSection.html">concreteproperties.analysis_section.AnalysisSection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.analysis_section.Tri3.html">concreteproperties.analysis_section.Tri3</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.results.html">concreteproperties.results</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.BiaxialBendingResults.html">concreteproperties.results.BiaxialBendingResults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.CrackedResults.html">concreteproperties.results.CrackedResults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.GrossProperties.html">concreteproperties.results.GrossProperties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.MomentCurvatureResults.html">concreteproperties.results.MomentCurvatureResults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html">concreteproperties.results.MomentInteractionResults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.StressResult.html">concreteproperties.results.StressResult</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.TransformedGrossProperties.html">concreteproperties.results.TransformedGrossProperties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html">concreteproperties.results.UltimateBendingResults</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="concreteproperties.design_codes.html">concreteproperties.design_codes</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="concreteproperties.design_codes.as3600.html">concreteproperties.design_codes.as3600</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="concreteproperties.design_codes.as3600.AS3600.html">concreteproperties.design_codes.as3600.AS3600</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concreteproperties.design_codes.design_code.html">concreteproperties.design_codes.design_code</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="concreteproperties.design_codes.design_code.DesignCode.html">concreteproperties.design_codes.design_code.DesignCode</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="concreteproperties.design_codes.nzs3101.html">concreteproperties.design_codes.nzs3101</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">concreteproperties.design_codes.nzs3101.NZS3101</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.post.html">concreteproperties.post</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.post.plotting_context.html">concreteproperties.post.plotting_context</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.utils.html">concreteproperties.utils</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.calculate_extreme_fibre.html">concreteproperties.utils.calculate_extreme_fibre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.calculate_local_extents.html">concreteproperties.utils.calculate_local_extents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.calculate_max_bending_depth.html">concreteproperties.utils.calculate_max_bending_depth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.create_known_progress.html">concreteproperties.utils.create_known_progress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.create_unknown_progress.html">concreteproperties.utils.create_unknown_progress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.gauss_points.html">concreteproperties.utils.gauss_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.get_service_strain.html">concreteproperties.utils.get_service_strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.get_ultimate_strain.html">concreteproperties.utils.get_ultimate_strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.global_to_local.html">concreteproperties.utils.global_to_local</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.local_to_global.html">concreteproperties.utils.local_to_global</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.point_on_neutral_axis.html">concreteproperties.utils.point_on_neutral_axis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.shape_function.html">concreteproperties.utils.shape_function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.split_geom_at_strains.html">concreteproperties.utils.split_geom_at_strains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.CustomTimeElapsedColumn.html">concreteproperties.utils.CustomTimeElapsedColumn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.AnalysisError.html">concreteproperties.utils.AnalysisError</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</nav>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <div class="section" id="concreteproperties-design-codes-nzs3101-nzs3101">
+<h1>concreteproperties.design_codes.nzs3101.NZS3101<a class="headerlink" href="#concreteproperties-design-codes-nzs3101-nzs3101" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NZS3101</span></span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="concreteproperties.design_codes.design_code.DesignCode.html#concreteproperties.design_codes.design_code.DesignCode" title="concreteproperties.design_codes.design_code.DesignCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">DesignCode</span></code></a></p>
+<p>Design code class for the New Zealand concrete design standard NZS3101:2006. Also
+implements the requirements of the NZSEE C5 assessment guidelines for probable
+strength design.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that this design code currently only supports
+<a class="reference internal" href="concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> and
+<a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101.SteelBarNZ</span></code></a> material objects. Meshed
+<a class="reference internal" href="concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> material objects are <strong>not</strong>
+supported as this falls under the composite structures design code.</p>
+</div>
+<p>Inits the NZS3101 class.</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.alpha_1" title="concreteproperties.design_codes.nzs3101.NZS3101.alpha_1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha_1</span></code></a></p></td>
+<td><p>Scaling factor relating the nominal 28 day concrete compressive strength to the effective concrete compressive strength used for design purposes within the concrete stress block.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.assign_analysis_section" title="concreteproperties.design_codes.nzs3101.NZS3101.assign_analysis_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_analysis_section</span></code></a></p></td>
+<td><p>Assigns the appropriate concrete section to be analysed depending on the analysis type requested.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.assign_concrete_section" title="concreteproperties.design_codes.nzs3101.NZS3101.assign_concrete_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_concrete_section</span></code></a></p></td>
+<td><p>Assigns a concrete section and the section type for the concrete section to the design code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.beta_1" title="concreteproperties.design_codes.nzs3101.NZS3101.beta_1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">beta_1</span></code></a></p></td>
+<td><p>Scaling factor relating the depth of an equivalent rectangular compressive stress block (<span class="math notranslate nohighlight">\(a\)</span>) to the depth of the neutral axis (<span class="math notranslate nohighlight">\(c\)</span>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.biaxial_bending_diagram" title="concreteproperties.design_codes.nzs3101.NZS3101.biaxial_bending_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">biaxial_bending_diagram</span></code></a></p></td>
+<td><p>Generates a biaxial bending with capacity factors to NZS3101:2006 or the NZSEE C5 assessment guidelines dependant on analysis type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_properties" title="concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_cracked_properties</span></code></a></p></td>
+<td><p>Calculates cracked section properties.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_stress" title="concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_cracked_stress</span></code></a></p></td>
+<td><p>Calculates stresses within the reinforced concrete section assuming a cracked section.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_service_stress" title="concreteproperties.design_codes.nzs3101.NZS3101.calculate_service_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_service_stress</span></code></a></p></td>
+<td><p>Calculates service stresses within the reinforced concrete section.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_ultimate_stress" title="concreteproperties.design_codes.nzs3101.NZS3101.calculate_ultimate_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_ultimate_stress</span></code></a></p></td>
+<td><p>Calculates ultimate stresses within the reinforced concrete section.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_uncracked_stress" title="concreteproperties.design_codes.nzs3101.NZS3101.calculate_uncracked_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_uncracked_stress</span></code></a></p></td>
+<td><p>Calculates stresses within the reinforced concrete section assuming an uncracked section.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor" title="concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">capacity_reduction_factor</span></code></a></p></td>
+<td><p>Returns the appropriate NZS3101:2006 or NZSEE C5 assessment guidelines capacity reduction factor dependant on the type of analysis specified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.check_axial_limits" title="concreteproperties.design_codes.nzs3101.NZS3101.check_axial_limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_axial_limits</span></code></a></p></td>
+<td><p>Checks that the specified axial load is within the maximum tensile and compressive capacity of the concrete cross section.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.check_density_limits" title="concreteproperties.design_codes.nzs3101.NZS3101.check_density_limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_density_limits</span></code></a></p></td>
+<td><p>Checks that the density is within the bounds outlined within NZS3101:2006 CL 5.2.2 for the elastic modulus expression within NZS3101:2006 CL 5.2.3(b) to be valid.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.check_f_c_limits" title="concreteproperties.design_codes.nzs3101.NZS3101.check_f_c_limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_f_c_limits</span></code></a></p></td>
+<td><p>Checks that a valid Potential Plastic Hinge Region (PPHR) classification has been specified, and that the specified compressive strengths for all defined concrete geometries comply with NZS3101:2006 CL 5.2.1 for the specified PPHR classification.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.check_f_y_limit" title="concreteproperties.design_codes.nzs3101.NZS3101.check_f_y_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_f_y_limit</span></code></a></p></td>
+<td><p>Checks that the specified steel reinforcement strengths for all defined steel geometries comply with NZS3101:2006 CL 5.3.3.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.concrete_capacity" title="concreteproperties.design_codes.nzs3101.NZS3101.concrete_capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concrete_capacity</span></code></a></p></td>
+<td><p>Function to return the nominal, overstrength or probable concrete capacity capacity of a concrete section.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.concrete_tensile_strength" title="concreteproperties.design_codes.nzs3101.NZS3101.concrete_tensile_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concrete_tensile_strength</span></code></a></p></td>
+<td><p>Calculates the lower characteristic tensile strength of concrete (<span class="math notranslate nohighlight">\(f_t\)</span>) in accordance with NZS3101:2006 CL 5.2.4, or calculates the probable tensile strength of concrete in accordance with NZSEE C5 assessment guidelines C5.4.2.4.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_concrete_material" title="concreteproperties.design_codes.nzs3101.NZS3101.create_concrete_material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_concrete_material</span></code></a></p></td>
+<td><p>Returns a concrete material object to NZS3101:2006.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_os_section" title="concreteproperties.design_codes.nzs3101.NZS3101.create_os_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_os_section</span></code></a></p></td>
+<td><p>Creates a concrete section with likely maximum material strength properties for a cross section analysis to NZS3101:2006.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_prob_section" title="concreteproperties.design_codes.nzs3101.NZS3101.create_prob_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_prob_section</span></code></a></p></td>
+<td><p>Creates a concrete section with probable strength material properties for a cross section analysis to NZS3101:2006 &amp; NZSEE C5 assessment guidelines.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material" title="concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_steel_material</span></code></a></p></td>
+<td><p>Returns a steel material object specific to the NZS3101:2006 code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.e_conc" title="concreteproperties.design_codes.nzs3101.NZS3101.e_conc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">e_conc</span></code></a></p></td>
+<td><p>Calculates Youngs Modulus (<span class="math notranslate nohighlight">\(E_c\)</span>) for concrete in accordance with NZS3101:2006 CL 5.2.3(b).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.get_gross_properties" title="concreteproperties.design_codes.nzs3101.NZS3101.get_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gross_properties</span></code></a></p></td>
+<td><p>Returns the gross section properties of the reinforced concrete section.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.get_transformed_gross_properties" title="concreteproperties.design_codes.nzs3101.NZS3101.get_transformed_gross_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_transformed_gross_properties</span></code></a></p></td>
+<td><p>Transforms gross section properties.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.lamda" title="concreteproperties.design_codes.nzs3101.NZS3101.lamda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lamda</span></code></a></p></td>
+<td><p>Modification factor reflecting the reduced mechanical properties of lightweight concrete relative to normal weight concrete of the same compression strength.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.max_comp_strength" title="concreteproperties.design_codes.nzs3101.NZS3101.max_comp_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_comp_strength</span></code></a></p></td>
+<td><p>Function to return the nominal, overstrength or probable axial load compressive strength of a concrete section when the load is applied with zero eccentricity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.max_ten_strength" title="concreteproperties.design_codes.nzs3101.NZS3101.max_ten_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_ten_strength</span></code></a></p></td>
+<td><p>Function to return the nominal axial load tension strength of a concrete section when the load is applied with zero eccentricity.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.modulus_of_rupture" title="concreteproperties.design_codes.nzs3101.NZS3101.modulus_of_rupture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modulus_of_rupture</span></code></a></p></td>
+<td><p>Calculates the average modulus of rupture of concrete (<span class="math notranslate nohighlight">\(f_r\)</span>) in accordance with NZS3101:2006 CL 5.2.5 for deflection calculations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.moment_curvature_analysis" title="concreteproperties.design_codes.nzs3101.NZS3101.moment_curvature_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_curvature_analysis</span></code></a></p></td>
+<td><p>Performs a moment curvature analysis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.moment_interaction_diagram" title="concreteproperties.design_codes.nzs3101.NZS3101.moment_interaction_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_interaction_diagram</span></code></a></p></td>
+<td><p>Generates a moment interaction diagram with capacity factors and material strengths to NZS3101:2006 or the NZSEE C5 assessment guidelines dependant on analysis type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.predefined_steel_materials" title="concreteproperties.design_codes.nzs3101.NZS3101.predefined_steel_materials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predefined_steel_materials</span></code></a></p></td>
+<td><p>Returns a list of predefined material properties for steel grades for design to NZS3101:2006 &amp; NZSEE C5 assessment guidelines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.prob_compressive_strength" title="concreteproperties.design_codes.nzs3101.NZS3101.prob_compressive_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prob_compressive_strength</span></code></a></p></td>
+<td><p>Calculate the probable compressive strength of concrete in accordance with NZSEE C5 assessement guidelines C5.4.2.2.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.steel_capacity" title="concreteproperties.design_codes.nzs3101.NZS3101.steel_capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">steel_capacity</span></code></a></p></td>
+<td><p>Function to return the nominal, overstrength or probable steel reinforcement capacity of a concrete section.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.ultimate_bending_capacity" title="concreteproperties.design_codes.nzs3101.NZS3101.ultimate_bending_capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ultimate_bending_capacity</span></code></a></p></td>
+<td><p>Calculates the ultimate bending capacity with capacity factors to NZS3101:2006 or the NZSEE C5 assessment guidelines dependant on analysis type.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteelBarNZ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steel_grade</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_os</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.SteelBarNZ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a></p>
+<p>Class for a steel bar material to NZS3101, treated as a lumped circular mass
+with a constant strain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Steel bar material name</p></li>
+<li><p><strong>steel_grade</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Designation of the grade of reinforcement bar to be
+analysed, included predefined current and historic grades are detailed in
+the <a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material" title="concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NZS3101.create_steel_material()</span></code></a> method</p></li>
+<li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Steel bar density (mass per unit volume)</p></li>
+<li><p><strong>phi_os</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Overstrength factor depending on reinforcement grade
+(<span class="math notranslate nohighlight">\(\phi_{o,f_y}\)</span>), refer to NZS3101:2006 CL 2.6.5.5 or NZSEE C5
+assessment guidelines C5.4.3</p></li>
+<li><p><strong>stress_strain_profile</strong> (<a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html#concreteproperties.stress_strain_profile.StressStrainProfile" title="concreteproperties.stress_strain_profile.StressStrainProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressStrainProfile</span></code></a>) – Steel bar stress-strain profile</p></li>
+<li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Colour of the material for rendering</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.assign_concrete_section">
+<span class="sig-name descname"><span class="pre">assign_concrete_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concrete_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'column'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.assign_concrete_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.assign_concrete_section" title="Permalink to this definition">#</a></dt>
+<dd><p>Assigns a concrete section and the section type for the concrete section to
+the design code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>concrete_section</strong> (<a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a>) – Concrete section object to analyse</p></li>
+<li><p><strong>section_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'column'</span></code>) – <p>The type of member being analysed:-</p>
+<ul>
+<li><p><strong>column</strong> - Analyses assigned concrete section object as a column (or
+beam) member in accordance with NZS3101:2006 Chapter 9 or 10 as
+appropriate</p></li>
+<li><p><strong>wall</strong> - Analyses assigned concrete section object as a doubly
+reinforced wall member in accordance with NZS3101:2006 Chapter 11</p></li>
+<li><p><strong>wall_sr_s</strong> - Analyses assigned concrete section object as a singly
+reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
+design actions causing bending about the strong axis</p></li>
+<li><p><strong>wall_sr_m</strong>- Analyses assigned concrete section object as a singly
+reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
+design actions causing bending about the minor axis</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the concrete section contains meshed reinforcement</p></li>
+<li><p><strong>ValueError</strong> – If section type for the analysis of the concrete section is
+not valid</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.assign_analysis_section">
+<span class="sig-name descname"><span class="pre">assign_analysis_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">analysis_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nom_chk'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.assign_analysis_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.assign_analysis_section" title="Permalink to this definition">#</a></dt>
+<dd><p>Assigns the appropriate concrete section to be analysed depending on the
+analysis type requested.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>analysis_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'nom_chk'</span></code>) – The type of cross section analysis to undertake on the
+defined concrete section, by default a normal nominal strength design check
+is undertaken, refer to <a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor" title="concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NZS3101.capacity_reduction_factor()</span></code></a> for
+further information on analysis types.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If analysis type is not valid</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> – Returns the appropriate concrete section object for the analysis
+depending on the analysis type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.e_conc">
+<span class="sig-name descname"><span class="pre">e_conc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2300</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.e_conc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.e_conc" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates Youngs Modulus (<span class="math notranslate nohighlight">\(E_c\)</span>) for concrete in accordance with
+NZS3101:2006 CL 5.2.3(b).</p>
+<p><span class="math notranslate nohighlight">\(E_c=\displaystyle{4700\sqrt{f'_c}\frac{\rho}{2300}}\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compressive_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – 28 day compressive concrete strength (MPa)</p></li>
+<li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">2300</span></code>) – Concrete density <span class="math notranslate nohighlight">\(\rho\)</span> in accordance with NZS3101:2006
+CL 5.2.2, defaults to 2300 kg/m<sup>3</sup> for normal weight concrete</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – <span class="math notranslate nohighlight">\(E_c\)</span>, Youngs Modulus (MPa)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.check_density_limits">
+<span class="sig-name descname"><span class="pre">check_density_limits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_limit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_limit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.check_density_limits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.check_density_limits" title="Permalink to this definition">#</a></dt>
+<dd><p>Checks that the density is within the bounds outlined within NZS3101:2006
+CL 5.2.2 for the elastic modulus expression within NZS3101:2006 CL 5.2.3(b) to
+be valid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Concrete density <span class="math notranslate nohighlight">\(\rho\)</span> in accordance with NZS3101:2006
+CL 5.2.2</p></li>
+<li><p><strong>low_limit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Lower limit for density from NZS3101:2006 CL 5.2.2</p></li>
+<li><p><strong>high_limit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Upper limit for density from NZS3101:2006 CL 5.2.2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If density is outside of the limits within NZS3101:2006 CL
+5.2.2</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.alpha_1">
+<span class="sig-name descname"><span class="pre">alpha_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.alpha_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.alpha_1" title="Permalink to this definition">#</a></dt>
+<dd><p>Scaling factor relating the nominal 28 day concrete compressive strength to
+the effective concrete compressive strength used for design purposes within the
+concrete stress block. For an equivalent rectangular compressive stress block it
+relates the 28 day concrete compressive strength (<span class="math notranslate nohighlight">\(f'_c\)</span>) to the average
+concrete compressive design strength (<span class="math notranslate nohighlight">\(f_{ave}\)</span>). A function of the
+concrete compressive strength.</p>
+<p><span class="math notranslate nohighlight">\(\quad\alpha_1=\displaystyle{\frac{f_{ave}}{f'_c}}\)</span></p>
+<p>Where:-</p>
+<p><span class="math notranslate nohighlight">\(\quad\alpha_1=0.85-0.004(f'_c-55)\quad:0.75\leq\alpha_1\leq0.85\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>compressive_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – 28 day compressive design strength (MPa)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – <span class="math notranslate nohighlight">\(\alpha_1\)</span> factor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.beta_1">
+<span class="sig-name descname"><span class="pre">beta_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.beta_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.beta_1" title="Permalink to this definition">#</a></dt>
+<dd><p>Scaling factor relating the depth of an equivalent rectangular compressive
+stress block (<span class="math notranslate nohighlight">\(a\)</span>) to the depth of the neutral axis (<span class="math notranslate nohighlight">\(c\)</span>).
+A function of the concrete compressive strength.</p>
+<p><span class="math notranslate nohighlight">\(\quad\beta_1=\displaystyle{\frac{a}{c}}\)</span></p>
+<p>Where:-</p>
+<p><span class="math notranslate nohighlight">\(\quad\beta_1=0.85-0.008(f'_c-30)\quad:0.65\leq\beta_1\leq0.85\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>compressive_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – 28 day compressive design strength (MPa)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – <span class="math notranslate nohighlight">\(\beta_1\)</span> factor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.lamda">
+<span class="sig-name descname"><span class="pre">lamda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">density</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.lamda"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.lamda" title="Permalink to this definition">#</a></dt>
+<dd><p>Modification factor reflecting the reduced mechanical properties of
+lightweight concrete relative to normal weight concrete of the same compression
+strength.</p>
+<p><span class="math notranslate nohighlight">\(\quad\lambda=0.4+\displaystyle{\frac{0.6\rho}{2200}}\leq1.0\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Saturated surface dry density of concrete material</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – <span class="math notranslate nohighlight">\(\lambda\)</span> factor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.concrete_tensile_strength">
+<span class="sig-name descname"><span class="pre">concrete_tensile_strength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.concrete_tensile_strength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.concrete_tensile_strength" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the lower characteristic tensile strength of concrete
+(<span class="math notranslate nohighlight">\(f_t\)</span>) in accordance with NZS3101:2006 CL 5.2.4, or calculates the
+probable tensile strength of concrete in accordance with NZSEE C5 assessment
+guidelines C5.4.2.4.</p>
+<p>For design to NZS3101:2006:-</p>
+<p><span class="math notranslate nohighlight">\(\quad f_t=0.38\lambda({f'_c})^{0.5}\)</span></p>
+<p>For design to NZSEE C5 assessment guidelines:-</p>
+<p><span class="math notranslate nohighlight">\(\quad f_{ct}=0.55({f'_{cp}})^{0.5}\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compressive_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – 28 day compressive design strength (MPa)</p></li>
+<li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">2300</span></code>) – Saturated surface dry density of concrete material</p></li>
+<li><p><strong>prob_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if the probable tensile strength of concrete is to be
+calculated in accordance with NZSEE C5 assessment guidelines</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Lower characteristic (<span class="math notranslate nohighlight">\(f_t\)</span>) or probable (<span class="math notranslate nohighlight">\(f_{ct}\)</span>) tensile
+strength of concrete</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.modulus_of_rupture">
+<span class="sig-name descname"><span class="pre">modulus_of_rupture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2300</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.modulus_of_rupture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.modulus_of_rupture" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the average modulus of rupture of concrete (<span class="math notranslate nohighlight">\(f_r\)</span>) in
+accordance with NZS3101:2006 CL 5.2.5 for deflection calculations.</p>
+<p><span class="math notranslate nohighlight">\(\quad f_r=0.6\lambda({f'_c})^{0.5}\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compressive_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – 28 day compressive design strength (MPa)</p></li>
+<li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">2300</span></code>) – Saturated surface dry density of concrete material</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Modulus of rupture (<span class="math notranslate nohighlight">\(f_r\)</span>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.prob_compressive_strength">
+<span class="sig-name descname"><span class="pre">prob_compressive_strength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.prob_compressive_strength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.prob_compressive_strength" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the probable compressive strength of concrete in accordance with
+NZSEE C5 assessement guidelines C5.4.2.2.</p>
+<p>Taken as the nominal 28-day compressive strenght of the concrete specified for
+the original construciton, multiplied by 1.5 for strengths less than or equal to
+40 MPa, and 1.4 for strengths greater than 40 MPa.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>compressive_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – 28 day compressive design strength (MPa)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Probable comopressive strength of concrete (<span class="math notranslate nohighlight">\(f'_{cp}\)</span>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.concrete_capacity">
+<span class="sig-name descname"><span class="pre">concrete_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">os_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_compressive_strength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.concrete_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.concrete_capacity" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to return the nominal, overstrength or probable concrete capacity
+capacity of a concrete section.</p>
+<ul>
+<li><p>Note for a column section type outputs the unfactored concrete yield force
+for a column member designed in accordance with NZS3101:2006 Chapter 10
+based on net concrete area:-</p>
+<p><span class="math notranslate nohighlight">\(\quad N_c = \alpha_1A_nf'_c\)</span></p>
+</li>
+<li><p>Note for a wall section type outputs the unfactored concrete yield force for
+a doubly or singly reinforced wall member designed in accordance with
+NZS3101:2006 Chapter 11 based on gross concrete area:-</p>
+<p><span class="math notranslate nohighlight">\(\quad N_c = A_gf'_c\)</span></p>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>os_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if an overstrength capacity of a concrete section is
+required, then the material properties for concrete are scaled to reflect
+the likely maximum material strength properties</p></li>
+<li><p><strong>prob_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if the probable capacity of a concrete section is
+required, then the material properties for concrete and lumped reinforcement
+are scaled to reflect the probable material strength properties</p></li>
+<li><p><strong>add_compressive_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">15</span></code>) – The increase in compressive strength of the
+specified 28 day compressive strength of concrete to reflect the likely
+maximum material strength, defaults to an additional 15 MPa as per
+NZS3101:2006 CL 2.6.5.5(c)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If section type for the analysis of the concrete section is
+not valid</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Nominal, overstrength or probable concrete yield force (N) for the
+defined section/member type provided</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.steel_capacity">
+<span class="sig-name descname"><span class="pre">steel_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">os_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.steel_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.steel_capacity" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to return the nominal, overstrength or probable steel reinforcement
+capacity of a concrete section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>os_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if an overstrength capacity of a concrete section is
+required, then the material properties for lumped reinforcement are scaled
+to reflect the likely maximum material strength properties</p></li>
+<li><p><strong>prob_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if the probable capacity of a concrete
+section is required, then the material properties for concrete and lumped
+reinforcement are scaled to reflect the probable material strength
+properties</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If concrete section contains a steel material that is not
+<a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101.SteelBarNZ</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Nominal, overstrength or probable steel yield force (N)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.max_comp_strength">
+<span class="sig-name descname"><span class="pre">max_comp_strength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpe_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">os_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.max_comp_strength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.max_comp_strength" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to return the nominal, overstrength or probable axial load
+compressive strength of a concrete section when the load is applied with zero
+eccentricity.</p>
+<p>For column members, the maximum design load in compression is as follows:-</p>
+<p>For non-capacity design situations, refer to NZS3101:2006 CL 10.3.4.2:-</p>
+<p><span class="math notranslate nohighlight">\(\quad\displaystyle{\frac{N^*}{\phi} &lt; 0.85N_{n,max}}\)</span></p>
+<p>For capacity design situations, refer to NZS3101:2006 CL 10.4.4:-</p>
+<p><span class="math notranslate nohighlight">\(\quad N^*_o &lt; 0.7N_{n,max}\)</span></p>
+<p>Where:-</p>
+<p><span class="math notranslate nohighlight">\(\quad N_{n,max} = \alpha_1f'_c(A_g-A_{st})+f_yA_{st}\)</span></p>
+<p>For doubly reinforced wall members, the maximum design load in compression is as
+follows:-</p>
+<p>For non-capacity design situations, refer to NZS3101:2006 CL 11.3.1.6:-</p>
+<p><span class="math notranslate nohighlight">\(\quad\displaystyle{\frac{N^*}{\phi} &lt; 0.3A_gf'_c}\)</span></p>
+<p>For ductile wall design situations within potential plastic regions, refer to
+NZS3101:2006 CL 11.4.1.1:-</p>
+<p><span class="math notranslate nohighlight">\(\quad N^*_o &lt; 0.3A_gf'_c\)</span></p>
+<p>For singly reinforced wall members, the maximum design load in compression
+depends on the axis the design actions are causing bending about:-</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note singly reinforced walls are only allowed in nominally ductile structures
+designed in accordance with NZS3101:2006.</p>
+<p>Refer NZS3101:2006 Chapter 2 &amp; 11 for other limitations on the use of
+singly reinforced walls.</p>
+<p>Note because of the different maximum axial compression load limits and
+strength reduction factors for singly reinforced walls depending upon the
+bending axis, care should be taken to only analyse a singly reinforced wall
+member about the appropriate axis. Engineering judgement should be exercised
+when analysing a singly reinforced wall about non-principal axes.</p>
+</div>
+<p>For design situations where the design actions cause bending about the strong
+axis of a singly reinforced wall, refer to NZS3101:2006 CL 11.3.1.6:-</p>
+<p><span class="math notranslate nohighlight">\(\quad N^* &lt; 0.015A_gf'_c\)</span></p>
+<p>For design situations where the design actions cause bending about the minor
+axis of a singly reinforced wall, refer to NZS3101:2006 CL 11.3.5:-</p>
+<p><span class="math notranslate nohighlight">\(\quad N^* &lt; 0.06A_gf'_c\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cpe_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if the capacity protected element capacity of a concrete
+section is required (i.e. design capacity being checked against O/S
+actions)</p></li>
+<li><p><strong>os_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if the overstrength capacity of a concrete section is
+required, then the material properties for concrete and lumped reinforcement
+are scaled to reflect the likely maximum material strength properties</p></li>
+<li><p><strong>prob_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if the probable capacity of a concrete
+section is required, then the material properties for concrete and lumped
+reinforcement are scaled to reflect the probable material strength
+properties</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Returns the nominal, overstrength or probable axial load compressive
+strength of a concrete section <span class="math notranslate nohighlight">\(N_{n,max}\)</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.max_ten_strength">
+<span class="sig-name descname"><span class="pre">max_ten_strength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">os_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.max_ten_strength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.max_ten_strength" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to return the nominal axial load tension strength of a concrete
+section when the load is applied with zero eccentricity.</p>
+<p><span class="math notranslate nohighlight">\(\quad N_{t,max} = f_yA_{st}\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>os_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if an overstrength capacity of a concrete section is
+required, then the material properties for concrete and lumped reinforcement
+are scaled to reflect the likely maximum material strength properties</p></li>
+<li><p><strong>prob_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if the probable capacity of a concrete
+section is required, then the material properties for concrete and lumped
+reinforcement are scaled to reflect the probable material strength
+properties</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Returns the nominal, overstrength or probable axial tension strength of
+a concrete section <span class="math notranslate nohighlight">\(N_{t,max}\)</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.check_axial_limits">
+<span class="sig-name descname"><span class="pre">check_axial_limits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_design</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpe_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">os_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.check_axial_limits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.check_axial_limits" title="Permalink to this definition">#</a></dt>
+<dd><p>Checks that the specified axial load is within the maximum tensile and
+compressive capacity of the concrete cross section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Axial design force (<span class="math notranslate nohighlight">\(N^*\)</span>)</p></li>
+<li><p><strong>phi</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Strength reduction factor <span class="math notranslate nohighlight">\(\phi\)</span></p></li>
+<li><p><strong>cpe_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if the capacity protected element capacity of a concrete
+section is required (i.e. design capacity being checked against O/S
+actions)</p></li>
+<li><p><strong>os_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if the overstrength capacity of a concrete section is
+required, then the material properties for concrete and lumped reinforcement
+are scaled to reflect the likely maximum material strength properties</p></li>
+<li><p><strong>prob_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if the probable capacity of a concrete
+section is required, then the material properties for concrete and lumped
+reinforcement are scaled to reflect the probable material strength
+properties</p></li>
+<li><p><strong>n_scale</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0.001</span></code>) – Scaling factor to apply to axial load</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the supplied axial load is less than or greater than the
+the tensile or compressive strength of a concrete section</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.check_f_y_limit">
+<span class="sig-name descname"><span class="pre">check_f_y_limit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.check_f_y_limit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.check_f_y_limit" title="Permalink to this definition">#</a></dt>
+<dd><p>Checks that the specified steel reinforcement strengths for all defined
+steel geometries comply with NZS3101:2006 CL 5.3.3.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note this check does not apply to predefined steel materials based on
+probable strength properties.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If concrete section contains a steel material that is not
+<a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101.SteelBarNZ</span></code></a></p></li>
+<li><p><strong>ValueError</strong> – If characteristic steel reinforcement yield strength is
+greater than the 500MPa limit in NZS3101:2006 CL 5.3.3</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.check_f_c_limits">
+<span class="sig-name descname"><span class="pre">check_f_c_limits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pphr_class</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.check_f_c_limits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.check_f_c_limits" title="Permalink to this definition">#</a></dt>
+<dd><p>Checks that a valid Potential Plastic Hinge Region (PPHR) classification has
+been specified, and that the specified compressive strengths for all defined
+concrete geometries comply with NZS3101:2006 CL 5.2.1 for the specified PPHR
+classification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pphr_class</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>Potential Plastic Hinge Region (PPHR) classification,
+<strong>NDPR</strong>/<strong>LDPR</strong>/<strong>DPR</strong>.</p>
+<ul class="simple">
+<li><p><strong>NDPR</strong> = Nominally Ductile Plastic Region</p></li>
+<li><p><strong>LDPR</strong> = Limited Ductile Plastic Region</p></li>
+<li><p><strong>DPR</strong> = Ductile Plastic Region</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If specified Potential Plastic Hinge Region (PPHR)
+classification is not NDPR, LDPR or DPR</p></li>
+<li><p><strong>ValueError</strong> – If specified compressive strength for a concrete geometry
+is not between 20 MPa and 100 MPa for NDPR PPHR’s, or is not between 20 MPa
+and 70 MPa for LDPR or DPR PPHR’s</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.create_concrete_material">
+<span class="sig-name descname"><span class="pre">create_concrete_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.003</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lightgrey'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.create_concrete_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_concrete_material" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a concrete material object to NZS3101:2006.</p>
+<div class="admonition-material-assumptions admonition">
+<p class="admonition-title">Material assumptions</p>
+<ul class="simple">
+<li><p><em>Density</em>: Defaults to 2300 kg/m<sup>3</sup> unless supplied as user input</p></li>
+<li><p><em>Elastic modulus</em>: Calculated from NZS3101:2006 Eq. 5-1</p></li>
+<li><p><em>Serviceability stress-strain profile</em>: Linear with no tension</p></li>
+<li><p><em>Ultimate stress-strain profile</em>: Rectangular stress block, parameters from
+NZS3101:2006 CL 7.4.2.7, maximum compressive strain of 0.003</p></li>
+<li><p><em>Lower characteristic tensile strength of concrete</em>: Calculated from
+NZS3101:2006 Eq. 5-2</p></li>
+</ul>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compressive_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – 28 day compressive design strength (MPa)</p></li>
+<li><p><strong>ultimate_strain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0.003</span></code>) – Maximum concrete compressive strain at crushing of the
+concrete for design</p></li>
+<li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">2300</span></code>) – Saturated surface dry density of concrete material</p></li>
+<li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'lightgrey'</span></code>) – Colour of the concrete for rendering, defaults to ‘lightgrey’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> – Concrete material object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.predefined_steel_materials">
+<span class="sig-name descname"><span class="pre">predefined_steel_materials</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.predefined_steel_materials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.predefined_steel_materials" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a list of predefined material properties for steel grades for design
+to NZS3101:2006 &amp; NZSEE C5 assessment guidelines.</p>
+<p>Refer to <a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material" title="concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NZS3101.create_steel_material()</span></code></a> for details of predefined steel
+grades.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]] – Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with standard predefined steel material
+properties based on current steel grade 300E &amp; 500E material properties in
+accordance with NZS3101:2006, and based on historic steel grade material
+properties in accordance with NZSEE C5 assessment guidelines.</p>
+<p>Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> with predefined material grades that have been
+defined on characteristic strength material properties and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of predefined material grades that have been defined
+based on probable strength material properties.</p>
+</p>
+</dd>
+</dl>
+<div class="admonition-dictionary-keys admonition">
+<p class="admonition-title">Dictionary keys</p>
+<table class="table">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 84%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Dict key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Charateristic yield strength (<span class="math notranslate nohighlight">\(f_y\)</span>)
+or probable yield strength (<span class="math notranslate nohighlight">\(f_{yp}\)</span>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Fracture strain (<span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span>)</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Overstrength factor (<span class="math notranslate nohighlight">\(\phi_{o,f_y}\)</span> or <span class="math notranslate nohighlight">\(\phi_o\)</span>)
+(note if probable strength based material
+property is specified then the true O/S factor to be applied
+against the characteristic yield strength is 1.08 times this
+value).</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p><strong>True</strong> if probable strength based yield strength &amp;
+overstrength factor. <strong>False</strong> if lower characteristic
+strength based yield strength &amp; overstrength factor.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material">
+<span class="sig-name descname"><span class="pre">create_steel_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steel_grade</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracture_strain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_os</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.create_steel_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a steel material object specific to the NZS3101:2006 code.</p>
+<div class="admonition-material-assumptions admonition">
+<p class="admonition-title">Material assumptions</p>
+<ul class="simple">
+<li><p><em>Density</em>: 7850 kg/m<sup>3</sup></p></li>
+<li><p><em>Elastic modulus</em>: 200000 MPa</p></li>
+<li><p><em>Stress-strain profile</em>: Elastic-plastic, fracture strain
+<span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> from AS/NZS4671 Table 7.2(A) or NZSEE C5
+assessment guidelines (for historic reinforcement grades)</p></li>
+</ul>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>steel_grade</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Designation of the grade of reinforcement bar to be
+analysed, included predefined current and historic grades are as follows:-</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By using a valid steel grade designation the required input parameters are
+initiated with the required values for current reinforcement grades from the
+AS/NZS4671 standard or for historic grades from the NZSEE C5 assessment
+guidelines. Note user may overwrite any parameter of a predefined material
+by providing that parameter as input to <a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material" title="concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NZS3101.create_steel_material()</span></code></a>.</p>
+<p>Note if no predefined steel grade is provided, a steel grade name of
+<strong>‘user_’ + yield strength</strong> is utilised.</p>
+</div>
+<div class="admonition-nzs3101-2006-nzsee-c5-asessment-guidelines-predefined-steel-materials admonition">
+<p class="admonition-title">NZS3101:2006 &amp; NZSEE C5 asessment guidelines predefined steel
+  materials</p>
+<p><strong>NZS3101:2006 characteristic yield strength based predefined materials</strong></p>
+<ul class="simple">
+<li><p><strong>300e</strong> - Use for design to NZS3101:2006 provisions</p>
+<ul>
+<li><p>Characteristic yield strength <span class="math notranslate nohighlight">\(f_y\)</span> = 300 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 15% or 0.15</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{o,f_y}\)</span> = 1.35</p></li>
+</ul>
+</li>
+<li><p><strong>500e</strong> - Use for design to NZS3101:2006 provisions</p>
+<ul>
+<li><p>Characteristic yield strength <span class="math notranslate nohighlight">\(f_y\)</span> = 500 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 10% or 0.10</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{o,f_y}\)</span> = 1.35</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>NZSEE C5 guidelines probable yield strength based predefined materials</strong></p>
+<ul class="simple">
+<li><p><strong>pre_1945</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 280 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 10% or 0.10</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>33</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 280 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 10% or 0.10</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>40</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 324 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 15% or 0.15</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>275</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 324 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 15% or 0.15</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>hy60</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 455 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 12% or 0.12</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.5</p></li>
+</ul>
+</li>
+<li><p><strong>380</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 455 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 12% or 0.12</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.5</p></li>
+</ul>
+</li>
+<li><p><strong>430</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 464 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 12% or 0.12</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>300</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 324 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 15% or 0.15</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>500n</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 500 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 5% or 0.05</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.5</p></li>
+</ul>
+</li>
+<li><p><strong>500</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 540 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 10% or 0.10</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>cd_mesh</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 600 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 1.5% or 0.015</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.2</p></li>
+</ul>
+</li>
+<li><p><strong>duc_mesh</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 500 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 3% or 0.03</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.2</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>yield_strength</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Steel characteristic yield strength (MPa)</p>
+<ul>
+<li><p>Note for a predefined steel grade based on probable strength
+properties this is interpreted as the probable yield strength.</p></li>
+<li><p>Note for a user defined steel grade, this is <strong>always</strong> entered on the
+basis of a characteristic yield strength, even if undertaking a probable
+strength based analysis. The analysis will internally scale the
+characteristic yield stress by 1.08 as per NZSEE C5 assessment guidelines
+C5.4.3.</p></li>
+</ul>
+</p></li>
+<li><p><strong>fracture_strain</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Lower bound tensile strain (<span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span>),
+based on characteristic uniform elongation limit from AS/NZS4671 Table
+7.2(A) or NZSEE C5 assessment guidelines Table C5.4.</p></li>
+<li><p><strong>phi_os</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Overstrength factor depending on reinforcement grade
+(<span class="math notranslate nohighlight">\(\phi_{o,f_y}\)</span> or <span class="math notranslate nohighlight">\(\phi_o\)</span>), refer to NZS3101:2006 CL 2.6.5.5,
+or for a probable strength assessment to the NZSEE C5 assessment guidelines
+refer to NZSEE C5 Table C5.4.</p></li>
+<li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'red'</span></code>) – Colour of the steel for rendering, if user does not provide a
+value, characteristic strength based materials will be rendered as red, and
+probable strength based materials will be rendered as blue.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>Exception</strong> – If a predefined steel grade is not provided and the required
+material properties have not been provided. For creating a user defined
+steel material, values for <strong>yield_strength</strong>, <strong>fracture_strain</strong> &amp;
+<strong>phi_os</strong> are required to define a valid user defined material.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBarNZ</span></code></a> – Steel bar material object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor">
+<span class="sig-name descname"><span class="pre">capacity_reduction_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">analysis_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.capacity_reduction_factor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the appropriate NZS3101:2006 or NZSEE C5 assessment guidelines
+capacity reduction factor dependant on the type of analysis specified. Refer to
+NZS3101:2006 CL 2.3.2.2 or NZSEE C5 assessment guidelines C5.5.1.4.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>analysis_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>The type of cross section analysis to undertake on the
+defined concrete section, by default a normal nominal strength design check
+is undertaken:-</p>
+<ul>
+<li><p><strong>nom_chk</strong> - Nominal strength design check.</p>
+<p>Returns the normal nominal strength section design capacity, i.e.
+undertakes the cross section analysis based on the following
+assumptions:-</p>
+<ul class="simple">
+<li><p>Using a strength reduction factor of <span class="math notranslate nohighlight">\(\phi\)</span> = 0.85 in accordance
+with NZS3101:2006 CL 2.3.2.2.</p>
+<ul>
+<li><p>Except that for a singly reinforced wall for in-plane actions (flexure
+about the strong axis) a strength reduction factor of <span class="math notranslate nohighlight">\(\phi\)</span> =
+0.7 applies in accordance with NZS3101:2006 CL 2.3.2.2.</p></li>
+</ul>
+</li>
+<li><p>Using the lower 5% characteristic reinforcement yield strengths.</p></li>
+<li><p>Using the lower 5% characteristic concrete 28 day compressive
+design strength.</p></li>
+</ul>
+</li>
+<li><p><strong>cpe_chk</strong> - Capacity Protected Element (CPE) strength design check.</p>
+<p>Returns the capacity protected element section design capacity, i.e.
+undertakes the cross section analysis based on the following
+assumptions:-</p>
+<ul class="simple">
+<li><p>Using a strength reduction factor of <span class="math notranslate nohighlight">\(\phi\)</span> = 1.0 in
+accordance with NZS3101:2006 CL 2.3.2.2.</p></li>
+<li><p>Using the lower 5% characteristic reinforcement yield strengths.</p></li>
+<li><p>Using the lower 5% characteristic concrete 28 day compressive
+design strength.</p></li>
+</ul>
+</li>
+<li><p><strong>os_chk</strong> - Overstrength (O/S) strength design check.</p>
+<p>Returns the O/S (overstrength) section design capacity, i.e. undertakes
+the cross section analysis based on the following assumptions:-</p>
+<ul class="simple">
+<li><p>Using a strength reduction factor of <span class="math notranslate nohighlight">\(\phi\)</span> = 1.0 in
+accordance with NZS3101:2006 CL 2.3.2.2.</p></li>
+<li><p>Using a likely maximum reinforcement yield strength of
+<span class="math notranslate nohighlight">\(\phi_{o,f_y}f_y\)</span>, typically <span class="math notranslate nohighlight">\(\phi_{o,f_y}=1.35\)</span> in
+accordance with NZS3101:2006 CL 2.6.5.5(a) for grade 300E or grade
+500E reinforcement which complies with AS/NZS4671. User may define
+custom overstrength factors when defining steel reinforcement
+materials using <a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101.SteelBarNZ</span></code></a>.</p></li>
+<li><p>Using a likely maximum compression strength of the concrete based
+on the lower 5% characteristic concrete 28 day strength plus 15
+MPa, i.e. <span class="math notranslate nohighlight">\(f'_c\)</span> + 15 in accordance with NZS3101:2006 CL
+2.6.5.5(c).</p></li>
+</ul>
+</li>
+<li><p><strong>prob_chk</strong> - Probable strength design check to NZSEE C5 guidelines based
+on NZS3101:2006 analysis provisions.</p>
+<p>Returns the probable strength section design capacity, i.e.
+undertakes the cross section analysis based on the following assumptions:-</p>
+<ul class="simple">
+<li><p>Using a strength reduction factor of <span class="math notranslate nohighlight">\(\phi\)</span> = 1.0 in
+accordance with NZSEE C5 assessment guidelines C5.5.1.4.</p></li>
+<li><p>Using the probable reinforcement yield strengths in accordance
+with NZSEE C5 assessment guidelines C5.4.3, typically
+<span class="math notranslate nohighlight">\(f_{yp}=1.08f_y\)</span> in accordance with NZSEE C5 assessment
+guidelines C5.4.3. User may define custom probable strengths when
+defining steel reinforcement materials using
+<a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101.SteelBarNZ</span></code></a>. Note if one of the predefined
+probable strength based steel grade materials are being utilised, then
+the yield strength is inclusive of the 1.08 factor noted above.</p></li>
+<li><p>Using the probable compressive strength of the concrete in
+accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+specified 28 day concrete compressive strengths of less than or
+equal to 40 MPa, <span class="math notranslate nohighlight">\(f'_{cp}=1.5f'_c\)</span>, and for greater than
+40 MPa, <span class="math notranslate nohighlight">\(f'_{cp}=1.4f'_c\)</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>prob_os_chk</strong> - Probable overstrength design check to NZSEE C5
+guidelines based on NZS3101:2006 analysis provisions.</p>
+<p>Returns the probable O/S (overstrength) strength section design
+capacity, i.e. undertakes the cross section analysis based on the
+following assumptions:-</p>
+<ul>
+<li><p>Using a strength reduction factor of <span class="math notranslate nohighlight">\(\phi\)</span> = 1.0 in
+accordance with NZSEE C5 assessment guidelines C5.5.1.4.</p></li>
+<li><p>Using the probable overstrength reinforcement yield strengths in
+accordance with NZSEE C5 assessment guidelines C5.4.3, typically
+<span class="math notranslate nohighlight">\(f_o=\phi_of_{yp}\)</span> in accordance with NZSEE C5 assessment
+guidelines C5.4.3 &amp; C5.5.2.3. User may define custom overstrength
+factors strengths when defining steel reinforcement materials
+using <a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101.SteelBarNZ</span></code></a>. Note if one of the predefined
+probable strength based steel grade materials are being utilised,
+then the overstrength factor being applied to the yield strength
+is inclusive of the 1.08 factor on the lower bound yield strength.</p>
+<p><span class="math notranslate nohighlight">\(\quad\phi_o=\displaystyle{\frac{f_o}{f_{yp}}}\)</span></p>
+<p>Where:-</p>
+<p><span class="math notranslate nohighlight">\(\quad f_{yp}=1.08f_y\)</span></p>
+</li>
+<li><p>Using the probable compressive strength of the concrete in
+accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+specified 28 day concrete compressive strengths of less than or
+equal to 40 MPa, <span class="math notranslate nohighlight">\(f'_{cp}=1.5f'_c\)</span>, and for greater than
+40 MPa, <span class="math notranslate nohighlight">\(f'_{cp}=1.4f'_c\)</span>.</p>
+<p>Note there is no enhancement to concrete strength for overstrength
+checks in accordance with the NZSEE C5 assessment guidelines.</p>
+</li>
+</ul>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If analysis type is not valid</p></li>
+<li><p><strong>ValueError</strong> – If concrete section contains a steel material that is not
+<a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101.SteelBarNZ</span></code></a></p></li>
+<li><p><strong>Exception</strong> – If a characteristic strength based analysis is specified, but
+a predefined probable strength based steel grade has been specified.
+Undertaking a non NZSEE C5 assessment guidelines analysis on a probable
+strength based steel grade is not consistent with an analysis to
+NZS3101:2006.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>] – Returns the appropriate strength reduction factor <span class="math notranslate nohighlight">\(\phi\)</span> and
+variables to indicate the type of analysis being requested.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.create_os_section">
+<span class="sig-name descname"><span class="pre">create_os_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">add_compressive_strength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.create_os_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_os_section" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a concrete section with likely maximum material strength properties
+for a cross section analysis to NZS3101:2006. Concrete and steel reinforcement
+strength properties are modified in accordance with NZS3101:2006 CL 2.6.5.5 to
+reflect likely maximum material strengths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>add_compressive_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">15</span></code>) – The increase in compressive strength of the
+specified 28 day compressive strength of concrete to reflect the likely
+maximum material strength, defaults to an additional 15 MPa as per
+NZS3101:2006 CL 2.6.5.5(c)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If concrete section contains a steel material that is not
+<a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101.SteelBarNZ</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> – Returns a concrete section with material strengths modified to reflect
+likely maximum material strengths to enable an overstrength based analysis
+to be undertaken</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.create_prob_section">
+<span class="sig-name descname"><span class="pre">create_prob_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">os_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.create_prob_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_prob_section" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a concrete section with probable strength material properties
+for a cross section analysis to NZS3101:2006 &amp; NZSEE C5 assessment guidelines.
+Concrete and steel reinforcement strength properties are modified in accordance
+with NZSEE C5 assessment guidelines C5.4.2.2 &amp; C5.4.3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>os_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – True if an overstrength probable capacity of a concrete
+section is required, then the material properties for concrete and lumped
+reinforcement are scaled to reflect the probable overstrength material
+strength properties, defaults to False which only scales the material
+properties for concrete to reflec tthe probable material strength properties</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If concrete section contains a steel material that is not
+<a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101.SteelBarNZ</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> – Returns a concrete section with material strengths modified to reflect
+probable material strengths or probable overstrength material strengths, to
+enable a probable strength or probable overstrength based analysis
+to be undertaken</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.ultimate_bending_capacity">
+<span class="sig-name descname"><span class="pre">ultimate_bending_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pphr_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NDPR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nom_chk'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.ultimate_bending_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.ultimate_bending_capacity" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates the ultimate bending capacity with capacity factors to
+NZS3101:2006 or the NZSEE C5 assessment guidelines dependant on analysis type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>analysis_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'nom_chk'</span></code>) – The type of cross section analysis to undertake on the
+defined concrete section, by default a normal nominal strength design check
+is undertaken, refer to <a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor" title="concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NZS3101.capacity_reduction_factor()</span></code></a> for
+further information on analysis types.</p></li>
+<li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Angle (in radians) the neutral axis makes with the horizontal axis
+(<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
+<li><p><strong>n_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Axial design force (<span class="math notranslate nohighlight">\(N^*\)</span>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code></a>, <a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Factored and unfactored ultimate bending results objects, and capacity
+reduction factor <em>(factored_results, unfactored_results, phi)</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.moment_interaction_diagram">
+<span class="sig-name descname"><span class="pre">moment_interaction_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pphr_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NDPR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nom_chk'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[('fy',</span> <span class="pre">1.0),</span> <span class="pre">('fy',</span> <span class="pre">0.5),</span> <span class="pre">('fy',</span> <span class="pre">0.0),</span> <span class="pre">('N',</span> <span class="pre">0.0)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_comp_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.moment_interaction_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.moment_interaction_diagram" title="Permalink to this definition">#</a></dt>
+<dd><p>Generates a moment interaction diagram with capacity factors and material
+strengths to NZS3101:2006 or the NZSEE C5 assessment guidelines dependant
+on analysis type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pphr_class</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'NDPR'</span></code>) – <p>Potential Plastic Hinge Region (PPHR) classification,
+<strong>NDPR</strong>/<strong>LDPR</strong>/<strong>DPR</strong>.</p>
+<ul>
+<li><p><strong>NDPR</strong> = Nominally Ductile Plastic Region</p></li>
+<li><p><strong>LDPR</strong> = Limited Ductile Plastic Region</p></li>
+<li><p><strong>DPR</strong> = Ductile Plastic Region</p></li>
+</ul>
+</p></li>
+<li><p><strong>analysis_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'nom_chk'</span></code>) – The type of cross section analysis to undertake on the
+defined concrete section, by default a normal nominal strength design check
+is undertaken, refer to <a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor" title="concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NZS3101.capacity_reduction_factor()</span></code></a> for
+further information on analysis types.</p></li>
+<li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Angle (in radians) the neutral axis makes with the horizontal axis
+(<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
+<li><p><strong>control_points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">[('fy',</span> <span class="pre">1.0),</span> <span class="pre">('fy',</span> <span class="pre">0.5),</span> <span class="pre">('fy',</span> <span class="pre">0.0),</span> <span class="pre">('N',</span> <span class="pre">0.0)]</span></code>) – List of additional control points to add to the moment
+interaction diagram. The default control points include the balanced point,
+the 50% reinforcement strain point, the 0% reinforcement strain point
+(<code class="docutils literal notranslate"><span class="pre">fy=1</span></code>, <code class="docutils literal notranslate"><span class="pre">fy=0.5</span></code>, <code class="docutils literal notranslate"><span class="pre">fy=0</span></code>), and the pure bending point (<code class="docutils literal notranslate"><span class="pre">N=0</span></code>).
+Control points may lie outside the limits of the moment interaction diagram
+as long as equilibrium can be found.</p></li>
+<li><p><strong>labels</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – List of labels to apply to the <code class="docutils literal notranslate"><span class="pre">limits</span></code> and <code class="docutils literal notranslate"><span class="pre">control_points</span></code>
+for plotting purposes. The first two values in <code class="docutils literal notranslate"><span class="pre">labels</span></code> apply labels to
+the <code class="docutils literal notranslate"><span class="pre">limits</span></code>, the remaining values apply labels to the <code class="docutils literal notranslate"><span class="pre">control_points</span></code>.
+If a single value is provided, this value will be applied to both <code class="docutils literal notranslate"><span class="pre">limits</span></code>
+and all <code class="docutils literal notranslate"><span class="pre">control_points</span></code>. The length of <code class="docutils literal notranslate"><span class="pre">labels</span></code> must equal <code class="docutils literal notranslate"><span class="pre">1</span></code> or
+<code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">+</span> <span class="pre">len(control_points)</span></code>.</p></li>
+<li><p><strong>n_points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">24</span></code>) – Number of points to compute including and between the
+<code class="docutils literal notranslate"><span class="pre">limits</span></code> of the moment interaction diagram. Generates equally spaced
+neutral axes between the <code class="docutils literal notranslate"><span class="pre">limits</span></code>.</p></li>
+<li><p><strong>n_spacing</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If provided, overrides <code class="docutils literal notranslate"><span class="pre">n_points</span></code> and generates the moment
+interaction diagram using <code class="docutils literal notranslate"><span class="pre">n_spacing</span></code> equally spaced axial loads. Note
+that using <code class="docutils literal notranslate"><span class="pre">n_spacing</span></code> negatively affects performance, as the neutral axis
+depth must first be located for each point on the moment interaction
+diagram.</p></li>
+<li><p><strong>max_comp_labels</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Labels to apply to the <code class="docutils literal notranslate"><span class="pre">max_comp</span></code> intersection points,
+first value is at zero moment, second value is at the intersection with the
+interaction diagram.</p></li>
+<li><p><strong>progress_bar</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – If set to True, displays the progress bar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code></a>, <a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]] – Factored and unfactored moment interaction results objects, and list of
+capacity reduction factors <em>(factored_results, unfactored_results, phis)</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.biaxial_bending_diagram">
+<span class="sig-name descname"><span class="pre">biaxial_bending_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pphr_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NDPR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nom_chk'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">48</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.biaxial_bending_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.biaxial_bending_diagram" title="Permalink to this definition">#</a></dt>
+<dd><p>Generates a biaxial bending with capacity factors to NZS3101:2006 or the
+NZSEE C5 assessment guidelines dependant on analysis type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pphr_class</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'NDPR'</span></code>) – <p>Potential Plastic Hinge Region (PPHR) classification,
+<strong>NDPR</strong>/<strong>LDPR</strong>/<strong>DPR</strong>.</p>
+<ul>
+<li><p><strong>NDPR</strong> = Nominally Ductile Plastic Region</p></li>
+<li><p><strong>LDPR</strong> = Limited Ductile Plastic Region</p></li>
+<li><p><strong>DPR</strong> = Ductile Plastic Region</p></li>
+</ul>
+</p></li>
+<li><p><strong>analysis_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'nom_chk'</span></code>) – The type of cross section analysis to undertake on the
+defined concrete section, by default a normal nominal strength design check
+is undertaken, refer to <a class="reference internal" href="#concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor" title="concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NZS3101.capacity_reduction_factor()</span></code></a> for
+further information on analysis types.</p></li>
+<li><p><strong>n_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>) – Axial design force (<span class="math notranslate nohighlight">\(N^*\)</span>)</p></li>
+<li><p><strong>n_points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">48</span></code>) – Number of calculation points for neutral axis orientation</p></li>
+<li><p><strong>progress_bar</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – If set to True, displays the progress bar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<a class="reference internal" href="concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]] – Factored biaxial bending results object and list of capacity reduction
+factors <em>(factored_results, phis)</em>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_properties">
+<span class="sig-name descname"><span class="pre">calculate_cracked_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_properties" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates cracked section properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Keyword arguments passed to
+<a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_cracked_properties()</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.CrackedResults.html#concreteproperties.results.CrackedResults" title="concreteproperties.results.CrackedResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrackedResults</span></code></a> – Cracked results object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_stress">
+<span class="sig-name descname"><span class="pre">calculate_cracked_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_stress" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates stresses within the reinforced concrete section assuming a cracked
+section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Keyword arguments passed to
+<a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_cracked_stress" title="concreteproperties.concrete_section.ConcreteSection.calculate_cracked_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_cracked_stress()</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a> – Stress results object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.calculate_service_stress">
+<span class="sig-name descname"><span class="pre">calculate_service_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_service_stress" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates service stresses within the reinforced concrete section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Keyword arguments passed to
+<a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_service_stress" title="concreteproperties.concrete_section.ConcreteSection.calculate_service_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_service_stress()</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a> – Stress results object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.calculate_ultimate_stress">
+<span class="sig-name descname"><span class="pre">calculate_ultimate_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_ultimate_stress" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates ultimate stresses within the reinforced concrete section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Keyword arguments passed to
+<a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_stress" title="concreteproperties.concrete_section.ConcreteSection.calculate_ultimate_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_ultimate_stress()</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a> – Stress results object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.calculate_uncracked_stress">
+<span class="sig-name descname"><span class="pre">calculate_uncracked_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_uncracked_stress" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculates stresses within the reinforced concrete section assuming an
+uncracked section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Keyword arguments passed to
+<a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.calculate_uncracked_stress" title="concreteproperties.concrete_section.ConcreteSection.calculate_uncracked_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_uncracked_stress()</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.StressResult.html#concreteproperties.results.StressResult" title="concreteproperties.results.StressResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">StressResult</span></code></a> – Stress results object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.get_gross_properties">
+<span class="sig-name descname"><span class="pre">get_gross_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.get_gross_properties" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the gross section properties of the reinforced concrete section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Keyword arguments passed to
+<a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.GrossProperties.html#concreteproperties.results.GrossProperties" title="concreteproperties.results.GrossProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">GrossProperties</span></code></a> – Concrete properties object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.get_transformed_gross_properties">
+<span class="sig-name descname"><span class="pre">get_transformed_gross_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.get_transformed_gross_properties" title="Permalink to this definition">#</a></dt>
+<dd><p>Transforms gross section properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Keyword arguments passed to
+<a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_transformed_gross_properties()</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.TransformedGrossProperties.html#concreteproperties.results.TransformedGrossProperties" title="concreteproperties.results.TransformedGrossProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformedGrossProperties</span></code></a> – Transformed concrete properties object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.design_codes.nzs3101.NZS3101.moment_curvature_analysis">
+<span class="sig-name descname"><span class="pre">moment_curvature_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.design_codes.nzs3101.NZS3101.moment_curvature_analysis" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs a moment curvature analysis. No reduction factors are applied to the
+moments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Keyword arguments passed to
+<a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis" title="concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">moment_curvature_analysis()</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="concreteproperties.results.MomentCurvatureResults.html#concreteproperties.results.MomentCurvatureResults" title="concreteproperties.results.MomentCurvatureResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentCurvatureResults</span></code></a> – Moment curvature results object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="concreteproperties.design_codes.nzs3101.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">concreteproperties.design_codes.nzs3101</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="concreteproperties.post.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">concreteproperties.post</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     NZS3101
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.SteelBarNZ
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.assign_concrete_section">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.assign_concrete_section()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.assign_analysis_section">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.assign_analysis_section()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.e_conc">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.e_conc()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.check_density_limits">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.check_density_limits()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.alpha_1">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.alpha_1()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.beta_1">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.beta_1()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.lamda">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.lamda()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.concrete_tensile_strength">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.concrete_tensile_strength()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.modulus_of_rupture">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.modulus_of_rupture()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.prob_compressive_strength">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.prob_compressive_strength()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.concrete_capacity">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.concrete_capacity()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.steel_capacity">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.steel_capacity()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.max_comp_strength">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.max_comp_strength()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.max_ten_strength">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.max_ten_strength()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.check_axial_limits">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.check_axial_limits()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.check_f_y_limit">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.check_f_y_limit()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.check_f_c_limits">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.check_f_c_limits()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_concrete_material">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.create_concrete_material()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.predefined_steel_materials">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.predefined_steel_materials()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.create_steel_material()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.capacity_reduction_factor()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_os_section">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.create_os_section()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.create_prob_section">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.create_prob_section()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.ultimate_bending_capacity">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.ultimate_bending_capacity()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.moment_interaction_diagram">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.moment_interaction_diagram()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.biaxial_bending_diagram">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.biaxial_bending_diagram()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_properties">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.calculate_cracked_properties()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_stress">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.calculate_cracked_stress()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_service_stress">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.calculate_service_stress()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_ultimate_stress">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.calculate_ultimate_stress()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.calculate_uncracked_stress">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.calculate_uncracked_stress()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.get_gross_properties">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.get_gross_properties()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.get_transformed_gross_properties">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.get_transformed_gross_properties()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.design_codes.nzs3101.NZS3101.moment_curvature_analysis">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       NZS3101.moment_curvature_analysis()
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/gen/concreteproperties.design_codes.nzs3101.NZS3101.rst">
+        <i class="fa-solid fa-pencil"></i> Edit this page
+    </a>
+</div>
+
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Robbie van Leeuwen.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>

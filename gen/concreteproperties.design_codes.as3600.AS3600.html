@@ -361,6 +361,7 @@
 <li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">concreteproperties.stress_strain_profile.ConcreteUltimateProfile</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeNonLinear.html">concreteproperties.stress_strain_profile.EurocodeNonLinear</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeParabolicUltimate.html">concreteproperties.stress_strain_profile.EurocodeParabolicUltimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ModifiedMander.html">concreteproperties.stress_strain_profile.ModifiedMander</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.RectangularStressBlock.html">concreteproperties.stress_strain_profile.RectangularStressBlock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelElasticPlastic.html">concreteproperties.stress_strain_profile.SteelElasticPlastic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelHardening.html">concreteproperties.stress_strain_profile.SteelHardening</a></li>
@@ -397,13 +398,17 @@
 <li class="toctree-l3"><a class="reference internal" href="concreteproperties.design_codes.design_code.DesignCode.html">concreteproperties.design_codes.design_code.DesignCode</a></li>
 </ul>
 </li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concreteproperties.design_codes.nzs3101.html">concreteproperties.design_codes.nzs3101</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="concreteproperties.design_codes.nzs3101.NZS3101.html">concreteproperties.design_codes.nzs3101.NZS3101</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.post.html">concreteproperties.post</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.post.html">concreteproperties.post</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="concreteproperties.post.plotting_context.html">concreteproperties.post.plotting_context</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.utils.html">concreteproperties.utils</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.utils.html">concreteproperties.utils</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.calculate_extreme_fibre.html">concreteproperties.utils.calculate_extreme_fibre</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.calculate_local_extents.html">concreteproperties.utils.calculate_local_extents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.calculate_max_bending_depth.html">concreteproperties.utils.calculate_max_bending_depth</a></li>
@@ -459,10 +464,14 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AS3600</span></span><a class="reference internal" href="../_modules/concreteproperties/design_codes/as3600.html#AS3600"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.as3600.AS3600" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="concreteproperties.design_codes.design_code.DesignCode.html#concreteproperties.design_codes.design_code.DesignCode" title="concreteproperties.design_codes.design_code.DesignCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">DesignCode</span></code></a></p>
 <p>Design code class for Australian standard AS 3600:2018.</p>
-<p>Note that this design code only supports <code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code>
-and <code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code> material objects. Meshed
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code> material objects are <strong>not</strong> supported
-as this falls under the composite structures design code.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that this design code only supports
+<a class="reference internal" href="concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> and
+<a class="reference internal" href="concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a> material objects. Meshed
+<a class="reference internal" href="concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> material objects are <strong>not</strong>
+supported as this falls under the composite structures design code.</p>
+</div>
 <p>Inits the AS3600 class.</p>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
@@ -542,16 +551,18 @@ as this falls under the composite structures design code.</p>
 <dt class="sig sig-object py" id="concreteproperties.design_codes.as3600.AS3600.create_concrete_material">
 <span class="sig-name descname"><span class="pre">create_concrete_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lightgrey'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/as3600.html#AS3600.create_concrete_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.as3600.AS3600.create_concrete_material" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a concrete material object to AS 3600:2018.</p>
-<div class="line-block">
-<div class="line"><strong>Material assumptions:</strong></div>
-<div class="line">- <em>Density</em>: 2400 kg/m<sup>3</sup></div>
-<div class="line">- <em>Elastic modulus</em>: Interpolated from Table 3.1.2</div>
-<div class="line">- <em>Service stress-strain profile</em>: Linear with no tension, compressive strength
-at 0.9 * f’c</div>
-<div class="line">- <em>Ultimate stress-strain profile</em>: Rectangular stress block, parameters from
-Cl. 8.1.3</div>
-<div class="line">- <em>Alpha squash</em>: From Cl. 10.6.2.2</div>
-<div class="line">- <em>Flexural tensile strength</em>: From Cl. 3.1.1.3</div>
+<div class="admonition-material-assumptions admonition">
+<p class="admonition-title">Material assumptions</p>
+<ul class="simple">
+<li><p><em>Density</em>: 2400 kg/m<sup>3</sup></p></li>
+<li><p><em>Elastic modulus</em>: Interpolated from Table 3.1.2</p></li>
+<li><p><em>Service stress-strain profile</em>: Linear with no tension, compressive
+strength at <span class="math notranslate nohighlight">\(0.9f'_c\)</span></p></li>
+<li><p><em>Ultimate stress-strain profile</em>: Rectangular stress block, parameters from
+Cl. 8.1.3</p></li>
+<li><p><em>Alpha squash</em>: From Cl. 10.6.2.2</p></li>
+<li><p><em>Flexural tensile strength</em>: From Cl. 3.1.1.3</p></li>
+</ul>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -575,11 +586,13 @@ concrete at 28 days in megapascals (MPa)</p></li>
 <dt class="sig sig-object py" id="concreteproperties.design_codes.as3600.AS3600.create_steel_material">
 <span class="sig-name descname"><span class="pre">create_steel_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ductility_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'grey'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/design_codes/as3600.html#AS3600.create_steel_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.design_codes.as3600.AS3600.create_steel_material" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a steel bar material object.</p>
-<div class="line-block">
-<div class="line"><strong>Material assumptions:</strong></div>
-<div class="line">- <em>Density</em>: 7850 kg/m<sup>3</sup></div>
-<div class="line">- <em>Elastic modulus</em>: 200,000 MPa</div>
-<div class="line">- <em>Stress-strain profile:</em> Elastic-plastic, fracture strain from Table 3.2.1</div>
+<div class="admonition-material-assumptions admonition">
+<p class="admonition-title">Material assumptions</p>
+<ul class="simple">
+<li><p><em>Density</em>: 7850 kg/m<sup>3</sup></p></li>
+<li><p><em>Elastic modulus</em>: 200000 MPa</p></li>
+<li><p><em>Stress-strain profile</em>: Elastic-plastic, fracture strain from Table 3.2.1</p></li>
+</ul>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
