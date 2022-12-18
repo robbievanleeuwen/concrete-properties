@@ -130,6 +130,7 @@ class NZS3101(DesignCode):
             defined concrete section, by default a normal nominal strength design check
             is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor` for
             further information on analysis types.
+        :raises ValueError: If analysis type is not valid
         :return: Returns the appropriate concrete section object for the analysis
             depending on the analysis type
         """
@@ -143,7 +144,7 @@ class NZS3101(DesignCode):
         elif analysis_type.lower() in ["prob_os_chk"]:
             analysis_section = self.prob_os_concrete_section
         else:
-            # ensure analysis_section is bound
+            # ensure analysis_type is bound
             raise ValueError(
                 f"The specified analysis type of '{analysis_type}' should be either "
                 f"'nom_chk', 'cpe_chk', 'os_chk', 'prob_chk' or 'prob_os_chk'"
@@ -358,6 +359,8 @@ class NZS3101(DesignCode):
             specified 28 day compressive strength of concrete to reflect the likely
             maximum material strength, defaults to an additional 15 MPa as per
             NZS3101:2006 CL 2.6.5.5(c)
+        :raises ValueError: If section type for the analysis of the concrete section is
+            not valid
         :return: Nominal, overstrength or probable concrete yield force (N) for the
             defined section/member type provided
         """
@@ -396,6 +399,13 @@ class NZS3101(DesignCode):
 
                 # calculate cumulative gross concrete force
                 force += concrete_area * compressive_strength
+            else:
+                # ensure section_type is bound
+                raise ValueError(
+                    f"The specified section type of '{self.section_type}' should be "
+                    f"either 'column', 'wall', 'wall_sr_s' or 'wall_sr_m' for a "
+                    f"{self.analysis_code} code analysis"
+                )
 
         return force
 
@@ -412,6 +422,8 @@ class NZS3101(DesignCode):
             section is required, then the material properties for concrete and lumped
             reinforcement are scaled to reflect the probable material strength
             properties
+        :raises ValueError: If concrete section contains a steel material that is not
+            :class:`NZS3101.SteelBarNZ`
         :return: Nominal, overstrength or probable steel yield force (N)
         """
         # Retrieve predefined names of probable strength based materials
@@ -424,7 +436,7 @@ class NZS3101(DesignCode):
         for steel_geom in self.concrete_section.reinf_geometries_lumped:
             # check all materials are SteelBarNZ, else following code will fail
             if not isinstance(steel_geom.material, self.SteelBarNZ):
-                raise ValueError("Material must be a SteelBarNZ.")
+                raise ValueError("Material must be a SteelBarNZ")
 
             # calculate reinforcement area & yield strength & steel_grade
             steel_area = steel_geom.calculate_area()
@@ -544,9 +556,6 @@ class NZS3101(DesignCode):
             # Calculate maximum axial compression strength for a singly reinf wall
             # member about minor axis
             max_comp = 0.06 * conc_capacity
-        else:
-            # ensure max_comp is bound
-            raise ValueError("section_type invalid.")
 
         return max_comp
 
@@ -626,6 +635,8 @@ class NZS3101(DesignCode):
         .. note:: Note this check does not apply to predefined steel materials based on
             probable strength properties.
 
+        :raises ValueError: If concrete section contains a steel material that is not
+            :class:`NZS3101.SteelBarNZ`
         :raises ValueError: If characteristic steel reinforcement yield strength is
             greater than the 500MPa limit in NZS3101:2006 CL 5.3.3
         """
@@ -639,7 +650,7 @@ class NZS3101(DesignCode):
         for steel_geom in self.concrete_section.reinf_geometries_lumped:
             # check all materials are SteelBarNZ, else following code will fail
             if not isinstance(steel_geom.material, self.SteelBarNZ):
-                raise ValueError("Material must be a SteelBarNZ.")
+                raise ValueError("Material must be a SteelBarNZ")
 
             # calculate defined steel grade & yield strength
             steel_grade = steel_geom.material.steel_grade
@@ -1218,6 +1229,8 @@ class NZS3101(DesignCode):
                 checks in accordance with the NZSEE C5 assessment guidelines.
 
         :raises ValueError: If analysis type is not valid
+        :raises ValueError: If concrete section contains a steel material that is not
+            :class:`NZS3101.SteelBarNZ`
         :raises Exception: If a characteristic strength based analysis is specified, but
             a predefined probable strength based steel grade has been specified.
             Undertaking a non NZSEE C5 assessment guidelines analysis on a probable
@@ -1268,7 +1281,7 @@ class NZS3101(DesignCode):
         for steel_geom in self.concrete_section.reinf_geometries_lumped:
             # check all materials are SteelBarNZ, else following code will fail
             if not isinstance(steel_geom.material, self.SteelBarNZ):
-                raise ValueError("Material must be a SteelBarNZ.")
+                raise ValueError("Material must be a SteelBarNZ")
 
             if (
                 analysis_type.lower() in ["nom_chk", "cpe_chk", "os_chk"]
@@ -1304,6 +1317,8 @@ class NZS3101(DesignCode):
             specified 28 day compressive strength of concrete to reflect the likely
             maximum material strength, defaults to an additional 15 MPa as per
             NZS3101:2006 CL 2.6.5.5(c)
+        :raises ValueError: If concrete section contains a steel material that is not
+            :class:`NZS3101.SteelBarNZ`
         :return: Returns a concrete section with material strengths modified to reflect
             likely maximum material strengths to enable an overstrength based analysis
             to be undertaken
@@ -1340,7 +1355,7 @@ class NZS3101(DesignCode):
         for steel_geom in os_concrete_section.reinf_geometries_lumped:
             # check all materials are SteelBarNZ, else following code will fail
             if not isinstance(steel_geom.material, self.SteelBarNZ):
-                raise ValueError("Material must be a SteelBarNZ.")
+                raise ValueError("Material must be a SteelBarNZ")
 
             # retrieve previous nominal/characteristic material properties
             prev_steel_grade = steel_geom.material.steel_grade
@@ -1380,6 +1395,8 @@ class NZS3101(DesignCode):
             reinforcement are scaled to reflect the probable overstrength material
             strength properties, defaults to False which only scales the material
             properties for concrete to reflec tthe probable material strength properties
+        :raises ValueError: If concrete section contains a steel material that is not
+            :class:`NZS3101.SteelBarNZ`
         :return: Returns a concrete section with material strengths modified to reflect
             probable material strengths or probable overstrength material strengths, to
             enable a probable strength or probable overstrength based analysis
@@ -1430,7 +1447,7 @@ class NZS3101(DesignCode):
         for steel_geom in prob_concrete_section.reinf_geometries_lumped:
             # check all materials are SteelBarNZ, else following code will fail
             if not isinstance(steel_geom.material, self.SteelBarNZ):
-                raise ValueError("Material must be a SteelBarNZ.")
+                raise ValueError("Material must be a SteelBarNZ")
 
             # retrieve previous nominal/characteristic material properties
             prev_steel_grade = steel_geom.material.steel_grade

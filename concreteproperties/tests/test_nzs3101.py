@@ -7,7 +7,7 @@ from sectionproperties.pre.library.concrete_sections import concrete_rectangular
 import concreteproperties.stress_strain_profile as ssp
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.design_codes.nzs3101 import NZS3101
-from concreteproperties.material import Concrete, Steel
+from concreteproperties.material import Concrete, Steel, SteelBar
 
 
 def create_dummy_section(design_code, prob_section=False, section_type="column"):
@@ -1041,6 +1041,22 @@ def test_nzs3101_max_comp_strength(analysis_type, section_type, rel_tol, calc_va
 
 
 @pytest.mark.parametrize(
+    "section_type",
+    [
+        ("this_is_not_a_valid_section_type"),
+    ],
+)
+def test_nzs3101_max_comp_strength_valueerror(section_type):
+    design_code = NZS3101()
+    create_dummy_section(design_code)
+    design_code.section_type = section_type
+
+    # raises ValueError in concrete_capacity()
+    with pytest.raises(ValueError):
+        design_code.max_comp_strength()
+
+
+@pytest.mark.parametrize(
     "analysis_type, rel_tol, calc_value",
     [
         ("nom_chk", 0.1, 1570796.33),
@@ -1289,3 +1305,64 @@ def test_nzs3101_biaxial_bending_diagram(
     assert pytest.approx(m_y_list[2] / 1e6, rel=0.001) == 0
     assert pytest.approx(m_x_list[3] / 1e6, rel=0.001) == 0
     assert pytest.approx(m_y_list[3] / 1e6, rel=0.001) == -phi_Mn
+
+
+def test_nzs3101_create_section_with_non_SteelBarNZ_material():
+    design_code = NZS3101()
+    # create concrete material
+    concrete = Concrete(
+        name="50 MPa Concrete",
+        density=2300,
+        stress_strain_profile=ssp.ConcreteLinearNoTension(
+            elastic_modulus=design_code.e_conc(50),
+            ultimate_strain=0.003,
+            compressive_strength=50,
+        ),
+        ultimate_stress_strain_profile=ssp.RectangularStressBlock(
+            compressive_strength=50,
+            alpha=design_code.alpha_1(50),
+            gamma=design_code.beta_1(50),
+            ultimate_strain=0.003,
+        ),
+        flexural_tensile_strength=design_code.concrete_tensile_strength(50),
+        colour="lightgrey",
+    )
+
+    # create non SteelBarNZ steel material
+    steel = SteelBar(
+        name="Meshed Steel",
+        density=7850,
+        stress_strain_profile=ssp.SteelElasticPlastic(
+            yield_strength=300,
+            elastic_modulus=200e3,
+            fracture_strain=0.05,
+        ),
+        colour="red",
+    )
+
+    # create concrete section
+    conc = sp_ps.rectangular_section(d=1000, b=1000, material=concrete)  # type: ignore
+
+    # create UC section from SteelBar material and centre to concrete section
+    uc = sp_ss.i_section(
+        d=308,
+        b=305,
+        t_f=15.4,
+        t_w=9.9,
+        r=16.5,
+        n_r=8,
+        material=steel,  # type: ignore
+    ).align_center(align_to=conc)
+
+    # create geometry
+    geom = conc - uc + uc  # type: ignore
+
+    concrete_section = ConcreteSection(geom)
+    design_code.concrete_section = concrete_section
+
+    with pytest.raises(ValueError):
+        design_code.create_os_section()
+        design_code.create_prob_section()
+        design_code.capacity_reduction_factor(analysis_type="nom_chk")
+        design_code.check_f_y_limit()
+        design_code.steel_capacity()
