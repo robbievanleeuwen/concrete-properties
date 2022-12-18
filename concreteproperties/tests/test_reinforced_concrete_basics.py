@@ -12,7 +12,8 @@ from concreteproperties.stress_strain_profile import (
 from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
 
 # All examples come from:
-# Warner, R. F., Foster, S. J., & Kilpatrick, A. E. (2007). Reinforced Concrete Basics (1st ed.). Pearson Australia.
+# Warner, R. F., Foster, S. J., & Kilpatrick, A. E. (2007). Reinforced Concrete Basics
+# (1st ed.). Pearson Australia.
 
 
 def test_example_3_1():

@@ -105,7 +105,7 @@ class ConcreteSection:
         if geometric_centroid_override:
             self.moment_centroid = self.gross_properties.cx, self.gross_properties.cy
 
-    def calculate_gross_area_properties(self) -> None:       
+    def calculate_gross_area_properties(self) -> None:
         """Calculates and stores gross section area properties."""
 
         # loop through all geometries
