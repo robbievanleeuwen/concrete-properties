@@ -1359,10 +1359,15 @@ def test_nzs3101_create_section_with_non_SteelBarNZ_material():
 
     concrete_section = ConcreteSection(geom)
     design_code.concrete_section = concrete_section
+    design_code.section_type = "column"
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Material must be a SteelBarNZ"):
         design_code.create_os_section()
+    with pytest.raises(ValueError, match="Material must be a SteelBarNZ"):
         design_code.create_prob_section()
+    with pytest.raises(ValueError, match="Material must be a SteelBarNZ"):
         design_code.capacity_reduction_factor(analysis_type="nom_chk")
+    with pytest.raises(ValueError, match="Material must be a SteelBarNZ"):
         design_code.check_f_y_limit()
+    with pytest.raises(ValueError, match="Material must be a SteelBarNZ"):
         design_code.steel_capacity()
