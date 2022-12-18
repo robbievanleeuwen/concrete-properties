@@ -42,3 +42,10 @@ Conventions
 * Compressive stresses are positive, tensile stresses area negative
 * Angles are measured in radians and are positive counter clockwise from the positive
   ``x`` axis
+
+Prestressed Analysis
+--------------------
+
+* All prestressing strands are fully bonded to the concrete
+* Internal actions arising from prestressing forces are automatically included in all
+  analyses

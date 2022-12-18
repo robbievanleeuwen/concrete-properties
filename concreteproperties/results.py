@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, List, Optional, Tuple
+from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
 import matplotlib.cm as cm
 import matplotlib.patches as mpatches
@@ -271,7 +271,7 @@ class CrackedResults:
     theta: float
     n: float = 0
     m: float = 0
-    m_cr: float = 0
+    m_cr: Union[float, Tuple[float, float]] = 0
     d_nc: float = 0
     cracked_geometries: List[CPGeom] = field(default_factory=list, repr=False)
     e_a_cr: float = 0
@@ -381,19 +381,20 @@ class CrackedResults:
         table.add_column("Value", justify="right", style="green")
 
         table.add_row("theta", "{:>{fmt}}".format(self.theta, fmt=fmt))
-
-        if self.n:
-            table.add_row("n", "{:>{fmt}}".format(self.n, fmt=fmt))
-
-        if self.m:
-            table.add_row("m", "{:>{fmt}}".format(self.m, fmt=fmt))
+        table.add_row("n", "{:>{fmt}}".format(self.n, fmt=fmt))
+        table.add_row("m", "{:>{fmt}}".format(self.m, fmt=fmt))
 
         if self.elastic_modulus_ref:
             table.add_row(
                 "E_ref", "{:>{fmt}}".format(self.elastic_modulus_ref, fmt=fmt)
             )
 
-        table.add_row("M_cr", "{:>{fmt}}".format(self.m_cr, fmt=fmt))
+        if isinstance(self.m_cr, tuple):
+            table.add_row("M_cr_pos", "{:>{fmt}}".format(self.m_cr[0], fmt=fmt))
+            table.add_row("M_cr_neg", "{:>{fmt}}".format(self.m_cr[1], fmt=fmt))
+        else:
+            table.add_row("M_cr", "{:>{fmt}}".format(self.m_cr, fmt=fmt))
+
         table.add_row("d_nc", "{:>{fmt}}".format(self.d_nc, fmt=fmt))
 
         if self.a_cr:

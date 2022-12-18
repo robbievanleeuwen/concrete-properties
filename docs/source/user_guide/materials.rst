@@ -32,7 +32,8 @@ The :class:`~concreteproperties.material.SteelBar` class has meshing disabled by
 and should be used when defining steel reinforcement. On the other hand, the
 :class:`~concreteproperties.material.Steel` class is meshed by default so should be used
 when defining larger sections such as strucutral steel sections used in composite
-sections.
+sections. The :class:`~concreteproperties.material.SteelStrand` class also has meshing
+disabled by default and should be used when defining prestressing strands.
 
 
 Material
@@ -60,6 +61,13 @@ SteelBar
 ^^^^^^^^
 
 ..  autoclass:: concreteproperties.material.SteelBar
+  :noindex:
+
+
+SteelStrand
+^^^^^^^^^^^
+
+..  autoclass:: concreteproperties.material.SteelStrand
   :noindex:
 
 
@@ -359,4 +367,70 @@ Elastic-Plastic Hardening Steel Profile
     elastic_modulus=200e3,
     fracture_strain=0.05,
     ultimate_strength=600,
+  ).plot_stress_strain()
+
+
+Strand Stress-Strain Profiles
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Generic Strand Profile
+""""""""""""""""""""""
+
+..  autoclass:: concreteproperties.stress_strain_profile.StrandProfile
+  :noindex:
+  :show-inheritance:
+
+.. plot::
+  :include-source: True
+  :caption: StrandProfile Stress-Strain Profile
+
+  from concreteproperties.stress_strain_profile import StrandProfile
+
+  StrandProfile(
+    strains=[-0.03, -0.01, -1400 / 195e3, 0, 1400 / 195e3, 0.01, 0.03],
+    stresses=[-1800, -1600, -1400, 0, 1400, 1600, 1800],
+    yield_strength=500,
+  ).plot_stress_strain()
+
+
+Elastic-Plastic Hardening Strand Profile
+""""""""""""""""""""""""""""""""""""""""
+
+..  autoclass:: concreteproperties.stress_strain_profile.StrandHardening
+  :noindex:
+  :show-inheritance:
+
+.. plot::
+  :include-source: True
+  :caption: StrandHardening Stress-Strain Profile
+
+  from concreteproperties.stress_strain_profile import StrandHardening
+
+  StrandHardening(
+    yield_strength=1500,
+    elastic_modulus=195e3,
+    fracture_strain=0.035,
+    breaking_strength=1830,
+  ).plot_stress_strain()
+
+
+PCI Journal (1992) Strand Profile
+"""""""""""""""""""""""""""""""""
+
+..  autoclass:: concreteproperties.stress_strain_profile.StrandPCI1992
+  :noindex:
+  :show-inheritance:
+
+.. plot::
+  :include-source: True
+  :caption: StrandPCI1992 Stress-Strain Profile
+
+  from concreteproperties.stress_strain_profile import StrandPCI1992
+
+  StrandPCI1992(
+    yield_strength=1500,
+    elastic_modulus=195e3,
+    fracture_strain=0.035,
+    breaking_strength=1830,
   ).plot_stress_strain()

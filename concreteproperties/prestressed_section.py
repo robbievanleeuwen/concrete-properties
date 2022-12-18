@@ -18,10 +18,15 @@ from concreteproperties.pre import CPGeom, CPGeomConcrete
 class PrestressedSection(ConcreteSection):
     """Class for a prestressed concrete section.
 
-    Note that the section must be symmetric about its vertical (``y``) axis and all
-    bending is assumed to be about the ``x`` axis.
+    .. note::
 
-    The only meshed geometries that are permitted are concrete geometries.
+        Prestressed concrete sections analysed in ``concreteproperties`` must be
+        symmetric about their vertical (``y``) axis, with all flexure assumed to be
+        about the ``x`` axis.
+
+    .. warning::
+
+        The only meshed geometries that are permitted are concrete geometries.
     """
 
     def __init__(
@@ -83,8 +88,11 @@ class PrestressedSection(ConcreteSection):
         """Calculates cracked section properties given an axial loading and bending
         moment.
 
-        :param n_ext: External axial force
         :param m_ext: External bending moment
+        :param n_ext: External axial force
+
+        :raises ValueError: If the provided loads do not result in tension within the
+            concrete
 
         :return: Cracked results object
         """
@@ -97,10 +105,19 @@ class PrestressedSection(ConcreteSection):
         )
 
         # calculate cracking moment
-        cracked_results.m_cr = self.calculate_cracking_moment(
+        m_cr_pos = self.calculate_cracking_moment(
             n=self.gross_properties.n_prestress + n_ext,
             m_int=self.gross_properties.m_prestress,
+            positive=True,
         )
+
+        m_cr_neg = self.calculate_cracking_moment(
+            n=self.gross_properties.n_prestress + n_ext,
+            m_int=self.gross_properties.m_prestress,
+            positive=False,
+        )
+
+        cracked_results.m_cr = (m_cr_pos, -m_cr_neg)
 
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
@@ -123,8 +140,9 @@ class PrestressedSection(ConcreteSection):
                 disp=False,
             )
         except ValueError:
-            msg = "Analysis failed. Please raise an issue at "
-            msg += "https://github.com/robbievanleeuwen/concrete-properties/issues"
+            msg = "Analysis failed, section contains no tension. Please provide a "
+            msg += "combination of m_ext and n_ext that results in a tensile stress "
+            msg += "within the section when combined with the prestressing actions."
             raise utils.AnalysisError(msg)
 
         return cracked_results
@@ -133,15 +151,21 @@ class PrestressedSection(ConcreteSection):
         self,
         n: float,
         m_int: float,
+        positive: bool,
     ) -> float:
         """Calculates the cracking moment given an axial load ``n`` and internal bending
         moment ``m_int``.
 
         :param n: Axial load
         :param m_int: Internal bending moment
+        :param positive: If set to True, determines the cracking moment for positive
+            bending, otherwise determines the cracking moment for negative bending
 
         :return: Cracking moment
         """
+
+        # determine theta
+        theta = 0 if positive else np.pi
 
         # get centroidal second moments of area
         e_ixx = self.gross_properties.e_ixx_c
@@ -154,9 +178,9 @@ class PrestressedSection(ConcreteSection):
             d = utils.calculate_max_bending_depth(
                 points=conc_geom.points,
                 c_local_v=utils.global_to_local(
-                    theta=0, x=self.gross_properties.cx, y=self.gross_properties.cy
+                    theta=theta, x=self.gross_properties.cx, y=self.gross_properties.cy
                 )[1],
-                theta=0,
+                theta=theta,
             )
 
             # if no part of the section is in tension, go to next geometry
@@ -169,7 +193,10 @@ class PrestressedSection(ConcreteSection):
             f_r = f_t + f_n
 
             # cracking moment for this geometry
-            m_c_geom = (f_r / conc_geom.material.elastic_modulus) * (e_ixx / d) - m_int
+            m_int_sign = -1 if positive else 1
+            m_c_geom = (f_r / conc_geom.material.elastic_modulus) * (
+                e_ixx / d
+            ) + m_int_sign * m_int
 
             # if we are the first geometry, initialise cracking moment
             if idx == 0:
@@ -195,9 +222,15 @@ class PrestressedSection(ConcreteSection):
         :return: Cracked neutral axis convergence
         """
 
+        # determine hogging or sagging
+        if cracked_results.m + self.gross_properties.m_prestress > 0:
+            theta = 0
+        else:
+            theta = np.pi
+
         # calculate extreme fibre in global coordinates
         extreme_fibre, d_t = utils.calculate_extreme_fibre(
-            points=self.compound_geometry.points, theta=0
+            points=self.compound_geometry.points, theta=theta
         )
 
         # validate d_nc input
@@ -208,14 +241,14 @@ class PrestressedSection(ConcreteSection):
 
         # find point on neutral axis by shifting by d_nc
         point_na = utils.point_on_neutral_axis(
-            extreme_fibre=extreme_fibre, d_n=d_nc, theta=0
+            extreme_fibre=extreme_fibre, d_n=d_nc, theta=theta
         )
 
         # split concrete geometries above and below d_nc, discard below
         cracked_geoms: List[Union[CPGeomConcrete, CPGeom]] = []
 
         for conc_geom in self.concrete_geometries:
-            top_geoms, _ = conc_geom.split_section(point=point_na, theta=0)
+            top_geoms, _ = conc_geom.split_section(point=point_na, theta=theta)
 
             # save compression geometries
             cracked_geoms.extend(top_geoms)
@@ -238,6 +271,7 @@ class PrestressedSection(ConcreteSection):
 
     def moment_curvature_analysis(
         self,
+        positive: bool = True,
         n: float = 0,
         kappa_inc: float = 1e-7,
         kappa_mult: float = 2,
@@ -250,6 +284,9 @@ class PrestressedSection(ConcreteSection):
 
         Analysis continues until a material reaches its ultimate strain.
 
+        :param positive: If set to True, performs the moment curvature analysis for
+            positive bending, otherwise performs the moment curvature analysis for
+            negative bending
         :param n: Axial force
         :param kappa_inc: Initial curvature increment
         :param kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
@@ -265,10 +302,13 @@ class PrestressedSection(ConcreteSection):
         :return: Moment curvature results object
         """
 
+        # determine theta
+        theta = 0 if positive else np.pi
+
         # determine initial curvature that gives zero moment
         def find_intial_curvature(kappa0):
             # initialise moment curvature result
-            mk_res = res.MomentCurvatureResults(theta=0, n_target=n)
+            mk_res = res.MomentCurvatureResults(theta=theta, n_target=n)
 
             # find neutral axis that gives convergence of axial force
             brentq(
@@ -285,7 +325,7 @@ class PrestressedSection(ConcreteSection):
         kappa0 = root_scalar(f=find_intial_curvature, x0=0, x1=-1e-6)
 
         return super().moment_curvature_analysis(
-            theta=0,
+            theta=theta,
             n=n,
             kappa0=kappa0.root,
             kappa_inc=kappa_inc,
@@ -295,6 +335,27 @@ class PrestressedSection(ConcreteSection):
             delta_m_max=delta_m_max,
             progress_bar=progress_bar,
         )
+
+    def ultimate_bending_capacity(
+        self,
+        positive: bool = True,
+        n: float = 0,
+    ) -> res.UltimateBendingResults:
+        """Given axial force ``n``, calculates the ultimate bending capacity.
+
+        Note that ``k_u`` is calculated only for lumped (non-meshed) geometries.
+
+        :param positive: If set to True, calculates the positive bending capacity,
+            otherwise calculates the negative bending capacity.
+        :param n: Net axial force
+
+        :return: Ultimate bending results object
+        """
+
+        # determine theta
+        theta = 0 if positive else np.pi
+
+        return super().ultimate_bending_capacity(theta=theta, n=n)
 
     def moment_interaction_diagram(self):
         raise NotImplementedError

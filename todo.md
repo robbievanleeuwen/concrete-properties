@@ -1,8 +1,11 @@
-# POST-RELEASE ITEMS
-- [ ] Add prestressing
+# Todo List
+
+## POST-RELEASE ITEMS
+
 - [ ] More tests!
 
-# Version Instructions
+## Changing Version Instructions
+
 1. Change version in __init__.py
 2. Update switcher.json
 3. Push to github & create release (wait for actions to complete)

@@ -108,7 +108,12 @@ class SteelStrand(Steel):
 
     .. note::
 
-      The stramd is assumed to be bonded to the conrete.
+      A :class:`~concreteproperties.stress_strain_profile.StrandProfile` must be used
+      if using a :class:`~concreteproperties.material.SteelStrand` object.
+
+    .. note::
+
+      The strand is assumed to be bonded to the concrete.
 
     :param name: Steel strand material name
     :param density: Steel strand density (mass per unit volume)

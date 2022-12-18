@@ -15,4 +15,5 @@ The following examples complement the structured documentation presented thus fa
    notebooks/biaxial_bending
    notebooks/stress_analysis
    notebooks/composite_section
+   notebooks/prestressed_section
    notebooks/as3600

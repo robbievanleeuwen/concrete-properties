@@ -931,9 +931,9 @@ class StrandPCI1992(StrandProfile):
     :param breaking_strength: Strand breaking strength
     :param bilinear_yield_ratio: Ratio between the stress at the intersection of a
         bilinear profile, and the yield strength
-    :param strain_cps: Additional strain control points, generates the following strain
-        segments: ``[0, strain_cps[0], strain_cps[1], fracture_strain]``. Length must be
-        equal to 2.
+    :param strain_cps: Strain control points, generates the following strain segments:
+        ``[0, strain_cps[0], strain_cps[1], fracture_strain]``. Length must be equal to
+        2.
     :param n_points: Number of points to discretise within each strain segment. Length
         must be equal to 3.
     """
