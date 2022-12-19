@@ -245,6 +245,7 @@ def test_example_5_7():
     # check initial curvature
     assert pytest.approx(mk_res.kappa[0], rel=1e-3) == -0.702e-6
 
+
 def test_example_6_1_2_3():
     # create materials
     concrete = Concrete(
@@ -339,6 +340,7 @@ def test_example_6_1_2_3():
     assert pytest.approx(ult_res_3.d_n, rel=1.5e-2) == 225
     assert pytest.approx(ult_res_3.m_x, rel=1e-2) == 1422e6
 
+
 def test_example_6_9():
     # create materials
     concrete = Concrete(
@@ -380,7 +382,7 @@ def test_example_6_9():
         control_points=[[0, 375]],
     ).shift_section(x_offset=-600)
     beam_r = beam_l.shift_section(x_offset=1200)
-    
+
     geom = slab + beam_l + beam_r
     geom.create_mesh(mesh_sizes=[0, 0, 0])
     gross_sec = Section(geom)

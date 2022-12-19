@@ -1125,6 +1125,7 @@ class StressResult:
     strand_stresses: List[float] = field(default_factory=list)
     strand_strains: List[float] = field(default_factory=list)
     strand_forces: List[Tuple[float, float, float]] = field(default_factory=list)
+    _m_net: Optional[float] = field(default=None, repr=False)
 
     def plot_stress(
         self,

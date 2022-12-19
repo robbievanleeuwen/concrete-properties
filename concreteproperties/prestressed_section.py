@@ -103,6 +103,15 @@ class PrestressedSection(ConcreteSection):
         :return: Cracked results object
         """
 
+        # check there is tension in the section
+        uncr_stress = self.calculate_uncracked_stress(n=n_ext, m=m_ext)
+
+        if uncr_stress.get_concrete_stress_limits()[0] > 0:
+            msg = "Analysis failed, section contains no tension. Please provide a "
+            msg += "combination of m_ext and n_ext that results in a tensile stress "
+            msg += "within the section when combined with the prestressing actions."
+            raise utils.AnalysisError(msg)
+
         # initialise cracked results object
         cracked_results = res.CrackedResults(
             theta=0,
@@ -146,9 +155,8 @@ class PrestressedSection(ConcreteSection):
                 disp=False,
             )
         except ValueError:
-            msg = "Analysis failed, section contains no tension. Please provide a "
-            msg += "combination of m_ext and n_ext that results in a tensile stress "
-            msg += "within the section when combined with the prestressing actions."
+            msg = "Analysis failed. Please raise an issue at "
+            msg += "https://github.com/robbievanleeuwen/concrete-properties/issues"
             raise utils.AnalysisError(msg)
 
         return cracked_results
@@ -178,8 +186,9 @@ class PrestressedSection(ConcreteSection):
 
         # loop through all concrete geometries to find lowest cracking moment
         m_c = 0
+        valid_geom_count = 0
 
-        for idx, conc_geom in enumerate(self.concrete_geometries):
+        for conc_geom in self.concrete_geometries:
             # get distance from centroid to extreme tensile fibre
             d = utils.calculate_max_bending_depth(
                 points=conc_geom.points,
@@ -205,11 +214,13 @@ class PrestressedSection(ConcreteSection):
             ) + m_int_sign * m_int
 
             # if we are the first geometry, initialise cracking moment
-            if idx == 0:
+            if valid_geom_count == 0:
                 m_c = m_c_geom
             # otherwise take smaller cracking moment
             else:
                 m_c = min(m_c, m_c_geom)
+
+            valid_geom_count += 1
 
         return m_c
 
@@ -228,47 +239,56 @@ class PrestressedSection(ConcreteSection):
         :return: Cracked neutral axis convergence
         """
 
-        # determine hogging or sagging
-        if cracked_results.m + self.gross_properties.m_prestress > 0:
+        # guess hogging or sagging
+        m_net_guess = cracked_results.m + self.gross_properties.m_prestress
+
+        if m_net_guess > 0:
             theta = 0
         else:
             theta = np.pi
 
-        # calculate extreme fibre in global coordinates
-        extreme_fibre, d_t = utils.calculate_extreme_fibre(
-            points=self.compound_geometry.points, theta=theta
-        )
+        def calc_min_stress():
+            # calculate extreme fibre in global coordinates
+            extreme_fibre, d_t = utils.calculate_extreme_fibre(
+                points=self.compound_geometry.points, theta=theta
+            )
 
-        # validate d_nc input
-        if d_nc <= 0:
-            raise ValueError("d_nc must be positive.")
-        elif d_nc > d_t:
-            raise ValueError("d_nc must lie within the section, i.e. d_nc <= d_t")
+            # find point on neutral axis by shifting by d_nc
+            point_na = utils.point_on_neutral_axis(
+                extreme_fibre=extreme_fibre, d_n=d_nc, theta=theta
+            )
 
-        # find point on neutral axis by shifting by d_nc
-        point_na = utils.point_on_neutral_axis(
-            extreme_fibre=extreme_fibre, d_n=d_nc, theta=theta
-        )
+            # split concrete geometries above and below d_nc, discard below
+            cracked_geoms: List[Union[CPGeomConcrete, CPGeom]] = []
 
-        # split concrete geometries above and below d_nc, discard below
-        cracked_geoms: List[Union[CPGeomConcrete, CPGeom]] = []
+            for conc_geom in self.concrete_geometries:
+                top_geoms, _ = conc_geom.split_section(point=point_na, theta=theta)
 
-        for conc_geom in self.concrete_geometries:
-            top_geoms, _ = conc_geom.split_section(point=point_na, theta=theta)
+                # save compression geometries
+                cracked_geoms.extend(top_geoms)
 
-            # save compression geometries
-            cracked_geoms.extend(top_geoms)
+            # add reinforcement geometries to list
+            cracked_geoms.extend(self.reinf_geometries_lumped)
+            cracked_geoms.extend(self.strand_geometries)
 
-        # add reinforcement geometries to list
-        cracked_geoms.extend(self.reinf_geometries_lumped)
-        cracked_geoms.extend(self.strand_geometries)
+            # save cracked geometries and calculate properties
+            cracked_results.cracked_geometries = cracked_geoms
+            self.cracked_section_properties(cracked_results=cracked_results)
 
-        # save cracked geometries and calculate properties
-        cracked_results.cracked_geometries = cracked_geoms
-        self.cracked_section_properties(cracked_results=cracked_results)
+            # conduct cracked stress analysis
+            return self.calculate_cracked_stress(cracked_results=cracked_results)
 
-        # conduct cracked stress analysis
-        cr_stress_res = self.calculate_cracked_stress(cracked_results=cracked_results)
+        cr_stress_res = calc_min_stress()
+
+        # check _m_net exists
+        if cr_stress_res._m_net:
+            m_net = cr_stress_res._m_net
+            # if we guess the bending direction wrong
+            if m_net > 0 and m_net_guess < 0 or m_net < 0 and m_net_guess > 0:
+                # change bending direction
+                theta -= np.pi
+
+                cr_stress_res = calc_min_stress()
 
         # get minimum concrete stress is zero
         min_stress, _ = cr_stress_res.get_concrete_stress_limits()
@@ -635,6 +655,7 @@ class PrestressedSection(ConcreteSection):
             strand_stresses=strand_sigs,
             strand_strains=strand_strains,
             strand_forces=strand_forces,
+            _m_net=m_net,
         )
 
     def calculate_service_stress(
