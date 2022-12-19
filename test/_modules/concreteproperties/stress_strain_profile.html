@@ -5,31 +5,32 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>concreteproperties.stress_strain_profile &#8212; concreteproperties 0.3.1 documentation</title>
-  <script>
+    <title>concreteproperties.stress_strain_profile &#8212; concreteproperties 0.4.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -51,6 +52,10 @@
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -124,32 +129,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../user_guide.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user_guide.html">
                         User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../examples.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../examples.html">
                         Examples
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../api.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
                         API Reference
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -158,19 +163,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
   <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
-    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -205,11 +212,13 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
   <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
@@ -239,32 +248,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../user_guide.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user_guide.html">
                         User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../examples.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../examples.html">
                         Examples
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../api.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
                         API Reference
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -278,11 +287,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
-    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -324,8 +333,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -343,13 +355,14 @@
 
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
 <span class="kn">from</span> <span class="nn">rich.table</span> <span class="kn">import</span> <span class="n">Table</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">brentq</span>
 
 <span class="kn">from</span> <span class="nn">concreteproperties.post</span> <span class="kn">import</span> <span class="n">plotting_context</span>
 
@@ -798,6 +811,368 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conc_stress</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="ModifiedMander"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.ModifiedMander">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ModifiedMander</span><span class="p">(</span><span class="n">ConcreteServiceProfile</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class for a non-linear stress-strain relationship based on the Mander</span>
+<span class="sd">    stress-strain model for confined &amp; unconfined concrete for a rectangular cross</span>
+<span class="sd">    section. Intended for use with moment-curvature analyses with rectangular or</span>
+<span class="sd">    circular cross sections.</span>
+
+<span class="sd">    Refer to references [1]_ [2]_ [3]_ for further information on the Mander</span>
+<span class="sd">    stress-strain models for confined and unconfined concrete.</span>
+
+<span class="sd">    This stress strain relationship has been specifically modified for use as per the</span>
+<span class="sd">    modified implementation documented within the NZSEE C5 assessment guidelines.</span>
+<span class="sd">    However input parameters can also be customised to suit other implementations if</span>
+<span class="sd">    desired.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">      Optional input variables are only required for defining a confined concrete</span>
+<span class="sd">      stress-strain relationship. Note if any variables are missed when attempting to</span>
+<span class="sd">      define a confined concrete stress-strain relationship (using</span>
+<span class="sd">      ``conc_confined=True``), then the material will default to being defined as an</span>
+<span class="sd">      unconfined concrete stress-strain relationship with a warning given.</span>
+
+<span class="sd">    .. admonition:: Modifications to Mander confined concrete model:-</span>
+
+<span class="sd">      The original formulation of the expression for confined concrete presented by</span>
+<span class="sd">      Mander et al. [1]_ can predict high levels of confined concrete strain dependant</span>
+<span class="sd">      on the assumed value for the ultimate steel strain for the transverse</span>
+<span class="sd">      reinforcement. The modified expression given the NZSEE C5 assesment guidelines</span>
+<span class="sd">      [3]_ provides a correction and is directly implemented in the</span>
+<span class="sd">      :class:`ModifiedMander` material class.</span>
+
+<span class="sd">      These corrections to avoid overestimating the confined concrete limiting strain</span>
+<span class="sd">      consist of three allowances:-</span>
+
+<span class="sd">      - Modifying the maximum steel strain by a factor of 0.6:-</span>
+
+<span class="sd">        - :math:`\varepsilon_{s,max}= 0.6\varepsilon_{su} \leq 0.06`</span>
+
+<span class="sd">        - Note this 0.6 modifier can be altered via the ``n_steel_strain`` parameter.</span>
+
+<span class="sd">        - Note the steel material used for reinforcement is also required to be defined</span>
+<span class="sd">          with this same limiting fracture strain for a moment-curvature analysis.</span>
+
+<span class="sd">      - Modifying the volumetric ratio of confinement reinforcement by a factor of</span>
+<span class="sd">        0.75. i.e.:-</span>
+
+<span class="sd">        - For rectangular sections</span>
+
+<span class="sd">          - :math:`\displaystyle{\rho_{st}=\frac{0.75}{s}\left[\frac{A_{v,d}}</span>
+<span class="sd">            {b_{core}}+\frac{A_{v,b}}{d_{core}}\right]}`</span>
+
+<span class="sd">        - For circular sections</span>
+
+<span class="sd">          - :math:`\displaystyle{\rho_{st}=\frac{0.75}{s}\frac{4A_v}{d_s}}`</span>
+
+<span class="sd">        - Note this 0.75 modifier can be altered via the ``n_confinement`` parameter.</span>
+
+<span class="sd">      - For confined concrete utilising a maximum concrete compressive strain of:-</span>
+
+<span class="sd">        - :math:`\displaystyle{\varepsilon_{c,max}=0.004+\frac{0.6\rho_{st}f_{yh}</span>
+<span class="sd">          \varepsilon_{su}}{f&#39;_{cc}}\leq0.05}`</span>
+
+<span class="sd">        - Note that the 0.6 factor applied to the ultimate tensile failure strain can</span>
+<span class="sd">          be modified as noted above.</span>
+
+<span class="sd">    .. plot:: ./_static/doc_plots/mander_unconfined_plot.py mander_unconfined_plot</span>
+<span class="sd">      :include-source: False</span>
+<span class="sd">      :caption: ModifiedMander Parameters for Unconfined Concrete</span>
+
+<span class="sd">    .. plot:: ./_static/doc_plots/mander_confined_plot.py mander_confined_plot</span>
+<span class="sd">      :include-source: False</span>
+<span class="sd">      :caption: ModifiedMander Parameters for Confined Concrete</span>
+
+<span class="sd">    .. [1] Theoretical Stress-Strain Model For Confined Concrete - Mander, Priestley,</span>
+<span class="sd">      Park (1988)</span>
+<span class="sd">    .. [2] Observed Stress-Strain Behavior of Confined Concrete - Mander, Priestley,</span>
+<span class="sd">      Park (1988)</span>
+<span class="sd">    .. [3] NZSEE C5 Assessment Guidelines - Part C5 - Concrete Buildings - Technical</span>
+<span class="sd">      Proposal to Revise the Engineering Assessment Guidelines (2018)</span>
+
+<span class="sd">    :param elastic_modulus: Concrete elastic modulus (:math:`E_c`)</span>
+<span class="sd">    :param compressive_strength: Concrete compressive strength (:math:`f&#39;_c`)</span>
+<span class="sd">    :param tensile_strength: Concrete tensile strength (:math:`f_t`)</span>
+<span class="sd">    :param sect_type: The type of concrete cross section for which to create a confined</span>
+<span class="sd">        concrete stress-strain relationship for:-</span>
+
+<span class="sd">        - **rect** = Rectangular section with closed stirrup/tie transverse</span>
+<span class="sd">          reinforcement</span>
+
+<span class="sd">        - **circ_hoop** = Circular section with closed hoop transverse reinforcement</span>
+
+<span class="sd">        - **circ_spiral** = Circular section with spiral transverse reinforcement</span>
+
+<span class="sd">    :param conc_confined: True to return a confined concrete stress-strain relationship</span>
+<span class="sd">        based on provided reinforcing parameters, False to return an unconfined concrete</span>
+<span class="sd">        stress-strain relationship</span>
+<span class="sd">    :param conc_tension: True to include tension in the concrete within the</span>
+<span class="sd">        stress-strain relationship (up to the tensile strength of the concrete is</span>
+<span class="sd">        reached), False to not consider any tension behaviour in the concrete</span>
+<span class="sd">    :param conc_spalling: True to consider the spalling effect for unconfined concrete,</span>
+<span class="sd">        False to not consider the spalling branch and truncate the unconfined concrete</span>
+<span class="sd">        curve at min(:math:`2 \varepsilon_{co},\varepsilon_{c,max}`)</span>
+<span class="sd">    :param eps_co: Strain at which the maximum concrete stress is obtained for an</span>
+<span class="sd">        unconfined concrete material (:math:`\varepsilon_{co}`)</span>
+<span class="sd">    :param eps_c_max_unconfined: Maximum strain that is able to be supported within</span>
+<span class="sd">        unconfined concrete (:math:`\varepsilon_{c,max}`)</span>
+<span class="sd">    :param eps_sp: Spalling strain, the strain at which the stress returns to zero for</span>
+<span class="sd">        unconfined concrete (:math:`\varepsilon_{sp}`)</span>
+<span class="sd">    :param d: Depth of a rectangular concrete cross section, or diameter of circular</span>
+<span class="sd">        concrete cross section (:math:`d`)</span>
+<span class="sd">    :param b: Breadth of a rectangular concrete cross section (:math:`b`)</span>
+<span class="sd">    :param long_reinf_area: Total area of the longitudinal reinforcement in the concrete</span>
+<span class="sd">        cross section (:math:`A_{st}`)</span>
+<span class="sd">    :param w_dash: List of clear spacing between longitudinal reinforcement</span>
+<span class="sd">        around the full perimeter of a rectangular concrete cross section (:math:`w&#39;`)</span>
+<span class="sd">    :param cvr: Concrete cover (to confining reinforcement)</span>
+<span class="sd">    :param trans_spacing: Spacing of transverse confining reinforcement (:math:`s`)</span>
+<span class="sd">    :param trans_d_b: Diameter of the transverse confining reinforcement (:math:`d_b`)</span>
+<span class="sd">    :param trans_num_d: Number of legs/cross links parallel to the depth of a</span>
+<span class="sd">        rectangular concrete cross section</span>
+<span class="sd">    :param trans_num_b: Number of legs/cross links parallel to the breadth of a</span>
+<span class="sd">        rectangular concrete cross section</span>
+<span class="sd">    :param trans_f_y: Yield strength of the transverse confining reinforcement</span>
+<span class="sd">        (:math:`f_{yh}`)</span>
+<span class="sd">    :param eps_su: Strain at the ultimate tensile strength of the reinforcement</span>
+<span class="sd">        (:math:`\varepsilon_{su}`)</span>
+<span class="sd">    :param n_points: Number of points to discretise the compression part of the</span>
+<span class="sd">        stress-strain curve between :math:`\varepsilon_{c}=0` &amp; :math:`\varepsilon_{c}</span>
+<span class="sd">        =2\varepsilon_{co}` for an unconfined concrete, or between</span>
+<span class="sd">        :math:`\varepsilon_{c}=0` &amp; :math:`\varepsilon_{c}=\varepsilon_{cu}` for a</span>
+<span class="sd">        confined concrete</span>
+<span class="sd">    :param n_steel_strain: Modifier for maximum steel reinforcement strain. Steel</span>
+<span class="sd">        reinforcement material within the concrete cross section should also be defined</span>
+<span class="sd">        with the same limit for the fracture strain</span>
+<span class="sd">    :param n_confinement: Modifier for volumetric ratio of confinement reinforcement</span>
+<span class="sd">    :raises ValueError: If specified section type is not rect, circ_hoop or circ_spiral</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">strains</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">compressive_strength</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">tensile_strength</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">sect_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">conc_confined</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">conc_tension</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">conc_spalling</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">eps_co</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.002</span>
+    <span class="n">eps_c_max_unconfined</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.004</span>
+    <span class="n">eps_sp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.006</span>
+    <span class="n">d</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">b</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">long_reinf_area</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">w_dash</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">cvr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">trans_spacing</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">trans_d_b</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">trans_num_d</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">trans_num_b</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">trans_f_y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">eps_su</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">n_steel_strain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span>
+    <span class="n">n_confinement</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.75</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># check section type is valid</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_confined</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sect_type</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">&quot;rect&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;circ_hoop&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;circ_spiral&quot;</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The specified section type &#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sect_type</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; should be &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;&#39;rect&#39;, &#39;circ_hoop&#39; or &#39;circ_spiral&#39;.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_confined</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;circ_hoop&quot;</span><span class="p">,</span> <span class="s2">&quot;circ_spiral&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w_dash</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trans_num_b</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trans_num_d</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># if confined concrete required, check that all inputs have been provided,</span>
+        <span class="c1"># otherwise reset to unconfined stress-strain relationship and provide warning</span>
+        <span class="n">input_not_provided</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">i</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataclass_fields__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_confined</span> <span class="ow">and</span> <span class="n">input_not_provided</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conc_confined</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Reverting analysis to utilise an unconfined concrete Mander &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;stress-strain model, as the following input variables required for a &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;confined concrete Mander stress-strain model have not been &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;provided:-</span><span class="se">\n</span><span class="si">{</span><span class="n">input_not_provided</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># calculate confined/unconfined compressive strength</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_confined</span><span class="p">:</span>
+            <span class="c1"># calculate clear distance between transverse reinforcement</span>
+            <span class="n">s_dash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_spacing</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_d_b</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;rect&quot;</span><span class="p">]:</span>
+                <span class="c1"># calculate core dimensions (between centrelines of confining transverse</span>
+                <span class="c1"># reinforcement)</span>
+                <span class="n">d_core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cvr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_d_b</span>
+                <span class="n">b_core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cvr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_d_b</span>
+
+                <span class="c1"># calculate core area</span>
+                <span class="n">A_c</span> <span class="o">=</span> <span class="n">d_core</span> <span class="o">*</span> <span class="n">b_core</span>
+
+                <span class="c1"># calculate area of transverse reinforcement in each direction within a depth s</span>
+                <span class="n">A_vd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_num_d</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_d_b</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span>
+                <span class="n">A_vb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_num_b</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_d_b</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span>
+
+                <span class="c1"># calculate volumetric ratio of confinement reinforcement</span>
+                <span class="n">rho_st</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">n_confinement</span>
+                    <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_spacing</span>
+                    <span class="o">*</span> <span class="p">(</span><span class="n">A_vd</span> <span class="o">/</span> <span class="n">b_core</span> <span class="o">+</span> <span class="n">A_vb</span> <span class="o">/</span> <span class="n">d_core</span><span class="p">)</span>
+                <span class="p">)</span>
+
+                <span class="c1"># calculate ratio of reinforcement area to core area</span>
+                <span class="n">rho_cc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">long_reinf_area</span> <span class="o">/</span> <span class="n">A_c</span>
+
+                <span class="c1"># calculate plan area of ineffectually confined core concrete at the level of</span>
+                <span class="c1"># the transverse reinforcement</span>
+                <span class="n">A_i</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_dash</span><span class="p">:</span>
+                    <span class="n">A_i</span> <span class="o">=</span> <span class="n">A_i</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+                <span class="c1"># calculate confinement effectiveness coefficient</span>
+                <span class="n">k_e</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">A_i</span> <span class="o">/</span> <span class="p">(</span><span class="mi">6</span> <span class="o">*</span> <span class="n">A_c</span><span class="p">))</span>
+                    <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s_dash</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">b_core</span><span class="p">))</span>
+                    <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s_dash</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d_core</span><span class="p">))</span>
+                    <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rho_cc</span><span class="p">)</span>
+                <span class="p">)</span>
+
+                <span class="c1"># calculate tranverse reinforcement ratios and confining pressures</span>
+                <span class="c1"># across defined depth</span>
+                <span class="n">rho_d</span> <span class="o">=</span> <span class="n">A_vd</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trans_spacing</span> <span class="o">*</span> <span class="n">b_core</span><span class="p">)</span>
+                <span class="n">f_ld</span> <span class="o">=</span> <span class="n">k_e</span> <span class="o">*</span> <span class="n">rho_d</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_f_y</span>
+
+                <span class="c1"># calculate tranverse reinforcement ratios and confining pressures</span>
+                <span class="c1"># across defined width</span>
+                <span class="n">rho_b</span> <span class="o">=</span> <span class="n">A_vb</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trans_spacing</span> <span class="o">*</span> <span class="n">d_core</span><span class="p">)</span>
+                <span class="n">f_lb</span> <span class="o">=</span> <span class="n">k_e</span> <span class="o">*</span> <span class="n">rho_b</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_f_y</span>
+
+                <span class="c1"># calculate confined concrete strength</span>
+                <span class="n">f_cc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="o">-</span><span class="mf">1.254</span>
+                    <span class="o">+</span> <span class="mf">2.254</span>
+                    <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">7.94</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="n">f_lb</span><span class="p">,</span> <span class="n">f_ld</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+                    <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="n">f_lb</span><span class="p">,</span> <span class="n">f_ld</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># calculate core diameter</span>
+                <span class="n">d_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cvr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_d_b</span>
+
+                <span class="c1"># calculate core area</span>
+                <span class="n">A_c</span> <span class="o">=</span> <span class="n">d_s</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span>
+
+                <span class="c1"># calculate volumetric ratio of confinement reinforcement</span>
+                <span class="n">rho_st</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">n_confinement</span>
+                    <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_spacing</span>
+                    <span class="o">*</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_d_b</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">/</span> <span class="n">d_s</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="c1"># calculate ratio of reinforcement area to core area</span>
+                <span class="n">rho_cc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">long_reinf_area</span> <span class="o">/</span> <span class="n">A_c</span>
+
+                <span class="c1"># calculate confinement effectiveness coefficient</span>
+                <span class="n">exp</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;circ_hoop&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span>
+                <span class="n">k_e</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s_dash</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d_s</span><span class="p">))</span> <span class="o">**</span> <span class="n">exp</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rho_cc</span><span class="p">)</span>
+
+                <span class="c1"># calculate tranverse confining pressures</span>
+                <span class="c1"># rho_b = A_vb / (self.trans_spacing * d_core)</span>
+                <span class="n">f_l</span> <span class="o">=</span> <span class="n">k_e</span> <span class="o">*</span> <span class="n">rho_st</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_f_y</span>
+
+                <span class="c1"># calculate confined concrete strength</span>
+                <span class="n">f_cc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="o">-</span><span class="mf">1.254</span>
+                    <span class="o">+</span> <span class="mf">2.254</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">7.94</span> <span class="o">*</span> <span class="n">f_l</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+                    <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">f_l</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># calculate unconfined concrete strength</span>
+            <span class="n">f_cc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span>
+
+        <span class="c1"># calculate strain associated with max confined/unconfined concrete strength</span>
+        <span class="n">eps_cc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps_co</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="p">(</span><span class="n">f_cc</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">compressive_strength</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># calculate maximum confined/unconfined compressive strain</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_confined</span><span class="p">:</span>
+            <span class="n">eps_c_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+                <span class="mf">0.004</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_steel_strain</span> <span class="o">*</span> <span class="n">rho_st</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_f_y</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps_su</span> <span class="o">/</span> <span class="n">f_cc</span><span class="p">,</span>
+                <span class="mf">0.05</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">eps_c_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps_c_max_unconfined</span>
+
+        <span class="c1"># calculate secant modulus</span>
+        <span class="n">E_sec</span> <span class="o">=</span> <span class="n">f_cc</span> <span class="o">/</span> <span class="n">eps_cc</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_confined</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">eps_c_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_points</span><span class="p">)</span>
+            <span class="c1"># add eps_cc point corresponding to max stress point at end</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">,</span> <span class="n">eps_cc</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">eps_cc</span><span class="p">,</span> <span class="n">eps_c_max</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_points</span><span class="p">)</span>
+            <span class="c1"># add eps_cc point corresponding to max stress point at end</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">,</span> <span class="n">eps_cc</span><span class="p">)</span>
+
+        <span class="c1"># sort strains numerically</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="c1"># calculate stresses from strains &amp; convert to List</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">-</span> <span class="n">E_sec</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">/</span> <span class="n">eps_cc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_cc</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">r</span> <span class="o">/</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="n">r</span><span class="p">))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="c1"># add spalling branch if specified for unconfined curve</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_confined</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_spalling</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eps_sp</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># calculate max tension strain based on modulus of rupture/concrete tension</span>
+        <span class="c1"># strength</span>
+        <span class="n">eps_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensile_strength</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conc_tension</span><span class="p">:</span>
+            <span class="c1"># add tension stress/strain limit</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">eps_t</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">tensile_strength</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># add flat horizontal tension stress/strain branch</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">eps_t</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># initiate ultimate compressive strain as maximum strain</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_strain</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">)</span>
+
+        <span class="c1"># add small horizontal compressive strain to improve interpolation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e-12</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+
+
 <div class="viewcode-block" id="ConcreteUltimateProfile"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.ConcreteUltimateProfile">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ConcreteUltimateProfile</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Abstract class for a concrete ultimate stress-strain profile.</span>
@@ -1131,6 +1506,251 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ultimate_strength</span><span class="p">,</span>
         <span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="StrandProfile"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.StrandProfile">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">StrandProfile</span><span class="p">(</span><span class="n">StressStrainProfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Abstract class for a steel strand stress-strain profile.</span>
+
+<span class="sd">    Implements a piecewise linear stress-strain profile. Positive stresses &amp; strains are</span>
+<span class="sd">    compression.</span>
+
+<span class="sd">    :param strains: List of strains (must be increasing or equal)</span>
+<span class="sd">    :param stresses: List of stresses</span>
+<span class="sd">    :param yield_strength: Strand yield strength</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">strains</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+    <span class="n">stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+    <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="StrandProfile.get_strain"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.StrandProfile.html#concreteproperties.stress_strain_profile.StrandProfile.get_strain">[docs]</a>    <span class="k">def</span> <span class="nf">get_strain</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">stress</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a strain given a stress.</span>
+
+<span class="sd">        :param stress: Stress at which to return a strain.</span>
+
+<span class="sd">        :return: Strain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># create interpolation function</span>
+        <span class="n">strain_function</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stresses</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strains</span><span class="p">,</span>
+            <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+            <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">strain_function</span><span class="p">(</span><span class="n">stress</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StrandProfile.get_yield_strength"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.StrandProfile.html#concreteproperties.stress_strain_profile.StrandProfile.get_yield_strength">[docs]</a>    <span class="k">def</span> <span class="nf">get_yield_strength</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the yield strength of the stress-strain profile.</span>
+
+<span class="sd">        :return: Yield strength</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span></div>
+
+<div class="viewcode-block" id="StrandProfile.print_properties"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.StrandProfile.html#concreteproperties.stress_strain_profile.StrandProfile.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;8.6e&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Prints the stress-strain profile properties to the terminal.</span>
+
+<span class="sd">        :param fmt: Number format</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Stress-Strain Profile - </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Property&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">no_wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Elastic Modulus&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_elastic_modulus</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Yield Strength&quot;</span><span class="p">,</span> <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Breaking Strength&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">get_tensile_strength</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+            <span class="s2">&quot;Fracture Strain&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;{:&gt;</span><span class="si">{fmt}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ultimate_tensile_strain</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="StrandHardening"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.StrandHardening">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">StrandHardening</span><span class="p">(</span><span class="n">StrandProfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for a strand stress-strain profile with strain hardening.</span>
+
+<span class="sd">    :param yield_strength: Strand yield strength</span>
+<span class="sd">    :param elastic_modulus: Strand elastic modulus</span>
+<span class="sd">    :param fracture_strain: Strand fracture strain</span>
+<span class="sd">    :param breaking_strength: Strand breaking strength</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">strains</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">fracture_strain</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">breaking_strength</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">yield_strain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">fracture_strain</span><span class="p">,</span>
+            <span class="o">-</span><span class="n">yield_strain</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">yield_strain</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fracture_strain</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">breaking_strength</span><span class="p">,</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">breaking_strength</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="StrandHardening.get_elastic_modulus"><a class="viewcode-back" href="../../gen/concreteproperties.stress_strain_profile.StrandHardening.html#concreteproperties.stress_strain_profile.StrandHardening.get_elastic_modulus">[docs]</a>    <span class="k">def</span> <span class="nf">get_elastic_modulus</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the elastic modulus of the stress-strain profile.</span>
+
+<span class="sd">        :return: Elastic modulus</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span></div></div>
+
+
+<div class="viewcode-block" id="StrandPCI1992"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.stress_strain_profile.StrandPCI1992">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">StrandPCI1992</span><span class="p">(</span><span class="n">StrandProfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for a strand stress-strain profile by R. Devalapura and M. Tadros from the</span>
+<span class="sd">    March-April issue of the PCI Journal.</span>
+
+<span class="sd">    :param yield_strength: Strand yield strength</span>
+<span class="sd">    :param elastic_modulus: Strand elastic modulus</span>
+<span class="sd">    :param fracture_strain: Strand fracture strain</span>
+<span class="sd">    :param breaking_strength: Strand breaking strength</span>
+<span class="sd">    :param bilinear_yield_ratio: Ratio between the stress at the intersection of a</span>
+<span class="sd">        bilinear profile, and the yield strength</span>
+<span class="sd">    :param strain_cps: Strain control points, generates the following strain segments:</span>
+<span class="sd">        ``[0, strain_cps[0], strain_cps[1], fracture_strain]``. Length must be equal to</span>
+<span class="sd">        2.</span>
+<span class="sd">    :param n_points: Number of points to discretise within each strain segment. Length</span>
+<span class="sd">        must be equal to 3.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">strains</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">stresses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">yield_strength</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">elastic_modulus</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">fracture_strain</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">breaking_strength</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">bilinear_yield_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.04</span>
+    <span class="n">strain_cps</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.015</span><span class="p">])</span>
+    <span class="n">n_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># validate control points</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strain_cps</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of strain_cps must be equal to 2.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_points</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of n_points must be equal to 3.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># determine constants</span>
+        <span class="n">f_so</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bilinear_yield_ratio</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span>
+        <span class="n">const_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">/</span> <span class="n">f_so</span>
+        <span class="n">const_a</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">breaking_strength</span> <span class="o">-</span> <span class="n">f_so</span><span class="p">)</span>
+            <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fracture_strain</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">-</span> <span class="n">f_so</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">const_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elastic_modulus</span> <span class="o">-</span> <span class="n">const_a</span>
+
+        <span class="c1"># function that determines the stress</span>
+        <span class="k">def</span> <span class="nf">stress_eq</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">eps_ps</span><span class="p">,</span> <span class="n">f_pu</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">eps_ps</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">sign</span> <span class="o">=</span> <span class="n">eps_ps</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">eps_ps</span><span class="p">)</span>  <span class="c1"># get sign of strain</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="n">eps_ps</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">eps_ps</span><span class="p">)</span>  <span class="c1"># ensure strain is positive</span>
+            <span class="n">denom</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">eps_ps</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">d</span><span class="p">)</span>  <span class="c1"># calculate denominator</span>
+            <span class="n">stress</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">eps_ps</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">/</span> <span class="n">denom</span><span class="p">),</span> <span class="n">f_pu</span><span class="p">)</span>  <span class="c1"># calculate stress</span>
+
+            <span class="k">return</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">stress</span>
+
+        <span class="c1"># determine constant D that yields the yield strength at a strain of 0.01</span>
+        <span class="k">def</span> <span class="nf">find_d</span><span class="p">(</span><span class="n">const_d</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">stress_eq</span><span class="p">(</span>
+                    <span class="n">a</span><span class="o">=</span><span class="n">const_a</span><span class="p">,</span>
+                    <span class="n">b</span><span class="o">=</span><span class="n">const_b</span><span class="p">,</span>
+                    <span class="n">c</span><span class="o">=</span><span class="n">const_c</span><span class="p">,</span>
+                    <span class="n">d</span><span class="o">=</span><span class="n">const_d</span><span class="p">,</span>
+                    <span class="n">eps_ps</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+                    <span class="n">f_pu</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">breaking_strength</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">yield_strength</span>
+            <span class="p">)</span>
+
+        <span class="n">const_d</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">find_d</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+        <span class="c1"># generate stresses and strains</span>
+        <span class="n">seg1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strain_cps</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">seg2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strain_cps</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">stop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strain_cps</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">seg3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strain_cps</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">stop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fracture_strain</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_points</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">strain_list</span> <span class="o">=</span> <span class="n">seg1</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="n">seg2</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="n">seg3</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="c1"># generate compressive region of profile</span>
+        <span class="n">strains_c</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">stresses_c</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">strain</span> <span class="ow">in</span> <span class="n">strain_list</span><span class="p">:</span>
+            <span class="n">strains_c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strain</span><span class="p">)</span>
+            <span class="n">stresses_c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">stress_eq</span><span class="p">(</span>
+                    <span class="n">a</span><span class="o">=</span><span class="n">const_a</span><span class="p">,</span>
+                    <span class="n">b</span><span class="o">=</span><span class="n">const_b</span><span class="p">,</span>
+                    <span class="n">c</span><span class="o">=</span><span class="n">const_c</span><span class="p">,</span>
+                    <span class="n">d</span><span class="o">=</span><span class="n">const_d</span><span class="p">,</span>
+                    <span class="n">eps_ps</span><span class="o">=</span><span class="n">strain</span><span class="p">,</span>
+                    <span class="n">f_pu</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">breaking_strength</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1"># generate tensile region of profile</span>
+        <span class="n">strains_t</span> <span class="o">=</span> <span class="p">[</span><span class="n">eps</span> <span class="o">*</span> <span class="o">-</span><span class="mf">1.0</span> <span class="k">for</span> <span class="n">eps</span> <span class="ow">in</span> <span class="n">strains_c</span><span class="p">[:</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">stresses_t</span> <span class="o">=</span> <span class="p">[</span><span class="n">sig</span> <span class="o">*</span> <span class="o">-</span><span class="mf">1.0</span> <span class="k">for</span> <span class="n">sig</span> <span class="ow">in</span> <span class="n">stresses_c</span><span class="p">[:</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+
+        <span class="c1"># combine lists</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strains</span> <span class="o">=</span> <span class="n">strains_t</span> <span class="o">+</span> <span class="n">strains_c</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stresses</span> <span class="o">=</span> <span class="n">stresses_t</span> <span class="o">+</span> <span class="n">stresses_c</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span></div>
 </pre></div>
 
             </article>
@@ -1179,7 +1799,8 @@
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -1194,9 +1815,19 @@
   </div>
   
   <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

@@ -5,31 +5,32 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3. Analysis &#8212; concreteproperties 0.3.1 documentation</title>
-  <script>
+    <title>3. Analysis &#8212; concreteproperties 0.4.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -47,7 +48,7 @@
         </script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. Results" href="results.html" />
+    <link rel="next" title="4. Prestressed Analysis" href="prestressed_analysis.html" />
     <link rel="prev" title="2. Geometry" href="geometry.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
@@ -55,6 +56,10 @@
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -128,32 +133,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="../user_guide.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
                         User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../examples.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples.html">
                         Examples
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../api.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
                         API Reference
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -162,19 +167,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
   <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
-    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -209,11 +216,13 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
   <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
@@ -243,32 +252,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="../user_guide.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
                         User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../examples.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples.html">
                         Examples
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../api.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
                         API Reference
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -282,11 +291,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
-    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -331,12 +340,14 @@
 <li class="toctree-l1"><a class="reference internal" href="materials.html">1. Materials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="geometry.html">2. Geometry</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="results.html">4. Results</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">5. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">5.1. AS 3600:2018</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prestressed_analysis.html">4. Prestressed Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">5. Results</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">6. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">6.1. AS 3600:2018</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design_codes/nzs3101.html">6.2. NZS3101:2006</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="assumptions.html">6. Assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assumptions.html">7. Assumptions</a></li>
 </ul>
 
   </div>
@@ -351,8 +362,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -376,17 +390,37 @@ display the results obtained from these analyses.</p>
 material properties.</p>
 <dl class="py class">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteSection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConcreteSection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moment_centroid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometric_centroid_override</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Class for a reinforced concrete section.</p>
 <p>Inits the ConcreteSection class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>) – <em>sectionproperties</em> CompoundGeometry object describing the
-reinforced concrete section</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geometry</strong> (<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>) – <em>sectionproperties</em> CompoundGeometry object describing the
+reinforced concrete section</p></li>
+<li><p><strong>moment_centroid</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If specified, all moments for service and ultimate
+analyses are calculated about this point. If not specified, all moments are
+calculated about the gross cross-section centroid, i.e. no material
+properties applied.</p></li>
+<li><p><strong>geometric_centroid_override</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – If set to True, sets <code class="docutils literal notranslate"><span class="pre">moment_centroid</span></code> to
+the geometric centroid i.e. material properties applied (useful for
+composite section analysis)</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
+<p>If a prestressed concrete section is being analysed, a
+<a class="reference internal" href="../gen/concreteproperties.prestressed_section.PrestressedSection.html#concreteproperties.prestressed_section.PrestressedSection" title="concreteproperties.prestressed_section.PrestressedSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrestressedSection</span></code></a> object must be used
+instead of a <a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> object, see
+<a class="reference internal" href="prestressed_analysis.html#label-prestressed-analysis"><span class="std std-ref">Prestressed Analysis</span></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If the cross-section geometry contains a
+<a class="reference internal" href="../gen/concreteproperties.material.SteelStrand.html#concreteproperties.material.SteelStrand" title="concreteproperties.material.SteelStrand"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelStrand</span></code></a> material object, a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>
+will be raised if trying to create a
+<a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> object.</p>
+</div>
 <div class="section" id="visualising-the-cross-section">
 <h2><span class="section-number">3.1. </span>Visualising the Cross-Section<a class="headerlink" href="#visualising-the-cross-section" title="Permalink to this heading">#</a></h2>
 <p>The <a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> object can be
@@ -443,7 +477,7 @@ axis, but this can be modified by providing a bending axis angle <code class="do
 </dl>
 </dd></dl>
 
-<p>The cracking moment is determines assuming cracking occurs once the stress in the
+<p>The cracking moment is determined assuming cracking occurs once the stress in the
 concrete reaches the <code class="docutils literal notranslate"><span class="pre">flexural_tensile_strength</span></code>. Cracked properties are calculated
 assuming the concrete is linear elastic and can only resist compression.</p>
 <div class="admonition seealso">
@@ -461,14 +495,17 @@ method. By default the moment curvature analysis is calculated for bending about
 <code class="docutils literal notranslate"><span class="pre">x</span></code> axis, but this can be modified by providing a bending axis angle <code class="docutils literal notranslate"><span class="pre">theta</span></code>.</p>
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">ConcreteSection.</span></span><span class="sig-name descname"><span class="pre">moment_curvature_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_inc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_mult</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_inc_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.moment_curvature_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Performs a moment curvature analysis given a bending angle <code class="docutils literal notranslate"><span class="pre">theta</span></code>.</p>
+<span class="sig-prename descclassname"><span class="pre">ConcreteSection.</span></span><span class="sig-name descname"><span class="pre">moment_curvature_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_inc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_mult</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_inc_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.moment_curvature_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Performs a moment curvature analysis given a bending angle <code class="docutils literal notranslate"><span class="pre">theta</span></code> and
+applied axial force <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
 <p>Analysis continues until a material reaches its ultimate strain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Angle (in radians) the neutral axis makes with the horizontal axis
 (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
+<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Axial force</p></li>
+<li><p><strong>kappa0</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Initial curvature</p></li>
 <li><p><strong>kappa_inc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">1e-07</span></code>) – Initial curvature increment</p></li>
 <li><p><strong>kappa_mult</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">2</span></code>) – Multiplier to apply to the curvature increment <code class="docutils literal notranslate"><span class="pre">kappa_inc</span></code>
 when <code class="docutils literal notranslate"><span class="pre">delta_m_max</span></code> is satisfied. When <code class="docutils literal notranslate"><span class="pre">delta_m_min</span></code> is satisfied, the
@@ -491,8 +528,8 @@ increment</p></li>
 <a class="reference internal" href="../gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> and
 <a class="reference internal" href="../gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> material properties to calculate a moment
 curvature response. The analysis is displacement controlled with an adaptive curvature
-increment controlled by the parameters <code class="docutils literal notranslate"><span class="pre">kappa_inc</span></code>, <code class="docutils literal notranslate"><span class="pre">delta_m_min</span></code> and
-<code class="docutils literal notranslate"><span class="pre">delta_m_max</span></code>.</p>
+increment controlled by the parameters <code class="docutils literal notranslate"><span class="pre">kappa_inc</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_mult</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_inc_max</span></code>,
+<code class="docutils literal notranslate"><span class="pre">delta_m_min</span></code> and <code class="docutils literal notranslate"><span class="pre">delta_m_max</span></code>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For an application of the above, see the example
@@ -512,13 +549,20 @@ angle <code class="docutils literal notranslate"><span class="pre">theta</span><
 <span class="sig-prename descclassname"><span class="pre">ConcreteSection.</span></span><span class="sig-name descname"><span class="pre">ultimate_bending_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.ultimate_bending_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Given a neutral axis angle <code class="docutils literal notranslate"><span class="pre">theta</span></code> and an axial force <code class="docutils literal notranslate"><span class="pre">n</span></code>, calculates
 the ultimate bending capacity.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This calculation is code agnostic and no capacity reduction factors are
+applied. If design capacities are required, use the applicable
+<code class="docutils literal notranslate"><span class="pre">design_code</span></code> module or consult your local design code on how to treat
+nominal axial loads in ultimate bending calculations.</p>
+</div>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">k_u</span></code> is calculated only for lumped (non-meshed) geometries.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Angle (in radians) the neutral axis makes with the horizontal axis
 (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
-<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Net axial force</p></li>
+<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Net axial force (nominal axial load)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -530,9 +574,9 @@ the ultimate bending capacity.</p>
 <p>This analysis uses the <code class="docutils literal notranslate"><span class="pre">ultimate_stress_strain_profile</span></code> given to the
 <a class="reference internal" href="../gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> materials and the
 <code class="docutils literal notranslate"><span class="pre">stress_strain_profile</span></code> given to the <a class="reference internal" href="../gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a>
-materials. The ultimate strain profile is determined by setting the strain at the
-extreme compressive fibre to the <code class="docutils literal notranslate"><span class="pre">ultimate_strain</span></code> parameter (see
-<a class="reference internal" href="materials.html#label-conc-ult-profile"><span class="std std-ref">Concrete Ultimate Stress-Strain Profiles</span></a>) and finding the neutral axis which satisfies the
+materials. The ultimate strain profile within the cross-section is determined by setting
+the strain at the extreme compressive fibre to the <code class="docutils literal notranslate"><span class="pre">ultimate_strain</span></code> parameter (see
+<a class="reference internal" href="materials.html#label-conc-ult-profile"><span class="std std-ref">Concrete Ultimate Stress-Strain Profiles</span></a>) and finding the neutral axis that satisfies the
 equilibrium of axial forces.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -564,7 +608,7 @@ Types of control points are detailed below:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;D&quot;</span></code> - ratio of neutral axis depth to section depth</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;d_n&quot;</span></code> - neutral axis depth</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;fy&quot;</span></code> - yield ratio of the most extreme tensile bar</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;N&quot;</span></code> - axial force</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;N&quot;</span></code> - net (nominal) axial force</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;kappa0&quot;</span></code> - zero curvature compression (N.B second item in tuple is not
 used)</p></li>
 </ul>
@@ -687,6 +731,12 @@ stresses given an axial force <code class="docutils literal notranslate"><span c
 </dl>
 </dd></dl>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Forces/moments are assumed to be acting at the geometric centroid, i.e. <code class="docutils literal notranslate"><span class="pre">cx</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cy</span></code> in
+<a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a></p>
+</div>
 </div>
 <div class="section" id="cracked-stress">
 <h3><span class="section-number">3.8.2. </span>Cracked Stress<a class="headerlink" href="#cracked-stress" title="Permalink to this heading">#</a></h3>
@@ -719,6 +769,12 @@ axis stored in <code class="docutils literal notranslate"><span class="pre">crac
 </dl>
 </dd></dl>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Forces/moments are assumed to be acting at the geometric centroid, i.e. <code class="docutils literal notranslate"><span class="pre">cx</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cy</span></code> in
+<a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a></p>
+</div>
 </div>
 <div class="section" id="service-stress">
 <h3><span class="section-number">3.8.3. </span>Service Stress<a class="headerlink" href="#service-stress" title="Permalink to this heading">#</a></h3>
@@ -753,6 +809,12 @@ calculates the stress at the given curvature</p></li>
 </dl>
 </dd></dl>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Forces/moments are assumed to be acting at the gross centroid, i.e. <code class="docutils literal notranslate"><span class="pre">cx_gross</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cy_gross</span></code> in
+<a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a></p>
+</div>
 </div>
 <div class="section" id="ultimate-stress">
 <h3><span class="section-number">3.8.4. </span>Ultimate Stress<a class="headerlink" href="#ultimate-stress" title="Permalink to this heading">#</a></h3>
@@ -778,6 +840,12 @@ method and these results passed to
 </dl>
 </dd></dl>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Forces/moments are assumed to be acting at the gross centroid, i.e. <code class="docutils literal notranslate"><span class="pre">cx_gross</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cy_gross</span></code> in
+<a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection.get_gross_properties" title="concreteproperties.concrete_section.ConcreteSection.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a></p>
+</div>
 </div>
 </div>
 </div>
@@ -797,10 +865,10 @@ method and these results passed to
           <p class="prev-next-title"><span class="section-number">2. </span>Geometry</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="results.html" title="next page">
+  <a class='right-next' id="next-link" href="prestressed_analysis.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title"><span class="section-number">4. </span>Results</p>
+      <p class="prev-next-title"><span class="section-number">4. </span>Prestressed Analysis</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>
@@ -924,7 +992,8 @@ method and these results passed to
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -939,9 +1008,19 @@ method and these results passed to
   </div>
   
   <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

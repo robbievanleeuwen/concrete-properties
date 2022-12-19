@@ -60,6 +60,13 @@ returns a :class:`~concreteproperties.results.CrackedResults` object.
   :noindex:
   :members:
 
+.. note::
+
+  A :class:`~concreteproperties.prestressed_section.PrestressedSection` object will 
+  return a ``tuple`` for the cracking moment ``m_cr``, with the first value the cracking
+  moment for positive bending and the second value the cracking moment for negative 
+  bending.
+
 Calling
 :meth:`~concreteproperties.results.TransformedGrossProperties.calculate_transformed_properties`
 on a :class:`~concreteproperties.results.CrackedResults` object stores the transformed

@@ -1,0 +1,937 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>concreteproperties.stress_strain_profile.StrandPCI1992 &#8212; concreteproperties 0.4.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gen/concreteproperties.stress_strain_profile.StrandPCI1992';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="concreteproperties.stress_strain_profile.StrandProfile" href="concreteproperties.stress_strain_profile.StrandProfile.html" />
+    <link rel="prev" title="concreteproperties.stress_strain_profile.StrandHardening" href="concreteproperties.stress_strain_profile.StrandHardening.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../_static/cp_logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+    <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
+        latest  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">
+    Section Navigation
+  </p>
+  <div class="bd-toc-item navbar-nav">
+    <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.pre.html">concreteproperties.pre</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.add_bar.html">concreteproperties.pre.add_bar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.add_bar_circular_array.html">concreteproperties.pre.add_bar_circular_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.add_bar_rectangular_array.html">concreteproperties.pre.add_bar_rectangular_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.CPGeom.html">concreteproperties.pre.CPGeom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.pre.CPGeomConcrete.html">concreteproperties.pre.CPGeomConcrete</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.material.html">concreteproperties.material</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.Concrete.html">concreteproperties.material.Concrete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.Material.html">concreteproperties.material.Material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.Steel.html">concreteproperties.material.Steel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.SteelBar.html">concreteproperties.material.SteelBar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.material.SteelStrand.html">concreteproperties.material.SteelStrand</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="concreteproperties.stress_strain_profile.html">concreteproperties.stress_strain_profile</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.BilinearStressStrain.html">concreteproperties.stress_strain_profile.BilinearStressStrain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinear.html">concreteproperties.stress_strain_profile.ConcreteLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteLinearNoTension.html">concreteproperties.stress_strain_profile.ConcreteLinearNoTension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteServiceProfile.html">concreteproperties.stress_strain_profile.ConcreteServiceProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ConcreteUltimateProfile.html">concreteproperties.stress_strain_profile.ConcreteUltimateProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeNonLinear.html">concreteproperties.stress_strain_profile.EurocodeNonLinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.EurocodeParabolicUltimate.html">concreteproperties.stress_strain_profile.EurocodeParabolicUltimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.ModifiedMander.html">concreteproperties.stress_strain_profile.ModifiedMander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.RectangularStressBlock.html">concreteproperties.stress_strain_profile.RectangularStressBlock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelElasticPlastic.html">concreteproperties.stress_strain_profile.SteelElasticPlastic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelHardening.html">concreteproperties.stress_strain_profile.SteelHardening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.SteelProfile.html">concreteproperties.stress_strain_profile.SteelProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.StrandHardening.html">concreteproperties.stress_strain_profile.StrandHardening</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">concreteproperties.stress_strain_profile.StrandPCI1992</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.StrandProfile.html">concreteproperties.stress_strain_profile.StrandProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.stress_strain_profile.StressStrainProfile.html">concreteproperties.stress_strain_profile.StressStrainProfile</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.concrete_section.html">concreteproperties.concrete_section</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.concrete_section.ConcreteSection.html">concreteproperties.concrete_section.ConcreteSection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.prestressed_section.html">concreteproperties.prestressed_section</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.prestressed_section.PrestressedSection.html">concreteproperties.prestressed_section.PrestressedSection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.analysis_section.html">concreteproperties.analysis_section</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.analysis_section.AnalysisSection.html">concreteproperties.analysis_section.AnalysisSection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.analysis_section.Tri3.html">concreteproperties.analysis_section.Tri3</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.results.html">concreteproperties.results</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.BiaxialBendingResults.html">concreteproperties.results.BiaxialBendingResults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.CrackedResults.html">concreteproperties.results.CrackedResults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.GrossProperties.html">concreteproperties.results.GrossProperties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.MomentCurvatureResults.html">concreteproperties.results.MomentCurvatureResults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.MomentInteractionResults.html">concreteproperties.results.MomentInteractionResults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.StressResult.html">concreteproperties.results.StressResult</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.TransformedGrossProperties.html">concreteproperties.results.TransformedGrossProperties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.results.UltimateBendingResults.html">concreteproperties.results.UltimateBendingResults</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.design_codes.html">concreteproperties.design_codes</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concreteproperties.design_codes.as3600.html">concreteproperties.design_codes.as3600</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="concreteproperties.design_codes.as3600.AS3600.html">concreteproperties.design_codes.as3600.AS3600</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concreteproperties.design_codes.design_code.html">concreteproperties.design_codes.design_code</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="concreteproperties.design_codes.design_code.DesignCode.html">concreteproperties.design_codes.design_code.DesignCode</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concreteproperties.design_codes.nzs3101.html">concreteproperties.design_codes.nzs3101</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="concreteproperties.design_codes.nzs3101.NZS3101.html">concreteproperties.design_codes.nzs3101.NZS3101</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.post.html">concreteproperties.post</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.post.plotting_context.html">concreteproperties.post.plotting_context</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="concreteproperties.utils.html">concreteproperties.utils</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.calculate_extreme_fibre.html">concreteproperties.utils.calculate_extreme_fibre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.calculate_local_extents.html">concreteproperties.utils.calculate_local_extents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.calculate_max_bending_depth.html">concreteproperties.utils.calculate_max_bending_depth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.create_known_progress.html">concreteproperties.utils.create_known_progress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.create_unknown_progress.html">concreteproperties.utils.create_unknown_progress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.gauss_points.html">concreteproperties.utils.gauss_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.get_service_strain.html">concreteproperties.utils.get_service_strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.get_ultimate_strain.html">concreteproperties.utils.get_ultimate_strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.global_to_local.html">concreteproperties.utils.global_to_local</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.local_to_global.html">concreteproperties.utils.local_to_global</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.point_on_neutral_axis.html">concreteproperties.utils.point_on_neutral_axis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.shape_function.html">concreteproperties.utils.shape_function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.split_geom_at_strains_service.html">concreteproperties.utils.split_geom_at_strains_service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.split_geom_at_strains_ultimate.html">concreteproperties.utils.split_geom_at_strains_ultimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.CustomTimeElapsedColumn.html">concreteproperties.utils.CustomTimeElapsedColumn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concreteproperties.utils.AnalysisError.html">concreteproperties.utils.AnalysisError</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</nav>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <div class="section" id="concreteproperties-stress-strain-profile-strandpci1992">
+<h1>concreteproperties.stress_strain_profile.StrandPCI1992<a class="headerlink" href="#concreteproperties-stress-strain-profile-strandpci1992" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StrandPCI1992">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StrandPCI1992</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elastic_modulus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracture_strain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">breaking_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bilinear_yield_ratio=1.04</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strain_cps=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points=&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/stress_strain_profile.html#StrandPCI1992"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.stress_strain_profile.StrandPCI1992" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="concreteproperties.stress_strain_profile.StrandProfile.html#concreteproperties.stress_strain_profile.StrandProfile" title="concreteproperties.stress_strain_profile.StrandProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrandProfile</span></code></a></p>
+<p>Class for a strand stress-strain profile by R. Devalapura and M. Tadros from the
+March-April issue of the PCI Journal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>yield_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Strand yield strength</p></li>
+<li><p><strong>elastic_modulus</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Strand elastic modulus</p></li>
+<li><p><strong>fracture_strain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Strand fracture strain</p></li>
+<li><p><strong>breaking_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Strand breaking strength</p></li>
+<li><p><strong>bilinear_yield_ratio</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">1.04</span></code>) – Ratio between the stress at the intersection of a
+bilinear profile, and the yield strength</p></li>
+<li><p><strong>strain_cps</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">&lt;factory&gt;</span></code>) – Strain control points, generates the following strain segments:
+<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">strain_cps[0],</span> <span class="pre">strain_cps[1],</span> <span class="pre">fracture_strain]</span></code>. Length must be equal to
+2.</p></li>
+<li><p><strong>n_points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>], default: <code class="docutils literal notranslate"><span class="pre">&lt;factory&gt;</span></code>) – Number of points to discretise within each strain segment. Length
+must be equal to 3.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_compressive_strength" title="concreteproperties.stress_strain_profile.StrandPCI1992.get_compressive_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_compressive_strength</span></code></a></p></td>
+<td><p>Returns the most positive stress.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_elastic_modulus" title="concreteproperties.stress_strain_profile.StrandPCI1992.get_elastic_modulus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_elastic_modulus</span></code></a></p></td>
+<td><p>Returns the elastic modulus of the stress-strain profile.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_strain" title="concreteproperties.stress_strain_profile.StrandPCI1992.get_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_strain</span></code></a></p></td>
+<td><p>Returns a strain given a stress.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_stress" title="concreteproperties.stress_strain_profile.StrandPCI1992.get_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_stress</span></code></a></p></td>
+<td><p>Returns a stress given a strain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_tensile_strength" title="concreteproperties.stress_strain_profile.StrandPCI1992.get_tensile_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tensile_strength</span></code></a></p></td>
+<td><p>Returns the most negative stress.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_ultimate_compressive_strain" title="concreteproperties.stress_strain_profile.StrandPCI1992.get_ultimate_compressive_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_compressive_strain</span></code></a></p></td>
+<td><p>Returns the largest compressive strain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_ultimate_tensile_strain" title="concreteproperties.stress_strain_profile.StrandPCI1992.get_ultimate_tensile_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ultimate_tensile_strain</span></code></a></p></td>
+<td><p>Returns the largest tensile strain.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_unique_strains" title="concreteproperties.stress_strain_profile.StrandPCI1992.get_unique_strains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_unique_strains</span></code></a></p></td>
+<td><p>Returns an ordered list of unique strains.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_yield_strength" title="concreteproperties.stress_strain_profile.StrandPCI1992.get_yield_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_yield_strength</span></code></a></p></td>
+<td><p>Returns the yield strength of the stress-strain profile.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StrandPCI1992.plot_stress_strain" title="concreteproperties.stress_strain_profile.StrandPCI1992.plot_stress_strain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_stress_strain</span></code></a></p></td>
+<td><p>Plots the stress-strain profile.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#concreteproperties.stress_strain_profile.StrandPCI1992.print_properties" title="concreteproperties.stress_strain_profile.StrandPCI1992.print_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_properties</span></code></a></p></td>
+<td><p>Prints the stress-strain profile properties to the terminal.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bilinear_yield_ratio</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">strains</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">stresses</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">yield_strength</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">elastic_modulus</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fracture_strain</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">breaking_strength</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">strain_cps</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_points</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StrandPCI1992.get_compressive_strength">
+<span class="sig-name descname"><span class="pre">get_compressive_strength</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_compressive_strength" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the most positive stress.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Compressive strength</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StrandPCI1992.get_elastic_modulus">
+<span class="sig-name descname"><span class="pre">get_elastic_modulus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_elastic_modulus" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the elastic modulus of the stress-strain profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Elastic modulus</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StrandPCI1992.get_strain">
+<span class="sig-name descname"><span class="pre">get_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_strain" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a strain given a stress.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stress</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Stress at which to return a strain.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Strain</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StrandPCI1992.get_stress">
+<span class="sig-name descname"><span class="pre">get_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_stress" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a stress given a strain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>strain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Strain at which to return a stress.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Stress</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StrandPCI1992.get_tensile_strength">
+<span class="sig-name descname"><span class="pre">get_tensile_strength</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_tensile_strength" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the most negative stress.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Tensile strength</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StrandPCI1992.get_ultimate_compressive_strain">
+<span class="sig-name descname"><span class="pre">get_ultimate_compressive_strain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_ultimate_compressive_strain" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the largest compressive strain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Ultimate strain</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StrandPCI1992.get_ultimate_tensile_strain">
+<span class="sig-name descname"><span class="pre">get_ultimate_tensile_strain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_ultimate_tensile_strain" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the largest tensile strain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Ultimate strain</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StrandPCI1992.get_unique_strains">
+<span class="sig-name descname"><span class="pre">get_unique_strains</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_unique_strains" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns an ordered list of unique strains.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Ordered list of unique strains</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StrandPCI1992.get_yield_strength">
+<span class="sig-name descname"><span class="pre">get_yield_strength</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_yield_strength" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the yield strength of the stress-strain profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Yield strength</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StrandPCI1992.plot_stress_strain">
+<span class="sig-name descname"><span class="pre">plot_stress_strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Stress-Strain</span> <span class="pre">Profile'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'o-'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.StrandPCI1992.plot_stress_strain" title="Permalink to this definition">#</a></dt>
+<dd><p>Plots the stress-strain profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'Stress-Strain</span> <span class="pre">Profile'</span></code>) – Plot title</p></li>
+<li><p><strong>fmt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'o-'</span></code>) – Plot format string</p></li>
+<li><p><strong>kwargs</strong> – Passed to <a class="reference internal" href="concreteproperties.post.plotting_context.html#concreteproperties.post.plotting_context" title="concreteproperties.post.plotting_context"><code class="xref py py-func docutils literal notranslate"><span class="pre">plotting_context()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> – Matplotlib axes object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="concreteproperties.stress_strain_profile.StrandPCI1992.print_properties">
+<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'8.6e'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#concreteproperties.stress_strain_profile.StrandPCI1992.print_properties" title="Permalink to this definition">#</a></dt>
+<dd><p>Prints the stress-strain profile properties to the terminal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fmt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'8.6e'</span></code>) – Number format</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="concreteproperties.stress_strain_profile.StrandHardening.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">concreteproperties.stress_strain_profile.StrandHardening</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="concreteproperties.stress_strain_profile.StrandProfile.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">concreteproperties.stress_strain_profile.StrandProfile</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#concreteproperties.stress_strain_profile.StrandPCI1992">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     StrandPCI1992
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_compressive_strength">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       StrandPCI1992.get_compressive_strength()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_elastic_modulus">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       StrandPCI1992.get_elastic_modulus()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_strain">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       StrandPCI1992.get_strain()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_stress">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       StrandPCI1992.get_stress()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_tensile_strength">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       StrandPCI1992.get_tensile_strength()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_ultimate_compressive_strain">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       StrandPCI1992.get_ultimate_compressive_strain()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_ultimate_tensile_strain">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       StrandPCI1992.get_ultimate_tensile_strain()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_unique_strains">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       StrandPCI1992.get_unique_strains()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.stress_strain_profile.StrandPCI1992.get_yield_strength">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       StrandPCI1992.get_yield_strength()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.stress_strain_profile.StrandPCI1992.plot_stress_strain">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       StrandPCI1992.plot_stress_strain()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concreteproperties.stress_strain_profile.StrandPCI1992.print_properties">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       StrandPCI1992.print_properties()
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/gen/concreteproperties.stress_strain_profile.StrandPCI1992.rst">
+        <i class="fa-solid fa-pencil"></i> Edit this page
+    </a>
+</div>
+
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Robbie van Leeuwen.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>

@@ -5,31 +5,32 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6. Assumptions &#8212; concreteproperties 0.3.1 documentation</title>
-  <script>
+    <title>7. Assumptions &#8212; concreteproperties 0.4.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -46,13 +47,17 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Examples" href="../examples.html" />
-    <link rel="prev" title="5.1. AS 3600:2018" href="design_codes/as3600.html" />
+    <link rel="prev" title="6.2. NZS3101:2006" href="design_codes/nzs3101.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -126,32 +131,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="../user_guide.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
                         User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../examples.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples.html">
                         Examples
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../api.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
                         API Reference
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -160,19 +165,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
   <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
-    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -207,11 +214,13 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
   <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
@@ -241,32 +250,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="../user_guide.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
                         User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../examples.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples.html">
                         Examples
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../api.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
                         API Reference
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -280,11 +289,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
-    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -329,12 +338,14 @@
 <li class="toctree-l1"><a class="reference internal" href="materials.html">1. Materials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="geometry.html">2. Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="analysis.html">3. Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="results.html">4. Results</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">5. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">5.1. AS 3600:2018</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prestressed_analysis.html">4. Prestressed Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">5. Results</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">6. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">6.1. AS 3600:2018</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design_codes/nzs3101.html">6.2. NZS3101:2006</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Assumptions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. Assumptions</a></li>
 </ul>
 
   </div>
@@ -349,8 +360,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -364,10 +378,10 @@
             <article class="bd-article" role="main">
               
   <div class="section" id="assumptions">
-<h1><span class="section-number">6. </span>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">7. </span>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this heading">#</a></h1>
 <p>Below are a list of assumptions and conventions used by <code class="docutils literal notranslate"><span class="pre">concreteproperties</span></code>:</p>
 <div class="section" id="general">
-<h2><span class="section-number">6.1. </span>General<a class="headerlink" href="#general" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1. </span>General<a class="headerlink" href="#general" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Plane sections remain plane (Euler-Bernoulli) i.e. linear strain profile throughout
 the cross-section</p></li>
@@ -379,18 +393,25 @@ at it’s geometric centroid</p></li>
 <li><p>Stresses in materials are determined from strains by linear interpolation from the
 corresponding stress-strain profile (linear extrapolation is used where the strains
 are outside the range of the profile)</p></li>
+<li><p>All moments in service and ultimate analyses (moment-curvature, ultimate bending,
+moment interaction, biaxial bending, service stress, ultimate stress) are calculated
+about, or assumed to be about the gross centroid (no material properties applied),
+unless otherwise specified in the intitialisation of
+<a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a></p></li>
+<li><p>Moment inputs for elastic stress analysis (cracked and uncracked), are assumed to be
+taken to be about the geometric centroid (material properties applied)</p></li>
 <li><p>Finite element assumptions and background can be found
 <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/theory.html">here</a></p></li>
 </ul>
 </div>
 <div class="section" id="cracked-analysis">
-<h2><span class="section-number">6.2. </span>Cracked Analysis<a class="headerlink" href="#cracked-analysis" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.2. </span>Cracked Analysis<a class="headerlink" href="#cracked-analysis" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Concrete is assumed to have zero tensile strength</p></li>
 </ul>
 </div>
 <div class="section" id="ultimate-analysis">
-<h2><span class="section-number">6.3. </span>Ultimate Analysis<a class="headerlink" href="#ultimate-analysis" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.3. </span>Ultimate Analysis<a class="headerlink" href="#ultimate-analysis" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>The maximum strain at the extreme concrete compression fibre is assumed to reach a
 maximum limiting compressive strain, see note in <a class="reference internal" href="materials.html#label-conc-ult-profile"><span class="std std-ref">Concrete Ultimate Stress-Strain Profiles</span></a></p></li>
@@ -399,15 +420,24 @@ maximum limiting compressive strain, see note in <a class="reference internal" h
 reaching its ultimate strength</p></li>
 <li><p>The stress-strain relationship for concrete may be assumed to be rectangular,
 trapezoidal, bilinear, parabolic, or any other arbitrary shape that results in the
-prediction of strength in substantial agreement with the results of comprehensive tests</p></li>
+prediction of strength in substantial agreement with the results of comprehensive
+tests</p></li>
 </ul>
 </div>
 <div class="section" id="conventions">
-<h2><span class="section-number">6.4. </span>Conventions<a class="headerlink" href="#conventions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.4. </span>Conventions<a class="headerlink" href="#conventions" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Compressive stresses are positive, tensile stresses area negative</p></li>
 <li><p>Angles are measured in radians and are positive counter clockwise from the positive
 <code class="docutils literal notranslate"><span class="pre">x</span></code> axis</p></li>
+</ul>
+</div>
+<div class="section" id="prestressed-analysis">
+<h2><span class="section-number">7.5. </span>Prestressed Analysis<a class="headerlink" href="#prestressed-analysis" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>All prestressing strands are fully bonded to the concrete</p></li>
+<li><p>Internal actions arising from prestressing forces are automatically included in all
+analyses</p></li>
 </ul>
 </div>
 </div>
@@ -420,11 +450,11 @@ prediction of strength in substantial agreement with the results of comprehensiv
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="design_codes/as3600.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="design_codes/nzs3101.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">5.1. </span>AS 3600:2018</p>
+          <p class="prev-next-title"><span class="section-number">6.2. </span>NZS3101:2006</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="../examples.html" title="next page">
@@ -452,22 +482,27 @@ prediction of strength in substantial agreement with the results of comprehensiv
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#general">
-   6.1. General
+   7.1. General
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#cracked-analysis">
-   6.2. Cracked Analysis
+   7.2. Cracked Analysis
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#ultimate-analysis">
-   6.3. Ultimate Analysis
+   7.3. Ultimate Analysis
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conventions">
-   6.4. Conventions
+   7.4. Conventions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prestressed-analysis">
+   7.5. Prestressed Analysis
   </a>
  </li>
 </ul>
@@ -512,7 +547,8 @@ prediction of strength in substantial agreement with the results of comprehensiv
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -527,9 +563,19 @@ prediction of strength in substantial agreement with the results of comprehensiv
   </div>
   
   <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.2.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

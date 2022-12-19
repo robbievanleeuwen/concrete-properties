@@ -26,13 +26,14 @@ By default, all geometries in *concreteproperties* are meshed to capture strain
 variation across the section. However, for smaller geometries (such as reinforcement),
 *concreteproperties* can treat the area as having a constant strain with a lumped mass,
 which increases the performance of the analysis with almost no loss in fidelity. The
-meshing can be switched off by setting the attribute ``meshed=False``. 
+meshing can be switched off by setting the attribute ``meshed=False``.
 
 The :class:`~concreteproperties.material.SteelBar` class has meshing disabled by default
 and should be used when defining steel reinforcement. On the other hand, the
 :class:`~concreteproperties.material.Steel` class is meshed by default so should be used
 when defining larger sections such as strucutral steel sections used in composite
-sections.
+sections. The :class:`~concreteproperties.material.SteelStrand` class also has meshing
+disabled by default and should be used when defining prestressing strands.
 
 
 Material
@@ -60,6 +61,13 @@ SteelBar
 ^^^^^^^^
 
 ..  autoclass:: concreteproperties.material.SteelBar
+  :noindex:
+
+
+SteelStrand
+^^^^^^^^^^^
+
+..  autoclass:: concreteproperties.material.SteelStrand
   :noindex:
 
 
@@ -126,7 +134,7 @@ Linear Concrete Service Profile
 
 .. warning::
 
-  This profile is not intended to be used in conjunction with a 
+  This profile is not intended to be used in conjunction with a
   :meth:`~concreteproperties.concrete_section.ConcreteSection.moment_curvature_analysis`
   as the concrete can resist large tensile stresses without fracture.
 
@@ -189,6 +197,53 @@ Eurocode Non-Linear Concrete Service Profile
       tension_softening_stiffness=7e3,
   ).plot_stress_strain()
 
+Modified Mander Non-Linear Unconfined & Confined Concrete Service Profile
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+..  autoclass:: concreteproperties.stress_strain_profile.ModifiedMander
+  :noindex:
+  :show-inheritance:
+
+.. plot::
+  :include-source: True
+  :caption: ModifiedMander NonLinear Stress-Strain Profile for Unconfined Concrete
+
+  from concreteproperties.stress_strain_profile import ModifiedMander
+
+  ModifiedMander(elastic_modulus=30e3,
+        compressive_strength=30,
+        tensile_strength=4.5,
+        sect_type="rect",
+        conc_tension=True,
+        conc_spalling=True,
+        n_points=25
+  ).plot_stress_strain()
+
+.. plot::
+  :include-source: True
+  :caption: ModifiedMander NonLinear Stress-Strain Profile for Confined Concrete
+
+  from concreteproperties.stress_strain_profile import ModifiedMander
+  ModifiedMander(
+        elastic_modulus=30e3,
+        compressive_strength=30,
+        tensile_strength=4.5,
+        sect_type="rect",
+        conc_confined=True,
+        conc_tension=True,
+        d=800,
+        b=500,
+        long_reinf_area=12 * 314,
+        w_dash=[150] * 12,
+        cvr=30 + 10,
+        trans_spacing=125,
+        trans_d_b=10,
+        trans_num_d=4,
+        trans_num_b=4,
+        trans_f_y=500,
+        eps_su=0.15,
+        n_points=25,
+    ).plot_stress_strain()
 
 .. _label-conc-ult-profile:
 
@@ -359,4 +414,70 @@ Elastic-Plastic Hardening Steel Profile
     elastic_modulus=200e3,
     fracture_strain=0.05,
     ultimate_strength=600,
+  ).plot_stress_strain()
+
+
+Strand Stress-Strain Profiles
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Generic Strand Profile
+""""""""""""""""""""""
+
+..  autoclass:: concreteproperties.stress_strain_profile.StrandProfile
+  :noindex:
+  :show-inheritance:
+
+.. plot::
+  :include-source: True
+  :caption: StrandProfile Stress-Strain Profile
+
+  from concreteproperties.stress_strain_profile import StrandProfile
+
+  StrandProfile(
+    strains=[-0.03, -0.01, -1400 / 195e3, 0, 1400 / 195e3, 0.01, 0.03],
+    stresses=[-1800, -1600, -1400, 0, 1400, 1600, 1800],
+    yield_strength=500,
+  ).plot_stress_strain()
+
+
+Elastic-Plastic Hardening Strand Profile
+""""""""""""""""""""""""""""""""""""""""
+
+..  autoclass:: concreteproperties.stress_strain_profile.StrandHardening
+  :noindex:
+  :show-inheritance:
+
+.. plot::
+  :include-source: True
+  :caption: StrandHardening Stress-Strain Profile
+
+  from concreteproperties.stress_strain_profile import StrandHardening
+
+  StrandHardening(
+    yield_strength=1500,
+    elastic_modulus=195e3,
+    fracture_strain=0.035,
+    breaking_strength=1830,
+  ).plot_stress_strain()
+
+
+PCI Journal (1992) Strand Profile
+"""""""""""""""""""""""""""""""""
+
+..  autoclass:: concreteproperties.stress_strain_profile.StrandPCI1992
+  :noindex:
+  :show-inheritance:
+
+.. plot::
+  :include-source: True
+  :caption: StrandPCI1992 Stress-Strain Profile
+
+  from concreteproperties.stress_strain_profile import StrandPCI1992
+
+  StrandPCI1992(
+    yield_strength=1500,
+    elastic_modulus=195e3,
+    fracture_strain=0.035,
+    breaking_strength=1830,
   ).plot_stress_strain()

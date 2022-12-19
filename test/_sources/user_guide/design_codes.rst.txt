@@ -9,6 +9,7 @@ following design codes:
    :maxdepth: 1
 
    design_codes/as3600
+   design_codes/nzs3101
 
 .. warning::
 
@@ -17,9 +18,9 @@ following design codes:
    Asymmetric sections with a non-zero neutral axis angle will result in biaxial
    bending moments. When generating moment interaction diagrams using this approach, the
    ratio between the bending moments ``m_x`` and ``m_y`` will change depending on the
-   level of axial load. As a result, without generating biaxial bending diagrams, 
+   level of axial load. As a result, without generating biaxial bending diagrams,
    a false impression of demand/capacity may be generated when operating close to the
-   design curve. A future version of *concreteproperties* will incorporate a constant 
+   design curve. A future version of *concreteproperties* will incorporate a constant
    'load-angle' approach, which will keep the ratio of ``m_x`` to ``m_y`` constant
    for a given moment interaction diagram, rather than keeping the neutral axis angle
    constant. Further discussion of this issue can be found

@@ -656,6 +656,117 @@
    "source": [
     "Note that the behaviour is largely similar, however the refined parameters do a better job of capturing the yielding behaviour."
    ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c83508ab",
+   "metadata": {},
+   "source": [
+    "## Non-Zero Axial Force"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "61451884",
+   "metadata": {},
+   "source": [
+    "Moment-curvature diagrams can be generated with non-zero axial forces. A simple column is used to illustrate this."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "01e9d20b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "concrete = Concrete(\n",
+    "    name=\"Concrete (No Tension)\",\n",
+    "    density=2.4e-6,\n",
+    "    stress_strain_profile=ssp.ConcreteLinearNoTension(\n",
+    "        elastic_modulus=35e3,\n",
+    "        ultimate_strain=0.003,\n",
+    "        compressive_strength=31,\n",
+    "    ),\n",
+    "    ultimate_stress_strain_profile=ssp.BilinearStressStrain(\n",
+    "        compressive_strength=31,\n",
+    "        compressive_strain=0.00175,\n",
+    "        ultimate_strain=0.0035,\n",
+    "    ),\n",
+    "    flexural_tensile_strength=3.5,\n",
+    "    colour=\"lightgrey\",\n",
+    ")\n",
+    "\n",
+    "steel = SteelBar(\n",
+    "    name=\"Steel - Elastic-Plastic\",\n",
+    "    density=7.85e-6,\n",
+    "    stress_strain_profile=ssp.SteelElasticPlastic(\n",
+    "        yield_strength=320,\n",
+    "        elastic_modulus=200e3,\n",
+    "        fracture_strain=0.05,\n",
+    "    ),\n",
+    "    colour=\"grey\",\n",
+    ")\n",
+    "\n",
+    "geom = rectangular_section(d=600, b=600, material=concrete)\n",
+    "geom = add_bar_rectangular_array(\n",
+    "    geometry=geom,\n",
+    "    area=610,\n",
+    "    material=steel,\n",
+    "    n_x=3,\n",
+    "    x_s=236,\n",
+    "    n_y=3,\n",
+    "    y_s=236,\n",
+    "    anchor=(64, 64),\n",
+    "    exterior_only=True,\n",
+    ")\n",
+    "\n",
+    "conc_sec = ConcreteSection(geom)\n",
+    "conc_sec.plot_section()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ef68a98d",
+   "metadata": {},
+   "source": [
+    "We perform four moment-curvature analyses with varying levels of axial force."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c627baa5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "res_n0 = conc_sec.moment_curvature_analysis(n=0, progress_bar=False)\n",
+    "res_n1 = conc_sec.moment_curvature_analysis(n=0.2 * 600 * 600 * 31, progress_bar=False)\n",
+    "res_n2 = conc_sec.moment_curvature_analysis(n=0.4 * 600 * 600 * 31, progress_bar=False)\n",
+    "res_nt = conc_sec.moment_curvature_analysis(n=-1000e3, progress_bar=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "87d9a986",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "MomentCurvatureResults.plot_multiple_results(\n",
+    "    moment_curvature_results=[res_n0, res_n1, res_n2, res_nt],\n",
+    "    labels=[\"$N=0$ kN\", \"$N=0.2f'cA_g$\", \"$N=0.4f'cA_g$\", \"$N=-1000$ kN\"],\n",
+    "    fmt=\"-\",\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bc0683bc",
+   "metadata": {},
+   "source": [
+    "The above plot clearly illustrates the influence axial force has on the moment-curvature response of a column."
+   ]
   }
  ],
  "metadata": {
