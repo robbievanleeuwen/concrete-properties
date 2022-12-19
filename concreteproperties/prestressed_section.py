@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from math import isinf
-from typing import List, Optional, Union
+from typing import List, Optional, Tuple, Union
 
 import numpy as np
 import sectionproperties.pre.geometry as sp_geom
@@ -32,14 +32,26 @@ class PrestressedSection(ConcreteSection):
     def __init__(
         self,
         geometry: sp_geom.CompoundGeometry,
+        moment_centroid: Optional[Tuple[float, float]] = None,
+        geometric_centroid_override: bool = True,
     ) -> None:
         """Inits the ConcreteSection class.
 
         :param geometry: *sectionproperties* CompoundGeometry object describing the
             prestressed concrete section
+        :param moment_centroid: If specified, all moments for service and ultimate
+            analyses are calculated about this point. If not specified, all moments are
+            calculated about the gross cross-section centroid, i.e. no material
+            properties applied.
+        :param geometric_centroid_override: If set to True, sets ``moment_centroid`` to
+            the geometric centroid i.e. material properties applied
         """
 
-        super().__init__(geometry=geometry)
+        super().__init__(
+            geometry=geometry,
+            moment_centroid=moment_centroid,
+            geometric_centroid_override=geometric_centroid_override,
+        )
 
         # check symmetry about y-axis
         if not np.isclose(
@@ -52,11 +64,6 @@ class PrestressedSection(ConcreteSection):
             msg = "Meshed reinforcement geometries are not permitted in "
             msg += "PrestressedSection."
             raise ValueError(msg)
-
-    def calculate_gross_area_properties(self) -> None:
-        """Calculates and stores gross section area properties."""
-
-        super().calculate_gross_area_properties()
 
         # sum strand areas
         for strand_geom in self.strand_geometries:
