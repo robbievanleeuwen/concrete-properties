@@ -76,7 +76,9 @@ class PrestressedSection(ConcreteSection):
         for strand in self.strand_geometries:
             if isinstance(strand.material, SteelStrand):
                 # add axial force
-                n_strand = strand.material.prestress_force
+                n_strand = (
+                    strand.material.get_prestress_stress() * strand.calculate_area()
+                )
                 n_prestress += n_strand
 
                 # add moment
@@ -491,9 +493,7 @@ class PrestressedSection(ConcreteSection):
 
             # add initial prestress
             if isinstance(lumped_geom.material, SteelStrand):
-                sig += (
-                    -lumped_geom.material.prestress_force / lumped_geom.calculate_area()
-                )
+                sig += -lumped_geom.material.get_prestress_stress()
 
             strain = sig / lumped_geom.material.elastic_modulus
 
@@ -571,7 +571,9 @@ class PrestressedSection(ConcreteSection):
 
         for strand in self.strand_geometries:
             if isinstance(strand.material, SteelStrand):
-                n_strand = strand.material.prestress_force
+                n_strand = (
+                    strand.material.get_prestress_stress() * strand.calculate_area()
+                )
                 centroid = strand.calculate_centroid()
                 m_net += n_strand * (centroid[1] - cy)
 
@@ -619,9 +621,7 @@ class PrestressedSection(ConcreteSection):
 
             # add initial prestress
             if isinstance(lumped_geom.material, SteelStrand):
-                sig += (
-                    -lumped_geom.material.prestress_force / lumped_geom.calculate_area()
-                )
+                sig += -lumped_geom.material.get_prestress_stress()
 
             strain = sig / lumped_geom.material.elastic_modulus
 

@@ -119,28 +119,23 @@ class SteelStrand(Steel):
     :param density: Steel strand density (mass per unit volume)
     :param stress_strain_profile: Steel strand stress-strain profile
     :param colour: Colour of the material for rendering
-    :param prestress_force: Prestressing force applied to the strand
+    :param prestress_stress: Prestressing stress applied to the strand
     """
 
     name: str
     density: float
     stress_strain_profile: ssp.StrandProfile
     colour: str
-    prestress_force: float = 0
+    prestress_stress: float = 0
     meshed: bool = field(default=False, init=False)
 
-    def get_prestress_stress(
-        self,
-        area: float,
-    ) -> float:
-        """Given the strand cross-sectional area, returns the prestress stress.
-
-        :param area: Strand cross-sectional area
+    def get_prestress_stress(self) -> float:
+        """Returns the prestress stress.
 
         :return: Prestress stress
         """
 
-        return self.prestress_force / area
+        return self.prestress_stress
 
     def get_prestress_strain(
         self,
@@ -153,6 +148,6 @@ class SteelStrand(Steel):
         :return: Prestress strain
         """
 
-        stress = self.get_prestress_stress(area=area)
+        stress = self.get_prestress_stress()
 
         return self.stress_strain_profile.get_strain(stress=stress)

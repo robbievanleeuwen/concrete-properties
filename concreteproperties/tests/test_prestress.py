@@ -32,7 +32,7 @@ strand = SteelStrand(
         breaking_strength=1830,
     ),
     colour="slategrey",
-    prestress_force=1000e3,
+    prestress_stress=1000,
 )
 
 

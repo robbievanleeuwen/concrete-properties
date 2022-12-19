@@ -51,7 +51,7 @@ def test_example_5_4():
             breaking_strength=1830,
         ),
         colour="slategrey",
-        prestress_force=125e3,
+        prestress_stress=1250,
     )
 
     # create geometry and check gross section properties
@@ -191,7 +191,7 @@ def test_example_5_7():
             breaking_strength=1830,
         ),
         colour="slategrey",
-        prestress_force=900e3,
+        prestress_stress=1200,
     )
 
     # create geometry
@@ -287,7 +287,7 @@ def test_example_6_1_2_3():
             breaking_strength=1910,
         ),
         colour="slategrey",
-        prestress_force=1200e3,
+        prestress_stress=1200,
     )
 
     # create geometry
@@ -371,7 +371,7 @@ def test_example_6_9():
             breaking_strength=1910,
         ),
         colour="slategrey",
-        prestress_force=1625e3,
+        prestress_stress=1250,
     )
 
     # create geometry and check gross section properties
