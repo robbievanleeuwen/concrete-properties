@@ -525,15 +525,16 @@
 
 <div class="viewcode-block" id="AnalysisSection.service_analysis"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.service_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">service_analysis</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">ecf</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">eps0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">centroid</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Performs a service stress analysis on the section.</span>
 
-<span class="sd">        :param point_na: Point on the neutral axis</span>
-<span class="sd">        :param d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">        :param ecf: Global coordinate of the extreme compressive fibre</span>
+<span class="sd">        :param eps0: Strain at top fibre</span>
 <span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
 <span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">        :param kappa: Curvature</span>
@@ -557,7 +558,8 @@
                 <span class="n">el_min_strain</span><span class="p">,</span>
                 <span class="n">el_max_strain</span><span class="p">,</span>
             <span class="p">)</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">calculate_service_actions</span><span class="p">(</span>
-                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">ecf</span><span class="o">=</span><span class="n">ecf</span><span class="p">,</span>
+                <span class="n">eps0</span><span class="o">=</span><span class="n">eps0</span><span class="p">,</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
                 <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
                 <span class="n">centroid</span><span class="o">=</span><span class="n">centroid</span><span class="p">,</span>
@@ -573,18 +575,18 @@
 
 <div class="viewcode-block" id="AnalysisSection.get_service_stress"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.AnalysisSection.html#concreteproperties.analysis_section.AnalysisSection.get_service_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_service_stress</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">ecf</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">eps0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">centroid</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Given the neutral axis depth `d_n` and curvature `kappa` determines the</span>
 <span class="sd">        service stresses within the section.</span>
 
-<span class="sd">        :param d_n: Neutral axis depth</span>
 <span class="sd">        :param kappa: Curvature</span>
-<span class="sd">        :param point_na: Point on the neutral axis</span>
+<span class="sd">        :param ecf: Global coordinate of the extreme compressive fibre</span>
+<span class="sd">        :param eps0: Strain at top fibre</span>
 <span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
 <span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">        :param centroid: Centroid about which to take moments</span>
@@ -601,7 +603,8 @@
             <span class="c1"># get strain at node</span>
             <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_service_strain</span><span class="p">(</span>
                 <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">ecf</span><span class="o">=</span><span class="n">ecf</span><span class="p">,</span>
+                <span class="n">eps0</span><span class="o">=</span><span class="n">eps0</span><span class="p">,</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
                 <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
             <span class="p">)</span>
@@ -611,7 +614,8 @@
 
         <span class="c1"># calculate total force</span>
         <span class="n">n_sec</span><span class="p">,</span> <span class="n">m_x_sec</span><span class="p">,</span> <span class="n">m_y_sec</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_analysis</span><span class="p">(</span>
-            <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+            <span class="n">ecf</span><span class="o">=</span><span class="n">ecf</span><span class="p">,</span>
+            <span class="n">eps0</span><span class="o">=</span><span class="n">eps0</span><span class="p">,</span>
             <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
             <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
             <span class="n">centroid</span><span class="o">=</span><span class="n">centroid</span><span class="p">,</span>
@@ -960,14 +964,16 @@
 
 <div class="viewcode-block" id="Tri3.calculate_service_actions"><a class="viewcode-back" href="../../gen/concreteproperties.analysis_section.Tri3.html#concreteproperties.analysis_section.Tri3.calculate_service_actions">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_service_actions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">ecf</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">eps0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">centroid</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates service actions for the current finite element.</span>
 
-<span class="sd">        :param point_na: Point on the neutral axis</span>
+<span class="sd">        :param ecf: Global coordinate of the extreme compressive fibre</span>
+<span class="sd">        :param eps0: Strain at top fibre</span>
 <span class="sd">        :param theta: Angle (in radians) the neutral axis makes with the</span>
 <span class="sd">            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">        :param kappa: Curvature</span>
@@ -998,7 +1004,8 @@
             <span class="c1"># get strain at gauss point</span>
             <span class="n">strain</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_service_strain</span><span class="p">(</span>
                 <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
-                <span class="n">point_na</span><span class="o">=</span><span class="n">point_na</span><span class="p">,</span>
+                <span class="n">ecf</span><span class="o">=</span><span class="n">ecf</span><span class="p">,</span>
+                <span class="n">eps0</span><span class="o">=</span><span class="n">eps0</span><span class="p">,</span>
                 <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
                 <span class="n">kappa</span><span class="o">=</span><span class="n">kappa</span><span class="p">,</span>
             <span class="p">)</span>

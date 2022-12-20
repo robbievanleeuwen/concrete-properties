@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6. Assumptions &#8212; concreteproperties 0.4.1 documentation</title>
+    <title>7. Assumptions &#8212; concreteproperties 0.4.1 documentation</title>
   
   
   
@@ -47,7 +47,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Examples" href="../examples.html" />
-    <link rel="prev" title="5.2. NZS3101:2006" href="design_codes/nzs3101.html" />
+    <link rel="prev" title="6.2. NZS3101:2006" href="design_codes/nzs3101.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -338,13 +338,14 @@
 <li class="toctree-l1"><a class="reference internal" href="materials.html">1. Materials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="geometry.html">2. Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="analysis.html">3. Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="results.html">4. Results</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">5. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">5.1. AS 3600:2018</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design_codes/nzs3101.html">5.2. NZS3101:2006</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prestressed_analysis.html">4. Prestressed Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">5. Results</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">6. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">6.1. AS 3600:2018</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design_codes/nzs3101.html">6.2. NZS3101:2006</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Assumptions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. Assumptions</a></li>
 </ul>
 
   </div>
@@ -377,10 +378,10 @@
             <article class="bd-article" role="main">
               
   <div class="section" id="assumptions">
-<h1><span class="section-number">6. </span>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">7. </span>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this heading">#</a></h1>
 <p>Below are a list of assumptions and conventions used by <code class="docutils literal notranslate"><span class="pre">concreteproperties</span></code>:</p>
 <div class="section" id="general">
-<h2><span class="section-number">6.1. </span>General<a class="headerlink" href="#general" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1. </span>General<a class="headerlink" href="#general" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Plane sections remain plane (Euler-Bernoulli) i.e. linear strain profile throughout
 the cross-section</p></li>
@@ -404,13 +405,13 @@ taken to be about the geometric centroid (material properties applied)</p></li>
 </ul>
 </div>
 <div class="section" id="cracked-analysis">
-<h2><span class="section-number">6.2. </span>Cracked Analysis<a class="headerlink" href="#cracked-analysis" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.2. </span>Cracked Analysis<a class="headerlink" href="#cracked-analysis" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Concrete is assumed to have zero tensile strength</p></li>
 </ul>
 </div>
 <div class="section" id="ultimate-analysis">
-<h2><span class="section-number">6.3. </span>Ultimate Analysis<a class="headerlink" href="#ultimate-analysis" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.3. </span>Ultimate Analysis<a class="headerlink" href="#ultimate-analysis" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>The maximum strain at the extreme concrete compression fibre is assumed to reach a
 maximum limiting compressive strain, see note in <a class="reference internal" href="materials.html#label-conc-ult-profile"><span class="std std-ref">Concrete Ultimate Stress-Strain Profiles</span></a></p></li>
@@ -424,11 +425,19 @@ tests</p></li>
 </ul>
 </div>
 <div class="section" id="conventions">
-<h2><span class="section-number">6.4. </span>Conventions<a class="headerlink" href="#conventions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.4. </span>Conventions<a class="headerlink" href="#conventions" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Compressive stresses are positive, tensile stresses area negative</p></li>
 <li><p>Angles are measured in radians and are positive counter clockwise from the positive
 <code class="docutils literal notranslate"><span class="pre">x</span></code> axis</p></li>
+</ul>
+</div>
+<div class="section" id="prestressed-analysis">
+<h2><span class="section-number">7.5. </span>Prestressed Analysis<a class="headerlink" href="#prestressed-analysis" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>All prestressing strands are fully bonded to the concrete</p></li>
+<li><p>Internal actions arising from prestressing forces are automatically included in all
+analyses</p></li>
 </ul>
 </div>
 </div>
@@ -445,7 +454,7 @@ tests</p></li>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">5.2. </span>NZS3101:2006</p>
+          <p class="prev-next-title"><span class="section-number">6.2. </span>NZS3101:2006</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="../examples.html" title="next page">
@@ -473,22 +482,27 @@ tests</p></li>
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#general">
-   6.1. General
+   7.1. General
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#cracked-analysis">
-   6.2. Cracked Analysis
+   7.2. Cracked Analysis
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#ultimate-analysis">
-   6.3. Ultimate Analysis
+   7.3. Ultimate Analysis
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conventions">
-   6.4. Conventions
+   7.4. Conventions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prestressed-analysis">
+   7.5. Prestressed Analysis
   </a>
  </li>
 </ul>

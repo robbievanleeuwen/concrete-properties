@@ -345,8 +345,9 @@
 <li class="toctree-l1"><a class="reference internal" href="biaxial_bending.html">6. Biaxial Bending Diagram</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stress_analysis.html">7. Stress Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="composite_section.html">8. Composite Sections</a></li>
-<li class="toctree-l1"><a class="reference internal" href="as3600.html">9. AS3600 Design Code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nzs3101.html">10. NZS3101 Design Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prestressed_section.html">9. Prestressed Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="as3600.html">10. AS3600 Design Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nzs3101.html">11. NZS3101 Design Code</a></li>
 </ul>
 
   </div>
@@ -1292,6 +1293,115 @@ Failure curvature = 3.5212e-05
 <p>Note that the behaviour is largely similar, however the refined parameters do a better job of capturing the yielding behaviour.</p>
 </div>
 </div>
+<div class="section" id="Non-Zero-Axial-Force">
+<h2><span class="section-number">3.7. </span>Non-Zero Axial Force<a class="headerlink" href="#Non-Zero-Axial-Force" title="Permalink to this heading">#</a></h2>
+<p>Moment-curvature diagrams can be generated with non-zero axial forces. A simple column is used to illustrate this.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concrete</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Concrete (No Tension)&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteLinearNoTension</span><span class="p">(</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">35e3</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">BilinearStressStrain</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span>
+        <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.00175</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">steel</span> <span class="o">=</span> <span class="n">SteelBar</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Steel - Elastic-Plastic&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
+        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
+        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">geom</span> <span class="o">=</span> <span class="n">rectangular_section</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">concrete</span><span class="p">)</span>
+<span class="n">geom</span> <span class="o">=</span> <span class="n">add_bar_rectangular_array</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span>
+    <span class="n">area</span><span class="o">=</span><span class="mi">610</span><span class="p">,</span>
+    <span class="n">material</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
+    <span class="n">n_x</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">x_s</span><span class="o">=</span><span class="mi">236</span><span class="p">,</span>
+    <span class="n">n_y</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">y_s</span><span class="o">=</span><span class="mi">236</span><span class="p">,</span>
+    <span class="n">anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span>
+    <span class="n">exterior_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_moment_curvature_47_0.svg" src="../_images/notebooks_moment_curvature_47_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Reinforced Concrete Section&#39;}&gt;
+</pre></div></div>
+</div>
+<p>We perform four moment-curvature analyses with varying levels of axial force.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_n0</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">res_n1</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">*</span> <span class="mi">31</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">res_n2</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mf">0.4</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">*</span> <span class="mi">31</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">res_nt</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">n</span><span class="o">=-</span><span class="mf">1000e3</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MomentCurvatureResults</span><span class="o">.</span><span class="n">plot_multiple_results</span><span class="p">(</span>
+    <span class="n">moment_curvature_results</span><span class="o">=</span><span class="p">[</span><span class="n">res_n0</span><span class="p">,</span> <span class="n">res_n1</span><span class="p">,</span> <span class="n">res_n2</span><span class="p">,</span> <span class="n">res_nt</span><span class="p">],</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;$N=0$ kN&quot;</span><span class="p">,</span> <span class="s2">&quot;$N=0.2f&#39;cA_g$&quot;</span><span class="p">,</span> <span class="s2">&quot;$N=0.4f&#39;cA_g$&quot;</span><span class="p">,</span> <span class="s2">&quot;$N=-1000$ kN&quot;</span><span class="p">],</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_moment_curvature_50_0.svg" src="../_images/notebooks_moment_curvature_50_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Moment-Curvature&#39;}, xlabel=&#39;Curvature&#39;, ylabel=&#39;Moment&#39;&gt;
+</pre></div></div>
+</div>
+<p>The above plot clearly illustrates the influence axial force has on the moment-curvature response of a column.</p>
+</div>
 </div>
 
 
@@ -1412,6 +1522,11 @@ Failure curvature = 3.5212e-05
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Non-Zero-Axial-Force">
+   3.7. Non-Zero Axial Force
+  </a>
  </li>
 </ul>
 

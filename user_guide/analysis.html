@@ -48,7 +48,7 @@
         </script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. Results" href="results.html" />
+    <link rel="next" title="4. Prestressed Analysis" href="prestressed_analysis.html" />
     <link rel="prev" title="2. Geometry" href="geometry.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
@@ -340,13 +340,14 @@
 <li class="toctree-l1"><a class="reference internal" href="materials.html">1. Materials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="geometry.html">2. Geometry</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="results.html">4. Results</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">5. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">5.1. AS 3600:2018</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design_codes/nzs3101.html">5.2. NZS3101:2006</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prestressed_analysis.html">4. Prestressed Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">5. Results</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="design_codes.html">6. Design Codes</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="design_codes/as3600.html">6.1. AS 3600:2018</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design_codes/nzs3101.html">6.2. NZS3101:2006</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="assumptions.html">6. Assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assumptions.html">7. Assumptions</a></li>
 </ul>
 
   </div>
@@ -409,6 +410,17 @@ composite section analysis)</p></li>
 </dl>
 </dd></dl>
 
+<p>If a prestressed concrete section is being analysed, a
+<a class="reference internal" href="../gen/concreteproperties.prestressed_section.PrestressedSection.html#concreteproperties.prestressed_section.PrestressedSection" title="concreteproperties.prestressed_section.PrestressedSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrestressedSection</span></code></a> object must be used
+instead of a <a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> object, see
+<a class="reference internal" href="prestressed_analysis.html#label-prestressed-analysis"><span class="std std-ref">Prestressed Analysis</span></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If the cross-section geometry contains a
+<a class="reference internal" href="../gen/concreteproperties.material.SteelStrand.html#concreteproperties.material.SteelStrand" title="concreteproperties.material.SteelStrand"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelStrand</span></code></a> material object, a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>
+will be raised if trying to create a
+<a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> object.</p>
+</div>
 <div class="section" id="visualising-the-cross-section">
 <h2><span class="section-number">3.1. </span>Visualising the Cross-Section<a class="headerlink" href="#visualising-the-cross-section" title="Permalink to this heading">#</a></h2>
 <p>The <a class="reference internal" href="../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> object can be
@@ -465,7 +477,7 @@ axis, but this can be modified by providing a bending axis angle <code class="do
 </dl>
 </dd></dl>
 
-<p>The cracking moment is determines assuming cracking occurs once the stress in the
+<p>The cracking moment is determined assuming cracking occurs once the stress in the
 concrete reaches the <code class="docutils literal notranslate"><span class="pre">flexural_tensile_strength</span></code>. Cracked properties are calculated
 assuming the concrete is linear elastic and can only resist compression.</p>
 <div class="admonition seealso">
@@ -483,14 +495,17 @@ method. By default the moment curvature analysis is calculated for bending about
 <code class="docutils literal notranslate"><span class="pre">x</span></code> axis, but this can be modified by providing a bending axis angle <code class="docutils literal notranslate"><span class="pre">theta</span></code>.</p>
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">ConcreteSection.</span></span><span class="sig-name descname"><span class="pre">moment_curvature_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_inc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_mult</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_inc_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.moment_curvature_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Performs a moment curvature analysis given a bending angle <code class="docutils literal notranslate"><span class="pre">theta</span></code>.</p>
+<span class="sig-prename descclassname"><span class="pre">ConcreteSection.</span></span><span class="sig-name descname"><span class="pre">moment_curvature_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_inc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_mult</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_inc_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/concrete_section.html#ConcreteSection.moment_curvature_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Performs a moment curvature analysis given a bending angle <code class="docutils literal notranslate"><span class="pre">theta</span></code> and
+applied axial force <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
 <p>Analysis continues until a material reaches its ultimate strain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Angle (in radians) the neutral axis makes with the horizontal axis
 (<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
+<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Axial force</p></li>
+<li><p><strong>kappa0</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Initial curvature</p></li>
 <li><p><strong>kappa_inc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">1e-07</span></code>) – Initial curvature increment</p></li>
 <li><p><strong>kappa_mult</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">2</span></code>) – Multiplier to apply to the curvature increment <code class="docutils literal notranslate"><span class="pre">kappa_inc</span></code>
 when <code class="docutils literal notranslate"><span class="pre">delta_m_max</span></code> is satisfied. When <code class="docutils literal notranslate"><span class="pre">delta_m_min</span></code> is satisfied, the
@@ -513,8 +528,8 @@ increment</p></li>
 <a class="reference internal" href="../gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> and
 <a class="reference internal" href="../gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> material properties to calculate a moment
 curvature response. The analysis is displacement controlled with an adaptive curvature
-increment controlled by the parameters <code class="docutils literal notranslate"><span class="pre">kappa_inc</span></code>, <code class="docutils literal notranslate"><span class="pre">delta_m_min</span></code> and
-<code class="docutils literal notranslate"><span class="pre">delta_m_max</span></code>.</p>
+increment controlled by the parameters <code class="docutils literal notranslate"><span class="pre">kappa_inc</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_mult</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_inc_max</span></code>,
+<code class="docutils literal notranslate"><span class="pre">delta_m_min</span></code> and <code class="docutils literal notranslate"><span class="pre">delta_m_max</span></code>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For an application of the above, see the example
@@ -559,9 +574,9 @@ nominal axial loads in ultimate bending calculations.</p>
 <p>This analysis uses the <code class="docutils literal notranslate"><span class="pre">ultimate_stress_strain_profile</span></code> given to the
 <a class="reference internal" href="../gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> materials and the
 <code class="docutils literal notranslate"><span class="pre">stress_strain_profile</span></code> given to the <a class="reference internal" href="../gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a>
-materials. The ultimate strain profile is determined by setting the strain at the
-extreme compressive fibre to the <code class="docutils literal notranslate"><span class="pre">ultimate_strain</span></code> parameter (see
-<a class="reference internal" href="materials.html#label-conc-ult-profile"><span class="std std-ref">Concrete Ultimate Stress-Strain Profiles</span></a>) and finding the neutral axis which satisfies the
+materials. The ultimate strain profile within the cross-section is determined by setting
+the strain at the extreme compressive fibre to the <code class="docutils literal notranslate"><span class="pre">ultimate_strain</span></code> parameter (see
+<a class="reference internal" href="materials.html#label-conc-ult-profile"><span class="std std-ref">Concrete Ultimate Stress-Strain Profiles</span></a>) and finding the neutral axis that satisfies the
 equilibrium of axial forces.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -850,10 +865,10 @@ method and these results passed to
           <p class="prev-next-title"><span class="section-number">2. </span>Geometry</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="results.html" title="next page">
+  <a class='right-next' id="next-link" href="prestressed_analysis.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title"><span class="section-number">4. </span>Results</p>
+      <p class="prev-next-title"><span class="section-number">4. </span>Prestressed Analysis</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>

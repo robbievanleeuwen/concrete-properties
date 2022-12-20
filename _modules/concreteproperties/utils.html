@@ -370,7 +370,8 @@
 
 <div class="viewcode-block" id="get_service_strain"><a class="viewcode-back" href="../../gen/concreteproperties.utils.get_service_strain.html#concreteproperties.utils.get_service_strain">[docs]</a><span class="k">def</span> <span class="nf">get_service_strain</span><span class="p">(</span>
     <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
-    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">ecf</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">eps0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -378,7 +379,8 @@
 <span class="sd">    angle `theta`. Positive strain is compression.</span>
 
 <span class="sd">    :param point: Point at which to evaluate the strain</span>
-<span class="sd">    :param point_na: Point on the neutral axis</span>
+<span class="sd">    :param ecf: Global coordinate of the extreme compressive fibre</span>
+<span class="sd">    :param eps0: Strain at top fibre</span>
 <span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 <span class="sd">    :param kappa: Curvature</span>
@@ -389,13 +391,13 @@
     <span class="c1"># convert point to local coordinates</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-    <span class="c1"># convert point_na to local coordinates</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">v_na</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1"># convert ecf to local coordinates</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">v_ecf</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">ecf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">ecf</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-    <span class="c1"># calculate distance between NA and point in `v` direction</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">v_na</span>
+    <span class="c1"># calculate distance between ecf and point in `v` direction</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">v_ecf</span> <span class="o">-</span> <span class="n">v</span>
 
-    <span class="k">return</span> <span class="n">kappa</span> <span class="o">*</span> <span class="n">d</span></div>
+    <span class="k">return</span> <span class="n">eps0</span> <span class="o">-</span> <span class="n">kappa</span> <span class="o">*</span> <span class="n">d</span></div>
 
 
 <div class="viewcode-block" id="get_ultimate_strain"><a class="viewcode-back" href="../../gen/concreteproperties.utils.get_ultimate_strain.html#concreteproperties.utils.get_ultimate_strain">[docs]</a><span class="k">def</span> <span class="nf">get_ultimate_strain</span><span class="p">(</span>
@@ -456,27 +458,20 @@
     <span class="k">return</span> <span class="n">local_to_global</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="split_geom_at_strains"><a class="viewcode-back" href="../../gen/concreteproperties.utils.split_geom_at_strains.html#concreteproperties.utils.split_geom_at_strains">[docs]</a><span class="k">def</span> <span class="nf">split_geom_at_strains</span><span class="p">(</span>
+<div class="viewcode-block" id="split_geom_at_strains_service"><a class="viewcode-back" href="../../gen/concreteproperties.utils.split_geom_at_strains_service.html#concreteproperties.utils.split_geom_at_strains_service">[docs]</a><span class="k">def</span> <span class="nf">split_geom_at_strains_service</span><span class="p">(</span>
     <span class="n">geom</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CPGeom</span><span class="p">,</span> <span class="n">CPGeomConcrete</span><span class="p">],</span>
     <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
-    <span class="n">ultimate</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">ultimate_strain</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">d_n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">kappa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ecf</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">eps0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">CPGeom</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">CPGeomConcrete</span><span class="p">]]:</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Splits geometries at discontinuities in its stress-strain profile.</span>
 
 <span class="sd">    :param geom: Geometry to split</span>
 <span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
-<span class="sd">    :param point_na: Point on the neutral axis</span>
-<span class="sd">    :param ultimate: If set to True, uses ultimate stress-strain profile for concrete</span>
-<span class="sd">        geometries</span>
-<span class="sd">    :param ultimate_strain: Concrete strain at failure (required for ``ultimate=True``</span>
-<span class="sd">        only)</span>
-<span class="sd">    :param d_n: Depth of the neutral axis from the extreme compression fibre (required</span>
-<span class="sd">        for ``ultimate=True`` only)</span>
+<span class="sd">    :param ecf: Global coordinate of the extreme compressive fibre</span>
+<span class="sd">    :param eps0: Strain at top fibre</span>
 <span class="sd">    :param kappa: Curvature</span>
 
 <span class="sd">    :return: List of split geometries</span>
@@ -489,7 +484,84 @@
     <span class="c1"># create splits in concrete geometries at points in stress-strain profiles</span>
     <span class="n">split_geoms</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">CPGeom</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">CPGeomConcrete</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">if</span> <span class="n">ultimate</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">CPGeomConcrete</span><span class="p">):</span>
+    <span class="n">strains</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>
+
+    <span class="c1"># make geom a list of geometries</span>
+    <span class="n">geom_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">geom</span><span class="p">]</span>
+
+    <span class="c1"># initialise top_geoms in case of two unique strains</span>
+    <span class="n">top_geoms</span> <span class="o">=</span> <span class="n">geom_list</span>
+    <span class="n">continuing_geoms</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># loop through intermediate points on stress-strain profile</span>
+    <span class="k">for</span> <span class="n">strain</span> <span class="ow">in</span> <span class="n">strains</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="c1"># depth to points of *strain* from ecf</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">eps0</span> <span class="o">-</span> <span class="n">strain</span><span class="p">)</span> <span class="o">/</span> <span class="n">kappa</span>
+
+        <span class="c1"># convert depth to global coordinates</span>
+        <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">local_to_global</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># calculate location of point</span>
+        <span class="n">pt</span> <span class="o">=</span> <span class="n">ecf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">dx</span><span class="p">,</span> <span class="n">ecf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">dy</span>
+
+        <span class="c1"># make list of geometries that will need to continue to be split after the</span>
+        <span class="c1"># split operation, i.e. those above the split</span>
+        <span class="n">continuing_geoms</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># split concrete geometries</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">geom_list</span><span class="p">:</span>
+            <span class="n">top_geoms</span><span class="p">,</span> <span class="n">bot_geoms</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">split_section</span><span class="p">(</span>
+                <span class="n">point</span><span class="o">=</span><span class="n">pt</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">kappa</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># save top geoms</span>
+                <span class="n">split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">top_geoms</span><span class="p">)</span>
+
+                <span class="c1"># save continuing geoms</span>
+                <span class="n">continuing_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">bot_geoms</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># save bot geoms</span>
+                <span class="n">split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">bot_geoms</span><span class="p">)</span>
+
+                <span class="c1"># save continuing geoms</span>
+                <span class="n">continuing_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">top_geoms</span><span class="p">)</span>
+
+        <span class="c1"># update geom_list for next strain</span>
+        <span class="n">geom_list</span> <span class="o">=</span> <span class="n">continuing_geoms</span>
+
+    <span class="c1"># save final top geoms</span>
+    <span class="n">split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">continuing_geoms</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">split_geoms</span></div>
+
+
+<div class="viewcode-block" id="split_geom_at_strains_ultimate"><a class="viewcode-back" href="../../gen/concreteproperties.utils.split_geom_at_strains_ultimate.html#concreteproperties.utils.split_geom_at_strains_ultimate">[docs]</a><span class="k">def</span> <span class="nf">split_geom_at_strains_ultimate</span><span class="p">(</span>
+    <span class="n">geom</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CPGeom</span><span class="p">,</span> <span class="n">CPGeomConcrete</span><span class="p">],</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">CPGeom</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">CPGeomConcrete</span><span class="p">]]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Splits geometries at discontinuities in its stress-strain profile.</span>
+
+<span class="sd">    :param geom: Geometry to split</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">    :param point_na: Point on the neutral axis</span>
+<span class="sd">    :param ultimate_strain: Concrete strain at failure (required for ``ultimate=True``</span>
+<span class="sd">        only)</span>
+<span class="sd">    :param d_n: Depth of the neutral axis from the extreme compression fibre (required</span>
+<span class="sd">        for ``ultimate=True`` only)</span>
+
+<span class="sd">    :return: List of split geometries</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># create splits in concrete geometries at points in stress-strain profiles</span>
+    <span class="n">split_geoms</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">CPGeom</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">CPGeomConcrete</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">CPGeomConcrete</span><span class="p">):</span>
         <span class="n">strains</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">strains</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>
@@ -504,14 +576,7 @@
     <span class="c1"># loop through intermediate points on stress-strain profile</span>
     <span class="k">for</span> <span class="n">strain</span> <span class="ow">in</span> <span class="n">strains</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
         <span class="c1"># depth to points of *strain* from NA</span>
-        <span class="c1"># ultimate case</span>
-        <span class="k">if</span> <span class="n">ultimate</span> <span class="ow">and</span> <span class="n">ultimate_strain</span> <span class="ow">and</span> <span class="n">d_n</span><span class="p">:</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="n">strain</span> <span class="o">/</span> <span class="n">ultimate_strain</span> <span class="o">*</span> <span class="n">d_n</span>
-        <span class="c1"># service case</span>
-        <span class="k">elif</span> <span class="n">kappa</span><span class="p">:</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="n">strain</span> <span class="o">/</span> <span class="n">kappa</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Not enough arguments provided.&quot;</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">strain</span> <span class="o">/</span> <span class="n">ultimate_strain</span> <span class="o">*</span> <span class="n">d_n</span>
 
         <span class="c1"># convert depth to global coordinates</span>
         <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">local_to_global</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
@@ -598,7 +663,7 @@
 <span class="sd">    :param theta: Angle (in radians) the bending axis makes with the horizontal</span>
 <span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
 
-<span class="sd">    :return: Maximum bending depth</span>
+<span class="sd">    :return: Maximum bending depth, returns zero if distance is negative</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">max_bending_depth</span> <span class="o">=</span> <span class="mi">0</span>

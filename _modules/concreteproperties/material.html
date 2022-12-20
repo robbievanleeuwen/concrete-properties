@@ -454,10 +454,56 @@
     <span class="n">meshed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
-<span class="c1"># @dataclass</span>
-<span class="c1"># class SteelStrand(Steel):</span>
-<span class="c1">#     # placeholder</span>
-<span class="c1">#     pass</span>
+<div class="viewcode-block" id="SteelStrand"><a class="viewcode-back" href="../../user_guide/materials.html#concreteproperties.material.SteelStrand">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SteelStrand</span><span class="p">(</span><span class="n">Steel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for a steel strand material, treated as a lumped circular mass with a</span>
+<span class="sd">    constant strain.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">      A :class:`~concreteproperties.stress_strain_profile.StrandProfile` must be used</span>
+<span class="sd">      if using a :class:`~concreteproperties.material.SteelStrand` object.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">      The strand is assumed to be bonded to the concrete.</span>
+
+<span class="sd">    :param name: Steel strand material name</span>
+<span class="sd">    :param density: Steel strand density (mass per unit volume)</span>
+<span class="sd">    :param stress_strain_profile: Steel strand stress-strain profile</span>
+<span class="sd">    :param colour: Colour of the material for rendering</span>
+<span class="sd">    :param prestress_stress: Prestressing stress applied to the strand</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">density</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">stress_strain_profile</span><span class="p">:</span> <span class="n">ssp</span><span class="o">.</span><span class="n">StrandProfile</span>
+    <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">prestress_stress</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">meshed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SteelStrand.get_prestress_stress"><a class="viewcode-back" href="../../gen/concreteproperties.material.SteelStrand.html#concreteproperties.material.SteelStrand.get_prestress_stress">[docs]</a>    <span class="k">def</span> <span class="nf">get_prestress_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the prestress stress.</span>
+
+<span class="sd">        :return: Prestress stress</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prestress_stress</span></div>
+
+<div class="viewcode-block" id="SteelStrand.get_prestress_strain"><a class="viewcode-back" href="../../gen/concreteproperties.material.SteelStrand.html#concreteproperties.material.SteelStrand.get_prestress_strain">[docs]</a>    <span class="k">def</span> <span class="nf">get_prestress_strain</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">area</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Given the strand cross-sectional area, returns the prestress strain.</span>
+
+<span class="sd">        :param area: Strand cross-sectional area</span>
+
+<span class="sd">        :return: Prestress strain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">stress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prestress_stress</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_strain</span><span class="p">(</span><span class="n">stress</span><span class="o">=</span><span class="n">stress</span><span class="p">)</span></div></div>
 </pre></div>
 
             </article>

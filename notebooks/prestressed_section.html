@@ -1,0 +1,1575 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>9. Prestressed Sections &#8212; concreteproperties 0.4.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/prestressed_section';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. AS3600 Design Code" href="as3600.html" />
+    <link rel="prev" title="8. Composite Sections" href="composite_section.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../_static/cp_logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+    <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
+        latest  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">
+    Section Navigation
+  </p>
+  <div class="bd-toc-item navbar-nav">
+    <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="area_properties.html">1. Calculating Area Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cracked_properties.html">2. Calculating Cracked Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moment_curvature.html">3. Moment Curvature Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ultimate_bending.html">4. Ultimate Bending Capacity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moment_interaction.html">5. Moment Interaction Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="biaxial_bending.html">6. Biaxial Bending Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stress_analysis.html">7. Stress Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composite_section.html">8. Composite Sections</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. Prestressed Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="as3600.html">10. AS3600 Design Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nzs3101.html">11. NZS3101 Design Code</a></li>
+</ul>
+
+  </div>
+</nav>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars and line breaks on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+    white-space: pre;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="Prestressed-Sections">
+<h1><span class="section-number">9. </span>Prestressed Sections<a class="headerlink" href="#Prestressed-Sections" title="Permalink to this heading">#</a></h1>
+<p>This example demonstrates how to carry out an analysis of a prestressed concrete section using <em>concreteproperties</em>. We start by importing the necessary modules.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sectionproperties.pre.library.primitive_sections</span> <span class="kn">import</span> <span class="n">rectangular_section</span>
+
+<span class="kn">import</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="k">as</span> <span class="nn">ssp</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">SteelStrand</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">add_bar_rectangular_array</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.prestressed_section</span> <span class="kn">import</span> <span class="n">PrestressedSection</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.results</span> <span class="kn">import</span> <span class="n">MomentCurvatureResults</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Assign-Materials">
+<h2><span class="section-number">9.1. </span>Assign Materials<a class="headerlink" href="#Assign-Materials" title="Permalink to this heading">#</a></h2>
+<p>In this example we will be creating material properties for both a service and ultimate analysis.</p>
+<p><strong>Concrete:</strong> C50/60 concrete will be used (Eurocode). The service analysis will use a non-linear stress-strain profile, while the ultimate analysis will use a bilinear stress-strain profile with relevant material factors applied (<span class="math notranslate nohighlight">\(\gamma_c = 1.5\)</span>).</p>
+<p><strong>Strand:</strong> Y1860S7 strand will be used. The ultimate profile has the relevant material factors applied (<span class="math notranslate nohighlight">\(\gamma_s = 1.1\)</span>). The service profile will also be used for short-term analysis where the prestressing stress after short-term losses is <span class="math notranslate nohighlight">\(\sigma_{p,0} = 1274.4\)</span> MPa. The ultimate profile will also be used for long-term analysis where the prestressing stress after long-term losses is <span class="math notranslate nohighlight">\(\sigma_{p,\infty} = 1148.6\)</span> MPa.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concrete_service</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;C50/60 Concrete (Service)&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">EurocodeNonLinear</span><span class="p">(</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">37.0e3</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">58</span><span class="p">,</span>
+        <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.00245</span><span class="p">,</span>
+        <span class="n">tensile_strength</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span>
+        <span class="n">tension_softening_stiffness</span><span class="o">=</span><span class="mf">10e3</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">BilinearStressStrain</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">50</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.00175</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">concrete_ultimate</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;C50/60 Concrete (Ultimate)&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">ConcreteLinearNoTension</span><span class="p">(</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">37.0e3</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">50</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">BilinearStressStrain</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">50</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.00175</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">strand_service</span> <span class="o">=</span> <span class="n">SteelStrand</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Y1860S7 Strand (Service)&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">StrandHardening</span><span class="p">(</span>
+        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">1674</span><span class="p">,</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">195e3</span><span class="p">,</span>
+        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.035</span><span class="p">,</span>
+        <span class="n">breaking_strength</span><span class="o">=</span><span class="mi">1860</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+    <span class="n">prestress_stress</span><span class="o">=</span><span class="mf">1274.4</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">strand_ultimate</span> <span class="o">=</span> <span class="n">SteelStrand</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Y1860S7 Strand (Ultimate)&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">ssp</span><span class="o">.</span><span class="n">StrandHardening</span><span class="p">(</span>
+        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">1522</span><span class="p">,</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">195e3</span><span class="p">,</span>
+        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.035</span><span class="p">,</span>
+        <span class="n">breaking_strength</span><span class="o">=</span><span class="mi">1691</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+    <span class="n">prestress_stress</span><span class="o">=</span><span class="mf">1148.6</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We can compare the service and ultimate stress-strain profiles for the concrete and the strand.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># combine both stress-strain profiles on the same plot</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">concrete_service</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span><span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">concrete_service</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Service&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Ultimate&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Concrete C50/60&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_6_0.svg" src="../_images/notebooks_prestressed_section_6_0.svg" /></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># combine both stress-strain profiles on the same plot</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">strand_service</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span><span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">strand_ultimate</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Service&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Ultimate&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Strand Y1860S7&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_7_0.svg" src="../_images/notebooks_prestressed_section_7_0.svg" /></div>
+</div>
+</div>
+<div class="section" id="Create-Prestressed-Geometry">
+<h2><span class="section-number">9.2. </span>Create Prestressed Geometry<a class="headerlink" href="#Create-Prestressed-Geometry" title="Permalink to this heading">#</a></h2>
+<p>The section being analysed is a 1100D x 1500W hollow box with a 250THK web and flange. 15.2 mm strands with a cross-sectional area of 140 mm<span class="math notranslate nohighlight">\(^2\)</span> are used. Each web has 3 vertically spaced tendons containing 8 strands, while the bottom flange has two horizontally spaced tendons containing 9 strands. Two <code class="docutils literal notranslate"><span class="pre">PrestressedConcrete</span></code> objects are created, one for service analysis (short-term) and one for ultimate (long-term) analysis.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># box properties</span>
+<span class="n">d_box</span> <span class="o">=</span> <span class="mi">1100</span>  <span class="c1"># box depth</span>
+<span class="n">b_box</span> <span class="o">=</span> <span class="mi">1500</span>  <span class="c1"># box width</span>
+<span class="n">t_box</span> <span class="o">=</span> <span class="mi">250</span>  <span class="c1"># box thickness</span>
+
+<span class="c1"># strand properties</span>
+<span class="n">strand_area</span> <span class="o">=</span> <span class="mi">140</span>  <span class="c1"># area of each strand</span>
+<span class="n">duct_diameter</span> <span class="o">=</span> <span class="mi">72</span>  <span class="c1"># diameter of the tendon ducts</span>
+<span class="n">strand_d1</span> <span class="o">=</span> <span class="mi">125</span>  <span class="c1"># distance from bottom to layer 1</span>
+<span class="n">strand_d2</span> <span class="o">=</span> <span class="n">strand_d1</span> <span class="o">+</span> <span class="mi">72</span>  <span class="c1"># distance from bottom to layer 2</span>
+<span class="n">strand_d3</span> <span class="o">=</span> <span class="n">strand_d2</span> <span class="o">+</span> <span class="mf">165.4</span>  <span class="c1"># distance from bottom to layer 3</span>
+
+<span class="c1"># generate a service and ultimate PrestressedConcrete object</span>
+<span class="n">conc_secs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">concrete_props</span> <span class="o">=</span> <span class="p">[</span><span class="n">concrete_service</span><span class="p">,</span> <span class="n">concrete_ultimate</span><span class="p">]</span>
+<span class="n">strand_props</span> <span class="o">=</span> <span class="p">[</span><span class="n">strand_service</span><span class="p">,</span> <span class="n">strand_ultimate</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">concrete_prop</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">concrete_props</span><span class="p">):</span>
+    <span class="c1"># construct concrete hollow box</span>
+    <span class="n">box_outer</span> <span class="o">=</span> <span class="n">rectangular_section</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="n">d_box</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b_box</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">concrete_prop</span><span class="p">)</span>
+    <span class="n">box_inner</span> <span class="o">=</span> <span class="n">rectangular_section</span><span class="p">(</span>
+        <span class="n">d</span><span class="o">=</span><span class="n">d_box</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t_box</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b_box</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t_box</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">align_center</span><span class="p">(</span><span class="n">align_to</span><span class="o">=</span><span class="n">box_outer</span><span class="p">)</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">box_outer</span> <span class="o">-</span> <span class="n">box_inner</span>
+
+    <span class="c1"># add web strands (6 x 8 strand tendons)</span>
+    <span class="c1"># lower two sets</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">add_bar_rectangular_array</span><span class="p">(</span>
+        <span class="n">geometry</span><span class="o">=</span><span class="n">box</span><span class="p">,</span>
+        <span class="n">area</span><span class="o">=</span><span class="mi">8</span> <span class="o">*</span> <span class="n">strand_area</span><span class="p">,</span>
+        <span class="n">material</span><span class="o">=</span><span class="n">strand_props</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+        <span class="n">n_x</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">x_s</span><span class="o">=</span><span class="n">b_box</span> <span class="o">-</span> <span class="n">t_box</span><span class="p">,</span>
+        <span class="n">n_y</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">y_s</span><span class="o">=</span><span class="n">strand_d2</span> <span class="o">-</span> <span class="n">strand_d1</span><span class="p">,</span>
+        <span class="n">anchor</span><span class="o">=</span><span class="p">(</span><span class="n">t_box</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">strand_d1</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># top set</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">add_bar_rectangular_array</span><span class="p">(</span>
+        <span class="n">geometry</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span>
+        <span class="n">area</span><span class="o">=</span><span class="mi">8</span> <span class="o">*</span> <span class="n">strand_area</span><span class="p">,</span>
+        <span class="n">material</span><span class="o">=</span><span class="n">strand_props</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+        <span class="n">n_x</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">x_s</span><span class="o">=</span><span class="n">b_box</span> <span class="o">-</span> <span class="n">t_box</span><span class="p">,</span>
+        <span class="n">anchor</span><span class="o">=</span><span class="p">(</span><span class="n">t_box</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">strand_d3</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># add flange strands (2 x 9 strand tendons)</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">add_bar_rectangular_array</span><span class="p">(</span>
+        <span class="n">geometry</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span>
+        <span class="n">area</span><span class="o">=</span><span class="mi">9</span> <span class="o">*</span> <span class="n">strand_area</span><span class="p">,</span>
+        <span class="n">material</span><span class="o">=</span><span class="n">strand_props</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+        <span class="n">n_x</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">x_s</span><span class="o">=</span><span class="p">(</span><span class="n">b_box</span> <span class="o">-</span> <span class="n">t_box</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="n">anchor</span><span class="o">=</span><span class="p">(</span><span class="n">t_box</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">b_box</span> <span class="o">-</span> <span class="n">t_box</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="n">strand_d1</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># create prestressed section objects</span>
+    <span class="n">conc_secs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PrestressedSection</span><span class="p">(</span><span class="n">geom</span><span class="p">))</span>
+
+<span class="c1"># extract prestressed section objects</span>
+<span class="n">conc_sec_serv</span> <span class="o">=</span> <span class="n">conc_secs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">conc_sec_ult</span> <span class="o">=</span> <span class="n">conc_secs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># plot each object</span>
+<span class="n">conc_sec_serv</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+<span class="n">conc_sec_ult</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_9_0.svg" src="../_images/notebooks_prestressed_section_9_0.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_9_1.svg" src="../_images/notebooks_prestressed_section_9_1.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Reinforced Concrete Section&#39;}&gt;
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Calculate-Area-Properties">
+<h2><span class="section-number">9.3. </span>Calculate Area Properties<a class="headerlink" href="#Calculate-Area-Properties" title="Permalink to this heading">#</a></h2>
+<p>The area properties of the prestressed section are automatically calculated and can be printed as follows.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gross_props_serv</span> <span class="o">=</span> <span class="n">conc_sec_serv</span><span class="o">.</span><span class="n">get_gross_properties</span><span class="p">()</span>
+<span class="n">gross_props_ult</span> <span class="o">=</span> <span class="n">conc_sec_ult</span><span class="o">.</span><span class="n">get_gross_properties</span><span class="p">()</span>
+<span class="n">gross_props_serv</span><span class="o">.</span><span class="n">print_results</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.3e&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">    Gross Concrete Section Properties     </span>
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃<span style="font-weight: bold"> Property                  </span>┃<span style="font-weight: bold">      Value </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│<span style="color: #008080; text-decoration-color: #008080"> Total Area                </span>│<span style="color: #008000; text-decoration-color: #008000">  1.050e+06 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Concrete Area             </span>│<span style="color: #008000; text-decoration-color: #008000">  1.041e+06 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Lumped Reinforcement Area </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Strand Area               </span>│<span style="color: #008000; text-decoration-color: #008000">  9.240e+03 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Axial Rigidity (EA)       </span>│<span style="color: #008000; text-decoration-color: #008000">  4.031e+10 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Mass (per unit length)    </span>│<span style="color: #008000; text-decoration-color: #008000">  2.570e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Perimeter                 </span>│<span style="color: #008000; text-decoration-color: #008000">  5.200e+03 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Qx                      </span>│<span style="color: #008000; text-decoration-color: #008000">  2.166e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Qy                      </span>│<span style="color: #008000; text-decoration-color: #008000">  3.023e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> x-Centroid                </span>│<span style="color: #008000; text-decoration-color: #008000">  7.500e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> y-Centroid                </span>│<span style="color: #008000; text-decoration-color: #008000">  5.373e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> x-Centroid (Gross)        </span>│<span style="color: #008000; text-decoration-color: #008000">  7.500e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> y-Centroid (Gross)        </span>│<span style="color: #008000; text-decoration-color: #008000">  5.500e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_g                   </span>│<span style="color: #008000; text-decoration-color: #008000">  1.731e+16 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_g                   </span>│<span style="color: #008000; text-decoration-color: #008000">  3.270e+16 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g                   </span>│<span style="color: #008000; text-decoration-color: #008000">  1.624e+16 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_c                   </span>│<span style="color: #008000; text-decoration-color: #008000">  5.676e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_c                   </span>│<span style="color: #008000; text-decoration-color: #008000">  1.003e+16 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c                   </span>│<span style="color: #008000; text-decoration-color: #008000"> -1.400e+01 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.I11                     </span>│<span style="color: #008000; text-decoration-color: #008000">  1.003e+16 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.I22                     </span>│<span style="color: #008000; text-decoration-color: #008000">  5.676e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Principal Axis Angle      </span>│<span style="color: #008000; text-decoration-color: #008000"> -1.571e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Zxx+                    </span>│<span style="color: #008000; text-decoration-color: #008000">  1.009e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Zxx-                    </span>│<span style="color: #008000; text-decoration-color: #008000">  1.056e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Zyy+                    </span>│<span style="color: #008000; text-decoration-color: #008000">  1.337e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Zyy-                    </span>│<span style="color: #008000; text-decoration-color: #008000">  1.337e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Z11+                    </span>│<span style="color: #008000; text-decoration-color: #008000">  1.337e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Z11-                    </span>│<span style="color: #008000; text-decoration-color: #008000">  1.337e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Z22+                    </span>│<span style="color: #008000; text-decoration-color: #008000">  1.056e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Z22-                    </span>│<span style="color: #008000; text-decoration-color: #008000">  1.009e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Ultimate Concrete Strain  </span>│<span style="color: #008000; text-decoration-color: #008000">  3.500e-03 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> n_prestress               </span>│<span style="color: #008000; text-decoration-color: #008000">  1.178e+07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> m_prestress               </span>│<span style="color: #008000; text-decoration-color: #008000"> -3.972e+09 </span>│
+└───────────────────────────┴────────────┘
+</pre></div>
+</div>
+<p>The gross properties for <code class="docutils literal notranslate"><span class="pre">PrestressedConcrete</span></code> objects also report the total axial prestressing force and the induced bending moment.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P_0 = </span><span class="si">{</span><span class="n">gross_props_serv</span><span class="o">.</span><span class="n">n_prestress</span> <span class="o">/</span> <span class="mf">1e3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_0 = </span><span class="si">{</span><span class="n">gross_props_serv</span><span class="o">.</span><span class="n">m_prestress</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P_inf = </span><span class="si">{</span><span class="n">gross_props_ult</span><span class="o">.</span><span class="n">n_prestress</span> <span class="o">/</span> <span class="mf">1e3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_inf = </span><span class="si">{</span><span class="n">gross_props_ult</span><span class="o">.</span><span class="n">m_prestress</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+P_0 = 11775 kN
+M_0 = -3972 kN.m
+P_inf = 10613 kN
+M_inf = -3580 kN.m
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Design-Actions">
+<h2><span class="section-number">9.4. </span>Design Actions<a class="headerlink" href="#Design-Actions" title="Permalink to this heading">#</a></h2>
+<p>In this example, the prestressed girder is 35.5 m long. It has a superimposed dead load of 3 kN/m and a live load of 10 kN/m. The ultimate load factors are <span class="math notranslate nohighlight">\(\gamma_g = 1.2\)</span>, <span class="math notranslate nohighlight">\(\gamma_q = 1.5\)</span> and <span class="math notranslate nohighlight">\(\gamma_p = 1.0\)</span> (note that unfactored prestressing actions are automatically included in the analysis).</p>
+<p>The resulting design moments can be calculated, with the self-weight determined from the computed gross properties. Note that the initial prestressing force was selected to balance the moment due to self-weight.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># design actions</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">35500</span>  <span class="c1"># length of girder in [mm]</span>
+<span class="n">g_sw</span> <span class="o">=</span> <span class="n">gross_props_serv</span><span class="o">.</span><span class="n">mass</span> <span class="o">*</span> <span class="mf">9.81</span>  <span class="c1"># self weight in [N/mm]</span>
+<span class="n">g_si</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># superimposed dead load in [N/mm]</span>
+<span class="n">q</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># live load in [N/mm]</span>
+
+<span class="c1"># calculate moments</span>
+<span class="n">m_g_sw</span> <span class="o">=</span> <span class="n">g_sw</span> <span class="o">*</span> <span class="n">L</span> <span class="o">*</span> <span class="n">L</span> <span class="o">/</span> <span class="mi">8</span>  <span class="c1"># moment due to self weight</span>
+<span class="n">m_g_si</span> <span class="o">=</span> <span class="n">g_si</span> <span class="o">*</span> <span class="n">L</span> <span class="o">*</span> <span class="n">L</span> <span class="o">/</span> <span class="mi">8</span>  <span class="c1"># moment due to superimposed dead load</span>
+<span class="n">m_q</span> <span class="o">=</span> <span class="n">q</span> <span class="o">*</span> <span class="n">L</span> <span class="o">*</span> <span class="n">L</span> <span class="o">/</span> <span class="mi">8</span>  <span class="c1"># moment due to live load</span>
+<span class="n">m_ed</span> <span class="o">=</span> <span class="mf">1.2</span> <span class="o">*</span> <span class="p">(</span><span class="n">m_g_sw</span> <span class="o">+</span> <span class="n">m_g_si</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">m_q</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_g_sw = </span><span class="si">{</span><span class="n">m_g_sw</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_g_si = </span><span class="si">{</span><span class="n">m_g_si</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_q = </span><span class="si">{</span><span class="n">m_q</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_Ed = </span><span class="si">{</span><span class="n">m_ed</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+M_g_sw = 3972 kN.m
+M_g_si = 473 kN.m
+M_q = 1575 kN.m
+M_Ed = 7697 kN.m
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Stress-Analysis">
+<h2><span class="section-number">9.5. </span>Stress Analysis<a class="headerlink" href="#Stress-Analysis" title="Permalink to this heading">#</a></h2>
+<div class="section" id="Prestressing-Actions-Only">
+<h3><span class="section-number">9.5.1. </span>Prestressing Actions Only<a class="headerlink" href="#Prestressing-Actions-Only" title="Permalink to this heading">#</a></h3>
+<p>For academic purposes, the stresses resulting from prestressing only (no self-weight) can be visualised by not supplying any bending moment to <code class="docutils literal notranslate"><span class="pre">PrestressedSection.calculate_uncracked_stress()</span></code> (default is <code class="docutils literal notranslate"><span class="pre">m=0</span></code>).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># stress due to prestressing only</span>
+<span class="n">uncr_stress_p</span> <span class="o">=</span> <span class="n">conc_sec_serv</span><span class="o">.</span><span class="n">calculate_uncracked_stress</span><span class="p">()</span>
+<span class="n">uncr_stress_p</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_18_0.svg" src="../_images/notebooks_prestressed_section_18_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
+</pre></div></div>
+</div>
+<p>Without any self-weight, there is a small region of tension at the top of the girder. We can carry-out a cracked analysis for this loading condition to determine the cracked area properties, the cracking moments and concrete and strand stresses assuming a cracked section (linear concrete with no tensile capacity).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cr_p_serv</span> <span class="o">=</span> <span class="n">conc_sec_serv</span><span class="o">.</span><span class="n">calculate_cracked_properties</span><span class="p">(</span><span class="n">m_ext</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cr_p_ult</span> <span class="o">=</span> <span class="n">conc_sec_ult</span><span class="o">.</span><span class="n">calculate_cracked_properties</span><span class="p">(</span><span class="n">m_ext</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cr_p_serv</span><span class="o">.</span><span class="n">print_results</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.3e&quot;</span><span class="p">)</span>
+<span class="n">cr_stress_p_serv</span> <span class="o">=</span> <span class="n">conc_sec_serv</span><span class="o">.</span><span class="n">calculate_cracked_stress</span><span class="p">(</span><span class="n">cracked_results</span><span class="o">=</span><span class="n">cr_p_serv</span><span class="p">)</span>
+<span class="n">cr_stress_p_serv</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic"> Cracked Concrete Section  </span>
+<span style="font-style: italic">        Properties         </span>
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃<span style="font-weight: bold"> Property   </span>┃<span style="font-weight: bold">      Value </span>┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│<span style="color: #008080; text-decoration-color: #008080"> theta      </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> n          </span>│<span style="color: #008000; text-decoration-color: #008000">  1.178e+07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> m          </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> m_cr_pos   </span>│<span style="color: #008000; text-decoration-color: #008000">  8.228e+09 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> m_cr_neg   </span>│<span style="color: #008000; text-decoration-color: #008000"> -9.248e+07 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> d_nc       </span>│<span style="color: #008000; text-decoration-color: #008000">  8.528e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.A_cr     </span>│<span style="color: #008000; text-decoration-color: #008000">  2.659e+10 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Qx_cr    </span>│<span style="color: #008000; text-decoration-color: #008000">  8.262e+12 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Qy_cr    </span>│<span style="color: #008000; text-decoration-color: #008000">  1.994e+13 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> x-Centroid </span>│<span style="color: #008000; text-decoration-color: #008000">  7.500e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> y-Centroid </span>│<span style="color: #008000; text-decoration-color: #008000">  3.107e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  4.163e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  2.241e+16 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  6.196e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  1.596e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  7.456e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000">  1.100e+01 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Iuu_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  1.596e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.I11_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  7.456e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.I22_cr   </span>│<span style="color: #008000; text-decoration-color: #008000">  1.596e+15 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> phi_cr     </span>│<span style="color: #008000; text-decoration-color: #008000"> -1.571e+00 </span>│
+└────────────┴────────────┘
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_20_1.svg" src="../_images/notebooks_prestressed_section_20_1.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
+</pre></div></div>
+</div>
+<p>Note that the concrete and strand stresses have slightly increased now that the concrete cannot resist any tensile stresses.</p>
+<p>Also of interest are the cracking moments. <code class="docutils literal notranslate"><span class="pre">m_cr_pos</span></code> reports the sagging bending moment required for the stress to exceed the flexural tensile strength of the concrete at the base of the section when combined with the prestressing actions. <code class="docutils literal notranslate"><span class="pre">m_cr_neg</span></code> reports the hogging bending moment required for the stress to exceed the flexural tensile strength of the concrete at the top of the section when combined with the prestressing actions. Note if the flexural tensile strength of the concrete is
+set to zero, these values show the moments at which the concrete begins to experience tensile stresses.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_cr_pos_s = </span><span class="si">{</span><span class="n">cr_p_serv</span><span class="o">.</span><span class="n">m_cr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_cr_pos_u = </span><span class="si">{</span><span class="n">cr_p_ult</span><span class="o">.</span><span class="n">m_cr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_cr_neg_s = </span><span class="si">{</span><span class="n">cr_p_serv</span><span class="o">.</span><span class="n">m_cr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_cr_neg_u = </span><span class="si">{</span><span class="n">cr_p_ult</span><span class="o">.</span><span class="n">m_cr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+M_cr_pos_s = 8228 kN.m
+M_cr_pos_u = 7532 kN.m
+M_cr_neg_s = -92 kN.m
+M_cr_neg_u = -194 kN.m
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Transfer">
+<h3><span class="section-number">9.5.2. </span>Transfer<a class="headerlink" href="#Transfer" title="Permalink to this heading">#</a></h3>
+<p>The stresses at transfer (<span class="math notranslate nohighlight">\(G_{sw} + P\)</span>) can be determined by setting <code class="docutils literal notranslate"><span class="pre">m=m_g_sw</span></code> in the <code class="docutils literal notranslate"><span class="pre">calculate_uncracked_stress()</span></code> method. It was previously found that the moment due to self-weight was equal to the prestressing moment. As a result, the prestressed section is under pure compression.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># stress due to G_sw + P at t = 0</span>
+<span class="n">uncr_stress_t0</span> <span class="o">=</span> <span class="n">conc_sec_serv</span><span class="o">.</span><span class="n">calculate_uncracked_stress</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">m_g_sw</span><span class="p">)</span>
+<span class="n">uncr_stress_t0</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_24_0.svg" src="../_images/notebooks_prestressed_section_24_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Service-Load">
+<h3><span class="section-number">9.5.3. </span>Service Load<a class="headerlink" href="#Service-Load" title="Permalink to this heading">#</a></h3>
+<p>The stresses under long-term service loads can be found by using the <code class="docutils literal notranslate"><span class="pre">PrestressedConcrete</span></code> object created for ultimate analysis (with long-term losses incorporated into the prestressing stress).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># stress due to G + Q + P at t = inf</span>
+<span class="n">uncr_stress_tinf</span> <span class="o">=</span> <span class="n">conc_sec_ult</span><span class="o">.</span><span class="n">calculate_uncracked_stress</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">m_g_sw</span> <span class="o">+</span> <span class="n">m_g_si</span> <span class="o">+</span> <span class="n">m_q</span><span class="p">)</span>
+<span class="n">uncr_stress_tinf</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_26_0.svg" src="../_images/notebooks_prestressed_section_26_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
+</pre></div></div>
+</div>
+<p>The entire concrete section is still under compression and within limits, thus the level of prestressing stress is acceptable.</p>
+</div>
+</div>
+<div class="section" id="Ultimate-Analysis">
+<h2><span class="section-number">9.6. </span>Ultimate Analysis<a class="headerlink" href="#Ultimate-Analysis" title="Permalink to this heading">#</a></h2>
+<p>The ultimate bending capacity of the prestressed concrete section be found by calling the <code class="docutils literal notranslate"><span class="pre">ultimate_bending_capacity()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ult_res</span> <span class="o">=</span> <span class="n">conc_sec_ult</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">()</span>
+<span class="n">ult_res</span><span class="o">.</span><span class="n">print_results</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">            Ultimate Bending Results            </span>
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold"> Property                     </span>┃<span style="font-weight: bold">         Value </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│<span style="color: #008080; text-decoration-color: #008080"> Bending Angle - theta        </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Neutral Axis Depth - d_n     </span>│<span style="color: #008000; text-decoration-color: #008000">  4.661936e+02 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Neutral Axis Parameter - k_u </span>│<span style="color: #008000; text-decoration-color: #008000">  4.781473e-01 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Axial Force                  </span>│<span style="color: #008000; text-decoration-color: #008000"> -1.059989e+01 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_x       </span>│<span style="color: #008000; text-decoration-color: #008000">  1.063704e+10 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_y       </span>│<span style="color: #008000; text-decoration-color: #008000">  5.245209e-06 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> Bending Capacity - m_xy      </span>│<span style="color: #008000; text-decoration-color: #008000">  1.063704e+10 </span>│
+└──────────────────────────────┴───────────────┘
+</pre></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;d_n = </span><span class="si">{</span><span class="n">ult_res</span><span class="o">.</span><span class="n">d_n</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_Rd = </span><span class="si">{</span><span class="n">ult_res</span><span class="o">.</span><span class="n">m_x</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_Ed = </span><span class="si">{</span><span class="n">m_ed</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;M_Rd &gt;= M_Ed, therefore OK!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+d_n = 466.2 mm
+M_Rd = 10637 kN.m
+M_Ed = 7697 kN.m
+M_Rd &gt;= M_Ed, therefore OK!
+</pre></div></div>
+</div>
+<p>The ultimate bending stresses can be visualised by calling the <code class="docutils literal notranslate"><span class="pre">calculate_ultimate_stress()</span></code> method. The bilinear concrete profile is depicted well in the below plot.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ult_stress</span> <span class="o">=</span> <span class="n">conc_sec_ult</span><span class="o">.</span><span class="n">calculate_ultimate_stress</span><span class="p">(</span><span class="n">ultimate_results</span><span class="o">=</span><span class="n">ult_res</span><span class="p">)</span>
+<span class="n">ult_stress</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_32_0.svg" src="../_images/notebooks_prestressed_section_32_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Moment-Curvature-Analysis">
+<h2><span class="section-number">9.7. </span>Moment Curvature Analysis<a class="headerlink" href="#Moment-Curvature-Analysis" title="Permalink to this heading">#</a></h2>
+<p>We will now compute the moment curvature response of the prestressed concrete section. It should be noted that the service analysis is unfactored, while the ultimate analysis contains the material reduction factors.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_serv</span> <span class="o">=</span> <span class="n">conc_sec_serv</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">kappa_mult</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_ult</span> <span class="o">=</span> <span class="n">conc_sec_ult</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">kappa_mult</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MomentCurvatureResults</span><span class="o">.</span><span class="n">plot_multiple_results</span><span class="p">(</span>
+    <span class="n">moment_curvature_results</span><span class="o">=</span><span class="p">[</span><span class="n">mk_serv</span><span class="p">,</span> <span class="n">mk_ult</span><span class="p">],</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Service&quot;</span><span class="p">,</span> <span class="s2">&quot;Ultimate&quot;</span><span class="p">],</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_36_0.svg" src="../_images/notebooks_prestressed_section_36_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Moment-Curvature&#39;}, xlabel=&#39;Curvature&#39;, ylabel=&#39;Moment&#39;&gt;
+</pre></div></div>
+</div>
+<div class="section" id="Service-Stresses">
+<h3><span class="section-number">9.7.1. </span>Service Stresses<a class="headerlink" href="#Service-Stresses" title="Permalink to this heading">#</a></h3>
+<p>The stresses at any point on the moment curvature diagram can be visualised by calling the <code class="docutils literal notranslate"><span class="pre">calculate_service_stress()</span></code> method. Here we examine the stresses of both analyses under zero external moment.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">serv_stress_s_1</span> <span class="o">=</span> <span class="n">conc_sec_serv</span><span class="o">.</span><span class="n">calculate_service_stress</span><span class="p">(</span>
+    <span class="n">moment_curvature_results</span><span class="o">=</span><span class="n">mk_serv</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="n">mk_serv</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">serv_stress_u_1</span> <span class="o">=</span> <span class="n">conc_sec_ult</span><span class="o">.</span><span class="n">calculate_service_stress</span><span class="p">(</span>
+    <span class="n">moment_curvature_results</span><span class="o">=</span><span class="n">mk_ult</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="n">mk_ult</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">serv_stress_s_1</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+<span class="n">serv_stress_u_1</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_38_0.svg" src="../_images/notebooks_prestressed_section_38_0.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_38_1.svg" src="../_images/notebooks_prestressed_section_38_1.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
+</pre></div></div>
+</div>
+<p>The service analysis has a stress-strain profile that allows tensile stresses in the concrete while the ultimate analysis allows only compression. Note that the stresses in the ultimate analysis are lower because the prestressing stress accounts for long-term losses and is therefore smaller than in the service analysis.</p>
+<p>We can zoom into the initial segment of the moment curvature diagram to explore this further. The initial response of the ultimate analysis is initially softer as the section is cracked. However, under sufficient external sagging moment, the section entire is under compression and the response stiffens.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fix</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>  <span class="c1"># create plot</span>
+<span class="n">m_serv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mk_serv</span><span class="o">.</span><span class="n">m_x</span><span class="p">[:</span><span class="mi">8</span><span class="p">])</span> <span class="o">/</span> <span class="mf">1e6</span>  <span class="c1"># get service analysis moments</span>
+<span class="n">m_ult</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mk_ult</span><span class="o">.</span><span class="n">m_x</span><span class="p">[:</span><span class="mi">8</span><span class="p">])</span> <span class="o">/</span> <span class="mf">1e6</span>  <span class="c1"># get ultimate analysis moments</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mk_serv</span><span class="o">.</span><span class="n">kappa</span><span class="p">[:</span><span class="mi">8</span><span class="p">],</span> <span class="n">m_serv</span><span class="p">,</span> <span class="s2">&quot;x-&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Service&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mk_ult</span><span class="o">.</span><span class="n">kappa</span><span class="p">[:</span><span class="mi">8</span><span class="p">],</span> <span class="n">m_ult</span><span class="p">,</span> <span class="s2">&quot;x-&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Ultimate&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_41_0.svg" src="../_images/notebooks_prestressed_section_41_0.svg" /></div>
+</div>
+<p>Another point of interest on the moment curvature diagram is around 8000 kN.m. At this magnitude of external moment, the section in the service analysis remains uncracked (just below the flexural tensile strenght). However, the section in the ultimate analysis has started to crack and the bending stiffness has begun to soften. Note also the resulting increase in concrete compressive stress to compensate.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">serv_stress_s_2</span> <span class="o">=</span> <span class="n">conc_sec_serv</span><span class="o">.</span><span class="n">calculate_service_stress</span><span class="p">(</span>
+    <span class="n">moment_curvature_results</span><span class="o">=</span><span class="n">mk_serv</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mf">8000e6</span>
+<span class="p">)</span>
+<span class="n">serv_stress_u_2</span> <span class="o">=</span> <span class="n">conc_sec_ult</span><span class="o">.</span><span class="n">calculate_service_stress</span><span class="p">(</span>
+    <span class="n">moment_curvature_results</span><span class="o">=</span><span class="n">mk_ult</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mf">8000e6</span>
+<span class="p">)</span>
+<span class="n">serv_stress_s_2</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+<span class="n">serv_stress_u_2</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_43_0.svg" src="../_images/notebooks_prestressed_section_43_0.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_prestressed_section_43_1.svg" src="../_images/notebooks_prestressed_section_43_1.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
+</pre></div></div>
+</div>
+</div>
+</div>
+</div>
+
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="composite_section.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title"><span class="section-number">8. </span>Composite Sections</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="as3600.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title"><span class="section-number">10. </span>AS3600 Design Code</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Assign-Materials">
+   9.1. Assign Materials
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Create-Prestressed-Geometry">
+   9.2. Create Prestressed Geometry
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Calculate-Area-Properties">
+   9.3. Calculate Area Properties
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Design-Actions">
+   9.4. Design Actions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Stress-Analysis">
+   9.5. Stress Analysis
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Prestressing-Actions-Only">
+     9.5.1. Prestressing Actions Only
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Transfer">
+     9.5.2. Transfer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Service-Load">
+     9.5.3. Service Load
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Ultimate-Analysis">
+   9.6. Ultimate Analysis
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Moment-Curvature-Analysis">
+   9.7. Moment Curvature Analysis
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Service-Stresses">
+     9.7.1. Service Stresses
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/notebooks/prestressed_section.ipynb">
+        <i class="fa-solid fa-pencil"></i> Edit this page
+    </a>
+</div>
+
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Robbie van Leeuwen.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>

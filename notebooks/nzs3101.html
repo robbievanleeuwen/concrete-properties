@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>10. NZS3101 Design Code &#8212; concreteproperties 0.4.1 documentation</title>
+    <title>11. NZS3101 Design Code &#8212; concreteproperties 0.4.1 documentation</title>
   
   
   
@@ -49,7 +49,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="API Reference" href="../api.html" />
-    <link rel="prev" title="9. AS3600 Design Code" href="as3600.html" />
+    <link rel="prev" title="10. AS3600 Design Code" href="as3600.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -345,8 +345,9 @@
 <li class="toctree-l1"><a class="reference internal" href="biaxial_bending.html">6. Biaxial Bending Diagram</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stress_analysis.html">7. Stress Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="composite_section.html">8. Composite Sections</a></li>
-<li class="toctree-l1"><a class="reference internal" href="as3600.html">9. AS3600 Design Code</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. NZS3101 Design Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prestressed_section.html">9. Prestressed Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="as3600.html">10. AS3600 Design Code</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">11. NZS3101 Design Code</a></li>
 </ul>
 
   </div>
@@ -636,7 +637,7 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <div class="section" id="NZS3101-Design-Code">
-<h1><span class="section-number">10. </span>NZS3101 Design Code<a class="headerlink" href="#NZS3101-Design-Code" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">11. </span>NZS3101 Design Code<a class="headerlink" href="#NZS3101-Design-Code" title="Permalink to this heading">#</a></h1>
 <p>This example demonstrates how to work with the NZS3101 concrete design code. We start by importing the necessary modules: -</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -656,7 +657,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="section" id="Create-Design-Code-and-Materials">
-<h2><span class="section-number">10.1. </span>Create Design Code and Materials<a class="headerlink" href="#Create-Design-Code-and-Materials" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.1. </span>Create Design Code and Materials<a class="headerlink" href="#Create-Design-Code-and-Materials" title="Permalink to this heading">#</a></h2>
 <p>In this example, we’ll use the NZS3101:2006 design code. Creating a concrete cross-section geometry with a 40 MPa concrete, with a default density of 2300 kg/m3 and with reinforcement consisting of a grade 300E reinforcing steel: -</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -767,7 +768,7 @@ Overstrength Factor = 1.35
 </div>
 </div>
 <div class="section" id="Assigning-Geometry-to-the-Design-Code">
-<h2><span class="section-number">10.2. </span>Assigning Geometry to the Design Code<a class="headerlink" href="#Assigning-Geometry-to-the-Design-Code" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.2. </span>Assigning Geometry to the Design Code<a class="headerlink" href="#Assigning-Geometry-to-the-Design-Code" title="Permalink to this heading">#</a></h2>
 <p>This example will analyse an 800D x 500W concrete beam with 6-D25 top and 6-D20 bottom bars with an assumed R12 stirrup size with a specified 35 concrete cover all around. It is assumed the analysis of the concrete frame containing the beam in question is based on a maximum global ductility demand of <span class="math notranslate nohighlight">\(\mu\)</span> = 3. An assessment of the Potential Plastic Hinge Region (PPHR) curvature has shown that the PPHR can be designated as a Limited Ductile Plastic Region (LDPR).</p>
 <p>After creating the geometry, it must be assigned to the design code object. When assigning the geometry to the design code we can also specify what type of member the geometry is: -</p>
 <p>The NZS3101 design code class includes four valid section types that can be assigned to the geometry, the <code class="docutils literal notranslate"><span class="pre">section_type</span></code> parameter impacts the strength reduction factor and defines the maximum axial load in compression that the concrete cross section can sustain: -</p>
@@ -810,7 +811,7 @@ Overstrength Factor = 1.35
 </div>
 </div>
 <div class="section" id="Area-Properties">
-<h2><span class="section-number">10.3. </span>Area Properties<a class="headerlink" href="#Area-Properties" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.3. </span>Area Properties<a class="headerlink" href="#Area-Properties" title="Permalink to this heading">#</a></h2>
 <p>Obtaining the area properties is identical to that of a <code class="docutils literal notranslate"><span class="pre">ConcreteSection</span></code> object: -</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -837,7 +838,6 @@ Overstrength Factor = 1.35
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━┩
 │<span style="color: #008080; text-decoration-color: #008080"> Total Area                </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.000000e+05 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Concrete Area             </span>│<span style="color: #008000; text-decoration-color: #008000"> 3.959748e+05 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> Meshed Reinforcement Area </span>│<span style="color: #008000; text-decoration-color: #008000"> 0.000000e+00 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Lumped Reinforcement Area </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.025166e+03 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Axial Rigidity (EA)       </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.257555e+10 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Mass (per unit length)    </span>│<span style="color: #008000; text-decoration-color: #008000"> 9.423397e+08 </span>│
@@ -879,7 +879,9 @@ Overstrength Factor = 1.35
 ┃<span style="font-weight: bold"> Property   </span>┃<span style="font-weight: bold">         Value </span>┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
 │<span style="color: #008080; text-decoration-color: #008080"> theta      </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000000e+00 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> M_cr       </span>│<span style="color: #008000; text-decoration-color: #008000">  1.428595e+08 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> n          </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> m          </span>│<span style="color: #008000; text-decoration-color: #008000">  0.000000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> m_cr       </span>│<span style="color: #008000; text-decoration-color: #008000">  1.428595e+08 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> d_nc       </span>│<span style="color: #008000; text-decoration-color: #008000">  1.435716e+02 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.A_cr     </span>│<span style="color: #008000; text-decoration-color: #008000">  2.865930e+09 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Qx_cr    </span>│<span style="color: #008000; text-decoration-color: #008000">  1.881278e+12 </span>│
@@ -901,7 +903,7 @@ Overstrength Factor = 1.35
 </div>
 </div>
 <div class="section" id="Ultimate-Bending-Capacity">
-<h2><span class="section-number">10.4. </span>Ultimate Bending Capacity<a class="headerlink" href="#Ultimate-Bending-Capacity" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.4. </span>Ultimate Bending Capacity<a class="headerlink" href="#Ultimate-Bending-Capacity" title="Permalink to this heading">#</a></h2>
 <p>The factored ultimate bending capacity can be found by calling the <code class="docutils literal notranslate"><span class="pre">ultimate_bending_capacity()</span></code> method. This method returns a factored and unfactored <code class="docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code> object, as well as the capacity reduction factor <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p>
 <p>The NZS3101 design code class includes five valid analysis types that can be provided to the analysis method: -</p>
 <ul class="simple">
@@ -1116,7 +1118,7 @@ Actual design ratio = 0.318
 <p>We can also plot these points on an M/N interaction diagram and a biaxial Mx/My interaction diagram to show that at the target design axial loads, that the design moments lie within the interaction surface.</p>
 </div>
 <div class="section" id="Moment/Axial-Interaction-Diagram">
-<h2><span class="section-number">10.5. </span>Moment/Axial Interaction Diagram<a class="headerlink" href="#Moment/Axial-Interaction-Diagram" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.5. </span>Moment/Axial Interaction Diagram<a class="headerlink" href="#Moment/Axial-Interaction-Diagram" title="Permalink to this heading">#</a></h2>
 <p>We can plot these points on M/N interaction diagrams and Mx/My interaction diagrams to illustrate that the target axial and moment actions for the design are within the interaction surface.</p>
 <p>We can compute unfactored and factored axial/moment interaction diagrams by calling the <code class="docutils literal notranslate"><span class="pre">moment_interaction_diagram()</span></code> method. This method returns a <code class="docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code> object with factored and unfactored results, as well as a list of the capacity reduction factors <code class="docutils literal notranslate"><span class="pre">phis</span></code>.</p>
 <div class="nbinput nblast docutils container">
@@ -1205,7 +1207,7 @@ Case 2: OK
 </div>
 </div>
 <div class="section" id="Biaxial-Bending-Interaction-Diagram">
-<h2><span class="section-number">10.6. </span>Biaxial Bending Interaction Diagram<a class="headerlink" href="#Biaxial-Bending-Interaction-Diagram" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.6. </span>Biaxial Bending Interaction Diagram<a class="headerlink" href="#Biaxial-Bending-Interaction-Diagram" title="Permalink to this heading">#</a></h2>
 <p>We can also compute factored biaxial bending diagrams by calling the <code class="docutils literal notranslate"><span class="pre">biaxial_bending_diagram()</span></code> method. This method returns a factored <code class="docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code> object as well as a list of the capacity reduction factors <code class="docutils literal notranslate"><span class="pre">phis</span></code>: -</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -1251,7 +1253,7 @@ Case 2: OK
 </div>
 </div>
 <div class="section" id="Creating-a-3D-interaction-surface">
-<h2><span class="section-number">10.7. </span>Creating a 3D interaction surface<a class="headerlink" href="#Creating-a-3D-interaction-surface" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.7. </span>Creating a 3D interaction surface<a class="headerlink" href="#Creating-a-3D-interaction-surface" title="Permalink to this heading">#</a></h2>
 <p>We can create more complex representations of the entire interaction surface by stringing together the <code class="docutils literal notranslate"><span class="pre">moment_interaction_diagram()</span></code> and <code class="docutils literal notranslate"><span class="pre">biaxial_bending_diagram()</span></code> methods and plotting the results on a 3D plot: -</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
@@ -1326,7 +1328,7 @@ Case 2: OK
 </div>
 </div>
 <div class="section" id="NZSEE-Probable-Strength-Analyses">
-<h2><span class="section-number">10.8. </span>NZSEE Probable Strength Analyses<a class="headerlink" href="#NZSEE-Probable-Strength-Analyses" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.8. </span>NZSEE Probable Strength Analyses<a class="headerlink" href="#NZSEE-Probable-Strength-Analyses" title="Permalink to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">NZS3101</span></code> design code also allows for the analysis of concrete cross-sections in accordance with the NZSEE C5 Assessment Guideline provisions.</p>
 <p>These guidelines are intended for the assessment of existing structures based on probable material strength assumptions for the steel and concrete materials. The probable strength of materials is intended to represent more of an average strength approach, recognising that in the real world structures the material strengths are less likely to all be measured to be 5% characteristic strength value.</p>
 <p>To utilise these types of analyses within <code class="docutils literal notranslate"><span class="pre">ultimate_bending_capacity()</span></code>, <code class="docutils literal notranslate"><span class="pre">moment_interaction_diagram()</span></code> and <code class="docutils literal notranslate"><span class="pre">biaxial_bending_diagram()</span></code> methods we can specify an <code class="docutils literal notranslate"><span class="pre">analysis_type</span></code> of <code class="docutils literal notranslate"><span class="pre">prob_chk</span></code> or <code class="docutils literal notranslate"><span class="pre">prob_os_chk</span></code> to undertake a normal or overstrength probable strength based analysis.</p>
@@ -1334,7 +1336,7 @@ Case 2: OK
 material when a probable strength based <code class="docutils literal notranslate"><span class="pre">analysis_type</span></code> is specified.</p>
 </div>
 <div class="section" id="Moment-Curvature-Analysis">
-<h2><span class="section-number">10.9. </span>Moment-Curvature Analysis<a class="headerlink" href="#Moment-Curvature-Analysis" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.9. </span>Moment-Curvature Analysis<a class="headerlink" href="#Moment-Curvature-Analysis" title="Permalink to this heading">#</a></h2>
 <p>Note we will undertake a moment-curvature analysis based on an unconfined probable strength based analysis to the NZSEE C5 assessment guidelines.</p>
 <p>The section we will analyse will be a 600D x 400W beam section with 5-D28 grade 275 bars top and bottom, and D10 stirrups with 30 cover and an original specified characteristic concrete strength of 25 MPa.</p>
 <p>We utilise these parameters to create a new concrete cross-section with a predefined steel material with probable strength properties and a characteristic concrete strength properties.</p>
@@ -1680,7 +1682,7 @@ Ratio of results = 0.94
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">9. </span>AS3600 Design Code</p>
+          <p class="prev-next-title"><span class="section-number">10. </span>AS3600 Design Code</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="../api.html" title="next page">
@@ -1708,47 +1710,47 @@ Ratio of results = 0.94
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Create-Design-Code-and-Materials">
-   10.1. Create Design Code and Materials
+   11.1. Create Design Code and Materials
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Assigning-Geometry-to-the-Design-Code">
-   10.2. Assigning Geometry to the Design Code
+   11.2. Assigning Geometry to the Design Code
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Area-Properties">
-   10.3. Area Properties
+   11.3. Area Properties
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Ultimate-Bending-Capacity">
-   10.4. Ultimate Bending Capacity
+   11.4. Ultimate Bending Capacity
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Moment/Axial-Interaction-Diagram">
-   10.5. Moment/Axial Interaction Diagram
+   11.5. Moment/Axial Interaction Diagram
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Biaxial-Bending-Interaction-Diagram">
-   10.6. Biaxial Bending Interaction Diagram
+   11.6. Biaxial Bending Interaction Diagram
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Creating-a-3D-interaction-surface">
-   10.7. Creating a 3D interaction surface
+   11.7. Creating a 3D interaction surface
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#NZSEE-Probable-Strength-Analyses">
-   10.8. NZSEE Probable Strength Analyses
+   11.8. NZSEE Probable Strength Analyses
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Moment-Curvature-Analysis">
-   10.9. Moment-Curvature Analysis
+   11.9. Moment-Curvature Analysis
   </a>
  </li>
 </ul>

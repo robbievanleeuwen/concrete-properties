@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>9. AS3600 Design Code &#8212; concreteproperties 0.4.1 documentation</title>
+    <title>10. AS3600 Design Code &#8212; concreteproperties 0.4.1 documentation</title>
   
   
   
@@ -48,8 +48,8 @@
         </script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="10. NZS3101 Design Code" href="nzs3101.html" />
-    <link rel="prev" title="8. Composite Sections" href="composite_section.html" />
+    <link rel="next" title="11. NZS3101 Design Code" href="nzs3101.html" />
+    <link rel="prev" title="9. Prestressed Sections" href="prestressed_section.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -345,8 +345,9 @@
 <li class="toctree-l1"><a class="reference internal" href="biaxial_bending.html">6. Biaxial Bending Diagram</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stress_analysis.html">7. Stress Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="composite_section.html">8. Composite Sections</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. AS3600 Design Code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nzs3101.html">10. NZS3101 Design Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prestressed_section.html">9. Prestressed Sections</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. AS3600 Design Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nzs3101.html">11. NZS3101 Design Code</a></li>
 </ul>
 
   </div>
@@ -636,7 +637,7 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <div class="section" id="AS3600-Design-Code">
-<h1><span class="section-number">9. </span>AS3600 Design Code<a class="headerlink" href="#AS3600-Design-Code" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">10. </span>AS3600 Design Code<a class="headerlink" href="#AS3600-Design-Code" title="Permalink to this heading">#</a></h1>
 <p>This example demonstrates how to work with the AS3600:2018 design code. We start by importing the necessary modules.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -653,7 +654,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="section" id="Create-Design-Code-and-Materials">
-<h2><span class="section-number">9.1. </span>Create Design Code and Materials<a class="headerlink" href="#Create-Design-Code-and-Materials" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.1. </span>Create Design Code and Materials<a class="headerlink" href="#Create-Design-Code-and-Materials" title="Permalink to this heading">#</a></h2>
 <p>In this example 40 MPa concrete will be used with the default 500N steel.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -746,7 +747,7 @@ Density = 7.85e-06 kg/mm^3
 </div>
 </div>
 <div class="section" id="Assign-Geometry-to-Design-Code">
-<h2><span class="section-number">9.2. </span>Assign Geometry to Design Code<a class="headerlink" href="#Assign-Geometry-to-Design-Code" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.2. </span>Assign Geometry to Design Code<a class="headerlink" href="#Assign-Geometry-to-Design-Code" title="Permalink to this heading">#</a></h2>
 <p>This example will analyse a 600D x 450W concrete beam with 5N20s top and bottom. After creating the geometry it must be assigned to the design code object.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -781,7 +782,7 @@ Density = 7.85e-06 kg/mm^3
 </div>
 </div>
 <div class="section" id="Area-Properties">
-<h2><span class="section-number">9.3. </span>Area Properties<a class="headerlink" href="#Area-Properties" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.3. </span>Area Properties<a class="headerlink" href="#Area-Properties" title="Permalink to this heading">#</a></h2>
 <p>Obtaining the area properties is identical to that of a <code class="docutils literal notranslate"><span class="pre">ConcreteSection</span></code> object. The same can be done for a moment-curvature analysis and stress analyses (not carried out in this example).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -808,7 +809,6 @@ Density = 7.85e-06 kg/mm^3
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━┩
 │<span style="color: #008080; text-decoration-color: #008080"> Total Area                </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.700000e+05 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Concrete Area             </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.669000e+05 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> Meshed Reinforcement Area </span>│<span style="color: #008000; text-decoration-color: #008000"> 0.000000e+00 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Lumped Reinforcement Area </span>│<span style="color: #008000; text-decoration-color: #008000"> 3.100000e+03 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Axial Rigidity (EA)       </span>│<span style="color: #008000; text-decoration-color: #008000"> 9.374320e+09 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Mass (per unit length)    </span>│<span style="color: #008000; text-decoration-color: #008000"> 6.648950e-01 </span>│
@@ -824,7 +824,7 @@ Density = 7.85e-06 kg/mm^3
 │<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g                   </span>│<span style="color: #008000; text-decoration-color: #008000"> 6.327666e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_c                   </span>│<span style="color: #008000; text-decoration-color: #008000"> 3.007311e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_c                   </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.583274e+14 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c                   </span>│<span style="color: #008000; text-decoration-color: #008000"> 7.500000e-01 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c                   </span>│<span style="color: #008000; text-decoration-color: #008000"> 6.250000e-01 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.I11                     </span>│<span style="color: #008000; text-decoration-color: #008000"> 3.007311e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.I22                     </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.583274e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> Principal Axis Angle      </span>│<span style="color: #008000; text-decoration-color: #008000"> 0.000000e+00 </span>│
@@ -850,7 +850,9 @@ Density = 7.85e-06 kg/mm^3
 ┃<span style="font-weight: bold"> Property   </span>┃<span style="font-weight: bold">        Value </span>┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━━━┩
 │<span style="color: #008080; text-decoration-color: #008080"> theta      </span>│<span style="color: #008000; text-decoration-color: #008000"> 0.000000e+00 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> M_cr       </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.159750e+08 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> n          </span>│<span style="color: #008000; text-decoration-color: #008000"> 0.000000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> m          </span>│<span style="color: #008000; text-decoration-color: #008000"> 0.000000e+00 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> m_cr       </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.159750e+08 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> d_nc       </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.239649e+02 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.A_cr     </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.398873e+09 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Qx_cr    </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.141948e+12 </span>│
@@ -862,7 +864,7 @@ Density = 7.85e-06 kg/mm^3
 │<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_g_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 2.569383e+14 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Ixx_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 7.015297e+13 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iyy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.063014e+13 </span>│
-│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 1.250000e-01 </span>│
+│<span style="color: #008080; text-decoration-color: #008080"> E.Ixy_c_cr </span>│<span style="color: #008000; text-decoration-color: #008000"> 6.250000e-02 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.Iuu_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 7.015297e+13 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.I11_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 7.015297e+13 </span>│
 │<span style="color: #008080; text-decoration-color: #008080"> E.I22_cr   </span>│<span style="color: #008000; text-decoration-color: #008000"> 4.063014e+13 </span>│
@@ -872,7 +874,7 @@ Density = 7.85e-06 kg/mm^3
 </div>
 </div>
 <div class="section" id="Ultimate-Bending-Capacity">
-<h2><span class="section-number">9.4. </span>Ultimate Bending Capacity<a class="headerlink" href="#Ultimate-Bending-Capacity" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.4. </span>Ultimate Bending Capacity<a class="headerlink" href="#Ultimate-Bending-Capacity" title="Permalink to this heading">#</a></h2>
 <p>The factored ultimate bending capacity can be found by calling the <code class="docutils literal notranslate"><span class="pre">ultimate_bending_capacity()</span></code> method. This method returns a factored and unfactored <code class="docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code> object, as well as the capacity reduction factor <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -928,7 +930,7 @@ phi.Mu = 551.98 kN.m
 </div>
 </div>
 <div class="section" id="Moment-Interaction-Diagram">
-<h2><span class="section-number">9.5. </span>Moment Interaction Diagram<a class="headerlink" href="#Moment-Interaction-Diagram" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.5. </span>Moment Interaction Diagram<a class="headerlink" href="#Moment-Interaction-Diagram" title="Permalink to this heading">#</a></h2>
 <p>The factored moment interaction diagram can be found by calling the <code class="docutils literal notranslate"><span class="pre">moment_interaction_diagram()</span></code> method. This method returns a factored and unfactored <code class="docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code> object.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -1086,7 +1088,7 @@ Case 4: OK
 </div>
 </div>
 <div class="section" id="Biaxial-Bending-Diagram">
-<h2><span class="section-number">9.6. </span>Biaxial Bending Diagram<a class="headerlink" href="#Biaxial-Bending-Diagram" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.6. </span>Biaxial Bending Diagram<a class="headerlink" href="#Biaxial-Bending-Diagram" title="Permalink to this heading">#</a></h2>
 <p>We can also compute factored biaxial bending diagrams by calling the <code class="docutils literal notranslate"><span class="pre">biaxial_bending_diagram()</span></code> method. This method returns a factored <code class="docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code> object as well as a list of the capacity reduction factors <code class="docutils literal notranslate"><span class="pre">phis</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -1168,17 +1170,17 @@ Average phi = 0.618
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="composite_section.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="prestressed_section.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">8. </span>Composite Sections</p>
+          <p class="prev-next-title"><span class="section-number">9. </span>Prestressed Sections</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="nzs3101.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title"><span class="section-number">10. </span>NZS3101 Design Code</p>
+      <p class="prev-next-title"><span class="section-number">11. </span>NZS3101 Design Code</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>
@@ -1200,32 +1202,32 @@ Average phi = 0.618
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Create-Design-Code-and-Materials">
-   9.1. Create Design Code and Materials
+   10.1. Create Design Code and Materials
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Assign-Geometry-to-Design-Code">
-   9.2. Assign Geometry to Design Code
+   10.2. Assign Geometry to Design Code
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Area-Properties">
-   9.3. Area Properties
+   10.3. Area Properties
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Ultimate-Bending-Capacity">
-   9.4. Ultimate Bending Capacity
+   10.4. Ultimate Bending Capacity
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Moment-Interaction-Diagram">
-   9.5. Moment Interaction Diagram
+   10.5. Moment Interaction Diagram
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#Biaxial-Bending-Diagram">
-   9.6. Biaxial Bending Diagram
+   10.6. Biaxial Bending Diagram
   </a>
  </li>
 </ul>
