@@ -1,0 +1,960 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>concreteproperties.utils &#8212; concreteproperties 0.5.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/concreteproperties/utils';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.0';
+        </script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../_static/cp_logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+    <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
+        0.5.0  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <h1>Source code for concreteproperties.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">rich.progress</span> <span class="kn">import</span> <span class="n">BarColumn</span><span class="p">,</span> <span class="n">Progress</span><span class="p">,</span> <span class="n">ProgressColumn</span><span class="p">,</span> <span class="n">SpinnerColumn</span><span class="p">,</span> <span class="n">TextColumn</span>
+<span class="kn">from</span> <span class="nn">rich.table</span> <span class="kn">import</span> <span class="n">Column</span>
+<span class="kn">from</span> <span class="nn">rich.text</span> <span class="kn">import</span> <span class="n">Text</span>
+
+<span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">CPGeomConcrete</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">CompoundGeometry</span>
+
+    <span class="kn">from</span> <span class="nn">concreteproperties.pre</span> <span class="kn">import</span> <span class="n">CPGeom</span>
+
+
+<div class="viewcode-block" id="get_service_strain"><a class="viewcode-back" href="../../gen/concreteproperties.utils.get_service_strain.html#concreteproperties.utils.get_service_strain">[docs]</a><span class="k">def</span> <span class="nf">get_service_strain</span><span class="p">(</span>
+    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">ecf</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">eps0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Determines the strain at point `point` given curvature `kappa` and neutral axis</span>
+<span class="sd">    angle `theta`. Positive strain is compression.</span>
+
+<span class="sd">    :param point: Point at which to evaluate the strain</span>
+<span class="sd">    :param ecf: Global coordinate of the extreme compressive fibre</span>
+<span class="sd">    :param eps0: Strain at top fibre</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">    :param kappa: Curvature</span>
+
+<span class="sd">    :return: Strain</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># convert point to local coordinates</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># convert ecf to local coordinates</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">v_ecf</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">ecf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">ecf</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># calculate distance between ecf and point in `v` direction</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">v_ecf</span> <span class="o">-</span> <span class="n">v</span>
+
+    <span class="k">return</span> <span class="n">eps0</span> <span class="o">-</span> <span class="n">kappa</span> <span class="o">*</span> <span class="n">d</span></div>
+
+
+<div class="viewcode-block" id="get_ultimate_strain"><a class="viewcode-back" href="../../gen/concreteproperties.utils.get_ultimate_strain.html#concreteproperties.utils.get_ultimate_strain">[docs]</a><span class="k">def</span> <span class="nf">get_ultimate_strain</span><span class="p">(</span>
+    <span class="n">point</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Determines the strain at point `point` given neutral axis depth `d_n` and</span>
+<span class="sd">    neutral axis angle `theta`. Positive strain is compression.</span>
+
+<span class="sd">    :param point: Point at which to evaluate the strain</span>
+<span class="sd">    :param point_na: Point on the neutral axis</span>
+<span class="sd">    :param d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">    :param ultimate_strain: Concrete strain at failure</span>
+
+<span class="sd">    :return: Strain</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># convert point to local coordinates</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># convert point_na to local coordinates</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">v_na</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># calculate distance between NA and point in `v` direction</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">v_na</span>
+
+    <span class="k">return</span> <span class="n">d</span> <span class="o">/</span> <span class="n">d_n</span> <span class="o">*</span> <span class="n">ultimate_strain</span></div>
+
+
+<div class="viewcode-block" id="point_on_neutral_axis"><a class="viewcode-back" href="../../gen/concreteproperties.utils.point_on_neutral_axis.html#concreteproperties.utils.point_on_neutral_axis">[docs]</a><span class="k">def</span> <span class="nf">point_on_neutral_axis</span><span class="p">(</span>
+    <span class="n">extreme_fibre</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a point on the neutral axis given an extreme fibre, a depth to the</span>
+<span class="sd">    neutral axis and a neutral axis angle.</span>
+
+<span class="sd">    :param extreme_fibre: Global coordinate of the extreme compression fibre</span>
+<span class="sd">    :param d_n: Depth of the neutral axis from the extreme compression fibre</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+
+<span class="sd">    :return: Point on the neutral axis in global coordinates `(x, y)`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># determine the coordinate of the point wrt the local axis</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">extreme_fibre</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># subtract the neutral axis depth</span>
+    <span class="n">v</span> <span class="o">-=</span> <span class="n">d_n</span>
+
+    <span class="c1"># convert point back to global coordinates</span>
+    <span class="k">return</span> <span class="n">local_to_global</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="split_geom_at_strains_service"><a class="viewcode-back" href="../../gen/concreteproperties.utils.split_geom_at_strains_service.html#concreteproperties.utils.split_geom_at_strains_service">[docs]</a><span class="k">def</span> <span class="nf">split_geom_at_strains_service</span><span class="p">(</span>
+    <span class="n">geom</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CPGeom</span><span class="p">,</span> <span class="n">CPGeomConcrete</span><span class="p">],</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">ecf</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">eps0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">CPGeom</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">CPGeomConcrete</span><span class="p">]]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Splits geometries at discontinuities in its stress-strain profile.</span>
+
+<span class="sd">    :param geom: Geometry to split</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">    :param ecf: Global coordinate of the extreme compressive fibre</span>
+<span class="sd">    :param eps0: Strain at top fibre</span>
+<span class="sd">    :param kappa: Curvature</span>
+
+<span class="sd">    :return: List of split geometries</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># handle zero curvature</span>
+    <span class="k">if</span> <span class="n">kappa</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">geom</span><span class="p">]</span>
+
+    <span class="c1"># create splits in concrete geometries at points in stress-strain profiles</span>
+    <span class="n">split_geoms</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">CPGeom</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">CPGeomConcrete</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">strains</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>
+
+    <span class="c1"># make geom a list of geometries</span>
+    <span class="n">geom_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">geom</span><span class="p">]</span>
+
+    <span class="c1"># initialise top_geoms in case of two unique strains</span>
+    <span class="n">top_geoms</span> <span class="o">=</span> <span class="n">geom_list</span>
+    <span class="n">continuing_geoms</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># loop through intermediate points on stress-strain profile</span>
+    <span class="k">for</span> <span class="n">strain</span> <span class="ow">in</span> <span class="n">strains</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="c1"># depth to points of *strain* from ecf</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">eps0</span> <span class="o">-</span> <span class="n">strain</span><span class="p">)</span> <span class="o">/</span> <span class="n">kappa</span>
+
+        <span class="c1"># convert depth to global coordinates</span>
+        <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">local_to_global</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># calculate location of point</span>
+        <span class="n">pt</span> <span class="o">=</span> <span class="n">ecf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">dx</span><span class="p">,</span> <span class="n">ecf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">dy</span>
+
+        <span class="c1"># make list of geometries that will need to continue to be split after the</span>
+        <span class="c1"># split operation, i.e. those above the split</span>
+        <span class="n">continuing_geoms</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># split concrete geometries</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">geom_list</span><span class="p">:</span>
+            <span class="n">top_geoms</span><span class="p">,</span> <span class="n">bot_geoms</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">split_section</span><span class="p">(</span>
+                <span class="n">point</span><span class="o">=</span><span class="n">pt</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">kappa</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># save top geoms</span>
+                <span class="n">split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">top_geoms</span><span class="p">)</span>
+
+                <span class="c1"># save continuing geoms</span>
+                <span class="n">continuing_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">bot_geoms</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># save bot geoms</span>
+                <span class="n">split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">bot_geoms</span><span class="p">)</span>
+
+                <span class="c1"># save continuing geoms</span>
+                <span class="n">continuing_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">top_geoms</span><span class="p">)</span>
+
+        <span class="c1"># update geom_list for next strain</span>
+        <span class="n">geom_list</span> <span class="o">=</span> <span class="n">continuing_geoms</span>
+
+    <span class="c1"># save final top geoms</span>
+    <span class="n">split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">continuing_geoms</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">split_geoms</span></div>
+
+
+<div class="viewcode-block" id="split_geom_at_strains_ultimate"><a class="viewcode-back" href="../../gen/concreteproperties.utils.split_geom_at_strains_ultimate.html#concreteproperties.utils.split_geom_at_strains_ultimate">[docs]</a><span class="k">def</span> <span class="nf">split_geom_at_strains_ultimate</span><span class="p">(</span>
+    <span class="n">geom</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CPGeom</span><span class="p">,</span> <span class="n">CPGeomConcrete</span><span class="p">],</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">point_na</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">ultimate_strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">d_n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">CPGeom</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">CPGeomConcrete</span><span class="p">]]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Splits geometries at discontinuities in its stress-strain profile.</span>
+
+<span class="sd">    :param geom: Geometry to split</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">    :param point_na: Point on the neutral axis</span>
+<span class="sd">    :param ultimate_strain: Concrete strain at failure (required for ``ultimate=True``</span>
+<span class="sd">        only)</span>
+<span class="sd">    :param d_n: Depth of the neutral axis from the extreme compression fibre (required</span>
+<span class="sd">        for ``ultimate=True`` only)</span>
+
+<span class="sd">    :return: List of split geometries</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># create splits in concrete geometries at points in stress-strain profiles</span>
+    <span class="n">split_geoms</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">CPGeom</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">CPGeomConcrete</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">CPGeomConcrete</span><span class="p">):</span>
+        <span class="n">strains</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">strains</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">get_unique_strains</span><span class="p">()</span>
+
+    <span class="c1"># make geom a list of geometries</span>
+    <span class="n">geom_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">geom</span><span class="p">]</span>
+
+    <span class="c1"># initialise top_geoms in case of two unique strains</span>
+    <span class="n">top_geoms</span> <span class="o">=</span> <span class="n">geom_list</span>
+    <span class="n">continuing_geoms</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># loop through intermediate points on stress-strain profile</span>
+    <span class="k">for</span> <span class="n">strain</span> <span class="ow">in</span> <span class="n">strains</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="c1"># depth to points of *strain* from NA</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">strain</span> <span class="o">/</span> <span class="n">ultimate_strain</span> <span class="o">*</span> <span class="n">d_n</span>
+
+        <span class="c1"># convert depth to global coordinates</span>
+        <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">local_to_global</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># calculate location of point</span>
+        <span class="n">pt</span> <span class="o">=</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">point_na</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span>
+
+        <span class="c1"># make list of geometries that will need to continue to be split after the</span>
+        <span class="c1"># split operation, i.e. those above the split</span>
+        <span class="n">continuing_geoms</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># split concrete geometries (from bottom up)</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">geom_list</span><span class="p">:</span>
+            <span class="n">top_geoms</span><span class="p">,</span> <span class="n">bot_geoms</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">split_section</span><span class="p">(</span>
+                <span class="n">point</span><span class="o">=</span><span class="n">pt</span><span class="p">,</span>
+                <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># save bottom geoms</span>
+            <span class="n">split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">bot_geoms</span><span class="p">)</span>
+
+            <span class="c1"># save continuing geoms</span>
+            <span class="n">continuing_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">top_geoms</span><span class="p">)</span>
+
+        <span class="c1"># update geom_list for next strain</span>
+        <span class="n">geom_list</span> <span class="o">=</span> <span class="n">continuing_geoms</span>
+
+    <span class="c1"># save final top geoms</span>
+    <span class="n">split_geoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">continuing_geoms</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">split_geoms</span></div>
+
+
+<div class="viewcode-block" id="calculate_extreme_fibre"><a class="viewcode-back" href="../../gen/concreteproperties.utils.calculate_extreme_fibre.html#concreteproperties.utils.calculate_extreme_fibre">[docs]</a><span class="k">def</span> <span class="nf">calculate_extreme_fibre</span><span class="p">(</span>
+    <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the locations of the extreme compression fibre in global</span>
+<span class="sd">    coordinates given a neutral axis angle `theta`.</span>
+
+<span class="sd">    :param points: Points over which to search for an extreme fibre</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+
+<span class="sd">    :return: Global coordinate of the extreme compression fibre `(x, y)` and the</span>
+<span class="sd">        neutral axis depth at the extreme tensile fibre</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># initialise min/max variable &amp; point</span>
+    <span class="n">max_pt</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">v_min</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="n">v_max</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="c1"># loop through all points</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="c1"># determine the coordinate of the point wrt the local axis</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># update the min/max &amp; point where necessary</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">v_min</span><span class="p">:</span>
+            <span class="n">v_min</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">v_max</span><span class="p">:</span>
+            <span class="n">v_max</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="n">max_pt</span> <span class="o">=</span> <span class="n">point</span>
+
+    <span class="c1"># calculate depth of neutral axis at tensile fibre</span>
+    <span class="n">d_t</span> <span class="o">=</span> <span class="n">v_max</span> <span class="o">-</span> <span class="n">v_min</span>
+
+    <span class="k">return</span> <span class="n">max_pt</span><span class="p">,</span> <span class="n">d_t</span></div>
+
+
+<div class="viewcode-block" id="calculate_max_bending_depth"><a class="viewcode-back" href="../../gen/concreteproperties.utils.calculate_max_bending_depth.html#concreteproperties.utils.calculate_max_bending_depth">[docs]</a><span class="k">def</span> <span class="nf">calculate_max_bending_depth</span><span class="p">(</span>
+    <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+    <span class="n">c_local_v</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the maximum distance from the centroid to an extreme fibre when</span>
+<span class="sd">    bending about an axis `theta`.</span>
+
+<span class="sd">    :param points: Points over which to search for a bending depth</span>
+<span class="sd">    :param c_local_v: Centroid coordinate in the local v-direction</span>
+<span class="sd">    :param theta: Angle (in radians) the bending axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+
+<span class="sd">    :return: Maximum bending depth, returns zero if distance is negative</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">max_bending_depth</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># loop through all points</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+        <span class="c1"># determine the coordinate of the point wrt the local axis</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">max_bending_depth</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">c_local_v</span> <span class="o">-</span> <span class="n">v</span><span class="p">,</span> <span class="n">max_bending_depth</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">max_bending_depth</span></div>
+
+
+<div class="viewcode-block" id="gauss_points"><a class="viewcode-back" href="../../gen/concreteproperties.utils.gauss_points.html#concreteproperties.utils.gauss_points">[docs]</a><span class="k">def</span> <span class="nf">gauss_points</span><span class="p">(</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Returns the Gaussian weights and locations for *n* point Gaussian integration of</span>
+<span class="sd">    a linear triangular element.</span>
+
+<span class="sd">    :param n: Number of Gauss points (1, 3 or 6)</span>
+
+<span class="sd">    :return: An *n x 3* matrix consisting of the integration weight and the xi and eta</span>
+<span class="sd">        locations for *n* Gauss points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mi">3</span><span class="p">]]</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="p">[</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mi">6</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mi">6</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="mi">3</span><span class="p">],</span>
+        <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> gauss points not implemented.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="shape_function"><a class="viewcode-back" href="../../gen/concreteproperties.utils.shape_function.html#concreteproperties.utils.shape_function">[docs]</a><span class="k">def</span> <span class="nf">shape_function</span><span class="p">(</span>
+    <span class="n">coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">gauss_point</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Computes shape functions and the determinant of the Jacobian matrix for a</span>
+<span class="sd">    linear triangular element at a given Gauss point.</span>
+
+<span class="sd">    :param coords: Global coordinates of the linear triangle vertices [2 x 3]</span>
+<span class="sd">    :param gauss_point: Gaussian weight and isoparametric location of the Gauss point</span>
+
+<span class="sd">    :return: The value of the shape functions *N(i)* at the given Gauss point [1 x 3]</span>
+<span class="sd">        and the determinant of the Jacobian matrix *j*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">gauss_point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">gauss_point</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">-</span> <span class="n">xi</span> <span class="o">-</span> <span class="n">eta</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">eta</span><span class="p">])</span>
+    <span class="n">dN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+
+    <span class="c1"># calculate jacobian</span>
+    <span class="n">J_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">dN</span><span class="p">)</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">J_mat</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">N</span><span class="p">,</span> <span class="n">j</span></div>
+
+
+<div class="viewcode-block" id="calculate_local_extents"><a class="viewcode-back" href="../../gen/concreteproperties.utils.calculate_local_extents.html#concreteproperties.utils.calculate_local_extents">[docs]</a><span class="k">def</span> <span class="nf">calculate_local_extents</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="n">CompoundGeometry</span><span class="p">,</span>
+    <span class="n">cx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">cy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the local extents of a geometry given a centroid and axis angle.</span>
+
+<span class="sd">    :param geometry: Geometry over which to calculate extents</span>
+<span class="sd">    :param cx: x-location of the centroid</span>
+<span class="sd">    :param cy: y-location of the centroid</span>
+<span class="sd">    :param theta: Angle (in radians) the neutral axis makes with the horizontal</span>
+<span class="sd">        axis (:math:`-\pi \leq \theta \leq \pi`)</span>
+
+<span class="sd">    :return: Local extents *(x11_max, x11_min, y22_max, y22_min)*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># initialise min, max variables</span>
+    <span class="n">pt0</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">x11</span><span class="p">,</span> <span class="n">y22</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">pt0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">pt0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cy</span><span class="p">)</span>
+    <span class="n">x11_max</span> <span class="o">=</span> <span class="n">x11</span>
+    <span class="n">x11_min</span> <span class="o">=</span> <span class="n">x11</span>
+    <span class="n">y22_max</span> <span class="o">=</span> <span class="n">y22</span>
+    <span class="n">y22_min</span> <span class="o">=</span> <span class="n">y22</span>
+
+    <span class="c1"># loop through all points in geometry</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="c1"># determine the coordinate of the point wrt the principal axis</span>
+        <span class="n">x11</span><span class="p">,</span> <span class="n">y22</span> <span class="o">=</span> <span class="n">global_to_local</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cy</span><span class="p">)</span>
+
+        <span class="c1"># update the mins and maxes where necessary</span>
+        <span class="n">x11_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x11_max</span><span class="p">,</span> <span class="n">x11</span><span class="p">)</span>
+        <span class="n">x11_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x11_min</span><span class="p">,</span> <span class="n">x11</span><span class="p">)</span>
+        <span class="n">y22_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y22_max</span><span class="p">,</span> <span class="n">y22</span><span class="p">)</span>
+        <span class="n">y22_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y22_min</span><span class="p">,</span> <span class="n">y22</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x11_max</span><span class="p">,</span> <span class="n">x11_min</span><span class="p">,</span> <span class="n">y22_max</span><span class="p">,</span> <span class="n">y22_min</span></div>
+
+
+<div class="viewcode-block" id="global_to_local"><a class="viewcode-back" href="../../gen/concreteproperties.utils.global_to_local.html#concreteproperties.utils.global_to_local">[docs]</a><span class="k">def</span> <span class="nf">global_to_local</span><span class="p">(</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Determines the local coordinates of the global point (``x``, ``y``) given local</span>
+<span class="sd">    axis angle ``theta``.</span>
+
+<span class="sd">    :param theta: Angle (in radians) the local axis makes with the horizontal axis</span>
+<span class="sd">        (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">    :param x: x-coordinate of the point in the global axis</span>
+<span class="sd">    :param y: y-coordinate of the point in the global axis</span>
+
+<span class="sd">    :return: Local axis coordinates (``u``, ``v``)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cos_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">sin_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">cos_theta</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">sin_theta</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">cos_theta</span> <span class="o">-</span> <span class="n">x</span> <span class="o">*</span> <span class="n">sin_theta</span></div>
+
+
+<div class="viewcode-block" id="local_to_global"><a class="viewcode-back" href="../../gen/concreteproperties.utils.local_to_global.html#concreteproperties.utils.local_to_global">[docs]</a><span class="k">def</span> <span class="nf">local_to_global</span><span class="p">(</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">u</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">v</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Determines the global coordinates of the local point (``u``, ``v``) given local</span>
+<span class="sd">    axis angle ``theta``.</span>
+
+<span class="sd">    :param theta: Angle (in radians) the local axis makes with the horizontal axis</span>
+<span class="sd">        (:math:`-\pi \leq \theta \leq \pi`)</span>
+<span class="sd">    :param u: u-coordinate of the point in the local axis</span>
+<span class="sd">    :param v: v-coordinate of the point in the local axis</span>
+
+<span class="sd">    :return: Global axis coordinates (``x``, ``y``)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cos_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">sin_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">u</span> <span class="o">*</span> <span class="n">cos_theta</span> <span class="o">-</span> <span class="n">v</span> <span class="o">*</span> <span class="n">sin_theta</span><span class="p">,</span> <span class="n">u</span> <span class="o">*</span> <span class="n">sin_theta</span> <span class="o">+</span> <span class="n">v</span> <span class="o">*</span> <span class="n">cos_theta</span></div>
+
+
+<div class="viewcode-block" id="CustomTimeElapsedColumn"><a class="viewcode-back" href="../../gen/concreteproperties.utils.CustomTimeElapsedColumn.html#concreteproperties.utils.CustomTimeElapsedColumn">[docs]</a><span class="k">class</span> <span class="nc">CustomTimeElapsedColumn</span><span class="p">(</span><span class="n">ProgressColumn</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Renders time elapsed in milliseconds.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CustomTimeElapsedColumn.render"><a class="viewcode-back" href="../../gen/concreteproperties.utils.CustomTimeElapsedColumn.html#concreteproperties.utils.CustomTimeElapsedColumn.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">task</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Task&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Text</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Show time remaining.</span>
+
+<span class="sd">        :param task: Task string</span>
+
+<span class="sd">        :return: Rich text object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">finished_time</span> <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">finished</span> <span class="k">else</span> <span class="n">task</span><span class="o">.</span><span class="n">elapsed</span>  <span class="c1"># type: ignore</span>
+
+        <span class="k">if</span> <span class="n">elapsed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;-:--:--&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;progress.elapsed&quot;</span><span class="p">)</span>
+
+        <span class="n">elapsed_string</span> <span class="o">=</span> <span class="s2">&quot;[ </span><span class="si">{0:.4f}</span><span class="s2"> s ]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">elapsed</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Text</span><span class="p">(</span><span class="n">elapsed_string</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;progress.elapsed&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="create_known_progress"><a class="viewcode-back" href="../../gen/concreteproperties.utils.create_known_progress.html#concreteproperties.utils.create_known_progress">[docs]</a><span class="k">def</span> <span class="nf">create_known_progress</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Progress</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Returns a Rich Progress class for a known number of iterations.</span>
+
+<span class="sd">    :return: Rich progress object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">Progress</span><span class="p">(</span>
+        <span class="n">SpinnerColumn</span><span class="p">(),</span>
+        <span class="n">TextColumn</span><span class="p">(</span>
+            <span class="s2">&quot;[progress.description]</span><span class="si">{task.description}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">table_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">BarColumn</span><span class="p">(</span><span class="n">bar_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
+        <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&quot;[progress.percentage]</span><span class="si">{task.percentage:&gt;3.0f}</span><span class="s2">%&quot;</span><span class="p">),</span>
+        <span class="n">CustomTimeElapsedColumn</span><span class="p">(),</span>
+        <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_unknown_progress"><a class="viewcode-back" href="../../gen/concreteproperties.utils.create_unknown_progress.html#concreteproperties.utils.create_unknown_progress">[docs]</a><span class="k">def</span> <span class="nf">create_unknown_progress</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Progress</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Returns a Rich Progress class for an unknown number of iterations.</span>
+
+<span class="sd">    :return: Rich progress object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">Progress</span><span class="p">(</span>
+        <span class="n">SpinnerColumn</span><span class="p">(),</span>
+        <span class="n">TextColumn</span><span class="p">(</span>
+            <span class="s2">&quot;[progress.description]</span><span class="si">{task.description}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">table_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">BarColumn</span><span class="p">(</span><span class="n">bar_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
+        <span class="n">CustomTimeElapsedColumn</span><span class="p">(),</span>
+        <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AnalysisError"><a class="viewcode-back" href="../../gen/concreteproperties.utils.AnalysisError.html#concreteproperties.utils.AnalysisError">[docs]</a><span class="k">class</span> <span class="nc">AnalysisError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+</pre></div>
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Robbie van Leeuwen.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>
