@@ -172,15 +172,16 @@ class AnalysisSection:
 
     def service_analysis(
         self,
-        point_na: Tuple[float, float],
+        ecf: Tuple[float, float],
+        eps0: float,
         theta: float,
         kappa: float,
         centroid: Tuple[float, float],
     ) -> Tuple[float, float, float, float, float]:
         r"""Performs a service stress analysis on the section.
 
-        :param point_na: Point on the neutral axis
-        :param d_n: Depth of the neutral axis from the extreme compression fibre
+        :param ecf: Global coordinate of the extreme compressive fibre
+        :param eps0: Strain at top fibre
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param kappa: Curvature
@@ -204,7 +205,8 @@ class AnalysisSection:
                 el_min_strain,
                 el_max_strain,
             ) = el.calculate_service_actions(
-                point_na=point_na,
+                ecf=ecf,
+                eps0=eps0,
                 theta=theta,
                 kappa=kappa,
                 centroid=centroid,
@@ -220,18 +222,18 @@ class AnalysisSection:
 
     def get_service_stress(
         self,
-        d_n: float,
         kappa: float,
-        point_na: Tuple[float, float],
+        ecf: Tuple[float, float],
+        eps0: float,
         theta: float,
         centroid: Tuple[float, float],
     ) -> Tuple[np.ndarray, float, float, float]:
         r"""Given the neutral axis depth `d_n` and curvature `kappa` determines the
         service stresses within the section.
 
-        :param d_n: Neutral axis depth
         :param kappa: Curvature
-        :param point_na: Point on the neutral axis
+        :param ecf: Global coordinate of the extreme compressive fibre
+        :param eps0: Strain at top fibre
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param centroid: Centroid about which to take moments
@@ -248,7 +250,8 @@ class AnalysisSection:
             # get strain at node
             strain = utils.get_service_strain(
                 point=(node[0], node[1]),
-                point_na=point_na,
+                ecf=ecf,
+                eps0=eps0,
                 theta=theta,
                 kappa=kappa,
             )
@@ -258,7 +261,8 @@ class AnalysisSection:
 
         # calculate total force
         n_sec, m_x_sec, m_y_sec, _, _ = self.service_analysis(
-            point_na=point_na,
+            ecf=ecf,
+            eps0=eps0,
             theta=theta,
             kappa=kappa,
             centroid=centroid,
@@ -607,14 +611,16 @@ class Tri3:
 
     def calculate_service_actions(
         self,
-        point_na: Tuple[float, float],
+        ecf: Tuple[float, float],
+        eps0: float,
         theta: float,
         kappa: float,
         centroid: Tuple[float, float],
     ) -> Tuple[float, float, float, float, float]:
         r"""Calculates service actions for the current finite element.
 
-        :param point_na: Point on the neutral axis
+        :param ecf: Global coordinate of the extreme compressive fibre
+        :param eps0: Strain at top fibre
         :param theta: Angle (in radians) the neutral axis makes with the
             horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
         :param kappa: Curvature
@@ -645,7 +651,8 @@ class Tri3:
             # get strain at gauss point
             strain = utils.get_service_strain(
                 point=(x, y),
-                point_na=point_na,
+                ecf=ecf,
+                eps0=eps0,
                 theta=theta,
                 kappa=kappa,
             )

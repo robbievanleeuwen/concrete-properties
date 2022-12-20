@@ -1,9 +1,10 @@
-# To Do List
+# Todo List
 
-- [ ] Add prestressing
+## POST-RELEASE ITEMS
+
 - [ ] More tests!
 
-## Version Instructions
+## Changing Version Instructions
 
 1. Change version in __init__.py
 2. Update switcher.json

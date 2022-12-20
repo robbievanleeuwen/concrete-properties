@@ -15,6 +15,18 @@ material properties.
 ..  autoclass:: concreteproperties.concrete_section.ConcreteSection
   :noindex:
 
+If a prestressed concrete section is being analysed, a
+:class:`~concreteproperties.prestressed_section.PrestressedSection` object must be used
+instead of a :class:`~concreteproperties.concrete_section.ConcreteSection` object, see
+:ref:`label-prestressed-analysis`.
+
+.. warning::
+
+  If the cross-section geometry contains a
+  :class:`~concreteproperties.material.SteelStrand` material object, a ``ValueError``
+  will be raised if trying to create a
+  :class:`~concreteproperties.concrete_section.ConcreteSection` object.
+
 
 Visualising the Cross-Section
 -----------------------------
@@ -50,7 +62,7 @@ axis, but this can be modified by providing a bending axis angle ``theta``.
 ..  automethod:: concreteproperties.concrete_section.ConcreteSection.calculate_cracked_properties
   :noindex:
 
-The cracking moment is determines assuming cracking occurs once the stress in the
+The cracking moment is determined assuming cracking occurs once the stress in the
 concrete reaches the ``flexural_tensile_strength``. Cracked properties are calculated
 assuming the concrete is linear elastic and can only resist compression.
 
@@ -75,8 +87,8 @@ This analysis uses the ``stress_strain_profile`` given to the
 :class:`~concreteproperties.material.Concrete` and
 :class:`~concreteproperties.material.Steel` material properties to calculate a moment
 curvature response. The analysis is displacement controlled with an adaptive curvature
-increment controlled by the parameters ``kappa_inc``, ``delta_m_min`` and
-``delta_m_max``.
+increment controlled by the parameters ``kappa_inc``, ``kappa_mult``, ``kappa_inc_max``,
+``delta_m_min`` and ``delta_m_max``.
 
 .. seealso::
   For an application of the above, see the example
@@ -99,9 +111,9 @@ angle ``theta`` and axial force ``n``.
 This analysis uses the ``ultimate_stress_strain_profile`` given to the
 :class:`~concreteproperties.material.Concrete` materials and the
 ``stress_strain_profile`` given to the :class:`~concreteproperties.material.Steel`
-materials. The ultimate strain profile is determined by setting the strain at the
-extreme compressive fibre to the ``ultimate_strain`` parameter (see
-:ref:`label-conc-ult-profile`) and finding the neutral axis which satisfies the
+materials. The ultimate strain profile within the cross-section is determined by setting
+the strain at the extreme compressive fibre to the ``ultimate_strain`` parameter (see
+:ref:`label-conc-ult-profile`) and finding the neutral axis that satisfies the
 equilibrium of axial forces.
 
 .. seealso::

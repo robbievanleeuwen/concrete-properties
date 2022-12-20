@@ -17,7 +17,8 @@ if TYPE_CHECKING:
 
 def get_service_strain(
     point: Tuple[float, float],
-    point_na: Tuple[float, float],
+    ecf: Tuple[float, float],
+    eps0: float,
     theta: float,
     kappa: float,
 ) -> float:
@@ -25,7 +26,8 @@ def get_service_strain(
     angle `theta`. Positive strain is compression.
 
     :param point: Point at which to evaluate the strain
-    :param point_na: Point on the neutral axis
+    :param ecf: Global coordinate of the extreme compressive fibre
+    :param eps0: Strain at top fibre
     :param theta: Angle (in radians) the neutral axis makes with the horizontal
         axis (:math:`-\pi \leq \theta \leq \pi`)
     :param kappa: Curvature
@@ -36,13 +38,13 @@ def get_service_strain(
     # convert point to local coordinates
     _, v = global_to_local(theta=theta, x=point[0], y=point[1])
 
-    # convert point_na to local coordinates
-    _, v_na = global_to_local(theta=theta, x=point_na[0], y=point_na[1])
+    # convert ecf to local coordinates
+    _, v_ecf = global_to_local(theta=theta, x=ecf[0], y=ecf[1])
 
-    # calculate distance between NA and point in `v` direction
-    d = v - v_na
+    # calculate distance between ecf and point in `v` direction
+    d = v_ecf - v
 
-    return kappa * d
+    return eps0 - kappa * d
 
 
 def get_ultimate_strain(
@@ -103,27 +105,20 @@ def point_on_neutral_axis(
     return local_to_global(theta=theta, u=u, v=v)
 
 
-def split_geom_at_strains(
+def split_geom_at_strains_service(
     geom: Union[CPGeom, CPGeomConcrete],
     theta: float,
-    point_na: Tuple[float, float],
-    ultimate: bool,
-    ultimate_strain: Optional[float] = None,
-    d_n: Optional[float] = None,
-    kappa: Optional[float] = None,
+    ecf: Tuple[float, float],
+    eps0: float,
+    kappa: float,
 ) -> Union[List[CPGeom], List[CPGeomConcrete]]:
     r"""Splits geometries at discontinuities in its stress-strain profile.
 
     :param geom: Geometry to split
     :param theta: Angle (in radians) the neutral axis makes with the horizontal
         axis (:math:`-\pi \leq \theta \leq \pi`)
-    :param point_na: Point on the neutral axis
-    :param ultimate: If set to True, uses ultimate stress-strain profile for concrete
-        geometries
-    :param ultimate_strain: Concrete strain at failure (required for ``ultimate=True``
-        only)
-    :param d_n: Depth of the neutral axis from the extreme compression fibre (required
-        for ``ultimate=True`` only)
+    :param ecf: Global coordinate of the extreme compressive fibre
+    :param eps0: Strain at top fibre
     :param kappa: Curvature
 
     :return: List of split geometries
@@ -136,7 +131,84 @@ def split_geom_at_strains(
     # create splits in concrete geometries at points in stress-strain profiles
     split_geoms: Union[List[CPGeom], List[CPGeomConcrete]] = []
 
-    if ultimate and isinstance(geom, CPGeomConcrete):
+    strains = geom.material.stress_strain_profile.get_unique_strains()
+
+    # make geom a list of geometries
+    geom_list = [geom]
+
+    # initialise top_geoms in case of two unique strains
+    top_geoms = geom_list
+    continuing_geoms = []
+
+    # loop through intermediate points on stress-strain profile
+    for strain in strains[1:-1]:
+        # depth to points of *strain* from ecf
+        d = (eps0 - strain) / kappa
+
+        # convert depth to global coordinates
+        dx, dy = local_to_global(theta=theta, u=0, v=d)
+
+        # calculate location of point
+        pt = ecf[0] - dx, ecf[1] - dy
+
+        # make list of geometries that will need to continue to be split after the
+        # split operation, i.e. those above the split
+        continuing_geoms = []
+
+        # split concrete geometries
+        for g in geom_list:
+            top_geoms, bot_geoms = g.split_section(
+                point=pt,
+                theta=theta,
+            )
+
+            if kappa < 0:
+                # save top geoms
+                split_geoms.extend(top_geoms)
+
+                # save continuing geoms
+                continuing_geoms.extend(bot_geoms)
+            else:
+                # save bot geoms
+                split_geoms.extend(bot_geoms)
+
+                # save continuing geoms
+                continuing_geoms.extend(top_geoms)
+
+        # update geom_list for next strain
+        geom_list = continuing_geoms
+
+    # save final top geoms
+    split_geoms.extend(continuing_geoms)
+
+    return split_geoms
+
+
+def split_geom_at_strains_ultimate(
+    geom: Union[CPGeom, CPGeomConcrete],
+    theta: float,
+    point_na: Tuple[float, float],
+    ultimate_strain: float,
+    d_n: float,
+) -> Union[List[CPGeom], List[CPGeomConcrete]]:
+    r"""Splits geometries at discontinuities in its stress-strain profile.
+
+    :param geom: Geometry to split
+    :param theta: Angle (in radians) the neutral axis makes with the horizontal
+        axis (:math:`-\pi \leq \theta \leq \pi`)
+    :param point_na: Point on the neutral axis
+    :param ultimate_strain: Concrete strain at failure (required for ``ultimate=True``
+        only)
+    :param d_n: Depth of the neutral axis from the extreme compression fibre (required
+        for ``ultimate=True`` only)
+
+    :return: List of split geometries
+    """
+
+    # create splits in concrete geometries at points in stress-strain profiles
+    split_geoms: Union[List[CPGeom], List[CPGeomConcrete]] = []
+
+    if isinstance(geom, CPGeomConcrete):
         strains = geom.material.ultimate_stress_strain_profile.get_unique_strains()
     else:
         strains = geom.material.stress_strain_profile.get_unique_strains()
@@ -151,14 +223,7 @@ def split_geom_at_strains(
     # loop through intermediate points on stress-strain profile
     for strain in strains[1:-1]:
         # depth to points of *strain* from NA
-        # ultimate case
-        if ultimate and ultimate_strain and d_n:
-            d = strain / ultimate_strain * d_n
-        # service case
-        elif kappa:
-            d = strain / kappa
-        else:
-            raise ValueError("Not enough arguments provided.")
+        d = strain / ultimate_strain * d_n
 
         # convert depth to global coordinates
         dx, dy = local_to_global(theta=theta, u=0, v=d)
@@ -245,7 +310,7 @@ def calculate_max_bending_depth(
     :param theta: Angle (in radians) the bending axis makes with the horizontal
         axis (:math:`-\pi \leq \theta \leq \pi`)
 
-    :return: Maximum bending depth
+    :return: Maximum bending depth, returns zero if distance is negative
     """
 
     max_bending_depth = 0
