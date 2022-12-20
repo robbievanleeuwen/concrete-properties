@@ -36,6 +36,12 @@ through submitting bug reports, feature requests or pull requests. Please read t
 
 ## Current Capabilities
 
+### Analysis Types
+
+- [x] Reinforced Concrete
+- [x] Steel-Concrete Composite
+- [x] Prestressed Concrete
+
 ### Material Properties
 
 - [x] Concrete material
@@ -53,10 +59,14 @@ through submitting bug reports, feature requests or pull requests. Please read t
   - [x] Stress-strain profiles
     - [x] Elastic-plastic
     - [x] Elastic-plastic (with hardening)
+- [x] Strand material
+  - [x] Stress-strain profiles
+    - [x] Elastic-plastic (with hardening)
+    - [x] PCI journal (1992) non-linear
 
 ### Gross Section Properties
 
-- [x] Cross-sectional areas (total, concrete, steel)
+- [x] Cross-sectional areas (total, concrete, steel, strand)
 - [x] Axial rigidity
 - [x] Cross-section mass
 - [x] Cross-section perimeter
@@ -68,11 +78,12 @@ through submitting bug reports, feature requests or pull requests. Please read t
 - [x] Principal second moments of area
 - [x] Centroidal section moduli
 - [x] Principal section moduli
+- [x] Prestressed Aations
 
 ### Service Analysis
 
 - [x] Cracking moment
-- [x] Cracked second moment of area
+- [x] Cracked area properties
 - [x] Moment-curvature diagram
 
 ### Ultimate Analysis
