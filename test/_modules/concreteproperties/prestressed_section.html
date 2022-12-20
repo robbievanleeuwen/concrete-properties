@@ -429,7 +429,9 @@
         <span class="k">for</span> <span class="n">strand</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strand_geometries</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">strand</span><span class="o">.</span><span class="n">material</span><span class="p">,</span> <span class="n">SteelStrand</span><span class="p">):</span>
                 <span class="c1"># add axial force</span>
-                <span class="n">n_strand</span> <span class="o">=</span> <span class="n">strand</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">prestress_force</span>
+                <span class="n">n_strand</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">strand</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">get_prestress_stress</span><span class="p">()</span> <span class="o">*</span> <span class="n">strand</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
+                <span class="p">)</span>
                 <span class="n">n_prestress</span> <span class="o">+=</span> <span class="n">n_strand</span>
 
                 <span class="c1"># add moment</span>
@@ -844,9 +846,7 @@
 
             <span class="c1"># add initial prestress</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lumped_geom</span><span class="o">.</span><span class="n">material</span><span class="p">,</span> <span class="n">SteelStrand</span><span class="p">):</span>
-                <span class="n">sig</span> <span class="o">+=</span> <span class="p">(</span>
-                    <span class="o">-</span><span class="n">lumped_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">prestress_force</span> <span class="o">/</span> <span class="n">lumped_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
-                <span class="p">)</span>
+                <span class="n">sig</span> <span class="o">+=</span> <span class="o">-</span><span class="n">lumped_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">get_prestress_stress</span><span class="p">()</span>
 
             <span class="n">strain</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">/</span> <span class="n">lumped_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
 
@@ -924,7 +924,9 @@
 
         <span class="k">for</span> <span class="n">strand</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strand_geometries</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">strand</span><span class="o">.</span><span class="n">material</span><span class="p">,</span> <span class="n">SteelStrand</span><span class="p">):</span>
-                <span class="n">n_strand</span> <span class="o">=</span> <span class="n">strand</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">prestress_force</span>
+                <span class="n">n_strand</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">strand</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">get_prestress_stress</span><span class="p">()</span> <span class="o">*</span> <span class="n">strand</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
+                <span class="p">)</span>
                 <span class="n">centroid</span> <span class="o">=</span> <span class="n">strand</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
                 <span class="n">m_net</span> <span class="o">+=</span> <span class="n">n_strand</span> <span class="o">*</span> <span class="p">(</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cy</span><span class="p">)</span>
 
@@ -972,9 +974,7 @@
 
             <span class="c1"># add initial prestress</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lumped_geom</span><span class="o">.</span><span class="n">material</span><span class="p">,</span> <span class="n">SteelStrand</span><span class="p">):</span>
-                <span class="n">sig</span> <span class="o">+=</span> <span class="p">(</span>
-                    <span class="o">-</span><span class="n">lumped_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">prestress_force</span> <span class="o">/</span> <span class="n">lumped_geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span>
-                <span class="p">)</span>
+                <span class="n">sig</span> <span class="o">+=</span> <span class="o">-</span><span class="n">lumped_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">get_prestress_stress</span><span class="p">()</span>
 
             <span class="n">strain</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">/</span> <span class="n">lumped_geom</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">elastic_modulus</span>
 

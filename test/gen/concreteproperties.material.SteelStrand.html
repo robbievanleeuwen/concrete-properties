@@ -468,7 +468,7 @@
 <h1>concreteproperties.material.SteelStrand<a class="headerlink" href="#concreteproperties-material-steelstrand" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="concreteproperties.material.SteelStrand">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteelStrand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prestress_force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#SteelStrand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.material.SteelStrand" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteelStrand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_strain_profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prestress_stress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#SteelStrand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.material.SteelStrand" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a></p>
 <p>Class for a steel strand material, treated as a lumped circular mass with a
 constant strain.</p>
@@ -488,7 +488,7 @@ if using a <a class="reference internal" href="#concreteproperties.material.Stee
 <li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Steel strand density (mass per unit volume)</p></li>
 <li><p><strong>stress_strain_profile</strong> (<a class="reference internal" href="concreteproperties.stress_strain_profile.StrandProfile.html#concreteproperties.stress_strain_profile.StrandProfile" title="concreteproperties.stress_strain_profile.StrandProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrandProfile</span></code></a>) – Steel strand stress-strain profile</p></li>
 <li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Colour of the material for rendering</p></li>
-<li><p><strong>prestress_force</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Prestressing force applied to the strand</p></li>
+<li><p><strong>prestress_stress</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Prestressing stress applied to the strand</p></li>
 </ul>
 </dd>
 </dl>
@@ -503,7 +503,7 @@ if using a <a class="reference internal" href="#concreteproperties.material.Stee
 <td><p>Given the strand cross-sectional area, returns the prestress strain.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#concreteproperties.material.SteelStrand.get_prestress_stress" title="concreteproperties.material.SteelStrand.get_prestress_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_prestress_stress</span></code></a></p></td>
-<td><p>Given the strand cross-sectional area, returns the prestress stress.</p></td>
+<td><p>Returns the prestress stress.</p></td>
 </tr>
 </tbody>
 </table>
@@ -517,7 +517,7 @@ if using a <a class="reference internal" href="#concreteproperties.material.Stee
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">meshed</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prestress_force</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prestress_stress</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
@@ -536,14 +536,11 @@ if using a <a class="reference internal" href="#concreteproperties.material.Stee
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="concreteproperties.material.SteelStrand.get_prestress_stress">
-<span class="sig-name descname"><span class="pre">get_prestress_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#SteelStrand.get_prestress_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.material.SteelStrand.get_prestress_stress" title="Permalink to this definition">#</a></dt>
-<dd><p>Given the strand cross-sectional area, returns the prestress stress.</p>
+<span class="sig-name descname"><span class="pre">get_prestress_stress</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/concreteproperties/material.html#SteelStrand.get_prestress_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#concreteproperties.material.SteelStrand.get_prestress_stress" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the prestress stress.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>area</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Strand cross-sectional area</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Prestress stress</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – Prestress stress</p>
 </dd>
 </dl>
 </dd></dl>
