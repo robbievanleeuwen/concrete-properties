@@ -1,3 +1,0 @@
-from concreteproperties.stress_strain_profile import ConcreteLinear
-
-ConcreteLinear(elastic_modulus=35e3).plot_stress_strain()
