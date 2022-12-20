@@ -396,10 +396,10 @@ class CrackedResults:
             )
 
         if isinstance(self.m_cr, tuple):
-            table.add_row("M_cr_pos", "{:>{fmt}}".format(self.m_cr[0], fmt=fmt))
-            table.add_row("M_cr_neg", "{:>{fmt}}".format(self.m_cr[1], fmt=fmt))
+            table.add_row("m_cr_pos", "{:>{fmt}}".format(self.m_cr[0], fmt=fmt))
+            table.add_row("m_cr_neg", "{:>{fmt}}".format(self.m_cr[1], fmt=fmt))
         else:
-            table.add_row("M_cr", "{:>{fmt}}".format(self.m_cr, fmt=fmt))
+            table.add_row("m_cr", "{:>{fmt}}".format(self.m_cr, fmt=fmt))
 
         table.add_row("d_nc", "{:>{fmt}}".format(self.d_nc, fmt=fmt))
 
