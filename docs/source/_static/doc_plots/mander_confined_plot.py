@@ -81,7 +81,7 @@ def mander_confined_plot(render=False):
     # add title and axes labels
     plt.title(label="Modified Mander Confined Stress-Strain Profile").set_fontsize(16)
     plt.xlabel("Compressive Strain $\\varepsilon_c$", labelpad=10).set_fontsize(16)
-    plt.ylabel("Compressive Stength $f_c$", labelpad=0).set_fontsize(16)
+    plt.ylabel("Compressive Strength $f_c$", labelpad=0).set_fontsize(16)
 
     # define data for annotations
     f_cc = max(stress_strain_profile.stresses)
