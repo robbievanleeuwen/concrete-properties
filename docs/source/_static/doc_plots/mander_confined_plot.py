@@ -110,7 +110,6 @@ def mander_confined_plot(render=False):
         "$f'_t$",
         "$f'_{cc}$",
     ]
-    xy_list = zip(x, y)
 
     # add markers
     plt.plot(x, y, "ok", ms=6)

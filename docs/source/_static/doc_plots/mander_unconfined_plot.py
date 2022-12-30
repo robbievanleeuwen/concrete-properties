@@ -92,7 +92,6 @@ def mander_unconfined_plot(render=False):
         "$f'_t$",
         "$f'_{co}$",
     ]
-    xy_list = zip(x, y)
 
     # add markers
     plt.plot(x, y, "ok", ms=6)
