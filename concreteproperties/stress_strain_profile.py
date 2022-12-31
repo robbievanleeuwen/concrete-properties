@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, List, Optional, Union
+from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -969,22 +969,99 @@ class BilinearStressStrain(ConcreteUltimateProfile):
 
 @dataclass
 class EurocodeParabolicUltimate(ConcreteUltimateProfile):
-    """Class for an ultimate parabolic stress-strain relationship to EC2.
+    r"""Class for an ultimate parabolic stress-strain relationship to EC2.
 
-    :param compressive_strength: Concrete compressive strength
-    :param compressive_strain: Strain at which the concrete stress equals the
-        compressive strength
-    :param ultimate_strain: Concrete strain at failure
-    :param n: Parabolic curve exponent
+    The stress-strain relationship is defined as follows:-
+
+    With the design concrete compressive strength (:math:`f_{cd}`) being defined in EC2
+    CL 3.1.6(1)P as:-
+
+    :math:`\quad f_{cd}=\displaystyle{\frac{\alpha_{cc}f_{ck}}{\gamma_C}}`
+
+    And the stress & strain relationship being defined in EC2 CL 3.1.7(1) as:-
+
+    :math:`\quad\sigma_c=f_{cd}\displaystyle{\bigg[1-\Big(1-\frac{\varepsilon_c}
+    {\varepsilon_{c2}}\Big)^n\bigg]}` for :math:`0\leq\varepsilon_c\leq\varepsilon_{c2}`
+
+    :math:`\quad\sigma_c=f_{cd}` for :math:`\varepsilon_{c2}\leq\varepsilon_c\leq
+    \varepsilon_{cu2}`
+
+    .. note::
+      The default recommended values for the stress-strain relationship parameters
+      :math:`\alpha_{cc}` & :math:`\gamma_C` are taken as per EC2. Note that by default
+      the design situation for the default value of :math:`\gamma_C` assumes a
+      'Persistent & Transient' load case verses an 'Accidental' load case.
+
+      However, note that a Countries National Annex may modify the value of these
+      parameters. If this is the case then provide the values for the optional
+      variable(s) to override the default EC2 value(s) as required.
+
+    .. tip::
+      Note, if utilising the
+      :class:`~concreteproperties.stress_strain_profile.EurocodeParabolicUltimate`
+      stress-strain profile with design codes (other than EC2) which might utilise a
+      strength reduction factor (:math:`\phi`) based approach verses a partial factor of
+      safety (:math:`\gamma`) based approach, then a
+      :class:`~concreteproperties.stress_strain_profile.EurocodeParabolicUltimate`
+      stress-strain profile can be adopted provided that consideration is given to the
+      following:-
+
+      - The :math:`\gamma_C` factor should generally be taken as being 1.0, and the
+        strength reduction factor should be applied to the design ultimate strength or
+        material properties in the normal manner associated with the design code.
+
+      - The concrete compressive strength should have an appropriate reduction factor
+        applied to it which is consistent with the design code via the :math:`\alpha_cc`
+        factor.
+
+    .. plot:: ./_static/doc_plots/ec2_parabolic_ultimate_plot.py
+      ec2_parabolic_ultimate_plot
+      :include-source: False
+      :caption: EurocodeParabolicUltimate Parameters
+
+    :param compressive_strength: Characteristic concrete compressive cylinder strength
+        (:math:`f_{ck}`)
+    :param limiting_strain: Upper limit on the strain considered in the generated
+        stress-strain profile. This variable should be utilised when using the EC2
+        parabolic stress-strain relationship with other design codes that have a
+        lower limit on the ultimate compressive strain than the maximum compressive
+        strain of 0.0035 considered in EC2. In this case the EC2 curve is truncated at
+        the limiting strain specified if applicable
+    :param alpha_cc: Coefficient to take account of long term effects on the compressive
+        strength and of unfavourable effects resulting for the way the load is applied
+        (:math:`\alpha_{cc}`)
+
+        - The recommended value in EC2 CL 3.1.6(1)P is 1.0. However, the value of
+          :math:`\alpha_{cc}` for use in a Country should lie between 0.8 and 1.0 and
+          may be found in that Countries National Annex
+
+    :param gamma_c: Partial factor of safety for concrete (:math:`\gamma_C`) in
+        accordance with EC2 CL 2.4.2.4 or a Countries National Annex
+
+        - The recommended values from EC2 CL 2.4.2.4 are as outlined below. However, the
+          value of :math:`\gamma_C` may be found in a Countries National Annex
+
+        +------------------------+---------------------------------------+
+        | Design Situations      | Partial Factor Of Safety for Concrete |
+        +========================+=======================================+
+        | Persistent & Transient | 1.5                                   |
+        +------------------------+---------------------------------------+
+        | Accidental             | 1.2                                   |
+        +------------------------+---------------------------------------+
+
+        - Note that the 'Persistent & Transient' value is utilised by default unless a
+          user defined value is provided
+
     :param n_points: Number of points to discretise the parabolic segment of the curve
     """
 
     strains: List[float] = field(init=False)
     stresses: List[float] = field(init=False)
     compressive_strength: float
-    compressive_strain: float
-    ultimate_strain: float
-    n: float
+    ultimate_strain: float = field(init=False, default=0)
+    limiting_strain: float = 0.0035
+    alpha_cc: float = 1.0
+    gamma_c: float = 1.5
     n_points: int = field(default=10)
 
     def __post_init__(
@@ -993,25 +1070,124 @@ class EurocodeParabolicUltimate(ConcreteUltimateProfile):
         self.strains = []
         self.stresses = []
 
+        # determine n exponent
+        n_exp = self.n_exp(self.compressive_strength)
+
+        # determine transition and ultimate compressive strains
+        epsilon_c2, epsilon_cu2 = self.epsilon_parabolic(
+            self.compressive_strength, self.limiting_strain
+        )
+
+        # determine design concrete compressive strength
+        f_cd = self.alpha_cc * self.compressive_strength / self.gamma_c
+
         # tensile portion of curve
-        self.strains.append(-self.compressive_strain)
+        self.strains.append(-epsilon_c2)
         self.stresses.append(0)
         self.strains.append(0)
         self.stresses.append(0)
 
         # parabolic portion of curve
         for idx in range(self.n_points):
-            conc_strain = self.compressive_strain / self.n_points * (idx + 1)
-            conc_stress = self.compressive_strength * (
-                1 - np.power(1 - (conc_strain / self.compressive_strain), self.n)
-            )
+            conc_strain = epsilon_c2 / self.n_points * (idx + 1)
+            conc_stress = f_cd * (1 - np.power(1 - (conc_strain / epsilon_c2), n_exp))
 
             self.strains.append(conc_strain)
             self.stresses.append(conc_stress)
 
         # compressive plateau
-        self.strains.append(self.ultimate_strain)
-        self.stresses.append(self.compressive_strength)
+        self.strains.append(epsilon_cu2)
+        self.stresses.append(f_cd)
+
+        # initiate ultimate compressive strain as maximum strain
+        self.ultimate_strain = max(self.strains)
+
+        # add small horizontal compressive strain to improve interpolation
+        self.strains.append(self.strains[-1] + 1e-12)
+        self.stresses.append(self.stresses[-1])
+
+    def n_exp(self, f_ck: float) -> float:
+        """Function to calculate the 'n' exponent in EC2 stress block equation, refer to
+        EC2 Table 3.1.
+
+        :param f_ck: Characteristic concrete compressive cylinder strength
+            (:math:`f_{ck}`)
+        :raises ValueError: If concrete strength provided is outside the EC2 bounds of
+            12 MPa and 90 MPa
+        :return: :math:`n` exponential
+        """
+
+        if 12 <= f_ck <= 90:
+            n_exp = 2 if f_ck < 50 else 1.4 + 23.4 * ((90 - f_ck) / 100) ** 4
+        else:
+            raise ValueError(
+                f"Concrete compressive strength should be between 12 MPa & 90 MPa for "
+                f"EC2, a compressive strength of {f_ck:.2f} MPa was provided."
+            )
+
+        return n_exp
+
+    def epsilon_parabolic(
+        self, f_ck: float, limiting_strain: float = 0.0035
+    ) -> Tuple[float, float]:
+        r"""Function to calculate the strain at which the maximum strength is reached
+        (:math:`\epsilon_{c2}`) and the ultimate compressive strain
+        (:math:`\epsilon_{cu2}`) for the EC2 parabolic stress-strain relationship. Refer
+        to EC2 Table 3.1.
+
+        :param f_ck: Characteristic concrete compressive cylinder strength
+            (:math:`f_{ck}`)
+        :param limiting_strain: Upper limit on the strain considered in the generated
+            stress-strain profile. This variable should be utilised when using the EC2
+            parabolic stress-strain relationship with other design codes that have a
+            lower limit on the ultimate compressive strain than the maximum compressive
+            strain of 0.0035 considered in EC2. In this case the returned strains are
+            limited to the limiting strain specified if applicable
+
+        :raises ValueError: If concrete strength provided is outside the bounds of 12
+            MPa and 90 MPa
+        :raises ValueError: If the specified limiting strain is greater than that
+            considered by the EC2 design code
+        :return: Strain at which maximum concrete strength is reached
+            (:math:`\epsilon_{c2}`) & the ultimate compressive strain
+            (:math:`\epsilon_{cu2}`)
+        """
+
+        # Check if user defined limiting strain is greater than maximum ultimate
+        # compressive strain from EC2
+        if limiting_strain > 0.0035:
+            raise ValueError(
+                f"The limiting strain of {limiting_strain} provided is greater "
+                f" than the 0.0035 limiting ultimate strain from EC2"
+            )
+
+        if 12 <= f_ck <= 90:
+            # EC2 table 3.1, epsilon_c2 & epsilon_cu2
+            if f_ck < 50:
+                epsilon_c = 2 / 1000
+                epsilon_cu = 3.5 / 1000
+            else:
+                epsilon_c = (2 + 0.085 * (f_ck - 50) ** 0.53) / 1000
+                epsilon_cu = (2.6 + 35 * ((90 - f_ck) / 100) ** 4) / 1000
+        else:
+            raise ValueError(
+                f"Concrete compressive strength should be between 12 MPa & 90 MPa for "
+                f"EC2, a compressive strength of {f_ck:.2f} MPa was provided."
+            )
+
+        # around a concrete strength of 90MPa, epsilon_c2 creeps over epsilon_cu2 by a
+        # very small margin, effectively there is no constant stress plateau at 90MPa
+        # concrete strength
+        if epsilon_c > epsilon_cu:
+            epsilon_c = epsilon_cu
+
+        # limit strain to an upper bound based on the defined limiting strain.
+        if epsilon_c > limiting_strain:
+            epsilon_c = limiting_strain
+        if epsilon_cu > limiting_strain:
+            epsilon_cu = limiting_strain
+
+        return epsilon_c, epsilon_cu
 
 
 @dataclass
