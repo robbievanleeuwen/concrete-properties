@@ -135,7 +135,7 @@ def ec2_bilinear_ultimate_plot(render=False):
     ax.axes.set_xlim(xmin)
     ax.axes.set_ylim(ymin)
 
-    # add line to maximum strength f_cd at esp_c3
+    # add line to maximum strength f_cd at eps_c3
     plt.plot(
         [xmin, eps_c3, eps_c3],
         [f_cd, f_cd, ymin],
@@ -144,7 +144,7 @@ def ec2_bilinear_ultimate_plot(render=False):
         dashes=[6, 6],
     )
 
-    # add line to maximum strength f_ck at esp_c3
+    # add line to maximum strength f_ck at eps_c3
     plt.plot(
         [xmin, eps_c3, eps_c3],
         [f_ck, f_ck, f_cd],
@@ -153,7 +153,7 @@ def ec2_bilinear_ultimate_plot(render=False):
         dashes=[6, 6],
     )
 
-    # add line to maximum strength f_cd at esp_cu3
+    # add line to maximum strength f_cd at eps_cu3
     plt.plot(
         [xmin, eps_cu3, eps_cu3],
         [f_cd, f_cd, ymin],
