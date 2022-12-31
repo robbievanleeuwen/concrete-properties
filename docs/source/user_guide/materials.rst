@@ -328,8 +328,29 @@ Bilinear Ultimate Profile
   ).plot_stress_strain()
 
 
+Parabolic Ultimate Profile
+""""""""""""""""""""""""""
+
+..  autoclass:: concreteproperties.stress_strain_profile.ParabolicStressStrain
+  :noindex:
+  :show-inheritance:
+
+.. plot::
+  :include-source: True
+  :caption: ParabolicStressStrain Stress-Strain Profile
+
+  from concreteproperties.stress_strain_profile import ParabolicStressStrain
+
+  ParabolicStressStrain(
+      compressive_strength=40,
+      compressive_strain=0.002,
+      ultimate_strain=0.0035,
+      n_exp=2,
+  ).plot_stress_strain()
+
+
 Eurocode Bilinear Ultimate Profile
-"""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""
 
 ..  autoclass:: concreteproperties.stress_strain_profile.EurocodeBilinearUltimate
   :noindex:

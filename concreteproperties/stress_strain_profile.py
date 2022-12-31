@@ -340,7 +340,7 @@ class ConcreteLinearNoTension(ConcreteServiceProfile):
     """Class for a linear stress-strain profile with no tensile strength.
 
     :param elastic_modulus: Elastic modulus of the stress-strain profile
-    :param ultimate_strain: Concrete strain at failure
+    :param ultimate_strain: Maximum concrete compressive strain at failure
     :param compressive_strength: Compressive strength of the concrete
     """
 
@@ -372,11 +372,12 @@ class EurocodeNonLinear(ConcreteServiceProfile):
     ``tension_softening_stiffness``.
 
     :param elastic_modulus: Concrete elastic modulus (:math:`E_{cm}`)
-    :param ultimate_strain: Concrete strain at failure (:math:`\epsilon_{cu1}`)
+    :param ultimate_strain: Maximum concrete compressive strain at failure
+        (:math:`\varepsilon_{cu1}`)
     :param compressive_strength: Concrete compressive strength (:math:`f_{cm}`)
-    :param compressive_strain: Strain at which the concrete stress equals the
-        compressive strength (:math:`\epsilon_{c1}`)
-    :param tensile_strength:  Concrete tensile strength
+    :param compressive_strain: Strain at which the maximum concrete strength is reached
+        (:math:`\varepsilon_{c1}`)
+    :param tensile_strength: Concrete tensile strength
     :param tension_softening_stiffness: Slope of the linear tension softening
         branch
     :param n_points_1: Number of points to discretise the curve prior to the peak stress
@@ -888,7 +889,7 @@ class RectangularStressBlock(ConcreteUltimateProfile):
     :param compressive_strength: Concrete compressive strength
     :param alpha: Factor that modifies the concrete compressive strength
     :param gamma: Factor that modifies the depth of the stress block
-    :param ultimate_strain: Concrete strain at failure
+    :param ultimate_strain: Maximum concrete compressive strain at failure
     """
 
     strains: List[float] = field(init=False)
@@ -936,12 +937,11 @@ class RectangularStressBlock(ConcreteUltimateProfile):
 
 @dataclass
 class BilinearStressStrain(ConcreteUltimateProfile):
-    """Class for a bilinear stress-strain relationship.
+    """Class for an ultimate bilinear stress-strain relationship.
 
     :param compressive_strength: Concrete compressive strength
-    :param compressive_strain: Strain at which the concrete stress equals the
-        compressive strength
-    :param ultimate_strain: Concrete strain at failure
+    :param compressive_strain: Strain at which the maximum concrete strength is reached
+    :param ultimate_strain: Maximum concrete compressive strain at failure
     """
 
     strains: List[float] = field(init=False)
@@ -965,6 +965,64 @@ class BilinearStressStrain(ConcreteUltimateProfile):
             self.compressive_strength,
             self.compressive_strength,
         ]
+
+
+@dataclass
+class ParabolicStressStrain(ConcreteUltimateProfile):
+    r"""Class for an ultimate parabolic stress-strain relationship.
+
+    Note parabolic portion of the stress-strain relationship is based on the EC2
+    derivation, refer to
+    :class:`~concreteproperties.stress_strain_profile.EurocodeParabolicUltimate` class
+    for further details.
+
+    :param compressive_strength: Concrete compressive strength (:math:`f'_c`)
+    :param compressive_strain: Strain at which the maximum concrete strength is reached
+        (:math:`\varepsilon_{1}`)
+    :param ultimate_strain: Maximum concrete compressive strain at failure
+        (:math:`\varepsilon_{u1}`)
+    :param n_exp: Parabolic curve exponent
+    :param n_points: Number of points to discretise the parabolic segment of the curve
+
+    .. plot:: ./_static/doc_plots/generic_parabolic_ultimate_plot.py
+      generic_parabolic_ultimate_plot
+      :include-source: False
+      :caption: ParabolicStressStrain Parameters
+    """
+
+    strains: List[float] = field(init=False)
+    stresses: List[float] = field(init=False)
+    compressive_strength: float
+    compressive_strain: float
+    ultimate_strain: float
+    n_exp: float
+    n_points: int = field(default=10)
+
+    def __post_init__(
+        self,
+    ):
+        self.strains = []
+        self.stresses = []
+
+        # tensile portion of curve
+        self.strains.append(-self.compressive_strain)
+        self.stresses.append(0)
+        self.strains.append(0)
+        self.stresses.append(0)
+
+        # parabolic portion of curve
+        for idx in range(self.n_points):
+            conc_strain = self.compressive_strain / self.n_points * (idx + 1)
+            conc_stress = self.compressive_strength * (
+                1 - np.power(1 - (conc_strain / self.compressive_strain), self.n_exp)
+            )
+
+            self.strains.append(conc_strain)
+            self.stresses.append(conc_stress)
+
+        # compressive plateau
+        self.strains.append(self.ultimate_strain)
+        self.stresses.append(self.compressive_strength)
 
 
 @dataclass
@@ -1100,8 +1158,8 @@ class EurocodeBilinearUltimate(ConcreteUltimateProfile):
     def epsilon_bilinear(
         self, f_ck: float, limiting_strain: float = 0.0035
     ) -> Tuple[float, float]:
-        r"""Function to calculate the strain at which the maximum strength is reached
-        (:math:`\epsilon_{c3}`) and the ultimate compressive strain
+        r"""Function to calculate the strain at which the maximum concrete strength is
+        reached (:math:`\epsilon_{c3}`) and the ultimate compressive strain
         (:math:`\epsilon_{cu3}`) for the EC2 bilinear stress-strain relationship. Refer
         to EC2 Table 3.1.
 
@@ -1324,8 +1382,8 @@ class EurocodeParabolicUltimate(ConcreteUltimateProfile):
     def epsilon_parabolic(
         self, f_ck: float, limiting_strain: float = 0.0035
     ) -> Tuple[float, float]:
-        r"""Function to calculate the strain at which the maximum strength is reached
-        (:math:`\epsilon_{c2}`) and the ultimate compressive strain
+        r"""Function to calculate the strain at which the maximum concrete strength is
+        reached (:math:`\epsilon_{c2}`) and the ultimate compressive strain
         (:math:`\epsilon_{cu2}`) for the EC2 parabolic stress-strain relationship. Refer
         to EC2 Table 3.1.
 
