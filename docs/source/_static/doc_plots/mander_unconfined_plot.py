@@ -20,6 +20,7 @@ def mander_unconfined_plot(render=False):
         compressive_strength
     )
     tensile_failure_strain = concrete_tensile_strength / elastic_modulus
+
     stress_strain_profile = ssp.ModifiedMander(
         elastic_modulus=elastic_modulus,
         compressive_strength=compressive_strength,
@@ -62,8 +63,8 @@ def mander_unconfined_plot(render=False):
 
     # add title and axes labels
     plt.title(label="Modified Mander Unconfined Stress-Strain Profile").set_fontsize(16)
-    plt.xlabel("Compressive Strain $\\varepsilon_c$", labelpad=10).set_fontsize(16)
-    plt.ylabel("Compressive Strength $f_c$", labelpad=10).set_fontsize(16)
+    plt.xlabel("Concrete Strain $\\varepsilon_c$", labelpad=10).set_fontsize(16)
+    plt.ylabel("Concrete Stress $\sigma_c$", labelpad=10).set_fontsize(16)
 
     # define data for annotations
     x = [

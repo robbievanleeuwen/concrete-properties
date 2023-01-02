@@ -85,8 +85,8 @@ def ec2_bilinear_ultimate_plot(render=False):
 
     # add title and axes labels
     plt.title(label="Eurocode 2 Bilinear Stress-Strain Profile").set_fontsize(16)
-    plt.xlabel("Compressive Strain $\\varepsilon_c$", labelpad=10).set_fontsize(16)
-    plt.ylabel("Compressive Stress $\sigma_c$", labelpad=10).set_fontsize(16)
+    plt.xlabel("Concrete Strain $\\varepsilon_c$", labelpad=10).set_fontsize(16)
+    plt.ylabel("Concrete Stress $\sigma_c$", labelpad=10).set_fontsize(16)
 
     # define data for annotations
     f_cd = max(stress_strain_profile.stresses)

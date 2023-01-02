@@ -2,35 +2,43 @@ import matplotlib.pyplot as plt
 import concreteproperties.stress_strain_profile as ssp
 
 
-def ec2_parabolic_ultimate_plot(render=False):
-    """Creates a plot for use in the docstring of EurocodeParabolicUltimate class,
+def generic_rect_ultimate_plot(render=False):
+    """Creates a plot for use in the docstring of RectangularStressBlock class,
     generates a plot with stress-strain parameters shown to aid in
     interpreting class variables.
 
     :param render: Set to True to plot for testing purposes, note will plot
         automatically in a docstring plot directive when set to default of False
     """
-    # create EurocodeParabolicUltimate stress-strain profile
-    compressive_strength = 40
-    alpha_cc = 1.0
-    gamma_c = 1.5
-    f_ck = compressive_strength
-    f_cd = alpha_cc * f_ck / gamma_c
-    n_points = 50
+    # create RectangularStressBlock stress-strain profile
+    compressive_strength = 50
+    alpha = 0.85
+    gamma = 0.69
+    ultimate_strain = 0.003
+    f_c = compressive_strength
+    alpha_f_c = alpha * f_c
 
-    stress_strain_profile = ssp.EurocodeParabolicUltimate(
-        compressive_strength=f_ck,
-        alpha_cc=alpha_cc,
-        gamma_c=gamma_c,
-        n_points=n_points,
+    stress_strain_profile = ssp.RectangularStressBlock(
+        compressive_strength=compressive_strength,
+        alpha=alpha,
+        gamma=gamma,
+        ultimate_strain=ultimate_strain,
     )
 
-    stress_strain_profile_nominal = ssp.EurocodeParabolicUltimate(
-        compressive_strength=f_ck,
-        alpha_cc=1,
-        gamma_c=1,
-        n_points=n_points,
-    )
+    # create nominal curve stress & strain values
+    nom_strains = [
+        stress_strain_profile.strains[2],
+        stress_strain_profile.strains[2],
+        stress_strain_profile.strains[3],
+        stress_strain_profile.strains[3],
+    ]
+    nom_stresses = [
+        stress_strain_profile.stresses[2],
+        stress_strain_profile.stresses[2] / alpha,
+        stress_strain_profile.stresses[3] / alpha,
+        stress_strain_profile.stresses[3],
+    ]
+
     # overide default tension branch strain
     stress_strain_profile.strains[0] = 0
 
@@ -38,22 +46,15 @@ def ec2_parabolic_ultimate_plot(render=False):
     stress_strain_profile.stresses.append(0)
     stress_strain_profile.strains.append(stress_strain_profile.strains[-1])
 
-    # overide default tension branch strain
-    stress_strain_profile_nominal.strains[0] = 0
-
-    # add return of stress-strain diagram to f_cd
-    stress_strain_profile_nominal.stresses.append(stress_strain_profile.stresses[-2])
-    stress_strain_profile_nominal.strains.append(stress_strain_profile.strains[-1])
-
     # plot design stress-strain relationship
     ax = stress_strain_profile.plot_stress_strain(
         fmt="-k", render=False, linewidth=1, figsize=(8, 6)
     )
 
-    # plot nominal stress-strian relationship
+    # plot nominal stress-strain relationship
     ax.plot(
-        stress_strain_profile_nominal.strains,
-        stress_strain_profile_nominal.stresses,
+        nom_strains,
+        nom_stresses,
         color="k",
         lw=1.25,
         ls="--",
@@ -87,43 +88,45 @@ def ec2_parabolic_ultimate_plot(render=False):
     )
 
     # add title and axes labels
-    plt.title(label="Eurocode 2 Parabolic Stress-Strain Profile").set_fontsize(16)
+    plt.title(label="Rectangular Stress-Strain Profile").set_fontsize(16)
     plt.xlabel("Concrete Strain $\\varepsilon_c$", labelpad=10).set_fontsize(16)
     plt.ylabel("Concrete Stress $\sigma_c$", labelpad=10).set_fontsize(16)
 
     # define data for annotations
-    f_cd = max(stress_strain_profile.stresses)
-    eps_c2, eps_cu2 = stress_strain_profile.epsilon_parabolic(f_ck=f_ck)
+    eps_1, eps_u1 = ultimate_strain * (1 - gamma), ultimate_strain
     x = [
         0,
-        eps_c2,
-        eps_cu2,
-        eps_c2,
-        eps_cu2,
+        eps_1,
+        eps_1,
+        eps_u1,
+        eps_1,
+        eps_u1,
     ]
     y = [
         0,
-        f_cd,
-        f_cd,
-        f_ck,
-        f_ck,
+        0,
+        f_c,
+        f_c,
+        alpha_f_c,
+        alpha_f_c,
     ]
     x_annotation = [
         "$0$",
         "",
         "",
-        "$\\varepsilon_{c2}$",
-        "$\\varepsilon_{cu2}$",
+        "",
+        "$\\varepsilon_{1}$",
+        "$\\varepsilon_{u1}$",
     ]
     y_label = [
         0,
-        f_cd,
-        f_ck,
+        alpha_f_c,
+        f_c,
     ]
     y_annotation = [
         "$0$",
-        "$f_{cd}$",
-        "$f_{ck}$",
+        "$\\alpha f'_{c}$",
+        "$f'_{c}$",
     ]
 
     # add markers
@@ -138,28 +141,28 @@ def ec2_parabolic_ultimate_plot(render=False):
     ax.axes.set_xlim(xmin)
     ax.axes.set_ylim(ymin)
 
-    # add line to maximum strength f_cd at eps_c2
+    # add line to maximum strength alpha*f'_c at eps_1
     plt.plot(
-        [xmin, eps_c2, eps_c2],
-        [f_cd, f_cd, ymin],
+        [xmin, eps_1, eps_1],
+        [alpha_f_c, alpha_f_c, ymin],
         "k",
         linewidth=0.75,
         dashes=[6, 6],
     )
 
-    # add line to maximum strength f_ck at eps_c2
+    # add line to maximum strength f'_c at eps_1
     plt.plot(
-        [xmin, eps_c2, eps_c2],
-        [f_ck, f_ck, f_cd],
+        [xmin, eps_1],
+        [f_c, f_c],
         "k",
         linewidth=0.75,
         dashes=[6, 6],
     )
 
-    # add line to maximum strength f_cd at esp_cu2
+    # add line to maximum strength alpha*f'_c at eps_u1
     plt.plot(
-        [xmin, eps_cu2, eps_cu2],
-        [f_cd, f_cd, ymin],
+        [xmin, eps_u1, eps_u1],
+        [alpha_f_c, alpha_f_c, ymin],
         "k",
         linewidth=0.75,
         dashes=[6, 6],

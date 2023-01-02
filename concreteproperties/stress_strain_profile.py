@@ -19,13 +19,24 @@ if TYPE_CHECKING:
 
 @dataclass
 class StressStrainProfile:
-    """Abstract base class for a material stress-strain profile.
+    r"""Abstract base class for a material stress-strain profile.
 
     Implements a piecewise linear stress-strain profile. Positive stresses & strains are
-    compression.
+    compression. The generic stress-strain relationship is defined as a series of
+    corresponding material strain (:math:`\varepsilon_{m(i)}`) and material stress
+    (:math:`\sigma_{m(i)}`) values.
 
-    :param strains: List of strains (must be increasing or equal)
-    :param stresses: List of stresses
+    Corresponding stress-strain points are sorted based on increasing values of strain.
+
+    .. plot:: ./_static/doc_plots/generic_stress_strain_plot.py
+      generic_stress_strain_plot
+      :include-source: False
+      :caption: StressStrainProfile Parameters
+
+    :param strains: List of strains, i.e.
+        :math:`...\varepsilon_{m(i-1)},\varepsilon_{m(i)},\varepsilon_{m(i+1)}...`
+    :param stresses: List of corresponding stresses, i.e
+        :math:`...\sigma_{m(i-1)},\sigma_{m(i)},\sigma_{m(i+1)}...`
     """
 
     strains: List[float]
@@ -42,16 +53,10 @@ class StressStrainProfile:
         if len(self.strains) < 2:
             raise ValueError("Length of strains and stresses must be greater than 1")
 
-        # validate input - increasing values
-        prev_strain = self.strains[0]
-
-        for idx in range(len(self.strains)):
-            if idx != 0:
-                if self.strains[idx] < prev_strain:
-                    msg = "strains must contain increasing values."
-                    raise ValueError(msg)
-
-                prev_strain = self.strains[idx]
+        # sort stresses and strains based on increasing strains
+        self.strains, self.stresses = (
+            list(i) for i in zip(*sorted(zip(self.strains, self.stresses)))
+        )
 
     def get_stress(
         self,
@@ -235,11 +240,26 @@ class StressStrainProfile:
 
 @dataclass
 class ConcreteServiceProfile(StressStrainProfile):
-    """Abstract class for a concrete service stress-strain profile.
+    r"""Abstract class for a concrete service stress-strain profile.
 
-    :param strains: List of strains (must be increasing or equal)
-    :param stresses: List of stresses
-    :param ultimate_strain: Concrete strain at failure
+    Implements a piecewise linear stress-strain profile. Positive stresses & strains are
+    compression. The generic stress-strain relationship is defined as a series of
+    corresponding concrete strain (:math:`\varepsilon_{c(i)}`) and concrete stress
+    (:math:`\sigma_{c(i)}`) values.
+
+    Corresponding stress-strain points are sorted based on increasing values of strain.
+
+    .. plot:: ./_static/doc_plots/generic_conc_service_plot.py
+      generic_conc_service_plot
+      :include-source: False
+      :caption: ConcreteServiceProfile Parameters
+
+    :param strains: List of strains, i.e.
+        :math:`...\varepsilon_{c(i-1)},\varepsilon_{c(i)},\varepsilon_{c(i+1)}...`
+    :param stresses: List of corresponding stresses, i.e
+        :math:`...\sigma_{c(i-1)},\sigma_{c(i)},\sigma_{c(i+1)}...`
+    :param ultimate_strain: Maximum concrete compressive strain at failure
+        (:math:`\varepsilon_{u1}`)
     """
 
     strains: List[float]
@@ -823,11 +843,25 @@ class ModifiedMander(ConcreteServiceProfile):
 
 @dataclass
 class ConcreteUltimateProfile(StressStrainProfile):
-    """Abstract class for a concrete ultimate stress-strain profile.
+    r"""Abstract class for a concrete ultimate stress-strain profile.
 
-    :param strains: List of strains (must be increasing or equal)
-    :param stresses: List of stresses
-    :param compressive_strength: Concrete compressive strength
+    Implements a piecewise linear stress-strain profile. Positive stresses & strains are
+    compression. The generic stress-strain relationship is defined as a series of
+    corresponding concrete strain (:math:`\varepsilon_{c(i)}`) and concrete stress
+    (:math:`\sigma_{c(i)}`) values.
+
+    Corresponding stress-strain points are sorted based on increasing values of strain.
+
+    .. plot:: ./_static/doc_plots/generic_conc_ultimate_plot.py
+      generic_conc_ultimate_plot
+      :include-source: False
+      :caption: ConcreteUltimateProfile Parameters
+
+    :param strains: List of strains, i.e.
+        :math:`...\varepsilon_{c(i-1)},\varepsilon_{c(i)},\varepsilon_{c(i+1)}...`
+    :param stresses: List of corresponding stresses, i.e
+        :math:`...\sigma_{c(i-1)},\sigma_{c(i)},\sigma_{c(i+1)}...`
+    :param compressive_strength: Concrete compressive strength (:math:`f'_c`)
     """
 
     strains: List[float]
@@ -884,12 +918,35 @@ class ConcreteUltimateProfile(StressStrainProfile):
 
 @dataclass
 class RectangularStressBlock(ConcreteUltimateProfile):
-    """Class for a rectangular stress block.
+    r"""Class for an equivalent rectangular stress block.
 
-    :param compressive_strength: Concrete compressive strength
+    The equivalent rectangular stress block stress-strain relationship can be defined
+    as:-
+
+    - A uniformly distributed concrete stress of :math:`\alpha f'_c` acting over a
+      depth of :math:`\gamma d_n` from the extreme compressive fibre, where
+      :math:`d_n` is the neutral axis depth measured from the extreme compressive
+      fibre to the neutral axis.
+
+    - Alternatively this can be expressed as a uniformaly distributed concrete stress of
+      :math:`\alpha f'_c` acting where the concrete strain :math:`\varepsilon_c`
+      satisfies the relationship
+      :math:`\varepsilon_{1}\leq\varepsilon_c\leq\varepsilon_{u1}`.
+      Where the transition strain :math:`\varepsilon_{1}` is defined as being
+      :math:`\varepsilon_{1}=\varepsilon_{u1}(1-\gamma)` and :math:`\varepsilon_{u1}`
+      is defined as the ultimate compressive strain.
+
+    .. plot:: ./_static/doc_plots/generic_rect_ultimate_plot.py
+      generic_rect_ultimate_plot
+      :include-source: False
+      :caption: RectangularStressBlock Parameters
+
+    :param compressive_strength: Concrete compressive strength (:math:`f'_c`)
     :param alpha: Factor that modifies the concrete compressive strength
-    :param gamma: Factor that modifies the depth of the stress block
+        (:math:`\alpha`)
+    :param gamma: Factor that modifies the depth of the stress block (:math:`\gamma`)
     :param ultimate_strain: Maximum concrete compressive strain at failure
+        (:math:`\varepsilon_{u1}`)
     """
 
     strains: List[float] = field(init=False)
@@ -937,11 +994,18 @@ class RectangularStressBlock(ConcreteUltimateProfile):
 
 @dataclass
 class BilinearStressStrain(ConcreteUltimateProfile):
-    """Class for an ultimate bilinear stress-strain relationship.
+    r"""Class for an ultimate bilinear stress-strain relationship.
 
-    :param compressive_strength: Concrete compressive strength
+    .. plot:: ./_static/doc_plots/generic_bilinear_ultimate_plot.py
+      generic_bilinear_ultimate_plot
+      :include-source: False
+      :caption: BilinearStressStrain Parameters
+
+    :param compressive_strength: Concrete compressive strength (:math:`f'_c`)
     :param compressive_strain: Strain at which the maximum concrete strength is reached
+        (:math:`\varepsilon_{1}`)
     :param ultimate_strain: Maximum concrete compressive strain at failure
+        (:math:`\varepsilon_{u1}`)
     """
 
     strains: List[float] = field(init=False)
@@ -1202,13 +1266,6 @@ class EurocodeBilinearUltimate(ConcreteUltimateProfile):
                 f"Concrete compressive strength should be between 12 MPa & 90 MPa for "
                 f"EC2, a compressive strength of {f_ck:.2f} MPa was provided."
             )
-
-        # TODO check this
-        # around a concrete strength of 90MPa, epsilon_c3 creeps over epsilon_cu3 by a
-        # very small margin, effectively there is no constant stress plateau at 90MPa
-        # concrete strength
-        if epsilon_c > epsilon_cu:
-            epsilon_c = epsilon_cu
 
         # limit strain to an upper bound based on the defined limiting strain.
         if epsilon_c > limiting_strain:
@@ -1590,7 +1647,9 @@ class StrandProfile(StressStrainProfile):
     Implements a piecewise linear stress-strain profile. Positive stresses & strains are
     compression.
 
-    :param strains: List of strains (must be increasing or equal)
+    Corresponding stress-strain points are sorted based on increasing values of strain.
+
+    :param strains: List of strains
     :param stresses: List of stresses
     :param yield_strength: Strand yield strength
     """

@@ -308,8 +308,8 @@ Rectangular Stress Block
   ).plot_stress_strain()
 
 
-Bilinear Ultimate Profile
-"""""""""""""""""""""""""
+Generic Bilinear Ultimate Profile
+"""""""""""""""""""""""""""""""""
 
 ..  autoclass:: concreteproperties.stress_strain_profile.BilinearStressStrain
   :noindex:
@@ -328,8 +328,8 @@ Bilinear Ultimate Profile
   ).plot_stress_strain()
 
 
-Parabolic Ultimate Profile
-""""""""""""""""""""""""""
+Generic Parabolic Ultimate Profile
+""""""""""""""""""""""""""""""""""
 
 ..  autoclass:: concreteproperties.stress_strain_profile.ParabolicStressStrain
   :noindex:
