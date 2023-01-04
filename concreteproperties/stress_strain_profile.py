@@ -337,10 +337,20 @@ class ConcreteServiceProfile(StressStrainProfile):
 
 @dataclass
 class ConcreteLinear(ConcreteServiceProfile):
-    """Class for a symmetric linear stress-strain profile.
+    r"""Class for a symmetric linear stress-strain profile.
 
-    :param elastic_modulus: Elastic modulus of the stress-strain profile
-    :param ultimate_strain: Concrete strain at failure
+    The linear stress strain relationship is defined based on the slope of the
+    stress-strain curve being equal to the elastic modulus, i.e.
+
+    :math:`\quad \displaystyle{E_c=\frac{\sigma_c}{\varepsilon_c}=\frac{\sigma_{c(i+1)}-\sigma_{c(i)}}{\varepsilon_{c(i+1)}-\varepsilon_{c(i)}}}`
+
+    .. plot:: ./_static/doc_plots/generic_linear_service_plot.py
+      generic_linear_service_plot
+      :include-source: False
+      :caption: ConcreteLinear Parameters
+
+    :param elastic_modulus: Elastic modulus of the stress-strain profile (:math:`E_c`)
+    :param ultimate_strain: Concrete strain at failure (:math:`\varepsilon_{u1}`)
     """
 
     strains: List[float] = field(init=False)

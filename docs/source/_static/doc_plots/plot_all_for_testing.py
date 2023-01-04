@@ -3,6 +3,7 @@ import ec2_parabolic_ultimate_plot as ec2_par
 import generic_bilinear_ultimate_plot as gen_bi
 import generic_conc_service_plot as gen_ser
 import generic_conc_ultimate_plot as gen_ult
+import generic_linear_service_plot as gen_lin
 import generic_parabolic_ultimate_plot as gen_par
 import generic_rect_ultimate_plot as gen_rec
 import generic_stress_strain_plot as gen
@@ -22,6 +23,7 @@ def main():
     gen_bi.generic_bilinear_ultimate_plot()
     gen_ser.generic_conc_service_plot()
     gen_ult.generic_conc_ultimate_plot()
+    gen_lin.generic_linear_service_plot()
     gen_par.generic_parabolic_ultimate_plot()
     gen_rec.generic_rect_ultimate_plot()
     gen.generic_stress_strain_plot()
