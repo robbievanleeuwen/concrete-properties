@@ -342,7 +342,8 @@ class ConcreteLinear(ConcreteServiceProfile):
     The linear stress strain relationship is defined based on the slope of the
     stress-strain curve being equal to the elastic modulus, i.e.
 
-    :math:`\quad \displaystyle{E_c=\frac{\sigma_c}{\varepsilon_c}=\frac{\sigma_{c(i+1)}-\sigma_{c(i)}}{\varepsilon_{c(i+1)}-\varepsilon_{c(i)}}}`
+    :math:`\quad \displaystyle{E_c=\frac{\sigma_c}{\varepsilon_c}=\frac{\sigma_{c(i+1)}
+    -\sigma_{c(i)}}{\varepsilon_{c(i+1)}-\varepsilon_{c(i)}}}`
 
     .. plot:: ./_static/doc_plots/generic_linear_service_plot.py
       generic_linear_service_plot
@@ -350,7 +351,8 @@ class ConcreteLinear(ConcreteServiceProfile):
       :caption: ConcreteLinear Parameters
 
     :param elastic_modulus: Elastic modulus of the stress-strain profile (:math:`E_c`)
-    :param ultimate_strain: Concrete strain at failure (:math:`\varepsilon_{u1}`)
+    :param ultimate_strain: Maximum concrete compressive strain at failure
+        (:math:`\varepsilon_{u1}`)
     """
 
     strains: List[float] = field(init=False)
@@ -367,10 +369,27 @@ class ConcreteLinear(ConcreteServiceProfile):
 
 @dataclass
 class ConcreteLinearNoTension(ConcreteServiceProfile):
-    """Class for a linear stress-strain profile with no tensile strength.
+    r"""Class for a linear stress-strain profile with no tensile strength.
 
-    :param elastic_modulus: Elastic modulus of the stress-strain profile
+    The linear stress strain relationship is defined based on the slope of the
+    stress-strain curve being equal to the elastic modulus, i.e.
+
+    :math:`\quad \displaystyle{E_c=\frac{\sigma_c}{\varepsilon_c}=\frac{
+    \sigma_{c(i+1)}-\sigma_{c(i)}}{\varepsilon_{c(i+1)}-\varepsilon_{c(i)}}}`
+
+    If the concrete compressive strength and ultimate compressive strain are specified
+    then a constant stress return is added from the yield strain
+    (:math:`\varepsilon_{y1}`) up to the specified ultimate
+    compressive strain (:math:`\varepsilon_{u1}`).
+
+    .. plot:: ./_static/doc_plots/generic_linear_no_tension_service_plot.py
+      generic_linear_no_tension_service_plot
+      :include-source: False
+      :caption: ConcreteLinearNoTension Parameters
+
+    :param elastic_modulus: Elastic modulus of the stress-strain profile (:math:`E_c`)
     :param ultimate_strain: Maximum concrete compressive strain at failure
+        (:math:`\varepsilon_{u1}`)
     :param compressive_strength: Compressive strength of the concrete
     """
 
