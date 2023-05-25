@@ -1,0 +1,1038 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>6.2. NZS3101:2006 &#8212; concreteproperties 0.5.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/design_codes/nzs3101';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.1';
+        </script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7. Assumptions" href="../assumptions.html" />
+    <link rel="prev" title="6.1. AS 3600:2018" href="as3600.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/cp_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      0.5.1  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../materials.html">1. Materials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../geometry.html">2. Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">3. Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prestressed_analysis.html">4. Prestressed Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../results.html">5. Results</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../design_codes.html">6. Design Codes</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="as3600.html">6.1. AS 3600:2018</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.2. NZS3101:2006</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../assumptions.html">7. Assumptions</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../user_guide.html" class="nav-link">User Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../design_codes.html" class="nav-link"><span class="section-number">6. </span>Design Codes</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="section-number">6.2. </span>NZS3101:2006</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="section" id="nzs3101-2006">
+<span id="label-nzs3101-2006"></span><h1><span class="section-number">6.2. </span>NZS3101:2006<a class="headerlink" href="#nzs3101-2006" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NZS3101</span></span><a class="reference internal" href="../../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Design code class for the New Zealand concrete design standard NZS3101:2006. Also
+implements the requirements of the NZSEE C5 assessment guidelines for probable
+strength design.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that this design code currently only supports
+<a class="reference internal" href="../../gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> and
+<a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101.SteelBarNZ</span></code></a> material objects. Meshed
+<a class="reference internal" href="../../gen/concreteproperties.material.Steel.html#concreteproperties.material.Steel" title="concreteproperties.material.Steel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Steel</span></code></a> material objects are <strong>not</strong>
+supported as this falls under the composite structures design code.</p>
+</div>
+<p>Inits the NZS3101 class.</p>
+</dd></dl>
+
+<p>Using the NZS3101:2006 design code starts by creating an
+<a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101" title="concreteproperties.design_codes.nzs3101.NZS3101"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101</span></code></a> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.design_codes.nzs3101</span> <span class="kn">import</span> <span class="n">NZS3101</span>
+
+<span class="n">design_code</span> <span class="o">=</span> <span class="n">NZS3101</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>After a <a class="reference internal" href="../../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> object has been
+created it must be assigned to the design code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">design_code</span><span class="o">.</span><span class="n">assign_concrete_section</span><span class="p">(</span><span class="n">concrete_section</span><span class="o">=</span><span class="n">concrete_section</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">NZS3101.</span></span><span class="sig-name descname"><span class="pre">assign_concrete_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concrete_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'column'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.assign_concrete_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Assigns a concrete section and the section type for the concrete section to
+the design code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>concrete_section</strong> (<a class="reference internal" href="../../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a>) – Concrete section object to analyse</p></li>
+<li><p><strong>section_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'column'</span></code>) – <p>The type of member being analysed:-</p>
+<ul>
+<li><p><strong>column</strong> - Analyses assigned concrete section object as a column (or
+beam) member in accordance with NZS3101:2006 Chapter 9 or 10 as
+appropriate</p></li>
+<li><p><strong>wall</strong> - Analyses assigned concrete section object as a doubly
+reinforced wall member in accordance with NZS3101:2006 Chapter 11</p></li>
+<li><p><strong>wall_sr_s</strong> - Analyses assigned concrete section object as a singly
+reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
+design actions causing bending about the strong axis</p></li>
+<li><p><strong>wall_sr_m</strong>- Analyses assigned concrete section object as a singly
+reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
+design actions causing bending about the minor axis</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the concrete section contains meshed reinforcement</p></li>
+<li><p><strong>ValueError</strong> – If section type for the analysis of the concrete section is
+not valid</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To maintain unit consistency, the cross-section dimensions should be entered in
+<em>[mm]</em>.</p>
+</div>
+<div class="section" id="creating-material-properties">
+<h2><span class="section-number">6.2.1. </span>Creating Material Properties<a class="headerlink" href="#creating-material-properties" title="Permalink to this heading">#</a></h2>
+<p>The <a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101" title="concreteproperties.design_codes.nzs3101.NZS3101"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101</span></code></a> class can be used to
+easily create material objects whose attributes comply with the standard.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">NZS3101.</span></span><span class="sig-name descname"><span class="pre">create_concrete_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compressive_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ultimate_strain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.003</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lightgrey'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.create_concrete_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Returns a concrete material object to NZS3101:2006.</p>
+<div class="admonition-material-assumptions admonition">
+<p class="admonition-title">Material assumptions</p>
+<ul class="simple">
+<li><p><em>Density</em>: Defaults to 2300 kg/m<sup>3</sup> unless supplied as user input</p></li>
+<li><p><em>Elastic modulus</em>: Calculated from NZS3101:2006 Eq. 5-1</p></li>
+<li><p><em>Serviceability stress-strain profile</em>: Linear with no tension</p></li>
+<li><p><em>Ultimate stress-strain profile</em>: Rectangular stress block, parameters from
+NZS3101:2006 CL 7.4.2.7, maximum compressive strain of 0.003</p></li>
+<li><p><em>Lower characteristic tensile strength of concrete</em>: Calculated from
+NZS3101:2006 Eq. 5-2</p></li>
+</ul>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compressive_strength</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – 28 day compressive design strength (MPa)</p></li>
+<li><p><strong>ultimate_strain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0.003</span></code>) – Maximum concrete compressive strain at crushing of the
+concrete for design</p></li>
+<li><p><strong>density</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">2300</span></code>) – Saturated surface dry density of concrete material</p></li>
+<li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'lightgrey'</span></code>) – Colour of the concrete for rendering, defaults to ‘lightgrey’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../gen/concreteproperties.material.Concrete.html#concreteproperties.material.Concrete" title="concreteproperties.material.Concrete"><code class="xref py py-class docutils literal notranslate"><span class="pre">Concrete</span></code></a> – Concrete material object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.design_codes.nzs3101</span> <span class="kn">import</span> <span class="n">NZS3101</span>
+
+<span class="n">design_code</span> <span class="o">=</span> <span class="n">NZS3101</span><span class="p">()</span>
+<span class="n">concrete</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">create_concrete_material</span><span class="p">(</span><span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+
+<span class="n">concrete</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span>
+  <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">concrete</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - Service Profile&quot;</span>
+<span class="p">)</span>
+<span class="n">concrete</span><span class="o">.</span><span class="n">ultimate_stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span>
+  <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">concrete</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - Ultimate Profile&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="../../_downloads/dab3d1989b9736008b4529eff40141f0/nzs3101-1.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>)</p>
+<div class="figure align-default" id="id1">
+<img alt="../../_images/nzs3101-1_00.png" class="plot-directive" src="../../_images/nzs3101-1_00.png" />
+<p class="caption"><span class="caption-text">(<a class="reference download internal" download="" href="../../_downloads/51d4e239f1005cb31aa2557b82b7be76/nzs3101-1_00.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../../_downloads/6e9e5eacb70c71e0c104ad42271a6cb6/nzs3101-1_00.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../../_downloads/bc18cd53ded93c5c5b01c709905c3107/nzs3101-1_00.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</div>
+<div class="figure align-default" id="id2">
+<img alt="../../_images/nzs3101-1_01.png" class="plot-directive" src="../../_images/nzs3101-1_01.png" />
+<p class="caption"><span class="caption-text">(<a class="reference download internal" download="" href="../../_downloads/844cc2610c2fa6143c2ec3e3d4978b56/nzs3101-1_01.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../../_downloads/5e27e09b9eaa3ff3e769e1f44662c9eb/nzs3101-1_01.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../../_downloads/41090796d789d8007167d336d2ec09bc/nzs3101-1_01.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">NZS3101.</span></span><span class="sig-name descname"><span class="pre">create_steel_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steel_grade</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yield_strength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fracture_strain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_os</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.create_steel_material"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Returns a steel material object specific to the NZS3101:2006 code.</p>
+<div class="admonition-material-assumptions admonition">
+<p class="admonition-title">Material assumptions</p>
+<ul class="simple">
+<li><p><em>Density</em>: 7850 kg/m<sup>3</sup></p></li>
+<li><p><em>Elastic modulus</em>: 200000 MPa</p></li>
+<li><p><em>Stress-strain profile</em>: Elastic-plastic, fracture strain
+<span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> from AS/NZS4671 Table 7.2(A) or NZSEE C5
+assessment guidelines (for historic reinforcement grades)</p></li>
+</ul>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>steel_grade</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Designation of the grade of reinforcement bar to be
+analysed, included predefined current and historic grades are as follows:-</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By using a valid steel grade designation the required input parameters are
+initiated with the required values for current reinforcement grades from the
+AS/NZS4671 standard or for historic grades from the NZSEE C5 assessment
+guidelines. Note user may overwrite any parameter of a predefined material
+by providing that parameter as input to <a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material" title="concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NZS3101.create_steel_material()</span></code></a>.</p>
+<p>Note if no predefined steel grade is provided, a steel grade name of
+<strong>‘user_’ + yield strength</strong> is utilised.</p>
+</div>
+<div class="admonition-nzs3101-2006-nzsee-c5-asessment-guidelines-predefined-steel-materials admonition">
+<p class="admonition-title">NZS3101:2006 &amp; NZSEE C5 asessment guidelines predefined steel
+  materials</p>
+<p><strong>NZS3101:2006 characteristic yield strength based predefined materials</strong></p>
+<ul class="simple">
+<li><p><strong>300e</strong> - Use for design to NZS3101:2006 provisions</p>
+<ul>
+<li><p>Characteristic yield strength <span class="math notranslate nohighlight">\(f_y\)</span> = 300 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 15% or 0.15</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{o,f_y}\)</span> = 1.35</p></li>
+</ul>
+</li>
+<li><p><strong>500e</strong> - Use for design to NZS3101:2006 provisions</p>
+<ul>
+<li><p>Characteristic yield strength <span class="math notranslate nohighlight">\(f_y\)</span> = 500 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 10% or 0.10</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{o,f_y}\)</span> = 1.35</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>NZSEE C5 guidelines probable yield strength based predefined materials</strong></p>
+<ul class="simple">
+<li><p><strong>pre_1945</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 280 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 10% or 0.10</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>33</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 280 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 10% or 0.10</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>40</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 324 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 15% or 0.15</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>275</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 324 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 15% or 0.15</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>hy60</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 455 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 12% or 0.12</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.5</p></li>
+</ul>
+</li>
+<li><p><strong>380</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 455 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 12% or 0.12</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.5</p></li>
+</ul>
+</li>
+<li><p><strong>430</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 464 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 12% or 0.12</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>300</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 324 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 15% or 0.15</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>500n</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 500 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 5% or 0.05</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.5</p></li>
+</ul>
+</li>
+<li><p><strong>500</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 540 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 10% or 0.10</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.25</p></li>
+</ul>
+</li>
+<li><p><strong>cd_mesh</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 600 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 1.5% or 0.015</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.2</p></li>
+</ul>
+</li>
+<li><p><strong>duc_mesh</strong> - Use for probable strength design to NZSEE C5 assessment
+guidelines</p>
+<ul>
+<li><p>Probable yield strength <span class="math notranslate nohighlight">\(f_{yp}\)</span> = 500 MPa</p></li>
+<li><p>Fracture strain <span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span> = 3% or 0.03</p></li>
+<li><p>Overstrength factor <span class="math notranslate nohighlight">\(\phi_{f_o}\)</span> = 1.2</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>yield_strength</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Steel characteristic yield strength (MPa)</p>
+<ul>
+<li><p>Note for a predefined steel grade based on probable strength
+properties this is interpreted as the probable yield strength.</p></li>
+<li><p>Note for a user defined steel grade, this is <strong>always</strong> entered on the
+basis of a characteristic yield strength, even if undertaking a probable
+strength based analysis. The analysis will internally scale the
+characteristic yield stress by 1.08 as per NZSEE C5 assessment guidelines
+C5.4.3.</p></li>
+</ul>
+</p></li>
+<li><p><strong>fracture_strain</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Lower bound tensile strain (<span class="math notranslate nohighlight">\(\varepsilon_{su}\)</span>),
+based on characteristic uniform elongation limit from AS/NZS4671 Table
+7.2(A) or NZSEE C5 assessment guidelines Table C5.4.</p></li>
+<li><p><strong>phi_os</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Overstrength factor depending on reinforcement grade
+(<span class="math notranslate nohighlight">\(\phi_{o,f_y}\)</span> or <span class="math notranslate nohighlight">\(\phi_o\)</span>), refer to NZS3101:2006 CL 2.6.5.5,
+or for a probable strength assessment to the NZSEE C5 assessment guidelines
+refer to NZSEE C5 Table C5.4.</p></li>
+<li><p><strong>colour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'red'</span></code>) – Colour of the steel for rendering, if user does not provide a
+value, characteristic strength based materials will be rendered as red, and
+probable strength based materials will be rendered as blue.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>Exception</strong> – If a predefined steel grade is not provided and the required
+material properties have not been provided. For creating a user defined
+steel material, values for <strong>yield_strength</strong>, <strong>fracture_strain</strong> &amp;
+<strong>phi_os</strong> are required to define a valid user defined material.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ" title="concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBarNZ</span></code></a> – Steel bar material object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concreteproperties.design_codes.nzs3101</span> <span class="kn">import</span> <span class="n">NZS3101</span>
+
+<span class="n">design_code</span> <span class="o">=</span> <span class="n">NZS3101</span><span class="p">()</span>
+<span class="n">steel</span> <span class="o">=</span> <span class="n">design_code</span><span class="o">.</span><span class="n">create_steel_material</span><span class="p">(</span><span class="n">steel_grade</span><span class="o">=</span><span class="s2">&quot;500E&quot;</span><span class="p">)</span>
+
+<span class="n">steel</span><span class="o">.</span><span class="n">stress_strain_profile</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">(</span>
+  <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">steel</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - Stress-Strain Profile&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="../../_downloads/b10629c38b3aa681853c6e8d07e1240a/nzs3101-2.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../../_downloads/62bec9a72467bb8793628956e4d0ef0d/nzs3101-2.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../../_downloads/e69e74a5de8b1a6db56f688a2f5bb90c/nzs3101-2.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../../_downloads/d8e260e13966201e88c809d80ef57f50/nzs3101-2.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<div class="figure align-default">
+<img alt="../../_images/nzs3101-2.png" class="plot-directive" src="../../_images/nzs3101-2.png" />
+</div>
+</div>
+<div class="section" id="calculating-section-properties">
+<h2><span class="section-number">6.2.2. </span>Calculating Section Properties<a class="headerlink" href="#calculating-section-properties" title="Permalink to this heading">#</a></h2>
+<p>Analysis methods can be called from the
+<a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101" title="concreteproperties.design_codes.nzs3101.NZS3101"><code class="xref py py-class docutils literal notranslate"><span class="pre">NZS3101</span></code></a> object similar to
+<a class="reference internal" href="../../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> object. The following
+methods are identical to those found in the
+<a class="reference internal" href="../../gen/concreteproperties.concrete_section.ConcreteSection.html#concreteproperties.concrete_section.ConcreteSection" title="concreteproperties.concrete_section.ConcreteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConcreteSection</span></code></a> object, i.e. do not apply
+any capacity reduction factors:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.get_gross_properties" title="concreteproperties.design_codes.nzs3101.NZS3101.get_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gross_properties()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.get_transformed_gross_properties" title="concreteproperties.design_codes.nzs3101.NZS3101.get_transformed_gross_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_transformed_gross_properties()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_properties" title="concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_properties"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_cracked_properties()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.moment_curvature_analysis" title="concreteproperties.design_codes.nzs3101.NZS3101.moment_curvature_analysis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">moment_curvature_analysis()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.calculate_uncracked_stress" title="concreteproperties.design_codes.nzs3101.NZS3101.calculate_uncracked_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_uncracked_stress()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_stress" title="concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_cracked_stress()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.calculate_service_stress" title="concreteproperties.design_codes.nzs3101.NZS3101.calculate_service_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_service_stress()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.calculate_ultimate_stress" title="concreteproperties.design_codes.nzs3101.NZS3101.calculate_ultimate_stress"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_ultimate_stress()</span></code></a></p></li>
+</ul>
+<p>The following methods have been modified for NZS3101:2006, with codified capacity
+reduction factors applied.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">NZS3101.</span></span><span class="sig-name descname"><span class="pre">ultimate_bending_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pphr_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NDPR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nom_chk'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.ultimate_bending_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Calculates the ultimate bending capacity with capacity factors to
+NZS3101:2006 or the NZSEE C5 assessment guidelines dependant on analysis type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>analysis_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'nom_chk'</span></code>) – The type of cross section analysis to undertake on the
+defined concrete section, by default a normal nominal strength design check
+is undertaken, refer to <a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor" title="concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NZS3101.capacity_reduction_factor()</span></code></a> for
+further information on analysis types.</p></li>
+<li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Angle (in radians) the neutral axis makes with the horizontal axis
+(<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
+<li><p><strong>n_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Axial design force (<span class="math notranslate nohighlight">\(N^*\)</span>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<a class="reference internal" href="../../gen/concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code></a>, <a class="reference internal" href="../../gen/concreteproperties.results.UltimateBendingResults.html#concreteproperties.results.UltimateBendingResults" title="concreteproperties.results.UltimateBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">UltimateBendingResults</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – Factored and unfactored ultimate bending results objects, and capacity
+reduction factor <em>(factored_results, unfactored_results, phi)</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">NZS3101.</span></span><span class="sig-name descname"><span class="pre">moment_interaction_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pphr_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NDPR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nom_chk'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[('fy',</span> <span class="pre">1.0),</span> <span class="pre">('fy',</span> <span class="pre">0.5),</span> <span class="pre">('fy',</span> <span class="pre">0.0),</span> <span class="pre">('N',</span> <span class="pre">0.0)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_comp_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.moment_interaction_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Generates a moment interaction diagram with capacity factors and material
+strengths to NZS3101:2006 or the NZSEE C5 assessment guidelines dependant
+on analysis type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pphr_class</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'NDPR'</span></code>) – <p>Potential Plastic Hinge Region (PPHR) classification,
+<strong>NDPR</strong>/<strong>LDPR</strong>/<strong>DPR</strong>.</p>
+<ul>
+<li><p><strong>NDPR</strong> = Nominally Ductile Plastic Region</p></li>
+<li><p><strong>LDPR</strong> = Limited Ductile Plastic Region</p></li>
+<li><p><strong>DPR</strong> = Ductile Plastic Region</p></li>
+</ul>
+</p></li>
+<li><p><strong>analysis_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'nom_chk'</span></code>) – The type of cross section analysis to undertake on the
+defined concrete section, by default a normal nominal strength design check
+is undertaken, refer to <a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor" title="concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NZS3101.capacity_reduction_factor()</span></code></a> for
+further information on analysis types.</p></li>
+<li><p><strong>theta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Angle (in radians) the neutral axis makes with the horizontal axis
+(<span class="math notranslate nohighlight">\(-\pi \leq \theta \leq \pi\)</span>)</p></li>
+<li><p><strong>control_points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">[('fy',</span> <span class="pre">1.0),</span> <span class="pre">('fy',</span> <span class="pre">0.5),</span> <span class="pre">('fy',</span> <span class="pre">0.0),</span> <span class="pre">('N',</span> <span class="pre">0.0)]</span></code>) – List of additional control points to add to the moment
+interaction diagram. The default control points include the balanced point,
+the 50% reinforcement strain point, the 0% reinforcement strain point
+(<code class="docutils literal notranslate"><span class="pre">fy=1</span></code>, <code class="docutils literal notranslate"><span class="pre">fy=0.5</span></code>, <code class="docutils literal notranslate"><span class="pre">fy=0</span></code>), and the pure bending point (<code class="docutils literal notranslate"><span class="pre">N=0</span></code>).
+Control points may lie outside the limits of the moment interaction diagram
+as long as equilibrium can be found.</p></li>
+<li><p><strong>labels</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – List of labels to apply to the <code class="docutils literal notranslate"><span class="pre">limits</span></code> and <code class="docutils literal notranslate"><span class="pre">control_points</span></code>
+for plotting purposes. The first two values in <code class="docutils literal notranslate"><span class="pre">labels</span></code> apply labels to
+the <code class="docutils literal notranslate"><span class="pre">limits</span></code>, the remaining values apply labels to the <code class="docutils literal notranslate"><span class="pre">control_points</span></code>.
+If a single value is provided, this value will be applied to both <code class="docutils literal notranslate"><span class="pre">limits</span></code>
+and all <code class="docutils literal notranslate"><span class="pre">control_points</span></code>. The length of <code class="docutils literal notranslate"><span class="pre">labels</span></code> must equal <code class="docutils literal notranslate"><span class="pre">1</span></code> or
+<code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">+</span> <span class="pre">len(control_points)</span></code>.</p></li>
+<li><p><strong>n_points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">24</span></code>) – Number of points to compute including and between the
+<code class="docutils literal notranslate"><span class="pre">limits</span></code> of the moment interaction diagram. Generates equally spaced
+neutral axes between the <code class="docutils literal notranslate"><span class="pre">limits</span></code>.</p></li>
+<li><p><strong>n_spacing</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If provided, overrides <code class="docutils literal notranslate"><span class="pre">n_points</span></code> and generates the moment
+interaction diagram using <code class="docutils literal notranslate"><span class="pre">n_spacing</span></code> equally spaced axial loads. Note
+that using <code class="docutils literal notranslate"><span class="pre">n_spacing</span></code> negatively affects performance, as the neutral axis
+depth must first be located for each point on the moment interaction
+diagram.</p></li>
+<li><p><strong>max_comp_labels</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Labels to apply to the <code class="docutils literal notranslate"><span class="pre">max_comp</span></code> intersection points,
+first value is at zero moment, second value is at the intersection with the
+interaction diagram.</p></li>
+<li><p><strong>progress_bar</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – If set to True, displays the progress bar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<a class="reference internal" href="../../gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code></a>, <a class="reference internal" href="../../gen/concreteproperties.results.MomentInteractionResults.html#concreteproperties.results.MomentInteractionResults" title="concreteproperties.results.MomentInteractionResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">MomentInteractionResults</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]] – Factored and unfactored moment interaction results objects, and list of
+capacity reduction factors <em>(factored_results, unfactored_results, phis)</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">NZS3101.</span></span><span class="sig-name descname"><span class="pre">biaxial_bending_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pphr_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NDPR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nom_chk'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">48</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/concreteproperties/design_codes/nzs3101.html#NZS3101.biaxial_bending_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Generates a biaxial bending with capacity factors to NZS3101:2006 or the
+NZSEE C5 assessment guidelines dependant on analysis type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pphr_class</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'NDPR'</span></code>) – <p>Potential Plastic Hinge Region (PPHR) classification,
+<strong>NDPR</strong>/<strong>LDPR</strong>/<strong>DPR</strong>.</p>
+<ul>
+<li><p><strong>NDPR</strong> = Nominally Ductile Plastic Region</p></li>
+<li><p><strong>LDPR</strong> = Limited Ductile Plastic Region</p></li>
+<li><p><strong>DPR</strong> = Ductile Plastic Region</p></li>
+</ul>
+</p></li>
+<li><p><strong>analysis_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'nom_chk'</span></code>) – The type of cross section analysis to undertake on the
+defined concrete section, by default a normal nominal strength design check
+is undertaken, refer to <a class="reference internal" href="../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor" title="concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NZS3101.capacity_reduction_factor()</span></code></a> for
+further information on analysis types.</p></li>
+<li><p><strong>n_design</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code>) – Axial design force (<span class="math notranslate nohighlight">\(N^*\)</span>)</p></li>
+<li><p><strong>n_points</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">48</span></code>) – Number of calculation points for neutral axis orientation</p></li>
+<li><p><strong>progress_bar</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – If set to True, displays the progress bar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<a class="reference internal" href="../../gen/concreteproperties.results.BiaxialBendingResults.html#concreteproperties.results.BiaxialBendingResults" title="concreteproperties.results.BiaxialBendingResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiaxialBendingResults</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]] – Factored biaxial bending results object and list of capacity reduction
+factors <em>(factored_results, phis)</em>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For an application of the use of the design code object, see the example
+<a class="reference internal" href="../../notebooks/nzs3101.html"><span class="std std-ref">NZS3101 Design Code</span></a>.</p>
+</div>
+</div>
+</div>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="as3600.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.1. </span>AS 3600:2018</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../assumptions.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>Assumptions</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-material-properties">6.2.1. Creating Material Properties</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-section-properties">6.2.2. Calculating Section Properties</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/user_guide/design_codes/nzs3101.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2022, Robbie van Leeuwen.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

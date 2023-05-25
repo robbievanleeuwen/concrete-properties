@@ -1,0 +1,44 @@
+concreteproperties.stress\_strain\_profile.SteelProfile
+=======================================================
+
+.. currentmodule:: concreteproperties.stress_strain_profile
+
+.. autoclass:: SteelProfile
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SteelProfile.get_compressive_strength
+      ~SteelProfile.get_elastic_modulus
+      ~SteelProfile.get_stress
+      ~SteelProfile.get_tensile_strength
+      ~SteelProfile.get_ultimate_compressive_strain
+      ~SteelProfile.get_ultimate_tensile_strain
+      ~SteelProfile.get_unique_strains
+      ~SteelProfile.get_yield_strength
+      ~SteelProfile.plot_stress_strain
+      ~SteelProfile.print_properties
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SteelProfile.strains
+      ~SteelProfile.stresses
+      ~SteelProfile.yield_strength
+      ~SteelProfile.elastic_modulus
+      ~SteelProfile.fracture_strain
+   
+   

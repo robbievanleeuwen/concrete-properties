@@ -1,0 +1,1194 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>7. Stress Analysis &#8212; concreteproperties 0.5.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/stress_analysis';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.1';
+        </script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. Composite Sections" href="composite_section.html" />
+    <link rel="prev" title="6. Biaxial Bending Diagram" href="biaxial_bending.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/cp_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      0.5.1  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="area_properties.html">1. Calculating Area Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cracked_properties.html">2. Calculating Cracked Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moment_curvature.html">3. Moment Curvature Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ultimate_bending.html">4. Ultimate Bending Capacity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moment_interaction.html">5. Moment Interaction Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="biaxial_bending.html">6. Biaxial Bending Diagram</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. Stress Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composite_section.html">8. Composite Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prestressed_section.html">9. Prestressed Sections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="as3600.html">10. AS3600 Design Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nzs3101.html">11. NZS3101 Design Code</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../examples.html" class="nav-link">Examples</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="section-number">7. </span>Stress Analysis</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="section" id="Stress-Analysis">
+<h1><span class="section-number">7. </span>Stress Analysis<a class="headerlink" href="#Stress-Analysis" title="Permalink to this heading">#</a></h1>
+<p>This example demonstrates how to undertake stress analyses and view their results. We start by importing the necessary modules.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">rich.pretty</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.material</span> <span class="kn">import</span> <span class="n">Concrete</span><span class="p">,</span> <span class="n">SteelBar</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.stress_strain_profile</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">EurocodeNonLinear</span><span class="p">,</span>
+    <span class="n">RectangularStressBlock</span><span class="p">,</span>
+    <span class="n">SteelElasticPlastic</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sectionproperties.pre.library.concrete_sections</span> <span class="kn">import</span> <span class="n">concrete_circular_section</span>
+<span class="kn">from</span> <span class="nn">concreteproperties.concrete_section</span> <span class="kn">import</span> <span class="n">ConcreteSection</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Assign-Materials">
+<h2><span class="section-number">7.1. </span>Assign Materials<a class="headerlink" href="#Assign-Materials" title="Permalink to this heading">#</a></h2>
+<p>The materials used in this example will be 40 MPa concrete and 500 MPa steel, specified in accordance with AS 3600:2018. The service stress-strain profile for the concrete will be adapted from EC2.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concrete</span> <span class="o">=</span> <span class="n">Concrete</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;40 MPa Concrete&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.4e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">EurocodeNonLinear</span><span class="p">(</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">32.8e3</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.0035</span><span class="p">,</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">compressive_strain</span><span class="o">=</span><span class="mf">0.0023</span><span class="p">,</span>
+        <span class="n">tensile_strength</span><span class="o">=</span><span class="mf">3.8</span><span class="p">,</span>
+        <span class="n">tension_softening_stiffness</span><span class="o">=</span><span class="mf">10e3</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">ultimate_stress_strain_profile</span><span class="o">=</span><span class="n">RectangularStressBlock</span><span class="p">(</span>
+        <span class="n">compressive_strength</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.79</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.87</span><span class="p">,</span>
+        <span class="n">ultimate_strain</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">flexural_tensile_strength</span><span class="o">=</span><span class="mf">3.8</span><span class="p">,</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">steel</span> <span class="o">=</span> <span class="n">SteelBar</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;500 MPa Steel&quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">7.85e-6</span><span class="p">,</span>
+    <span class="n">stress_strain_profile</span><span class="o">=</span><span class="n">SteelElasticPlastic</span><span class="p">(</span>
+        <span class="n">yield_strength</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">200e3</span><span class="p">,</span>
+        <span class="n">fracture_strain</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">colour</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Create-Geometry-and-Concrete-Section">
+<h2><span class="section-number">7.2. </span>Create Geometry and Concrete Section<a class="headerlink" href="#Create-Geometry-and-Concrete-Section" title="Permalink to this heading">#</a></h2>
+<p>The section in this example is a 600 mm diameter concrete column, reinforced with 10N20 bars with 45 mm cover. The geometry is generated using the <em>sectionproperties</em> concrete sections library.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">geom</span> <span class="o">=</span> <span class="n">concrete_circular_section</span><span class="p">(</span>
+    <span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">n</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">dia</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">n_bar</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">n_circle</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">area_conc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">area_bar</span><span class="o">=</span><span class="mi">310</span><span class="p">,</span>
+    <span class="n">cover</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
+    <span class="n">conc_mat</span><span class="o">=</span><span class="n">concrete</span><span class="p">,</span>
+    <span class="n">steel_mat</span><span class="o">=</span><span class="n">steel</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">conc_sec</span> <span class="o">=</span> <span class="n">ConcreteSection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+<span class="n">conc_sec</span><span class="o">.</span><span class="n">plot_section</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_6_0.svg" src="../_images/notebooks_stress_analysis_6_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Axes: title={&#39;center&#39;: &#39;Reinforced Concrete Section&#39;}&gt;
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Elastic-Uncracked-Stress-Analysis">
+<h2><span class="section-number">7.3. </span>Elastic Uncracked Stress Analysis<a class="headerlink" href="#Elastic-Uncracked-Stress-Analysis" title="Permalink to this heading">#</a></h2>
+<p>We perform an uncracked stress analysis using the <code class="docutils literal notranslate"><span class="pre">calculate_uncracked_stress()</span></code> method. This analysis assumes the entire concrete section acts to resist the applied loading. Note that <em>concreteproperties</em> does not check to see if the provided moment is above the cracking moment, this should be confirmed by performing a cracking analysis.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uncr_stress_res_1</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_uncracked_stress</span><span class="p">(</span><span class="n">m_x</span><span class="o">=</span><span class="mf">50e6</span><span class="p">)</span>
+<span class="n">uncr_stress_res_2</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_uncracked_stress</span><span class="p">(</span><span class="n">m_x</span><span class="o">=</span><span class="mf">25e6</span><span class="p">,</span> <span class="n">m_y</span><span class="o">=</span><span class="mf">35e6</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mf">200e3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We can visualise the stresses by calling the <code class="docutils literal notranslate"><span class="pre">plot_stress()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uncr_stress_res_1</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_10_0.svg" src="../_images/notebooks_stress_analysis_10_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Axes: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uncr_stress_res_2</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_11_0.svg" src="../_images/notebooks_stress_analysis_11_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Axes: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Elastic-Cracked-Stress-Analysis">
+<h2><span class="section-number">7.4. </span>Elastic Cracked Stress Analysis<a class="headerlink" href="#Elastic-Cracked-Stress-Analysis" title="Permalink to this heading">#</a></h2>
+<p>A cracked stress analysis first requires a cracking analysis to be performed by calling the <code class="docutils literal notranslate"><span class="pre">calculate_cracked_properties()</span></code> method. Here we perform a cracking analysis for bending about the <code class="docutils literal notranslate"><span class="pre">x</span></code> axis.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cracked_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_cracked_properties</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_cr = </span><span class="si">{</span><span class="n">cracked_res</span><span class="o">.</span><span class="n">m_cr</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;d_n,c = </span><span class="si">{</span><span class="n">cracked_res</span><span class="o">.</span><span class="n">d_nc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+M_cr = 86.32 kN.m
+d_n,c = 143.81 mm
+</pre></div></div>
+</div>
+<p>Since the cracking moment is 86 kN.m, let’s see what the stresses within the cross-section look like under 150 kN.m bending moment. Note that the moment will be applied about the same axis as used in the cracking analysis.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_ext</span> <span class="o">=</span> <span class="mf">150e6</span>
+<span class="n">cracked_stress_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_cracked_stress</span><span class="p">(</span>
+    <span class="n">cracked_results</span><span class="o">=</span><span class="n">cracked_res</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m_ext</span>
+<span class="p">)</span>
+<span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_15_0.svg" src="../_images/notebooks_stress_analysis_15_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Axes: title={&#39;center&#39;: &#39;Stress&#39;}&gt;
+</pre></div></div>
+</div>
+<p>Many useful results are stored within the <code class="docutils literal notranslate"><span class="pre">StressResult</span></code> object. Let’s examine a few of these results.</p>
+<div class="section" id="Concrete-Results">
+<h3><span class="section-number">7.4.1. </span>Concrete Results<a class="headerlink" href="#Concrete-Results" title="Permalink to this heading">#</a></h3>
+<p>Concrete geometries that remain after cracking are stored in the <code class="docutils literal notranslate"><span class="pre">concrete_analysis_sections</span></code> attribute as a list of <code class="docutils literal notranslate"><span class="pre">AnalysisSection</span></code> objects. We can visualise this geometry by calling the <code class="docutils literal notranslate"><span class="pre">plot_mesh()</span></code> method. The <code class="docutils literal notranslate"><span class="pre">StressResult</span></code> object also stores the stresses at the nodes in each <code class="docutils literal notranslate"><span class="pre">AnalysisSection</span></code> in the <code class="docutils literal notranslate"><span class="pre">concrete_stresses</span></code> attribute - these are the stresses you see on the <code class="docutils literal notranslate"><span class="pre">plot_stress()</span></code> plots. Finally, the <code class="docutils literal notranslate"><span class="pre">concrete_forces</span></code> attribute stores the resultant force for each
+<code class="docutils literal notranslate"><span class="pre">AnalysisSection</span></code> and its lever arm to the cracked centroid.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">an_sec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">concrete_analysis_sections</span><span class="p">):</span>
+    <span class="c1"># Label section and plot section mesh</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Analysis Section </span><span class="si">{</span><span class="n">idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">an_sec</span><span class="o">.</span><span class="n">plot_mesh</span><span class="p">()</span>
+
+    <span class="c1"># get concrete results</span>
+    <span class="n">sigs_conc</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">concrete_stresses</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">f_conc</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">concrete_forces</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">d_x_conc</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">concrete_forces</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">d_y_conc</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">concrete_forces</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">m_x_conc</span> <span class="o">=</span> <span class="n">f_conc</span> <span class="o">*</span> <span class="n">d_y_conc</span>
+    <span class="n">m_y_conc</span> <span class="o">=</span> <span class="n">f_conc</span> <span class="o">*</span> <span class="n">d_x_conc</span>
+    <span class="n">m_conc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">m_x_conc</span> <span class="o">*</span> <span class="n">m_x_conc</span> <span class="o">+</span> <span class="n">m_y_conc</span> <span class="o">*</span> <span class="n">m_y_conc</span><span class="p">)</span>
+
+    <span class="c1"># print results</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Concrete Stresses:&quot;</span><span class="p">)</span>
+    <span class="n">pprint</span><span class="p">(</span><span class="n">sigs_conc</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Concrete Net Force &amp; Lever Arm:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;F_c = </span><span class="si">{</span><span class="n">f_conc</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;d_x_n = </span><span class="si">{</span><span class="n">d_x_conc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;d_y_n = </span><span class="si">{</span><span class="n">d_y_conc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_x_c = </span><span class="si">{</span><span class="n">m_x_conc</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_y_c = </span><span class="si">{</span><span class="n">m_y_conc</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M_c = </span><span class="si">{</span><span class="n">m_conc</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Analysis Section 1
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_18_1.svg" src="../_images/notebooks_stress_analysis_18_1.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Concrete Stresses:
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">array</span><span style="font-weight: bold">([</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">5.86428608e-05</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1.17773025e+00</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">6.52033249e+00</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1.09048928e+01</span>,
+<span style="color: #7fbf7f; text-decoration-color: #7fbf7f">│      </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1.41629151e+01</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1.61691954e+01</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1.68466333e+01</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1.61691954e+01</span>,
+<span style="color: #7fbf7f; text-decoration-color: #7fbf7f">│      </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1.41629151e+01</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1.09048928e+01</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">6.52033249e+00</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1.17773025e+00</span>,
+<span style="color: #7fbf7f; text-decoration-color: #7fbf7f">│      </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">5.86428608e-05</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">8.88584105e+00</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1.03442623e+01</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">8.88584105e+00</span>,
+<span style="color: #7fbf7f; text-decoration-color: #7fbf7f">│      </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">7.42741992e+00</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">7.42741992e+00</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">8.88584105e+00</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1.03442623e+01</span>,
+<span style="color: #7fbf7f; text-decoration-color: #7fbf7f">│      </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">8.88584105e+00</span><span style="font-weight: bold">])</span>
+</pre></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Concrete Net Force &amp; Lever Arm:
+F_c = 347.99 kN
+d_x_n = -0.00 mm
+d_y_n = 82.77 mm
+M_x_c = 28.80 kN.m
+M_y_c = -0.00 kN.m
+M_c = 28.80 kN.m
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Reinforcement-Results">
+<h3><span class="section-number">7.4.2. </span>Reinforcement Results<a class="headerlink" href="#Reinforcement-Results" title="Permalink to this heading">#</a></h3>
+<p>Lumped reinforcement geometries are stored in the <code class="docutils literal notranslate"><span class="pre">lumped_reinforcement_geometries</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">StressResult</span></code> object. Similar to the concrete results, the stresses and forces/lever arms are stored, as well as the strains. Here we print the stress for each lumped bar to the terminal. Note that meshed reinforcement results are also stored, but have not been used for this analysis.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rich.table</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
+
+<span class="c1"># store forces &amp; moments for later</span>
+<span class="n">forces</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">moments_x</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># create a Rich table for pretty printing</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Reinforcement Results&quot;</span><span class="p">)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Bar No.&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">no_wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Location (x, y) (mm)&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Stress (MPa)&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Force (kN)&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Lever Arm (mm)&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Moment (kN.m)&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">reinf_geom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">lumped_reinforcement_geometries</span><span class="p">):</span>
+    <span class="c1"># get the reinforcement results</span>
+    <span class="n">centroid</span> <span class="o">=</span> <span class="n">reinf_geom</span><span class="o">.</span><span class="n">calculate_centroid</span><span class="p">()</span>
+    <span class="n">stress</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">lumped_reinforcement_stresses</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">strain</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">lumped_reinforcement_strains</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">force</span><span class="p">,</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_y</span> <span class="o">=</span> <span class="n">cracked_stress_res</span><span class="o">.</span><span class="n">lumped_reinforcement_forces</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="c1"># calculate the moment each bar creates and store the results</span>
+    <span class="n">moment_x</span> <span class="o">=</span> <span class="n">force</span> <span class="o">*</span> <span class="n">d_y</span>
+    <span class="n">forces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">force</span><span class="p">)</span>
+    <span class="n">moments_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">moment_x</span><span class="p">)</span>
+
+    <span class="c1"># print compression or tension</span>
+    <span class="k">if</span> <span class="n">strain</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">t_or_c</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">t_or_c</span> <span class="o">=</span> <span class="s2">&quot;T&quot;</span>
+
+    <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">stress</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">t_or_c</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">force</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d_y</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">moment_x</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">                                     Reinforcement Results                                     </span>
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold"> Bar No. </span>┃<span style="font-weight: bold"> Location (x, y) (mm) </span>┃<span style="font-weight: bold"> Stress (MPa) </span>┃<span style="font-weight: bold"> Force (kN) </span>┃<span style="font-weight: bold"> Lever Arm (mm) </span>┃<span style="font-weight: bold"> Moment (kN.m) </span>┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│<span style="color: #008080; text-decoration-color: #008080">    1    </span>│<span style="color: #008000; text-decoration-color: #008000">    (245.0, -0.0)     </span>│<span style="color: #008000; text-decoration-color: #008000">  112.3 (T)   </span>│<span style="color: #008000; text-decoration-color: #008000">    34.8    </span>│<span style="color: #008000; text-decoration-color: #008000">     -157.2     </span>│<span style="color: #008000; text-decoration-color: #008000">     5.47      </span>│
+│<span style="color: #008080; text-decoration-color: #008080">    2    </span>│<span style="color: #008000; text-decoration-color: #008000">    (198.2, 144.0)    </span>│<span style="color: #008000; text-decoration-color: #008000">   9.4 (T)    </span>│<span style="color: #008000; text-decoration-color: #008000">    2.9     </span>│<span style="color: #008000; text-decoration-color: #008000">     -13.1      </span>│<span style="color: #008000; text-decoration-color: #008000">     0.04      </span>│
+│<span style="color: #008080; text-decoration-color: #008080">    3    </span>│<span style="color: #008000; text-decoration-color: #008000">    (75.7, 233.0)     </span>│<span style="color: #008000; text-decoration-color: #008000">   54.2 (C)   </span>│<span style="color: #008000; text-decoration-color: #008000">    16.8    </span>│<span style="color: #008000; text-decoration-color: #008000">      75.9      </span>│<span style="color: #008000; text-decoration-color: #008000">     1.27      </span>│
+│<span style="color: #008080; text-decoration-color: #008080">    4    </span>│<span style="color: #008000; text-decoration-color: #008000">    (-75.7, 233.0)    </span>│<span style="color: #008000; text-decoration-color: #008000">   54.2 (C)   </span>│<span style="color: #008000; text-decoration-color: #008000">    16.8    </span>│<span style="color: #008000; text-decoration-color: #008000">      75.9      </span>│<span style="color: #008000; text-decoration-color: #008000">     1.27      </span>│
+│<span style="color: #008080; text-decoration-color: #008080">    5    </span>│<span style="color: #008000; text-decoration-color: #008000">   (-198.2, 144.0)    </span>│<span style="color: #008000; text-decoration-color: #008000">   9.4 (T)    </span>│<span style="color: #008000; text-decoration-color: #008000">    2.9     </span>│<span style="color: #008000; text-decoration-color: #008000">     -13.1      </span>│<span style="color: #008000; text-decoration-color: #008000">     0.04      </span>│
+│<span style="color: #008080; text-decoration-color: #008080">    6    </span>│<span style="color: #008000; text-decoration-color: #008000">    (-245.0, -0.0)    </span>│<span style="color: #008000; text-decoration-color: #008000">  112.3 (T)   </span>│<span style="color: #008000; text-decoration-color: #008000">    34.8    </span>│<span style="color: #008000; text-decoration-color: #008000">     -157.2     </span>│<span style="color: #008000; text-decoration-color: #008000">     5.47      </span>│
+│<span style="color: #008080; text-decoration-color: #008080">    7    </span>│<span style="color: #008000; text-decoration-color: #008000">   (-198.2, -144.0)   </span>│<span style="color: #008000; text-decoration-color: #008000">  215.1 (T)   </span>│<span style="color: #008000; text-decoration-color: #008000">    66.7    </span>│<span style="color: #008000; text-decoration-color: #008000">     -301.2     </span>│<span style="color: #008000; text-decoration-color: #008000">     20.08     </span>│
+│<span style="color: #008080; text-decoration-color: #008080">    8    </span>│<span style="color: #008000; text-decoration-color: #008000">   (-75.7, -233.0)    </span>│<span style="color: #008000; text-decoration-color: #008000">  278.7 (T)   </span>│<span style="color: #008000; text-decoration-color: #008000">    86.4    </span>│<span style="color: #008000; text-decoration-color: #008000">     -390.2     </span>│<span style="color: #008000; text-decoration-color: #008000">     33.71     </span>│
+│<span style="color: #008080; text-decoration-color: #008080">    9    </span>│<span style="color: #008000; text-decoration-color: #008000">    (75.7, -233.0)    </span>│<span style="color: #008000; text-decoration-color: #008000">  278.7 (T)   </span>│<span style="color: #008000; text-decoration-color: #008000">    86.4    </span>│<span style="color: #008000; text-decoration-color: #008000">     -390.2     </span>│<span style="color: #008000; text-decoration-color: #008000">     33.71     </span>│
+│<span style="color: #008080; text-decoration-color: #008080">   10    </span>│<span style="color: #008000; text-decoration-color: #008000">   (198.2, -144.0)    </span>│<span style="color: #008000; text-decoration-color: #008000">  215.1 (T)   </span>│<span style="color: #008000; text-decoration-color: #008000">    66.7    </span>│<span style="color: #008000; text-decoration-color: #008000">     -301.2     </span>│<span style="color: #008000; text-decoration-color: #008000">     20.08     </span>│
+└─────────┴──────────────────────┴──────────────┴────────────┴────────────────┴───────────────┘
+</pre></div>
+</div>
+<p>Finally, let’s confirm that the net axial force is indeed zero and the internal moment is equal to the external moment.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sum of forces</span>
+<span class="n">int_force</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">forces</span><span class="p">)</span> <span class="o">+</span> <span class="n">f_conc</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sum of Internal Forces: </span><span class="si">{</span><span class="n">int_force</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+
+<span class="c1"># sum of moments</span>
+<span class="n">int_moment</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">moments_x</span><span class="p">)</span> <span class="o">+</span> <span class="n">m_conc</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sum of Internal Moments: </span><span class="si">{</span><span class="n">int_moment</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;External Moment: </span><span class="si">{</span><span class="n">m_ext</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Sum of Internal Forces: 0 kN
+Sum of Internal Moments: 150 kN.m
+External Moment: 150 kN.m
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Service-Stress-Analysis">
+<h2><span class="section-number">7.5. </span>Service Stress Analysis<a class="headerlink" href="#Service-Stress-Analysis" title="Permalink to this heading">#</a></h2>
+<p>A service stress analysis displays internal stresses based off the stress-strain profiles provided to the material properties. Before viewing the stresses, a moment curvature analysis must be performed to establish the structural response of the reinforced concrete section.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_curvature_analysis</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s plot the moment curvature diagram so that we can choose some interesting points to generate stress results.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mk_res</span><span class="o">.</span><span class="n">plot_results</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_26_0.svg" src="../_images/notebooks_stress_analysis_26_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Axes: title={&#39;center&#39;: &#39;Moment-Curvature&#39;}, xlabel=&#39;Curvature&#39;, ylabel=&#39;Moment&#39;&gt;
+</pre></div></div>
+</div>
+<p>Based on the above, we compile a list of moments and curvatures at which we want to visualise the cross-section stresses. We use curvatures as input around the softening region as there are two possible values of moment.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a list of inputs (either moments [m] or curvatures [k])</span>
+<span class="n">stress_inputs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">50e6</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="n">cracked_res</span><span class="o">.</span><span class="n">m_cr</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">7.5e-07</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">1.15e-06</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">2.15e-06</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">250e6</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">300e6</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mf">360e6</span><span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># loop through each input</span>
+<span class="k">for</span> <span class="n">s_in</span> <span class="ow">in</span> <span class="n">stress_inputs</span><span class="p">:</span>
+    <span class="c1"># determine if the input is a moment or curvature</span>
+    <span class="k">if</span> <span class="n">s_in</span><span class="p">[</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span>
+        <span class="n">m_stress</span> <span class="o">=</span> <span class="n">s_in</span><span class="p">[</span><span class="s2">&quot;val&quot;</span><span class="p">]</span>
+        <span class="n">service_stress_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_service_stress</span><span class="p">(</span>
+            <span class="n">moment_curvature_results</span><span class="o">=</span><span class="n">mk_res</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m_stress</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">s_in</span><span class="p">[</span><span class="s2">&quot;m_or_k&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;k&quot;</span><span class="p">:</span>
+        <span class="n">service_stress_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_service_stress</span><span class="p">(</span>
+            <span class="n">moment_curvature_results</span><span class="o">=</span><span class="n">mk_res</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="n">s_in</span><span class="p">[</span><span class="s2">&quot;val&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">m_stress</span> <span class="o">=</span> <span class="n">service_stress_res</span><span class="o">.</span><span class="n">sum_moments</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># create plot title and plot stress</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Moment = </span><span class="si">{</span><span class="n">m_stress</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN.m&quot;</span>
+    <span class="n">service_stress_res</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_29_0.svg" src="../_images/notebooks_stress_analysis_29_0.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_29_1.svg" src="../_images/notebooks_stress_analysis_29_1.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_29_2.svg" src="../_images/notebooks_stress_analysis_29_2.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_29_3.svg" src="../_images/notebooks_stress_analysis_29_3.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_29_4.svg" src="../_images/notebooks_stress_analysis_29_4.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_29_5.svg" src="../_images/notebooks_stress_analysis_29_5.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_29_6.svg" src="../_images/notebooks_stress_analysis_29_6.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_29_7.svg" src="../_images/notebooks_stress_analysis_29_7.svg" /></div>
+</div>
+<p>Viewing the above stress plots in combination with the moment curvature diagram is an insightful way of understanding the bending response of a reinforced concrete section!</p>
+</div>
+<div class="section" id="Ultimate-Stress-Analysis">
+<h2><span class="section-number">7.6. </span>Ultimate Stress Analysis<a class="headerlink" href="#Ultimate-Stress-Analysis" title="Permalink to this heading">#</a></h2>
+<p>An ultimate stress analysis displayed the internal stresses at the ultimate bending moment. In this example we examine the ultimate stresses at the pure bending point, the balanced point and the decompression point. To locate these points we first plot the moment interaction diagram.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mi_res</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">moment_interaction_diagram</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">mi_res</span><span class="o">.</span><span class="n">plot_diagram</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_32_0.svg" src="../_images/notebooks_stress_analysis_32_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Axes: title={&#39;center&#39;: &#39;Moment Interaction Diagram&#39;}, xlabel=&#39;Bending Moment&#39;, ylabel=&#39;Axial Force&#39;&gt;
+</pre></div></div>
+</div>
+<p>Prior to plotting the stresses, the ultimate bending capacities must be calculated.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ultimate_res_pure</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">()</span>
+<span class="n">ultimate_res_bal</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mf">3500e3</span><span class="p">)</span>
+<span class="n">ultimate_res_decomp</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">ultimate_bending_capacity</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mf">9000e3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We calculate the ultimate stresses by calling the <code class="docutils literal notranslate"><span class="pre">calculate_ultimate_stress()</span></code> method.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ultimate_stress_pure</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_ultimate_stress</span><span class="p">(</span>
+    <span class="n">ultimate_results</span><span class="o">=</span><span class="n">ultimate_res_pure</span>
+<span class="p">)</span>
+<span class="n">ultimate_stress_bal</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_ultimate_stress</span><span class="p">(</span>
+    <span class="n">ultimate_results</span><span class="o">=</span><span class="n">ultimate_res_bal</span>
+<span class="p">)</span>
+<span class="n">ultimate_stress_decomp</span> <span class="o">=</span> <span class="n">conc_sec</span><span class="o">.</span><span class="n">calculate_ultimate_stress</span><span class="p">(</span>
+    <span class="n">ultimate_results</span><span class="o">=</span><span class="n">ultimate_res_decomp</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ultimate_stress_pure</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Pure Bending&quot;</span><span class="p">)</span>
+<span class="n">ultimate_stress_bal</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Balanced&quot;</span><span class="p">)</span>
+<span class="n">ultimate_stress_decomp</span><span class="o">.</span><span class="n">plot_stress</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Decompression&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_37_0.svg" src="../_images/notebooks_stress_analysis_37_0.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_37_1.svg" src="../_images/notebooks_stress_analysis_37_1.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_stress_analysis_37_2.svg" src="../_images/notebooks_stress_analysis_37_2.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Axes: title={&#39;center&#39;: &#39;Decompression&#39;}&gt;
+</pre></div></div>
+</div>
+<p>As a rectangular stress block is used for the ultimate stress-strain profile, the entire cross-section is not in compression due to the zero stress region above the neutral axis in the stress-strain profile.</p>
+</div>
+</div>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="biaxial_bending.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>Biaxial Bending Diagram</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="composite_section.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>Composite Sections</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Assign-Materials">7.1. Assign Materials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Create-Geometry-and-Concrete-Section">7.2. Create Geometry and Concrete Section</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Elastic-Uncracked-Stress-Analysis">7.3. Elastic Uncracked Stress Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Elastic-Cracked-Stress-Analysis">7.4. Elastic Cracked Stress Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Concrete-Results">7.4.1. Concrete Results</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Reinforcement-Results">7.4.2. Reinforcement Results</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Service-Stress-Analysis">7.5. Service Stress Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Ultimate-Stress-Analysis">7.6. Ultimate Stress Analysis</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/notebooks/stress_analysis.ipynb">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2022, Robbie van Leeuwen.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

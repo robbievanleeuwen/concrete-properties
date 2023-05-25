@@ -1,0 +1,720 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "6efa58a4",
+   "metadata": {},
+   "source": [
+    "# Composite Sections"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bb4a755a",
+   "metadata": {},
+   "source": [
+    "This example demonstrates how to *concreteproperties* can be used to analyse composite sections. We start by importing the necessary modules.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d12341a2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from concreteproperties.material import Concrete, Steel, SteelBar\n",
+    "import concreteproperties.stress_strain_profile as ssp\n",
+    "import sectionproperties.pre.library.primitive_sections as sp_ps\n",
+    "import sectionproperties.pre.library.steel_sections as sp_ss\n",
+    "import sectionproperties.pre.library.concrete_sections as sp_cs\n",
+    "import concreteproperties.pre as cp_pre\n",
+    "from concreteproperties.concrete_section import ConcreteSection\n",
+    "import concreteproperties.results as res"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "463c9423",
+   "metadata": {},
+   "source": [
+    "## Assign Materials\n",
+    "The materials used in this example will be 50 MPa concrete with 500 MPa reinforcing steel and 300 MPa structural steel."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a87d1278",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "concrete = Concrete(\n",
+    "    name=\"50 MPa Concrete\",\n",
+    "    density=2.4e-6,\n",
+    "    stress_strain_profile=ssp.ConcreteLinearNoTension(\n",
+    "        elastic_modulus=34.8e3,\n",
+    "        ultimate_strain=0.003,\n",
+    "        compressive_strength=0.9 * 50,\n",
+    "    ),\n",
+    "    ultimate_stress_strain_profile=ssp.RectangularStressBlock(\n",
+    "        compressive_strength=50,\n",
+    "        alpha=0.775,\n",
+    "        gamma=0.845,\n",
+    "        ultimate_strain=0.003,\n",
+    "    ),\n",
+    "    flexural_tensile_strength=4.2,\n",
+    "    colour=\"lightgrey\",\n",
+    ")\n",
+    "\n",
+    "steel_300 = Steel(\n",
+    "    name=\"300 MPa Structural Steel\",\n",
+    "    density=7.85e-6,\n",
+    "    stress_strain_profile=ssp.SteelElasticPlastic(\n",
+    "        yield_strength=300,\n",
+    "        elastic_modulus=200e3,\n",
+    "        fracture_strain=0.05,\n",
+    "    ),\n",
+    "    colour=\"tan\",\n",
+    ")\n",
+    "\n",
+    "steel_bar = SteelBar(\n",
+    "    name=\"500 MPa Steel Bar\",\n",
+    "    density=7.85e-6,\n",
+    "    stress_strain_profile=ssp.SteelElasticPlastic(\n",
+    "        yield_strength=500,\n",
+    "        elastic_modulus=200e3,\n",
+    "        fracture_strain=0.05,\n",
+    "    ),\n",
+    "    colour=\"grey\",\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7ee76aca",
+   "metadata": {},
+   "source": [
+    "## Square Column with Universal Beam\n",
+    "First we will analyse a 500 mm x 500 mm square column with 12N20 bars and a central 310UC97 steel column."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f7672a60",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# create 500 square concrete\n",
+    "conc = sp_ps.rectangular_section(d=500, b=500, material=concrete)\n",
+    "\n",
+    "# create 310UC97 and centre to column\n",
+    "uc = sp_ss.i_section(\n",
+    "    d=308,\n",
+    "    b=305,\n",
+    "    t_f=15.4,\n",
+    "    t_w=9.9,\n",
+    "    r=16.5,\n",
+    "    n_r=8,\n",
+    "    material=steel_300,\n",
+    ").align_center(align_to=conc)\n",
+    "\n",
+    "# cut hole in concrete for UC then add UC\n",
+    "geom = conc - uc + uc\n",
+    "\n",
+    "# add 12N20 reinforcing bars\n",
+    "geom = cp_pre.add_bar_rectangular_array(\n",
+    "    geometry=geom,\n",
+    "    area=310,\n",
+    "    material=steel_bar,\n",
+    "    n_x=4,\n",
+    "    x_s=132,\n",
+    "    n_y=4,\n",
+    "    y_s=132,\n",
+    "    anchor=(52, 52),\n",
+    "    exterior_only=True,\n",
+    ")\n",
+    "\n",
+    "# create concrete section and plot\n",
+    "conc_sec = ConcreteSection(geom)\n",
+    "conc_sec.plot_section()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "fd36b69a",
+   "metadata": {},
+   "source": [
+    "### Elastic Stress\n",
+    "Calculate the elastic stress under a bending moment of 100 kN.m."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a4ea6715",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "el_stress = conc_sec.calculate_uncracked_stress(m_x=100e6)\n",
+    "el_stress.plot_stress()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d55583dd",
+   "metadata": {},
+   "source": [
+    "### Cracked Stress\n",
+    "Calculate the cracked stress under a bending moment of 500 kN.m."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "91c51681",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "cr_res = conc_sec.calculate_cracked_properties()\n",
+    "cr_stress = conc_sec.calculate_cracked_stress(cracked_results=cr_res, m=500e6)\n",
+    "cr_stress.plot_stress()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a5c1f8bc",
+   "metadata": {},
+   "source": [
+    "### Moment Curvature Diagram\n",
+    "Generate a moment-curvature diagram and plot the stress after yielding of the steel."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b0b7e00d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mk_res = conc_sec.moment_curvature_analysis(progress_bar=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b4dc4669",
+   "metadata": {
+    "scrolled": false
+   },
+   "outputs": [],
+   "source": [
+    "mk_res.plot_results(fmt=\"kx-\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "abd35873",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "serv_stress = conc_sec.calculate_service_stress(\n",
+    "    moment_curvature_results=mk_res, m=None, kappa=2e-5\n",
+    ")\n",
+    "serv_stress.plot_stress()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b03b2bcb",
+   "metadata": {},
+   "source": [
+    "### Ultimate Results\n",
+    "Finally the ultimate bending capacity about the ``x`` and ``y`` axes will be calculated, as well as generating an interaction diagram, a biaxial bending diagram and visualising the ultimate stresses."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5173a385",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ult_res_x = conc_sec.ultimate_bending_capacity()\n",
+    "ult_res_y = conc_sec.ultimate_bending_capacity(theta=np.pi / 2)\n",
+    "ult_res_x.print_results()\n",
+    "ult_res_y.print_results()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3f2406b1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mi_res = conc_sec.moment_interaction_diagram(progress_bar=False)\n",
+    "mi_res.plot_diagram()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e735f288",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "bb_res = conc_sec.biaxial_bending_diagram(progress_bar=False)\n",
+    "bb_res.plot_diagram()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2f460ed9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ult_stress_x = conc_sec.calculate_ultimate_stress(ult_res_x)\n",
+    "ult_stress_y = conc_sec.calculate_ultimate_stress(ult_res_y)\n",
+    "ult_stress_x.plot_stress()\n",
+    "ult_stress_y.plot_stress()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c49489f9",
+   "metadata": {},
+   "source": [
+    "## Concrete Filled Steel Column\n",
+    "Next we will analyse a 323.9 mm x 12.7 mm steel (350 MPa) circular hollow section filled with concrete and 6N20 bars. The results will be compared to a similarly sized concrete column."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "14d9e6e8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "steel_350 = Steel(\n",
+    "    name=\"350 MPa Structural Steel\",\n",
+    "    density=7.85e-6,\n",
+    "    stress_strain_profile=ssp.SteelElasticPlastic(\n",
+    "        yield_strength=350,\n",
+    "        elastic_modulus=200e3,\n",
+    "        fracture_strain=0.05,\n",
+    "    ),\n",
+    "    colour=\"tan\",\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bb581853",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# create outer diameter of steel column\n",
+    "steel_col = sp_ps.circular_section_by_area(\n",
+    "    area=np.pi * 323.9**2 / 4,\n",
+    "    n=64,\n",
+    "    material=steel_350,\n",
+    ")\n",
+    "\n",
+    "# create inner diameter of steel column, concrete filled\n",
+    "inner_conc = sp_ps.circular_section_by_area(\n",
+    "    area=np.pi * (323.9 - 2 * 12.7) ** 2 / 4,\n",
+    "    n=64,\n",
+    "    material=concrete,\n",
+    ")\n",
+    "\n",
+    "# create composite geometry\n",
+    "geom_comp = steel_col - inner_conc + inner_conc\n",
+    "\n",
+    "# add reinforcement\n",
+    "r_bars = 323.9 / 2 - 12.7 - 30 - 10  # 30 mm cover from inside of steel\n",
+    "\n",
+    "geom_comp = cp_pre.add_bar_circular_array(\n",
+    "    geometry=geom_comp,\n",
+    "    area=310,\n",
+    "    material=steel_bar,\n",
+    "    n_bar=6,\n",
+    "    r_array=r_bars,\n",
+    ")\n",
+    "\n",
+    "# create concrete section and plot\n",
+    "conc_sec_comp = ConcreteSection(geom_comp)\n",
+    "conc_sec_comp.plot_section()\n",
+    "\n",
+    "# create 350 diameter column for comparison\n",
+    "geom_conc = sp_cs.concrete_circular_section(\n",
+    "    d=350,\n",
+    "    n=64,\n",
+    "    dia=20,\n",
+    "    n_bar=6,\n",
+    "    n_circle=4,\n",
+    "    cover=30 + 12,  # 30 mm cover + 12 mm tie\n",
+    "    area_conc=np.pi * 350**2 / 4,\n",
+    "    area_bar=310,\n",
+    "    conc_mat=concrete,\n",
+    "    steel_mat=steel_bar,\n",
+    ")\n",
+    "\n",
+    "# create concrete section and plot\n",
+    "conc_sec_conc = ConcreteSection(geom_conc)\n",
+    "conc_sec_conc.plot_section()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d2102f37",
+   "metadata": {},
+   "source": [
+    "### Compare Elastic Stresses\n",
+    "Compare the elastic stresses under a bending moment of 10 kN.m (uncracked)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d7d88d9b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "el_stress_comp = conc_sec_comp.calculate_uncracked_stress(m_x=10e6)\n",
+    "el_stress_conc = conc_sec_conc.calculate_uncracked_stress(m_x=10e6)\n",
+    "el_stress_comp.plot_stress()\n",
+    "el_stress_conc.plot_stress()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f6bd27ac",
+   "metadata": {},
+   "source": [
+    "Compare the elastic stresses under a bending moment of 50 kN.m (cracked)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "787f165a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cr_res_comp = conc_sec_comp.calculate_cracked_properties()\n",
+    "cr_res_conc = conc_sec_conc.calculate_cracked_properties()\n",
+    "\n",
+    "cr_stress_comp = conc_sec_comp.calculate_cracked_stress(\n",
+    "    cracked_results=cr_res_comp, m=50e6\n",
+    ")\n",
+    "cr_stress_conc = conc_sec_conc.calculate_cracked_stress(\n",
+    "    cracked_results=cr_res_conc, m=50e6\n",
+    ")\n",
+    "cr_stress_comp.plot_stress()\n",
+    "cr_stress_conc.plot_stress()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3633d045",
+   "metadata": {},
+   "source": [
+    "### Compare Moment Curvature Response\n",
+    "Calculate the moment curvature response of each column and compare the results."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "caecaf08",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mk_res_comp = conc_sec_comp.moment_curvature_analysis(progress_bar=False)\n",
+    "mk_res_conc = conc_sec_conc.moment_curvature_analysis(progress_bar=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6d7cbc26",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "res.MomentCurvatureResults.plot_multiple_results(\n",
+    "    moment_curvature_results=[mk_res_comp, mk_res_conc],\n",
+    "    labels=[\"Composite\", \"Concrete\"],\n",
+    "    fmt=\"-\",\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8a02f2f2",
+   "metadata": {},
+   "source": [
+    "Although the composite section is significantly stiffer and stronger, the regular concrete section exhibits a more ductile response due to the reduced amount of steel reinforcement."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e867125e",
+   "metadata": {},
+   "source": [
+    "### Compare Moment Interaction Results\n",
+    "Moment interaction diagrams can be produced for each section and compared."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8d2ed0c8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mi_res_comp = conc_sec_comp.moment_interaction_diagram(progress_bar=False)\n",
+    "mi_res_conc = conc_sec_conc.moment_interaction_diagram(progress_bar=False)\n",
+    "res.MomentInteractionResults.plot_multiple_diagrams(\n",
+    "    moment_interaction_results=[mi_res_comp, mi_res_conc],\n",
+    "    labels=[\"Composite\", \"Concrete\"],\n",
+    "    fmt=\"x-\",\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "31c952e3",
+   "metadata": {},
+   "source": [
+    "## Composite Steel Beam\n",
+    "Finally we will analyse a steel composite beam, consisting of a 530UB92 universal beam compositely attached to a 1500 mm wide x 120 mm deep concrete slab. We start by defining the concrete material (32 MPa) for the slab."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "65577277",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "concrete = Concrete(\n",
+    "    name=\"32 MPa Concrete\",\n",
+    "    density=2.4e-6,\n",
+    "    stress_strain_profile=ssp.ConcreteLinearNoTension(\n",
+    "        elastic_modulus=30.1e3,\n",
+    "        ultimate_strain=0.003,\n",
+    "        compressive_strength=0.9 * 32,\n",
+    "    ),\n",
+    "    ultimate_stress_strain_profile=ssp.RectangularStressBlock(\n",
+    "        compressive_strength=32,\n",
+    "        alpha=0.802,\n",
+    "        gamma=0.89,\n",
+    "        ultimate_strain=0.003,\n",
+    "    ),\n",
+    "    flexural_tensile_strength=3.4,\n",
+    "    colour=\"lightgrey\",\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "112ad018",
+   "metadata": {},
+   "source": [
+    "Next we construct the composite geometry. Note that we set ``geometric_centroid_override=True`` to ensure that moments are calculated about the geometric centroid rather than the gross centroid. In previous examples the geometry was symmetric so setting this made no difference to the results."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d08a46da",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# create 530UB92\n",
+    "ub = sp_ss.i_section(\n",
+    "    d=533,\n",
+    "    b=209,\n",
+    "    t_f=15.6,\n",
+    "    t_w=10.2,\n",
+    "    r=14,\n",
+    "    n_r=8,\n",
+    "    material=steel_300,\n",
+    ")\n",
+    "\n",
+    "# create concrete slab, centre on top of UB\n",
+    "conc_slab = (\n",
+    "    sp_ps.rectangular_section(\n",
+    "        d=120,\n",
+    "        b=1500,\n",
+    "        material=concrete,\n",
+    "    )\n",
+    "    .align_center(align_to=ub)\n",
+    "    .align_to(other=ub, on=\"top\")\n",
+    ")\n",
+    "\n",
+    "# as there is no overlapping geometry, we can simply add the two sections together\n",
+    "geom = ub + conc_slab\n",
+    "\n",
+    "# the cross-section is rotated 90 degrees to aid viewing the stress plots\n",
+    "geom = geom.rotate_section(angle=np.pi / 2, use_radians=True)\n",
+    "\n",
+    "# create concrete section and plot\n",
+    "conc_sec = ConcreteSection(geom, geometric_centroid_override=True)\n",
+    "conc_sec.plot_section()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "326d0fe9",
+   "metadata": {},
+   "source": [
+    "We can compare the gross and geometric centroids. The geometric centroid takes into account the difference elastic moduli of each material, whereas the gross centroid does not."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d5879722",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\n",
+    "    f\"cx_geom = {conc_sec.moment_centroid[0]:.2f}; cy_geom = {conc_sec.moment_centroid[1]:.2f}\"\n",
+    ")\n",
+    "print(\n",
+    "    f\"cx_gross = {conc_sec.gross_properties.cx_gross:.2f}; cy_gross = {conc_sec.gross_properties.cy_gross:.2f}\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "77745bac",
+   "metadata": {},
+   "source": [
+    "### Moment Curvature Response\n",
+    "Calculate the moment curvature response of the composite section. The section should show a gradual yielding response as plasticity develops over the depth of the steel beam."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fcbc6333",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mk_res = conc_sec.moment_curvature_analysis(theta=np.pi / 2, progress_bar=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8f634623",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mk_res.plot_results()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5890c6c4",
+   "metadata": {},
+   "source": [
+    "We can examine the stresses at various point within the moment-curvature response."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b64edebc",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "el_stress = conc_sec.calculate_service_stress(moment_curvature_results=mk_res, m=500e6)\n",
+    "yield_stress = conc_sec.calculate_service_stress(\n",
+    "    moment_curvature_results=mk_res, m=1000e6\n",
+    ")\n",
+    "ult_stress = conc_sec.calculate_service_stress(\n",
+    "    moment_curvature_results=mk_res, m=1200e6\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d56e8c7d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "el_stress.plot_stress()\n",
+    "yield_stress.plot_stress()\n",
+    "ult_stress.plot_stress()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b9695c03",
+   "metadata": {},
+   "source": [
+    "### Ultimate Bending Capacity\n",
+    "The ultimate bending capacity can be calculated and compared to the result obtained from the moment curvature analysis."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c1c8cd3d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ult_res = conc_sec.ultimate_bending_capacity(theta=np.pi / 2)\n",
+    "ult_res.print_results()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f95ae617",
+   "metadata": {},
+   "source": [
+    "The above results match closely with the moment curvature results, as will as confirming that the neutral axis is within the concrete slab. Note that ``k_u`` is not calculated for only meshed sections, it is only computed for lumped reinforcement."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.12"
+  },
+  "vscode": {
+   "interpreter": {
+    "hash": "893b3ef6d13023afab4be8c5000be38ce11a760491bcfa4047435852657817d1"
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
