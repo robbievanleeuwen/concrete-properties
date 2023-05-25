@@ -1,11 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html lang="en">
+
+<html lang="en" data-theme="light">
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1. Materials &#8212; concreteproperties 0.4.1 documentation</title>
+    <title>1. Materials &#8212; concreteproperties 0.5.0 documentation</title>
   
   
   
@@ -15,22 +18,22 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -50,89 +53,106 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="2. Geometry" href="geometry.html" />
     <link rel="prev" title="User Guide" href="../user_guide.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="docsearch:language" content="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
 
   
   
   <a class="skip-link" href="#main-content">Skip to main content</a>
-
   
-  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
   <label class="overlay overlay-primary" for="__primary"></label>
-
   
-  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
   <label class="overlay overlay-secondary" for="__secondary"></label>
-
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
     <div class="search-button__search-container">
-      
-<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-    </div>
+</form></div>
   </div>
-
   
-  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fa-solid fa-bars"></span>
+    <span class="fa-solid fa-bars"></span>
   </label>
-  <div id="navbar-start">
-    
-    
   
-
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
 
 <a class="navbar-brand logo" href="../index.html">
-
   
   
   
   
-  
-  
-  
-
-  
-    <img src="../_static/cp_logo.png" class="logo__image only-light" alt="Logo image">
-    <img src="../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image">
-  
-  
-</a>
     
-    <div class="version-switcher__container dropdown">
-    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
-        latest  <!-- this text may get changed later by javascript -->
-        <span class="caret"></span>
+    
+    
+    <img src="../_static/cp_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
     </button>
     <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
     <!-- dropdown will be populated by javascript on page load -->
     </div>
-</div>
+  </div>
+`);
+</script></div>
     
   </div>
-
+  
   
   <div class="col-lg-9 navbar-header-items">
-    <div id="navbar-center" class="mr-auto">
+    
+    <div class="me-auto navbar-header-items__center">
       
-      <div class="navbar-center-item">
-        <nav class="navbar-nav">
-    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
-        Site Navigation
-    </p>
-    <ul id="navbar-main-elements" class="navbar-nav">
-        
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../installation.html">
                         Installation
@@ -160,32 +180,39 @@
                       </a>
                     </li>
                 
-    </ul>
-</nav>
-      </div>
+  </ul>
+</nav></div>
       
     </div>
-
-    <div id="navbar-end">
+    
+    
+    <div class="navbar-header-items__end">
       
-        <div class="navbar-end-item navbar-persistent--container">
+        <div class="navbar-item navbar-persistent--container">
           
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
-  <i class="fa-solid fa-magnifying-glass"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
         </div>
       
       
-      <div class="navbar-end-item">
-        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
     <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
     <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-</button>
-      </div>
+  </button>
+`);
+</script></div>
       
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
         <li class="nav-item">
           
           
@@ -194,7 +221,8 @@
           
           
           
-          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
         <li class="nav-item">
@@ -205,53 +233,58 @@
           
           
           
-          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fas fa-box"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
-      </ul>
-      </div>
+</ul></div>
       
     </div>
+    
   </div>
-
-
   
   
     <div class="navbar-persistent--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
-  <i class="fa-solid fa-magnifying-glass"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
     </div>
   
 
   
-  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
       <span class="fa-solid fa-outdent"></span>
-  </label>
+    </label>
   
-
 </div>
-  </nav>
-  
 
+    </nav>
+  
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
       <div class="bd-sidebar-primary bd-sidebar">
         
+
   
   <div class="sidebar-header-items sidebar-primary__section">
     
     
       <div class="sidebar-header-items__center">
-      
-      <div class="navbar-center-item">
-        <nav class="navbar-nav">
-    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
-        Site Navigation
-    </p>
-    <ul id="navbar-main-elements" class="navbar-nav">
         
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../installation.html">
                         Installation
@@ -279,27 +312,28 @@
                       </a>
                     </li>
                 
-    </ul>
-</nav>
+  </ul>
+</nav></div>
+        
       </div>
-      
-      </div>
-    
-
     
     
-    <div class="sidebar-header-items__end">
-      
-      <div class="navbar-end-item">
-        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
     <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
     <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-</button>
-      </div>
-      
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
         <li class="nav-item">
           
           
@@ -308,7 +342,8 @@
           
           
           
-          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
         <li class="nav-item">
@@ -319,24 +354,21 @@
           
           
           
-          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fas fa-box"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
-      </ul>
+</ul></div>
+        
       </div>
-      
-    </div>
     
   </div>
-
   
-  <div class="sidebar-start-items sidebar-primary__section">
-    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">
-    Section Navigation
-  </p>
-  <div class="bd-toc-item navbar-nav">
-    <ul class="current nav bd-sidenav">
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Materials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="geometry.html">2. Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="analysis.html">3. Analysis</a></li>
@@ -349,36 +381,62 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="assumptions.html">7. Assumptions</a></li>
 </ul>
-
-  </div>
-</nav>
+</div>
+</nav></div>
     </div>
-  </div>
   
-
   
-  <div class="sidebar-end-items sidebar-primary__section">
-    <div class="sidebar-end-items__item">
-    </div>
+  <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-
   
   <div id="rtd-footer-container"></div>
 
+
       </div>
+      
       <main id="main-content" class="bd-main">
         
         
-        <div class="bd-content">
-          <div class="bd-article-container">
-            
-            <div class="bd-header-article">
-                
-            </div>
-            
-            
-            <article class="bd-article" role="main">
+          <div class="bd-content">
+            <div class="bd-article-container">
               
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../user_guide.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="section-number">1. </span>Materials</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <div class="section" id="materials">
 <h1><span class="section-number">1. </span>Materials<a class="headerlink" href="#materials" title="Permalink to this heading">#</a></h1>
 <p><em>concreteproperties</em> requires material properties to be defined for the concrete and
@@ -575,7 +633,7 @@ compression.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> – Matplotlib axes object</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.7.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> – Matplotlib axes object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -618,7 +676,7 @@ analysis.</p>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-1.py">Source code</a>, <a class="reference external" href="../user_guide/materials-1.png">png</a>, <a class="reference external" href="../user_guide/materials-1.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-1.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/4baeb21a96af0be7f31b04187c6ff181/materials-1.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/26e639f2c11cc154fd42cad4f06d4a1a/materials-1.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/93374d627339279a85f0c9832a3a7367/materials-1.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/bfce775a966930dfd8512ad00d814f4f/materials-1.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id10">
 <img alt="../_images/materials-1.png" class="plot-directive" src="../_images/materials-1.png" />
 <p class="caption"><span class="caption-text">ConcreteServiceProfile Stress-Strain Profile</span><a class="headerlink" href="#id10" title="Permalink to this image">#</a></p>
@@ -652,7 +710,7 @@ as the concrete can resist large tensile stresses without fracture.</p>
 <span class="n">ConcreteLinear</span><span class="p">(</span><span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">35e3</span><span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-2.py">Source code</a>, <a class="reference external" href="../user_guide/materials-2.png">png</a>, <a class="reference external" href="../user_guide/materials-2.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-2.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/c8d41af1f50d0528118b625fa778493c/materials-2.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/7bfb5c38e1b67278c8b44e8873fb0344/materials-2.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/be51070c2ce2b1649cadb35e96313855/materials-2.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/2d089095de7f158f5cc01b02722d6411/materials-2.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id12">
 <img alt="../_images/materials-2.png" class="plot-directive" src="../_images/materials-2.png" />
 <p class="caption"><span class="caption-text">ConcreteLinear Stress-Strain Profile</span><a class="headerlink" href="#id12" title="Permalink to this image">#</a></p>
@@ -681,7 +739,7 @@ as the concrete can resist large tensile stresses without fracture.</p>
 <span class="n">ConcreteLinearNoTension</span><span class="p">(</span><span class="n">elastic_modulus</span><span class="o">=</span><span class="mf">35e3</span><span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-3.py">Source code</a>, <a class="reference external" href="../user_guide/materials-3.png">png</a>, <a class="reference external" href="../user_guide/materials-3.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-3.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/fed192f801b13b0073592ca032a83345/materials-3.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/97309375309f8069afcd80ba71f71302/materials-3.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/c4cdef44dfd8be23c79a99e157dac7de/materials-3.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/7b0b48c9a001798cdc5d8443bdb7ec4f/materials-3.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id14">
 <img alt="../_images/materials-3.png" class="plot-directive" src="../_images/materials-3.png" />
 <p class="caption"><span class="caption-text">ConcreteLinearNoTension Stress-Strain Profile</span><a class="headerlink" href="#id14" title="Permalink to this image">#</a></p>
@@ -695,7 +753,7 @@ as the concrete can resist large tensile stresses without fracture.</p>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-4.py">Source code</a>, <a class="reference external" href="../user_guide/materials-4.png">png</a>, <a class="reference external" href="../user_guide/materials-4.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-4.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/89c47083f308bd1667c0009423a1c59a/materials-4.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/74c545a37e1b6730bddbf43bfdbdbbd2/materials-4.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/71d60fa7e13ee341efff5ea74de5d427/materials-4.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/be8e5159225c66cf172709992889f661/materials-4.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id16">
 <img alt="../_images/materials-4.png" class="plot-directive" src="../_images/materials-4.png" />
 <p class="caption"><span class="caption-text">ConcreteLinearNoTension Stress-Strain Profile with Compressive Strength</span><a class="headerlink" href="#id16" title="Permalink to this image">#</a></p>
@@ -741,7 +799,7 @@ branch</p></li>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-5.py">Source code</a>, <a class="reference external" href="../user_guide/materials-5.png">png</a>, <a class="reference external" href="../user_guide/materials-5.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-5.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/acd4144e8bec567d8b44fdc8c695b5cd/materials-5.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/4c5c597732028316a228abe0bb6dd0e1/materials-5.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/6de849357ea7951cdaf2864a9ba9d597/materials-5.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/a08b7327bc117646c801dc3a94404c96/materials-5.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id18">
 <img alt="../_images/materials-5.png" class="plot-directive" src="../_images/materials-5.png" />
 <p class="caption"><span class="caption-text">EurocodeNonLinear Stress-Strain Profile</span><a class="headerlink" href="#id18" title="Permalink to this image">#</a></p>
@@ -817,14 +875,14 @@ be modified as noted above.</p></li>
 </li>
 </ul>
 </div>
-<p>(<a class="reference external" href="../_static/doc_plots/mander_unconfined_plot.py">Source code</a>, <a class="reference external" href="../_static/doc_plots/mander_unconfined_plot.png">png</a>, <a class="reference external" href="../_static/doc_plots/mander_unconfined_plot.hires.png">hires.png</a>, <a class="reference external" href="../_static/doc_plots/mander_unconfined_plot.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/e93558faae2e4cb3955f5a35c2bdb4b5/mander_unconfined_plot.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/c0eb7597635784fa07206661a283a1c0/mander_unconfined_plot_mander_unconfined_plot.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/7e4d123ce20b693e9fad51982e730954/mander_unconfined_plot_mander_unconfined_plot.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/3d95d968fb7bec69f246fb54af14b9a3/mander_unconfined_plot_mander_unconfined_plot.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id20">
-<img alt="../_images/mander_unconfined_plot.png" class="plot-directive" src="../_images/mander_unconfined_plot.png" />
+<img alt="../_images/mander_unconfined_plot_mander_unconfined_plot.png" class="plot-directive" src="../_images/mander_unconfined_plot_mander_unconfined_plot.png" />
 <p class="caption"><span class="caption-text">ModifiedMander Parameters for Unconfined Concrete</span><a class="headerlink" href="#id20" title="Permalink to this image">#</a></p>
 </div>
-<p>(<a class="reference external" href="../_static/doc_plots/mander_confined_plot.py">Source code</a>, <a class="reference external" href="../_static/doc_plots/mander_confined_plot.png">png</a>, <a class="reference external" href="../_static/doc_plots/mander_confined_plot.hires.png">hires.png</a>, <a class="reference external" href="../_static/doc_plots/mander_confined_plot.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/383509458ef471935fdc563595453569/mander_confined_plot.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/d3529ce7cd5f8b2ded03b58041473c08/mander_confined_plot_mander_confined_plot.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/f49348e0f1c2f3b630b892086d85f66e/mander_confined_plot_mander_confined_plot.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/97902cef56a2f813de2de72ddd705b87/mander_confined_plot_mander_confined_plot.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id22">
-<img alt="../_images/mander_confined_plot.png" class="plot-directive" src="../_images/mander_confined_plot.png" />
+<img alt="../_images/mander_confined_plot_mander_confined_plot.png" class="plot-directive" src="../_images/mander_confined_plot_mander_confined_plot.png" />
 <p class="caption"><span class="caption-text">ModifiedMander Parameters for Confined Concrete</span><a class="headerlink" href="#id22" title="Permalink to this image">#</a></p>
 </div>
 <dl class="footnote brackets">
@@ -918,7 +976,7 @@ with the same limit for the fracture strain</p></li>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-6.py">Source code</a>, <a class="reference external" href="../user_guide/materials-6.png">png</a>, <a class="reference external" href="../user_guide/materials-6.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-6.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/c8bb1f03217733af064228e5a14a33b8/materials-6.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/92c24d323aead8bdddb2c925ed32502c/materials-6.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/ca548b1a7f27017c12cabcbcfc655cd0/materials-6.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/9eddd0a9abdbd5ea908d67818cb29f2a/materials-6.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id24">
 <img alt="../_images/materials-6.png" class="plot-directive" src="../_images/materials-6.png" />
 <p class="caption"><span class="caption-text">ModifiedMander NonLinear Stress-Strain Profile for Unconfined Concrete</span><a class="headerlink" href="#id24" title="Permalink to this image">#</a></p>
@@ -946,7 +1004,7 @@ with the same limit for the fracture strain</p></li>
   <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-7.py">Source code</a>, <a class="reference external" href="../user_guide/materials-7.png">png</a>, <a class="reference external" href="../user_guide/materials-7.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-7.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/3f0dc43fe3945420a087978627cb6816/materials-7.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/06f33aa83d7d1c173565ff591af711e4/materials-7.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/0241b501ff357db553249d763415853d/materials-7.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/a6e079496fea254e60cc6e986b22cc92/materials-7.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id26">
 <img alt="../_images/materials-7.png" class="plot-directive" src="../_images/materials-7.png" />
 <p class="caption"><span class="caption-text">ModifiedMander NonLinear Stress-Strain Profile for Confined Concrete</span><a class="headerlink" href="#id26" title="Permalink to this image">#</a></p>
@@ -998,7 +1056,7 @@ various concrete materials to define the strain profile at ultimate.</p>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-8.py">Source code</a>, <a class="reference external" href="../user_guide/materials-8.png">png</a>, <a class="reference external" href="../user_guide/materials-8.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-8.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/0fc0499d9ec69bb797562f274fdf9eca/materials-8.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/2c23aa13855a6153a8936865657867c9/materials-8.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/3d90f27c96489bb6168209de7111d3af/materials-8.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/46dff57adb3a61478a34861da390ca9a/materials-8.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id28">
 <img alt="../_images/materials-8.png" class="plot-directive" src="../_images/materials-8.png" />
 <p class="caption"><span class="caption-text">ConcreteUltimateProfile Stress-Strain Profile</span><a class="headerlink" href="#id28" title="Permalink to this image">#</a></p>
@@ -1033,7 +1091,7 @@ various concrete materials to define the strain profile at ultimate.</p>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-9.py">Source code</a>, <a class="reference external" href="../user_guide/materials-9.png">png</a>, <a class="reference external" href="../user_guide/materials-9.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-9.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/b7b16ddbdbb5104e62fdce9adc5f41ba/materials-9.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/fec51b3ca3b2ea92d254e25fe9396656/materials-9.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/212d23cd1cf9b462f3fb7a503fb09e61/materials-9.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/6f33162f07cdfc202a1203d4d3a3641b/materials-9.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id30">
 <img alt="../_images/materials-9.png" class="plot-directive" src="../_images/materials-9.png" />
 <p class="caption"><span class="caption-text">RectangularStressBlock Stress-Strain Profile</span><a class="headerlink" href="#id30" title="Permalink to this image">#</a></p>
@@ -1067,7 +1125,7 @@ compressive strength</p></li>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-10.py">Source code</a>, <a class="reference external" href="../user_guide/materials-10.png">png</a>, <a class="reference external" href="../user_guide/materials-10.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-10.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/4d9815bec995cd3652ebdbbf26ba682e/materials-10.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/f90eadaec4ef487427b619677d957778/materials-10.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/479f187f6fc78900f1e59a7f19286539/materials-10.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/51056ac977cd3e5c4d8e6f64e8e76297/materials-10.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id32">
 <img alt="../_images/materials-10.png" class="plot-directive" src="../_images/materials-10.png" />
 <p class="caption"><span class="caption-text">BilinearStressStrain Stress-Strain Profile</span><a class="headerlink" href="#id32" title="Permalink to this image">#</a></p>
@@ -1104,7 +1162,7 @@ compressive strength</p></li>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-11.py">Source code</a>, <a class="reference external" href="../user_guide/materials-11.png">png</a>, <a class="reference external" href="../user_guide/materials-11.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-11.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/bb9c80056e069e16d29e5de658957906/materials-11.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/ddc481d8dd815cbe90e4f3f0f83d5ee2/materials-11.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/2548a77ac0d5263ae92fedafd75f6e22/materials-11.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/c33864ade15710078970bfd64e57e4e1/materials-11.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id34">
 <img alt="../_images/materials-11.png" class="plot-directive" src="../_images/materials-11.png" />
 <p class="caption"><span class="caption-text">EurocodeParabolicUltimate Stress-Strain Profile</span><a class="headerlink" href="#id34" title="Permalink to this image">#</a></p>
@@ -1144,7 +1202,7 @@ compressive strength</p></li>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-12.py">Source code</a>, <a class="reference external" href="../user_guide/materials-12.png">png</a>, <a class="reference external" href="../user_guide/materials-12.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-12.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/690a1296241f0167c8d95f5a69a49476/materials-12.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/be1fe01f4d3801e71d5f0bf132fa0573/materials-12.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/e11faeffc0a49a85e2960178f5c2679e/materials-12.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/22ea766917a4ac538d629f97edfb0ebc/materials-12.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id36">
 <img alt="../_images/materials-12.png" class="plot-directive" src="../_images/materials-12.png" />
 <p class="caption"><span class="caption-text">SteelProfile Stress-Strain Profile</span><a class="headerlink" href="#id36" title="Permalink to this image">#</a></p>
@@ -1177,7 +1235,7 @@ compressive strength</p></li>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-13.py">Source code</a>, <a class="reference external" href="../user_guide/materials-13.png">png</a>, <a class="reference external" href="../user_guide/materials-13.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-13.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/82ae9aadb8bc60e5186fb7c09e65773a/materials-13.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/d9cfb9f96c03377f820faf8fb5b817b4/materials-13.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/cfea821c9f68f1a33ba76674bc78756e/materials-13.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/6d3b1a7140ae9732705047b2cd8f1c84/materials-13.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id38">
 <img alt="../_images/materials-13.png" class="plot-directive" src="../_images/materials-13.png" />
 <p class="caption"><span class="caption-text">SteelElasticPlastic Stress-Strain Profile</span><a class="headerlink" href="#id38" title="Permalink to this image">#</a></p>
@@ -1212,7 +1270,7 @@ compressive strength</p></li>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-14.py">Source code</a>, <a class="reference external" href="../user_guide/materials-14.png">png</a>, <a class="reference external" href="../user_guide/materials-14.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-14.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/2fa0e8b777f98f5489af73fc5def3e8f/materials-14.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/1b8b4cfbe50d2aad862e1d3283cf3a7b/materials-14.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/a535adb400f5dfe5e2dad0c804a3985c/materials-14.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/b1123cc81c75267d09b0f32ccdbfdf5a/materials-14.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id40">
 <img alt="../_images/materials-14.png" class="plot-directive" src="../_images/materials-14.png" />
 <p class="caption"><span class="caption-text">SteelHardening Stress-Strain Profile</span><a class="headerlink" href="#id40" title="Permalink to this image">#</a></p>
@@ -1250,7 +1308,7 @@ compression.</p>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-15.py">Source code</a>, <a class="reference external" href="../user_guide/materials-15.png">png</a>, <a class="reference external" href="../user_guide/materials-15.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-15.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/8a383e49da70eb7225d24d9ab7c1b65b/materials-15.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/2e1a5976fb40e844edc20b74c59e03e0/materials-15.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/c23a784f41276b2ecb669109bdffa1da/materials-15.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/7d370afdd69ad8979aead586084b5b32/materials-15.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id42">
 <img alt="../_images/materials-15.png" class="plot-directive" src="../_images/materials-15.png" />
 <p class="caption"><span class="caption-text">StrandProfile Stress-Strain Profile</span><a class="headerlink" href="#id42" title="Permalink to this image">#</a></p>
@@ -1285,7 +1343,7 @@ compression.</p>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-16.py">Source code</a>, <a class="reference external" href="../user_guide/materials-16.png">png</a>, <a class="reference external" href="../user_guide/materials-16.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-16.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/1601a3c2ef03e197425f480c6fc7c36a/materials-16.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/b0d73faa9d466c1adfb3745eb5513a2e/materials-16.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/e1f15c7a59119b8dc06eaf33764dd7a9/materials-16.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/48fb81ebf197f07dfc7d2cf108b0e46d/materials-16.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id44">
 <img alt="../_images/materials-16.png" class="plot-directive" src="../_images/materials-16.png" />
 <p class="caption"><span class="caption-text">StrandHardening Stress-Strain Profile</span><a class="headerlink" href="#id44" title="Permalink to this image">#</a></p>
@@ -1328,7 +1386,7 @@ must be equal to 3.</p></li>
 <span class="p">)</span><span class="o">.</span><span class="n">plot_stress_strain</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/materials-17.py">Source code</a>, <a class="reference external" href="../user_guide/materials-17.png">png</a>, <a class="reference external" href="../user_guide/materials-17.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/materials-17.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/e23a4afb83364c14dfcc807127ea2e7f/materials-17.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/bb482dfdcaa53adb38943556825b8d79/materials-17.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/374092d6f509aba8a482ff280ff456c5/materials-17.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/9d1780ff3a7982f75784a833cb0b9ab1/materials-17.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id46">
 <img alt="../_images/materials-17.png" class="plot-directive" src="../_images/materials-17.png" />
 <p class="caption"><span class="caption-text">StrandPCI1992 Stress-Strain Profile</span><a class="headerlink" href="#id46" title="Permalink to this image">#</a></p>
@@ -1339,261 +1397,158 @@ must be equal to 3.</p></li>
 </div>
 
 
-            </article>
-            
-            
-            
-            <footer class="bd-footer-article">
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="../user_guide.html" title="previous page">
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../user_guide.html"
+       title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
-          <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">User Guide</p>
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">User Guide</p>
       </div>
-  </a>
-  <a class='right-next' id="next-link" href="geometry.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title"><span class="section-number">2. </span>Geometry</p>
-  </div>
-  <i class="fa-solid fa-angle-right"></i>
-  </a>
+    </a>
+    <a class="right-next"
+       href="geometry.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Geometry</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
 </div>
-            </footer>
-            
-          </div>
-          
-          
-          
-            <div class="bd-sidebar-secondary bd-toc">
+
+                </footer>
               
-<div class="toc-item">
-  
-<div class="tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-</div>
-<nav id="bd-toc-nav" class="page-toc">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#material-classes">
-   1.1. Material Classes
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#material">
-     1.1.1. Material
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#concrete">
-     1.1.2. Concrete
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#steel">
-     1.1.3. Steel
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#steelbar">
-     1.1.4. SteelBar
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#steelstrand">
-     1.1.5. SteelStrand
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#stress-strain-profiles">
-   1.2. Stress-Strain Profiles
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#concrete-service-stress-strain-profiles">
-     1.2.1. Concrete Service Stress-Strain Profiles
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#generic-concrete-service-profile">
-       1.2.1.1. Generic Concrete Service Profile
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#linear-concrete-service-profile">
-       1.2.1.2. Linear Concrete Service Profile
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#linear-concrete-no-tension-service-profile">
-       1.2.1.3. Linear Concrete (No Tension) Service Profile
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#eurocode-non-linear-concrete-service-profile">
-       1.2.1.4. Eurocode Non-Linear Concrete Service Profile
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#modified-mander-non-linear-unconfined-confined-concrete-service-profile">
-       1.2.1.5. Modified Mander Non-Linear Unconfined &amp; Confined Concrete Service Profile
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#concrete-ultimate-stress-strain-profiles">
-     1.2.2. Concrete Ultimate Stress-Strain Profiles
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#generic-concrete-ultimate-profile">
-       1.2.2.1. Generic Concrete Ultimate Profile
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#rectangular-stress-block">
-       1.2.2.2. Rectangular Stress Block
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#bilinear-ultimate-profile">
-       1.2.2.3. Bilinear Ultimate Profile
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#eurocode-parabolic-ultimate-profile">
-       1.2.2.4. Eurocode Parabolic Ultimate Profile
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#steel-stress-strain-profiles">
-     1.2.3. Steel Stress-Strain Profiles
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#generic-steel-profile">
-       1.2.3.1. Generic Steel Profile
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#elastic-plastic-steel-profile">
-       1.2.3.2. Elastic-Plastic Steel Profile
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#elastic-plastic-hardening-steel-profile">
-       1.2.3.3. Elastic-Plastic Hardening Steel Profile
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#strand-stress-strain-profiles">
-     1.2.4. Strand Stress-Strain Profiles
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#generic-strand-profile">
-       1.2.4.1. Generic Strand Profile
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#elastic-plastic-hardening-strand-profile">
-       1.2.4.2. Elastic-Plastic Hardening Strand Profile
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#pci-journal-1992-strand-profile">
-       1.2.4.3. PCI Journal (1992) Strand Profile
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
-</ul>
-
-</nav>
-</div>
-
-<div class="toc-item">
-  
-<div id="searchbox"></div>
-</div>
-
-<div class="toc-item">
-  
-
-<div class="tocsection editthispage">
-    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/user_guide/materials.rst">
-        <i class="fa-solid fa-pencil"></i> Edit this page
-    </a>
-</div>
-
-</div>
-
-<div class="toc-item">
-  
-</div>
-
             </div>
-          
-          
-        </div>
-        <footer class="bd-footer-content">
-          <div class="bd-footer-content__inner">
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#material-classes">1.1. Material Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#material">1.1.1. Material</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concrete">1.1.2. Concrete</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#steel">1.1.3. Steel</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#steelbar">1.1.4. SteelBar</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#steelstrand">1.1.5. SteelStrand</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stress-strain-profiles">1.2. Stress-Strain Profiles</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concrete-service-stress-strain-profiles">1.2.1. Concrete Service Stress-Strain Profiles</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#generic-concrete-service-profile">1.2.1.1. Generic Concrete Service Profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-concrete-service-profile">1.2.1.2. Linear Concrete Service Profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-concrete-no-tension-service-profile">1.2.1.3. Linear Concrete (No Tension) Service Profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#eurocode-non-linear-concrete-service-profile">1.2.1.4. Eurocode Non-Linear Concrete Service Profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#modified-mander-non-linear-unconfined-confined-concrete-service-profile">1.2.1.5. Modified Mander Non-Linear Unconfined &amp; Confined Concrete Service Profile</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concrete-ultimate-stress-strain-profiles">1.2.2. Concrete Ultimate Stress-Strain Profiles</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#generic-concrete-ultimate-profile">1.2.2.1. Generic Concrete Ultimate Profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rectangular-stress-block">1.2.2.2. Rectangular Stress Block</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bilinear-ultimate-profile">1.2.2.3. Bilinear Ultimate Profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#eurocode-parabolic-ultimate-profile">1.2.2.4. Eurocode Parabolic Ultimate Profile</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#steel-stress-strain-profiles">1.2.3. Steel Stress-Strain Profiles</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#generic-steel-profile">1.2.3.1. Generic Steel Profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#elastic-plastic-steel-profile">1.2.3.2. Elastic-Plastic Steel Profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#elastic-plastic-hardening-steel-profile">1.2.3.3. Elastic-Plastic Hardening Steel Profile</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strand-stress-strain-profiles">1.2.4. Strand Stress-Strain Profiles</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#generic-strand-profile">1.2.4.1. Generic Strand Profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#elastic-plastic-hardening-strand-profile">1.2.4.2. Elastic-Plastic Hardening Strand Profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pci-journal-1992-strand-profile">1.2.4.3. PCI Journal (1992) Strand Profile</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/user_guide/materials.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
             
           </div>
-        </footer>
+          <footer class="bd-footer-content">
+            
+          </footer>
         
       </main>
     </div>
   </div>
-
   
-    
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
-  <footer class="bd-footer"><div class="bd-footer__inner container">
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
   
-  <div class="footer-item">
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
     
-<p class="copyright">
-
-    &copy; Copyright 2022, Robbie van Leeuwen.<br>
-
-</p>
-
-  </div>
-  
-  <div class="footer-item">
-    <p class="theme-version">
-    Built with the
-    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
-        PyData Sphinx Theme
-    </a>
-    0.12.0.
-</p>
-  </div>
-  
-  <div class="footer-item">
+      © Copyright 2022, Robbie van Leeuwen.
+      <br/>
     
-<p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
-</p>
-
-  </div>
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
   
 </div>
+
   </footer>
   </body>
 </html>

@@ -1,11 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html lang="en">
+
+<html lang="en" data-theme="light">
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>concreteproperties.design_codes.nzs3101 &#8212; concreteproperties 0.4.1 documentation</title>
+    <title>concreteproperties.design_codes.nzs3101 &#8212; concreteproperties 0.5.0 documentation</title>
   
   
   
@@ -15,22 +18,22 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-<link href="../../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
   
-  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -46,89 +49,106 @@
         </script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="docsearch:language" content="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
 
   
   
   <a class="skip-link" href="#main-content">Skip to main content</a>
-
   
-  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
   <label class="overlay overlay-primary" for="__primary"></label>
-
   
-  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
   <label class="overlay overlay-secondary" for="__secondary"></label>
-
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
     <div class="search-button__search-container">
-      
-<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-    </div>
+</form></div>
   </div>
-
   
-  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fa-solid fa-bars"></span>
+    <span class="fa-solid fa-bars"></span>
   </label>
-  <div id="navbar-start">
-    
-    
   
-
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
 
 <a class="navbar-brand logo" href="../../../index.html">
-
   
   
   
   
-  
-  
-  
-
-  
-    <img src="../../../_static/cp_logo.png" class="logo__image only-light" alt="Logo image">
-    <img src="../../../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image">
-  
-  
-</a>
     
-    <div class="version-switcher__container dropdown">
-    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
-        latest  <!-- this text may get changed later by javascript -->
-        <span class="caret"></span>
+    
+    
+    <img src="../../../_static/cp_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
     </button>
     <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
     <!-- dropdown will be populated by javascript on page load -->
     </div>
-</div>
+  </div>
+`);
+</script></div>
     
   </div>
-
+  
   
   <div class="col-lg-9 navbar-header-items">
-    <div id="navbar-center" class="mr-auto">
+    
+    <div class="me-auto navbar-header-items__center">
       
-      <div class="navbar-center-item">
-        <nav class="navbar-nav">
-    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
-        Site Navigation
-    </p>
-    <ul id="navbar-main-elements" class="navbar-nav">
-        
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../../installation.html">
                         Installation
@@ -156,32 +176,39 @@
                       </a>
                     </li>
                 
-    </ul>
-</nav>
-      </div>
+  </ul>
+</nav></div>
       
     </div>
-
-    <div id="navbar-end">
+    
+    
+    <div class="navbar-header-items__end">
       
-        <div class="navbar-end-item navbar-persistent--container">
+        <div class="navbar-item navbar-persistent--container">
           
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
-  <i class="fa-solid fa-magnifying-glass"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
         </div>
       
       
-      <div class="navbar-end-item">
-        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
     <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
     <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-</button>
-      </div>
+  </button>
+`);
+</script></div>
       
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
         <li class="nav-item">
           
           
@@ -190,7 +217,8 @@
           
           
           
-          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
         <li class="nav-item">
@@ -201,53 +229,54 @@
           
           
           
-          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fas fa-box"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
-      </ul>
-      </div>
+</ul></div>
       
     </div>
+    
   </div>
-
-
   
   
     <div class="navbar-persistent--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
-  <i class="fa-solid fa-magnifying-glass"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
     </div>
   
 
   
-  <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fa-solid fa-outdent"></span>
-  </label>
-  
-
 </div>
-  </nav>
-  
 
+    </nav>
+  
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
       <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
+
   
   <div class="sidebar-header-items sidebar-primary__section">
     
     
       <div class="sidebar-header-items__center">
-      
-      <div class="navbar-center-item">
-        <nav class="navbar-nav">
-    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
-        Site Navigation
-    </p>
-    <ul id="navbar-main-elements" class="navbar-nav">
         
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../../installation.html">
                         Installation
@@ -275,27 +304,28 @@
                       </a>
                     </li>
                 
-    </ul>
-</nav>
+  </ul>
+</nav></div>
+        
       </div>
-      
-      </div>
-    
-
     
     
-    <div class="sidebar-header-items__end">
-      
-      <div class="navbar-end-item">
-        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
     <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
     <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-</button>
-      </div>
-      
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
         <li class="nav-item">
           
           
@@ -304,7 +334,8 @@
           
           
           
-          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
         <li class="nav-item">
@@ -315,41 +346,68 @@
           
           
           
-          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fas fa-box"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
-      </ul>
+</ul></div>
+        
       </div>
-      
-    </div>
     
   </div>
-
   
-
   
-  <div class="sidebar-end-items sidebar-primary__section">
-    <div class="sidebar-end-items__item">
-    </div>
+  <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-
   
   <div id="rtd-footer-container"></div>
 
+
       </div>
+      
       <main id="main-content" class="bd-main">
         
         
-        <div class="bd-content">
-          <div class="bd-article-container">
-            
-            <div class="bd-header-article">
-                
-            </div>
-            
-            
-            <article class="bd-article" role="main">
+          <div class="bd-content">
+            <div class="bd-article-container">
               
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">concreteproperties.design_codes.nzs3101</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <h1>Source code for concreteproperties.design_codes.nzs3101</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
@@ -371,7 +429,7 @@
 
 
 <div class="viewcode-block" id="NZS3101"><a class="viewcode-back" href="../../../user_guide/design_codes/nzs3101.html#concreteproperties.design_codes.nzs3101.NZS3101">[docs]</a><span class="k">class</span> <span class="nc">NZS3101</span><span class="p">(</span><span class="n">DesignCode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Design code class for the New Zealand concrete design standard NZS3101:2006. Also</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Design code class for the New Zealand concrete design standard NZS3101:2006. Also</span>
 <span class="sd">    implements the requirements of the NZSEE C5 assessment guidelines for probable</span>
 <span class="sd">    strength design.</span>
 
@@ -384,13 +442,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Inits the NZS3101 class.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inits the NZS3101 class.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">analysis_code</span> <span class="o">=</span> <span class="s2">&quot;NZS3101:2006&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
 <div class="viewcode-block" id="NZS3101.SteelBarNZ"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.SteelBarNZ">[docs]</a>    <span class="nd">@dataclass</span>
     <span class="k">class</span> <span class="nc">SteelBarNZ</span><span class="p">(</span><span class="n">SteelBar</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class for a steel bar material to NZS3101, treated as a lumped circular mass</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class for a steel bar material to NZS3101, treated as a lumped circular mass</span>
 <span class="sd">        with a constant strain.</span>
 
 <span class="sd">        :param name: Steel bar material name</span>
@@ -418,7 +476,7 @@
         <span class="n">concrete_section</span><span class="p">:</span> <span class="n">ConcreteSection</span><span class="p">,</span>
         <span class="n">section_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;column&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Assigns a concrete section and the section type for the concrete section to</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assigns a concrete section and the section type for the concrete section to</span>
 <span class="sd">        the design code.</span>
 
 <span class="sd">        :param concrete_section: Concrete section object to analyse</span>
@@ -476,7 +534,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">analysis_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;nom_chk&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConcreteSection</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Assigns the appropriate concrete section to be analysed depending on the</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assigns the appropriate concrete section to be analysed depending on the</span>
 <span class="sd">        analysis type requested.</span>
 
 <span class="sd">        :param analysis_type: The type of cross section analysis to undertake on the</span>
@@ -507,7 +565,7 @@
         <span class="k">return</span> <span class="n">analysis_section</span></div>
 
 <div class="viewcode-block" id="NZS3101.e_conc"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.e_conc">[docs]</a>    <span class="k">def</span> <span class="nf">e_conc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compressive_strength</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">density</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2300</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates Youngs Modulus (:math:`E_c`) for concrete in accordance with</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates Youngs Modulus (:math:`E_c`) for concrete in accordance with</span>
 <span class="sd">        NZS3101:2006 CL 5.2.3(b).</span>
 
 <span class="sd">        :math:`E_c=\displaystyle{4700\sqrt{f&#39;_c}\frac{\rho}{2300}}`</span>
@@ -532,7 +590,7 @@
 <div class="viewcode-block" id="NZS3101.check_density_limits"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.check_density_limits">[docs]</a>    <span class="k">def</span> <span class="nf">check_density_limits</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">low_limit</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">high_limit</span><span class="p">:</span> <span class="nb">float</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Checks that the density is within the bounds outlined within NZS3101:2006</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Checks that the density is within the bounds outlined within NZS3101:2006</span>
 <span class="sd">        CL 5.2.2 for the elastic modulus expression within NZS3101:2006 CL 5.2.3(b) to</span>
 <span class="sd">        be valid.</span>
 
@@ -551,7 +609,7 @@
             <span class="p">)</span></div>
 
 <div class="viewcode-block" id="NZS3101.alpha_1"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.alpha_1">[docs]</a>    <span class="k">def</span> <span class="nf">alpha_1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compressive_strength</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Scaling factor relating the nominal 28 day concrete compressive strength to</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Scaling factor relating the nominal 28 day concrete compressive strength to</span>
 <span class="sd">        the effective concrete compressive strength used for design purposes within the</span>
 <span class="sd">        concrete stress block. For an equivalent rectangular compressive stress block it</span>
 <span class="sd">        relates the 28 day concrete compressive strength (:math:`f&#39;_c`) to the average</span>
@@ -575,7 +633,7 @@
         <span class="k">return</span> <span class="n">alpha_1</span></div>
 
 <div class="viewcode-block" id="NZS3101.beta_1"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.beta_1">[docs]</a>    <span class="k">def</span> <span class="nf">beta_1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compressive_strength</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Scaling factor relating the depth of an equivalent rectangular compressive</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Scaling factor relating the depth of an equivalent rectangular compressive</span>
 <span class="sd">        stress block (:math:`a`) to the depth of the neutral axis (:math:`c`).</span>
 <span class="sd">        A function of the concrete compressive strength.</span>
 
@@ -596,7 +654,7 @@
         <span class="k">return</span> <span class="n">beta_1</span></div>
 
 <div class="viewcode-block" id="NZS3101.lamda"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.lamda">[docs]</a>    <span class="k">def</span> <span class="nf">lamda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Modification factor reflecting the reduced mechanical properties of</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Modification factor reflecting the reduced mechanical properties of</span>
 <span class="sd">        lightweight concrete relative to normal weight concrete of the same compression</span>
 <span class="sd">        strength.</span>
 
@@ -615,7 +673,7 @@
         <span class="n">density</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2300</span><span class="p">,</span>
         <span class="n">prob_design</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the lower characteristic tensile strength of concrete</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the lower characteristic tensile strength of concrete</span>
 <span class="sd">        (:math:`f_t`) in accordance with NZS3101:2006 CL 5.2.4, or calculates the</span>
 <span class="sd">        probable tensile strength of concrete in accordance with NZSEE C5 assessment</span>
 <span class="sd">        guidelines C5.4.2.4.</span>
@@ -650,7 +708,7 @@
         <span class="n">compressive_strength</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">density</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2300</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the average modulus of rupture of concrete (:math:`f_r`) in</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the average modulus of rupture of concrete (:math:`f_r`) in</span>
 <span class="sd">        accordance with NZS3101:2006 CL 5.2.5 for deflection calculations.</span>
 
 <span class="sd">        :math:`\quad f_r=0.6\lambda({f&#39;_c})^{0.5}`</span>
@@ -664,7 +722,7 @@
         <span class="k">return</span> <span class="n">f_r</span></div>
 
 <div class="viewcode-block" id="NZS3101.prob_compressive_strength"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.prob_compressive_strength">[docs]</a>    <span class="k">def</span> <span class="nf">prob_compressive_strength</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compressive_strength</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the probable compressive strength of concrete in accordance with</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the probable compressive strength of concrete in accordance with</span>
 <span class="sd">        NZSEE C5 assessement guidelines C5.4.2.2.</span>
 
 <span class="sd">        Taken as the nominal 28-day compressive strenght of the concrete specified for</span>
@@ -687,7 +745,7 @@
         <span class="n">prob_design</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">add_compressive_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Function to return the nominal, overstrength or probable concrete capacity</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Function to return the nominal, overstrength or probable concrete capacity</span>
 <span class="sd">        capacity of a concrete section.</span>
 
 <span class="sd">        - Note for a column section type outputs the unfactored concrete yield force</span>
@@ -765,7 +823,7 @@
 <div class="viewcode-block" id="NZS3101.steel_capacity"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.steel_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">steel_capacity</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">os_design</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">prob_design</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Function to return the nominal, overstrength or probable steel reinforcement</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to return the nominal, overstrength or probable steel reinforcement</span>
 <span class="sd">        capacity of a concrete section.</span>
 
 <span class="sd">        :param os_design: True if an overstrength capacity of a concrete section is</span>
@@ -817,7 +875,7 @@
         <span class="n">os_design</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">prob_design</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Function to return the nominal, overstrength or probable axial load</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Function to return the nominal, overstrength or probable axial load</span>
 <span class="sd">        compressive strength of a concrete section when the load is applied with zero</span>
 <span class="sd">        eccentricity.</span>
 
@@ -915,7 +973,7 @@
 <div class="viewcode-block" id="NZS3101.max_ten_strength"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.max_ten_strength">[docs]</a>    <span class="k">def</span> <span class="nf">max_ten_strength</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">os_design</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">prob_design</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Function to return the nominal axial load tension strength of a concrete</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Function to return the nominal axial load tension strength of a concrete</span>
 <span class="sd">        section when the load is applied with zero eccentricity.</span>
 
 <span class="sd">        :math:`\quad N_{t,max} = f_yA_{st}`</span>
@@ -944,7 +1002,7 @@
         <span class="n">prob_design</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">n_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Checks that the specified axial load is within the maximum tensile and</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Checks that the specified axial load is within the maximum tensile and</span>
 <span class="sd">        compressive capacity of the concrete cross section.</span>
 
 <span class="sd">        :param n_design: Axial design force (:math:`N^*`)</span>
@@ -982,7 +1040,7 @@
             <span class="p">)</span></div>
 
 <div class="viewcode-block" id="NZS3101.check_f_y_limit"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.check_f_y_limit">[docs]</a>    <span class="k">def</span> <span class="nf">check_f_y_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Checks that the specified steel reinforcement strengths for all defined</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks that the specified steel reinforcement strengths for all defined</span>
 <span class="sd">        steel geometries comply with NZS3101:2006 CL 5.3.3.</span>
 
 <span class="sd">        .. note:: Note this check does not apply to predefined steel materials based on</span>
@@ -1020,7 +1078,7 @@
                     <span class="p">)</span></div>
 
 <div class="viewcode-block" id="NZS3101.check_f_c_limits"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.check_f_c_limits">[docs]</a>    <span class="k">def</span> <span class="nf">check_f_c_limits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pphr_class</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Checks that a valid Potential Plastic Hinge Region (PPHR) classification has</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks that a valid Potential Plastic Hinge Region (PPHR) classification has</span>
 <span class="sd">        been specified, and that the specified compressive strengths for all defined</span>
 <span class="sd">        concrete geometries comply with NZS3101:2006 CL 5.2.1 for the specified PPHR</span>
 <span class="sd">        classification.</span>
@@ -1076,7 +1134,7 @@
         <span class="n">density</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2300</span><span class="p">,</span>
         <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Concrete</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a concrete material object to NZS3101:2006.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a concrete material object to NZS3101:2006.</span>
 
 <span class="sd">        .. admonition:: Material assumptions</span>
 
@@ -1138,7 +1196,7 @@
 <div class="viewcode-block" id="NZS3101.predefined_steel_materials"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.predefined_steel_materials">[docs]</a>    <span class="k">def</span> <span class="nf">predefined_steel_materials</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a list of predefined material properties for steel grades for design</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a list of predefined material properties for steel grades for design</span>
 <span class="sd">        to NZS3101:2006 &amp; NZSEE C5 assessment guidelines.</span>
 
 <span class="sd">        Refer to :meth:`NZS3101.create_steel_material` for details of predefined steel</span>
@@ -1215,7 +1273,7 @@
         <span class="n">phi_os</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NZS3101</span><span class="o">.</span><span class="n">SteelBarNZ</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a steel material object specific to the NZS3101:2006 code.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns a steel material object specific to the NZS3101:2006 code.</span>
 
 <span class="sd">        .. admonition:: Material assumptions</span>
 
@@ -1462,7 +1520,7 @@
 <div class="viewcode-block" id="NZS3101.capacity_reduction_factor"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.capacity_reduction_factor">[docs]</a>    <span class="k">def</span> <span class="nf">capacity_reduction_factor</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">analysis_type</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the appropriate NZS3101:2006 or NZSEE C5 assessment guidelines</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the appropriate NZS3101:2006 or NZSEE C5 assessment guidelines</span>
 <span class="sd">        capacity reduction factor dependant on the type of analysis specified. Refer to</span>
 <span class="sd">        NZS3101:2006 CL 2.3.2.2 or NZSEE C5 assessment guidelines C5.5.1.4.</span>
 
@@ -1661,7 +1719,7 @@
 <div class="viewcode-block" id="NZS3101.create_os_section"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.create_os_section">[docs]</a>    <span class="k">def</span> <span class="nf">create_os_section</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">add_compressive_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">15</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConcreteSection</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Creates a concrete section with likely maximum material strength properties</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a concrete section with likely maximum material strength properties</span>
 <span class="sd">        for a cross section analysis to NZS3101:2006. Concrete and steel reinforcement</span>
 <span class="sd">        strength properties are modified in accordance with NZS3101:2006 CL 2.6.5.5 to</span>
 <span class="sd">        reflect likely maximum material strengths.</span>
@@ -1738,7 +1796,7 @@
         <span class="k">return</span> <span class="n">os_concrete_section</span></div>
 
 <div class="viewcode-block" id="NZS3101.create_prob_section"><a class="viewcode-back" href="../../../gen/concreteproperties.design_codes.nzs3101.NZS3101.html#concreteproperties.design_codes.nzs3101.NZS3101.create_prob_section">[docs]</a>    <span class="k">def</span> <span class="nf">create_prob_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">os_design</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConcreteSection</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Creates a concrete section with probable strength material properties</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a concrete section with probable strength material properties</span>
 <span class="sd">        for a cross section analysis to NZS3101:2006 &amp; NZSEE C5 assessment guidelines.</span>
 <span class="sd">        Concrete and steel reinforcement strength properties are modified in accordance</span>
 <span class="sd">        with NZSEE C5 assessment guidelines C5.4.2.2 &amp; C5.4.3.</span>
@@ -1847,7 +1905,7 @@
         <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">n_design</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">UltimateBendingResults</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the ultimate bending capacity with capacity factors to</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the ultimate bending capacity with capacity factors to</span>
 <span class="sd">        NZS3101:2006 or the NZSEE C5 assessment guidelines dependant on analysis type.</span>
 
 <span class="sd">        :param analysis_type: The type of cross section analysis to undertake on the</span>
@@ -1910,7 +1968,7 @@
         <span class="n">max_comp_labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">MomentInteractionResults</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram with capacity factors and material</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generates a moment interaction diagram with capacity factors and material</span>
 <span class="sd">        strengths to NZS3101:2006 or the NZSEE C5 assessment guidelines dependant</span>
 <span class="sd">        on analysis type.</span>
 
@@ -2015,7 +2073,7 @@
         <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">48</span><span class="p">,</span>
         <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">res</span><span class="o">.</span><span class="n">BiaxialBendingResults</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Generates a biaxial bending with capacity factors to NZS3101:2006 or the</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates a biaxial bending with capacity factors to NZS3101:2006 or the</span>
 <span class="sd">        NZSEE C5 assessment guidelines dependant on analysis type.</span>
 
 <span class="sd">        :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,</span>
@@ -2104,86 +2162,74 @@
         <span class="k">return</span> <span class="n">f_bb_res</span><span class="p">,</span> <span class="n">phis</span></div></div>
 </pre></div>
 
-            </article>
-            
-            
-            
-            <footer class="bd-footer-article">
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-</div>
-            </footer>
-            
-          </div>
-          
-          
-          
-            <div class="bd-sidebar-secondary bd-toc">
+                </article>
               
-<div class="toc-item">
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
   
-<div id="searchbox"></div>
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
 </div>
 
-<div class="toc-item">
-  
-</div>
-
-<div class="toc-item">
-  
-</div>
-
+                </footer>
+              
             </div>
-          
-          
-        </div>
-        <footer class="bd-footer-content">
-          <div class="bd-footer-content__inner">
+            
+            
+              
             
           </div>
-        </footer>
+          <footer class="bd-footer-content">
+            
+          </footer>
         
       </main>
     </div>
   </div>
-
   
-    
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
-  <footer class="bd-footer"><div class="bd-footer__inner container">
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
   
-  <div class="footer-item">
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
     
-<p class="copyright">
-
-    &copy; Copyright 2022, Robbie van Leeuwen.<br>
-
-</p>
-
-  </div>
-  
-  <div class="footer-item">
-    <p class="theme-version">
-    Built with the
-    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
-        PyData Sphinx Theme
-    </a>
-    0.12.0.
-</p>
-  </div>
-  
-  <div class="footer-item">
+      © Copyright 2022, Robbie van Leeuwen.
+      <br/>
     
-<p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
-</p>
-
-  </div>
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
   
 </div>
+
   </footer>
   </body>
 </html>

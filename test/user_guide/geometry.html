@@ -1,11 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html lang="en">
+
+<html lang="en" data-theme="light">
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2. Geometry &#8212; concreteproperties 0.4.1 documentation</title>
+    <title>2. Geometry &#8212; concreteproperties 0.5.0 documentation</title>
   
   
   
@@ -15,22 +18,22 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -50,89 +53,106 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3. Analysis" href="analysis.html" />
     <link rel="prev" title="1. Materials" href="materials.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="docsearch:language" content="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
 
   
   
   <a class="skip-link" href="#main-content">Skip to main content</a>
-
   
-  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
   <label class="overlay overlay-primary" for="__primary"></label>
-
   
-  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
   <label class="overlay overlay-secondary" for="__secondary"></label>
-
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
     <div class="search-button__search-container">
-      
-<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-    </div>
+</form></div>
   </div>
-
   
-  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fa-solid fa-bars"></span>
+    <span class="fa-solid fa-bars"></span>
   </label>
-  <div id="navbar-start">
-    
-    
   
-
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
 
 <a class="navbar-brand logo" href="../index.html">
-
   
   
   
   
-  
-  
-  
-
-  
-    <img src="../_static/cp_logo.png" class="logo__image only-light" alt="Logo image">
-    <img src="../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image">
-  
-  
-</a>
     
-    <div class="version-switcher__container dropdown">
-    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
-        latest  <!-- this text may get changed later by javascript -->
-        <span class="caret"></span>
+    
+    
+    <img src="../_static/cp_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/cp_logo_dark.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
     </button>
     <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
     <!-- dropdown will be populated by javascript on page load -->
     </div>
-</div>
+  </div>
+`);
+</script></div>
     
   </div>
-
+  
   
   <div class="col-lg-9 navbar-header-items">
-    <div id="navbar-center" class="mr-auto">
+    
+    <div class="me-auto navbar-header-items__center">
       
-      <div class="navbar-center-item">
-        <nav class="navbar-nav">
-    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
-        Site Navigation
-    </p>
-    <ul id="navbar-main-elements" class="navbar-nav">
-        
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../installation.html">
                         Installation
@@ -160,32 +180,39 @@
                       </a>
                     </li>
                 
-    </ul>
-</nav>
-      </div>
+  </ul>
+</nav></div>
       
     </div>
-
-    <div id="navbar-end">
+    
+    
+    <div class="navbar-header-items__end">
       
-        <div class="navbar-end-item navbar-persistent--container">
+        <div class="navbar-item navbar-persistent--container">
           
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
-  <i class="fa-solid fa-magnifying-glass"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
         </div>
       
       
-      <div class="navbar-end-item">
-        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
     <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
     <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-</button>
-      </div>
+  </button>
+`);
+</script></div>
       
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
         <li class="nav-item">
           
           
@@ -194,7 +221,8 @@
           
           
           
-          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
         <li class="nav-item">
@@ -205,53 +233,58 @@
           
           
           
-          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fas fa-box"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
-      </ul>
-      </div>
+</ul></div>
       
     </div>
+    
   </div>
-
-
   
   
     <div class="navbar-persistent--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
-  <i class="fa-solid fa-magnifying-glass"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
     </div>
   
 
   
-  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
       <span class="fa-solid fa-outdent"></span>
-  </label>
+    </label>
   
-
 </div>
-  </nav>
-  
 
+    </nav>
+  
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
       <div class="bd-sidebar-primary bd-sidebar">
         
+
   
   <div class="sidebar-header-items sidebar-primary__section">
     
     
       <div class="sidebar-header-items__center">
-      
-      <div class="navbar-center-item">
-        <nav class="navbar-nav">
-    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
-        Site Navigation
-    </p>
-    <ul id="navbar-main-elements" class="navbar-nav">
         
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../installation.html">
                         Installation
@@ -279,27 +312,28 @@
                       </a>
                     </li>
                 
-    </ul>
-</nav>
+  </ul>
+</nav></div>
+        
       </div>
-      
-      </div>
-    
-
     
     
-    <div class="sidebar-header-items__end">
-      
-      <div class="navbar-end-item">
-        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
     <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
     <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-</button>
-      </div>
-      
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
         <li class="nav-item">
           
           
@@ -308,7 +342,8 @@
           
           
           
-          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/robbievanleeuwen/concrete-properties" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
         <li class="nav-item">
@@ -319,24 +354,21 @@
           
           
           
-          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-box"></i></span>
+          
+          <a href="https://pypi.org/project/concreteproperties/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fas fa-box"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
-      </ul>
+</ul></div>
+        
       </div>
-      
-    </div>
     
   </div>
-
   
-  <div class="sidebar-start-items sidebar-primary__section">
-    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">
-    Section Navigation
-  </p>
-  <div class="bd-toc-item navbar-nav">
-    <ul class="current nav bd-sidenav">
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="materials.html">1. Materials</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="analysis.html">3. Analysis</a></li>
@@ -349,53 +381,79 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="assumptions.html">7. Assumptions</a></li>
 </ul>
-
-  </div>
-</nav>
+</div>
+</nav></div>
     </div>
-  </div>
   
-
   
-  <div class="sidebar-end-items sidebar-primary__section">
-    <div class="sidebar-end-items__item">
-    </div>
+  <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-
   
   <div id="rtd-footer-container"></div>
 
+
       </div>
+      
       <main id="main-content" class="bd-main">
         
         
-        <div class="bd-content">
-          <div class="bd-article-container">
-            
-            <div class="bd-header-article">
-                
-            </div>
-            
-            
-            <article class="bd-article" role="main">
+          <div class="bd-content">
+            <div class="bd-article-container">
               
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../user_guide.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="section-number">2. </span>Geometry</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <div class="section" id="geometry">
 <h1><span class="section-number">2. </span>Geometry<a class="headerlink" href="#geometry" title="Permalink to this heading">#</a></h1>
 <p><em>concreteproperties</em> uses the pre-processor from <i><a href="https://github.com/robbievanleeuwen/section-properties" target="_blank">sectionproperties</a></i> to build reinforced
-concrete cross-sections as <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>
+concrete cross-sections as <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>
 objects. <em>concreteproperties</em> expects a
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> object to contain geometry
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> object to contain geometry
 information describing both the concrete and reinforcement components of the
 cross-section. The concrete portion of the cross-section can be constructed in many
 ways:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/section_library.html#label-primitive-library" title="(in sectionproperties v2.1.4)"><span>Primitive Sections Library</span></a> (e.g. rectangles, circles etc.)</p></li>
-<li><p>Standards Sections Library (e.g. <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/section_library.html#label-concrete-library" title="(in sectionproperties v2.1.4)"><span>Concrete Sections Library</span></a>,
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/section_library.html#label-bridge-library" title="(in sectionproperties v2.1.4)"><span>Bridge Sections Library</span></a>)</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-from-points" title="(in sectionproperties v2.1.4)"><span>Geometry from points, facets, holes, and control points</span></a></p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-geometry-dxf" title="(in sectionproperties v2.1.4)"><span>Geometry from .dxf Files</span></a> and
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-geometry-3dm" title="(in sectionproperties v2.1.4)"><span>Geometry from Rhino</span></a></p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-geometry-set" title="(in sectionproperties v2.1.4)"><span>Combining Geometries Using Set Operations</span></a></p></li>
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/section_library.html#label-primitive-library" title="(in sectionproperties v2.1.5)"><span>Primitive Sections Library</span></a> (e.g. rectangles, circles etc.)</p></li>
+<li><p>Standards Sections Library (e.g. <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/section_library.html#label-concrete-library" title="(in sectionproperties v2.1.5)"><span>Concrete Sections Library</span></a>,
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/section_library.html#label-bridge-library" title="(in sectionproperties v2.1.5)"><span>Bridge Sections Library</span></a>)</p></li>
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-from-points" title="(in sectionproperties v2.1.5)"><span>Geometry from points, facets, holes, and control points</span></a></p></li>
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-geometry-dxf" title="(in sectionproperties v2.1.5)"><span>Geometry from .dxf Files</span></a> and
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-geometry-3dm" title="(in sectionproperties v2.1.5)"><span>Geometry from Rhino</span></a></p></li>
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/geom_mesh.html#label-geometry-set" title="(in sectionproperties v2.1.5)"><span>Combining Geometries Using Set Operations</span></a></p></li>
 </ul>
 <p>Next, reinforcing bars can be added to the concrete geometry using the methods in the
 <a class="reference internal" href="../gen/concreteproperties.pre.html#module-concreteproperties.pre" title="concreteproperties.pre"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pre</span></code></a> module, and are also included in geometries generated by
@@ -449,7 +507,7 @@ wide:</p>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-1.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-1.png">png</a>, <a class="reference external" href="../user_guide/geometry-1.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-1.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/cb46d9d1df489a77adb8300a8d6ab719/geometry-1.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/0cb004629614d91fecd57a8029cbbcc1/geometry-1.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/c03c85d5635f5d97057c8f62e40183d4/geometry-1.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/deba03552ceec4049ea3455fde6ae26c/geometry-1.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id1">
 <img alt="../_images/geometry-1.png" class="plot-directive" src="../_images/geometry-1.png" />
 <p class="caption"><span class="caption-text">600 mm deep x 300 mm wide concrete beam</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
@@ -465,7 +523,7 @@ below example uses 32 points to discretise the circle:</p>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-2.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-2.png">png</a>, <a class="reference external" href="../user_guide/geometry-2.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-2.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/a9a7649f12be57fffd5d263a31a8e579/geometry-2.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/5d13c6ed8d715767084aa17700d16811/geometry-2.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/bf010f639c4e60e8262b6fe8951e50ff/geometry-2.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/6df9855678b73088ebe96d27862538cd/geometry-2.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id3">
 <img alt="../_images/geometry-2.png" class="plot-directive" src="../_images/geometry-2.png" />
 <p class="caption"><span class="caption-text">600 mm diameter concrete cross-section</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
@@ -477,12 +535,12 @@ circle:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">geom</span> <span class="o">=</span> <span class="n">circular_section</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="go">280930.06</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">/</span> <span class="mi">4</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">600</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">600</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">4</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="go">282743.34</span>
 </pre></div>
 </div>
 <p>This discretisation error can be avoided by using the
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.library.primitive_sections.circular_section_by_area" title="(in sectionproperties v2.1.4)"><code class="xref py py-func docutils literal notranslate"><span class="pre">circular_section_by_area()</span></code></a>
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.library.primitive_sections.circular_section_by_area" title="(in sectionproperties v2.1.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">circular_section_by_area()</span></code></a>
 function, which adjusts the diameter based on the number of discrete points to ensure
 a circle with the correct area is generated:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
@@ -493,7 +551,7 @@ a circle with the correct area is generated:</p>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-3.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-3.png">png</a>, <a class="reference external" href="../user_guide/geometry-3.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-3.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/dd7fb619860ec1fd9bdcc35132cc9f60/geometry-3.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/4a5e6bf6e6709cfa10ba5c0d75157d33/geometry-3.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/9e8607cd5a79a384d00242882f18dfb9/geometry-3.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/7c70ffdbd3a7508fa5cc248fd14dd754/geometry-3.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id5">
 <img alt="../_images/geometry-3.png" class="plot-directive" src="../_images/geometry-3.png" />
 <p class="caption"><span class="caption-text">600 mm diameter concrete cross-section</span><a class="headerlink" href="#id5" title="Permalink to this image">#</a></p>
@@ -503,7 +561,7 @@ a circle with the correct area is generated:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">geom</span> <span class="o">=</span>   <span class="n">geom</span> <span class="o">=</span> <span class="n">circular_section_by_area</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">geom</span><span class="o">.</span><span class="n">calculate_area</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="go">282743.34</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">*</span> <span class="mi">600</span> <span class="o">/</span> <span class="mi">4</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">600</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">600</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">4</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="go">282743.34</span>
 </pre></div>
 </div>
@@ -527,7 +585,7 @@ the bottom:</p>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-4.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-4.png">png</a>, <a class="reference external" href="../user_guide/geometry-4.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-4.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/776fac1b46435f6eec9bbbd474799e8e/geometry-4.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/c14638f93aa51a85b4372ed8620bd857/geometry-4.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/91027a95b77e35be9fb07f1761ef8817/geometry-4.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/6e779df00b551bcc25eb48aedb7ce8a4/geometry-4.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id7">
 <img alt="../_images/geometry-4.png" class="plot-directive" src="../_images/geometry-4.png" />
 <p class="caption"><span class="caption-text">1200 mm deep concrete tee-beam</span><a class="headerlink" href="#id7" title="Permalink to this image">#</a></p>
@@ -551,7 +609,7 @@ area of the bar is all that <em>concreteproperties</em> requires:</p>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-5.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-5.png">png</a>, <a class="reference external" href="../user_guide/geometry-5.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-5.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/57dcef5fafd8a4f90ed4b2878843fa46/geometry-5.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/633de5ed2e4cf45edf14320b583e1fb7/geometry-5.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/da52982c25c538ab1336b5073d4705b4/geometry-5.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/fe3c84742fa03718c5a7a407243fc785/geometry-5.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id9">
 <img alt="../_images/geometry-5.png" class="plot-directive" src="../_images/geometry-5.png" />
 <p class="caption"><span class="caption-text">1200 mm deep concrete tee-beam</span><a class="headerlink" href="#id9" title="Permalink to this image">#</a></p>
@@ -566,7 +624,7 @@ this library. The following code creates a T5 Super-T section:</p>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-6.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-6.png">png</a>, <a class="reference external" href="../user_guide/geometry-6.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-6.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/029a5f02dde523af4fec456ac391cc16/geometry-6.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/c964730dc2430d14adb06ec6cdc2bed7/geometry-6.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/a693f8d47a68fa72c488df544ee59a9b/geometry-6.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/32c5c573442ce3d4fc3b27e7f3d6821c/geometry-6.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id11">
 <img alt="../_images/geometry-6.png" class="plot-directive" src="../_images/geometry-6.png" />
 <p class="caption"><span class="caption-text">T5 Super-T section</span><a class="headerlink" href="#id11" title="Permalink to this image">#</a></p>
@@ -575,7 +633,7 @@ this library. The following code creates a T5 Super-T section:</p>
 <div class="section" id="arbitrary-list-of-points">
 <span id="label-geom-list-of-points"></span><h2><span class="section-number">2.4. </span>Arbitrary List of Points<a class="headerlink" href="#arbitrary-list-of-points" title="Permalink to this heading">#</a></h2>
 <p>Concrete geometry can also be created from an arbitrary list of points using the
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.from_points" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_points()</span></code></a> method. The following
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.from_points" title="(in sectionproperties v2.1.5)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_points()</span></code></a> method. The following
 example creates a 800 mm deep x 600 mm wide x 100 mm thick hollow box section:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sectionproperties.pre.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span>
 
@@ -595,7 +653,7 @@ example creates a 800 mm deep x 600 mm wide x 100 mm thick hollow box section:</
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-7.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-7.png">png</a>, <a class="reference external" href="../user_guide/geometry-7.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-7.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/9ff14b7667e3a510bd1b28ae880e1db5/geometry-7.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/8ef420d70c82617d82672a1152a9db72/geometry-7.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/053800e171c1557a9475f58b33ca039c/geometry-7.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/e6255621c745dc1d630d2314044d1f0f/geometry-7.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id13">
 <img alt="../_images/geometry-7.png" class="plot-directive" src="../_images/geometry-7.png" />
 <p class="caption"><span class="caption-text">800 mm deep hollow box section</span><a class="headerlink" href="#id13" title="Permalink to this image">#</a></p>
@@ -613,21 +671,21 @@ example creates a 800 mm deep x 600 mm wide x 100 mm thick hollow box section:</
 </ul>
 <p>Further geometry manipulation can be performed with the following methods:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.align_center" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">align_center()</span></code></a> - aligns the centroid of
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.align_center" title="(in sectionproperties v2.1.5)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">align_center()</span></code></a> - aligns the centroid of
 the geometry with the centroid of another
-<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a> object.</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.align_to" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">align_to()</span></code></a> - aligns an edge of the
-geometry with the edge of another <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>
+<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a> object.</p></li>
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.align_to" title="(in sectionproperties v2.1.5)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">align_to()</span></code></a> - aligns an edge of the
+geometry with the edge of another <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>
 object or point.</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.mirror_section" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mirror_section()</span></code></a> - mirrors the geometry
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.mirror_section" title="(in sectionproperties v2.1.5)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mirror_section()</span></code></a> - mirrors the geometry
 about the <code class="docutils literal notranslate"><span class="pre">x</span></code> or <code class="docutils literal notranslate"><span class="pre">y</span></code> axis.</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.rotate_section" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rotate_section()</span></code></a> - rotates the geometry
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.rotate_section" title="(in sectionproperties v2.1.5)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rotate_section()</span></code></a> - rotates the geometry
 by a certain angle.</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.shift_section" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">shift_section()</span></code></a> - translates the
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.shift_section" title="(in sectionproperties v2.1.5)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">shift_section()</span></code></a> - translates the
 geometry by a certain distance in the <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> directions.</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.split_section" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">split_section()</span></code></a> - splits the geometry
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.split_section" title="(in sectionproperties v2.1.5)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">split_section()</span></code></a> - splits the geometry
 above and below a line.</p></li>
-<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.offset_perimeter" title="(in sectionproperties v2.1.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">offset_perimeter()</span></code></a> - dilates or erodes
+<li><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry.offset_perimeter" title="(in sectionproperties v2.1.5)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">offset_perimeter()</span></code></a> - dilates or erodes
 the perimeter of the geometry by a discrete amount.</p></li>
 </ul>
 <p>The following code creates an L-shaped beam:</p>
@@ -642,7 +700,7 @@ the perimeter of the geometry by a discrete amount.</p></li>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-8.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-8.png">png</a>, <a class="reference external" href="../user_guide/geometry-8.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-8.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/c1573f0376ef3fc76982fe372a8e247a/geometry-8.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/08abcdb74f84f03c383acf45a3e498ec/geometry-8.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/93bcf9d4f1bb874d8acc988a7dfa5d29/geometry-8.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/5ccc5e70f3dc5d0ee2b95a4775cf8896/geometry-8.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id15">
 <img alt="../_images/geometry-8.png" class="plot-directive" src="../_images/geometry-8.png" />
 <p class="caption"><span class="caption-text">L-shaped beam</span><a class="headerlink" href="#id15" title="Permalink to this image">#</a></p>
@@ -658,7 +716,7 @@ the perimeter of the geometry by a discrete amount.</p></li>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-9.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-9.png">png</a>, <a class="reference external" href="../user_guide/geometry-9.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-9.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/75598bd3d523ed93c4820c1307ac2fe9/geometry-9.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/5fe05762a6d302c94c712bdf9b82bca8/geometry-9.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/b5b222bbe6a7398961bde1a007e0a2c8/geometry-9.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/08c06c6bdc5dd5e9af9ebc67b904c012/geometry-9.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id17">
 <img alt="../_images/geometry-9.png" class="plot-directive" src="../_images/geometry-9.png" />
 <p class="caption"><span class="caption-text">800 mm deep hollow box section</span><a class="headerlink" href="#id17" title="Permalink to this image">#</a></p>
@@ -679,7 +737,7 @@ geometry. Note how a hole is automatically generated in the closed-off region:</
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-10.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-10.png">png</a>, <a class="reference external" href="../user_guide/geometry-10.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-10.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/3ff17959b7f54bfc27030a0001c4c3aa/geometry-10.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/c09bf26b98da8bf4f52f844692409ebf/geometry-10.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/2a013d93575664b54e09eb2c0987ca1f/geometry-10.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/a0e1b18fc6e37ef290fef112aa7d9200/geometry-10.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id19">
 <img alt="../_images/geometry-10.png" class="plot-directive" src="../_images/geometry-10.png" />
 <p class="caption"><span class="caption-text">T5 Super-T section with an overlay slab</span><a class="headerlink" href="#id19" title="Permalink to this image">#</a></p>
@@ -704,7 +762,7 @@ concrete and demonstrates how composite sections can be created:</p>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-11.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-11.png">png</a>, <a class="reference external" href="../user_guide/geometry-11.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-11.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/a4510997d2054dc83558fb864ef228da/geometry-11.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/63e128d3a0a804371752d8d2ce75cf2a/geometry-11.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/67ae0a053dbcf50c5b5d9b9a84637cc8/geometry-11.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/b621a01af81607cbf0b5f97a611c44bb/geometry-11.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id21">
 <img alt="../_images/geometry-11.png" class="plot-directive" src="../_images/geometry-11.png" />
 <p class="caption"><span class="caption-text">Concrete filled circular hollow section</span><a class="headerlink" href="#id21" title="Permalink to this image">#</a></p>
@@ -721,7 +779,7 @@ of bars to the geometry</p></li>
 <li><p><a class="reference internal" href="../gen/concreteproperties.pre.add_bar_circular_array.html#concreteproperties.pre.add_bar_circular_array" title="concreteproperties.pre.add_bar_circular_array"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_bar_circular_array()</span></code></a> - adds a circular array of bars
 to the geometry</p></li>
 </ul>
-<p>(<a class="reference external" href="../_plot_directive/add_bar_context.py">Source code</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/7de8bddba398b25b6f545a518d765216/add_bar_context.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>)</p>
 <div class="section" id="add-bar">
 <h3><span class="section-number">2.6.1. </span>add_bar()<a class="headerlink" href="#add-bar" title="Permalink to this heading">#</a></h3>
 <dl class="py function">
@@ -732,7 +790,7 @@ to the geometry</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>geometry</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>, <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>]) – Reinforced concrete geometry to which the new bar will be added</p></li>
+<li><p><strong>geometry</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>, <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>]) – Reinforced concrete geometry to which the new bar will be added</p></li>
 <li><p><strong>area</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Bar cross-sectional area</p></li>
 <li><p><strong>material</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="../gen/concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a>, <a class="reference internal" href="../gen/concreteproperties.material.SteelStrand.html#concreteproperties.material.SteelStrand" title="concreteproperties.material.SteelStrand"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelStrand</span></code></a>]) – Material object for the bar</p></li>
 <li><p><strong>x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – x-position of the bar</p></li>
@@ -741,7 +799,7 @@ to the geometry</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> – Reinforced concrete geometry with added bar</p>
+<dd class="field-even"><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> – Reinforced concrete geometry with added bar</p>
 </dd>
 </dl>
 </dd></dl>
@@ -759,7 +817,7 @@ to the geometry</p></li>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-12.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-12.png">png</a>, <a class="reference external" href="../user_guide/geometry-12.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-12.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/1dffe4f61f0cdbeb484dca5757a29a31/geometry-12.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/a92cc325ab08e27065f6639e88879095/geometry-12.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/a5fa685532ab546def652a23fb69d66d/geometry-12.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/61f91d7d369776c4ecaa182bb0e35960/geometry-12.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id23">
 <img alt="../_images/geometry-12.png" class="plot-directive" src="../_images/geometry-12.png" />
 <p class="caption"><span class="caption-text">T5 Super-T with an 80 mm bar</span><a class="headerlink" href="#id23" title="Permalink to this image">#</a></p>
@@ -775,7 +833,7 @@ to the geometry</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>geometry</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>, <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>]) – Reinforced concrete geometry to which the new bar will be added</p></li>
+<li><p><strong>geometry</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>, <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>]) – Reinforced concrete geometry to which the new bar will be added</p></li>
 <li><p><strong>area</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Bar cross-sectional area</p></li>
 <li><p><strong>material</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="../gen/concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a>, <a class="reference internal" href="../gen/concreteproperties.material.SteelStrand.html#concreteproperties.material.SteelStrand" title="concreteproperties.material.SteelStrand"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelStrand</span></code></a>]) – Material object for the bar</p></li>
 <li><p><strong>n_x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of bars in the x-direction</p></li>
@@ -788,7 +846,7 @@ to the geometry</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> – Reinforced concrete geometry with added bar</p>
+<dd class="field-even"><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> – Reinforced concrete geometry with added bar</p>
 </dd>
 </dl>
 </dd></dl>
@@ -809,7 +867,7 @@ to the geometry</p></li>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-13.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-13.png">png</a>, <a class="reference external" href="../user_guide/geometry-13.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-13.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/c7853bff9d3e552f17a8372b0c8afccb/geometry-13.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/db1cf50adf0f219bff39739dd87c0e56/geometry-13.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/abb622b8564b519a184113c4e40b6f96/geometry-13.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/8ca4d1cfda1e5593b4e617e643d13efd/geometry-13.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id25">
 <img alt="../_images/geometry-13.png" class="plot-directive" src="../_images/geometry-13.png" />
 <p class="caption"><span class="caption-text">Rectangular beam with top and bottom reinforcement</span><a class="headerlink" href="#id25" title="Permalink to this image">#</a></p>
@@ -825,7 +883,7 @@ to the geometry</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>geometry</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>, <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>]) – Reinforced concrete geometry to which the news bar will be added</p></li>
+<li><p><strong>geometry</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.Geometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a>, <a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a>]) – Reinforced concrete geometry to which the news bar will be added</p></li>
 <li><p><strong>area</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Bar cross-sectional area</p></li>
 <li><p><strong>material</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="../gen/concreteproperties.material.SteelBar.html#concreteproperties.material.SteelBar" title="concreteproperties.material.SteelBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelBar</span></code></a>, <a class="reference internal" href="../gen/concreteproperties.material.SteelStrand.html#concreteproperties.material.SteelStrand" title="concreteproperties.material.SteelStrand"><code class="xref py py-class docutils literal notranslate"><span class="pre">SteelStrand</span></code></a>]) – Material object for the bar</p></li>
 <li><p><strong>n_bar</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of bars in the array</p></li>
@@ -837,7 +895,7 @@ horizontal axis in the circular array</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> – Reinforced concrete geometry with added bar</p>
+<dd class="field-even"><p><a class="reference external" href="https://sectionproperties.readthedocs.io/en/latest/rst/api.html#sectionproperties.pre.geometry.CompoundGeometry" title="(in sectionproperties v2.1.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundGeometry</span></code></a> – Reinforced concrete geometry with added bar</p>
 </dd>
 </dl>
 </dd></dl>
@@ -857,7 +915,7 @@ horizontal axis in the circular array</p></li>
 <span class="n">geom</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[],</span> <span class="n">cp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href="../user_guide/geometry-14.py">Source code</a>, <a class="reference external" href="../user_guide/geometry-14.png">png</a>, <a class="reference external" href="../user_guide/geometry-14.hires.png">hires.png</a>, <a class="reference external" href="../user_guide/geometry-14.pdf">pdf</a>)</p>
+<p>(<a class="reference download internal" download="" href="../_downloads/6d9c1660dda1b28d5ed0547088e28ba9/geometry-14.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/373c2086a19ae373c4d75b7f12bc0287/geometry-14.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/c506372e9e435cfe39ca0ee08d934f3d/geometry-14.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/34e1d3bcaf8a763ce2dba2d8b4427c71/geometry-14.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
 <div class="figure align-default" id="id27">
 <img alt="../_images/geometry-14.png" class="plot-directive" src="../_images/geometry-14.png" />
 <p class="caption"><span class="caption-text">Concrete column with circular bar array</span><a class="headerlink" href="#id27" title="Permalink to this image">#</a></p>
@@ -883,171 +941,132 @@ locations and only then adding the bar geometry:</p>
 </div>
 
 
-            </article>
-            
-            
-            
-            <footer class="bd-footer-article">
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="materials.html" title="previous page">
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="materials.html"
+       title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
-          <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title"><span class="section-number">1. </span>Materials</p>
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>Materials</p>
       </div>
-  </a>
-  <a class='right-next' id="next-link" href="analysis.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title"><span class="section-number">3. </span>Analysis</p>
-  </div>
-  <i class="fa-solid fa-angle-right"></i>
-  </a>
+    </a>
+    <a class="right-next"
+       href="analysis.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Analysis</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
 </div>
-            </footer>
-            
-          </div>
-          
-          
-          
-            <div class="bd-sidebar-secondary bd-toc">
+
+                </footer>
               
-<div class="toc-item">
-  
-<div class="tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-</div>
-<nav id="bd-toc-nav" class="page-toc">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#axis-conventions">
-   2.1. Axis Conventions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#primitive-sections">
-   2.2. Primitive Sections
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#standard-sections">
-   2.3. Standard Sections
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#arbitrary-list-of-points">
-   2.4. Arbitrary List of Points
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#set-operations-and-manipulation">
-   2.5. Set Operations and Manipulation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#adding-reinforcing-bars">
-   2.6. Adding Reinforcing Bars
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#add-bar">
-     2.6.1. add_bar()
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#add-bar-rectangular-array">
-     2.6.2. add_bar_rectangular_array()
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#add-bar-circular-array">
-     2.6.3. add_bar_circular_array()
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#overlapping-geometry">
-     2.6.4. Overlapping Geometry
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
-</nav>
-</div>
-
-<div class="toc-item">
-  
-<div id="searchbox"></div>
-</div>
-
-<div class="toc-item">
-  
-
-<div class="tocsection editthispage">
-    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/user_guide/geometry.rst">
-        <i class="fa-solid fa-pencil"></i> Edit this page
-    </a>
-</div>
-
-</div>
-
-<div class="toc-item">
-  
-</div>
-
             </div>
-          
-          
-        </div>
-        <footer class="bd-footer-content">
-          <div class="bd-footer-content__inner">
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#axis-conventions">2.1. Axis Conventions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#primitive-sections">2.2. Primitive Sections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-sections">2.3. Standard Sections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arbitrary-list-of-points">2.4. Arbitrary List of Points</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-operations-and-manipulation">2.5. Set Operations and Manipulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-reinforcing-bars">2.6. Adding Reinforcing Bars</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-bar">2.6.1. add_bar()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-bar-rectangular-array">2.6.2. add_bar_rectangular_array()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-bar-circular-array">2.6.3. add_bar_circular_array()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overlapping-geometry">2.6.4. Overlapping Geometry</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/robbievanleeuwen/concrete-properties/edit/master/docs/source/user_guide/geometry.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
             
           </div>
-        </footer>
+          <footer class="bd-footer-content">
+            
+          </footer>
         
       </main>
     </div>
   </div>
-
   
-    
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
-  <footer class="bd-footer"><div class="bd-footer__inner container">
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
   
-  <div class="footer-item">
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
     
-<p class="copyright">
-
-    &copy; Copyright 2022, Robbie van Leeuwen.<br>
-
-</p>
-
-  </div>
-  
-  <div class="footer-item">
-    <p class="theme-version">
-    Built with the
-    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
-        PyData Sphinx Theme
-    </a>
-    0.12.0.
-</p>
-  </div>
-  
-  <div class="footer-item">
+      © Copyright 2022, Robbie van Leeuwen.
+      <br/>
     
-<p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
-</p>
-
-  </div>
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
   
 </div>
+
   </footer>
   </body>
 </html>
