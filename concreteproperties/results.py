@@ -15,8 +15,7 @@ from rich.console import Console
 from rich.table import Table
 from scipy.interpolate import interp1d
 from sectionproperties.pre.geometry import CompoundGeometry
-from shapely.geometry import Point
-from shapely.geometry.polygon import Polygon
+from shapely import Point, Polygon
 
 from concreteproperties.post import plotting_context
 

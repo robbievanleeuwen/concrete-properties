@@ -39,7 +39,6 @@ def test_piecewise_linear():
 
 
 def test_modifiedmander_invalid_sect_type():
-
     with pytest.raises(ValueError):
         ModifiedMander(
             elastic_modulus=30e3,
