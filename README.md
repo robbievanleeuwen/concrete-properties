@@ -1,7 +1,7 @@
 ![Logo Dark](docs/source/_static/cp_logo_dark.png#gh-dark-mode-only)
 ![Logo Light](docs/source/_static/cp_logo.png#gh-light-mode-only)
 
-[![Run Tests](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/tests.yml/badge.svg)](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/tests.yml) [![Lint with Black](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/black.yml/badge.svg)](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/black.yml) [![Build Documentation](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/build_docs.yml/badge.svg)](https://robbievanleeuwen.github.io/concrete-properties/) [![codecov](https://codecov.io/gh/robbievanleeuwen/concrete-properties/branch/master/graph/badge.svg?token=3WXMUQITTD)](https://codecov.io/gh/robbievanleeuwen/concrete-properties) [![PyPI version](https://badge.fury.io/py/concreteproperties.svg)](https://badge.fury.io/py/concreteproperties) [![Python versions](https://img.shields.io/badge/python-3.7%20%7C%203.8%20%7C%203.9-blue?style=flat&logo=python)](https://badge.fury.io/py/concreteproperties) [![GitHub license](https://img.shields.io/github/license/robbievanleeuwen/concrete-properties)](https://github.com/robbievanleeuwen/concrete-properties/blob/master/LICENSE.md) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/robbievanleeuwen/concrete-properties-examples/master)
+[![Run Tests](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/tests.yml/badge.svg)](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/tests.yml) [![Lint with Black](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/black.yml/badge.svg)](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/black.yml) [![Build Documentation](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/build_docs.yml/badge.svg)](https://robbievanleeuwen.github.io/concrete-properties/) [![codecov](https://codecov.io/gh/robbievanleeuwen/concrete-properties/branch/master/graph/badge.svg?token=3WXMUQITTD)](https://codecov.io/gh/robbievanleeuwen/concrete-properties) [![PyPI version](https://badge.fury.io/py/concreteproperties.svg)](https://badge.fury.io/py/concreteproperties) [![Python versions](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue?style=flat&logo=python)](https://badge.fury.io/py/concreteproperties) [![GitHub license](https://img.shields.io/github/license/robbievanleeuwen/concrete-properties)](https://github.com/robbievanleeuwen/concrete-properties/blob/master/LICENSE.md) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/robbievanleeuwen/concrete-properties-examples/master)
 
 *concreteproperties* is a python package that can be used to calculate the section
 properties of arbitrary reinforced concrete sections. *concreteproperties* can calculate
@@ -17,7 +17,7 @@ Here's an example of some of the non-linear output *concreteproperties* can gene
 
 ## Installation
 
-For more detailed installation instructions, refer to the [documentation](https://robbievanleeuwen.github.io/concrete-properties/rst/installation.html).
+For more detailed installation instructions, refer to the [documentation](https://robbievanleeuwen.github.io/concrete-properties/installation.html).
 
 ```shell
 pip install concreteproperties
