@@ -6,7 +6,7 @@ import numpy as np
 import sectionproperties.pre.library.primitive_sections as sp_ps
 from more_itertools import peekable
 from sectionproperties.pre.geometry import Geometry
-from shapely.geometry import LineString, Polygon
+from shapely import LineString, Polygon
 from shapely.ops import split
 
 from concreteproperties.material import Concrete
