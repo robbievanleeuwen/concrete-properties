@@ -1,6 +1,8 @@
+"""Useful utilities for concreteproperties."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING
 
 import numpy as np
 from rich.progress import BarColumn, Progress, ProgressColumn, SpinnerColumn, TextColumn
@@ -9,6 +11,7 @@ from rich.text import Text
 
 from concreteproperties.pre import CPGeomConcrete
 
+
 if TYPE_CHECKING:
     from sectionproperties.pre.geometry import CompoundGeometry
 
@@ -16,25 +19,28 @@ if TYPE_CHECKING:
 
 
 def get_service_strain(
-    point: Tuple[float, float],
-    ecf: Tuple[float, float],
+    point: tuple[float, float],
+    ecf: tuple[float, float],
     eps0: float,
     theta: float,
     kappa: float,
 ) -> float:
-    r"""Determines the strain at point `point` given curvature `kappa` and neutral axis
-    angle `theta`. Positive strain is compression.
+    r"""Returns the service strain.
 
-    :param point: Point at which to evaluate the strain
-    :param ecf: Global coordinate of the extreme compressive fibre
-    :param eps0: Strain at top fibre
-    :param theta: Angle (in radians) the neutral axis makes with the horizontal
-        axis (:math:`-\pi \leq \theta \leq \pi`)
-    :param kappa: Curvature
+    Determines the strain at point ``point`` given curvature ``kappa`` and neutral axis
+    angle ``theta``. Positive strain is compression.
 
-    :return: Strain
+    Args:
+        point: Point at which to evaluate the strain
+        ecf: Global coordinate of the extreme compressive fibre
+        eps0: Strain at top fibre
+        theta: Angle (in radians) the neutral axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
+        kappa: Curvature
+
+    Returns:
+        Service strain
     """
-
     # convert point to local coordinates
     _, v = global_to_local(theta=theta, x=point[0], y=point[1])
 
@@ -48,25 +54,28 @@ def get_service_strain(
 
 
 def get_ultimate_strain(
-    point: Tuple[float, float],
-    point_na: Tuple[float, float],
+    point: tuple[float, float],
+    point_na: tuple[float, float],
     d_n: float,
     theta: float,
     ultimate_strain: float,
 ) -> float:
-    r"""Determines the strain at point `point` given neutral axis depth `d_n` and
-    neutral axis angle `theta`. Positive strain is compression.
+    r"""Returns the ultimate strain.
 
-    :param point: Point at which to evaluate the strain
-    :param point_na: Point on the neutral axis
-    :param d_n: Depth of the neutral axis from the extreme compression fibre
-    :param theta: Angle (in radians) the neutral axis makes with the horizontal
-        axis (:math:`-\pi \leq \theta \leq \pi`)
-    :param ultimate_strain: Concrete strain at failure
+    Determines the strain at point ``point`` given neutral axis depth ``d_n`` and
+    neutral axis angle ``theta``. Positive strain is compression.
 
-    :return: Strain
+    Args:
+        point: Point at which to evaluate the strain
+        point_na: Point on the neutral axis
+        d_n: Depth of the neutral axis from the extreme compression fibre
+        theta: Angle (in radians) the neutral axis makes with the horizontal
+            axis (:math:`-\pi \leq \theta \leq \pi`)
+        ultimate_strain: Concrete strain at failure
+
+    Returns:
+        Ultimate strain
     """
-
     # convert point to local coordinates
     _, v = global_to_local(theta=theta, x=point[0], y=point[1])
 
@@ -80,21 +89,24 @@ def get_ultimate_strain(
 
 
 def point_on_neutral_axis(
-    extreme_fibre: Tuple[float, float],
+    extreme_fibre: tuple[float, float],
     d_n: float,
     theta: float,
-) -> Tuple[float, float]:
-    r"""Returns a point on the neutral axis given an extreme fibre, a depth to the
-    neutral axis and a neutral axis angle.
+) -> tuple[float, float]:
+    r"""Gets a point on the neutral axis.
 
-    :param extreme_fibre: Global coordinate of the extreme compression fibre
-    :param d_n: Depth of the neutral axis from the extreme compression fibre
-    :param theta: Angle (in radians) the neutral axis makes with the horizontal
-        axis (:math:`-\pi \leq \theta \leq \pi`)
+    Returns a point on the neutral axis given an extreme fibre, a depth to the neutral
+    axis and a neutral axis angle.
 
-    :return: Point on the neutral axis in global coordinates `(x, y)`
+    Args:
+        extreme_fibre: Global coordinate of the extreme compression fibre
+        d_n: Depth of the neutral axis from the extreme compression fibre
+        theta: Angle (in radians) the neutral axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
+
+    Returns:
+        Point on the neutral axis in global coordinates (``x``, ``y``)
     """
-
     # determine the coordinate of the point wrt the local axis
     u, v = global_to_local(theta=theta, x=extreme_fibre[0], y=extreme_fibre[1])
 
@@ -106,30 +118,31 @@ def point_on_neutral_axis(
 
 
 def split_geom_at_strains_service(
-    geom: Union[CPGeom, CPGeomConcrete],
+    geom: CPGeom | CPGeomConcrete,
     theta: float,
-    ecf: Tuple[float, float],
+    ecf: tuple[float, float],
     eps0: float,
     kappa: float,
-) -> Union[List[CPGeom], List[CPGeomConcrete]]:
+) -> list[CPGeom] | list[CPGeomConcrete]:
     r"""Splits geometries at discontinuities in its stress-strain profile.
 
-    :param geom: Geometry to split
-    :param theta: Angle (in radians) the neutral axis makes with the horizontal
-        axis (:math:`-\pi \leq \theta \leq \pi`)
-    :param ecf: Global coordinate of the extreme compressive fibre
-    :param eps0: Strain at top fibre
-    :param kappa: Curvature
+    Args:
+        geom: Geometry to split
+        theta: Angle (in radians) the neutral axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
+        ecf: Global coordinate of the extreme compressive fibre
+        eps0: Strain at top fibre
+        kappa: Curvature
 
-    :return: List of split geometries
+    Returns:
+        List of split geometries
     """
-
     # handle zero curvature
     if kappa == 0:
         return [geom]
 
     # create splits in concrete geometries at points in stress-strain profiles
-    split_geoms: Union[List[CPGeom], List[CPGeomConcrete]] = []
+    split_geoms: list[CPGeom] | list[CPGeomConcrete] = []
 
     strains = geom.material.stress_strain_profile.get_unique_strains()
 
@@ -185,28 +198,29 @@ def split_geom_at_strains_service(
 
 
 def split_geom_at_strains_ultimate(
-    geom: Union[CPGeom, CPGeomConcrete],
+    geom: CPGeom | CPGeomConcrete,
     theta: float,
-    point_na: Tuple[float, float],
+    point_na: tuple[float, float],
     ultimate_strain: float,
     d_n: float,
-) -> Union[List[CPGeom], List[CPGeomConcrete]]:
+) -> list[CPGeom] | list[CPGeomConcrete]:
     r"""Splits geometries at discontinuities in its stress-strain profile.
 
-    :param geom: Geometry to split
-    :param theta: Angle (in radians) the neutral axis makes with the horizontal
-        axis (:math:`-\pi \leq \theta \leq \pi`)
-    :param point_na: Point on the neutral axis
-    :param ultimate_strain: Concrete strain at failure (required for ``ultimate=True``
-        only)
-    :param d_n: Depth of the neutral axis from the extreme compression fibre (required
-        for ``ultimate=True`` only)
+    Args:
+        geom: Geometry to split
+        theta: Angle (in radians) the neutral axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
+        point_na: Point on the neutral axis
+        ultimate_strain: Concrete strain at failure (required for ``ultimate=True``
+            only)
+        d_n: Depth of the neutral axis from the extreme compression fibre (required
+            for ``ultimate=True`` only)
 
-    :return: List of split geometries
+    Returns:
+        List of split geometries
     """
-
     # create splits in concrete geometries at points in stress-strain profiles
-    split_geoms: Union[List[CPGeom], List[CPGeomConcrete]] = []
+    split_geoms: list[CPGeom] | list[CPGeomConcrete] = []
 
     if isinstance(geom, CPGeomConcrete):
         strains = geom.material.ultimate_stress_strain_profile.get_unique_strains()
@@ -258,20 +272,23 @@ def split_geom_at_strains_ultimate(
 
 
 def calculate_extreme_fibre(
-    points: List[Tuple[float, float]],
+    points: list[tuple[float, float]],
     theta: float,
-) -> Tuple[Tuple[float, float], float]:
-    r"""Calculates the locations of the extreme compression fibre in global
-    coordinates given a neutral axis angle `theta`.
+) -> tuple[tuple[float, float], float]:
+    r"""Returns the extreme fibre location.
 
-    :param points: Points over which to search for an extreme fibre
-    :param theta: Angle (in radians) the neutral axis makes with the horizontal
-        axis (:math:`-\pi \leq \theta \leq \pi`)
+    Calculates the locations of the extreme compression fibre in global coordinates
+    given a neutral axis angle ``theta``.
 
-    :return: Global coordinate of the extreme compression fibre `(x, y)` and the
+    Args:
+        points: Points over which to search for an extreme fibre
+        theta: Angle (in radians) the neutral axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
+
+    Returns:
+        Global coordinate of the extreme compression fibre (``x``, ``y``) and the
         neutral axis depth at the extreme tensile fibre
     """
-
     # initialise min/max variable & point
     max_pt = points[0]
     _, v = global_to_local(theta=theta, x=points[0][0], y=points[0][1])
@@ -279,7 +296,7 @@ def calculate_extreme_fibre(
     v_max = v
 
     # loop through all points
-    for idx, point in enumerate(points[1:]):
+    for point in points[1:]:
         # determine the coordinate of the point wrt the local axis
         _, v = global_to_local(theta=theta, x=point[0], y=point[1])
 
@@ -298,25 +315,28 @@ def calculate_extreme_fibre(
 
 
 def calculate_max_bending_depth(
-    points: List[Tuple[float, float]],
+    points: list[tuple[float, float]],
     c_local_v: float,
     theta: float,
 ) -> float:
-    r"""Calculates the maximum distance from the centroid to an extreme fibre when
-    bending about an axis `theta`.
+    r"""Returns the bending depth.
 
-    :param points: Points over which to search for a bending depth
-    :param c_local_v: Centroid coordinate in the local v-direction
-    :param theta: Angle (in radians) the bending axis makes with the horizontal
-        axis (:math:`-\pi \leq \theta \leq \pi`)
+    Calculates the maximum distance from the centroid to an extreme fibre when bending
+    about an axis ``theta``.
 
-    :return: Maximum bending depth, returns zero if distance is negative
+    Args:
+        points: Points over which to search for a bending depth
+        c_local_v: Centroid coordinate in the local v-direction
+        theta: Angle (in radians) the bending axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
+
+    Returns:
+        Maximum bending depth, returns zero if distance is negative
     """
-
     max_bending_depth = 0
 
     # loop through all points
-    for idx, point in enumerate(points):
+    for point in points:
         # determine the coordinate of the point wrt the local axis
         _, v = global_to_local(theta=theta, x=point[0], y=point[1])
 
@@ -325,18 +345,19 @@ def calculate_max_bending_depth(
     return max_bending_depth
 
 
-def gauss_points(
-    n: float,
-) -> List[List[float]]:
-    """Returns the Gaussian weights and locations for *n* point Gaussian integration of
-    a linear triangular element.
+def gauss_points(n: float) -> list[list[float]]:
+    """Returns the Gauss weights and points.
 
-    :param n: Number of Gauss points (1, 3 or 6)
+    Returns the Gaussian weights and locations for *n* point Gaussian integration of a
+    linear triangular element.
 
-    :return: An *n x 3* matrix consisting of the integration weight and the xi and eta
+    Args:
+        n: Number of Gauss points (1, 3 or 6)
+
+    Returns:
+        An *n x 3* matrix consisting of the integration weight and the xi and eta
         locations for *n* Gauss points
     """
-
     if n == 1:
         return [[0.5, 1.0 / 3, 1.0 / 3]]
     elif n == 3:
@@ -351,29 +372,32 @@ def gauss_points(
 
 def shape_function(
     coords: np.ndarray,
-    gauss_point: List[float],
-) -> Tuple[np.ndarray, float]:
-    """Computes shape functions and the determinant of the Jacobian matrix for a
+    gauss_point: list[float],
+) -> tuple[np.ndarray, float]:
+    """Returns the shape functions and Jacobian determinant.
+
+    Computes shape functions and the determinant of the Jacobian matrix for a
     linear triangular element at a given Gauss point.
 
-    :param coords: Global coordinates of the linear triangle vertices [2 x 3]
-    :param gauss_point: Gaussian weight and isoparametric location of the Gauss point
+    Args:
+        coords: Global coordinates of the linear triangle vertices [2 x 3]
+        gauss_point: Gaussian weight and isoparametric location of the Gauss point
 
-    :return: The value of the shape functions *N(i)* at the given Gauss point [1 x 3]
-        and the determinant of the Jacobian matrix *j*
+    Returns:
+        The value of the shape functions *N(i)* at the given Gauss point [1 x 3] and the
+        determinant of the Jacobian matrix *j*
     """
-
     xi = gauss_point[1]
     eta = gauss_point[2]
 
-    N = np.array([1 - xi - eta, xi, eta])
-    dN = np.array([[-1, -1], [1, 0], [0, 1]])
+    n_shape = np.array([1 - xi - eta, xi, eta])
+    dn = np.array([[-1, -1], [1, 0], [0, 1]])
 
     # calculate jacobian
-    J_mat = np.matmul(coords, dN)
-    j = np.linalg.det(J_mat)
+    j_mat = np.matmul(coords, dn)
+    j = np.linalg.det(j_mat)
 
-    return N, j
+    return n_shape, j
 
 
 def calculate_local_extents(
@@ -381,18 +405,19 @@ def calculate_local_extents(
     cx: float,
     cy: float,
     theta: float,
-) -> Tuple[float, float, float, float]:
+) -> tuple[float, float, float, float]:
     r"""Calculates the local extents of a geometry given a centroid and axis angle.
 
-    :param geometry: Geometry over which to calculate extents
-    :param cx: x-location of the centroid
-    :param cy: y-location of the centroid
-    :param theta: Angle (in radians) the neutral axis makes with the horizontal
-        axis (:math:`-\pi \leq \theta \leq \pi`)
+    Args:
+        geometry: Geometry over which to calculate extents
+        cx: x-location of the centroid
+        cy: y-location of the centroid
+        theta: Angle (in radians) the neutral axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
 
-    :return: Local extents *(x11_max, x11_min, y22_max, y22_min)*
+    Returns:
+        Local extents (``x11_max``, ``x11_min``, ``y22_max``, ``y22_min``)
     """
-
     # initialise min, max variables
     pt0 = geometry.points[0]
     x11, y22 = global_to_local(theta=theta, x=pt0[0] - cx, y=pt0[1] - cy)
@@ -402,7 +427,7 @@ def calculate_local_extents(
     y22_min = y22
 
     # loop through all points in geometry
-    for idx, pt in enumerate(geometry.points[1:]):
+    for pt in geometry.points[1:]:
         # determine the coordinate of the point wrt the principal axis
         x11, y22 = global_to_local(theta=theta, x=pt[0] - cx, y=pt[1] - cy)
 
@@ -419,18 +444,21 @@ def global_to_local(
     theta: float,
     x: float,
     y: float,
-) -> Tuple[float, float]:
-    r"""Determines the local coordinates of the global point (``x``, ``y``) given local
+) -> tuple[float, float]:
+    r"""Calculates local coorindates.
+
+    Determines the local coordinates of the global point (``x``, ``y``) given local
     axis angle ``theta``.
 
-    :param theta: Angle (in radians) the local axis makes with the horizontal axis
-        (:math:`-\pi \leq \theta \leq \pi`)
-    :param x: x-coordinate of the point in the global axis
-    :param y: y-coordinate of the point in the global axis
+    Args:
+        theta: Angle (in radians) the local axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
+        x: x-coordinate of the point in the global axis
+        y: y-coordinate of the point in the global axis
 
-    :return: Local axis coordinates (``u``, ``v``)
+    Returns:
+        Local axis coordinates (``u``, ``v``)
     """
-
     cos_theta = np.cos(theta)
     sin_theta = np.sin(theta)
 
@@ -441,18 +469,21 @@ def local_to_global(
     theta: float,
     u: float,
     v: float,
-) -> Tuple[float, float]:
-    r"""Determines the global coordinates of the local point (``u``, ``v``) given local
+) -> tuple[float, float]:
+    r"""Calculates global coorindates.
+
+    Determines the global coordinates of the local point (``u``, ``v``) given local
     axis angle ``theta``.
 
-    :param theta: Angle (in radians) the local axis makes with the horizontal axis
-        (:math:`-\pi \leq \theta \leq \pi`)
-    :param u: u-coordinate of the point in the local axis
-    :param v: v-coordinate of the point in the local axis
+    Args:
+        theta: Angle (in radians) the local axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
+        u: u-coordinate of the point in the local axis
+        v: v-coordinate of the point in the local axis
 
-    :return: Global axis coordinates (``x``, ``y``)
+    Returns:
+        Global axis coordinates (``x``, ``y``)
     """
-
     cos_theta = np.cos(theta)
     sin_theta = np.sin(theta)
 
@@ -468,17 +499,18 @@ class CustomTimeElapsedColumn(ProgressColumn):
     ) -> Text:
         """Show time remaining.
 
-        :param task: Task string
+        Args:
+            task: Task string
 
-        :return: Rich text object
+        Returns:
+            Rich text object
         """
-
-        elapsed = task.finished_time if task.finished else task.elapsed  # type: ignore
+        elapsed = task.finished_time if task.finished else task.elapsed
 
         if elapsed is None:
             return Text("-:--:--", style="progress.elapsed")
 
-        elapsed_string = "[ {0:.4f} s ]".format(elapsed)
+        elapsed_string = f"[ {elapsed:.4f} s ]"
 
         return Text(elapsed_string, style="progress.elapsed")
 
@@ -486,9 +518,9 @@ class CustomTimeElapsedColumn(ProgressColumn):
 def create_known_progress() -> Progress:
     """Returns a Rich Progress class for a known number of iterations.
 
-    :return: Rich progress object
+    Returns:
+        Rich progress object
     """
-
     return Progress(
         SpinnerColumn(),
         TextColumn(
@@ -504,9 +536,9 @@ def create_known_progress() -> Progress:
 def create_unknown_progress() -> Progress:
     """Returns a Rich Progress class for an unknown number of iterations.
 
-    :return: Rich progress object
+    Returns:
+        Rich progress object
     """
-
     return Progress(
         SpinnerColumn(),
         TextColumn(
@@ -519,4 +551,6 @@ def create_unknown_progress() -> Progress:
 
 
 class AnalysisError(Exception):
+    """Custom exception for an error in the ``concreteproperties`` analysis."""
+
     pass
