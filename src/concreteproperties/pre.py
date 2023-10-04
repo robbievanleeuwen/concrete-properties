@@ -1,39 +1,47 @@
+"""Contains doctored versions of the sectionproperties Geometry objects for concrete.
+
+Also contains helper methods for adding bars to a geometry objects.
+"""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Tuple, Union
+from typing import TYPE_CHECKING
 
 import numpy as np
-import sectionproperties.pre.library.primitive_sections as sp_ps
 from more_itertools import peekable
 from sectionproperties.pre.geometry import Geometry
+from sectionproperties.pre.library.primitive_sections import circular_section_by_area
 from shapely import LineString, Polygon
 from shapely.ops import split
 
 from concreteproperties.material import Concrete
 
+
 if TYPE_CHECKING:
-    import matplotlib
+    import matplotlib.axes
     from sectionproperties.pre.geometry import CompoundGeometry
 
     from concreteproperties.material import Material, SteelBar, SteelStrand
 
 
 class CPGeom:
-    """Watered down implementation of the *sectionproperties* Geometry object, optimised
-    for *concreteproperties*.
+    """A ``concreteproperties`` geometry object.
+
+    A watered down implementation of the ``sectionproperties`` ``Geometry`` object,
+    optimised for ``concreteproperties``.
     """
 
     def __init__(
         self,
         geom: Polygon,
         material: Material,
-    ):
+    ) -> None:
         """Inits the CPGeom class.
 
-        :param geom: Shapely polygon defining the geometry
-        :param material: Material to apply to the geometry
+        Args:
+            geom: Shapely polygon defining the geometry
+            material: Material to apply to the geometry
         """
-
         # round polygon points and save geometry
         self.geom = self.round_geometry(geometry=geom, tol=6)
 
@@ -44,7 +52,7 @@ class CPGeom:
         self.points, self.facets = self.create_points_and_facets(geometry=self.geom)
 
         # create holes
-        self.holes: List[Tuple[float, float]] = []
+        self.holes: list[tuple[float, float]] = []
 
         for hole in self.geom.interiors:
             hole_polygon = Polygon(hole)
@@ -57,12 +65,13 @@ class CPGeom:
     ) -> Polygon:
         """Rounds the coordinates in ``geometry`` to tolerance ``tol``.
 
-        :param geometry: Geometry to round
-        :param tol: Number of decimal places to round
+        Args:
+            geometry: Geometry to round
+            tol: Number of decimal places to round
 
-        :return: Rounded geometry
+        Returns:
+            Rounded geometry
         """
-
         if geometry.exterior:
             rounded_exterior = np.round(geometry.exterior.coords, tol)
         else:
@@ -80,17 +89,18 @@ class CPGeom:
     def create_points_and_facets(
         self,
         geometry: Polygon,
-    ) -> Tuple[List[Tuple[float, float]], List[Tuple[int, int]]]:
+    ) -> tuple[list[tuple[float, float]], list[tuple[int, int]]]:
         """Creates a list of points and facets from a shapely polygon.
 
-        :param geometry: Shapely polygon from which to create points and facets
+        Args:
+            geometry: Shapely polygon from which to create points and facets
 
-        :return: Points and facets
+        Returns:
+            Points and facets
         """
-
         master_count = 0
-        points: List[Tuple[float, float]] = []
-        facets: List[Tuple[int, int]] = []
+        points: list[tuple[float, float]] = []
+        facets: list[tuple[int, int]] = []
 
         # perimeter, note in shapely last point == first point
         if geometry.exterior:
@@ -118,65 +128,65 @@ class CPGeom:
         return points, facets
 
     def create_facets(
-        self, points_list: List[Tuple[float, float]], offset: int = 0
-    ) -> List[Tuple[int, int]]:
+        self,
+        points_list: list[tuple[float, float]],
+        offset: int = 0,
+    ) -> list[tuple[int, int]]:
         """Generates a list of facets given a list of points and a facet offset.
 
-        :param points_list: List of ordered points to create facets from
-        :param offset: Facet offset integer
+        Args:
+            points_list: List of ordered points to create facets from
+            offset: Facet offset integer
 
-        :return: List of facets
+        Returns:
+            List of facets
         """
-
         idx_peeker = peekable([idx + offset for idx, _ in enumerate(points_list)])
         return [(item, idx_peeker.peek(offset)) for item in idx_peeker]
 
-    def calculate_area(
-        self,
-    ) -> float:
+    def calculate_area(self) -> float:
         """Calculates the area of the geometry.
 
-        :return: Geometry area
+        Returns:
+            Geometry area
         """
-
         return self.geom.area
 
-    def calculate_centroid(
-        self,
-    ) -> Tuple[float, float]:
+    def calculate_centroid(self) -> tuple[float, float]:
         """Calculates the centroid of the geometry.
 
-        :return: Geometry centroid
+        Returns:
+            Geometry centroid
         """
-
         return self.geom.centroid.coords[0]
 
-    def calculate_extents(
-        self,
-    ) -> Tuple[float, float, float, float]:
-        """Calculates the minimum and maximum ``x`` and ``y`` values among the points
+    def calculate_extents(self) -> tuple[float, float, float, float]:
+        """Calculates the extents of the geometry.
+
+        Calculates the minimum and maximum ``x`` and ``y`` values among the points
         describing the geometry.
 
-        :return: Extents (``x_min``, ``x_max``, ``y_min``, ``y_max``)
+        Returns:
+            Extents (``x_min``, ``x_max``, ``y_min``, ``y_max``)
         """
-
-        min_x, min_y, max_x, max_y = self.geom.bounds  # type: ignore
+        min_x, min_y, max_x, max_y = self.geom.bounds
 
         return min_x, max_x, min_y, max_y
 
     def split_section(
         self,
-        point: Tuple[float, float],
+        point: tuple[float, float],
         theta: float,
-    ) -> Tuple[List[CPGeom], List[CPGeom]]:
+    ) -> tuple[list[CPGeom], list[CPGeom]]:
         """Splits the geometry about a line.
 
-        :param point: Point on line
-        :param theta: Angle line makes with horizontal axis
+        Args:
+            point: Point on line
+            theta: Angle line makes with horizontal axis
 
-        :return: Geometries above and below the line
+        Returns:
+            Geometries above and below the line
         """
-
         # round point
         point = np.round(point, 6)
 
@@ -197,7 +207,7 @@ class CPGeom:
             polys = [self.geom]
 
         # sort geometries
-        top_polys, bot_polys = self.sort_polys(polys=polys, point=point, vector=vector)  # type: ignore
+        top_polys, bot_polys = self.sort_polys(polys=polys, point=point, vector=vector)
 
         # assign material properties and create cp geometry objects
         top_geoms = [
@@ -221,20 +231,23 @@ class CPGeom:
 
     def create_line_segment(
         self,
-        point: Tuple[float, float],
-        vector: Tuple[float, float],
-        bounds: Tuple[float, float, float, float],
+        point: tuple[float, float],
+        vector: tuple[float, float],
+        bounds: tuple[float, float, float, float],
     ) -> LineString:
-        """Creates a shapely line string defined by a ``point`` and ``vector`` and
+        """Creates a ``shapely`` line.
+
+        Creates a ``shapely`` line string defined by a ``point`` and ``vector`` and
         bounded by ``bounds``.
 
-        :param point: Point on line
-        :param vector: Vector defining direction of line
-        :param bounds: Bounds of the geometry
+        Args:
+            point: Point on line
+            vector: Vector defining direction of line
+            bounds: Bounds of the geometry
 
-        :return: Shapely line string
+        Returns:
+            Shapely line string
         """
-
         tol = 1e-6  # distance to displace start of line from bounds
 
         # not a vertical line
@@ -257,21 +270,22 @@ class CPGeom:
 
     def sort_polys(
         self,
-        polys: List[Polygon],
-        point: Tuple[float, float],
-        vector: Tuple[float, float],
-    ) -> Tuple[List[Polygon], List[Polygon]]:
+        polys: list[Polygon],
+        point: tuple[float, float],
+        vector: tuple[float, float],
+    ) -> tuple[list[Polygon], list[Polygon]]:
         """Sorts polygons that are above and below the line.
 
-        :param polys: Polygons to sort
-        :param point: Point on line
-        :param vector: Vector defining direction of line
+        Args:
+            polys: Polygons to sort
+            point: Point on line
+            vector: Vector defining direction of line
 
-        :return: Polygons above and below the line
+        Returns:
+            Polygons above and below the line
         """
-
-        top_polys: List[Polygon] = []
-        bot_polys: List[Polygon] = []
+        top_polys: list[Polygon] = []
+        bot_polys: list[Polygon] = []
         v_ratio = vector[1] / vector[0]
 
         for poly in polys:
@@ -305,43 +319,42 @@ class CPGeom:
         self,
         title: str = "Cross-Section Geometry",
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots the geometry.
 
-        :param title: Plot title
-        :param kwargs: Passed to
-            :meth:`~sectionproperties.pre.geometry.Geometry.plot_geometry`
+        Args:
+            title: Plot title
+            kwargs: Passed to
+                :meth:`~sectionproperties.pre.geometry.Geometry.plot_geometry`
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
-
         return self.to_sp_geom().plot_geometry(title=title, **kwargs)
 
-    def to_sp_geom(
-        self,
-    ) -> Geometry:
+    def to_sp_geom(self) -> Geometry:
         """Converts self to a *sectionproperties* geometry object.
 
-        :return: *sectionproperties* geometry object
+        Returns:
+            ``sectionproperties`` geometry object
         """
-
-        return Geometry(geom=self.geom, material=self.material)  # type: ignore
+        return Geometry(geom=self.geom, material=self.material)
 
 
 class CPGeomConcrete(CPGeom):
-    """*concreteproperties* Geometry class for concrete geometries."""
+    """A ``concreteproperties`` Geometry object for concrete geometries."""
 
     def __init__(
         self,
         geom: Polygon,
         material: Concrete,
-    ):
+    ) -> None:
         """Inits the CPGeomConcrete class.
 
-        :param geom: Shapely polygon defining the geometry
-        :param material: Material to apply to the geometry
+        Args:
+            geom: Shapely polygon defining the geometry
+            material: Material to apply to the geometry
         """
-
         super().__init__(
             geom=geom,
             material=material,
@@ -352,64 +365,66 @@ class CPGeomConcrete(CPGeom):
 
 
 def add_bar(
-    geometry: Union[Geometry, CompoundGeometry],
+    geometry: Geometry | CompoundGeometry,
     area: float,
-    material: Union[SteelBar, SteelStrand],
+    material: SteelBar | SteelStrand,
     x: float,
     y: float,
     n: int = 4,
 ) -> CompoundGeometry:
-    """Adds a reinforcing bar to a *sectionproperties* geometry.
+    """Adds a reinforcing bar to a ``sectionproperties`` geometry.
 
     Bars are discretised by four points by default.
 
-    :param geometry: Reinforced concrete geometry to which the new bar will be added
-    :param area: Bar cross-sectional area
-    :param material: Material object for the bar
-    :param x: x-position of the bar
-    :param y: y-position of the bar
-    :param n: Number of points to discretise the bar circle
+    Args:
+        geometry: Reinforced concrete geometry to which the new bar will be added
+        area: Bar cross-sectional area
+        material: Material object for the bar
+        x: x-position of the bar
+        y: y-position of the bar
+        n: Number of points to discretise the bar circle
 
-    :return: Reinforced concrete geometry with added bar
+    Returns:
+        Reinforced concrete geometry with added bar
     """
+    bar = circular_section_by_area(area=area, n=n, material=material).shift_section(
+        x_offset=x, y_offset=y
+    )
 
-    bar = sp_ps.circular_section_by_area(
-        area=area, n=n, material=material  # type: ignore
-    ).shift_section(x_offset=x, y_offset=y)
-
-    return (geometry - bar) + bar  # type: ignore
+    return (geometry - bar) + bar
 
 
 def add_bar_rectangular_array(
-    geometry: Union[Geometry, CompoundGeometry],
+    geometry: Geometry | CompoundGeometry,
     area: float,
-    material: Union[SteelBar, SteelStrand],
+    material: SteelBar | SteelStrand,
     n_x: int,
     x_s: float,
     n_y: int = 1,
     y_s: float = 0,
-    anchor: Tuple[float, float] = (0, 0),
+    anchor: tuple[float, float] = (0, 0),
     exterior_only: bool = False,
     n: int = 4,
 ) -> CompoundGeometry:
-    """Adds a rectangular array of reinforcing bars to a *sectionproperties* geometry.
+    """Adds a rectangular array of reinforcing bars to a ``sectionproperties`` geometry.
 
     Bars are discretised by four points by default.
 
-    :param geometry: Reinforced concrete geometry to which the new bar will be added
-    :param area: Bar cross-sectional area
-    :param material: Material object for the bar
-    :param n_x: Number of bars in the x-direction
-    :param x_s: Spacing in the x-direction
-    :param n_y: Number of bars in the y-direction
-    :param y_s: Spacing in the y-direction
-    :param anchor: Coordinates of the bottom left hand bar in the rectangular array
-    :param exterior_only: If set to True, only returns bars on the external perimeter
-    :param n: Number of points to discretise the bar circle
+    Args:
+        geometry: Reinforced concrete geometry to which the new bar will be added
+        area: Bar cross-sectional area
+        material: Material object for the bar
+        n_x: Number of bars in the x-direction
+        x_s: Spacing in the x-direction
+        n_y: Number of bars in the y-direction
+        y_s: Spacing in the y-direction
+        anchor: Coordinates of the bottom left hand bar in the rectangular array
+        exterior_only: If set to True, only returns bars on the external perimeter
+        n: Number of points to discretise the bar circle
 
-    :return: Reinforced concrete geometry with added bar
+    Returns:
+        Reinforced concrete geometry with added bar
     """
-
     for j_idx in range(n_y):
         for i_idx in range(n_x):
             # check to see if we are adding a bar
@@ -422,50 +437,51 @@ def add_bar_rectangular_array(
                 add_bar = True
 
             if add_bar:
-                bar = sp_ps.circular_section_by_area(area=area, n=n, material=material)  # type: ignore
+                bar = circular_section_by_area(area=area, n=n, material=material)
                 x = anchor[0] + i_idx * x_s
                 y = anchor[1] + j_idx * y_s
                 bar = bar.shift_section(x_offset=x, y_offset=y)
-                geometry = (geometry - bar) + bar  # type: ignore
+                geometry = (geometry - bar) + bar
 
-    return geometry  # type: ignore
+    return geometry
 
 
 def add_bar_circular_array(
-    geometry: Union[Geometry, CompoundGeometry],
+    geometry: Geometry | CompoundGeometry,
     area: float,
-    material: Union[SteelBar, SteelStrand],
+    material: SteelBar | SteelStrand,
     n_bar: int,
     r_array: float,
     theta_0: float = 0,
-    ctr: Tuple[float, float] = (0, 0),
+    ctr: tuple[float, float] = (0, 0),
     n: int = 4,
 ) -> CompoundGeometry:
-    """Adds a circular array of reinforcing bars to a *sectionproperties* geometry.
+    """Adds a circular array of reinforcing bars to a ``sectionproperties`` geometry.
 
     Bars are discretised by four points by default.
 
-    :param geometry: Reinforced concrete geometry to which the news bar will be added
-    :param area: Bar cross-sectional area
-    :param material: Material object for the bar
-    :param n_bar: Number of bars in the array
-    :param r_array: Radius of the circular array
-    :param theta_0: Initial angle (in radians) that the first bar makes with the
-        horizontal axis in the circular array
-    :param ctr: Centre of the circular array
-    :param n: Number of points to discretise the bar circle
+    Args:
+        geometry: Reinforced concrete geometry to which the news bar will be added
+        area: Bar cross-sectional area
+        material: Material object for the bar
+        n_bar: Number of bars in the array
+        r_array: Radius of the circular array
+        theta_0: Initial angle (in radians) that the first bar makes with the
+            horizontal axis in the circular array
+        ctr: Centre of the circular array
+        n: Number of points to discretise the bar circle
 
-    :return: Reinforced concrete geometry with added bar
+    Returns:
+        Reinforced concrete geometry with added bar
     """
-
     d_theta = 2 * np.pi / n_bar
 
     for idx in range(n_bar):
-        bar = sp_ps.circular_section_by_area(area=area, n=n, material=material)  # type: ignore
+        bar = circular_section_by_area(area=area, n=n, material=material)
         theta = theta_0 + idx * d_theta
         x = ctr[0] + r_array * np.cos(theta)
         y = ctr[1] + r_array * np.sin(theta)
         bar = bar.shift_section(x_offset=x, y_offset=y)
-        geometry = (geometry - bar) + bar  # type: ignore
+        geometry = (geometry - bar) + bar
 
-    return geometry  # type: ignore
+    return geometry
