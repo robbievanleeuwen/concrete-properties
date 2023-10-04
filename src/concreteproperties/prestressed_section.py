@@ -1,7 +1,8 @@
+"""Class for a prestressed concrete section."""
+
 from __future__ import annotations
 
 from math import isinf
-from typing import List, Optional, Tuple, Union
 
 import numpy as np
 import sectionproperties.pre.geometry as sp_geom
@@ -32,21 +33,21 @@ class PrestressedSection(ConcreteSection):
     def __init__(
         self,
         geometry: sp_geom.CompoundGeometry,
-        moment_centroid: Optional[Tuple[float, float]] = None,
+        moment_centroid: tuple[float, float] | None = None,
         geometric_centroid_override: bool = True,
     ) -> None:
         """Inits the ConcreteSection class.
 
-        :param geometry: *sectionproperties* CompoundGeometry object describing the
-            prestressed concrete section
-        :param moment_centroid: If specified, all moments for service and ultimate
-            analyses are calculated about this point. If not specified, all moments are
-            calculated about the gross cross-section centroid, i.e. no material
-            properties applied.
-        :param geometric_centroid_override: If set to True, sets ``moment_centroid`` to
-            the geometric centroid i.e. material properties applied
+        Args:
+            geometry: ``sectionproperties`` ``CompoundGeometry`` object describing the
+                prestressed concrete section
+            moment_centroid: If specified, all moments for service and ultimate
+                analyses are calculated about this point. If not specified, all moments
+                are calculated about the gross cross-section centroid, i.e. no material
+                properties applied.
+            geometric_centroid_override: If set to True, sets ``moment_centroid`` to
+                the geometric centroid i.e. material properties applied
         """
-
         super().__init__(
             geometry=geometry,
             moment_centroid=moment_centroid,
@@ -93,18 +94,21 @@ class PrestressedSection(ConcreteSection):
         m_ext: float,
         n_ext: float = 0,
     ) -> res.CrackedResults:
-        """Calculates cracked section properties given an axial loading and bending
-        moment.
+        """Calculate cracked section properties.
 
-        :param m_ext: External bending moment
-        :param n_ext: External axial force
+        Calculates cracked section properties given an axial loading and bending moment.
 
-        :raises ValueError: If the provided loads do not result in tension within the
-            concrete
+        Args:
+            m_ext: External bending moment
+            n_ext: External axial force
 
-        :return: Cracked results object
+        Raises:
+            ValueError: If the provided loads do not result in tension within the
+                concrete
+
+        Returns:
+            Cracked results object
         """
-
         # check there is tension in the section
         uncr_stress = self.calculate_uncracked_stress(n=n_ext, m=m_ext)
 
@@ -156,10 +160,10 @@ class PrestressedSection(ConcreteSection):
                 full_output=True,
                 disp=False,
             )
-        except ValueError:
+        except ValueError as exc:
             msg = "Analysis failed. Please raise an issue at "
             msg += "https://github.com/robbievanleeuwen/concrete-properties/issues"
-            raise utils.AnalysisError(msg)
+            raise utils.AnalysisError(msg) from exc
 
         return cracked_results
 
@@ -169,17 +173,20 @@ class PrestressedSection(ConcreteSection):
         m_int: float,
         positive: bool,
     ) -> float:
-        """Calculates the cracking moment given an axial load ``n`` and internal bending
+        """Calculates the cracking moment.
+
+        Calculates the cracking moment given an axial load ``n`` and internal bending
         moment ``m_int``.
 
-        :param n: Axial load
-        :param m_int: Internal bending moment
-        :param positive: If set to True, determines the cracking moment for positive
-            bending, otherwise determines the cracking moment for negative bending
+        Args:
+            n: Axial load
+            m_int: Internal bending moment
+            positive: If set to True, determines the cracking moment for positive
+                bending, otherwise determines the cracking moment for negative bending
 
-        :return: Cracking moment
+        Returns:
+            Cracking moment
         """
-
         # determine theta
         theta = 0 if positive else np.pi
 
@@ -231,16 +238,19 @@ class PrestressedSection(ConcreteSection):
         d_nc: float,
         cracked_results: res.CrackedResults,
     ) -> float:
-        """Given a trial cracked neutral axis depth ``d_nc``, determines the minimum
+        """Calculates cracked netural axis convergence.
+
+        Given a trial cracked neutral axis depth ``d_nc``, determines the minimum
         concrete stress. For a cracked elastic analysis this should be zero (no tension
         allowed).
 
-        :param d_nc: Trial cracked neutral axis
-        :param cracked_results: Cracked results object
+        Args:
+            d_nc: Trial cracked neutral axis
+            cracked_results: Cracked results object
 
-        :return: Cracked neutral axis convergence
+        Returns:
+            Cracked neutral axis convergence
         """
-
         # guess hogging or sagging
         m_net_guess = cracked_results.m + self.gross_properties.m_prestress
 
@@ -261,7 +271,7 @@ class PrestressedSection(ConcreteSection):
             )
 
             # split concrete geometries above and below d_nc, discard below
-            cracked_geoms: List[Union[CPGeomConcrete, CPGeom]] = []
+            cracked_geoms: list[CPGeomConcrete | CPGeom] = []
 
             for conc_geom in self.concrete_geometries:
                 top_geoms, _ = conc_geom.split_section(point=point_na, theta=theta)
@@ -312,24 +322,25 @@ class PrestressedSection(ConcreteSection):
 
         Analysis continues until a material reaches its ultimate strain.
 
-        :param positive: If set to True, performs the moment curvature analysis for
-            positive bending, otherwise performs the moment curvature analysis for
-            negative bending
-        :param n: Axial force
-        :param kappa_inc: Initial curvature increment
-        :param kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
-            when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied, the
-            inverse of this multipler is applied to ``kappa_inc``.
-        :param kappa_inc_max: Maximum curvature increment
-        :param delta_m_min: Relative change in moment at which to reduce the curvature
-            increment
-        :param delta_m_max: Relative change in moment at which to increase the curvature
-            increment
-        :param progress_bar: If set to True, displays the progress bar
+        Args:
+            positive: If set to True, performs the moment curvature analysis for
+                positive bending, otherwise performs the moment curvature analysis for
+                negative bending
+            n: Axial force
+            kappa_inc: Initial curvature increment
+            kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
+                when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied,
+                the inverse of this multipler is applied to ``kappa_inc``.
+            kappa_inc_max: Maximum curvature increment
+            delta_m_min: Relative change in moment at which to reduce the curvature
+                increment
+            delta_m_max: Relative change in moment at which to increase the curvature
+                increment
+            progress_bar: If set to True, displays the progress bar
 
-        :return: Moment curvature results object
+        Returns:
+            Moment curvature results object
         """
-
         # determine theta
         theta = 0 if positive else np.pi
 
@@ -373,22 +384,37 @@ class PrestressedSection(ConcreteSection):
 
         Note that ``k_u`` is calculated only for lumped (non-meshed) geometries.
 
-        :param positive: If set to True, calculates the positive bending capacity,
-            otherwise calculates the negative bending capacity.
-        :param n: Net axial force
+        Args:
+            positive: If set to True, calculates the positive bending capacity,
+                otherwise calculates the negative bending capacity.
+            n: Net axial force
 
-        :return: Ultimate bending results object
+        Returns:
+            Ultimate bending results object
         """
-
         # determine theta
         theta = 0 if positive else np.pi
 
         return super().ultimate_bending_capacity(theta=theta, n=n)
 
     def moment_interaction_diagram(self):
+        """Generates a moment interaction diagram.
+
+        .. erorr::
+
+            This feature has not yet been implemented.
+
+        """
         raise NotImplementedError
 
     def biaxial_bending_diagram(self):
+        """Generates a biaxial bending diagram.
+
+        .. erorr::
+
+            This feature has not yet been implemented.
+
+        """
         raise NotImplementedError
 
     def calculate_uncracked_stress(
@@ -396,18 +422,20 @@ class PrestressedSection(ConcreteSection):
         n: float = 0,
         m: float = 0,
     ) -> res.StressResult:
-        """Calculates stresses within the prestressed concrete section assuming an
-        uncracked section.
+        """Calculates uncracked streses.
 
-        Uses gross area section properties to determine concrete, reinforcement and
-        strand stresses given an axial force ``n`` and bending moment ``m``.
+        Calculates stresses within the prestressed concrete section assuming an
+        uncracked section. Uses gross area section properties to determine concrete,
+        reinforcement and strand stresses given an axial force ``n`` and bending moment
+        ``m``.
 
-        :param n: Axial force
-        :param m: Bending moment
+        Args:
+            n: Axial force
+            m: Bending moment
 
-        :return: Stress results object
+        Returns:
+            Stress results object
         """
-
         # initialise stress results
         conc_sections = []
         conc_sigs = []
@@ -533,17 +561,19 @@ class PrestressedSection(ConcreteSection):
         self,
         cracked_results: res.CrackedResults,
     ) -> res.StressResult:
-        """Calculates stresses within the prestressed concrete section assuming a
-        cracked section.
+        """Calculates cracked streses.
 
-        Uses cracked area section properties to determine concrete, reinforcement and
-        strand stresses given the actions provided during the cracked analysis.
+        Calculates stresses within the prestressed concrete section assuming a
+        cracked section. Uses cracked area section properties to determine concrete,
+        reinforcement and strand stresses given the actions provided during the cracked
+        analysis.
 
-        :param cracked_results: Cracked results objects
+        Args:
+            cracked_results: Cracked results objects
 
-        :return: Stress results object
+        Returns:
+            Stress results object
         """
-
         # initialise stress results
         conc_sections = []
         conc_sigs = []
@@ -662,7 +692,7 @@ class PrestressedSection(ConcreteSection):
         self,
         moment_curvature_results: res.MomentCurvatureResults,
         m: float,
-        kappa: Optional[float] = None,
+        kappa: float | None = None,
     ) -> res.StressResult:
         """Calculates service stresses within the prestressed concrete section.
 
@@ -671,14 +701,15 @@ class PrestressedSection(ConcreteSection):
         within the section. Otherwise, a curvature can be provided which overrides the
         supplied moment.
 
-        :param moment_curvature_results: Moment-curvature results objects
-        :param m: Bending moment
-        :param kappa: Curvature, if provided overrides the supplied bending moment and
-            calculates the stress at the given curvature
+        Args:
+            moment_curvature_results: Moment-curvature results objects
+            m: Bending moment
+            kappa: Curvature, if provided overrides the supplied bending moment and
+                calculates the stress at the given curvature
 
-        :return: Stress results object
+        Returns:
+            Stress results object
         """
-
         if kappa is None:
             # get curvature
             kappa = moment_curvature_results.get_curvature(moment=m)
@@ -698,10 +729,10 @@ class PrestressedSection(ConcreteSection):
                 full_output=True,
                 disp=False,
             )
-        except ValueError:
+        except ValueError as exc:
             msg = "Analysis failed. Confirm that the supplied moment/curvature is "
             msg += "within the range of the moment-curvature analysis."
-            raise utils.AnalysisError(msg)
+            raise utils.AnalysisError(msg) from exc
 
         # initialise stress results
         conc_sections = []
@@ -722,7 +753,7 @@ class PrestressedSection(ConcreteSection):
         )
 
         # create splits in meshed geometries at points in stress-strain profiles
-        meshed_split_geoms: List[Union[CPGeom, CPGeomConcrete]] = []
+        meshed_split_geoms: list[CPGeom | CPGeomConcrete] = []
 
         for meshed_geom in self.meshed_geometries:
             split_geoms = utils.split_geom_at_strains_service(
@@ -770,7 +801,7 @@ class PrestressedSection(ConcreteSection):
 
             # add initial prestress strain
             if isinstance(lumped_geom.material, SteelStrand):
-                eps_pe = -lumped_geom.material.get_prestress_strain(area=area)
+                eps_pe = -lumped_geom.material.get_prestress_strain()
                 strain += eps_pe
 
             # calculate stress, force and point of action
@@ -824,11 +855,12 @@ class PrestressedSection(ConcreteSection):
     ) -> res.StressResult:
         """Calculates ultimate stresses within the prestressed concrete section.
 
-        :param ultimate_results: Ultimate bending results objects
+        Args:
+            ultimate_results: Ultimate bending results objects
 
-        :return: Stress results object
+        Returns:
+            Stress results object
         """
-
         # depth of neutral axis at extreme tensile fibre
         extreme_fibre, _ = utils.calculate_extreme_fibre(
             points=self.compound_geometry.points, theta=ultimate_results.theta
@@ -858,7 +890,7 @@ class PrestressedSection(ConcreteSection):
         strand_forces = []
 
         # create splits in meshed geometries at points in stress-strain profiles
-        meshed_split_geoms: List[Union[CPGeom, CPGeomConcrete]] = []
+        meshed_split_geoms: list[CPGeom | CPGeomConcrete] = []
 
         if isinf(ultimate_results.d_n):
             meshed_split_geoms = self.meshed_geometries
@@ -896,7 +928,6 @@ class PrestressedSection(ConcreteSection):
         # loop through all lumped and strand geometries and calculate stress
         for lumped_geom in self.reinf_geometries_lumped + self.strand_geometries:
             # calculate area and centroid
-            area = lumped_geom.calculate_area()
             centroid = lumped_geom.calculate_centroid()
 
             # get strain at centroid of lump
@@ -913,7 +944,7 @@ class PrestressedSection(ConcreteSection):
 
             # add initial prestress strain
             if isinstance(lumped_geom.material, SteelStrand):
-                eps_pe = -lumped_geom.material.get_prestress_strain(area=area)
+                eps_pe = -lumped_geom.material.get_prestress_strain()
                 strain += eps_pe
 
             # calculate stress, force and point of action

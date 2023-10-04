@@ -477,7 +477,7 @@ class ConcreteSection:
         self,
         cracked_results: res.CrackedResults,
     ) -> None:
-        """Calculate cracked section properties.
+        """Calculates cracked section properties.
 
         Given a list of cracked geometries (stored in ``cracked_results``), determines
         the cracked section properties and stores in ``cracked_results``.
@@ -894,7 +894,7 @@ class ConcreteSection:
         theta: float = 0,
         n: float = 0,
     ) -> res.UltimateBendingResults:
-        r"""Calculate ultiamte bending capacity.
+        r"""Calculates ultiamte bending capacity.
 
         Given a neutral axis angle ``theta`` and an axial force ``n``, calculates
         the ultimate bending capacity.
