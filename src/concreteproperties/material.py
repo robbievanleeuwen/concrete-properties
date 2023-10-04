@@ -1,3 +1,5 @@
+"""Defines material objects to be used with concreteproperties."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -7,14 +9,15 @@ import concreteproperties.stress_strain_profile as ssp
 
 @dataclass
 class Material:
-    """Generic class for a *concreteproperties* material.
+    """Generic class for a ``concreteproperties`` material.
 
-    :param name: Material name
-    :param density: Material density (mass per unit volume)
-    :param stress_strain_profile: Material stress-strain profile
-    :param colour: Colour of the material for rendering
-    :param meshed: If set to True, the entire material region is meshed; if set to
-        False, the material region is treated as a lumped circular mass at its centroid
+    Args:
+        name: Material name
+        density: Material density (mass per unit volume)
+        stress_strain_profile: Material stress-strain profile
+        colour: Colour of the material for rendering
+        meshed: If set to True, the entire material region is meshed; if set to False,
+            the material region is treated as a lumped circular mass at its centroid
     """
 
     name: str
@@ -23,7 +26,8 @@ class Material:
     colour: str
     meshed: bool
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
+        """Post init method."""
         # set elastic modulus
         self.elastic_modulus = self.stress_strain_profile.get_elastic_modulus()
 
@@ -32,13 +36,20 @@ class Material:
 class Concrete(Material):
     """Class for a concrete material.
 
-    :param name: Concrete material name
-    :param density: Concrete density (mass per unit volume)
-    :param stress_strain_profile: Service concrete stress-strain profile
-    :param ultimate_stress_strain_profile: Ultimate concrete stress-strain profile
-    :param flexural_tensile_strength: Absolute value of the concrete flexural
-        tensile strength
-    :param colour: Colour of the material for rendering
+    Args:
+        name: Concrete material name
+        density: Concrete density (mass per unit volume)
+        stress_strain_profile: Service concrete stress-strain profile
+        ultimate_stress_strain_profile: Ultimate concrete stress-strain profile
+        flexural_tensile_strength: Absolute value of the concrete flexural tensile
+            strength
+        colour: Colour of the material for rendering
+
+    Raises:
+        ValueError: If concrete stress_strain_profile is not a ConcreteServiceProfile
+            object
+        ValueError: If concrete ultimate_stress_strain_profile is not a
+            ConcreteUltimateProfile object
     """
 
     name: str
@@ -49,7 +60,8 @@ class Concrete(Material):
     colour: str
     meshed: bool = field(default=True, init=False)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
+        """Post init method."""
         super().__post_init__()
 
         if not isinstance(self.stress_strain_profile, ssp.ConcreteServiceProfile):
@@ -67,13 +79,16 @@ class Concrete(Material):
 
 @dataclass
 class Steel(Material):
-    """Class for a steel material with the entire region meshed to allow for strain
-    variation across the section, e.g. structural steel profiles.
+    """Class for a steel material.
 
-    :param name: Steel material name
-    :param density: Steel density (mass per unit volume)
-    :param stress_strain_profile: Steel stress-strain profile
-    :param colour: Colour of the material for rendering
+    This steel material has the entire region meshed to allow for strain variation
+    across the section, e.g. structural steel profiles in composite sections.
+
+    Args:
+        name: Steel material name
+        density: Steel density (mass per unit volume)
+        stress_strain_profile: Steel stress-strain profile
+        colour: Colour of the material for rendering
     """
 
     name: str
@@ -85,13 +100,15 @@ class Steel(Material):
 
 @dataclass
 class SteelBar(Steel):
-    """Class for a steel bar material, treated as a lumped circular mass with a constant
-    strain.
+    """Class for a steel bar material.
 
-    :param name: Steel bar material name
-    :param density: Steel bar density (mass per unit volume)
-    :param stress_strain_profile: Steel bar stress-strain profile
-    :param colour: Colour of the material for rendering
+    This steel material is treated as a lumped circular mass with a constant strain.
+
+    Args:
+        name: Steel bar material name
+        density: Steel bar density (mass per unit volume)
+        stress_strain_profile: Steel bar stress-strain profile
+        colour: Colour of the material for rendering
     """
 
     name: str
@@ -103,8 +120,10 @@ class SteelBar(Steel):
 
 @dataclass
 class SteelStrand(Steel):
-    """Class for a steel strand material, treated as a lumped circular mass with a
-    constant strain.
+    """Class for a steel strand material.
+
+    This steel strand material is treated as a lumped circular mass with a constant
+    strain.
 
     .. note::
 
@@ -115,11 +134,12 @@ class SteelStrand(Steel):
 
       The strand is assumed to be bonded to the concrete.
 
-    :param name: Steel strand material name
-    :param density: Steel strand density (mass per unit volume)
-    :param stress_strain_profile: Steel strand stress-strain profile
-    :param colour: Colour of the material for rendering
-    :param prestress_stress: Prestressing stress applied to the strand
+    Args:
+        name: Steel strand material name
+        density: Steel strand density (mass per unit volume)
+        stress_strain_profile: Steel strand stress-strain profile
+        colour: Colour of the material for rendering
+        prestress_stress: Prestressing stress applied to the strand
     """
 
     name: str
@@ -132,22 +152,17 @@ class SteelStrand(Steel):
     def get_prestress_stress(self) -> float:
         """Returns the prestress stress.
 
-        :return: Prestress stress
+        Returns:
+            Prestress stress
         """
-
         return self.prestress_stress
 
-    def get_prestress_strain(
-        self,
-        area: float,
-    ) -> float:
-        """Given the strand cross-sectional area, returns the prestress strain.
+    def get_prestress_strain(self) -> float:
+        """Returns the prestress strain.
 
-        :param area: Strand cross-sectional area
-
-        :return: Prestress strain
+        Returns:
+            Prestress strain
         """
-
         stress = self.get_prestress_stress()
 
         return self.stress_strain_profile.get_strain(stress=stress)
