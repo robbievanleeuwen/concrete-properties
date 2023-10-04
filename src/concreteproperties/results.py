@@ -1,8 +1,10 @@
+"""Contains results objects specific to various analysis types."""
+
 from __future__ import annotations
 
 import warnings
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING
 
 import matplotlib.cm as cm
 import matplotlib.patches as mpatches
@@ -10,7 +12,7 @@ import matplotlib.pyplot as plt
 import matplotlib.tri as tri
 import numpy as np
 from matplotlib.collections import PatchCollection
-from matplotlib.colors import CenteredNorm  # type: ignore
+from matplotlib.colors import CenteredNorm
 from rich.console import Console
 from rich.table import Table
 from scipy.interpolate import interp1d
@@ -19,8 +21,9 @@ from shapely import Point, Polygon
 
 from concreteproperties.post import plotting_context
 
+
 if TYPE_CHECKING:
-    import matplotlib
+    import matplotlib.axes
 
     from concreteproperties.analysis_section import AnalysisSection
     from concreteproperties.concrete_section import ConcreteSection
@@ -31,7 +34,7 @@ if TYPE_CHECKING:
 class GrossProperties:
     """Class for storing gross concrete section properties.
 
-    All properties with an `e_` preceding the property are multiplied by the elastic
+    All properties with an ``e_`` preceding the property are multiplied by the elastic
     modulus. In order to obtain transformed properties, call the
     :meth:`~concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties`
     method.
@@ -94,12 +97,12 @@ class GrossProperties:
     def print_results(
         self,
         fmt: str = "8.6e",
-    ):
+    ) -> None:
         """Prints the gross concrete section properties to the terminal.
 
-        :param fmt: Number format
+        Args:
+            fmt: Number format
         """
-
         table = Table(title="Gross Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
@@ -165,8 +168,9 @@ class GrossProperties:
 class TransformedGrossProperties:
     """Class for storing transformed gross concrete section properties.
 
-    :param concrete_properties: Concrete properties object
-    :param elastic_modulus: Reference elastic modulus
+    Args:
+        concrete_properties: Concrete properties object
+        elastic_modulus: Reference elastic modulus
     """
 
     concrete_properties: GrossProperties = field(repr=False)
@@ -199,9 +203,8 @@ class TransformedGrossProperties:
     z22_plus: float = 0
     z22_minus: float = 0
 
-    def __post_init__(
-        self,
-    ):
+    def __post_init__(self) -> None:
+        """Post init method."""
         self.area = self.concrete_properties.e_a / self.elastic_modulus
         self.qx = self.concrete_properties.e_qx / self.elastic_modulus
         self.qy = self.concrete_properties.e_qy / self.elastic_modulus
@@ -225,12 +228,12 @@ class TransformedGrossProperties:
     def print_results(
         self,
         fmt: str = "8.6e",
-    ):
+    ) -> None:
         """Prints the transformed gross concrete section properties to the terminal.
 
-        :param fmt: Number format
+        Args:
+            fmt: Number format
         """
-
         table = Table(title="Transformed Gross Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
@@ -264,21 +267,21 @@ class TransformedGrossProperties:
 class CrackedResults:
     r"""Class for storing cracked concrete section properties.
 
-    All properties with an `e_` preceding the property are multiplied by the elastic
+    All properties with an ``e_`` preceding the property are multiplied by the elastic
     modulus. In order to obtain transformed properties, call the
     :meth:`~concreteproperties.results.CrackedResults.calculate_transformed_properties`
     method.
 
-    :param theta: Angle (in radians) the neutral axis makes with the horizontal
-        axis (:math:`-\pi \leq \theta \leq \pi`)
+    Args:
+        theta: Angle (in radians) the neutral axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
     """
-
     theta: float
     n: float = 0
     m: float = 0
-    m_cr: Union[float, Tuple[float, float]] = 0
+    m_cr: float | tuple[float, float] = 0
     d_nc: float = 0
-    cracked_geometries: List[CPGeom] = field(default_factory=list, repr=False)
+    cracked_geometries: list[CPGeom] = field(default_factory=list, repr=False)
     e_a_cr: float = 0
     e_qx_cr: float = 0
     e_qy_cr: float = 0
@@ -296,23 +299,22 @@ class CrackedResults:
     phi_cr: float = 0
 
     # transformed properties
-    elastic_modulus_ref: Optional[float] = None
-    a_cr: Optional[float] = None
-    qx_cr: Optional[float] = None
-    qy_cr: Optional[float] = None
-    ixx_g_cr: Optional[float] = None
-    iyy_g_cr: Optional[float] = None
-    ixy_g_cr: Optional[float] = None
-    ixx_c_cr: Optional[float] = None
-    iyy_c_cr: Optional[float] = None
-    ixy_c_cr: Optional[float] = None
-    iuu_cr: Optional[float] = None
-    i11_cr: Optional[float] = None
-    i22_cr: Optional[float] = None
+    elastic_modulus_ref: float | None = None
+    a_cr: float | None = None
+    qx_cr: float | None = None
+    qy_cr: float | None = None
+    ixx_g_cr: float | None = None
+    iyy_g_cr: float | None = None
+    ixy_g_cr: float | None = None
+    ixx_c_cr: float | None = None
+    iyy_c_cr: float | None = None
+    ixy_c_cr: float | None = None
+    iuu_cr: float | None = None
+    i11_cr: float | None = None
+    i22_cr: float | None = None
 
     def reset_results(self) -> None:
         """Resets the analysis results."""
-
         self.e_a_cr = 0
         self.e_qx_cr = 0
         self.e_qy_cr = 0
@@ -332,13 +334,12 @@ class CrackedResults:
     def calculate_transformed_properties(
         self,
         elastic_modulus: float,
-    ):
-        """Calculates and stores transformed cracked properties using a reference
-        elastic modulus.
+    ) -> None:
+        """Calculates and stores transformed cracked properties.
 
-        :param elastic_modulus: Reference elastic modulus
+        Args:
+            elastic_modulus: Reference elastic modulus
         """
-
         self.elastic_modulus_ref = elastic_modulus
         self.a_cr = self.e_a_cr / elastic_modulus
         self.qx_cr = self.e_qx_cr / elastic_modulus
@@ -357,17 +358,17 @@ class CrackedResults:
         self,
         title: str = "Cracked Geometries",
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
-        """Plots the geometries that remain (are in compression or are reinforcement)
-        after a cracked analysis.
+    ) -> matplotlib.axes.Axes:
+        """Plots geometries that remain (compression/reinf.) after a cracked analysis.
 
-        :param title: Plot title
-        :param kwargs: Passed to
-            :meth:`~sectionproperties.pre.geometry.CompoundGeometry.plot_geometry`
+        Args:
+            title: Plot title
+            kwargs: Passed to
+                :meth:`~sectionproperties.pre.geometry.CompoundGeometry.plot_geometry`
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
-
         return CompoundGeometry(
             [geom.to_sp_geom() for geom in self.cracked_geometries]
         ).plot_geometry(title=title, **kwargs)
@@ -375,12 +376,12 @@ class CrackedResults:
     def print_results(
         self,
         fmt: str = "8.6e",
-    ):
+    ) -> None:
         """Prints the cracked concrete section properties to the terminal.
 
-        :param fmt: Number format
+        Args:
+            fmt: Number format
         """
-
         table = Table(title="Cracked Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
@@ -446,31 +447,30 @@ class CrackedResults:
 class MomentCurvatureResults:
     r"""Class for storing moment curvature results.
 
-    :param theta: Angle (in radians) the neutral axis makes with the horizontal
-    :param n_target: Target axial force
-        axis (:math:`-\pi \leq \theta \leq \pi`)
-    :param kappa: List of curvatures
-    :param n: List of axial forces
-    :param m_x: List of bending moments about the x-axis
-    :param m_y: List of bending moments about the y-axis
-    :param m_xy: List of resultant bending moments
-    :param failure_geometry: Geometry object of the region of the cross-section that
-        failed, ending the moment curvature analysis
-    :param convergence: The critical ratio between the strain and the failure strain
-        within the cross-section for each curvature step in the analysis. A value of one
-        indicates failure.
+    Args:
+        theta: Angle (in radians) the neutral axis makes with the horizontal
+        n_target: Target axial force axis (:math:`-\pi \leq \theta \leq \pi`)
+        kappa: List of curvatures
+        n: List of axial forces
+        m_x: List of bending moments about the x-axis
+        m_y: List of bending moments about the y-axis
+        m_xy: List of resultant bending moments
+        failure_geometry: Geometry object of the region of the cross-section that
+            failed, ending the moment curvature analysis
+        convergence: The critical ratio between the strain and the failure strain within
+            the cross-section for each curvature step in the analysis. A value of one
+            indicates failure.
     """
-
     # results
     theta: float
     n_target: float
-    kappa: List[float] = field(default_factory=list)
-    n: List[float] = field(default_factory=list)
-    m_x: List[float] = field(default_factory=list)
-    m_y: List[float] = field(default_factory=list)
-    m_xy: List[float] = field(default_factory=list)
+    kappa: list[float] = field(default_factory=list)
+    n: list[float] = field(default_factory=list)
+    m_x: list[float] = field(default_factory=list)
+    m_y: list[float] = field(default_factory=list)
+    m_xy: list[float] = field(default_factory=list)
     failure_geometry: CPGeom = field(init=False, repr=False)
-    convergence: List[float] = field(default_factory=list)
+    convergence: list[float] = field(default_factory=list)
 
     # for analysis
     _kappa: float = field(default=0, repr=False)
@@ -485,25 +485,24 @@ class MomentCurvatureResults:
         m_scale: float = 1e-6,
         fmt: str = "o-",
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots the moment curvature results.
 
-        :param m_scale: Scaling factor to apply to bending moment
-        :param fmt: Plot format string
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+        Args:
+            m_scale: Scaling factor to apply to bending moment
+            fmt: Plot format string
+            kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
-
         # scale moments
         moments = np.array(self.m_xy) * m_scale
 
         # create plot and setup the plot
-        with plotting_context(title="Moment-Curvature", **kwargs) as (
-            fig,
-            ax,
-        ):
-            ax.plot(self.kappa, moments, fmt)  # type: ignore
+        with plotting_context(title="Moment-Curvature", **kwargs) as (fig, ax):
+            assert ax
+            ax.plot(self.kappa, moments, fmt)
             plt.xlabel("Curvature")
             plt.ylabel("Moment")
             plt.grid(True)
@@ -512,28 +511,27 @@ class MomentCurvatureResults:
 
     @staticmethod
     def plot_multiple_results(
-        moment_curvature_results: List[MomentCurvatureResults],
-        labels: List[str],
+        moment_curvature_results: list[MomentCurvatureResults],
+        labels: list[str],
         m_scale: float = 1e-6,
         fmt: str = "o-",
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots multiple moment curvature results.
 
-        :param moment_curvature_results: List of moment curvature results objects
-        :param labels: List of labels for each moment curvature diagram
-        :param m_scale: Scaling factor to apply to bending moment
-        :param fmt: Plot format string
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+        Args:
+            moment_curvature_results: List of moment curvature results objects
+            labels: List of labels for each moment curvature diagram
+            m_scale: Scaling factor to apply to bending moment
+            fmt: Plot format string
+            kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
-
         # create plot and setup the plot
-        with plotting_context(title="Moment-Curvature", **kwargs) as (
-            fig,
-            ax,
-        ):
+        with plotting_context(title="Moment-Curvature", **kwargs) as (fig, ax):
+            assert ax
             idx = 0
 
             # for each M-k curve
@@ -542,7 +540,7 @@ class MomentCurvatureResults:
                 kappas = np.array(mk_result.kappa)
                 moments = np.array(mk_result.m_xy) * m_scale
 
-                ax.plot(kappas, moments, fmt, label=labels[idx])  # type: ignore
+                ax.plot(kappas, moments, fmt, label=labels[idx])
 
             plt.xlabel("Curvature")
             plt.ylabel("Moment")
@@ -550,7 +548,7 @@ class MomentCurvatureResults:
 
             # if there is more than one curve show legend
             if idx > 0:
-                ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))  # type: ignore
+                ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
 
         return ax
 
@@ -558,16 +556,17 @@ class MomentCurvatureResults:
         self,
         title: str = "Failure Geometry",
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots the geometry that fails in the moment curvature analysis.
 
-        :param title: Plot title
-        :param kwargs: Passed to
-            :meth:`~sectionproperties.pre.geometry.CompoundGeometry.plot_geometry`
+        Args:
+            title: Plot title
+            kwargs: Passed to
+                :meth:`~sectionproperties.pre.geometry.CompoundGeometry.plot_geometry`
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
-
         return self.failure_geometry.plot_geometry(title=title, **kwargs)
 
     def get_curvature(
@@ -576,14 +575,16 @@ class MomentCurvatureResults:
     ) -> float:
         """Given a moment, uses the moment-curvature results to interpolate a curvature.
 
-        :param moment: Bending moment at which to obtain curvature
+        Args:
+            moment: Bending moment at which to obtain curvature
 
-        :raises ValueError: If supplied moment is outside bounds of moment-curvature
-            results.
+        Raise:
+            ValueError: If supplied moment is outside bounds of moment-curvature
+                results.
 
-        :return: Curvature
+        Returns:
+            Curvature
         """
-
         # check moment is within bounds of results
         m_min = min(self.m_xy)
         m_max = max(self.m_xy)
@@ -606,17 +607,17 @@ class MomentCurvatureResults:
 class UltimateBendingResults:
     r"""Class for storing ultimate bending results.
 
-    :param theta: Angle (in radians) the neutral axis makes with the horizontal
-        axis (:math:`-\pi \leq \theta \leq \pi`)
-    :param d_n: Ultimate neutral axis depth
-    :param k_u: Neutral axis parameter *(d_n / d)*
-    :param n: Resultant axial force
-    :param m_x: Resultant bending moment about the x-axis
-    :param m_y: Resultant bending moment about the y-axis
-    :param m_xy: Resultant bending moment
-    :param label: Result label
+    Args:
+        theta: Angle (in radians) the neutral axis makes with the horizontal axis
+            (:math:`-\pi \leq \theta \leq \pi`)
+        d_n: Ultimate neutral axis depth
+        k_u: Neutral axis parameter *(d_n / d)*
+        n: Resultant axial force
+        m_x: Resultant bending moment about the x-axis
+        m_y: Resultant bending moment about the y-axis
+        m_xy: Resultant bending moment
+        label: Result label
     """
-
     # bending angle
     theta: float
 
@@ -631,17 +632,17 @@ class UltimateBendingResults:
     m_xy: float = 0
 
     # label
-    label: Optional[str] = field(default=None, compare=False)
+    label: str | None = field(default=None, compare=False)
 
     def print_results(
         self,
         fmt: str = "8.6e",
-    ):
+    ) -> None:
         """Prints the ultimate bending results to the terminal.
 
-        :param fmt: Number format
+        Args:
+            fmt: Number format
         """
-
         table = Table(title="Ultimate Bending Results")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
@@ -667,14 +668,14 @@ class UltimateBendingResults:
 class MomentInteractionResults:
     """Class for storing moment interaction results.
 
-    :param results: List of ultimate bending result objects
+    Args:
+        results: List of ultimate bending result objects
     """
 
-    results: List[UltimateBendingResults] = field(default_factory=list)
+    results: list[UltimateBendingResults] = field(default_factory=list)
 
     def sort_results(self) -> None:
         """Sorts the results by decreasing axial force."""
-
         self.results.sort(reverse=True)
 
         # remove duplicates from sorted list
@@ -689,14 +690,16 @@ class MomentInteractionResults:
     def get_results_lists(
         self,
         moment: str,
-    ) -> Tuple[List[float], List[float]]:
+    ) -> tuple[list[float], list[float]]:
         """Returns a list of axial forces and moments.
 
-        :param moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"``
-            or ``"m_xy"``
-        :return: List of axial forces and moments *(n, m)*
-        """
+        Args:
+            moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
+                ``"m_xy"``
 
+        Returns:
+            List of axial forces and moments (``n``, ``m``)
+        """
         # build list of results
         n_list = []
         m_list = []
@@ -724,27 +727,28 @@ class MomentInteractionResults:
         labels: bool = False,
         label_offset: bool = False,
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots a moment interaction diagram.
 
-        :param n_scale: Scaling factor to apply to axial force
-        :param m_scale: Scaling factor to apply to the bending moment
-        :param moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"``
-            or ``"m_xy"``
-        :param fmt: Plot format string
-        :param labels: If set to True, also plots labels on the diagram
-        :param label_offset: If set to True, attempts to offset the label from the
-            diagram
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+        Args:
+            n_scale: Scaling factor to apply to axial force
+            m_scale: Scaling factor to apply to the bending moment
+            moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
+                ``"m_xy"``
+            fmt: Plot format string
+            labels: If set to True, also plots labels on the diagram
+            label_offset: If set to True, attempts to offset the label from the diagram
+            kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         :return: Matplotlib axes object
         """
-
         # create plot and setup the plot
         with plotting_context(title="Moment Interaction Diagram", **kwargs) as (
             fig,
             ax,
         ):
+            assert ax
+
             # get results
             n_list, m_list = self.get_results_lists(moment=moment)
 
@@ -753,15 +757,15 @@ class MomentInteractionResults:
             moments = np.array(m_list) * m_scale
 
             # plot diagram
-            ax.plot(moments, forces, fmt)  # type: ignore
+            ax.plot(moments, forces, fmt)
 
             # plot labels
             if labels:
                 if label_offset:
                     # compute gradients of curve and aspect ratio of plot
                     grad = np.gradient([moments, forces], axis=1)
-                    x_diff = ax.get_xlim()  # type: ignore
-                    y_diff = ax.get_ylim()  # type: ignore
+                    x_diff = ax.get_xlim()
+                    y_diff = ax.get_ylim()
                     ar = (y_diff[1] - y_diff[0]) / (x_diff[1] - x_diff[0])
 
                 for idx, m in enumerate(m_list):
@@ -772,7 +776,7 @@ class MomentInteractionResults:
 
                         if label_offset:
                             # calculate text offset
-                            grad_pt = grad[1, idx] / grad[0, idx] / ar  # type: ignore
+                            grad_pt = grad[1, idx] / grad[0, idx] / ar
                             if grad_pt == 0:
                                 norm_angle = np.pi / 2
                             else:
@@ -792,7 +796,7 @@ class MomentInteractionResults:
                             annotate_dict = {}
 
                         # plot text
-                        ax.annotate(  # type: ignore
+                        ax.annotate(
                             text=self.results[idx].label, xy=(x, y), **annotate_dict
                         )
 
@@ -804,33 +808,35 @@ class MomentInteractionResults:
 
     @staticmethod
     def plot_multiple_diagrams(
-        moment_interaction_results: List[MomentInteractionResults],
-        labels: List[str],
+        moment_interaction_results: list[MomentInteractionResults],
+        labels: list[str],
         n_scale: float = 1e-3,
         m_scale: float = 1e-6,
         moment: str = "m_x",
         fmt: str = "o-",
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots multiple moment interaction diagrams.
 
-        :param moment_interaction_results: List of moment interaction results objects
-        :param labels: List of labels for each moment interaction diagram
-        :param n_scale: Scaling factor to apply to axial force
-        :param m_scale: Scaling factor to apply to bending moment
-        :param moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"``
-            or ``"m_xy"``
-        :param fmt: Plot format string
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+        Args:
+            moment_interaction_results: List of moment interaction results objects
+            labels: List of labels for each moment interaction diagram
+            n_scale: Scaling factor to apply to axial force
+            m_scale: Scaling factor to apply to bending moment
+            moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
+                ``"m_xy"``
+            fmt: Plot format string
+            kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
+        Retursn:
+            Matplotlib axes object
         """
-
         # create plot and setup the plot
         with plotting_context(title="Moment Interaction Diagram", **kwargs) as (
             fig,
             ax,
         ):
+            assert ax
             idx = 0
 
             # for each M-N curve
@@ -841,7 +847,7 @@ class MomentInteractionResults:
                 forces = np.array(n_list) * n_scale
                 moments = np.array(m_list) * m_scale
 
-                ax.plot(moments, forces, fmt, label=labels[idx])  # type: ignore
+                ax.plot(moments, forces, fmt, label=labels[idx])
 
             plt.xlabel("Bending Moment")
             plt.ylabel("Axial Force")
@@ -849,7 +855,7 @@ class MomentInteractionResults:
 
             # if there is more than one curve show legend
             if idx > 0:
-                ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))  # type: ignore
+                ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
 
         return ax
 
@@ -859,17 +865,17 @@ class MomentInteractionResults:
         m: float,
         moment: str = "m_x",
     ) -> bool:
-        """Determines whether or not the combination of axial force and moment lies
-        within the moment interaction diagram.
+        """Determines whether or not the design point lies within the diagram.
 
-        :param n: Axial force
-        :param m: Bending moment
-        :param moment: Which moment to analyse, acceptable values are ``"m_x"``,
-            ``"m_y"`` or ``"m_xy"``
+        Args:
+            n: Axial force
+            m: Bending moment
+            moment: Which moment to analyse, acceptable values are ``"m_x"``, ``"m_y"``
+                or ``"m_xy"``
 
-        :returns: True, if combination of axial force and moment is within the diagram
+        Returns:
+            True, if combination of axial force and moment is within the diagram
         """
-
         # get results
         n_list, m_list = self.get_results_lists(moment=moment)
 
@@ -889,21 +895,22 @@ class MomentInteractionResults:
 class BiaxialBendingResults:
     """Class for storing biaxial bending results.
 
-    :param n: Net axial force
-    :param results: List of ultimate bending result objects
+    Args:
+        n: Net axial force
+        results: List of ultimate bending result objects
     """
 
     n: float
-    results: List[UltimateBendingResults] = field(default_factory=list)
+    results: list[UltimateBendingResults] = field(default_factory=list)
 
     def get_results_lists(
         self,
-    ) -> Tuple[List[float], List[float]]:
+    ) -> tuple[list[float], list[float]]:
         """Returns a list and moments about the ``x`` and ``y`` axes.
 
-        :return: List of axial forces and moments *(mx, my)*
+        Returns:
+            List of axial forces and moments (``mx``, ``my``)
         """
-
         # build list of results
         m_x_list = []
         m_y_list = []
@@ -919,30 +926,30 @@ class BiaxialBendingResults:
         m_scale: float = 1e-6,
         fmt: str = "o-",
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots a biaxial bending diagram.
 
-        :param m_scale: Scaling factor to apply to bending moment
-        :param fmt: Plot format string
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+        Args:
+            m_scale: Scaling factor to apply to bending moment
+            fmt: Plot format string
+            kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
-
         m_x_list, m_y_list = self.get_results_lists()
 
         # create plot and setup the plot
         with plotting_context(
             title=f"Biaxial Bending Diagram, $N = {self.n:.3e}$", **kwargs
-        ) as (
-            fig,
-            ax,
-        ):
+        ) as (fig, ax):
+            assert ax
+
             # scale results
             m_x = np.array(m_x_list) * m_scale
             m_y = np.array(m_y_list) * m_scale
 
-            ax.plot(m_x, m_y, fmt)  # type: ignore
+            ax.plot(m_x, m_y, fmt)
 
             plt.xlabel("Bending Moment $M_x$")
             plt.ylabel("Bending Moment $M_y$")
@@ -952,29 +959,28 @@ class BiaxialBendingResults:
 
     @staticmethod
     def plot_multiple_diagrams_2d(
-        biaxial_bending_results: List[BiaxialBendingResults],
-        labels: Optional[List[str]] = None,
+        biaxial_bending_results: list[BiaxialBendingResults],
+        labels: list[str] | None = None,
         m_scale: float = 1e-6,
         fmt: str = "o-",
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots multiple biaxial bending diagrams in a 2D plot.
 
-        :param biaxial_bending_results: List of biaxial bending results objects
-        :param labels: List of labels for each biaxial bending diagram, if not provided
-            labels are axial forces
-        :param m_scale: Scaling factor to apply to bending moment
-        :param fmt: Plot format string
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+        Args:
+            biaxial_bending_results: List of biaxial bending results objects
+            labels: List of labels for each biaxial bending diagram, if not provided
+                labels are axial forces
+            m_scale: Scaling factor to apply to bending moment
+            fmt: Plot format string
+            kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
-
         # create plot and setup the plot
-        with plotting_context(title="Biaxial Bending Diagram", **kwargs) as (
-            fig,
-            ax,
-        ):
+        with plotting_context(title="Biaxial Bending Diagram", **kwargs) as (fig, ax):
+            assert ax
             idx = 0
 
             # generate default labels
@@ -996,7 +1002,7 @@ class BiaxialBendingResults:
                 if default_labels:
                     labels.append(f"N = {bb_result.n:.3e}")
 
-                ax.plot(m_x_list, m_y_list, fmt, label=labels[idx])  # type: ignore
+                ax.plot(m_x_list, m_y_list, fmt, label=labels[idx])
 
             plt.xlabel("Bending Moment $M_x$")
             plt.ylabel("Bending Moment $M_y$")
@@ -1004,29 +1010,30 @@ class BiaxialBendingResults:
 
             # if there is more than one curve show legend
             if idx > 0:
-                ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))  # type: ignore
+                ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
 
         return ax
 
     @staticmethod
     def plot_multiple_diagrams_3d(
-        biaxial_bending_results: List[BiaxialBendingResults],
+        biaxial_bending_results: list[BiaxialBendingResults],
         n_scale: float = 1e-3,
         m_scale: float = 1e-6,
         fmt: str = "-",
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots multiple biaxial bending diagrams in a 3D plot.
 
-        :param biaxial_bending_results: List of biaxial bending results objects
-        :param n_scale: Scaling factor to apply to axial force
-        :param m_scale: Scaling factor to apply to bending moment
-        :param fmt: Plot format string
+        Args:
+            biaxial_bending_results: List of biaxial bending results objects
+            n_scale: Scaling factor to apply to axial force
+            m_scale: Scaling factor to apply to bending moment
+            fmt: Plot format string
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
-
         # make 3d plot
-        fig = plt.figure()
+        plt.figure()
         ax = plt.axes(projection="3d")
 
         # for each curve
@@ -1038,11 +1045,11 @@ class BiaxialBendingResults:
             m_x_list = np.array(m_x_list) * m_scale
             m_y_list = np.array(m_y_list) * m_scale
 
-            ax.plot3D(m_x_list, m_y_list, n_list, fmt)  # type: ignore
+            ax.plot3D(m_x_list, m_y_list, n_list, fmt)
 
         ax.set_xlabel("Bending Moment $M_x$")
         ax.set_ylabel("Bending Moment $M_y$")
-        ax.set_zlabel("Axial Force $N$")  # type: ignore
+        ax.set_zlabel("Axial Force $N$")
         plt.show()
 
         return ax
@@ -1052,15 +1059,15 @@ class BiaxialBendingResults:
         m_x: float,
         m_y: float,
     ) -> bool:
-        """Determines whether or not the combination of bending moments lies within the
-        biaxial bending diagram.
+        """Determines whether or not the design point lies within the biaxial diagram.
 
-        :param m_x: Bending moment about the x-axis
-        :param m_y: Bending moment about the y-axis
+        Args:
+            m_x: Bending moment about the x-axis
+            m_y: Bending moment about the y-axis
 
-        :returns: True, if combination of bendings moments is within the diagram
+        Returns:
+            True, if combination of bendings moments is within the diagram
         """
-
         # create a polygon from points on diagram
         poly_points = []
 
@@ -1079,52 +1086,53 @@ class StressResult:
 
     The lever arm is computed to the elastic centroid.
 
-    :param concrete_analysis_sections: List of concrete analysis section objects
-        present in the stress analysis, which can be visualised by calling the
-        :meth:`~concreteproperties.analysis_section.AnalysisSection.plot_mesh` or
-        :meth:`~concreteproperties.analysis_section.AnalysisSection.plot_shape`
-    :param concrete_stresses: List of concrete stresses at the nodes of each concrete
-        analysis section
-    :param concrete_forces: List of net forces for each concrete analysis section and
-        its lever arm (``force``, ``d_x``, ``d_y``)
-    :param meshed_reinforcement_sections: List of meshed reinforcement section objects
-        present in the stress analysis
-    :param meshed_reinforcement_stresses: List of meshed reinforcement stresses at the
-        nodes of each meshed reinforcement analysis section
-    :param meshed_reinforcement_forces: List of net forces for each meshed reinforcement
-         analysis section and its lever arm (``force``, ``d_x``, ``d_y``)
-    :param lumped_reinforcement_geometries: List of lumped reinforcement geometry
-        objects present in the stress analysis
-    :param lumped_reinforcement_stresses: List of lumped reinforcement stresses for
-        each lumped geometry
-    :param lumped_reinforcement_strains: List of lumped reinforcement strains for each
-        lumped geometry
-    :param lumped_reinforcement_forces: List of net forces for each lumped reinforcement
-        geometry and its lever arm (``force``, ``d_x``, ``d_y``)
-    :param strand_geometries: List of strand geometry objects present in the stress
-        analysis
-    :param strand_stresses: List of strand stresses for each strand
-    :param strand_strains: List of strand strains for each strand
-    :param strand_forces: List of net forces for each strand geometry and its lever arm
-        (``force``, ``d_x``, ``d_y``)
+    Args:
+        concrete_analysis_sections: List of concrete analysis section objects
+            present in the stress analysis, which can be visualised by calling the
+            :meth:`~concreteproperties.analysis_section.AnalysisSection.plot_mesh` or
+            :meth:`~concreteproperties.analysis_section.AnalysisSection.plot_shape`
+        concrete_stresses: List of concrete stresses at the nodes of each concrete
+            analysis section
+        concrete_forces: List of net forces for each concrete analysis section and
+            its lever arm (``force``, ``d_x``, ``d_y``)
+        meshed_reinforcement_sections: List of meshed reinforcement section objects
+            present in the stress analysis
+        meshed_reinforcement_stresses: List of meshed reinforcement stresses at the
+            nodes of each meshed reinforcement analysis section
+        meshed_reinforcement_forces: List of net forces for each meshed reinforcement
+            analysis section and its lever arm (``force``, ``d_x``, ``d_y``)
+        lumped_reinforcement_geometries: List of lumped reinforcement geometry
+            objects present in the stress analysis
+        lumped_reinforcement_stresses: List of lumped reinforcement stresses for
+            each lumped geometry
+        lumped_reinforcement_strains: List of lumped reinforcement strains for each
+            lumped geometry
+        lumped_reinforcement_forces: List of net forces for each lumped reinforcement
+            geometry and its lever arm (``force``, ``d_x``, ``d_y``)
+        strand_geometries: List of strand geometry objects present in the stress
+            analysis
+        strand_stresses: List of strand stresses for each strand
+        strand_strains: List of strand strains for each strand
+        strand_forces: List of net forces for each strand geometry and its lever arm
+            (``force``, ``d_x``, ``d_y``)
     """
 
     concrete_section: ConcreteSection
-    concrete_analysis_sections: List[AnalysisSection]
-    concrete_stresses: List[np.ndarray]
-    concrete_forces: List[Tuple[float, float, float]]
-    meshed_reinforcement_sections: List[AnalysisSection]
-    meshed_reinforcement_stresses: List[np.ndarray]
-    meshed_reinforcement_forces: List[Tuple[float, float, float]]
-    lumped_reinforcement_geometries: List[CPGeom]
-    lumped_reinforcement_stresses: List[float]
-    lumped_reinforcement_strains: List[float]
-    lumped_reinforcement_forces: List[Tuple[float, float, float]]
-    strand_geometries: List[CPGeom] = field(default_factory=list)
-    strand_stresses: List[float] = field(default_factory=list)
-    strand_strains: List[float] = field(default_factory=list)
-    strand_forces: List[Tuple[float, float, float]] = field(default_factory=list)
-    _m_net: Optional[float] = field(default=None, repr=False)
+    concrete_analysis_sections: list[AnalysisSection]
+    concrete_stresses: list[np.ndarray]
+    concrete_forces: list[tuple[float, float, float]]
+    meshed_reinforcement_sections: list[AnalysisSection]
+    meshed_reinforcement_stresses: list[np.ndarray]
+    meshed_reinforcement_forces: list[tuple[float, float, float]]
+    lumped_reinforcement_geometries: list[CPGeom]
+    lumped_reinforcement_stresses: list[float]
+    lumped_reinforcement_strains: list[float]
+    lumped_reinforcement_forces: list[tuple[float, float, float]]
+    strand_geometries: list[CPGeom] = field(default_factory=list)
+    strand_stresses: list[float] = field(default_factory=list)
+    strand_strains: list[float] = field(default_factory=list)
+    strand_forces: list[tuple[float, float, float]] = field(default_factory=list)
+    _m_net: float | None = field(default=None, repr=False)
 
     def plot_stress(
         self,
@@ -1132,17 +1140,18 @@ class StressResult:
         conc_cmap: str = "RdGy",
         reinf_cmap: str = "bwr",
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots concrete and steel stresses on a concrete section.
 
-        :param title: Plot title
-        :param conc_cmap: Colour map for the concrete stress
-        :param reinf_cmap: Colour map for the reinforcement stress
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+        Args:
+            title: Plot title
+            conc_cmap: Colour map for the concrete stress
+            reinf_cmap: Colour map for the reinforcement stress
+            kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
-
         with plotting_context(
             title=title,
             aspect=True,
@@ -1150,6 +1159,9 @@ class StressResult:
                 kwargs, nrows=1, ncols=3, gridspec_kw={"width_ratios": [1, 0.08, 0.08]}
             ),
         ) as (fig, ax):
+            assert fig
+            assert ax
+
             # plot background
             self.concrete_section.plot_section(
                 background=True, **dict(kwargs, ax=fig.axes[0])
@@ -1232,20 +1244,18 @@ class StressResult:
                     triang_conc = tri.Triangulation(
                         self.concrete_analysis_sections[idx].mesh_nodes[:, 0],
                         self.concrete_analysis_sections[idx].mesh_nodes[:, 1],
-                        self.concrete_analysis_sections[idx].mesh_elements[:, 0:3],  # type: ignore
+                        self.concrete_analysis_sections[idx].mesh_elements[:, 0:3],
                     )
 
                     # plot the filled contour
                     trictr_conc = fig.axes[0].tricontourf(
                         triang_conc, sig, v_conc, cmap=cmap_conc, norm=CenteredNorm()
-                    )  # type: ignore
+                    )
 
                     # plot a zero stress contour, supressing warning
                     with warnings.catch_warnings():
-                        warnings.filterwarnings(
-                            "ignore",
-                            message="No contour levels were found within the data range.",
-                        )
+                        msg = "No contour levels were found within the data range."
+                        warnings.filterwarnings("ignore", message=msg)
 
                         # set zero stress for neutral axis contour
                         zero_level = 0
@@ -1264,13 +1274,13 @@ class StressResult:
                         if max(sig) == 0:
                             zero_level = -1e-12
 
-                        CS = fig.axes[0].tricontour(
+                        fig.axes[0].tricontour(
                             triang_conc,
                             sig,
                             [zero_level],
                             linewidths=1,
                             linestyles="dashed",
-                        )  # type: ignore
+                        )
 
             # plot the meshed reinforcement stresses
             trictr_reinf = None
@@ -1282,20 +1292,18 @@ class StressResult:
                     triang_reinf = tri.Triangulation(
                         self.meshed_reinforcement_sections[idx].mesh_nodes[:, 0],
                         self.meshed_reinforcement_sections[idx].mesh_nodes[:, 1],
-                        self.meshed_reinforcement_sections[idx].mesh_elements[:, 0:3],  # type: ignore
+                        self.meshed_reinforcement_sections[idx].mesh_elements[:, 0:3],
                     )
 
                     # plot the filled contour
                     trictr_reinf = fig.axes[0].tricontourf(
                         triang_reinf, sig, v_reinf, cmap=cmap_reinf, norm=CenteredNorm()
-                    )  # type: ignore
+                    )
 
                     # plot a zero stress contour, supressing warning
                     with warnings.catch_warnings():
-                        warnings.filterwarnings(
-                            "ignore",
-                            message="No contour levels were found within the data range.",
-                        )
+                        msg = "No contour levels were found within the data range."
+                        warnings.filterwarnings("ignore", message=msg)
 
                         # set zero stress for neutral axis contour
                         zero_level = 0
@@ -1314,30 +1322,29 @@ class StressResult:
                         if max(sig) == 0:
                             zero_level = -1e-12
 
-                        CS = fig.axes[0].tricontour(
+                        fig.axes[0].tricontour(
                             triang_reinf,
                             sig,
                             [zero_level],
                             linewidths=1,
                             linestyles="dashed",
-                        )  # type: ignore
+                        )
 
             # plot the lumped reinforcement stresses
             lumped_reinf_patches = []
             colours = []
 
             for idx, sig in enumerate(self.lumped_reinforcement_stresses):
+                lumped_geom = self.lumped_reinforcement_geometries[idx].geom
                 lumped_reinf_patches.append(
-                    mpatches.Polygon(
-                        xy=list(self.lumped_reinforcement_geometries[idx].geom.exterior.coords)  # type: ignore
-                    )
+                    mpatches.Polygon(xy=list(lumped_geom.exterior.coords))
                 )
                 colours.append(sig)
 
             for idx, sig in enumerate(self.strand_stresses):
                 lumped_reinf_patches.append(
                     mpatches.Polygon(
-                        xy=list(self.strand_geometries[idx].geom.exterior.coords)  # type: ignore
+                        xy=list(self.strand_geometries[idx].geom.exterior.coords)
                     )
                 )
                 colours.append(sig)
@@ -1348,11 +1355,11 @@ class StressResult:
                 patch.set_clim(vmin=0.99 * v_reinf[0], vmax=1.01 * v_reinf[-1])
             else:
                 patch.set_clim(vmin=v_reinf[0], vmax=v_reinf[-1])
-            fig.axes[0].add_collection(patch)  # type: ignore
+            fig.axes[0].add_collection(patch)
 
             # add the colour bars
             fig.colorbar(
-                trictr_conc,  # type: ignore
+                trictr_conc,
                 label="Concrete Stress",
                 format="%.2e",
                 ticks=ticks_conc,
@@ -1377,9 +1384,9 @@ class StressResult:
     def sum_forces(self) -> float:
         """Returns the sum of the internal forces.
 
-        :return: Sum of internal forces
+        Returns:
+            Sum of internal forces
         """
-
         force_sum = 0
 
         # sum concrete forces
@@ -1400,13 +1407,13 @@ class StressResult:
 
         return force_sum
 
-    def sum_moments(self) -> Tuple[float, float, float]:
+    def sum_moments(self) -> tuple[float, float, float]:
         """Returns the sum of the internal moments.
 
-        :return: Sum of internal moments about each axis and resultant moment
-            (``m_x``, ``m_y``, ``m``)
+        Returns:
+            Sum of internal moments about each axis and resultant moment (``m_x``,
+            ``m_y``, ``m``)
         """
-
         moment_sum_x = 0
         moment_sum_y = 0
 
@@ -1434,12 +1441,12 @@ class StressResult:
 
         return moment_sum_x, moment_sum_y, moment_sum
 
-    def get_concrete_stress_limits(self) -> Tuple[float, float]:
+    def get_concrete_stress_limits(self) -> tuple[float, float]:
         """Returns the minimum and maximum concrete stress.
 
-        :return: Minimum concrete stress, maximum concrete stress
+        Returns:
+            Minimum concrete stress, maximum concrete stress
         """
-
         min_stress = 0
         max_stress = 0
 
