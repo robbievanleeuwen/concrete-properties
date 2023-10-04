@@ -1,14 +1,15 @@
+"""Class for a reinforced concrete section."""
+
 from __future__ import annotations
 
 import warnings
-from math import inf, isinf, nan
-from typing import TYPE_CHECKING, List, Optional, Tuple, Union
+from math import inf, isinf
+from typing import TYPE_CHECKING
 
 import matplotlib.patches as mpatches
 import numpy as np
 import sectionproperties.pre.geometry as sp_geom
 from rich.live import Live
-from scipy.interpolate import interp1d
 from scipy.optimize import brentq
 
 import concreteproperties.results as res
@@ -18,8 +19,9 @@ from concreteproperties.material import Concrete, SteelStrand
 from concreteproperties.post import plotting_context
 from concreteproperties.pre import CPGeom, CPGeomConcrete
 
+
 if TYPE_CHECKING:
-    import matplotlib
+    import matplotlib.axes
 
 
 class ConcreteSection:
@@ -28,39 +30,43 @@ class ConcreteSection:
     def __init__(
         self,
         geometry: sp_geom.CompoundGeometry,
-        moment_centroid: Optional[Tuple[float, float]] = None,
+        moment_centroid: tuple[float, float] | None = None,
         geometric_centroid_override: bool = False,
     ) -> None:
         """Inits the ConcreteSection class.
 
-        :param geometry: *sectionproperties* CompoundGeometry object describing the
-            reinforced concrete section
-        :param moment_centroid: If specified, all moments for service and ultimate
-            analyses are calculated about this point. If not specified, all moments are
-            calculated about the gross cross-section centroid, i.e. no material
-            properties applied.
-        :param geometric_centroid_override: If set to True, sets ``moment_centroid`` to
-            the geometric centroid i.e. material properties applied (useful for
-            composite section analysis)
-        """
+        Args:
+            geometry: ``sectionproperties`` ``CompoundGeometry`` object describing the
+                reinforced concrete section
+            moment_centroid: If specified, all moments for service and ultimate
+                analyses are calculated about this point. If not specified, all moments
+                are calculated about the gross cross-section centroid, i.e. no material
+                properties applied.
+            geometric_centroid_override: If set to True, sets ``moment_centroid`` to
+                the geometric centroid i.e. material properties applied (useful for
+                composite section analysis)
 
+        Raises:
+            ValueError: If steel strand materials are detected, use a PrestressedSection
+                instead
+        """
         self.compound_geometry = geometry
 
         # check overlapping regions
         polygons = [sec_geom.geom for sec_geom in self.compound_geometry.geoms]
         overlapped_regions = sp_geom.check_geometry_overlaps(polygons)
         if overlapped_regions:
-            warnings.warn(
-                "The provided geometry contains overlapping regions, results may be incorrect."
-            )
+            msg = "The provided geometry contains overlapping regions, results may be"
+            msg += " incorrect."
+            warnings.warn(msg)
 
         # sort into concrete, reinforcement (meshed and lumped) and strand geometries
-        self.all_geometries: List[Union[CPGeomConcrete, CPGeom]] = []
-        self.meshed_geometries: List[Union[CPGeomConcrete, CPGeom]] = []
-        self.concrete_geometries: List[CPGeomConcrete] = []
-        self.reinf_geometries_meshed: List[CPGeom] = []
-        self.reinf_geometries_lumped: List[CPGeom] = []
-        self.strand_geometries: List[CPGeom] = []
+        self.all_geometries: list[CPGeomConcrete | CPGeom] = []
+        self.meshed_geometries: list[CPGeomConcrete | CPGeom] = []
+        self.concrete_geometries: list[CPGeomConcrete] = []
+        self.reinf_geometries_meshed: list[CPGeom] = []
+        self.reinf_geometries_lumped: list[CPGeom] = []
+        self.strand_geometries: list[CPGeom] = []
 
         # sort geometry into appropriate list
         for geom in self.compound_geometry.geoms:
@@ -70,7 +76,7 @@ class ConcreteSection:
                 self.meshed_geometries.append(cp_geom)
             elif isinstance(geom.material, SteelStrand):
                 # SteelStrand materials can only be in PrestressedSection
-                if type(self) == ConcreteSection:
+                if type(self) is ConcreteSection:
                     raise ValueError(
                         "SteelStrand material detected. Use PrestressedSection instead."
                     )
@@ -78,7 +84,7 @@ class ConcreteSection:
                     cp_geom = CPGeom(geom=geom.geom, material=geom.material)
                     self.strand_geometries.append(cp_geom)
             else:
-                cp_geom = CPGeom(geom=geom.geom, material=geom.material)  # type: ignore
+                cp_geom = CPGeom(geom=geom.geom, material=geom.material)
 
                 if cp_geom.material.meshed:
                     self.reinf_geometries_meshed.append(cp_geom)
@@ -107,7 +113,6 @@ class ConcreteSection:
 
     def calculate_gross_area_properties(self) -> None:
         """Calculates and stores gross section area properties."""
-
         # loop through all geometries
         for geom in self.all_geometries:
             # area and centroid of geometry
@@ -200,16 +205,16 @@ class ConcreteSection:
         )
 
         # principal 2nd moments of area about the centroidal xy axis
-        Delta = (
+        delta = (
             ((self.gross_properties.e_ixx_c - self.gross_properties.e_iyy_c) / 2) ** 2
             + self.gross_properties.e_ixy_c**2
         ) ** 0.5
         self.gross_properties.e_i11 = (
             self.gross_properties.e_ixx_c + self.gross_properties.e_iyy_c
-        ) / 2 + Delta
+        ) / 2 + delta
         self.gross_properties.e_i22 = (
             self.gross_properties.e_ixx_c + self.gross_properties.e_iyy_c
-        ) / 2 - Delta
+        ) / 2 - delta
 
         # principal axis angle
         if (
@@ -271,9 +276,9 @@ class ConcreteSection:
     ) -> res.GrossProperties:
         """Returns the gross section properties of the reinforced concrete section.
 
-        :return: Gross concrete properties object
+        Returns:
+            Gross concrete properties object
         """
-
         return self.gross_properties
 
     def get_transformed_gross_properties(
@@ -282,11 +287,12 @@ class ConcreteSection:
     ) -> res.TransformedGrossProperties:
         """Transforms gross section properties given a reference elastic modulus.
 
-        :param elastic_modulus: Reference elastic modulus
+        Args:
+            elastic_modulus: Reference elastic modulus
 
-        :return: Transformed concrete properties object
+        Returns:
+            Transformed concrete properties object
         """
-
         return res.TransformedGrossProperties(
             concrete_properties=self.gross_properties, elastic_modulus=elastic_modulus
         )
@@ -297,12 +303,16 @@ class ConcreteSection:
     ) -> res.CrackedResults:
         r"""Calculates cracked section properties given a neutral axis angle ``theta``.
 
-        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
-            (:math:`-\pi \leq \theta \leq \pi`)
+        Args:
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
 
-        :return: Cracked results object
+        Raises:
+            ValueError: If the analysis fails
+
+        Results:
+            Cracked results object
         """
-
         cracked_results = res.CrackedResults(theta=theta)
         cracked_results.m_cr = self.calculate_cracking_moment(theta=theta)
 
@@ -322,14 +332,14 @@ class ConcreteSection:
                 b=b,
                 args=(cracked_results),
                 xtol=1e-3,
-                rtol=1e-6,  # type: ignore
+                rtol=1e-6,
                 full_output=True,
                 disp=False,
             )
-        except ValueError:
+        except ValueError as exc:
             msg = "Analysis failed. Please raise an issue at "
             msg += "https://github.com/robbievanleeuwen/concrete-properties/issues"
-            raise utils.AnalysisError(msg)
+            raise utils.AnalysisError(msg) from exc
 
         # calculate cracked section properties
         self.cracked_section_properties(cracked_results=cracked_results)
@@ -342,12 +352,13 @@ class ConcreteSection:
     ) -> float:
         r"""Calculates the cracking moment given a bending angle ``theta``.
 
-        :param theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
+        Args:
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
 
-        :return: Cracking moment
+        Returns:
+            Cracking moment
         """
-
         # get centroidal second moments of area
         e_ixx = self.gross_properties.e_ixx_c
         e_iyy = self.gross_properties.e_iyy_c
@@ -394,15 +405,18 @@ class ConcreteSection:
         d_nc: float,
         cracked_results: res.CrackedResults,
     ) -> float:
-        """Given a trial cracked neutral axis depth ``d_nc``, determines the difference
+        """Determine the cracked neutral axis convergence.
+
+        Given a trial cracked neutral axis depth ``d_nc``, determines the difference
         between the first moments of area above and below the trial axis.
 
-        :param d_nc: Trial cracked neutral axis
-        :param cracked_results: Cracked results object
+        Args:
+            d_nc: Trial cracked neutral axis
+            cracked_results: Cracked results object
 
-        :return: Cracked neutral axis convergence
+        Returns:
+            Cracked neutral axis convergence
         """
-
         # calculate extreme fibre in global coordinates
         extreme_fibre, d_t = utils.calculate_extreme_fibre(
             points=self.compound_geometry.points, theta=cracked_results.theta
@@ -425,7 +439,7 @@ class ConcreteSection:
         )
 
         # split concrete geometries above and below d_nc, discard below
-        cracked_geoms: List[Union[CPGeomConcrete, CPGeom]] = []
+        cracked_geoms: list[CPGeomConcrete | CPGeom] = []
 
         for conc_geom in self.concrete_geometries:
             top_geoms, _ = conc_geom.split_section(
@@ -463,12 +477,14 @@ class ConcreteSection:
         self,
         cracked_results: res.CrackedResults,
     ) -> None:
-        """Given a list of cracked geometries (stored in ``cracked_results``),
-        determines the cracked section properties and stores in ``cracked_results``.
+        """Calculate cracked section properties.
 
-        :param cracked_results: Cracked results object with stored cracked geometries
+        Given a list of cracked geometries (stored in ``cracked_results``), determines
+        the cracked section properties and stores in ``cracked_results``.
+
+        Args:
+            cracked_results: Cracked results object with stored cracked geometries
         """
-
         # reset results
         cracked_results.reset_results()
 
@@ -540,16 +556,16 @@ class ConcreteSection:
         )
 
         # principal 2nd moments of area about the centroidal xy axis
-        Delta = (
+        delta = (
             ((cracked_results.e_ixx_c_cr - cracked_results.e_iyy_c_cr) / 2) ** 2
             + cracked_results.e_ixy_c_cr**2
         ) ** 0.5
         cracked_results.e_i11_cr = (
             cracked_results.e_ixx_c_cr + cracked_results.e_iyy_c_cr
-        ) / 2 + Delta
+        ) / 2 + delta
         cracked_results.e_i22_cr = (
             cracked_results.e_ixx_c_cr + cracked_results.e_iyy_c_cr
-        ) / 2 - Delta
+        ) / 2 - delta
 
         # principal axis angle
         if (
@@ -575,29 +591,34 @@ class ConcreteSection:
         delta_m_max: float = 0.3,
         progress_bar: bool = True,
     ) -> res.MomentCurvatureResults:
-        r"""Performs a moment curvature analysis given a bending angle ``theta`` and
-        applied axial force ``n``.
+        r"""Moment curvature analysis.
 
-        Analysis continues until a material reaches its ultimate strain.
+        Performs a moment curvature analysis given a bending angle ``theta`` and
+        applied axial force ``n``. Analysis continues until a material reaches its
+        ultimate strain.
 
-        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
-            (:math:`-\pi \leq \theta \leq \pi`)
-        :param n: Axial force
-        :param kappa0: Initial curvature
-        :param kappa_inc: Initial curvature increment
-        :param kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
-            when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied, the
-            inverse of this multipler is applied to ``kappa_inc``.
-        :param kappa_inc_max: Maximum curvature increment
-        :param delta_m_min: Relative change in moment at which to reduce the curvature
-            increment
-        :param delta_m_max: Relative change in moment at which to increase the curvature
-            increment
-        :param progress_bar: If set to True, displays the progress bar
+        Args:
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            n: Axial force
+            kappa0: Initial curvature
+            kappa_inc: Initial curvature increment
+            kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
+                when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied,
+                the inverse of this multipler is applied to ``kappa_inc``.
+            kappa_inc_max: Maximum curvature increment
+            delta_m_min: Relative change in moment at which to reduce the curvature
+                increment
+            delta_m_max: Relative change in moment at which to increase the curvature
+                increment
+            progress_bar: If set to True, displays the progress bar
 
-        :return: Moment curvature results object
+        Raises:
+            ValueError: If the analysis fails
+
+        Returns:
+            Moment curvature results object
         """
-
         # initialise variables
         moment_curvature = res.MomentCurvatureResults(theta=theta, n_target=n)
 
@@ -635,11 +656,12 @@ class ConcreteSection:
                         full_output=True,
                         disp=False,
                     )
-                except ValueError:
+                except ValueError as exc:
                     if not moment_curvature._failure:
                         msg = "Analysis failed. Please raise an issue at "
-                        msg += "https://github.com/robbievanleeuwen/concrete-properties/issues"
-                        raise utils.AnalysisError(msg)
+                        msg += "https://github.com/robbievanleeuwen/concrete-properties"
+                        msg += "/issues"
+                        raise utils.AnalysisError(msg) from exc
 
                 m_xy = np.sqrt(
                     moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2
@@ -732,16 +754,19 @@ class ConcreteSection:
         kappa: float,
         moment_curvature: res.MomentCurvatureResults,
     ) -> float:
-        """Given a neutral axis depth ``d_n`` and curvature ``kappa``, returns the the
+        """Calculates service convergence.
+
+        Given a neutral axis depth ``d_n`` and curvature ``kappa``, returns the the
         net axial force.
 
-        :param eps0: Strain at top fibre
-        :param kappa: Curvature
-        :param moment_curvature: Moment curvature results object
+        Args:
+            eps0: Strain at top fibre
+            kappa: Curvature
+            moment_curvature: Moment curvature results object
 
-        :return: Net axial force
+        Returns:
+            Net axial force
         """
-
         # reset failure
         moment_curvature._failure = False
 
@@ -751,7 +776,7 @@ class ConcreteSection:
         )
 
         # create splits in meshed geometries at points in stress-strain profiles
-        meshed_split_geoms: List[Union[CPGeom, CPGeomConcrete]] = []
+        meshed_split_geoms: list[CPGeom | CPGeomConcrete] = []
 
         for meshed_geom in self.meshed_geometries:
             split_geoms = utils.split_geom_at_strains_service(
@@ -787,14 +812,11 @@ class ConcreteSection:
             m_y += m_y_sec
 
             # check for failure
-            ult_comp_strain = (
-                meshed_geom.material.stress_strain_profile.get_ultimate_compressive_strain()
-            )
-            ult_tens_strain = (
-                meshed_geom.material.stress_strain_profile.get_ultimate_tensile_strain()
-            )
+            meshed_ssp = meshed_geom.material.stress_strain_profile
+            ult_comp_strain = meshed_ssp.get_ultimate_compressive_strain()
+            ult_tens_strain = meshed_ssp.get_ultimate_tensile_strain()
 
-            # don't worry about tension failure in concrete
+            # ignore tension failure in concrete
             if max_strain > ult_comp_strain or (
                 min_strain < ult_tens_strain
                 and not isinstance(meshed_geom, CPGeomConcrete)
@@ -828,16 +850,13 @@ class ConcreteSection:
 
             # add initial prestress strain
             if isinstance(lumped_geom.material, SteelStrand):
-                eps_pe = -lumped_geom.material.get_prestress_strain(area=area)
+                eps_pe = -lumped_geom.material.get_prestress_strain()
                 strain += eps_pe
 
             # check for failure
-            ult_comp_strain = (
-                lumped_geom.material.stress_strain_profile.get_ultimate_compressive_strain()
-            )
-            ult_tens_strain = (
-                lumped_geom.material.stress_strain_profile.get_ultimate_tensile_strain()
-            )
+            lumped_ssp = lumped_geom.material.stress_strain_profile
+            ult_comp_strain = lumped_ssp.get_ultimate_compressive_strain()
+            ult_tens_strain = lumped_ssp.get_ultimate_tensile_strain()
 
             if strain > ult_comp_strain or strain < ult_tens_strain:
                 moment_curvature._failure = True
@@ -875,7 +894,9 @@ class ConcreteSection:
         theta: float = 0,
         n: float = 0,
     ) -> res.UltimateBendingResults:
-        r"""Given a neutral axis angle ``theta`` and an axial force ``n``, calculates
+        r"""Calculate ultiamte bending capacity.
+
+        Given a neutral axis angle ``theta`` and an axial force ``n``, calculates
         the ultimate bending capacity.
 
         .. note::
@@ -885,15 +906,21 @@ class ConcreteSection:
             ``design_code`` module or consult your local design code on how to treat
             nominal axial loads in ultimate bending calculations.
 
-        Note that ``k_u`` is calculated only for lumped (non-meshed) geometries.
+        .. note::
 
-        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
-            (:math:`-\pi \leq \theta \leq \pi`)
-        :param n: Net axial force (nominal axial load)
+            ``k_u`` is calculated only for lumped (non-meshed) geometries.
 
-        :return: Ultimate bending results object
+        Args:
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            n: Net axial force (nominal axial load)
+
+        Raises:
+            ValueError: If the analysis fails
+
+        Returns:
+            Ultimate bending results object
         """
-
         # set neutral axis depth limits
         # depth of neutral axis at extreme tensile fibre
         _, d_t = utils.calculate_extreme_fibre(
@@ -913,15 +940,15 @@ class ConcreteSection:
                 b=b,
                 args=(n, ultimate_results),
                 xtol=1e-3,
-                rtol=1e-6,  # type: ignore
+                rtol=1e-6,
                 full_output=True,
                 disp=False,
             )
-        except ValueError:
+        except ValueError as exc:
             msg = "Analysis failed. The solver could not find a neutral axis that "
             msg += "satisfies equilibrium. This may be due to an axial force that "
             msg += "exceeds the tensile or compressive capacity of the cross-section."
-            raise utils.AnalysisError(msg)
+            raise utils.AnalysisError(msg) from exc
 
         return ultimate_results
 
@@ -931,17 +958,20 @@ class ConcreteSection:
         n: float,
         ultimate_results: res.UltimateBendingResults,
     ) -> float:
-        """Given a neutral axis depth ``d_n`` and neutral axis angle ``theta``,
+        """Calculates ultimate convergence.
+
+        Given a neutral axis depth ``d_n`` and neutral axis angle ``theta``,
         calculates the difference between the target net axial force ``n`` and the
         calculated axial force.
 
-        :param d_n: Depth of the neutral axis from the extreme compression fibre
-        :param n: Net axial force
-        :param ultimate_results: Ultimate bending results object
+        Args:
+            d_n: Depth of the neutral axis from the extreme compression fibre
+            n: Net axial force
+            ultimate_results: Ultimate bending results object
 
-        :return: Axial force convergence
+        Returns:
+            Axial force convergence
         """
-
         # calculate convergence
         return (
             n
@@ -953,18 +983,21 @@ class ConcreteSection:
     def calculate_ultimate_section_actions(
         self,
         d_n: float,
-        ultimate_results: Optional[res.UltimateBendingResults] = None,
+        ultimate_results: res.UltimateBendingResults | None = None,
     ) -> res.UltimateBendingResults:
-        """Given a neutral axis depth ``d_n`` and neutral axis angle ``theta``,
+        """Caclculate ultimate section actions.
+
+        Given a neutral axis depth ``d_n`` and neutral axis angle ``theta``,
         calculates the resultant bending moments ``m_x``, ``m_y``, ``m_xy`` and the net
         axial force ``n``.
 
-        :param d_n: Depth of the neutral axis from the extreme compression fibre
-        :param ultimate_results: Ultimate bending results object
+        Args:
+            d_n: Depth of the neutral axis from the extreme compression fibre
+            ultimate_results: Ultimate bending results object
 
-        :return: Ultimate bending results object
+        Returns:
+            Ultimate bending results object
         """
-
         if ultimate_results is None:
             ultimate_results = res.UltimateBendingResults(theta=0)
 
@@ -993,7 +1026,7 @@ class ConcreteSection:
             )
 
         # create splits in meshed geometries at points in stress-strain profiles
-        meshed_split_geoms: List[Union[CPGeom, CPGeomConcrete]] = []
+        meshed_split_geoms: list[CPGeom | CPGeomConcrete] = []
 
         if isinf(d_n):
             meshed_split_geoms = self.meshed_geometries
@@ -1050,7 +1083,7 @@ class ConcreteSection:
 
                 # add initial prestress strain (N.B. ignore eps_ce)
                 if isinstance(lumped_geom.material, SteelStrand):
-                    eps_pe = -lumped_geom.material.get_prestress_strain(area=area)
+                    eps_pe = -lumped_geom.material.get_prestress_strain()
                     strain += eps_pe
 
             # calculate stress and force
@@ -1091,20 +1124,16 @@ class ConcreteSection:
     def moment_interaction_diagram(
         self,
         theta: float = 0,
-        limits: List[Tuple[str, float]] = [
-            ("D", 1.0),
-            ("d_n", 1e-6),
-        ],
-        control_points: List[Tuple[str, float]] = [
-            ("kappa0", 0.0),
-            ("fy", 1.0),
-            ("N", 0.0),
-        ],
-        labels: Optional[List[str]] = None,
+        limits: list[tuple[str, float]] | None = None,
+        control_points: list[tuple[str, float]] | None = None,
+        # ("kappa0", 0.0),
+        # ("fy", 1.0),
+        # ("N", 0.0),
+        labels: list[str] | None = None,
         n_points: int = 24,
-        n_spacing: Optional[int] = None,
-        max_comp: Optional[float] = None,
-        max_comp_labels: Optional[List[str]] = None,
+        n_spacing: int | None = None,
+        max_comp: float | None = None,
+        max_comp_labels: list[str] | None = None,
         progress_bar: bool = True,
     ) -> res.MomentInteractionResults:
         r"""Generates a moment interaction diagram given a neutral axis angle ``theta``.
@@ -1123,39 +1152,52 @@ class ConcreteSection:
           - ``"kappa0"`` - zero curvature compression (N.B second item in tuple is not
             used)
 
-        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
+        Args:
+        theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
-        :param limits: List of control points that define the start and end of the
+        limits: List of control points that define the start and end of the
             interaction diagram. List length must equal two. The default limits range
-            from concrete decompression strain to zero curvature tension.
-        :param control_points: List of additional control points to add to the moment
+            from concrete decompression strain to zero curvature tension, i.e.
+            ``[("D", 1.0), ("d_n", 1e-6)]``.
+        control_points: List of additional control points to add to the moment
             interatction diagram. The default control points include the pure
-            compression point (``kappa0``), the balanced point (``fy=1``) and the pure
-            bending point (``N=0``). Control points may lie outside the limits of the
-            moment interaction diagram as long as equilibrium can be found.
-        :param labels: List of labels to apply to the ``limits`` and ``control_points``
+            compression point (``kappa0``), the balanced point (``fy = 1``) and the pure
+            bending point (``N=0``), i.e. ``[("kappa0", 0.0), ("fy", 1.0),
+            ("N", 0.0)]``. Control points may lie outside the limits of the moment
+            interaction diagram as long as equilibrium can be found.
+        labels: List of labels to apply to the ``limits`` and ``control_points``
             for plotting purposes. The first two values in ``labels`` apply labels to
             the ``limits``, the remaining values apply labels to the ``control_points``.
             If a single value is provided, this value will be applied to both ``limits``
             and all ``control_points``. The length of ``labels`` must equal ``1`` or
             ``2 + len(control_points)``.
-        :param n_points: Number of points to compute including and between the
+        n_points: Number of points to compute including and between the
             ``limits`` of the moment interaction diagram. Generates equally spaced
             neutral axis depths between the ``limits``.
-        :param n_spacing: If provided, overrides ``n_points`` and generates the moment
+        n_spacing: If provided, overrides ``n_points`` and generates the moment
             interaction diagram using ``n_spacing`` equally spaced axial loads. Note
             that using ``n_spacing`` negatively affects performance, as the neutral axis
             depth must first be located for each point on the moment interaction
             diagram.
-        :param max_comp: If provided, limits the maximum compressive force in the moment
+        max_comp: If provided, limits the maximum compressive force in the moment
             interaction diagram to ``max_comp``
-        :param max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
+        max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
             first value is at zero moment, second value is at the intersection with the
             interaction diagram
-        :param progress_bar: If set to True, displays the progress bar
+        progress_bar: If set to True, displays the progress bar
+
+        Raises:
+            ValueError: Length of ``limits`` must equal 2
+            ValueError: Length of ``labels`` must be 1 or 2 + number of control points
+            ValueError: If ``max_comp`` is greater than the maximum axial capacity
 
         :return: Moment interaction results object
         """
+        if limits is None:
+            limits = [("D", 1.0), ("d_n", 1e-6)]
+
+        if control_points is None:
+            control_points = [("kappa0", 0.0), ("fy", 1.0), ("N", 0.0)]
 
         # compute extreme tensile fibre
         _, d_t = utils.calculate_extreme_fibre(
@@ -1372,16 +1414,19 @@ class ConcreteSection:
         n_points: int = 48,
         progress_bar: bool = True,
     ) -> res.BiaxialBendingResults:
-        """Generates a biaxial bending diagram given a net axial force ``n`` and
+        """Generates a biaxial bending diagram.
+
+        Generates a biaxial bending diagram given a net axial force ``n`` and
         ``n_points`` calculation points.
 
-        :param n: Net axial force
-        :param n_points: Number of calculation points
-        :param progress_bar: If set to True, displays the progress bar
+        Args:
+            n: Net axial force
+            n_points: Number of calculation points
+            progress_bar: If set to True, displays the progress bar
 
-        :return: Biaxial bending results
+        Returns:
+            Biaxial bending results
         """
-
         # initialise results
         bb_results = res.BiaxialBendingResults(n=n)
 
@@ -1416,10 +1461,8 @@ class ConcreteSection:
 
                 bbcurve(progress=progress)
 
-                progress.update(
-                    task,
-                    description="[bold green]:white_check_mark: Biaxial bending diagram generated",
-                )
+                msg = "[bold green]:white_check_mark: Biaxial bending diagram generated"
+                progress.update(task, description=msg)
                 live.refresh()
         else:
             bbcurve()
@@ -1432,19 +1475,21 @@ class ConcreteSection:
         m_x: float = 0,
         m_y: float = 0,
     ) -> res.StressResult:
-        """Calculates stresses within the reinforced concrete section assuming an
-        uncracked section.
+        """Calculates uncracked stresses.
 
-        Uses gross area section properties to determine concrete and reinforcement
-        stresses given an axial force ``n``, and bending moments ``m_x`` and ``m_y``.
+        Calculates stresses within the reinforced concrete section assuming an
+        uncracked section. Uses gross area section properties to determine concrete and
+        reinforcement stresses given an axial force ``n``, and bending moments ``m_x``
+        and ``m_y``.
 
-        :param n: Axial force
-        :param m_x: Bending moment about the x-axis
-        :param m_y: Bending moment about the y-axis
+        Args:
+            n: Axial force
+            m_x: Bending moment about the x-axis
+            m_y: Bending moment about the y-axis
 
-        :return: Stress results object
+        Returns:
+            Stress results object
         """
-
         # initialise stress results
         conc_sections = []
         conc_sigs = []
@@ -1564,20 +1609,21 @@ class ConcreteSection:
         n: float = 0,
         m: float = 0,
     ) -> res.StressResult:
-        """Calculates stresses within the reinforced concrete section assuming a cracked
-        section.
+        """Calculates cracked stresses.
 
-        Uses cracked area section properties to determine concrete and reinforcement
-        stresses given an axial force ``n`` and bending moment ``m`` about the bending
-        axis stored in ``cracked_results``.
+        Calculates stresses within the reinforced concrete section assuming a cracked
+        section. Uses cracked area section properties to determine concrete and
+        reinforcement stresses given an axial force ``n`` and bending moment ``m`` about
+        the bending axis stored in ``cracked_results``.
 
-        :param cracked_results: Cracked results objects
-        :param n: Axial force
-        :param m: Bending moment
+        Args:
+            cracked_results: Cracked results objects
+            n: Axial force
+            m: Bending moment
 
-        :return: Stress results object
+        Returns:
+            Stress results object
         """
-
         # initialise stress results
         conc_sections = []
         conc_sigs = []
@@ -1702,7 +1748,7 @@ class ConcreteSection:
         self,
         moment_curvature_results: res.MomentCurvatureResults,
         m: float,
-        kappa: Optional[float] = None,
+        kappa: float | None = None,
     ) -> res.StressResult:
         """Calculates service stresses within the reinforced concrete section.
 
@@ -1711,14 +1757,18 @@ class ConcreteSection:
         within the section. Otherwise, a curvature can be provided which overrides the
         supplied moment.
 
-        :param moment_curvature_results: Moment-curvature results objects
-        :param m: Bending moment
-        :param kappa: Curvature, if provided overrides the supplied bending moment and
-            calculates the stress at the given curvature
+        Args:
+            moment_curvature_results: Moment-curvature results objects
+            m: Bending moment
+            kappa: Curvature, if provided overrides the supplied bending moment and
+                calculates the stress at the given curvature
 
-        :return: Stress results object
+        Raises:
+            ValueError: If the stress analysis fails
+
+        Returns:
+            Stress results object
         """
-
         if kappa is None:
             # get curvature
             kappa = moment_curvature_results.get_curvature(moment=m)
@@ -1741,10 +1791,10 @@ class ConcreteSection:
                 full_output=True,
                 disp=False,
             )
-        except ValueError:
+        except ValueError as exc:
             msg = "Analysis failed. Confirm that the supplied moment/curvature is "
             msg += "within the range of the moment-curvature analysis."
-            raise utils.AnalysisError(msg)
+            raise utils.AnalysisError(msg) from exc
 
         # initialise stress results
         conc_sections = []
@@ -1764,7 +1814,7 @@ class ConcreteSection:
         )
 
         # create splits in meshed geometries at points in stress-strain profiles
-        meshed_split_geoms: List[Union[CPGeom, CPGeomConcrete]] = []
+        meshed_split_geoms: list[CPGeom | CPGeomConcrete] = []
 
         for meshed_geom in self.meshed_geometries:
             split_geoms = utils.split_geom_at_strains_service(
@@ -1849,11 +1899,12 @@ class ConcreteSection:
     ) -> res.StressResult:
         """Calculates ultimate stresses within the reinforced concrete section.
 
-        :param ultimate_results: Ultimate bending results objects
+        Args:
+            ultimate_results: Ultimate bending results objects
 
-        :return: Stress results object
+        Returns:
+            Stress results object
         """
-
         # depth of neutral axis at extreme tensile fibre
         extreme_fibre, _ = utils.calculate_extreme_fibre(
             points=self.compound_geometry.points, theta=ultimate_results.theta
@@ -1882,7 +1933,7 @@ class ConcreteSection:
         lumped_reinf_forces = []
 
         # create splits in meshed geometries at points in stress-strain profiles
-        meshed_split_geoms: List[Union[CPGeom, CPGeomConcrete]] = []
+        meshed_split_geoms: list[CPGeom | CPGeomConcrete] = []
 
         if isinf(ultimate_results.d_n):
             meshed_split_geoms = self.meshed_geometries
@@ -1970,17 +2021,20 @@ class ConcreteSection:
     def extreme_bar(
         self,
         theta: float,
-    ) -> Tuple[float, float]:
-        r"""Given neutral axis angle ``theta``, determines the depth of the furthest
+    ) -> tuple[float, float]:
+        r"""Calculates depth to the extreme bar.
+
+        Given neutral axis angle ``theta``, determines the depth of the furthest
         lumped reinforcement from the extreme compressive fibre and also returns its
         yield strain.
 
-        :param theta: Angle (in radians) the neutral axis makes with the horizontal
-            axis (:math:`-\pi \leq \theta \leq \pi`)
+        Args:
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
 
-        :return: Depth of furthest bar and its yield strain
+        Returns:
+            Depth of furthest bar and its yield strain
         """
-
         # initialise variables
         d_ext = 0
 
@@ -2019,19 +2073,20 @@ class ConcreteSection:
     def decode_d_n(
         self,
         theta: float,
-        cp: Tuple[str, float],
+        cp: tuple[str, float],
         d_t: float,
     ) -> float:
         r"""Decodes a neutral axis depth given a control point ``cp``.
 
-        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
-            (:math:`-\pi \leq \theta \leq \pi`)
-        :param cp: Control point to decode
-        :param d_t: Depth to extreme tensile fibre
+        Args:
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            cp: Control point to decode
+            d_t: Depth to extreme tensile fibre
 
-        :return: Decoded neutral axis depth
+        Returns:
+            Decoded neutral axis depth
         """
-
         # multiple of section depth
         if cp[0] == "D":
             # check D
@@ -2081,17 +2136,20 @@ class ConcreteSection:
         title: str = "Reinforced Concrete Section",
         background: bool = False,
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots the reinforced concrete section.
 
-        :param title: Plot title
-        :param background: If set to True, uses the plot as a background plot
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+        Args:
+            title: Plot title
+            background: If set to True, uses the plot as a background plot
+            kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
-
         with plotting_context(title=title, aspect=True, **kwargs) as (fig, ax):
+            assert ax
+
             # create list of already plotted materials
             plotted_materials = []
             legend_labels = []
@@ -2119,7 +2177,7 @@ class ConcreteSection:
                     else:
                         fmt = "ko-"
 
-                    ax.plot(  # type: ignore
+                    ax.plot(
                         [meshed_geom.points[f[0]][0], meshed_geom.points[f[1]][0]],
                         [meshed_geom.points[f[0]][1], meshed_geom.points[f[1]][1]],
                         fmt,
@@ -2138,14 +2196,14 @@ class ConcreteSection:
                     plotted_materials.append(lumped_geom.material)
 
                 # plot the points and facets
-                coords = list(lumped_geom.geom.exterior.coords)  # type: ignore
+                coords = list(lumped_geom.geom.exterior.coords)
                 bar = mpatches.Polygon(
                     xy=coords, closed=False, color=lumped_geom.material.colour
                 )
-                ax.add_patch(bar)  # type: ignore
+                ax.add_patch(bar)
 
             if not background:
-                ax.legend(  # type: ignore
+                ax.legend(
                     loc="center left", bbox_to_anchor=(1, 0.5), handles=legend_labels
                 )
 
