@@ -46,23 +46,28 @@ through submitting bug reports, feature requests or pull requests. Please read t
 
 - [x] Concrete material
   - [x] Service stress-strain profiles
-    - [x] Linear profile
-    - [x] Linear profile (no tension)
-    - [x] Eurocode non-linear
-    - [x] Modified Mander non-linear profile (confined & unconfined concrete)
+    - [x] Generic piecewise linear stress-strain profile
+    - [x] Linear stress-strain profile
+    - [x] Linear (no tension) stress-strain profile
+    - [x] Eurocode non-linear stress-strain profile
+    - [x] Modified Mander non-linear (confined & unconfined concrete) stress-strain profile
   - [x] Ultimate stress-strain profiles
-    - [x] Rectangular stress block
-    - [x] Bilinear stress-strain profile
-    - [x] Eurocode parabolic
-  - [x] Flexural tensile strength
+    - [x] Generic piecewise linear stress-strain profile
+    - [x] Equivalent Rectangular stress-strain profile
+    - [x] Generic Bilinear stress-strain profile
+    - [x] Generic Parabolic stress-strain profile
+    - [x] Eurocode Bilinear stress-strain profile
+    - [x] Eurocode Parabolic stress-strain profile
 - [x] Steel material
   - [x] Stress-strain profiles
-    - [x] Elastic-plastic
-    - [x] Elastic-plastic (with hardening)
+    - [x] Generic piecewise linear stress-strain profile
+    - [x] Elastic-plastic stress-strain profile
+    - [x] Elastic-plastic (with hardening) stress-strain profile
 - [x] Strand material
   - [x] Stress-strain profiles
-    - [x] Elastic-plastic (with hardening)
-    - [x] PCI journal (1992) non-linear
+    - [x] Generic piecewise linear stress-strain profile
+    - [x] Elastic-plastic (with hardening) stress-strain profile
+    - [x] PCI journal (1992) non-linear stress-strain profile
 
 ### Gross Section Properties
 
@@ -78,7 +83,7 @@ through submitting bug reports, feature requests or pull requests. Please read t
 - [x] Principal second moments of area
 - [x] Centroidal section moduli
 - [x] Principal section moduli
-- [x] Prestressed Aations
+- [x] Prestressed Actions
 
 ### Service Analysis
 
@@ -89,8 +94,6 @@ through submitting bug reports, feature requests or pull requests. Please read t
 ### Ultimate Analysis
 
 - [x] Ultimate bending capacity
-- [x] Squash load
-- [x] Tensile load
 - [x] Moment interaction diagrams
   - [x] M-N curves
   - [x] Biaxial bending curve

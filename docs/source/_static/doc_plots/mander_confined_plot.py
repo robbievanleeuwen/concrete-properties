@@ -4,13 +4,15 @@ from concreteproperties.design_codes.nzs3101 import NZS3101
 import concreteproperties.stress_strain_profile as ssp
 
 
-def mander_confined_plot(render=False):
+def mander_confined_plot(render=False, plot_unconfined=False):
     """Creates a plot for use in the docstring of ModifiedMander class for unconfined
     concrete to generate a plot with stress-strain parameters shown to aid in
     interpreting class variables.
 
     :param render: Set to True to plot for testing purposes, note will plot
         automatically in a docstring plot directive when set to default of False
+    :param plot_unconfined: Set to True to overlay unconfined stress-strain relationship
+        over the confined stress strain relationship
     """
     # create confined ModifiedMander stress-strain profile
     design_code = NZS3101()
@@ -20,6 +22,7 @@ def mander_confined_plot(render=False):
         compressive_strength
     )
     tensile_failure_strain = concrete_tensile_strength / elastic_modulus
+
     stress_strain_profile = ssp.ModifiedMander(
         elastic_modulus=elastic_modulus,
         compressive_strength=compressive_strength,
@@ -40,6 +43,16 @@ def mander_confined_plot(render=False):
         eps_su=0.15,
     )
 
+    if plot_unconfined:
+        stress_strain_profile_uc = ssp.ModifiedMander(
+            elastic_modulus=elastic_modulus,
+            compressive_strength=compressive_strength,
+            tensile_strength=concrete_tensile_strength,
+            sect_type="rect",
+            conc_tension=False,
+            conc_spalling=True,
+        )
+
     # add return of stress-strain diagram to zero stress
     stress_strain_profile.stresses = np.append(stress_strain_profile.stresses, 0)
     stress_strain_profile.strains = np.append(
@@ -47,10 +60,21 @@ def mander_confined_plot(render=False):
         stress_strain_profile.strains[-1],
     )
 
-    # plot unconfined stress-strain relationship
+    # plot confined stress-strain relationship
     ax = stress_strain_profile.plot_stress_strain(
         fmt="-k", render=False, linewidth=1, figsize=(8, 6)
     )
+
+    if plot_unconfined:
+        # plot unconfined stress-strain relationship for comparison
+        ax.plot(
+            stress_strain_profile_uc.strains,
+            stress_strain_profile_uc.stresses,
+            color="k",
+            lw=1.25,
+            ls="--",
+            dashes=[12, 6],
+        )
 
     # add fake origin axes lines
     plt.axvline(linewidth=1.5, color="grey")
@@ -80,8 +104,8 @@ def mander_confined_plot(render=False):
 
     # add title and axes labels
     plt.title(label="Modified Mander Confined Stress-Strain Profile").set_fontsize(16)
-    plt.xlabel("Compressive Strain $\\varepsilon_c$", labelpad=10).set_fontsize(16)
-    plt.ylabel("Compressive Strength $f_c$", labelpad=0).set_fontsize(16)
+    plt.xlabel("Concrete Strain $\\varepsilon_c$", labelpad=10).set_fontsize(16)
+    plt.ylabel("Concrete Stress $\sigma_c$", labelpad=10).set_fontsize(16)
 
     # define data for annotations
     f_cc = max(stress_strain_profile.stresses)

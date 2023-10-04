@@ -1,36 +1,37 @@
-import numpy as np
 import matplotlib.pyplot as plt
-from concreteproperties.design_codes.nzs3101 import NZS3101
 import concreteproperties.stress_strain_profile as ssp
 
 
-def mander_unconfined_plot(render=False):
-    """Creates a plot for use in the docstring of ModifiedMander class for unconfined
-    concrete to generate a plot with stress-strain parameters shown to aid in
-    interpreting class variables.
+def generic_parabolic_ultimate_plot(render=False):
+    """Creates a plot for use in the docstring of ParabolicStressStrain class,
+    generates a plot with stress-strain parameters shown to aid in interpreting class
+    variables.
 
     :param render: Set to True to plot for testing purposes, note will plot
         automatically in a docstring plot directive when set to default of False
     """
-    # create unconfined ModifiedMander stress-strain profile
-    design_code = NZS3101()
-    compressive_strength = 30
-    elastic_modulus = design_code.e_conc(compressive_strength)
-    concrete_tensile_strength = design_code.concrete_tensile_strength(
-        compressive_strength
-    )
-    tensile_failure_strain = concrete_tensile_strength / elastic_modulus
+    # create ParabolicStressStrain stress-strain profile
+    compressive_strength = 40
+    compressive_strain = 0.0025
+    ultimate_strain = 0.0035
+    n_points = 50
 
-    stress_strain_profile = ssp.ModifiedMander(
-        elastic_modulus=elastic_modulus,
+    stress_strain_profile = ssp.ParabolicStressStrain(
         compressive_strength=compressive_strength,
-        tensile_strength=concrete_tensile_strength,
-        sect_type="rect",
-        conc_tension=True,
-        conc_spalling=True,
+        compressive_strain=compressive_strain,
+        ultimate_strain=ultimate_strain,
+        n_exp=2,
+        n_points=n_points,
     )
 
-    # plot unconfined stress-strain relationship
+    # overide default tension branch strain
+    stress_strain_profile.strains[0] = 0
+
+    # add return of stress-strain diagram to zero stress
+    stress_strain_profile.stresses.append(0)
+    stress_strain_profile.strains.append(stress_strain_profile.strains[-1])
+
+    # plot design stress-strain relationship
     ax = stress_strain_profile.plot_stress_strain(
         fmt="-k", render=False, linewidth=1, figsize=(8, 6)
     )
@@ -62,36 +63,33 @@ def mander_unconfined_plot(render=False):
     )
 
     # add title and axes labels
-    plt.title(label="Modified Mander Unconfined Stress-Strain Profile").set_fontsize(16)
+    plt.title(label="Generic Parabolic Stress-Strain Profile").set_fontsize(16)
     plt.xlabel("Concrete Strain $\\varepsilon_c$", labelpad=10).set_fontsize(16)
     plt.ylabel("Concrete Stress $\sigma_c$", labelpad=10).set_fontsize(16)
 
     # define data for annotations
     x = [
-        -tensile_failure_strain,
-        0.002,
-        0.004,
-        0.006,
+        0,
+        compressive_strain,
+        ultimate_strain,
     ]
     y = [
-        -concrete_tensile_strength,
-        compressive_strength,
-        stress_strain_profile.stresses[-3],
         0,
+        compressive_strength,
+        compressive_strength,
     ]
     x_annotation = [
-        "$\\varepsilon_{t}$",
-        "$\\varepsilon_{co}$",
-        "$2\\varepsilon_{co}$",
-        "$\\varepsilon_{sp}$",
+        "$0$",
+        "$\\varepsilon_{1}$",
+        "$\\varepsilon_{u1}$",
     ]
     y_label = [
-        -concrete_tensile_strength,
+        0,
         compressive_strength,
     ]
     y_annotation = [
-        "$f'_t$",
-        "$f'_{co}$",
+        "$0$",
+        "$\\alpha f'_c$",
     ]
 
     # add markers
@@ -106,37 +104,19 @@ def mander_unconfined_plot(render=False):
     ax.axes.set_xlim(xmin)
     ax.axes.set_ylim(ymin)
 
-    # add line to maximum tension strength f_t at esp_t
+    # add line to maximum strength at eps_1
     plt.plot(
-        [xmin, -tensile_failure_strain, -tensile_failure_strain],
-        [-concrete_tensile_strength, -concrete_tensile_strength, ymin],
-        "k",
-        linewidth=0.75,
-        dashes=[6, 6],
-    )
-
-    # add line to maximum strength f_co at esp_co
-    plt.plot(
-        [xmin, 0.002, 0.002],
+        [xmin, compressive_strain, compressive_strain],
         [compressive_strength, compressive_strength, ymin],
         "k",
         linewidth=0.75,
         dashes=[6, 6],
     )
 
-    # add line to end of non-linear curve at 2*eps_co
+    # add line to maximum strength f_cd at eps_u1
     plt.plot(
-        [0.004, 0.004],
-        [stress_strain_profile.stresses[-3], ymin],
-        "k",
-        linewidth=0.75,
-        dashes=[6, 6],
-    )
-
-    # add line at eps_sp
-    plt.plot(
-        [0.006, 0.006],
-        [0, ymin],
+        [xmin, ultimate_strain, ultimate_strain],
+        [compressive_strength, compressive_strength, ymin],
         "k",
         linewidth=0.75,
         dashes=[6, 6],
