@@ -1,8 +1,10 @@
+"""Contains the finite element objects for a Section and a Tri3 element."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 from math import isinf
-from typing import TYPE_CHECKING, List, Tuple
+from typing import TYPE_CHECKING
 
 import numpy as np
 import triangle
@@ -12,8 +14,9 @@ import concreteproperties.utils as utils
 from concreteproperties.material import Concrete
 from concreteproperties.post import plotting_context
 
+
 if TYPE_CHECKING:
-    import matplotlib
+    import matplotlib.axes
 
     from concreteproperties.material import Material
     from concreteproperties.pre import CPGeom
@@ -25,12 +28,12 @@ class AnalysisSection:
     def __init__(
         self,
         geometry: CPGeom,
-    ):
+    ) -> None:
         """Inits the AnalysisSection class.
 
-        :param geometry: Geometry object
+        Args:
+            geometry: Geometry object
         """
-
         self.geometry = geometry
         self.material = geometry.material
 
@@ -54,7 +57,7 @@ class AnalysisSection:
             self.mesh_elements = []
 
         # build elements
-        self.elements: List[Tri3] = []
+        self.elements: list[Tri3] = []
 
         for node_ids in self.mesh_elements:
             x1 = self.mesh_nodes[node_ids[0]][0]
@@ -79,9 +82,9 @@ class AnalysisSection:
     def calculate_meshed_area(self) -> float:
         """Calculates the area of the analysis section based on the generated mesh.
 
-        :return: Meshed area (un-weighted by elastic modulus)
+        Returns:
+            Meshed area (un-weighted by elastic modulus)
         """
-
         area = 0
 
         for el in self.elements:
@@ -100,23 +103,24 @@ class AnalysisSection:
         e_ixx: float,
         e_iyy: float,
         e_ixy: float,
-    ) -> Tuple[np.ndarray, float, float, float]:
+    ) -> tuple[np.ndarray, float, float, float]:
         r"""Given section actions and section propreties, calculates elastic stresses.
 
-        :param n: Axial force
-        :param m_x: Bending moment about the x-axis
-        :param m_y: Bending moment about the y-axis
-        :param e_a: Axial rigidity
-        :param cx: x-Centroid
-        :param cy: y-Centroid
-        :param e_ixx: Flexural rigidity about the x-axis
-        :param e_iyy: Flexural rigidity about the y-axis
-        :param e_ixy: Flexural rigidity about the xy-axis
+        Args:
+            n: Axial force
+            m_x: Bending moment about the x-axis
+            m_y: Bending moment about the y-axis
+            e_a: Axial rigidity
+            cx: x-Centroid
+            cy: y-Centroid
+            e_ixx: Flexural rigidity about the x-axis
+            e_iyy: Flexural rigidity about the y-axis
+            e_ixy: Flexural rigidity about the xy-axis
 
-        :return: Elastic stresses, net force and distance from neutral axis to point of
-            force action
+        Returns:
+            Elastic stresses, net force and distance from neutral axis to point of force
+            action
         """
-
         # intialise stress results
         sig = np.zeros(len(self.mesh_nodes))
 
@@ -172,24 +176,25 @@ class AnalysisSection:
 
     def service_analysis(
         self,
-        ecf: Tuple[float, float],
+        ecf: tuple[float, float],
         eps0: float,
         theta: float,
         kappa: float,
-        centroid: Tuple[float, float],
-    ) -> Tuple[float, float, float, float, float]:
-        r"""Performs a service stress analysis on the section.
+        centroid: tuple[float, float],
+    ) -> tuple[float, float, float, float, float]:
+        r"""Performs a service analysis on the section.
 
-        :param ecf: Global coordinate of the extreme compressive fibre
-        :param eps0: Strain at top fibre
-        :param theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param kappa: Curvature
-        :param centroid: Centroid about which to take moments
+        Args:
+            ecf: Global coordinate of the extreme compressive fibre
+            eps0: Strain at top fibre
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            kappa: Curvature
+            centroid: Centroid about which to take moments
 
-        :return: Axial force, section moments and min/max strain
+        Returns:
+            Axial force, section moments and min/max strain
         """
-
         # initialise section actions
         n_sec = 0
         m_x_sec = 0
@@ -223,25 +228,28 @@ class AnalysisSection:
     def get_service_stress(
         self,
         kappa: float,
-        ecf: Tuple[float, float],
+        ecf: tuple[float, float],
         eps0: float,
         theta: float,
-        centroid: Tuple[float, float],
-    ) -> Tuple[np.ndarray, float, float, float]:
-        r"""Given the neutral axis depth `d_n` and curvature `kappa` determines the
+        centroid: tuple[float, float],
+    ) -> tuple[np.ndarray, float, float, float]:
+        r"""Determines the service stresses.
+
+        Given the neutral axis depth ``d_n`` and curvature ``kappa`` determines the
         service stresses within the section.
 
-        :param kappa: Curvature
-        :param ecf: Global coordinate of the extreme compressive fibre
-        :param eps0: Strain at top fibre
-        :param theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param centroid: Centroid about which to take moments
+        Args:
+            kappa: Curvature
+            ecf: Global coordinate of the extreme compressive fibre
+            eps0: Strain at top fibre
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            centroid: Centroid about which to take moments
 
-        :return: Service stresses, net force and distance from centroid to point of
-            force action
+        Returns:
+            Service stresses, net force and distance from centroid to point of force
+            action
         """
-
         # intialise stress results
         sig = np.zeros(len(self.mesh_nodes))
 
@@ -280,24 +288,25 @@ class AnalysisSection:
 
     def ultimate_analysis(
         self,
-        point_na: Tuple[float, float],
+        point_na: tuple[float, float],
         d_n: float,
         theta: float,
         ultimate_strain: float,
-        centroid: Tuple[float, float],
-    ) -> Tuple[float, float, float]:
-        r"""Performs an ultimate stress analysis on the section.
+        centroid: tuple[float, float],
+    ) -> tuple[float, float, float]:
+        r"""Performs an ultimate analysis on the section.
 
-        :param point_na: Point on the neutral axis
-        :param d_n: Depth of the neutral axis from the extreme compression fibre
-        :param theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param ultimate_strain: Concrete strain at failure
-        :param centroid: Centroid about which to take moments
+        Args:
+            point_na: Point on the neutral axis
+            d_n: Depth of the neutral axis from the extreme compression fibre
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            ultimate_strain: Concrete strain at failure
+            centroid: Centroid about which to take moments
 
-        :return: Axial force and resultant moments about the global axes
+        Returns:
+            Axial force and resultant moments about the global axes
         """
-
         # initialise section actions
         n_sec = 0
         m_x_sec = 0
@@ -321,25 +330,28 @@ class AnalysisSection:
     def get_ultimate_stress(
         self,
         d_n: float,
-        point_na: Tuple[float, float],
+        point_na: tuple[float, float],
         theta: float,
         ultimate_strain: float,
-        centroid: Tuple[float, float],
-    ) -> Tuple[np.ndarray, float, float, float]:
-        r"""Given the neutral axis depth `d_n` and ultimate strain, determines the
+        centroid: tuple[float, float],
+    ) -> tuple[np.ndarray, float, float, float]:
+        r"""Determines the ultimate stresses.
+
+        Given the neutral axis depth ``d_n`` and ultimate strain, determines the
         ultimate stresses with the section.
 
-        :param d_n: Neutral axis depth
-        :param point_na: Point on the neutral axis
-        :param theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param ultimate_strain: Concrete strain at failure
-        :param centroid: Centroid about which to take moments
+        Args:
+            d_n: Neutral axis depth
+            point_na: Point on the neutral axis
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            ultimate_strain: Concrete strain at failure
+            centroid: Centroid about which to take moments
 
-        :return: Ultimate stresses net force and distance from neutral axis to point of
-            force action
+        Returns:
+            Ultimate stresses net force and distance from neutral axis to point of force
+            action
         """
-
         # intialise stress results
         sig = np.zeros(len(self.mesh_nodes))
 
@@ -389,17 +401,20 @@ class AnalysisSection:
         alpha: float = 0.5,
         title: str = "Finite Element Mesh",
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots the finite element mesh.
 
-        :param alpha: Transparency of the mesh outlines
-        :param title: Plot title
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+        Args:
+            alpha: Transparency of the mesh outlines
+            title: Plot title
+            kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
-
         with plotting_context(title=title, aspect=True, **kwargs) as (fig, ax):
+            assert ax
+
             colour_array = []
             c = []  # Indices of elements for mapping colours
 
@@ -408,22 +423,22 @@ class AnalysisSection:
                 colour_array.append(el.material.colour)
                 c.append(idx)
 
-            cmap = ListedColormap(colour_array)  # type: ignore
+            cmap = ListedColormap(colour_array)
 
             # plot the mesh colours
-            ax.tripcolor(  # type: ignore
+            ax.tripcolor(
                 self.mesh_nodes[:, 0],
                 self.mesh_nodes[:, 1],
-                self.mesh_elements[:, 0:3],  # type: ignore
+                self.mesh_elements[:, 0:3],
                 c,
                 cmap=cmap,
             )
 
             # plot the mesh
-            ax.triplot(  # type: ignore
+            ax.triplot(
                 self.mesh_nodes[:, 0],
                 self.mesh_nodes[:, 1],
-                self.mesh_elements[:, 0:3],  # type: ignore
+                self.mesh_elements[:, 0:3],
                 lw=0.5,
                 color="black",
                 alpha=alpha,
@@ -433,13 +448,13 @@ class AnalysisSection:
 
     def plot_shape(
         self,
-        ax: matplotlib.axes.Axes,  # type: ignore
-    ):
-        """Plots the coloured shape of the mesh with no outlines on `ax`.
+        ax: matplotlib.axes.Axes,
+    ) -> None:
+        """Plots the coloured shape of the mesh with no outlines on ``ax``.
 
-        :param ax: Matplotlib axes object
+        Args:
+            ax: Matplotlib axes object
         """
-
         colour_array = []
         c = []  # Indices of elements for mapping colours
 
@@ -448,13 +463,13 @@ class AnalysisSection:
             colour_array.append(el.material.colour)
             c.append(idx)
 
-        cmap = ListedColormap(colour_array)  # type: ignore
+        cmap = ListedColormap(colour_array)
 
         # plot the mesh colours
         ax.tripcolor(
             self.mesh_nodes[:, 0],
             self.mesh_nodes[:, 1],
-            self.mesh_elements[:, 0:3],  # type: ignore
+            self.mesh_elements[:, 0:3],
             c,
             cmap=cmap,
         )
@@ -464,21 +479,22 @@ class AnalysisSection:
 class Tri3:
     """Class for a three noded linear triangular element.
 
-    :param coords: A 2 x 3 array of the coordinates of the tri-3 nodes
-    :param node_ids: A list of the global node ids for the current element
-    :param material: Material object for the current finite element
+    Args:
+        coords: A 2 x 3 array of the coordinates of the tri-3 nodes
+        node_ids: A list of the global node ids for the current element
+        material: Material object for the current finite element
     """
 
     coords: np.ndarray
-    node_ids: List[int]
+    node_ids: list[int]
     material: Material
 
     def calculate_area(self) -> float:
         """Calculates the area of the finite element.
 
-        :return: Element area
+        Returns:
+            Element area
         """
-
         area = 0
 
         # get points for 1 point Gaussian integration
@@ -493,12 +509,12 @@ class Tri3:
 
         return area
 
-    def second_moments_of_area(self) -> Tuple[float, float, float]:
+    def second_moments_of_area(self) -> tuple[float, float, float]:
         """Calculates the second moments of area of the finite element.
 
-        :return: Modulus weighted second moments of area *(e_ixx, e_iyy, e_ixy)*
+        Returns:
+            Modulus weighted second moments of area (``e_ixx``, ``e_iyy``, ``e_ixy``)
         """
-
         # initialise properties
         e_ixx = 0
         e_iyy = 0
@@ -510,25 +526,25 @@ class Tri3:
         # loop through each gauss point
         for gp in gps:
             # determine shape function and jacobian
-            N, j = utils.shape_function(coords=self.coords, gauss_point=gp)
+            n_shape, j = utils.shape_function(coords=self.coords, gauss_point=gp)
 
             e_ixx += (
                 self.material.elastic_modulus
                 * gp[0]
-                * np.dot(N, np.transpose(self.coords[1, :])) ** 2
+                * np.dot(n_shape, np.transpose(self.coords[1, :])) ** 2
                 * j
             )
             e_iyy += (
                 self.material.elastic_modulus
                 * gp[0]
-                * np.dot(N, np.transpose(self.coords[0, :])) ** 2
+                * np.dot(n_shape, np.transpose(self.coords[0, :])) ** 2
                 * j
             )
             e_ixy += (
                 self.material.elastic_modulus
                 * gp[0]
-                * np.dot(N, np.transpose(self.coords[1, :]))
-                * np.dot(N, np.transpose(self.coords[0, :]))
+                * np.dot(n_shape, np.transpose(self.coords[1, :]))
+                * np.dot(n_shape, np.transpose(self.coords[0, :]))
                 * j
             )
 
@@ -545,22 +561,23 @@ class Tri3:
         e_ixx: float,
         e_iyy: float,
         e_ixy: float,
-    ) -> Tuple[float, float, float]:
+    ) -> tuple[float, float, float]:
         """Calculates elastic actions for the current finite element.
 
-        :param n: Axial force
-        :param m_x: Bending moment about the x-axis
-        :param m_y: Bending moment about the y-axis
-        :param e_a: Axial rigidity
-        :param cx: x-Centroid
-        :param cy: y-Centroid
-        :param e_ixx: Flexural rigidity about the x-axis
-        :param e_iyy: Flexural rigidity about the y-axis
-        :param e_ixy: Flexural rigidity about the xy-axis
+        Args:
+            n: Axial force
+            m_x: Bending moment about the x-axis
+            m_y: Bending moment about the y-axis
+            e_a: Axial rigidity
+            cx: x-Centroid
+            cy: y-Centroid
+            e_ixx: Flexural rigidity about the x-axis
+            e_iyy: Flexural rigidity about the y-axis
+            e_ixy: Flexural rigidity about the xy-axis
 
-        :return: Elastic force and resultant moments
+        Returns:
+            Elastic force and resultant moments
         """
-
         # initialise element results
         force_e = 0
         m_x_e = 0
@@ -572,11 +589,11 @@ class Tri3:
         # loop through each gauss point
         for gp in gps:
             # determine shape function and jacobian
-            N, j = utils.shape_function(coords=self.coords, gauss_point=gp)
+            n_shape, j = utils.shape_function(coords=self.coords, gauss_point=gp)
 
             # get coordinates (wrt NA) of the gauss point
-            x = np.dot(N, np.transpose(self.coords[0, :])) - cx
-            y = np.dot(N, np.transpose(self.coords[1, :])) - cy
+            x = np.dot(n_shape, np.transpose(self.coords[0, :])) - cx
+            y = np.dot(n_shape, np.transpose(self.coords[1, :])) - cy
 
             # axial force
             force_gp = 0
@@ -611,24 +628,25 @@ class Tri3:
 
     def calculate_service_actions(
         self,
-        ecf: Tuple[float, float],
+        ecf: tuple[float, float],
         eps0: float,
         theta: float,
         kappa: float,
-        centroid: Tuple[float, float],
-    ) -> Tuple[float, float, float, float, float]:
+        centroid: tuple[float, float],
+    ) -> tuple[float, float, float, float, float]:
         r"""Calculates service actions for the current finite element.
 
-        :param ecf: Global coordinate of the extreme compressive fibre
-        :param eps0: Strain at top fibre
-        :param theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param kappa: Curvature
-        :param centroid: Centroid about which to take moments
+        Args:
+            ecf: Global coordinate of the extreme compressive fibre
+            eps0: Strain at top fibre
+            theta: Angle (in radians) the neutral axis makes with the
+                horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
+            kappa: Curvature
+            centroid: Centroid about which to take moments
 
-        :return: Axial force, moments and min/max strain
+        Returns:
+            Axial force, moments and min/max strain
         """
-
         # initialise element results
         force_e = 0
         m_x_e = 0
@@ -642,11 +660,11 @@ class Tri3:
         # loop through each gauss point
         for gp in gps:
             # determine shape function and jacobian
-            N, j = utils.shape_function(coords=self.coords, gauss_point=gp)
+            n_shape, j = utils.shape_function(coords=self.coords, gauss_point=gp)
 
             # get coordinates of the gauss point
-            x = np.dot(N, np.transpose(self.coords[0, :]))
-            y = np.dot(N, np.transpose(self.coords[1, :]))
+            x = np.dot(n_shape, np.transpose(self.coords[0, :]))
+            y = np.dot(n_shape, np.transpose(self.coords[1, :]))
 
             # get strain at gauss point
             strain = utils.get_service_strain(
@@ -674,24 +692,25 @@ class Tri3:
 
     def calculate_ultimate_actions(
         self,
-        point_na: Tuple[float, float],
+        point_na: tuple[float, float],
         d_n: float,
         theta: float,
         ultimate_strain: float,
-        centroid: Tuple[float, float],
-    ) -> Tuple[float, float, float]:
+        centroid: tuple[float, float],
+    ) -> tuple[float, float, float]:
         r"""Calculates ultimate actions for the current finite element.
 
-        :param point_na: Point on the neutral axis
-        :param d_n: Depth of the neutral axis from the extreme compression fibre
-        :param theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
-        :param ultimate_strain: Concrete strain at failure
-        :param centroid: Centroid about which to take moments
+        Args:
+            point_na: Point on the neutral axis
+            d_n: Depth of the neutral axis from the extreme compression fibre
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            ultimate_strain: Concrete strain at failure
+            centroid: Centroid about which to take moments
 
-        :return: Axial force and resultant moments about the global axes
+        Retunrs:
+            Axial force and resultant moments about the global axes
         """
-
         # initialise element results
         force_e = 0
         m_x_e = 0
@@ -703,11 +722,11 @@ class Tri3:
         # loop through each gauss point
         for gp in gps:
             # determine shape function and jacobian
-            N, j = utils.shape_function(coords=self.coords, gauss_point=gp)
+            n_shape, j = utils.shape_function(coords=self.coords, gauss_point=gp)
 
             # get coordinates of the gauss point
-            x = np.dot(N, np.transpose(self.coords[0, :]))
-            y = np.dot(N, np.transpose(self.coords[1, :]))
+            x = np.dot(n_shape, np.transpose(self.coords[0, :]))
+            y = np.dot(n_shape, np.transpose(self.coords[1, :]))
 
             # get strain at gauss point
             if isinf(d_n):
