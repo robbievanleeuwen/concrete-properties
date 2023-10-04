@@ -1,8 +1,10 @@
+"""AS3600 class for designing to the Australian Standard AS 3600:2018."""
+
 from __future__ import annotations
 
 from copy import deepcopy
 from math import inf
-from typing import TYPE_CHECKING, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING
 
 import numpy as np
 from rich.live import Live
@@ -11,9 +13,10 @@ from scipy.optimize import brentq
 
 import concreteproperties.results as res
 import concreteproperties.stress_strain_profile as ssp
-import concreteproperties.utils as utils
 from concreteproperties.design_codes.design_code import DesignCode
 from concreteproperties.material import Concrete, SteelBar
+from concreteproperties.utils import AnalysisError, create_known_progress
+
 
 if TYPE_CHECKING:
     from concreteproperties.concrete_section import ConcreteSection
@@ -23,27 +26,30 @@ class AS3600(DesignCode):
     """Design code class for Australian standard AS 3600:2018.
 
     .. note::
+
         Note that this design code only supports
         :class:`~concreteproperties.material.Concrete` and
         :class:`~concreteproperties.material.SteelBar` material objects. Meshed
         :class:`~concreteproperties.material.Steel` material objects are **not**
-        supported as this falls under the composite structures design code.
+        supported, as this falls under the composite structures design code.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Inits the AS3600 class."""
-
         super().__init__()
 
     def assign_concrete_section(
         self,
         concrete_section: ConcreteSection,
-    ):
+    ) -> None:
         """Assigns a concrete section to the design code.
 
-        :param concrete_section: Concrete section object to analyse
-        """
+        Args:
+            concrete_section: Concrete section object to analyse
 
+        Raises:
+            ValueError: If there is meshed reinforcement within the concrete_section
+        """
         self.concrete_section = concrete_section
 
         # check to make sure there are no meshed reinforcement regions
@@ -74,7 +80,7 @@ class AS3600(DesignCode):
         compressive_strength: float,
         colour: str = "lightgrey",
     ) -> Concrete:
-        r"""Returns a concrete material object to AS 3600:2018.
+        r"""Returns a concrete material object to AS 3600.
 
         .. admonition:: Material assumptions
 
@@ -92,16 +98,17 @@ class AS3600(DesignCode):
 
           - *Flexural tensile strength*: From Cl. 3.1.1.3
 
-        :param compressive_strength: Characteristic compressive strength of
-            concrete at 28 days in megapascals (MPa)
-        :param colour: Colour of the concrete for rendering
+        Args:
+            compressive_strength: Characteristic compressive strength of concrete at 28
+                days in megapascals (MPa)
+            colour: Colour of the concrete for rendering
 
-        :raises ValueError: If ``compressive_strength`` is not between 20 MPa and
-            100 MPa.
+        Raises:
+            ValueError: If ``compressive_strength`` is not between 20 MPa and 100 MPa.
 
-        :return: Concrete material object
+        Returns:
+            Concrete material object
         """
-
         if compressive_strength < 20 or compressive_strength > 100:
             raise ValueError("compressive_strength must be between 20 MPa and 100 MPa.")
 
@@ -110,9 +117,9 @@ class AS3600(DesignCode):
 
         # calculate elastic modulus
         fc_list = [20, 25, 32, 40, 50, 65, 80, 100]
-        Ec_list = [24000, 26700, 30100, 32800, 34800, 37400, 39600, 42200]
-        f_Ec = interp1d(fc_list, Ec_list)
-        elastic_modulus = f_Ec(compressive_strength)
+        ec_list = [24000, 26700, 30100, 32800, 34800, 37400, 39600, 42200]
+        f_ec = interp1d(fc_list, ec_list)
+        elastic_modulus = f_ec(compressive_strength)
 
         # calculate stress block parameters
         alpha = 0.85 - 0.0015 * compressive_strength
@@ -157,15 +164,18 @@ class AS3600(DesignCode):
 
           - *Stress-strain profile*: Elastic-plastic, fracture strain from Table 3.2.1
 
-        :param yield_strength: Steel yield strength
-        :param ductility_class: Steel ductility class ("N" or "L")
-        :param colour: Colour of the steel for rendering
 
-        :raises ValueError: If ``ductility_class`` is not "N" or "L"
+        Args:
+            yield_strength: Steel yield strength
+            ductility_class: Steel ductility class ("N" or "L")
+            colour: Colour of the steel for rendering
 
-        :return: Steel material object
+        Raises:
+            ValueError: If ``ductility_class`` is not "N" or "L"
+
+        Returns:
+            Steel material object
         """
-
         if ductility_class == "N":
             fracture_strain = 0.05
         elif ductility_class == "L":
@@ -184,12 +194,12 @@ class AS3600(DesignCode):
             colour=colour,
         )
 
-    def squash_tensile_load(self) -> Tuple[float, float]:
+    def squash_tensile_load(self) -> tuple[float, float]:
         """Calculates the squash and tensile load of the reinforced concrete section.
 
-        :return: Squash and tensile load
+        Returns:
+            Squash and tensile load
         """
-
         # initialise the squash load, tensile load and squash moment variables
         squash_load = 0
         tensile_load = 0
@@ -212,11 +222,8 @@ class AS3600(DesignCode):
                 alpha_squash = 1
 
             # calculate compressive force
-            force_c = (
-                area
-                * alpha_squash
-                * conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
-            )
+            ult_profile = conc_geom.material.ultimate_stress_strain_profile
+            force_c = area * alpha_squash * ult_profile.get_compressive_strength()
 
             # add to totals
             squash_load += force_c
@@ -249,20 +256,21 @@ class AS3600(DesignCode):
         k_uo: float,
         phi_0: float,
     ) -> float:
-        """Returns the AS 3600:2018 capacity reduction factor (Table 2.2.2).
+        """Returns the AS 3600 capacity reduction factor (Table 2.2.2).
 
         ``n_ub`` and ``phi_0`` only required for compression, ``n_uot`` only required
         for tension.
 
-        :param n_u: Axial force in member
-        :param n_ub: Axial force at balanced point
-        :param n_uot: Axial force at ultimate tension load
-        :param k_uo: Neutral axis parameter at pure bending
-        :param phi_0: Capacity reduction factor for dominant compression
+        Args:
+            n_u: Axial force in member
+            n_ub: Axial force at balanced point
+            n_uot: Axial force at ultimate tension load
+            k_uo: Neutral axis parameter at pure bending
+            phi_0: Capacity reduction factor for dominant compression
 
-        :return: Capacity reduction factor
+        Returns:
+            Capacity reduction factor
         """
-
         # pure bending phi
         if self.reinforcement_class == "N":
             phi = 1.24 - 13 * k_uo / 12
@@ -290,12 +298,13 @@ class AS3600(DesignCode):
     ) -> float:
         r"""Returns k_uo for the reinforced concrete cross-section given ``theta``.
 
-        :param theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
+        Args:
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
 
-        :return: Bending parameter k_uo
+        Returns:
+            Bending parameter ``k_uo``
         """
-
         pure_res = self.concrete_section.ultimate_bending_capacity(theta=theta)
 
         return pure_res.k_u
@@ -306,12 +315,13 @@ class AS3600(DesignCode):
     ) -> float:
         r"""Returns n_ub for the reinforced concrete cross-section given ``theta``.
 
-        :param theta: Angle (in radians) the neutral axis makes with the
-            horizontal axis (:math:`-\pi \leq \theta \leq \pi`)
+        Args:
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
 
-        :return: Balanced axial force n_ub
+        Returns:
+            Balanced axial force ``n_ub``
         """
-
         # get depth to extreme tensile bar and its yield strain
         d_0, eps_sy = self.concrete_section.extreme_bar(theta=theta)
 
@@ -333,19 +343,23 @@ class AS3600(DesignCode):
         theta: float = 0,
         n_design: float = 0,
         phi_0: float = 0.6,
-    ) -> Tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]:
-        r"""Calculates the ultimate bending capacity with capacity factors to
-        AS 3600:2018.
+    ) -> tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]:
+        r"""Calculates the ultimate bending capacity with capacity factors to AS 3600.
 
-        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
-            (:math:`-\pi \leq \theta \leq \pi`)
-        :param n_design: Design axial force, N*
-        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
+        Args:
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            n_design: Design axial force, N*
+            phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
 
-        :return: Factored and unfactored ultimate bending results objects, and capacity
-            reduction factor *(factored_results, unfactored_results, phi)*
+        Raises:
+            AnalysisError: If the design load is greater than the squash load
+            AnalysisError: If the design load is greater than the tensile load
+
+        Returns:
+            Factored and unfactored ultimate bending results objects, and capacity
+            reduction factor (``factored_results``, ``unfactored_results``, ``phi``)
         """
-
         # get parameters to determine phi
         n_uot = self.tensile_load
         k_uo = self.get_k_uo(theta=theta)
@@ -392,11 +406,11 @@ class AS3600(DesignCode):
         # DETERMINE where we are on interaction diagram
         # if we are above the squash load or tensile load
         if n_design > n_squash:
-            raise utils.AnalysisError(
+            raise AnalysisError(
                 f"N = {n_design} is greater than the squash load, phiNc = {n_squash}."
             )
         elif n_design < n_tensile:
-            raise utils.AnalysisError(
+            raise AnalysisError(
                 f"N = {n_design} is greater than the tensile load, phiNt = {n_tensile}"
             )
         # compression linear interpolation
@@ -444,23 +458,18 @@ class AS3600(DesignCode):
     def moment_interaction_diagram(
         self,
         theta: float = 0,
-        limits: List[Tuple[str, float]] = [
-            ("D", 1.0),
-            ("N", 0.0),
-        ],
-        control_points: List[Tuple[str, float]] = [
-            ("fy", 1.0),
-        ],
-        labels: Optional[List[str]] = None,
+        limits: list[tuple[str, float]] | None = None,
+        control_points: list[tuple[str, float]] | None = None,
+        labels: list[str] | None = None,
         n_points: int = 24,
-        n_spacing: Optional[int] = None,
+        n_spacing: int | None = None,
         phi_0: float = 0.6,
         progress_bar: bool = True,
-    ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
-        r"""Generates a moment interaction diagram with capacity factors to
-        AS 3600:2018.
+    ) -> tuple[res.MomentInteractionResults, res.MomentInteractionResults, list[float]]:
+        r"""Generates a moment interaction diagram with capacity factors to AS 3600.
 
-        See :meth:`concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram`
+        See
+        :meth:`concreteproperties.concrete_section.ConcreteSection.moment_interaction_diagram`
         for allowable control points.
 
         .. note::
@@ -468,35 +477,45 @@ class AS3600(DesignCode):
             When providing ``"N"`` to ``limits`` or ``control_points``, ``"N"`` is taken
             to be the unfactored net (nominal) axial load :math:`N^{*} / \phi`.
 
-        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
-            (:math:`-\pi \leq \theta \leq \pi`)
-        :param limits: List of control points that define the start and end of the
-            interaction diagram. List length must equal two. The default limits range
-            from concrete decompression strain to the pure bending point.
-        :param control_points: List of additional control points to add to the moment
-            interaction diagram. The default control points include the balanced point
-            (``fy=1``). Control points may lie outside the limits of the moment
-            interaction diagram as long as equilibrium can be found.
-        :param labels: List of labels to apply to the ``limits`` and ``control_points``
-            for plotting purposes. The first two values in ``labels`` apply labels to
-            the ``limits``, the remaining values apply labels to the ``control_points``.
-            If a single value is provided, this value will be applied to both ``limits``
-            and all ``control_points``. The length of ``labels`` must equal ``1`` or
-            ``2 + len(control_points)``.
-        :param n_points: Number of points to compute including and between the
-            ``limits`` of the moment interaction diagram. Generates equally spaced
-            neutral axes between the ``limits``.
-        :param n_spacing: If provided, overrides ``n_points`` and generates the moment
-            interaction diagram using ``n_spacing`` equally spaced axial loads. Note
-            that using ``n_spacing`` negatively affects performance, as the neutral axis
-            depth must first be located for each point on the moment interaction
-            diagram.
-        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
-        :param progress_bar: If set to True, displays the progress bar
+        Args:
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            limits: List of control points that define the start and end of the
+                interaction diagram. List length must equal two. The default limits
+                range from concrete decompression strain to the pure bending point,
+                ``[("D", 1.0), ("N", 0.0)]``.
+            control_points: List of additional control points to add to the moment
+                interaction diagram. The default control points include the balanced
+                point, ``fy = 1``, i.e. ``[("fy", 1.0)]``. Control points may lie
+                outside the limits of the moment interaction diagram as long as
+                equilibrium can be found.
+            labels: List of labels to apply to the ``limits`` and ``control_points`` for
+                plotting purposes. The first two values in ``labels`` apply labels to
+                the ``limits``, the remaining values apply labels to the
+                ``control_points``. If a single value is provided, this value will be
+                applied to both ``limits`` and all ``control_points``. The length of
+                ``labels`` must equal ``1`` or ``2 + len(control_points)``.
+            n_points: Number of points to compute including and between the ``limits``
+                of the moment interaction diagram. Generates equally spaced neutral axes
+                between the ``limits``.
+            n_spacing: If provided, overrides ``n_points`` and generates the moment
+                interaction diagram using ``n_spacing`` equally spaced axial loads. Note
+                that using ``n_spacing`` negatively affects performance, as the neutral
+                axis depth must first be located for each point on the moment
+                interaction diagram.
+            phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
+            progress_bar: If set to True, displays the progress bar
 
-        :return: Factored and unfactored moment interaction results objects, and list of
-            capacity reduction factors *(factored_results, unfactored_results, phis)*
+        Returns:
+            Factored and unfactored moment interaction results objects, and list of
+            capacity reduction factors (``factored_results``, ``unfactored_results``,
+            ``phis``)
         """
+        if limits is None:
+            limits = [("D", 1.0), ("N", 0.0)]
+
+        if control_points is None:
+            control_points = [("fy", 1.0)]
 
         mi_res = self.concrete_section.moment_interaction_diagram(
             theta=theta,
@@ -568,18 +587,19 @@ class AS3600(DesignCode):
         n_points: int = 48,
         phi_0: float = 0.6,
         progress_bar: bool = True,
-    ) -> Tuple[res.BiaxialBendingResults, List[float]]:
-        """Generates a biaxial bending with capacity factors to AS 3600:2018.
+    ) -> tuple[res.BiaxialBendingResults, list[float]]:
+        """Generates a biaxial bending with capacity factors to AS 3600.
 
-        :param n_design: Design axial force, N*
-        :param n_points: Number of calculation points
-        :param phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
-        :param progress_bar: If set to True, displays the progress bar
+        Args:
+            n_design: Design axial force, N*
+            n_points: Number of calculation points
+            phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
+            progress_bar: If set to True, displays the progress bar
 
-        :return: Factored biaxial bending results object and list of capacity reduction
-            factors *(factored_results, phis)*
+        Returns:
+            Factored biaxial bending results object and list of capacity reduction
+            factors (``factored_results``, ``phis``)
         """
-
         # initialise results
         f_bb_res = res.BiaxialBendingResults(n=n_design)
         phis = []
@@ -606,7 +626,7 @@ class AS3600(DesignCode):
 
         if progress_bar:
             # create progress bar
-            progress = utils.create_known_progress()
+            progress = create_known_progress()
 
             with Live(progress, refresh_per_second=10) as live:
                 task = progress.add_task(
@@ -616,9 +636,10 @@ class AS3600(DesignCode):
 
                 bbcurve(progress=progress)
 
+                msg = "[bold green]:white_check_mark: Biaxial bending diagram generated"
                 progress.update(
                     task,
-                    description="[bold green]:white_check_mark: Biaxial bending diagram generated",
+                    description=msg,
                 )
                 live.refresh()
         else:
