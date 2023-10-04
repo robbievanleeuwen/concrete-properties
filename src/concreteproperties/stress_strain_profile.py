@@ -1,8 +1,10 @@
+"""Stress-strain profile objects to be applied to materials in concreteproperties."""
+
 from __future__ import annotations
 
 import warnings
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, List, Optional, Union
+from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -13,8 +15,9 @@ from scipy.optimize import brentq
 
 from concreteproperties.post import plotting_context
 
+
 if TYPE_CHECKING:
-    import matplotlib
+    import matplotlib.axes
 
 
 @dataclass
@@ -24,16 +27,21 @@ class StressStrainProfile:
     Implements a piecewise linear stress-strain profile. Positive stresses & strains are
     compression.
 
-    :param strains: List of strains (must be increasing or equal)
-    :param stresses: List of stresses
+    Args:
+        strains: List of strains (must be increasing or at least equal to last)
+        stresses: List of stresses
+
+    Raises:
+        ValueError: If length of strains is not equal to length of stresses
+        ValueError: If length of strains/stresses is not greater than 1
+        ValueError: If strains do not contain increasing or equal values
     """
 
-    strains: List[float]
-    stresses: List[float]
+    strains: list[float]
+    stresses: list[float]
 
-    def __post_init__(
-        self,
-    ):
+    def __post_init__(self) -> None:
+        """Post init method."""
         # validate input - same length lists
         if len(self.strains) != len(self.stresses):
             raise ValueError("Length of strains must equal length of stresses")
@@ -48,7 +56,7 @@ class StressStrainProfile:
         for idx in range(len(self.strains)):
             if idx != 0:
                 if self.strains[idx] < prev_strain:
-                    msg = "strains must contain increasing values."
+                    msg = "Strains must contain increasing or equal values."
                     raise ValueError(msg)
 
                 prev_strain = self.strains[idx]
@@ -59,33 +67,32 @@ class StressStrainProfile:
     ) -> float:
         """Returns a stress given a strain.
 
-        :param strain: Strain at which to return a stress.
+        Args:
+            strain: Strain at which to return a stress.
 
-        :return: Stress
+        Returns:
+            Stress
         """
-
         # create interpolation function
         stress_function = interp1d(
             x=self.strains,
             y=self.stresses,
             kind="linear",
-            fill_value="extrapolate",  # type: ignore
+            fill_value="extrapolate",
         )
 
         return stress_function(strain)
 
-    def get_elastic_modulus(
-        self,
-    ) -> float:
+    def get_elastic_modulus(self) -> float:
         """Returns the elastic modulus of the stress-strain profile.
 
-        :return: Elastic modulus
+        Raises:
+            ValueError: Elastic modulus is zero
+
+        Returns:
+            Elastic modulus
         """
-
         small_strain = 1e-6
-
-        # get stress at zero strain
-        stress_0 = self.get_stress(strain=0)
 
         # get stress at small positive strain & compute elastic modulus
         stress_positive = self.get_stress(strain=small_strain)
@@ -106,64 +113,52 @@ class StressStrainProfile:
 
         return em_positive
 
-    def get_compressive_strength(
-        self,
-    ) -> float:
+    def get_compressive_strength(self) -> float:
         """Returns the most positive stress.
 
-        :return: Compressive strength
+        Returns:
+            Compressive strength
         """
-
         return max(self.stresses)
 
-    def get_tensile_strength(
-        self,
-    ) -> float:
+    def get_tensile_strength(self) -> float:
         """Returns the most negative stress.
 
-        :return: Tensile strength
+        Returns:
+            Tensile strength
         """
-
         return min(self.stresses)
 
-    def get_yield_strength(
-        self,
-    ) -> float:
+    def get_yield_strength(self) -> float:
         """Returns the yield strength of the stress-strain profile.
 
-        :return: Yield strength
+        Returns:
+            Yield strength
         """
-
         raise NotImplementedError
 
-    def get_ultimate_compressive_strain(
-        self,
-    ) -> float:
+    def get_ultimate_compressive_strain(self) -> float:
         """Returns the largest compressive strain.
 
-        :return: Ultimate strain
+        Returns:
+            Ultimate strain
         """
-
         return max(self.strains)
 
-    def get_ultimate_tensile_strain(
-        self,
-    ) -> float:
+    def get_ultimate_tensile_strain(self) -> float:
         """Returns the largest tensile strain.
 
-        :return: Ultimate strain
+        Returns:
+            Ultimate strain
         """
-
         return min(self.strains)
 
-    def get_unique_strains(
-        self,
-    ) -> List[float]:
+    def get_unique_strains(self) -> list[float]:
         """Returns an ordered list of unique strains.
 
-        :return: Ordered list of unique strains
+        Returns:
+            Ordered list of unique strains
         """
-
         unique_strains = list(set(self.strains))
         unique_strains.sort()
 
@@ -172,12 +167,12 @@ class StressStrainProfile:
     def print_properties(
         self,
         fmt: str = "8.6e",
-    ):
+    ) -> None:
         """Prints the stress-strain profile properties to the terminal.
 
-        :param fmt: Number format
+        Args:
+            fmt: Number format
         """
-
         table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
@@ -210,22 +205,21 @@ class StressStrainProfile:
         title: str = "Stress-Strain Profile",
         fmt: str = "o-",
         **kwargs,
-    ) -> matplotlib.axes.Axes:  # type: ignore
+    ) -> matplotlib.axes.Axes:
         """Plots the stress-strain profile.
 
-        :param title: Plot title
-        :param fmt: Plot format string
-        :param kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
+        Args:
+            title: Plot title
+            fmt: Plot format string
+            kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
-
         # create plot and setup the plot
-        with plotting_context(title=title, **kwargs) as (
-            fig,
-            ax,
-        ):
-            ax.plot(self.strains, self.stresses, fmt)  # type: ignore
+        with plotting_context(title=title, **kwargs) as (fig, ax):
+            assert ax
+            ax.plot(self.strains, self.stresses, fmt)
             plt.xlabel("Strain")
             plt.ylabel("Stress")
             plt.grid(True)
@@ -237,25 +231,26 @@ class StressStrainProfile:
 class ConcreteServiceProfile(StressStrainProfile):
     """Abstract class for a concrete service stress-strain profile.
 
-    :param strains: List of strains (must be increasing or equal)
-    :param stresses: List of stresses
-    :param ultimate_strain: Concrete strain at failure
+    Args:
+        strains: List of strains (must be increasing or equal to last)
+        stresses: List of stresses
+        ultimate_strain: Concrete strain at failure
     """
 
-    strains: List[float]
-    stresses: List[float]
+    strains: list[float]
+    stresses: list[float]
     elastic_modulus: float = field(init=False)
     ultimate_strain: float
 
     def print_properties(
         self,
         fmt: str = "8.6e",
-    ):
+    ) -> None:
         """Prints the stress-strain profile properties to the terminal.
 
-        :param fmt: Number format
+        Args:
+            fmt: Number format
         """
-
         table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
@@ -271,47 +266,39 @@ class ConcreteServiceProfile(StressStrainProfile):
         console = Console()
         console.print(table)
 
-    def get_elastic_modulus(
-        self,
-    ) -> float:
+    def get_elastic_modulus(self) -> float:
         """Returns the elastic modulus of the stress-strain profile.
 
-        :return: Elastic modulus
+        Returns:
+            Elastic modulus
         """
-
         try:
             return self.elastic_modulus
         except AttributeError:
             return super().get_elastic_modulus()
 
-    def get_compressive_strength(
-        self,
-    ) -> Union[float, None]:
+    def get_compressive_strength(self) -> float | None:
         """Returns the most positive stress.
 
-        :return: Compressive strength
+        Returns:
+            Compressive strength
         """
-
         return None
 
-    def get_tensile_strength(
-        self,
-    ) -> Union[float, None]:
+    def get_tensile_strength(self) -> float | None:
         """Returns the most negative stress.
 
-        :return: Tensile strength
+        Returns:
+            Tensile strength
         """
-
         return None
 
-    def get_ultimate_compressive_strain(
-        self,
-    ) -> float:
+    def get_ultimate_compressive_strain(self) -> float:
         """Returns the largest strain.
 
-        :return: Ultimate strain
+        Returns:
+            Ultimate strain
         """
-
         return self.ultimate_strain
 
 
@@ -319,18 +306,18 @@ class ConcreteServiceProfile(StressStrainProfile):
 class ConcreteLinear(ConcreteServiceProfile):
     """Class for a symmetric linear stress-strain profile.
 
-    :param elastic_modulus: Elastic modulus of the stress-strain profile
-    :param ultimate_strain: Concrete strain at failure
+    Args:
+        elastic_modulus: Elastic modulus of the stress-strain profile
+        ultimate_strain: Concrete strain at failure
     """
 
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
+    strains: list[float] = field(init=False)
+    stresses: list[float] = field(init=False)
     elastic_modulus: float
     ultimate_strain: float = field(default=1)
 
-    def __post_init__(
-        self,
-    ):
+    def __post_init__(self) -> None:
+        """Post init method."""
         self.strains = [-0.001, 0, 0.001]
         self.stresses = [-0.001 * self.elastic_modulus, 0, 0.001 * self.elastic_modulus]
 
@@ -339,20 +326,20 @@ class ConcreteLinear(ConcreteServiceProfile):
 class ConcreteLinearNoTension(ConcreteServiceProfile):
     """Class for a linear stress-strain profile with no tensile strength.
 
-    :param elastic_modulus: Elastic modulus of the stress-strain profile
-    :param ultimate_strain: Concrete strain at failure
-    :param compressive_strength: Compressive strength of the concrete
+    Args:
+        elastic_modulus: Elastic modulus of the stress-strain profile
+        ultimate_strain: Concrete strain at failure
+        compressive_strength: Compressive strength of the concrete
     """
 
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
+    strains: list[float] = field(init=False)
+    stresses: list[float] = field(init=False)
     elastic_modulus: float
     ultimate_strain: float = field(default=1)
-    compressive_strength: Union[float, None] = field(default=None)
+    compressive_strength: float | None = field(default=None)
 
-    def __post_init__(
-        self,
-    ):
+    def __post_init__(self) -> None:
+        """Post init method."""
         self.strains = [-0.001, 0, 0.001]
         self.stresses = [0, 0, 0.001 * self.elastic_modulus]
 
@@ -371,20 +358,21 @@ class EurocodeNonLinear(ConcreteServiceProfile):
     ``tensile_strength``, after which the tensile stress reduces according to the
     ``tension_softening_stiffness``.
 
-    :param elastic_modulus: Concrete elastic modulus (:math:`E_{cm}`)
-    :param ultimate_strain: Concrete strain at failure (:math:`\epsilon_{cu1}`)
-    :param compressive_strength: Concrete compressive strength (:math:`f_{cm}`)
-    :param compressive_strain: Strain at which the concrete stress equals the
-        compressive strength (:math:`\epsilon_{c1}`)
-    :param tensile_strength:  Concrete tensile strength
-    :param tension_softening_stiffness: Slope of the linear tension softening
-        branch
-    :param n_points_1: Number of points to discretise the curve prior to the peak stress
-    :param n_points_2: Number of points to discretise the curve after the peak stress
+    Args:
+        elastic_modulus: Concrete elastic modulus (:math:`E_{cm}`)
+        ultimate_strain: Concrete strain at failure (:math:`\epsilon_{cu1}`)
+        compressive_strength: Concrete compressive strength (:math:`f_{cm}`)
+        compressive_strain: Strain at which the concrete stress equals the
+            compressive strength (:math:`\epsilon_{c1}`)
+        tensile_strength:  Concrete tensile strength
+        tension_softening_stiffness: Slope of the linear tension softening
+            branch
+        n_points_1: Number of points to discretise the curve prior to the peak stress
+        n_points_2: Number of points to discretise the curve after the peak stress
     """
 
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
+    strains: list[float] = field(init=False)
+    stresses: list[float] = field(init=False)
     elastic_modulus: float
     ultimate_strain: float
     compressive_strength: float
@@ -394,9 +382,8 @@ class EurocodeNonLinear(ConcreteServiceProfile):
     n_points_1: int = field(default=10)
     n_points_2: int = field(default=3)
 
-    def __post_init__(
-        self,
-    ):
+    def __post_init__(self) -> None:
+        """Post init method."""
         self.strains = []
         self.stresses = []
 
@@ -460,7 +447,9 @@ class EurocodeNonLinear(ConcreteServiceProfile):
 
 @dataclass
 class ModifiedMander(ConcreteServiceProfile):
-    r"""Class for a non-linear stress-strain relationship based on the Mander
+    r"""Modified Mander stress-strain profile.
+
+    Class for a non-linear stress-strain relationship based on the Mander
     stress-strain model for confined & unconfined concrete for a rectangular cross
     section. Intended for use with moment-curvature analyses with rectangular or
     circular cross sections.
@@ -474,25 +463,26 @@ class ModifiedMander(ConcreteServiceProfile):
     desired.
 
     .. tip::
-      Optional input variables are only required for defining a confined concrete
-      stress-strain relationship. Note if any variables are missed when attempting to
-      define a confined concrete stress-strain relationship (using
-      ``conc_confined=True``), then the material will default to being defined as an
-      unconfined concrete stress-strain relationship with a warning given.
 
-    .. admonition:: Modifications to Mander confined concrete model:-
+        Optional input variables are only required for defining a confined concrete
+        stress-strain relationship. Note if any variables are missed when attempting to
+        define a confined concrete stress-strain relationship (using
+        ``conc_confined=True``), then the material will default to being defined as an
+        unconfined concrete stress-strain relationship with a warning given.
 
-      The original formulation of the expression for confined concrete presented by
-      Mander et al. [1]_ can predict high levels of confined concrete strain dependant
-      on the assumed value for the ultimate steel strain for the transverse
-      reinforcement. The modified expression given the NZSEE C5 assesment guidelines
-      [3]_ provides a correction and is directly implemented in the
-      :class:`ModifiedMander` material class.
+    .. admonition:: Modifications to Mander confined concrete model:
+
+        The original formulation of the expression for confined concrete presented by
+        Mander et al. [1]_ can predict high levels of confined concrete strain dependant
+        on the assumed value for the ultimate steel strain for the transverse
+        reinforcement. The modified expression given the NZSEE C5 assesment guidelines
+        [3]_ provides a correction and is directly implemented in the
+        :class:`ModifiedMander` material class.
 
       These corrections to avoid overestimating the confined concrete limiting strain
-      consist of three allowances:-
+      consist of three allowances:
 
-      - Modifying the maximum steel strain by a factor of 0.6:-
+      - Modifying the maximum steel strain by a factor of 0.6:
 
         - :math:`\varepsilon_{s,max}= 0.6\varepsilon_{su} \leq 0.06`
 
@@ -502,7 +492,7 @@ class ModifiedMander(ConcreteServiceProfile):
           with this same limiting fracture strain for a moment-curvature analysis.
 
       - Modifying the volumetric ratio of confinement reinforcement by a factor of
-        0.75. i.e.:-
+        0.75. i.e.:
 
         - For rectangular sections
 
@@ -515,7 +505,7 @@ class ModifiedMander(ConcreteServiceProfile):
 
         - Note this 0.75 modifier can be altered via the ``n_confinement`` parameter.
 
-      - For confined concrete utilising a maximum concrete compressive strain of:-
+      - For confined concrete utilising a maximum concrete compressive strain of:
 
         - :math:`\displaystyle{\varepsilon_{c,max}=0.004+\frac{0.6\rho_{st}f_{yh}
           \varepsilon_{su}}{f'_{cc}}\leq0.05}`
@@ -524,10 +514,12 @@ class ModifiedMander(ConcreteServiceProfile):
           be modified as noted above.
 
     .. plot:: ./_static/doc_plots/mander_unconfined_plot.py mander_unconfined_plot
+
       :include-source: False
       :caption: ModifiedMander Parameters for Unconfined Concrete
 
     .. plot:: ./_static/doc_plots/mander_confined_plot.py mander_confined_plot
+
       :include-source: False
       :caption: ModifiedMander Parameters for Confined Concrete
 
@@ -538,95 +530,97 @@ class ModifiedMander(ConcreteServiceProfile):
     .. [3] NZSEE C5 Assessment Guidelines - Part C5 - Concrete Buildings - Technical
       Proposal to Revise the Engineering Assessment Guidelines (2018)
 
-    :param elastic_modulus: Concrete elastic modulus (:math:`E_c`)
-    :param compressive_strength: Concrete compressive strength (:math:`f'_c`)
-    :param tensile_strength: Concrete tensile strength (:math:`f_t`)
-    :param sect_type: The type of concrete cross section for which to create a confined
-        concrete stress-strain relationship for:-
+    Args:
+        elastic_modulus: Concrete elastic modulus (:math:`E_c`)
+        compressive_strength: Concrete compressive strength (:math:`f'_c`)
+        tensile_strength: Concrete tensile strength (:math:`f_t`)
+        sect_type: The type of concrete cross section for which to create a confined
+            concrete stress-strain relationship for:
 
-        - **rect** = Rectangular section with closed stirrup/tie transverse
-          reinforcement
+            - **rect** = Rectangular section with closed stirrup/tie transverse
+              reinforcement
 
-        - **circ_hoop** = Circular section with closed hoop transverse reinforcement
+            - **circ_hoop** = Circular section with closed hoop transverse reinforcement
 
-        - **circ_spiral** = Circular section with spiral transverse reinforcement
+            - **circ_spiral** = Circular section with spiral transverse reinforcement
 
-    :param conc_confined: True to return a confined concrete stress-strain relationship
-        based on provided reinforcing parameters, False to return an unconfined concrete
-        stress-strain relationship
-    :param conc_tension: True to include tension in the concrete within the
-        stress-strain relationship (up to the tensile strength of the concrete is
-        reached), False to not consider any tension behaviour in the concrete
-    :param conc_spalling: True to consider the spalling effect for unconfined concrete,
-        False to not consider the spalling branch and truncate the unconfined concrete
-        curve at min(:math:`2 \varepsilon_{co},\varepsilon_{c,max}`)
-    :param eps_co: Strain at which the maximum concrete stress is obtained for an
-        unconfined concrete material (:math:`\varepsilon_{co}`)
-    :param eps_c_max_unconfined: Maximum strain that is able to be supported within
-        unconfined concrete (:math:`\varepsilon_{c,max}`)
-    :param eps_sp: Spalling strain, the strain at which the stress returns to zero for
-        unconfined concrete (:math:`\varepsilon_{sp}`)
-    :param d: Depth of a rectangular concrete cross section, or diameter of circular
-        concrete cross section (:math:`d`)
-    :param b: Breadth of a rectangular concrete cross section (:math:`b`)
-    :param long_reinf_area: Total area of the longitudinal reinforcement in the concrete
-        cross section (:math:`A_{st}`)
-    :param w_dash: List of clear spacing between longitudinal reinforcement
-        around the full perimeter of a rectangular concrete cross section (:math:`w'`)
-    :param cvr: Concrete cover (to confining reinforcement)
-    :param trans_spacing: Spacing of transverse confining reinforcement (:math:`s`)
-    :param trans_d_b: Diameter of the transverse confining reinforcement (:math:`d_b`)
-    :param trans_num_d: Number of legs/cross links parallel to the depth of a
-        rectangular concrete cross section
-    :param trans_num_b: Number of legs/cross links parallel to the breadth of a
-        rectangular concrete cross section
-    :param trans_f_y: Yield strength of the transverse confining reinforcement
-        (:math:`f_{yh}`)
-    :param eps_su: Strain at the ultimate tensile strength of the reinforcement
-        (:math:`\varepsilon_{su}`)
-    :param n_points: Number of points to discretise the compression part of the
-        stress-strain curve between :math:`\varepsilon_{c}=0` & :math:`\varepsilon_{c}
-        =2\varepsilon_{co}` for an unconfined concrete, or between
-        :math:`\varepsilon_{c}=0` & :math:`\varepsilon_{c}=\varepsilon_{cu}` for a
-        confined concrete
-    :param n_steel_strain: Modifier for maximum steel reinforcement strain. Steel
-        reinforcement material within the concrete cross section should also be defined
-        with the same limit for the fracture strain
-    :param n_confinement: Modifier for volumetric ratio of confinement reinforcement
-    :raises ValueError: If specified section type is not rect, circ_hoop or circ_spiral
+        conc_confined: True to return a confined concrete stress-strain relationship
+            based on provided reinforcing parameters, False to return an unconfined
+            concrete stress-strain relationship
+        conc_tension: True to include tension in the concrete within the
+            stress-strain relationship (up to the tensile strength of the concrete is
+            reached), False to not consider any tension behaviour in the concrete
+        conc_spalling: True to consider the spalling effect for unconfined concrete,
+            False to not consider the spalling branch and truncate the unconfined
+            concrete curve at min(:math:`2 \varepsilon_{co},\varepsilon_{c,max}`)
+        eps_co: Strain at which the maximum concrete stress is obtained for an
+            unconfined concrete material (:math:`\varepsilon_{co}`)
+        eps_c_max_unconfined: Maximum strain that is able to be supported within
+            unconfined concrete (:math:`\varepsilon_{c,max}`)
+        eps_sp: Spalling strain, the strain at which the stress returns to zero for
+            unconfined concrete (:math:`\varepsilon_{sp}`)
+        d: Depth of a rectangular concrete cross section, or diameter of circular
+            concrete cross section (:math:`d`)
+        b: Breadth of a rectangular concrete cross section (:math:`b`)
+        long_reinf_area: Total area of the longitudinal reinforcement in the concrete
+            cross section (:math:`A_{st}`)
+        w_dash: List of clear spacing between longitudinal reinforcement
+            around the full perimeter of a rectangular concrete cross section
+            (:math:`w'`)
+        cvr: Concrete cover (to confining reinforcement)
+        trans_spacing: Spacing of transverse confining reinforcement (:math:`s`)
+        trans_d_b: Diameter of the transverse confining reinforcement (:math:`d_b`)
+        trans_num_d: Number of legs/cross links parallel to the depth of a
+            rectangular concrete cross section
+        trans_num_b: Number of legs/cross links parallel to the breadth of a
+            rectangular concrete cross section
+        trans_f_y: Yield strength of the transverse confining reinforcement
+            (:math:`f_{yh}`)
+        eps_su: Strain at the ultimate tensile strength of the reinforcement
+            (:math:`\varepsilon_{su}`)
+        n_points: Number of points to discretise the compression part of the
+            stress-strain curve between :math:`\varepsilon_{c}=0` &
+            :math:`\varepsilon_{c} =2\varepsilon_{co}` for an unconfined concrete, or
+            between :math:`\varepsilon_{c}=0` & :math:`\varepsilon_{c}=\varepsilon_{cu}`
+            for a confined concrete
+        n_steel_strain: Modifier for maximum steel reinforcement strain. Steel
+            reinforcement material within the concrete cross section should also be
+            defined with the same limit for the fracture strain
+        n_confinement: Modifier for volumetric ratio of confinement reinforcement
+
+    Raise:
+        ValueError: If specified section type is not rect, circ_hoop or circ_spiral
     """
-
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
+    strains: list[float] = field(init=False)
+    stresses: list[float] = field(init=False)
     elastic_modulus: float
     ultimate_strain: float = field(init=False, default=0)
     compressive_strength: float
     tensile_strength: float
-    sect_type: Optional[str] = None
+    sect_type: str | None = None
     conc_confined: bool = False
     conc_tension: bool = False
     conc_spalling: bool = False
     eps_co: float = 0.002
     eps_c_max_unconfined: float = 0.004
     eps_sp: float = 0.006
-    d: Optional[float] = None
-    b: Optional[float] = None
-    long_reinf_area: Optional[float] = None
-    w_dash: Optional[List[float]] = None
-    cvr: Optional[float] = None
-    trans_spacing: Optional[float] = None
-    trans_d_b: Optional[float] = None
-    trans_num_d: Optional[int] = None
-    trans_num_b: Optional[int] = None
-    trans_f_y: Optional[float] = None
-    eps_su: Optional[float] = None
+    d: float | None = None
+    b: float | None = None
+    long_reinf_area: float | None = None
+    w_dash: list[float] | None = None
+    cvr: float | None = None
+    trans_spacing: float | None = None
+    trans_d_b: float | None = None
+    trans_num_d: int | None = None
+    trans_num_b: int | None = None
+    trans_f_y: float | None = None
+    eps_su: float | None = None
     n_points: int = field(default=50)
     n_steel_strain: float = 0.6
     n_confinement: float = 0.75
 
-    def __post_init__(
-        self,
-    ):
+    def __post_init__(self) -> None:
+        """Post init method."""
         self.strains = []
         self.stresses = []
 
@@ -637,7 +631,7 @@ class ModifiedMander(ConcreteServiceProfile):
             "circ_spiral",
         ]:
             raise ValueError(
-                f"The specified section type '{str(self.sect_type).lower()}' should be "
+                f"The specified section type {str(self.sect_type).lower()} should be "
                 f"'rect', 'circ_hoop' or 'circ_spiral'."
             )
 
@@ -660,7 +654,7 @@ class ModifiedMander(ConcreteServiceProfile):
                 f"Reverting analysis to utilise an unconfined concrete Mander "
                 f"stress-strain model, as the following input variables required for a "
                 f"confined concrete Mander stress-strain model have not been "
-                f"provided:-\n{input_not_provided}"
+                f"provided:\n{input_not_provided}"
             )
 
         # calculate confined/unconfined compressive strength
@@ -675,31 +669,32 @@ class ModifiedMander(ConcreteServiceProfile):
                 b_core = self.b - 2 * self.cvr - self.trans_d_b
 
                 # calculate core area
-                A_c = d_core * b_core
+                a_c = d_core * b_core
 
-                # calculate area of transverse reinforcement in each direction within a depth s
-                A_vd = self.trans_num_d * self.trans_d_b**2 * np.pi / 4
-                A_vb = self.trans_num_b * self.trans_d_b**2 * np.pi / 4
+                # calculate area of transverse reinforcement in each direction within a
+                # depth s
+                a_vd = self.trans_num_d * self.trans_d_b**2 * np.pi / 4
+                a_vb = self.trans_num_b * self.trans_d_b**2 * np.pi / 4
 
                 # calculate volumetric ratio of confinement reinforcement
                 rho_st = (
                     self.n_confinement
                     / self.trans_spacing
-                    * (A_vd / b_core + A_vb / d_core)
+                    * (a_vd / b_core + a_vb / d_core)
                 )
 
                 # calculate ratio of reinforcement area to core area
-                rho_cc = self.long_reinf_area / A_c
+                rho_cc = self.long_reinf_area / a_c
 
-                # calculate plan area of ineffectually confined core concrete at the level of
-                # the transverse reinforcement
-                A_i = 0
+                # calculate plan area of ineffectually confined core concrete at the
+                # level of the transverse reinforcement
+                a_i = 0
                 for w in self.w_dash:
-                    A_i = A_i + pow(w, 2)
+                    a_i = a_i + pow(w, 2)
 
                 # calculate confinement effectiveness coefficient
                 k_e = (
-                    (1 - A_i / (6 * A_c))
+                    (1 - a_i / (6 * a_c))
                     * (1 - s_dash / (2 * b_core))
                     * (1 - s_dash / (2 * d_core))
                     / (1 - rho_cc)
@@ -707,12 +702,12 @@ class ModifiedMander(ConcreteServiceProfile):
 
                 # calculate tranverse reinforcement ratios and confining pressures
                 # across defined depth
-                rho_d = A_vd / (self.trans_spacing * b_core)
+                rho_d = a_vd / (self.trans_spacing * b_core)
                 f_ld = k_e * rho_d * self.trans_f_y
 
                 # calculate tranverse reinforcement ratios and confining pressures
                 # across defined width
-                rho_b = A_vb / (self.trans_spacing * d_core)
+                rho_b = a_vb / (self.trans_spacing * d_core)
                 f_lb = k_e * rho_b * self.trans_f_y
 
                 # calculate confined concrete strength
@@ -727,7 +722,7 @@ class ModifiedMander(ConcreteServiceProfile):
                 d_s = self.d - 2 * self.cvr - self.trans_d_b
 
                 # calculate core area
-                A_c = d_s**2 * np.pi / 4
+                a_c = d_s**2 * np.pi / 4
 
                 # calculate volumetric ratio of confinement reinforcement
                 rho_st = (
@@ -736,14 +731,14 @@ class ModifiedMander(ConcreteServiceProfile):
                     * (4 * self.trans_d_b**2 * np.pi / 4 / d_s)
                 )
                 # calculate ratio of reinforcement area to core area
-                rho_cc = self.long_reinf_area / A_c
+                rho_cc = self.long_reinf_area / a_c
 
                 # calculate confinement effectiveness coefficient
                 exp = 2 if self.sect_type in ["circ_hoop"] else 1
                 k_e = (1 - s_dash / (2 * d_s)) ** exp / (1 - rho_cc)
 
                 # calculate tranverse confining pressures
-                # rho_b = A_vb / (self.trans_spacing * d_core)
+                # rho_b = a_vb / (self.trans_spacing * d_core)
                 f_l = k_e * rho_st * self.trans_f_y
 
                 # calculate confined concrete strength
@@ -770,7 +765,7 @@ class ModifiedMander(ConcreteServiceProfile):
             eps_c_max = self.eps_c_max_unconfined
 
         # calculate secant modulus
-        E_sec = f_cc / eps_cc
+        e_sec = f_cc / eps_cc
 
         if self.conc_confined:
             self.strains = np.linspace(0, eps_c_max, self.n_points)
@@ -785,7 +780,7 @@ class ModifiedMander(ConcreteServiceProfile):
         self.strains.sort()
 
         # calculate stresses from strains & convert to List
-        r = self.elastic_modulus / (self.elastic_modulus - E_sec)
+        r = self.elastic_modulus / (self.elastic_modulus - e_sec)
         x = self.strains / eps_cc
         self.strains = self.strains.tolist()
         self.stresses = (f_cc * x * r / (r - 1 + x**r)).tolist()
@@ -824,47 +819,43 @@ class ModifiedMander(ConcreteServiceProfile):
 class ConcreteUltimateProfile(StressStrainProfile):
     """Abstract class for a concrete ultimate stress-strain profile.
 
-    :param strains: List of strains (must be increasing or equal)
-    :param stresses: List of stresses
-    :param compressive_strength: Concrete compressive strength
+    strains: List of strains (must be increasing or at least equal to last)
+    stresses: List of stresses
+    compressive_strength: Concrete compressive strength
     """
 
-    strains: List[float]
-    stresses: List[float]
+    strains: list[float]
+    stresses: list[float]
     compressive_strength: float
 
-    def get_compressive_strength(
-        self,
-    ) -> float:
+    def get_compressive_strength(self) -> float:
         """Returns the most positive stress.
 
-        :return: Compressive strength
+        Returns:
+            Compressive strength
         """
-
         return self.compressive_strength
 
-    def get_ultimate_compressive_strain(
-        self,
-    ) -> float:
+    def get_ultimate_compressive_strain(self) -> float:
         """Returns the ultimate strain, or largest compressive strain.
 
-        :return: Ultimate strain
+        Returns:
+            Ultimate strain
         """
-
         try:
-            return self.ultimate_strain  # type: ignore
+            return self.ultimate_strain
         except AttributeError:
             return super().get_ultimate_compressive_strain()
 
     def print_properties(
         self,
         fmt: str = "8.6e",
-    ):
+    ) -> None:
         """Prints the stress-strain profile properties to the terminal.
 
-        :param fmt: Number format
+        Args:
+            fmt: Number format
         """
-
         table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
@@ -885,14 +876,15 @@ class ConcreteUltimateProfile(StressStrainProfile):
 class RectangularStressBlock(ConcreteUltimateProfile):
     """Class for a rectangular stress block.
 
-    :param compressive_strength: Concrete compressive strength
-    :param alpha: Factor that modifies the concrete compressive strength
-    :param gamma: Factor that modifies the depth of the stress block
-    :param ultimate_strain: Concrete strain at failure
+    Args:
+        compressive_strength: Concrete compressive strength
+        alpha: Factor that modifies the concrete compressive strength
+        gamma: Factor that modifies the depth of the stress block
+        ultimate_strain: Concrete strain at failure
     """
 
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
+    strains: list[float] = field(init=False)
+    stresses: list[float] = field(init=False)
     compressive_strength: float
     alpha: float
     gamma: float
@@ -901,6 +893,7 @@ class RectangularStressBlock(ConcreteUltimateProfile):
     def __post_init__(
         self,
     ):
+        """Post init method."""
         self.strains = [
             0,
             self.ultimate_strain * (1 - self.gamma),
@@ -923,11 +916,12 @@ class RectangularStressBlock(ConcreteUltimateProfile):
         Overrides parent method with small tolerance to aid ultimate stress generation
         at nodes.
 
-        :param strain: Strain at which to return a stress.
+        Args:
+            strain: Strain at which to return a stress.
 
-        :return: Stress
+        Returns:
+            Stress
         """
-
         if strain >= self.strains[1] - 1e-8:
             return self.stresses[2]
         else:
@@ -938,21 +932,21 @@ class RectangularStressBlock(ConcreteUltimateProfile):
 class BilinearStressStrain(ConcreteUltimateProfile):
     """Class for a bilinear stress-strain relationship.
 
-    :param compressive_strength: Concrete compressive strength
-    :param compressive_strain: Strain at which the concrete stress equals the
-        compressive strength
-    :param ultimate_strain: Concrete strain at failure
+    Args:
+        compressive_strength: Concrete compressive strength
+        compressive_strain: Strain at which the concrete stress equals the compressive
+            strength
+        ultimate_strain: Concrete strain at failure
     """
 
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
+    strains: list[float] = field(init=False)
+    stresses: list[float] = field(init=False)
     compressive_strength: float
     compressive_strain: float
     ultimate_strain: float
 
-    def __post_init__(
-        self,
-    ):
+    def __post_init__(self) -> None:
+        """Post init method."""
         self.strains = [
             -self.compressive_strain,
             0,
@@ -971,25 +965,25 @@ class BilinearStressStrain(ConcreteUltimateProfile):
 class EurocodeParabolicUltimate(ConcreteUltimateProfile):
     """Class for an ultimate parabolic stress-strain relationship to EC2.
 
-    :param compressive_strength: Concrete compressive strength
-    :param compressive_strain: Strain at which the concrete stress equals the
-        compressive strength
-    :param ultimate_strain: Concrete strain at failure
-    :param n: Parabolic curve exponent
-    :param n_points: Number of points to discretise the parabolic segment of the curve
+    Args:
+        compressive_strength: Concrete compressive strength
+        compressive_strain: Strain at which the concrete stress equals the compressive
+            strength
+        ultimate_strain: Concrete strain at failure
+        n: Parabolic curve exponent
+        n_points: Number of points to discretise the parabolic segment of the curve
     """
 
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
+    strains: list[float] = field(init=False)
+    stresses: list[float] = field(init=False)
     compressive_strength: float
     compressive_strain: float
     ultimate_strain: float
     n: float
     n_points: int = field(default=10)
 
-    def __post_init__(
-        self,
-    ):
+    def __post_init__(self) -> None:
+        """Post init method."""
         self.strains = []
         self.stresses = []
 
@@ -1018,48 +1012,45 @@ class EurocodeParabolicUltimate(ConcreteUltimateProfile):
 class SteelProfile(StressStrainProfile):
     """Abstract class for a steel stress-strain profile.
 
-    :param strains: List of strains (must be increasing or equal)
-    :param stresses: List of stresses
-    :param yield_strength: Steel yield strength
-    :param elastic_modulus: Steel elastic modulus
-    :param fracture_strain: Steel fracture strain
+    Args:
+        strains: List of strains (must be increasing or at least equal to last)
+        stresses: List of stresses
+        yield_strength: Steel yield strength
+        elastic_modulus: Steel elastic modulus
+        fracture_strain: Steel fracture strain
     """
 
-    strains: List[float]
-    stresses: List[float]
+    strains: list[float]
+    stresses: list[float]
     yield_strength: float
     elastic_modulus: float
     fracture_strain: float
 
-    def get_elastic_modulus(
-        self,
-    ) -> float:
+    def get_elastic_modulus(self) -> float:
         """Returns the elastic modulus of the stress-strain profile.
 
-        :return: Elastic modulus
+        Returns:
+            Elastic modulus
         """
-
         return self.elastic_modulus
 
-    def get_yield_strength(
-        self,
-    ) -> float:
+    def get_yield_strength(self) -> float:
         """Returns the yield strength of the stress-strain profile.
 
-        :return: Yield strength
+        Returns:
+            Yield strength
         """
-
         return self.yield_strength
 
     def print_properties(
         self,
         fmt: str = "8.6e",
-    ):
+    ) -> None:
         """Prints the stress-strain profile properties to the terminal.
 
-        :param fmt: Number format
+        Args:
+            fmt: Number format
         """
-
         table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
@@ -1087,20 +1078,20 @@ class SteelProfile(StressStrainProfile):
 class SteelElasticPlastic(SteelProfile):
     """Class for a perfectly elastic-plastic steel stress-strain profile.
 
-    :param yield_strength: Steel yield strength
-    :param elastic_modulus: Steel elastic modulus
-    :param fracture_strain: Steel fracture strain
+    Args:
+        yield_strength: Steel yield strength
+        elastic_modulus: Steel elastic modulus
+        fracture_strain: Steel fracture strain
     """
 
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
+    strains: list[float] = field(init=False)
+    stresses: list[float] = field(init=False)
     yield_strength: float
     elastic_modulus: float
     fracture_strain: float
 
-    def __post_init__(
-        self,
-    ):
+    def __post_init__(self) -> None:
+        """Post init method."""
         yield_strain = self.yield_strength / self.elastic_modulus
         self.strains = [
             -self.fracture_strain,
@@ -1122,22 +1113,22 @@ class SteelElasticPlastic(SteelProfile):
 class SteelHardening(SteelProfile):
     """Class for a steel stress-strain profile with strain hardening.
 
-    :param yield_strength: Steel yield strength
-    :param elastic_modulus: Steel elastic modulus
-    :param fracture_strain: Steel fracture strain
-    :param ultimate_strength: Steel ultimate strength
+    Args:
+        yield_strength: Steel yield strength
+        elastic_modulus: Steel elastic modulus
+        fracture_strain: Steel fracture strain
+        ultimate_strength: Steel ultimate strength
     """
 
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
+    strains: list[float] = field(init=False)
+    stresses: list[float] = field(init=False)
     yield_strength: float
     elastic_modulus: float
     fracture_strain: float
     ultimate_strength: float
 
-    def __post_init__(
-        self,
-    ):
+    def __post_init__(self) -> None:
+        """Post init method."""
         yield_strain = self.yield_strength / self.elastic_modulus
         self.strains = [
             -self.fracture_strain,
@@ -1162,16 +1153,18 @@ class StrandProfile(StressStrainProfile):
     Implements a piecewise linear stress-strain profile. Positive stresses & strains are
     compression.
 
-    :param strains: List of strains (must be increasing or equal)
-    :param stresses: List of stresses
-    :param yield_strength: Strand yield strength
+    Args:
+        strains: List of strains (must be increasing or at least equal to last)
+        stresses: List of stresses
+        yield_strength: Strand yield strength
     """
 
-    strains: List[float]
-    stresses: List[float]
+    strains: list[float]
+    stresses: list[float]
     yield_strength: float
 
     def __post_init__(self) -> None:
+        """Post init method."""
         return super().__post_init__()
 
     def get_strain(
@@ -1180,17 +1173,18 @@ class StrandProfile(StressStrainProfile):
     ) -> float:
         """Returns a strain given a stress.
 
-        :param stress: Stress at which to return a strain.
+        Args:
+            stress: Stress at which to return a strain.
 
-        :return: Strain
+        Returns:
+            Strain
         """
-
         # create interpolation function
         strain_function = interp1d(
             x=self.stresses,
             y=self.strains,
             kind="linear",
-            fill_value="extrapolate",  # type: ignore
+            fill_value="extrapolate",
         )
 
         return strain_function(stress)
@@ -1198,9 +1192,9 @@ class StrandProfile(StressStrainProfile):
     def get_yield_strength(self) -> float:
         """Returns the yield strength of the stress-strain profile.
 
-        :return: Yield strength
+        Returns:
+            Yield strength
         """
-
         return self.yield_strength
 
     def print_properties(
@@ -1209,9 +1203,9 @@ class StrandProfile(StressStrainProfile):
     ) -> None:
         """Prints the stress-strain profile properties to the terminal.
 
-        :param fmt: Number format
+        Args:
+            fmt: Number format
         """
-
         table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
@@ -1239,20 +1233,22 @@ class StrandProfile(StressStrainProfile):
 class StrandHardening(StrandProfile):
     """Class for a strand stress-strain profile with strain hardening.
 
-    :param yield_strength: Strand yield strength
-    :param elastic_modulus: Strand elastic modulus
-    :param fracture_strain: Strand fracture strain
-    :param breaking_strength: Strand breaking strength
+    Args:
+        yield_strength: Strand yield strength
+        elastic_modulus: Strand elastic modulus
+        fracture_strain: Strand fracture strain
+        breaking_strength: Strand breaking strength
     """
 
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
+    strains: list[float] = field(init=False)
+    stresses: list[float] = field(init=False)
     yield_strength: float
     elastic_modulus: float
     fracture_strain: float
     breaking_strength: float
 
     def __post_init__(self) -> None:
+        """Post init method."""
         yield_strain = self.yield_strength / self.elastic_modulus
         self.strains = [
             -self.fracture_strain,
@@ -1271,46 +1267,48 @@ class StrandHardening(StrandProfile):
 
         return super().__post_init__()
 
-    def get_elastic_modulus(
-        self,
-    ) -> float:
+    def get_elastic_modulus(self) -> float:
         """Returns the elastic modulus of the stress-strain profile.
 
-        :return: Elastic modulus
+        Returns:
+            Elastic modulus
         """
-
         return self.elastic_modulus
 
 
 @dataclass
 class StrandPCI1992(StrandProfile):
-    """Class for a strand stress-strain profile by R. Devalapura and M. Tadros from the
+    """Class for a PCI Strand (1992).
+
+    Class for a strand stress-strain profile by R. Devalapura and M. Tadros from the
     March-April issue of the PCI Journal.
 
-    :param yield_strength: Strand yield strength
-    :param elastic_modulus: Strand elastic modulus
-    :param fracture_strain: Strand fracture strain
-    :param breaking_strength: Strand breaking strength
-    :param bilinear_yield_ratio: Ratio between the stress at the intersection of a
-        bilinear profile, and the yield strength
-    :param strain_cps: Strain control points, generates the following strain segments:
-        ``[0, strain_cps[0], strain_cps[1], fracture_strain]``. Length must be equal to
-        2.
-    :param n_points: Number of points to discretise within each strain segment. Length
-        must be equal to 3.
+    Args:
+        yield_strength: Strand yield strength
+        elastic_modulus: Strand elastic modulus
+        fracture_strain: Strand fracture strain
+        breaking_strength: Strand breaking strength
+        bilinear_yield_ratio: Ratio between the stress at the intersection of a bilinear
+            profile, and the yield strength
+        strain_cps: Strain control points, generates the following strain segments:
+            ``[0, strain_cps[0], strain_cps[1], fracture_strain]``. Length must be equal
+            to 2.
+        n_points: Number of points to discretise within each strain segment. Length must
+            be equal to 3.
     """
 
-    strains: List[float] = field(init=False)
-    stresses: List[float] = field(init=False)
+    strains: list[float] = field(init=False)
+    stresses: list[float] = field(init=False)
     yield_strength: float
     elastic_modulus: float
     fracture_strain: float
     breaking_strength: float
     bilinear_yield_ratio: float = 1.04
-    strain_cps: List[float] = field(default_factory=lambda: [0.005, 0.015])
-    n_points: List[int] = field(default_factory=lambda: [5, 14, 5])
+    strain_cps: list[float] = field(default_factory=lambda: [0.005, 0.015])
+    n_points: list[int] = field(default_factory=lambda: [5, 14, 5])
 
     def __post_init__(self) -> None:
+        """Post init method."""
         # validate control points
         if len(self.strain_cps) != 2:
             raise ValueError("Length of strain_cps must be equal to 2.")
