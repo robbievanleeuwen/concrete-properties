@@ -46,7 +46,7 @@ calling the
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/area_properties.ipynb`.
+  :ref:`/examples/area_properties.ipynb`.
 
 
 Cracked Area Properties
@@ -62,9 +62,9 @@ returns a :class:`~concreteproperties.results.CrackedResults` object.
 
 .. note::
 
-  A :class:`~concreteproperties.prestressed_section.PrestressedSection` object will 
+  A :class:`~concreteproperties.prestressed_section.PrestressedSection` object will
   return a ``tuple`` for the cracking moment ``m_cr``, with the first value the cracking
-  moment for positive bending and the second value the cracking moment for negative 
+  moment for positive bending and the second value the cracking moment for negative
   bending.
 
 Calling
@@ -74,7 +74,7 @@ cracked properties as attributes within the current object.
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/cracked_properties.ipynb`.
+  :ref:`/examples/cracked_properties.ipynb`.
 
 
 Moment Curvature Analysis
@@ -91,7 +91,7 @@ object can be used to plot moment curvature results.
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/moment_curvature.ipynb`.
+  :ref:`/examples/moment_curvature.ipynb`.
 
 
 Ultimate Bending Capacity
@@ -110,7 +110,7 @@ to the terminal by calling the
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/ultimate_bending.ipynb`.
+  :ref:`/examples/ultimate_bending.ipynb`.
 
 
 Moment Interaction Diagram
@@ -127,7 +127,7 @@ This object can be used to plot moment interaction results.
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/moment_interaction.ipynb`.
+  :ref:`/examples/moment_interaction.ipynb`.
 
 
 Biaxial Bending Diagram
@@ -144,7 +144,7 @@ This object can be used to plot biaxial bending results.
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/biaxial_bending.ipynb`.
+  :ref:`/examples/biaxial_bending.ipynb`.
 
 
 Stress Analysis
@@ -166,4 +166,4 @@ stress results.
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/stress_analysis.ipynb`.
+  :ref:`/examples/stress_analysis.ipynb`.

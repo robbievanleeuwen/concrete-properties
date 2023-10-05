@@ -400,20 +400,18 @@ class PrestressedSection(ConcreteSection):
     def moment_interaction_diagram(self):
         """Generates a moment interaction diagram.
 
-        .. erorr::
+        .. error::
 
             This feature has not yet been implemented.
-
         """
         raise NotImplementedError
 
     def biaxial_bending_diagram(self):
         """Generates a biaxial bending diagram.
 
-        .. erorr::
+        .. error::
 
             This feature has not yet been implemented.
-
         """
         raise NotImplementedError
 

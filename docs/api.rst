@@ -2,7 +2,7 @@ API
 ===
 
 ``concreteproperties`` Modules
------------------------------
+------------------------------
 
 .. autosummary::
     :toctree: gen

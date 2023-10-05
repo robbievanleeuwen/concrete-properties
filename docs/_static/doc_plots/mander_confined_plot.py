@@ -1,7 +1,8 @@
-import numpy as np
 import matplotlib.pyplot as plt
-from concreteproperties.design_codes.nzs3101 import NZS3101
+import numpy as np
+
 import concreteproperties.stress_strain_profile as ssp
+from concreteproperties.design_codes.nzs3101 import NZS3101
 
 
 def mander_confined_plot(render=False):
@@ -9,8 +10,9 @@ def mander_confined_plot(render=False):
     concrete to generate a plot with stress-strain parameters shown to aid in
     interpreting class variables.
 
-    :param render: Set to True to plot for testing purposes, note will plot
-        automatically in a docstring plot directive when set to default of False
+    Args:
+        render: Set to True to plot for testing purposes, note will plot
+            automatically in a docstring plot directive when set to default of False
     """
     # create confined ModifiedMander stress-strain profile
     design_code = NZS3101()
@@ -30,7 +32,7 @@ def mander_confined_plot(render=False):
         d=800,
         b=500,
         long_reinf_area=12 * 314,
-        w_dash=[150] * 12,
+        w_dash=[150.0] * 12,
         cvr=30 + 10,
         trans_spacing=125,
         trans_d_b=10,

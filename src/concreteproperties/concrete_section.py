@@ -1126,9 +1126,6 @@ class ConcreteSection:
         theta: float = 0,
         limits: list[tuple[str, float]] | None = None,
         control_points: list[tuple[str, float]] | None = None,
-        # ("kappa0", 0.0),
-        # ("fy", 1.0),
-        # ("N", 0.0),
         labels: list[str] | None = None,
         n_points: int = 24,
         n_spacing: int | None = None,
@@ -1153,45 +1150,46 @@ class ConcreteSection:
             used)
 
         Args:
-        theta: Angle (in radians) the neutral axis makes with the horizontal axis
-            (:math:`-\pi \leq \theta \leq \pi`)
-        limits: List of control points that define the start and end of the
-            interaction diagram. List length must equal two. The default limits range
-            from concrete decompression strain to zero curvature tension, i.e.
-            ``[("D", 1.0), ("d_n", 1e-6)]``.
-        control_points: List of additional control points to add to the moment
-            interatction diagram. The default control points include the pure
-            compression point (``kappa0``), the balanced point (``fy = 1``) and the pure
-            bending point (``N=0``), i.e. ``[("kappa0", 0.0), ("fy", 1.0),
-            ("N", 0.0)]``. Control points may lie outside the limits of the moment
-            interaction diagram as long as equilibrium can be found.
-        labels: List of labels to apply to the ``limits`` and ``control_points``
-            for plotting purposes. The first two values in ``labels`` apply labels to
-            the ``limits``, the remaining values apply labels to the ``control_points``.
-            If a single value is provided, this value will be applied to both ``limits``
-            and all ``control_points``. The length of ``labels`` must equal ``1`` or
-            ``2 + len(control_points)``.
-        n_points: Number of points to compute including and between the
-            ``limits`` of the moment interaction diagram. Generates equally spaced
-            neutral axis depths between the ``limits``.
-        n_spacing: If provided, overrides ``n_points`` and generates the moment
-            interaction diagram using ``n_spacing`` equally spaced axial loads. Note
-            that using ``n_spacing`` negatively affects performance, as the neutral axis
-            depth must first be located for each point on the moment interaction
-            diagram.
-        max_comp: If provided, limits the maximum compressive force in the moment
-            interaction diagram to ``max_comp``
-        max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
-            first value is at zero moment, second value is at the intersection with the
-            interaction diagram
-        progress_bar: If set to True, displays the progress bar
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            limits: List of control points that define the start and end of the
+                interaction diagram. List length must equal two. The default limits
+                range from concrete decompression strain to zero curvature tension, i.e.
+                ``[("D", 1.0), ("d_n", 1e-6)]``.
+            control_points: List of additional control points to add to the moment
+                interatction diagram. The default control points include the pure
+                compression point (``kappa0``), the balanced point (``fy = 1``) and the
+                pure bending point (``N=0``), i.e. ``[("kappa0", 0.0), ("fy", 1.0),
+                ("N", 0.0)]``. Control points may lie outside the limits of the moment
+                interaction diagram as long as equilibrium can be found.
+            labels: List of labels to apply to the ``limits`` and ``control_points``
+                for plotting purposes. The first two values in ``labels`` apply labels
+                to the ``limits``, the remaining values apply labels to the
+                ``control_points``. If a single value is provided, this value will be
+                applied to both ``limits`` and all ``control_points``. The length of
+                ``labels`` must equal ``1`` or ``2 + len(control_points)``.
+            n_points: Number of points to compute including and between the
+                ``limits`` of the moment interaction diagram. Generates equally spaced
+                neutral axis depths between the ``limits``.
+            n_spacing: If provided, overrides ``n_points`` and generates the moment
+                interaction diagram using ``n_spacing`` equally spaced axial loads. Note
+                that using ``n_spacing`` negatively affects performance, as the neutral
+                axis depth must first be located for each point on the moment
+                interaction diagram.
+            max_comp: If provided, limits the maximum compressive force in the moment
+                interaction diagram to ``max_comp``
+            max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
+                first value is at zero moment, second value is at the intersection with
+                the interaction diagram
+            progress_bar: If set to True, displays the progress bar
 
         Raises:
             ValueError: Length of ``limits`` must equal 2
             ValueError: Length of ``labels`` must be 1 or 2 + number of control points
             ValueError: If ``max_comp`` is greater than the maximum axial capacity
 
-        :return: Moment interaction results object
+        Returns:
+            Moment interaction results object
         """
         if limits is None:
             limits = [("D", 1.0), ("d_n", 1e-6)]

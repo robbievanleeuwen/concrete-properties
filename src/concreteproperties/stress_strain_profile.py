@@ -513,13 +513,11 @@ class ModifiedMander(ConcreteServiceProfile):
         - Note that the 0.6 factor applied to the ultimate tensile failure strain can
           be modified as noted above.
 
-    .. plot:: ./_static/doc_plots/mander_unconfined_plot.py mander_unconfined_plot
-
+    .. plot:: _static/doc_plots/mander_unconfined_plot.py mander_unconfined_plot
       :include-source: False
       :caption: ModifiedMander Parameters for Unconfined Concrete
 
-    .. plot:: ./_static/doc_plots/mander_confined_plot.py mander_confined_plot
-
+    .. plot:: _static/doc_plots/mander_confined_plot.py mander_confined_plot
       :include-source: False
       :caption: ModifiedMander Parameters for Confined Concrete
 

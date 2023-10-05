@@ -7,7 +7,7 @@ These instructions will get you a copy of ``concreteproperties`` up and running 
 machine. You will need a working copy of python 3.9, 3.10 or 3.11 to get started.
 
 Installing ``concreteproperties``
---------------------------------
+---------------------------------
 
 ``concreteproperties`` uses `shapely <https://github.com/shapely/shapely>`_ to prepare
 the cross-section geometry and `triangle <https://github.com/drufat/triangle>`_ to

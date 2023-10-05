@@ -380,7 +380,7 @@ functions:
 - :func:`~concreteproperties.pre.add_bar_circular_array` - adds a circular array of bars
   to the geometry
 
-.. plot:: _plot_directive/add_bar_context.py
+.. plot:: _static/doc_plots/add_bar_context.py
   :context:
   :nofigs:
   :include-source: False

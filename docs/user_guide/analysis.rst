@@ -48,7 +48,7 @@ reinforced concrete cross-section.
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/area_properties.ipynb`.
+  :ref:`/examples/area_properties.ipynb`.
 
 
 Cracked Area Properties
@@ -68,7 +68,7 @@ assuming the concrete is linear elastic and can only resist compression.
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/cracked_properties.ipynb`.
+  :ref:`/examples/cracked_properties.ipynb`.
 
 
 Moment Curvature Analysis
@@ -92,7 +92,7 @@ increment controlled by the parameters ``kappa_inc``, ``kappa_mult``, ``kappa_in
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/moment_curvature.ipynb`.
+  :ref:`/examples/moment_curvature.ipynb`.
 
 
 Ultimate Bending Capacity
@@ -118,7 +118,7 @@ equilibrium of axial forces.
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/ultimate_bending.ipynb`.
+  :ref:`/examples/ultimate_bending.ipynb`.
 
 
 Moment Interaction Diagram
@@ -139,7 +139,7 @@ Additional ``control_points`` can be added to the analysis.
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/moment_interaction.ipynb`.
+  :ref:`/examples/moment_interaction.ipynb`.
 
 
 Biaxial Bending Diagram
@@ -160,7 +160,7 @@ ultimate bending moments about the ``x`` and ``y`` axes.
 
 .. seealso::
   For an application of the above, see the example
-  :ref:`/notebooks/biaxial_bending.ipynb`.
+  :ref:`/examples/biaxial_bending.ipynb`.
 
 
 Stress Analysis
@@ -171,7 +171,7 @@ is detailed separately below.
 
 .. seealso::
   For an application of stress analysis, see the example
-  :ref:`/notebooks/stress_analysis.ipynb`.
+  :ref:`/examples/stress_analysis.ipynb`.
 
 
 Uncracked Stress

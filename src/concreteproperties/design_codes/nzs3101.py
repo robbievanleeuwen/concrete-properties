@@ -139,9 +139,9 @@ class NZS3101(DesignCode):
 
         Args:
             analysis_type: The type of cross section analysis to undertake on the
-            defined concrete section, by default a normal nominal strength design check
-            is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor` for
-            further information on analysis types.
+                defined concrete section, by default a normal nominal strength design
+                check is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor`
+                for further information on analysis types.
 
         Raises:
             ValueError: If analysis type is not valid
@@ -1838,30 +1838,30 @@ class NZS3101(DesignCode):
     ) -> tuple[res.BiaxialBendingResults, list[float]]:
         """Generates a biaxial bending diagram.
 
-         Generates a biaxial bending with capacity factors to NZS3101:2006 or the
-         NZSEE C5 assessment guidelines dependant on analysis type.
+        Generates a biaxial bending with capacity factors to NZS3101:2006 or the
+        NZSEE C5 assessment guidelines dependant on analysis type.
 
-         Args:
-             pphr_class: Potential Plastic Hinge Region (PPHR) classification,
-                 **NDPR**/**LDPR**/**DPR**.
+        Args:
+            pphr_class: Potential Plastic Hinge Region (PPHR) classification,
+                **NDPR**/**LDPR**/**DPR**.
 
-                 - **NDPR** = Nominally Ductile Plastic Region
+                - **NDPR** = Nominally Ductile Plastic Region
 
-                 - **LDPR** = Limited Ductile Plastic Region
+                - **LDPR** = Limited Ductile Plastic Region
 
-                 - **DPR** = Ductile Plastic Region
+                - **DPR** = Ductile Plastic Region
 
-             analysis_type: The type of cross section analysis to undertake on the
-                 defined concrete section, by default a normal nominal strength design
-                 check is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor`
-                 for further information on analysis types.
-             n_design: Axial design force (:math:`N^*`)
-             n_points: Number of calculation points for neutral axis orientation
-             progress_bar: If set to True, displays the progress bar
+            analysis_type: The type of cross section analysis to undertake on the
+                defined concrete section, by default a normal nominal strength design
+                check is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor`
+                for further information on analysis types.
+            n_design: Axial design force (:math:`N^*`)
+            n_points: Number of calculation points for neutral axis orientation
+            progress_bar: If set to True, displays the progress bar
 
         Returns:
-             Factored biaxial bending results object and list of capacity reduction
-             factors (``factored_results``, ``phis``)
+            Factored biaxial bending results object and list of capacity reduction
+            factors (``factored_results``, ``phis``)
         """
         # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
         # (dependant on PPHR class)
