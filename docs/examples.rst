@@ -1,20 +1,18 @@
 Examples
 ========
 
-The following examples complement the structured documentation presented thus far.
-
-.. toctree::
+.. nbgallery::
+   :name: examples-gallery
    :maxdepth: 1
-   :numbered:
 
-   notebooks/area_properties
-   notebooks/cracked_properties
-   notebooks/moment_curvature
-   notebooks/ultimate_bending
-   notebooks/moment_interaction
-   notebooks/biaxial_bending
-   notebooks/stress_analysis
-   notebooks/composite_section
-   notebooks/prestressed_section
-   notebooks/as3600
-   notebooks/nzs3101
+   examples/area_properties
+   examples/cracked_properties
+   examples/moment_curvature
+   examples/ultimate_bending
+   examples/moment_interaction
+   examples/biaxial_bending
+   examples/stress_analysis
+   examples/composite_section
+   examples/prestressed_section
+   examples/as3600
+   examples/nzs3101

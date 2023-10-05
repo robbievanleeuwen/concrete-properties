@@ -50,7 +50,7 @@ Below are a few examples:
 
 - ``m_x`` and ``m_y`` relate to bending moments about the ``x`` and ``y`` axes
   respectively.
-- ``m_xy`` relates to a resultant bending moment, i.e. the positive square root of the 
+- ``m_xy`` relates to a resultant bending moment, i.e. the positive square root of the
   sum of the squares of ``m_x`` and ``m_y``.
 - ``ixx_g`` and ``iyy_g`` relate to the second moments of area about the global ``x``
   and ``y`` axes respectively. The global axis refers to an axis centred at the origin
@@ -103,13 +103,18 @@ below example uses 32 points to discretise the circle:
 By discretising the above circle, the cross-sectional area is slightly lower than a true
 circle:
 
-.. runblock:: pycon
+.. code-block:: python
 
-  >>> import math
-  >>> from sectionproperties.pre.library.primitive_sections import circular_section
-  >>> geom = circular_section(d=600, n=32)
-  >>> print(f"{geom.calculate_area():.2f}")
-  >>> print(f"{math.pi * 600 * 600 / 4:.2f}")
+  import math
+  from sectionproperties.pre.library import circular_section
+
+  geom = circular_section(d=600, n=32)
+
+  print(f"{geom.calculate_area():.2f}")
+  >>> 280930.06
+
+  print(f"{math.pi * 600 * 600 / 4:.2f}")
+  >>> 282743.34
 
 This discretisation error can be avoided by using the
 :func:`~sectionproperties.pre.library.primitive_sections.circular_section_by_area`
@@ -127,14 +132,18 @@ a circle with the correct area is generated:
   geom = circular_section_by_area(area=math.pi * 600 * 600 / 4, n=32, material=concrete)
   geom.plot_geometry(labels=[], cp=False, legend=False)
 
-.. runblock:: pycon
+.. code-block:: python
 
-  >>> import math
-  >>> from sectionproperties.pre.library.primitive_sections import circular_section_by_area
-  >>> geom =   geom = circular_section_by_area(area=math.pi * 600 * 600 / 4, n=32)
-  >>> print(f"{geom.calculate_area():.2f}")
-  >>> print(f"{math.pi * 600 * 600 / 4:.2f}")
+  import math
+  from sectionproperties.pre.library import circular_section_by_area
 
+  geom = circular_section_by_area(area=math.pi * 600 * 600 / 4, n=32)
+
+  print(f"{geom.calculate_area():.2f}")
+  >>> 282743.34
+
+  print(f"{math.pi * 600 * 600 / 4:.2f}")
+  >>> 282743.34
 
 Standard Sections
 -----------------

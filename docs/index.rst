@@ -1,74 +1,86 @@
-.. concreteproperties documentation master file, created by
-   sphinx-quickstart on Tue Feb 22 13:36:09 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. image:: _static/cp_logo.png
+    :class: only-light
 
-.. image:: _static/cp_logo_page.png
- :width: 100 %
- :alt: concreteproperties
- :align: left
- :class: only-light
+.. image:: _static/cp_logo_dark.png
+    :class: only-dark
 
-.. image:: _static/cp_logo_page_dark.png
- :width: 100 %
- :alt: concreteproperties
- :align: left
- :class: only-dark
+.. toctree::
+    :hidden:
 
-|Run Tests| |Lint with Black| |Build Documentation| |codecov| |PyPI version| |Python versions| |GitHub license| |Binder|
+    installation
+    user_guide
+    api
+
+.. toctree::
+    :caption: Development
+    :hidden:
+
+    contributing
+    Code of Conduct <codeofconduct>
+    License <license>
+    Changelog <https://github.com/robbievanleeuwen/concrete-properties/releases>
 
 
 Documentation
 =============
 
-*concreteproperties* is a python package that can be used to calculate the section
-properties of arbitrary reinforced concrete sections. *concreteproperties* can calculate
-gross, cracked and ultimate properties. It can perform moment curvature analyses
-and generate moment interaction and biaxial bending diagrams. On top of this,
-*concreteproperties* can also generate pretty stress plots!
+``concreteproperties`` is a python package that can be used to calculate the section
+properties of arbitrary reinforced concrete sections. ``concreteproperties`` can
+calculate gross, cracked and ultimate properties. It can perform moment curvature
+analyses and generate moment interaction and biaxial bending diagrams. On top of this,
+``concreteproperties`` can also generate pretty stress plots!
 
-Here's an example of some of the non-linear output *concreteproperties* can generate:
+Here's an example of some of the non-linear output ``concreteproperties`` can generate:
 
 .. image:: _static/anim/anim_compress.gif
  :width: 67 %
  :alt: concreteproperties
  :align: center
 
-A list of the `current features of the package and implementation goals for future
-releases <https://github.com/robbievanleeuwen/concrete-properties/tree/master/README.md>`_
-can be found in the README file on github.
+Installation
+------------
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Contents:
+You can install ``concreteproperties`` via `pip <https://pip.pypa.io/>`_ from
+`PyPI <https://pypi.org/>`_:
 
-   installation
-   user_guide
-   examples
-   api
+.. code:: shell
 
+   pip install concreteproperties
 
-Indices and tables
-==================
+See :ref:`label-installation` for more information.
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+Features
+--------
 
+See the complete list of ``concreteproperties`` features :ref:`here<label-features>`.
 
-.. |Run Tests| image:: https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/tests.yml/badge.svg
-   :target: https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/tests.yml
-.. |Lint with Black| image:: https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/black.yml/badge.svg
-   :target: https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/black.yml
-.. |Build Documentation| image:: https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/build_docs.yml/badge.svg
-   :target: https://robbievanleeuwen.github.io/concrete-properties/
-.. |codecov| image:: https://codecov.io/gh/robbievanleeuwen/concrete-properties/branch/master/graph/badge.svg?token=3WXMUQITTD
-   :target: https://codecov.io/gh/robbievanleeuwen/concrete-properties
-.. |PyPI version| image:: https://badge.fury.io/py/concreteproperties.svg
-   :target: https://badge.fury.io/py/concreteproperties
-.. |Python versions| image:: https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue?style=flat&logo=python
-   :target: https://badge.fury.io/py/concreteproperties
-.. |GitHub license| image:: https://img.shields.io/github/license/robbievanleeuwen/concrete-properties
-   :target: https://github.com/robbievanleeuwen/concrete-properties/blob/master/LICENSE.md
-.. |Binder| image:: https://mybinder.org/badge_logo.svg
-   :target: https://mybinder.org/v2/gh/robbievanleeuwen/concrete-properties-examples/master
+Contributing
+------------
+
+Contributions are very welcome. To learn more, see the
+:ref:`Contributor Guide<label-contributing>`.
+
+License
+-------
+
+Distributed under the terms of the :doc:`MIT License <license>` ``concreteproperties``
+is free and open source software.
+
+Support
+-------
+
+Found a bug 🐛, or have a feature request ✨, raise an issue on the
+GitHub `issue
+tracker <https://github.com/robbievanleeuwen/concrete-properties/issues>`_.
+Alternatively you can get support on the
+`discussions <https://github.com/robbievanleeuwen/concrete-properties/discussions>`_
+page.
+
+Disclaimer
+----------
+
+``concreteproperties`` is an open source engineering tool that continues to benefit from
+the collaboration of many contributors. Although efforts have been made to ensure the
+that relevant engineering theories have been correctly implemented, it remains the
+user's responsibility to confirm and accept the output. Refer to the
+:doc:`License <license>` for clarification of the conditions of use.

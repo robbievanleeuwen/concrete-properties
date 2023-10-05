@@ -1,7 +1,8 @@
+from sectionproperties.analysis.section import Section
 from sectionproperties.pre.geometry import Geometry
 from sectionproperties.pre.library.primitive_sections import circular_section
 from sectionproperties.pre.pre import Material
-from sectionproperties.analysis.section import Section
+
 
 concrete = Material(
     name="Concrete",
@@ -9,7 +10,7 @@ concrete = Material(
     poissons_ratio=0.2,
     yield_strength=32,
     density=2.4e-6,
-    colour="lightgrey",
+    color="lightgrey",
 )
 steel = Material(
     name="Steel",
@@ -17,7 +18,7 @@ steel = Material(
     poissons_ratio=0.3,
     yield_strength=500,
     density=7.85e-6,
-    colour="grey",
+    color="grey",
 )
 
 t = 150
@@ -26,44 +27,44 @@ b = 2400
 c = 15
 
 points = [
-    [0, c],
-    [0, d - c],
-    [c, d],
-    [b - c, d],
-    [b, d - c],
-    [b, c],
-    [b - c, 0],
-    [b - t + c, 0],
-    [b - t, c],
-    [b - t, d - t - c],
-    [b - t - c, d - t],
-    [t + c, d - t],
-    [t, d - t - c],
-    [t, c],
-    [t - c, 0],
-    [c, 0],
+    (0, c),
+    (0, d - c),
+    (c, d),
+    (b - c, d),
+    (b, d - c),
+    (b, c),
+    (b - c, 0),
+    (b - t + c, 0),
+    (b - t, c),
+    (b - t, d - t - c),
+    (b - t - c, d - t),
+    (t + c, d - t),
+    (t, d - t - c),
+    (t, c),
+    (t - c, 0),
+    (c, 0),
 ]
 facets = [
-    [0, 1],
-    [1, 2],
-    [2, 3],
-    [3, 4],
-    [4, 5],
-    [5, 6],
-    [6, 7],
-    [7, 8],
-    [8, 9],
-    [9, 10],
-    [10, 11],
-    [11, 12],
-    [12, 13],
-    [13, 14],
-    [14, 15],
-    [15, 0],
+    (0, 1),
+    (1, 2),
+    (2, 3),
+    (3, 4),
+    (4, 5),
+    (5, 6),
+    (6, 7),
+    (7, 8),
+    (8, 9),
+    (9, 10),
+    (10, 11),
+    (11, 12),
+    (12, 13),
+    (13, 14),
+    (14, 15),
+    (15, 0),
 ]
-control_points = [[0.5 * t, 0.5 * d]]
+control_points = [(0.5 * t, 0.5 * d)]
 
-beam = Geometry.from_points(points, facets, control_points, material=[concrete])
+beam = Geometry.from_points(points, facets, control_points, material=concrete)
 beam.material = concrete
 
 n_top = 14
@@ -87,7 +88,7 @@ for idx in range(n_wall):
     )
     beam = (beam - bar) + bar
 
-beam.create_mesh(300)
+beam.create_mesh([300.0])
 
 sec = Section(beam)
 sec.plot_mesh()

@@ -1,30 +1,28 @@
+.. _label-installation:
+
 Installation
 ============
 
-These instructions will get you a copy of *concreteproperties* up and running on
-your local machine. You will need a working copy of python 3.8, 3.9 or 3.10 on your
-machine.
+These instructions will get you a copy of ``concreteproperties`` up and running on your
+machine. You will need a working copy of python 3.9, 3.10 or 3.11 to get started.
 
-Installing *concreteproperties*
--------------------------------
+Installing ``concreteproperties``
+--------------------------------
 
-*concreteproperties* uses `sectionproperties <https://github.com/robbievanleeuwen/section-properties>`_
-to generate a reinforced concrete geometry.
+``concreteproperties`` uses `shapely <https://github.com/shapely/shapely>`_ to prepare
+the cross-section geometry and `triangle <https://github.com/drufat/triangle>`_ to
+efficiently generate a conforming triangular mesh.
+`sectionproperties <https://github.com/robbievanleeuwen/section-properties>`_ is used to
+generate concrete geometries, while `numpy <https://github.com/numpy/numpy>`_ and
+`scipy <https://github.com/scipy/scipy>`_ are used to aid computations, and
+`matplotlib <https://github.com/matplotlib/matplotlib>`_ and
+`rich <https://github.com/Textualize/rich>`_ are used for post-processing.
+Finally, `click <https://github.com/pallets/click>`_ is used to power the
+``concreteproperties`` CLI.
 
-*concreteproperties* and all of its dependencies can be installed through the python
+``concreteproperties`` and all of its dependencies can be installed through the python
 package index:
 
-.. code-block:: console
+.. code-block:: shell
 
-  pip install concreteproperties
-
-Testing the Installation
-------------------------
-
-Python *pytest* modules are located in the *concreteproperties.tests* package.
-To see if your installation is working correctly, install `pytest` and run the
-following test:
-
-.. code-block:: console
-
-  pytest --pyargs concreteproperties
+    pip install sectionproperties

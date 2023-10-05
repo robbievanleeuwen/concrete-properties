@@ -1,135 +1,66 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# This file only contains a selection of the most common options. For a full
-# list see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
+"""Sphinx configuration."""
 
-# -- Path setup --------------------------------------------------------------
-
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath("../../"))
-from concreteproperties import __version__ as ver
-
-# -- Project information -----------------------------------------------------
-
+# project information
 project = "concreteproperties"
-copyright = "2022, Robbie van Leeuwen"
 author = "Robbie van Leeuwen"
+copyright = "2023, Robbie van Leeuwen"
 
-# The short Major.Minor.Build version
-_v = ver.split(".")
-_build = "".join([c for c in _v[2] if c.isdigit()])
-version = _v[0] + "." + _v[1] + "." + _build
-# The full version, including alpha/beta/rc tags
-release = ver
+# sphinx config
+templates_path = ["_templates"]
+exclude_patterns = ["_build"]
 
-# -- General configuration ---------------------------------------------------
-
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
-    "sphinx.ext.viewcode",
-    "sphinx.ext.mathjax",
     "sphinx.ext.intersphinx",
-    "sphinx_autodoc_typehints",
-    "sphinx_autorun",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
     "matplotlib.sphinxext.plot_directive",
     "nbsphinx",
-    "IPython.sphinxext.ipython_console_highlighting",
+    "sphinx_click",
+    "sphinx_copybutton",
+    "sphinxext.opengraph",
 ]
 
+# autodoc config
 autodoc_member_order = "bysource"
-autosummary_generate = True  # Turn on sphinx.ext.autosummary
-autosummary_mock_imports = []
-autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
-html_show_sourcelink = (
-    False  # Remove 'view source code' from top of page (for html, not python)
-)
-autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
-add_module_names = False  # Remove namespaces from class/method signatures
-nbsphinx_allow_errors = False  # whether to continue through Jupyter errors
+autodoc_typehints = "both"
+autodoc_typehints_description_target = "documented_params"
+
+# napoleon config
+napoleon_numpy_docstring = False
+napoleon_include_init_with_doc = True
+napoleon_use_admonition_for_examples = True
+napoleon_use_ivar = True
+
+# nbsphinx config
 nbsphinx_execute_arguments = [
     "--InlineBackend.figure_formats={'svg', 'pdf'}",
     "--InlineBackend.rc=figure.dpi=96",
 ]
-typehints_use_rtype = False  # document return type as part of the :return: directive
-typehints_defaults = "comma"  # adds a default annotation after the type
-
-# Add any paths that contain templates here, relative to this directory.
-templates_path = ["_templates"]
-
-# List of patterns, relative to source directory, that match files and
-# directories to ignore when looking for source files.
-# This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
 
 # intersphinx mapping
 intersphinx_mapping = {
-    "sectionproperties": ("https://sectionproperties.readthedocs.io/en/latest/", None),
+    "python": ("https://docs.python.org/3", None),
     "numpy": ("https://numpy.org/doc/stable/", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
     "matplotlib": ("https://matplotlib.org/stable/", None),
+    "shapely": ("https://shapely.readthedocs.io/en/stable/", None),
+    "sectionproperties": ("https://sectionproperties.readthedocs.io/en/stable", None),
 }
 
-
-# -- Options for HTML output -------------------------------------------------
-
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
-html_theme = "pydata_sphinx_theme"
-
-# Define the json_url for our version switcher.
-json_url = (
-    "https://robbievanleeuwen.github.io/concrete-properties/_static/switcher.json"
-)
-
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
+# html theme
+html_theme = "furo"
 html_static_path = ["_static"]
-
-# Theme options
+html_favicon = "_static/favicon.ico"
 html_theme_options = {
-    "icon_links": [
-        {
-            "name": "GitHub",
-            "url": "https://github.com/robbievanleeuwen/concrete-properties",
-            "icon": "fab fa-github-square",
-            "type": "fontawesome",
-        },
-        {
-            "name": "PyPI",
-            "url": "https://pypi.org/project/concreteproperties/",
-            "icon": "fas fa-box",
-            "type": "fontawesome",
-        },
-    ],
-    "use_edit_page_button": True,
-    "logo": {
-        "image_light": "cp_logo.png",
-        "image_dark": "cp_logo_dark.png",
-    },
-    "navbar_start": ["navbar-logo", "version-switcher"],
-    "switcher": {
-        "json_url": json_url,
-        "version_match": "latest",
-        # "version_match": release,
-    },
+    "light_logo": "cp_logo.png",  # add light mode logo
+    "dark_logo": "cp_logo_dark.png",  # add dark mode logo
+    "sidebar_hide_name": True,  # hide name of project in sidebar (already in logo)
+    "source_repository": "https://github.com/robbievanleeuwen/concrete-properties",
+    "source_branch": "master",
+    "source_directory": "docs/",
 }
-
-html_context = {
-    "github_user": "robbievanleeuwen",
-    "github_repo": "concrete-properties",
-    "github_version": "master",
-    "doc_path": "docs/source/",
-    "default_mode": "light",
-}
+pygments_style = "sphinx"
+pygments_dark_style = "monokai"

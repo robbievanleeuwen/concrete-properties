@@ -1,8 +1,8 @@
-API Reference
-=============
+API
+===
 
-Package Modules
----------------
+``concreteproperties`` Modules
+-----------------------------
 
 .. autosummary::
     :toctree: gen

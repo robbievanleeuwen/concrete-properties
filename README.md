@@ -36,78 +36,7 @@ through submitting bug reports, feature requests or pull requests. Please read t
 
 ## Current Capabilities
 
-### Analysis Types
-
-- [x] Reinforced Concrete
-- [x] Steel-Concrete Composite
-- [x] Prestressed Concrete
-
-### Material Properties
-
-- [x] Concrete material
-  - [x] Service stress-strain profiles
-    - [x] Linear profile
-    - [x] Linear profile (no tension)
-    - [x] Eurocode non-linear
-    - [x] Modified Mander non-linear profile (confined & unconfined concrete)
-  - [x] Ultimate stress-strain profiles
-    - [x] Rectangular stress block
-    - [x] Bilinear stress-strain profile
-    - [x] Eurocode parabolic
-  - [x] Flexural tensile strength
-- [x] Steel material
-  - [x] Stress-strain profiles
-    - [x] Elastic-plastic
-    - [x] Elastic-plastic (with hardening)
-- [x] Strand material
-  - [x] Stress-strain profiles
-    - [x] Elastic-plastic (with hardening)
-    - [x] PCI journal (1992) non-linear
-
-### Gross Section Properties
-
-- [x] Cross-sectional areas (total, concrete, steel, strand)
-- [x] Axial rigidity
-- [x] Cross-section mass
-- [x] Cross-section perimeter
-- [x] First moments of area
-- [x] Elastic centroid
-- [x] Global second moments of area
-- [x] Centroidal second moments of area
-- [x] Principal axis angle
-- [x] Principal second moments of area
-- [x] Centroidal section moduli
-- [x] Principal section moduli
-- [x] Prestressed Aations
-
-### Service Analysis
-
-- [x] Cracking moment
-- [x] Cracked area properties
-- [x] Moment-curvature diagram
-
-### Ultimate Analysis
-
-- [x] Ultimate bending capacity
-- [x] Squash load
-- [x] Tensile load
-- [x] Moment interaction diagrams
-  - [x] M-N curves
-  - [x] Biaxial bending curve
-
-### Stress Analysis
-
-- [x] Uncracked stresses
-- [x] Cracked stresses
-- [x] Service stresses
-- [x] Ultimate stresses
-
-### Design Codes
-
-- [x] Design code modules
-  - [x] AS3600
-  - [ ] AS5100
-  - [x] NZS3101 & NZSEE C5 Assessment Guidelines
+aslkdjaskld
 
 ## Disclaimer
 
