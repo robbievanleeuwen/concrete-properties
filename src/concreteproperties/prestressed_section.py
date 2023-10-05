@@ -47,6 +47,10 @@ class PrestressedSection(ConcreteSection):
                 properties applied.
             geometric_centroid_override: If set to True, sets ``moment_centroid`` to
                 the geometric centroid i.e. material properties applied
+
+        Raises:
+            ValueError: If the section is not symmetric about the y-axis
+            ValueError: If meshed reinforcement geometries are provided
         """
         super().__init__(
             geometry=geometry,
@@ -103,7 +107,7 @@ class PrestressedSection(ConcreteSection):
             n_ext: External axial force
 
         Raises:
-            ValueError: If the provided loads do not result in tension within the
+            AnalysisError: If the provided loads do not result in tension within the
                 concrete
 
         Returns:
@@ -400,18 +404,16 @@ class PrestressedSection(ConcreteSection):
     def moment_interaction_diagram(self):
         """Generates a moment interaction diagram.
 
-        .. error::
-
-            This feature has not yet been implemented.
+        Raises:
+            NotImplementedError: This feature has not yet been implemented.
         """
         raise NotImplementedError
 
     def biaxial_bending_diagram(self):
         """Generates a biaxial bending diagram.
 
-        .. error::
-
-            This feature has not yet been implemented.
+        Raises:
+            NotImplementedError: This feature has not yet been implemented.
         """
         raise NotImplementedError
 
@@ -704,6 +706,9 @@ class PrestressedSection(ConcreteSection):
             m: Bending moment
             kappa: Curvature, if provided overrides the supplied bending moment and
                 calculates the stress at the given curvature
+
+        Raises:
+            AnalysisError: If the analysis fails
 
         Returns:
             Stress results object

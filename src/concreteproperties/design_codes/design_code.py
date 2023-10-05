@@ -43,8 +43,9 @@ class DesignCode:
             compressive_strength: Concrete compressive strength
             colour: Colour of the concrete for rendering
 
-        Returns:
-            Concrete material object
+        Raises:
+            NotImplementedError: If this method has not been implemented by the child
+                class
         """
         raise NotImplementedError
 
@@ -61,8 +62,9 @@ class DesignCode:
             yield_strength: Steel yield strength
             colour: Colour of the steel for rendering
 
-        Returns:
-            Steel material object
+        Raises:
+            NotImplementedError: If this method has not been implemented by the child
+                class
         """
         raise NotImplementedError
 
@@ -87,7 +89,7 @@ class DesignCode:
     ) -> res.TransformedGrossProperties:
         """Transforms gross section properties.
 
-        Args"
+        Args:
             kwargs: Keyword arguments passed to
                 :meth:`~concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties`
 
@@ -136,7 +138,7 @@ class DesignCode:
             kwargs: Keyword arguments passed to
                 :meth:`~concreteproperties.concrete_section.ConcreteSection.ultimate_bending_capacity`
 
-        :Returns:
+        Returns:
             Ultimate bending results object
         """
         return self.concrete_section.ultimate_bending_capacity(**kwargs)

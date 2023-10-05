@@ -12,8 +12,19 @@ from concreteproperties.design_codes.nzs3101 import NZS3101
 from concreteproperties.material import Concrete, Steel, SteelBar
 
 
-def create_dummy_section(design_code, prob_section=False, section_type="column"):
-    """Creates a dummy section."""
+def create_dummy_section(
+    design_code, prob_section=False, section_type="column"
+) -> ConcreteSection:
+    """Creates a dummy section.
+
+    Args:
+        design_code: Design code to use
+        prob_section: Whether or not to use probable strength properties
+        section_type: The type of member being analysed
+
+    Return:
+        ConcreteSection object
+    """
     # dummy beam section with fixed properties to fulfil design_code.concrete_section
     # checks, not utilised for any section analysis
     concrete = design_code.create_concrete_material(compressive_strength=40)

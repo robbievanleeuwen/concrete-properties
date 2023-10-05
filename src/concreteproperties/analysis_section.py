@@ -708,7 +708,7 @@ class Tri3:
             ultimate_strain: Concrete strain at failure
             centroid: Centroid about which to take moments
 
-        Retunrs:
+        Returns:
             Axial force and resultant moments about the global axes
         """
         # initialise element results

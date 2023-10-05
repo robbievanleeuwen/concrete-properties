@@ -1,5 +1,7 @@
 import glob
+
 from PIL import Image
+
 
 # filepaths
 fp_in = "*.png"

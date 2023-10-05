@@ -46,7 +46,7 @@ The area properties of the cracked cross-section can be determined by calling th
 method.
 
 Unlike regular reinforced concrete sections, the cracked section properties of
-prestressed sections are sensitive to external loads, e.g. moment due to self-weight. 
+prestressed sections are sensitive to external loads, e.g. moment due to self-weight.
 These can be provided to the analysis by providing the arguments ``m_ext`` and
 ``n_ext``.
 

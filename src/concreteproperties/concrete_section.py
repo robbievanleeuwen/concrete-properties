@@ -308,9 +308,9 @@ class ConcreteSection:
                 (:math:`-\pi \leq \theta \leq \pi`)
 
         Raises:
-            ValueError: If the analysis fails
+            AnalysisError: If the analysis fails
 
-        Results:
+        Returns:
             Cracked results object
         """
         cracked_results = res.CrackedResults(theta=theta)
@@ -413,6 +413,9 @@ class ConcreteSection:
         Args:
             d_nc: Trial cracked neutral axis
             cracked_results: Cracked results object
+
+        Raises:
+            ValueError: If d_nc is not positive or doesn't lie within the section
 
         Returns:
             Cracked neutral axis convergence
@@ -614,7 +617,7 @@ class ConcreteSection:
             progress_bar: If set to True, displays the progress bar
 
         Raises:
-            ValueError: If the analysis fails
+            AnalysisError: If the analysis fails
 
         Returns:
             Moment curvature results object
@@ -916,7 +919,7 @@ class ConcreteSection:
             n: Net axial force (nominal axial load)
 
         Raises:
-            ValueError: If the analysis fails
+            AnalysisError: If the analysis fails
 
         Returns:
             Ultimate bending results object
@@ -994,6 +997,9 @@ class ConcreteSection:
         Args:
             d_n: Depth of the neutral axis from the extreme compression fibre
             ultimate_results: Ultimate bending results object
+
+        Raises:
+            ValueError: If d_n is not positive
 
         Returns:
             Ultimate bending results object
@@ -1762,7 +1768,7 @@ class ConcreteSection:
                 calculates the stress at the given curvature
 
         Raises:
-            ValueError: If the stress analysis fails
+            AnalysisError: If the stress analysis fails
 
         Returns:
             Stress results object
@@ -2081,6 +2087,10 @@ class ConcreteSection:
                 (:math:`-\pi \leq \theta \leq \pi`)
             cp: Control point to decode
             d_t: Depth to extreme tensile fibre
+
+        Raises:
+            ValueError: If D is not greater than zero
+            ValueError: If d_n is not greater than zero
 
         Returns:
             Decoded neutral axis depth

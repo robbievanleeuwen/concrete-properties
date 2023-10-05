@@ -1,16 +1,21 @@
-import numpy as np
+"""Plotting function to generate the mander confined plot."""
+
 import matplotlib.pyplot as plt
-from concreteproperties.design_codes.nzs3101 import NZS3101
+
 import concreteproperties.stress_strain_profile as ssp
+from concreteproperties.design_codes.nzs3101 import NZS3101
 
 
 def mander_unconfined_plot(render=False):
-    """Creates a plot for use in the docstring of ModifiedMander class for unconfined
+    """Plots the confined mander plot.
+
+    Creates a plot for use in the docstring of ModifiedMander class for unconfined
     concrete to generate a plot with stress-strain parameters shown to aid in
     interpreting class variables.
 
-    :param render: Set to True to plot for testing purposes, note will plot
-        automatically in a docstring plot directive when set to default of False
+    Args:
+        render: Set to True to plot for testing purposes, note will plot
+            automatically in a docstring plot directive when set to default of False
     """
     # create unconfined ModifiedMander stress-strain profile
     design_code = NZS3101()

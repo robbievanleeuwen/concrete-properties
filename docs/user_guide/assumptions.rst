@@ -10,7 +10,7 @@ General
   the cross-section
 * For a given depth, the strain in the reinforcement is equal to the strain in the
   concrete, i.e. there is a perfect bond between concrete and reinforcement
-* Materials that have ``meshed=False`` (e.g. 
+* Materials that have ``meshed=False`` (e.g.
   :class:`~concreteproperties.material.SteelBar`) are characterised by a constant strain
   at it's geometric centroid
 * Stresses in materials are determined from strains by linear interpolation from the
@@ -23,7 +23,7 @@ General
   :class:`~concreteproperties.concrete_section.ConcreteSection`
 * Moment inputs for elastic stress analysis (cracked and uncracked), are assumed to be
   taken to be about the geometric centroid (material properties applied)
-* Finite element assumptions and background can be found 
+* Finite element assumptions and background can be found
   `here <https://sectionproperties.readthedocs.io/en/latest/rst/theory.html>`_
 
 Cracked Analysis

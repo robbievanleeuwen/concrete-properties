@@ -352,7 +352,10 @@ def gauss_points(n: float) -> list[list[float]]:
     linear triangular element.
 
     Args:
-        n: Number of Gauss points (1, 3 or 6)
+        n: Number of Gauss points (1 or 3)
+
+    Raises:
+        ValueError: If n is not 1 or 3
 
     Returns:
         An *n x 3* matrix consisting of the integration weight and the xi and eta

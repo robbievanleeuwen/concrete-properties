@@ -41,7 +41,13 @@ class StressStrainProfile:
     stresses: list[float]
 
     def __post_init__(self) -> None:
-        """Post init method."""
+        """Post init method.
+
+        Raises:
+            ValueError: If length of strains is not equal to length of stresses
+            ValueError: If length of strains/stresses is not greater than 1
+            ValueError: If strains do not contain increasing or equal values
+        """
         # validate input - same length lists
         if len(self.strains) != len(self.stresses):
             raise ValueError("Length of strains must equal length of stresses")
@@ -132,8 +138,9 @@ class StressStrainProfile:
     def get_yield_strength(self) -> float:
         """Returns the yield strength of the stress-strain profile.
 
-        Returns:
-            Yield strength
+        Raises:
+            NotImplementedError: If this method has not been implemented by the child
+                class
         """
         raise NotImplementedError
 
@@ -586,7 +593,7 @@ class ModifiedMander(ConcreteServiceProfile):
             defined with the same limit for the fracture strain
         n_confinement: Modifier for volumetric ratio of confinement reinforcement
 
-    Raise:
+    Raises:
         ValueError: If specified section type is not rect, circ_hoop or circ_spiral
     """
     strains: list[float] = field(init=False)
@@ -618,7 +625,11 @@ class ModifiedMander(ConcreteServiceProfile):
     n_confinement: float = 0.75
 
     def __post_init__(self) -> None:
-        """Post init method."""
+        """Post init method.
+
+        Raises:
+            ValueError: If specified section type is not rect, circ_hoop or circ_spiral
+        """
         self.strains = []
         self.stresses = []
 
@@ -1162,7 +1173,11 @@ class StrandProfile(StressStrainProfile):
     yield_strength: float
 
     def __post_init__(self) -> None:
-        """Post init method."""
+        """Post init method.
+
+        Returns:
+            Post init method of parent class
+        """
         return super().__post_init__()
 
     def get_strain(
@@ -1246,7 +1261,11 @@ class StrandHardening(StrandProfile):
     breaking_strength: float
 
     def __post_init__(self) -> None:
-        """Post init method."""
+        """Post init method.
+
+        Returns:
+            Post init method of parent class
+        """
         yield_strain = self.yield_strength / self.elastic_modulus
         self.strains = [
             -self.fracture_strain,
@@ -1306,7 +1325,15 @@ class StrandPCI1992(StrandProfile):
     n_points: list[int] = field(default_factory=lambda: [5, 14, 5])
 
     def __post_init__(self) -> None:
-        """Post init method."""
+        """Post init method.
+
+        Raises:
+            ValueError: If the length of strain_cps is not equal to 2
+            ValueError: If the length of n_points is not equal to 3
+
+        Returns:
+            Post init method of parent class
+        """
         # validate control points
         if len(self.strain_cps) != 2:
             raise ValueError("Length of strain_cps must be equal to 2.")

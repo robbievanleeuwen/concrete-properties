@@ -61,7 +61,14 @@ class Concrete(Material):
     meshed: bool = field(default=True, init=False)
 
     def __post_init__(self) -> None:
-        """Post init method."""
+        """Post init method.
+
+        Raises:
+            ValueError: If concrete stress_strain_profile is not a
+                ConcreteServiceProfile object
+            ValueError: If concrete ultimate_stress_strain_profile is not a
+                ConcreteUltimateProfile object
+        """
         super().__post_init__()
 
         if not isinstance(self.stress_strain_profile, ssp.ConcreteServiceProfile):

@@ -578,7 +578,7 @@ class MomentCurvatureResults:
         Args:
             moment: Bending moment at which to obtain curvature
 
-        Raise:
+        Raises:
             ValueError: If supplied moment is outside bounds of moment-curvature
                 results.
 
@@ -697,6 +697,9 @@ class MomentInteractionResults:
             moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
                 ``"m_xy"``
 
+        Raises:
+            ValueError: If the moment string is not valid
+
         Returns:
             List of axial forces and moments (``n``, ``m``)
         """
@@ -740,7 +743,8 @@ class MomentInteractionResults:
             label_offset: If set to True, attempts to offset the label from the diagram
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        :return: Matplotlib axes object
+        Returns:
+            Matplotlib axes object
         """
         # create plot and setup the plot
         with plotting_context(title="Moment Interaction Diagram", **kwargs) as (
@@ -828,7 +832,7 @@ class MomentInteractionResults:
             fmt: Plot format string
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
-        Retursn:
+        Returns:
             Matplotlib axes object
         """
         # create plot and setup the plot
