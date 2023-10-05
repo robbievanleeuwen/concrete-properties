@@ -1,3 +1,5 @@
+"""Tests for the NZS3101 class."""
+
 import numpy as np
 import pytest
 import sectionproperties.pre.library.primitive_sections as sp_ps
@@ -11,6 +13,7 @@ from concreteproperties.material import Concrete, Steel, SteelBar
 
 
 def create_dummy_section(design_code, prob_section=False, section_type="column"):
+    """Creates a dummy section."""
     # dummy beam section with fixed properties to fulfil design_code.concrete_section
     # checks, not utilised for any section analysis
     concrete = design_code.create_concrete_material(compressive_strength=40)
@@ -20,6 +23,7 @@ def create_dummy_section(design_code, prob_section=False, section_type="column")
     b = 550
     d = 900
     dia = 20
+    area = 310
     n = 5
     cvr = 30
 
@@ -27,11 +31,14 @@ def create_dummy_section(design_code, prob_section=False, section_type="column")
         b=b,
         d=d,
         dia_top=dia,
+        area_top=area,
         n_top=n,
+        c_top=cvr,
         dia_bot=dia,
+        area_bot=area,
         n_bot=n,
+        c_bot=cvr,
         n_circle=16,
-        cover=cvr,
         conc_mat=concrete,
         steel_mat=steel,
     )
@@ -50,6 +57,7 @@ def create_dummy_section(design_code, prob_section=False, section_type="column")
     ],
 )
 def test_nzs3101_assign_concrete_section_valueerror(section_type):
+    """Tests assigning concrete sections ValueError."""
     design_code = NZS3101()
     conc_sec = create_dummy_section(design_code)
 
@@ -71,6 +79,7 @@ def test_nzs3101_assign_concrete_section_valueerror(section_type):
     ],
 )
 def test_nzs3101_alpha_1(compressive_strength, rel_tol, calc_value):
+    """Tests alpha_1."""
     design_code = NZS3101()
     assert (
         pytest.approx(design_code.alpha_1(compressive_strength), rel=rel_tol)
@@ -92,6 +101,7 @@ def test_nzs3101_alpha_1(compressive_strength, rel_tol, calc_value):
     ],
 )
 def test_nzs3101_beta_1(compressive_strength, rel_tol, calc_value):
+    """Tests beta_1."""
     design_code = NZS3101()
     assert (
         pytest.approx(design_code.beta_1(compressive_strength), rel=rel_tol)
@@ -110,6 +120,7 @@ def test_nzs3101_beta_1(compressive_strength, rel_tol, calc_value):
     ],
 )
 def test_nzs3101_lamda(density, rel_tol, calc_value):
+    """Tests lamda."""
     design_code = NZS3101()
     assert pytest.approx(design_code.lamda(density), rel=rel_tol) == calc_value
 
@@ -127,6 +138,7 @@ def test_nzs3101_lamda(density, rel_tol, calc_value):
 def test_nzs3101_concrete_tensile_strength(
     compressive_strength, density, prob_design, calc_value
 ):
+    """Tests concrete tensile strength."""
     design_code = NZS3101()
     assert (
         pytest.approx(
@@ -150,6 +162,7 @@ def test_nzs3101_concrete_tensile_strength(
     ],
 )
 def test_nzs3101_modulus_of_rupture(compressive_strength, density, calc_value):
+    """Tests modulus of rupture."""
     design_code = NZS3101()
     assert (
         pytest.approx(
@@ -169,6 +182,7 @@ def test_nzs3101_modulus_of_rupture(compressive_strength, density, calc_value):
     ],
 )
 def test_nzs3101_prob_compressive_strength(compressive_strength):
+    """Tests prob compressive strength."""
     design_code = NZS3101()
     assert pytest.approx(
         design_code.prob_compressive_strength(compressive_strength), rel=0.01
@@ -187,6 +201,7 @@ def test_nzs3101_prob_compressive_strength(compressive_strength):
     ],
 )
 def test_nzs3101_e_conc_valid(compressive_strength, density, rel_tol, calc_value):
+    """Tests validity of elastic modulus."""
     design_code = NZS3101()
     assert (
         pytest.approx(design_code.e_conc(compressive_strength, density), rel=rel_tol)
@@ -195,6 +210,7 @@ def test_nzs3101_e_conc_valid(compressive_strength, density, rel_tol, calc_value
 
 
 def test_nzs3101_e_conc_valueerror():
+    """Tests elastic modulus ValueError."""
     design_code = NZS3101()
     with pytest.raises(ValueError):
         design_code.e_conc(20, 1799)
@@ -216,6 +232,7 @@ def test_nzs3101_e_conc_valueerror():
     ],
 )
 def test_nzs3101_capacity_reduction_factor(analysis_type, section_type, calc_value):
+    """Tests capacity reduction factor."""
     design_code = NZS3101()
     create_dummy_section(design_code, section_type=section_type)
     assert (
@@ -231,6 +248,7 @@ def test_nzs3101_capacity_reduction_factor(analysis_type, section_type, calc_val
     ],
 )
 def test_nzs3101_capacity_reduction_factor_valueerror(analysis_type):
+    """Tests capacity reduction factor ValueError."""
     design_code = NZS3101()
     create_dummy_section(design_code)
     with pytest.raises(ValueError):
@@ -246,9 +264,10 @@ def test_nzs3101_capacity_reduction_factor_valueerror(analysis_type):
     ],
 )
 def test_nzs3101_capacity_reduction_factor_exception(analysis_type):
+    """Tests capacity reduction factor exception."""
     design_code = NZS3101()
     create_dummy_section(design_code, prob_section=True)
-    with pytest.raises(Exception):
+    with pytest.raises(RuntimeError):
         design_code.capacity_reduction_factor(analysis_type)
 
 
@@ -259,6 +278,7 @@ def test_nzs3101_capacity_reduction_factor_exception(analysis_type):
     ],
 )
 def test_nzs3101_assign_analysis_section_valueerror(analysis_type):
+    """Tests assign analysis section ValueError."""
     design_code = NZS3101()
     create_dummy_section(design_code)
     with pytest.raises(ValueError):
@@ -278,6 +298,7 @@ def test_nzs3101_assign_analysis_section_valueerror(analysis_type):
     ],
 )
 def test_nzs3101_check_f_c_limits_valueerror(pphr_class, compressive_strength):
+    """Tests check fc limits ValueError."""
     design_code = NZS3101()
     create_dummy_section(design_code)
 
@@ -301,6 +322,7 @@ def test_nzs3101_check_f_c_limits_valueerror(pphr_class, compressive_strength):
     ],
 )
 def test_nzs3101_check_f_c_limits_valid(pphr_class, compressive_strength):
+    """Tests check fc limits valid."""
     design_code = NZS3101()
     create_dummy_section(design_code)
 
@@ -308,7 +330,7 @@ def test_nzs3101_check_f_c_limits_valid(pphr_class, compressive_strength):
         conc_geom.material.ultimate_stress_strain_profile.__setattr__(
             "compressive_strength", compressive_strength
         )
-    assert pytest.approx(design_code.check_f_c_limits(pphr_class)) == None
+    assert pytest.approx(design_code.check_f_c_limits(pphr_class)) is None
 
 
 @pytest.mark.parametrize(
@@ -318,6 +340,7 @@ def test_nzs3101_check_f_c_limits_valid(pphr_class, compressive_strength):
     ],
 )
 def test_nzs3101_check_f_y_limit_valueerror(yield_strength):
+    """Tests check fy limits ValueError."""
     design_code = NZS3101()
     create_dummy_section(design_code)
 
@@ -337,6 +360,7 @@ def test_nzs3101_check_f_y_limit_valueerror(yield_strength):
     ],
 )
 def test_nzs3101_check_f_y_limit_valid(yield_strength):
+    """Tests check fy limits valid."""
     design_code = NZS3101()
     create_dummy_section(design_code)
 
@@ -344,7 +368,7 @@ def test_nzs3101_check_f_y_limit_valid(yield_strength):
         steel_geom.material.stress_strain_profile.__setattr__(
             "yield_strength", yield_strength
         )
-    assert pytest.approx(design_code.check_f_y_limit()) == None
+    assert pytest.approx(design_code.check_f_y_limit()) is None
 
 
 @pytest.mark.parametrize(
@@ -355,6 +379,7 @@ def test_nzs3101_check_f_y_limit_valid(yield_strength):
     ],
 )
 def test_nzs3101_check_axial_limits_valueerror(n_design):
+    """Tests check axial limits ValueError."""
     design_code = NZS3101()
     create_dummy_section(design_code)
     with pytest.raises(ValueError):
@@ -383,6 +408,7 @@ def test_nzs3101_check_axial_limits_valueerror(n_design):
 def test_nzs3101_create_steel_material_predefined(
     steel_grade, yield_strength, fracture_strain, phi_os
 ):
+    """Tests create predefined steel material."""
     design_code = NZS3101()
     steel_mat = design_code.create_steel_material(steel_grade)
     assert pytest.approx(steel_mat.__getattribute__("steel_grade")) == steel_grade
@@ -410,6 +436,7 @@ def test_nzs3101_create_steel_material_predefined(
 def test_nzs3101_create_steel_material_user_defined(
     steel_grade, yield_strength, fracture_strain, phi_os
 ):
+    """Tests create user defined steel material."""
     design_code = NZS3101()
     steel_mat = design_code.create_steel_material(
         steel_grade, yield_strength, fracture_strain, phi_os
@@ -421,6 +448,7 @@ def test_nzs3101_create_steel_material_user_defined(
 
 
 def test_nzs3101_create_steel_material_meshed_valueerror():
+    """Tests meshed steel ValueError."""
     design_code = NZS3101()
     # create concrete material
     concrete = Concrete(
@@ -454,7 +482,7 @@ def test_nzs3101_create_steel_material_meshed_valueerror():
     )
 
     # create concrete section
-    conc = sp_ps.rectangular_section(d=1000, b=1000, material=concrete)  # type: ignore
+    conc = sp_ps.rectangular_section(d=1000, b=1000, material=concrete)
 
     # create UC section and centre to concrete section
     uc = sp_ss.i_section(
@@ -464,11 +492,11 @@ def test_nzs3101_create_steel_material_meshed_valueerror():
         t_w=9.9,
         r=16.5,
         n_r=8,
-        material=steel,  # type: ignore
+        material=steel,
     ).align_center(align_to=conc)
 
     # create geometry
-    geom = conc - uc + uc  # type: ignore
+    geom = conc - uc + uc
 
     concrete_section = ConcreteSection(geom)
 
@@ -494,8 +522,9 @@ def test_nzs3101_create_steel_material_meshed_valueerror():
 def test_nzs3101_create_steel_material_exception(
     steel_grade, yield_strength, fracture_strain, phi_os
 ):
+    """Tests create steel material exception."""
     design_code = NZS3101()
-    with pytest.raises(Exception):
+    with pytest.raises(RuntimeError):
         design_code.create_steel_material(
             steel_grade, yield_strength, fracture_strain, phi_os
         )
@@ -524,6 +553,7 @@ def test_nzs3101_create_concrete_material(
     calc_value_beta_1,
     calc_value_tensile_strength,
 ):
+    """Tests create concrete material."""
     design_code = NZS3101()
     concrete_mat = design_code.create_concrete_material(
         compressive_strength, ultimate_strain, density
@@ -617,6 +647,7 @@ def test_nzs3101_create_os_section(
     calc_value_beta_1,
     calc_value_tensile_strength,
 ):
+    """Tests create overstrength section."""
     design_code = NZS3101()
     create_dummy_section(design_code)
     # update section properties for scaling to overstrength
@@ -764,6 +795,7 @@ def test_nzs3101_create_prob_section(
     calc_value_beta_1,
     calc_value_tensile_strength,
 ):
+    """Tests create prob section."""
     design_code = NZS3101()
     create_dummy_section(design_code)
     # update section properties for scaling to overstrength
@@ -904,6 +936,7 @@ def test_nzs3101_create_prob_os_section(
     calc_value_beta_1,
     calc_value_tensile_strength,
 ):
+    """Tests create prob overstrength section."""
     design_code = NZS3101()
     create_dummy_section(design_code)
     # update section properties for scaling to overstrength
@@ -1026,6 +1059,7 @@ def test_nzs3101_create_prob_os_section(
     ],
 )
 def test_nzs3101_max_comp_strength(analysis_type, section_type, rel_tol, calc_value):
+    """Tests max compressive strength."""
     design_code = NZS3101()
     create_dummy_section(design_code, section_type=section_type)
     _, cpe_design, os_design, prob_design = design_code.capacity_reduction_factor(
@@ -1047,6 +1081,7 @@ def test_nzs3101_max_comp_strength(analysis_type, section_type, rel_tol, calc_va
     ],
 )
 def test_nzs3101_max_comp_strength_valueerror(section_type):
+    """Tests max compressive strength ValueError."""
     design_code = NZS3101()
     create_dummy_section(design_code)
     design_code.section_type = section_type
@@ -1067,6 +1102,7 @@ def test_nzs3101_max_comp_strength_valueerror(section_type):
     ],
 )
 def test_nzs3101_max_ten_strength(analysis_type, rel_tol, calc_value):
+    """Tests max tensile strength."""
     design_code = NZS3101()
     create_dummy_section(design_code)
     _, _, os_design, prob_design = design_code.capacity_reduction_factor(analysis_type)
@@ -1080,7 +1116,7 @@ def test_nzs3101_max_ten_strength(analysis_type, rel_tol, calc_value):
 
 
 @pytest.mark.parametrize(
-    "compressive_strength, steel_grade, pphr_class, analysis_type, theta, phi_Mn, d_n",
+    "compressive_strength, steel_grade, pphr_class, analysis_type, theta, phi_mn, d_n",
     [
         (40, "500e", "LDPR", "nom_chk", 0, 732.7142, 77.4952),
         (40, "500e", "NDPR", "cpe_chk", 0, 862.0167, 77.4952),
@@ -1095,9 +1131,10 @@ def test_nzs3101_ultimate_bending_capacity_beam_no_axial(
     pphr_class,
     analysis_type,
     theta,
-    phi_Mn,
+    phi_mn,
     d_n,
 ):
+    """Tests ultimate bending capacity (pure bending)."""
     design_code = NZS3101()
     concrete = design_code.create_concrete_material(compressive_strength)
     steel = design_code.create_steel_material(steel_grade)
@@ -1108,13 +1145,16 @@ def test_nzs3101_ultimate_bending_capacity_beam_no_axial(
         b=500,
         d=800,
         dia_top=dia_top,
+        area_top=310,
         n_top=5,
+        c_top=50,
         dia_bot=dia_bot,
+        area_bot=490,
         n_bot=5,
+        c_bot=50,
         n_circle=16,
-        cover=50,
-        conc_mat=concrete,  # type: ignore
-        steel_mat=steel,  # type: ignore
+        conc_mat=concrete,
+        steel_mat=steel,
     )
     n_design = 0
     conc_sec = ConcreteSection(geometry)
@@ -1125,7 +1165,7 @@ def test_nzs3101_ultimate_bending_capacity_beam_no_axial(
         theta,
         n_design,
     )
-    assert pytest.approx(ultimate_results.m_x / 1e6, rel=0.001) == phi_Mn
+    assert pytest.approx(ultimate_results.m_x / 1e6, rel=0.001) == phi_mn
     assert pytest.approx(ultimate_results.m_y / 1e6, rel=0.001) == 0
     # temporarily removed as concreteproperites does not agree with independent analysis
     # assert pytest.approx(ultimate_results.d_n, rel=0.001) == d_n
@@ -1133,7 +1173,7 @@ def test_nzs3101_ultimate_bending_capacity_beam_no_axial(
 
 @pytest.mark.parametrize(
     "n_design, compressive_strength, steel_grade, pphr_class, analysis_type, theta, "
-    "phi_Mn, d_n",
+    "phi_mn, d_n",
     [
         (1000, 40, "500e", "LDPR", "nom_chk", 0, 1053.2022, 145.4137),
         (-500, 40, "500e", "NDPR", "cpe_chk", 0, 690.0205, 58.0155),
@@ -1149,9 +1189,10 @@ def test_nzs3101_ultimate_bending_capacity_beam_with_axial(
     pphr_class,
     analysis_type,
     theta,
-    phi_Mn,
+    phi_mn,
     d_n,
 ):
+    """Tests ultimate bending capacity (with axial force)."""
     design_code = NZS3101()
     concrete = design_code.create_concrete_material(compressive_strength)
     steel = design_code.create_steel_material(steel_grade)
@@ -1162,13 +1203,16 @@ def test_nzs3101_ultimate_bending_capacity_beam_with_axial(
         b=500,
         d=800,
         dia_top=dia_top,
+        area_top=310,
         n_top=5,
+        c_top=50,
         dia_bot=dia_bot,
+        area_bot=490,
         n_bot=5,
+        c_bot=50,
         n_circle=16,
-        cover=50,
-        conc_mat=concrete,  # type: ignore
-        steel_mat=steel,  # type: ignore
+        conc_mat=concrete,
+        steel_mat=steel,
     )
     conc_sec = ConcreteSection(geometry)
     design_code.assign_concrete_section(conc_sec)
@@ -1178,14 +1222,14 @@ def test_nzs3101_ultimate_bending_capacity_beam_with_axial(
         theta,
         n_design * 1e3,
     )
-    assert pytest.approx(ultimate_results.m_x / 1e6, rel=0.001) == phi_Mn
+    assert pytest.approx(ultimate_results.m_x / 1e6, rel=0.001) == phi_mn
     assert pytest.approx(ultimate_results.m_y / 1e6, rel=0.001) == 0
     assert pytest.approx(ultimate_results.d_n, rel=0.001) == d_n
 
 
 @pytest.mark.parametrize(
     "compressive_strength, steel_grade, pphr_class, analysis_type, theta, n_design, "
-    "progress_bar, phi_Mn, d_n",
+    "progress_bar, phi_mn, d_n",
     [
         (40, "500e", "LDPR", "nom_chk", 0, 1000, False, 742.4384, 140.6187),
         (40, "500e", "NDPR", "cpe_chk", 0, -500, True, 519.5037, 69.7683),
@@ -1202,9 +1246,10 @@ def test_nzs3101_moment_interaction_diagram(
     theta,
     n_design,
     progress_bar,
-    phi_Mn,
+    phi_mn,
     d_n,
 ):
+    """Tests moment interaction diagram."""
     design_code = NZS3101()
     concrete = design_code.create_concrete_material(compressive_strength)
     steel = design_code.create_steel_material(steel_grade)
@@ -1214,15 +1259,18 @@ def test_nzs3101_moment_interaction_diagram(
         b=600,
         d=600,
         dia_top=dia,
+        area_top=310,
         n_top=5,
+        c_top=50,
         dia_bot=dia,
+        area_bot=310,
         n_bot=5,
+        c_bot=50,
         dia_side=dia,
         n_side=3,
         n_circle=16,
-        cover=50,
-        conc_mat=concrete,  # type: ignore
-        steel_mat=steel,  # type: ignore
+        conc_mat=concrete,
+        steel_mat=steel,
     )
     conc_sec = ConcreteSection(geometry)
     design_code.assign_concrete_section(conc_sec)
@@ -1240,12 +1288,12 @@ def test_nzs3101_moment_interaction_diagram(
     n_list, m_list = mi_results.get_results_lists(moment="m_x")
 
     n_list = np.abs(np.asarray(n_list) / 1e3 - n_design)
-    assert pytest.approx(m_list[n_list.argmin()] / 1e6, rel=0.001) == phi_Mn
+    assert pytest.approx(m_list[n_list.argmin()] / 1e6, rel=0.001) == phi_mn
 
 
 @pytest.mark.parametrize(
     "compressive_strength, steel_grade, pphr_class, analysis_type, n_design, "
-    "progress_bar, phi_Mn, d_n",
+    "progress_bar, phi_mn, d_n",
     [
         (40, "500e", "LDPR", "nom_chk", 1000, True, 742.4384, 140.6187),
         (40, "500e", "NDPR", "cpe_chk", -500, False, 519.5037, 69.7683),
@@ -1261,9 +1309,10 @@ def test_nzs3101_biaxial_bending_diagram(
     analysis_type,
     n_design,
     progress_bar,
-    phi_Mn,
+    phi_mn,
     d_n,
 ):
+    """Tests biaxial bending diagram."""
     design_code = NZS3101()
     concrete = design_code.create_concrete_material(compressive_strength)
     steel = design_code.create_steel_material(steel_grade)
@@ -1273,15 +1322,18 @@ def test_nzs3101_biaxial_bending_diagram(
         b=600,
         d=600,
         dia_top=dia,
+        area_top=310,
         n_top=5,
+        c_top=50,
         dia_bot=dia,
+        area_bot=310,
         n_bot=5,
+        c_bot=50,
         dia_side=dia,
         n_side=3,
         n_circle=16,
-        cover=50,
-        conc_mat=concrete,  # type: ignore
-        steel_mat=steel,  # type: ignore
+        conc_mat=concrete,
+        steel_mat=steel,
     )
     conc_sec = ConcreteSection(geometry)
     design_code.assign_concrete_section(conc_sec)
@@ -1297,17 +1349,18 @@ def test_nzs3101_biaxial_bending_diagram(
 
     m_x_list, m_y_list = bb_results.get_results_lists()
 
-    assert pytest.approx(m_x_list[0] / 1e6, rel=0.001) == -phi_Mn
+    assert pytest.approx(m_x_list[0] / 1e6, rel=0.001) == -phi_mn
     assert pytest.approx(m_y_list[0] / 1e6, rel=0.001) == 0
     assert pytest.approx(m_x_list[1] / 1e6, rel=0.001) == 0
-    assert pytest.approx(m_y_list[1] / 1e6, rel=0.001) == phi_Mn
-    assert pytest.approx(m_x_list[2] / 1e6, rel=0.001) == phi_Mn
+    assert pytest.approx(m_y_list[1] / 1e6, rel=0.001) == phi_mn
+    assert pytest.approx(m_x_list[2] / 1e6, rel=0.001) == phi_mn
     assert pytest.approx(m_y_list[2] / 1e6, rel=0.001) == 0
     assert pytest.approx(m_x_list[3] / 1e6, rel=0.001) == 0
-    assert pytest.approx(m_y_list[3] / 1e6, rel=0.001) == -phi_Mn
+    assert pytest.approx(m_y_list[3] / 1e6, rel=0.001) == -phi_mn
 
 
-def test_nzs3101_create_section_with_non_SteelBarNZ_material():
+def test_nzs3101_create_section_with_non_steelbarnz_material():
+    """Tests section creation with non-SteelBarNZ."""
     design_code = NZS3101()
     # create concrete material
     concrete = Concrete(
@@ -1341,7 +1394,7 @@ def test_nzs3101_create_section_with_non_SteelBarNZ_material():
     )
 
     # create concrete section
-    conc = sp_ps.rectangular_section(d=1000, b=1000, material=concrete)  # type: ignore
+    conc = sp_ps.rectangular_section(d=1000, b=1000, material=concrete)
 
     # create UC section from SteelBar material and centre to concrete section
     uc = sp_ss.i_section(
@@ -1351,11 +1404,11 @@ def test_nzs3101_create_section_with_non_SteelBarNZ_material():
         t_w=9.9,
         r=16.5,
         n_r=8,
-        material=steel,  # type: ignore
+        material=steel,
     ).align_center(align_to=conc)
 
     # create geometry
-    geom = conc - uc + uc  # type: ignore
+    geom = conc - uc + uc
 
     concrete_section = ConcreteSection(geom)
     design_code.concrete_section = concrete_section

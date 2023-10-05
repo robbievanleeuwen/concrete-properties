@@ -1173,7 +1173,7 @@ class NZS3101(DesignCode):
                 and probable strength based materials will be rendered as blue.
 
         Raises:
-            Exception: If a predefined steel grade is not provided and the required
+            RuntimeError: If a predefined steel grade is not provided and the required
                 material properties have not been provided. For creating a user defined
                 steel material, values for **yield_strength**, **fracture_strain** &
                 **phi_os** are required to define a valid user defined material.
@@ -1194,7 +1194,7 @@ class NZS3101(DesignCode):
         if steel_grade is None or steel_grade.lower() not in pre_def_properties:
             # check if all user defined parameters are provided
             if yield_strength is None or fracture_strain is None or phi_os is None:
-                raise Exception(
+                raise RuntimeError(
                     f"A predefined steel grade has not been provided, to create a user "
                     f"defined steel material a yield strength, fracture strain and "
                     f"overstrength factor are required to be specified.\n   Valid "
@@ -1374,8 +1374,8 @@ class NZS3101(DesignCode):
             ValueError: If analysis type is not valid
             ValueError: If concrete section contains a steel material that is not
                 :class:`NZS3101.SteelBarNZ`
-            Exception: If a characteristic strength based analysis is specified, but
-                a predefined probable strength based steel grade has been specified.
+            RuntimeError: If a characteristic strength based analysis is specified,
+                but a predefined probable strength based steel grade has been specified.
                 Undertaking a non NZSEE C5 assessment guidelines analysis on a probable
                 strength based steel grade is not consistent with an analysis to
                 NZS3101:2006.
@@ -1432,7 +1432,7 @@ class NZS3101(DesignCode):
                 analysis_type.lower() in ["nom_chk", "cpe_chk", "os_chk"]
                 and steel_geom.material.steel_grade.lower() in prob_properties
             ):
-                raise Exception(
+                raise RuntimeError(
                     f"*{analysis_type}* analysis is not able to be undertaken on the "
                     f"provided concrete section as it contains predefined steel "
                     f"materials based on probable yield strengths and will give "
