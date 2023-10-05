@@ -26,3 +26,18 @@ package index:
 .. code-block:: shell
 
     pip install sectionproperties
+
+Using ``sectionproperties`` CAD Modules
+---------------------------------------
+
+To import geometry from CAD files, i.e. ``dxf`` or ``.3dm`` files, the optional CAD
+extras must be installed. To install ``sectionproperties`` with the above functionality,
+use the ``dxf`` and/or ``rhino`` options:
+
+.. code-block:: shell
+
+    pip install sectionproperties[dxf]
+    pip install sectionproperties[rhino]
+
+Note that the ``rhino`` option only supports python ``3.9`` due to incomplete wheel
+coverage of ``rhino3dm``.

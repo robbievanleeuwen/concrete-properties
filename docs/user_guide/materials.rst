@@ -116,7 +116,7 @@ Generic Concrete Service Profile
   :include-source: True
   :caption: ConcreteServiceProfile Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import ConcreteServiceProfile
+  from concreteproperties import ConcreteServiceProfile
 
   ConcreteServiceProfile(
     strains=[-5 / 35e3, -4 / 35e3, -3 / 35e3, 0, 40 / 35e3, 0.003],
@@ -142,7 +142,7 @@ Linear Concrete Service Profile
   :include-source: True
   :caption: ConcreteLinear Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import ConcreteLinear
+  from concreteproperties import ConcreteLinear
 
   ConcreteLinear(elastic_modulus=35e3).plot_stress_strain()
 
@@ -158,7 +158,7 @@ Linear Concrete (No Tension) Service Profile
   :include-source: True
   :caption: ConcreteLinearNoTension Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import ConcreteLinearNoTension
+  from concreteproperties import ConcreteLinearNoTension
 
   ConcreteLinearNoTension(elastic_modulus=35e3).plot_stress_strain()
 
@@ -166,7 +166,7 @@ Linear Concrete (No Tension) Service Profile
   :include-source: True
   :caption: ConcreteLinearNoTension Stress-Strain Profile with Compressive Strength
 
-  from concreteproperties.stress_strain_profile import ConcreteLinearNoTension
+  from concreteproperties import ConcreteLinearNoTension
 
   ConcreteLinearNoTension(
     elastic_modulus=35e3,
@@ -186,7 +186,7 @@ Eurocode Non-Linear Concrete Service Profile
   :include-source: True
   :caption: EurocodeNonLinear Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import EurocodeNonLinear
+  from concreteproperties import EurocodeNonLinear
 
   EurocodeNonLinear(
       elastic_modulus=35e3,
@@ -208,7 +208,7 @@ Modified Mander Non-Linear Unconfined & Confined Concrete Service Profile
   :include-source: True
   :caption: ModifiedMander NonLinear Stress-Strain Profile for Unconfined Concrete
 
-  from concreteproperties.stress_strain_profile import ModifiedMander
+  from concreteproperties import ModifiedMander
 
   ModifiedMander(elastic_modulus=30e3,
         compressive_strength=30,
@@ -223,7 +223,7 @@ Modified Mander Non-Linear Unconfined & Confined Concrete Service Profile
   :include-source: True
   :caption: ModifiedMander NonLinear Stress-Strain Profile for Confined Concrete
 
-  from concreteproperties.stress_strain_profile import ModifiedMander
+  from concreteproperties import ModifiedMander
   ModifiedMander(
         elastic_modulus=30e3,
         compressive_strength=30,
@@ -278,7 +278,7 @@ Generic Concrete Ultimate Profile
   :include-source: True
   :caption: ConcreteUltimateProfile Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import ConcreteUltimateProfile
+  from concreteproperties import ConcreteUltimateProfile
 
   ConcreteUltimateProfile(
     strains=[-20 / 30e3, 0, 20 / 30e3, 30 / 25e3, 40 / 20e3, 0.003],
@@ -298,7 +298,7 @@ Rectangular Stress Block
   :include-source: True
   :caption: RectangularStressBlock Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import RectangularStressBlock
+  from concreteproperties import RectangularStressBlock
 
   RectangularStressBlock(
       compressive_strength=40,
@@ -319,7 +319,7 @@ Bilinear Ultimate Profile
   :include-source: True
   :caption: BilinearStressStrain Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import BilinearStressStrain
+  from concreteproperties import BilinearStressStrain
 
   BilinearStressStrain(
       compressive_strength=40,
@@ -339,7 +339,7 @@ Eurocode Parabolic Ultimate Profile
   :include-source: True
   :caption: EurocodeParabolicUltimate Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import EurocodeParabolicUltimate
+  from concreteproperties import EurocodeParabolicUltimate
 
   EurocodeParabolicUltimate(
       compressive_strength=40,
@@ -365,7 +365,7 @@ Generic Steel Profile
   :include-source: True
   :caption: SteelProfile Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import SteelProfile
+  from concreteproperties import SteelProfile
 
   SteelProfile(
     strains=[-0.05, -0.03, -0.02, -500 / 200e3, 0, 500 / 200e3, 0.02, 0.03, 0.05],
@@ -387,7 +387,7 @@ Elastic-Plastic Steel Profile
   :include-source: True
   :caption: SteelElasticPlastic Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import SteelElasticPlastic
+  from concreteproperties import SteelElasticPlastic
 
   SteelElasticPlastic(
     yield_strength=500,
@@ -407,7 +407,7 @@ Elastic-Plastic Hardening Steel Profile
   :include-source: True
   :caption: SteelHardening Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import SteelHardening
+  from concreteproperties import SteelHardening
 
   SteelHardening(
     yield_strength=500,
@@ -432,7 +432,7 @@ Generic Strand Profile
   :include-source: True
   :caption: StrandProfile Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import StrandProfile
+  from concreteproperties import StrandProfile
 
   StrandProfile(
     strains=[-0.03, -0.01, -1400 / 195e3, 0, 1400 / 195e3, 0.01, 0.03],
@@ -452,7 +452,7 @@ Elastic-Plastic Hardening Strand Profile
   :include-source: True
   :caption: StrandHardening Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import StrandHardening
+  from concreteproperties import StrandHardening
 
   StrandHardening(
     yield_strength=1500,
@@ -473,7 +473,7 @@ PCI Journal (1992) Strand Profile
   :include-source: True
   :caption: StrandPCI1992 Stress-Strain Profile
 
-  from concreteproperties.stress_strain_profile import StrandPCI1992
+  from concreteproperties import StrandPCI1992
 
   StrandPCI1992(
     yield_strength=1500,

@@ -1,9 +1,9 @@
 Geometry
 ========
 
-*concreteproperties* uses the pre-processor from |sp_link| to build reinforced
+``concreteproperties`` uses the pre-processor from |sp_link| to build reinforced
 concrete cross-sections as :class:`~sectionproperties.pre.geometry.CompoundGeometry`
-objects. *concreteproperties* expects a
+objects. ``concreteproperties`` expects a
 :class:`~sectionproperties.pre.geometry.CompoundGeometry` object to contain geometry
 information describing both the concrete and reinforcement components of the
 cross-section. The concrete portion of the cross-section can be constructed in many
@@ -27,15 +27,15 @@ methods similar to that of concrete, except that a different material object wil
 provided.
 
 Below is a brief overview of the various methods that can be used to create
-geometries to be used by *concreteproperties*. A more exhaustive overview can be found
-in the *sectionproperties* |sp_docs_link|.
+geometries to be used by ``concreteproperties``. A more exhaustive overview can be found
+in the ``sectionproperties`` |sp_docs_link|.
 
 
 Axis Conventions
 ----------------
 
-Concrete cross-sections in *concreteproperties* are constructed in the
-``x-y`` plane. A key feature of *concreteproperties* is that the analyses are not
+Concrete cross-sections in ``concreteproperties`` are constructed in the
+``x-y`` plane. A key feature of ``concreteproperties`` is that the analyses are not
 restricted to bending about the ``x`` or ``y`` axis. All analysis types (where relevant)
 give the user the option of performing the analysis about a rotated ``u-v`` axis,
 defined by the angle :math:`\theta` (in radians).
@@ -45,7 +45,7 @@ defined by the angle :math:`\theta` (in radians).
  :alt: axis-convention
  :align: center
 
-Results in *concreteproperties* are labelled with consistent references to the axes.
+Results in ``concreteproperties`` are labelled with consistent references to the axes.
 Below are a few examples:
 
 - ``m_x`` and ``m_y`` relate to bending moments about the ``x`` and ``y`` axes
@@ -79,14 +79,14 @@ wide:
   :include-source: True
   :caption: 600 mm deep x 300 mm wide concrete beam
 
-  from sectionproperties.pre.library.primitive_sections import rectangular_section
+  from sectionproperties.pre.library import rectangular_section
 
   concrete = None  # define your concrete material properties here
   geom = rectangular_section(d=600, b=300, material=concrete)
   geom.plot_geometry(labels=[], cp=False, legend=False)
 
 The following code creates a circular concrete cross-section with a diameter of 600 mm.
-As *concreteproperties* constructs a mesh of triangular elements to calculate section
+As ``concreteproperties`` constructs a mesh of triangular elements to calculate section
 properties, circles must be discretised into a finite number of discrete edges. The
 below example uses 32 points to discretise the circle:
 
@@ -94,7 +94,7 @@ below example uses 32 points to discretise the circle:
   :include-source: True
   :caption: 600 mm diameter concrete cross-section
 
-  from sectionproperties.pre.library.primitive_sections import circular_section
+  from sectionproperties.pre.library import circular_section
 
   concrete = None  # define your concrete material properties here
   geom = circular_section(d=600, n=32, material=concrete)
@@ -126,10 +126,10 @@ a circle with the correct area is generated:
   :caption: 600 mm diameter concrete cross-section
 
   import math
-  from sectionproperties.pre.library.primitive_sections import circular_section_by_area
+  from sectionproperties.pre.library import circular_section_by_area
 
   concrete = None  # define your concrete material properties here
-  geom = circular_section_by_area(area=math.pi * 600 * 600 / 4, n=32, material=concrete)
+  geom = circular_section_by_area(area=math.pi * 600**2 / 4, n=32, material=concrete)
   geom.plot_geometry(labels=[], cp=False, legend=False)
 
 .. code-block:: python
@@ -137,7 +137,7 @@ a circle with the correct area is generated:
   import math
   from sectionproperties.pre.library import circular_section_by_area
 
-  geom = circular_section_by_area(area=math.pi * 600 * 600 / 4, n=32)
+  geom = circular_section_by_area(area=math.pi * 600**2 / 4, n=32)
 
   print(f"{geom.calculate_area():.2f}")
   >>> 282743.34
@@ -160,24 +160,34 @@ the bottom:
   :include-source: True
   :caption: 1200 mm deep concrete tee-beam
 
-  from sectionproperties.pre.library.concrete_sections import concrete_tee_section
+  from sectionproperties.pre.library import concrete_tee_section
 
   concrete = None  # define your concrete material properties here
   steel = None  # define your steel material properties here
   geom = concrete_tee_section(
-    b=450, d=1200, b_f=1500, d_f=200, dia_top=24, n_top=8, dia_bot=32, n_bot=4,
-    n_circle=12, cover=30, conc_mat=concrete, steel_mat=steel
+    b=450,
+    d=1200,
+    b_f=1500,
+    d_f=200,
+    dia_top=24,
+    area_top=450,
+    n_top=8,
+    c_top=30,
+    dia_bot=32,
+    area_bot=800,
+    n_bot=4,
+    c_bot=30,
+    n_circle=12,
+    conc_mat=concrete,
+    steel_mat=steel
   )
   geom.plot_geometry(labels=[], cp=False, legend=False)
 
-The reinforcement generated by the above code suffers from the same problem as the
-``circular_section`` example, in that the discretisation of the circular reinforcing
-bars results in a slightly lower reinforcement area. This can be overcome by using the
-optional ``area_top`` and ``area_bot`` parameters. Further, as this ensures the desired
-area, a smaller value for ``n_circle`` may be used to speed up the analysis. As the
-reinforcement area is now independent of ``n_circle`` a value of ``n_circle=4`` may be
-used without any loss of accuracy in the analysis results as the centroid of the bar and
-area of the bar is all that *concreteproperties* requires:
+As the above code ensures that the bar areas are fixed to ``area_top`` and ``area_bot``
+respectively, a smaller value for ``n_circle`` may be used to speed up the analysis. As
+the reinforcement area is now independent of ``n_circle`` a value of ``n_circle=4`` may
+be used without any loss of accuracy in the analysis results as the centroid of the bar
+and area of the bar is all that ``concreteproperties`` requires:
 
 .. plot::
   :include-source: True
@@ -188,8 +198,21 @@ area of the bar is all that *concreteproperties* requires:
   concrete = None  # define your concrete material properties here
   steel = None  # define your steel material properties here
   geom = concrete_tee_section(
-    b=450, d=1200, b_f=1500, d_f=200, dia_top=24, n_top=8, dia_bot=32, n_bot=4,
-    n_circle=4, cover=30, area_top=450, area_bot=800, conc_mat=concrete, steel_mat=steel
+    b=450,
+    d=1200,
+    b_f=1500,
+    d_f=200,
+    dia_top=24,
+    area_top=450,
+    n_top=8,
+    c_top=30,
+    dia_bot=32,
+    area_bot=800,
+    n_bot=4,
+    c_bot=30,
+    n_circle=4,
+    conc_mat=concrete,
+    steel_mat=steel
   )
   geom.plot_geometry(labels=[], cp=False, legend=False)
 
@@ -201,7 +224,7 @@ this library. The following code creates a T5 Super-T section:
   :include-source: True
   :caption: T5 Super-T section
 
-  from sectionproperties.pre.library.bridge_sections import super_t_girder_section
+  from sectionproperties.pre.library import super_t_girder_section
 
   concrete = None  # define your concrete material properties here
   geom = super_t_girder_section(girder_type=5, material=concrete)
@@ -221,17 +244,17 @@ example creates a 800 mm deep x 600 mm wide x 100 mm thick hollow box section:
   :include-source: True
   :caption: 800 mm deep hollow box section
 
-  from sectionproperties.pre.geometry import Geometry
+  from sectionproperties.pre import Geometry
 
   concrete = None  # define your concrete material properties here
 
   pts = [
-    [0, 0], [600, 0], [600, 800], [0, 800], [100, 100], [500, 100], [500, 700],
-    [100, 700]
+    (0, 0), (600, 0), (600, 800), (0, 800), (100, 100), (500, 100), (500, 700),
+    (100, 700)
   ]
-  fcts = [[0, 1], [1, 2], [2, 3], [3, 0], [4, 5], [5, 6], [6, 7], [7, 0]]
-  cps = [[50, 50]]
-  hls = [[400, 400]]
+  fcts = [(0, 1), (1, 2), (2, 3), (3, 0), (4, 5), (5, 6), (6, 7), (7, 0)]
+  cps = [(50, 50)]
+  hls = [(400, 400)]
 
   geom = Geometry.from_points(
     points=pts, facets=fcts, control_points=cps, holes=hls, material=concrete
@@ -242,7 +265,7 @@ example creates a 800 mm deep x 600 mm wide x 100 mm thick hollow box section:
 Set Operations and Manipulation
 -------------------------------
 
-*sectionproperties* geometry objects can be manipulated using python's set operators:
+``sectionproperties`` geometry objects can be manipulated using python's set operators:
 
 - ``|`` bitwise ``or``
 - ``-`` bitwise ``diff``
@@ -275,7 +298,7 @@ The following code creates an L-shaped beam:
   :include-source: True
   :caption: L-shaped beam
 
-  from sectionproperties.pre.library.primitive_sections import rectangular_section
+  from sectionproperties.pre.library import rectangular_section
 
   concrete = None  # define your concrete material properties here
   slab = rectangular_section(d=150, b=800, material=concrete)
@@ -292,7 +315,7 @@ The following code creates the hollow section geometry example in the
   :include-source: True
   :caption: 800 mm deep hollow box section
 
-  from sectionproperties.pre.library.primitive_sections import rectangular_section
+  from sectionproperties.pre.library import rectangular_section
 
   concrete = None  # define your concrete material properties here
   outer = rectangular_section(d=800, b=600, material=concrete)
@@ -308,8 +331,8 @@ geometry. Note how a hole is automatically generated in the closed-off region:
   :include-source: True
   :caption: T5 Super-T section with an overlay slab
 
-  from sectionproperties.pre.library.primitive_sections import rectangular_section
-  from sectionproperties.pre.library.bridge_sections import super_t_girder_section
+  from sectionproperties.pre.library import rectangular_section
+  from sectionproperties.pre.library import super_t_girder_section
 
   conc_precast = None  # define your concrete material properties here
   conc_insitu = None  # define your concrete material properties here
@@ -327,7 +350,7 @@ concrete and demonstrates how composite sections can be created:
   :include-source: True
   :caption: Concrete filled circular hollow section
 
-  import sectionproperties.pre.library.primitive_sections as sp_ps
+  import sectionproperties.pre.library as sp_ps
 
   conc = None  # define your concrete material properties here
   steel = None  # define your steel material properties here
@@ -348,7 +371,7 @@ concrete and demonstrates how composite sections can be created:
 Adding Reinforcing Bars
 -----------------------
 
-Reinforcing bars can be added to any *sectionproperties* geometry by using the following
+Reinforcing bars can be added to any ``sectionproperties`` geometry by using the following
 functions:
 
 - :func:`~concreteproperties.pre.add_bar` - adds a single bar to the geometry
@@ -371,14 +394,14 @@ add_bar()
 
 The following code adds an 80 mm bar to a T5 Super-T section::
 
-  from concreteproperties.pre import add_bar
+  from concreteproperties import add_bar
 
 .. plot::
   :context: close-figs
   :include-source: True
   :caption: T5 Super-T with an 80 mm bar
 
-  from sectionproperties.pre.library.bridge_sections import super_t_girder_section
+  from sectionproperties.pre.library import super_t_girder_section
 
   concrete = None  # define your concrete material properties here
   steel = None  # define your steel material properties here
@@ -395,21 +418,27 @@ add_bar_rectangular_array()
 
 The following code adds top and bottom reinforcement to a rectangular beam::
 
-  from concreteproperties.pre import add_bar_rectangular_array
+  from concreteproperties import add_bar_rectangular_array
 
 .. plot::
   :context: close-figs
   :include-source: True
   :caption: Rectangular beam with top and bottom reinforcement
 
-  from sectionproperties.pre.library.primitive_sections import rectangular_section
+  from sectionproperties.pre.library import rectangular_section
 
   concrete = None  # define your concrete material properties here
   steel = None  # define your steel material properties here
   beam = rectangular_section(d=500, b=300, material=concrete)
   geom = add_bar_rectangular_array(
-    geometry=beam, area=310, material=steel, n_x=3, x_s=110, n_y=2, y_s=420,
-    anchor=(40, 40)
+    geometry=beam,
+    area=310,
+    material=steel,
+    n_x=3,
+    x_s=110,
+    n_y=2,
+    y_s=420,
+    anchor=(40, 40),
   )
   geom.plot_geometry(labels=[], cp=False, legend=False)
 
@@ -422,14 +451,14 @@ add_bar_circular_array()
 
 The following code adds a circular array of bars to a concrete column::
 
-  from concreteproperties.pre import add_bar_circular_array
+  from concreteproperties import add_bar_circular_array
 
 .. plot::
   :context: close-figs
   :include-source: True
   :caption: Concrete column with circular bar array
 
-  from sectionproperties.pre.library.primitive_sections import circular_section_by_area
+  from sectionproperties.pre.library import circular_section_by_area
 
   concrete = None  # define your concrete material properties here
   steel = None  # define your steel material properties here
@@ -454,7 +483,7 @@ locations and only then adding the bar geometry::
 .. warning::
 
   A warning will be provided if overlapping geometries are supplied to
-  *concreteproperties*.
+  ``concreteproperties``.
 
 
 .. |sp_link| raw:: html
