@@ -1,8 +1,10 @@
+"""NZS3101 class for designing to the New Zealand Standard NZS 3101:2006."""
+
 from __future__ import annotations
 
 from copy import deepcopy
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING
 
 import numpy as np
 from rich.live import Live
@@ -13,43 +15,49 @@ import concreteproperties.utils as utils
 from concreteproperties.design_codes.design_code import DesignCode
 from concreteproperties.material import Concrete, SteelBar
 
+
 if TYPE_CHECKING:
     from concreteproperties.concrete_section import ConcreteSection
 
 
 class NZS3101(DesignCode):
-    """Design code class for the New Zealand concrete design standard NZS3101:2006. Also
-    implements the requirements of the NZSEE C5 assessment guidelines for probable
+    """Design code class for the New Zealand concrete design standard NZS3101:2006.
+
+    Also implements the requirements of the NZSEE C5 assessment guidelines for probable
     strength design.
 
     .. note::
+
         Note that this design code currently only supports
         :class:`~concreteproperties.material.Concrete` and
-        :class:`NZS3101.SteelBarNZ` material objects. Meshed
+        :class:`~NZS3101.SteelBarNZ` material objects. Meshed
         :class:`~concreteproperties.material.Steel` material objects are **not**
         supported as this falls under the composite structures design code.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Inits the NZS3101 class."""
         self.analysis_code = "NZS3101:2006"
         super().__init__()
 
     @dataclass
     class SteelBarNZ(SteelBar):
-        r"""Class for a steel bar material to NZS3101, treated as a lumped circular mass
+        r"""Class for an NZ steel bar.
+
+        Class for a steel bar material to NZS3101, treated as a lumped circular mass
         with a constant strain.
 
-        :param name: Steel bar material name
-        :param steel_grade: Designation of the grade of reinforcement bar to be
-            analysed, included predefined current and historic grades are detailed in
-            the :meth:`NZS3101.create_steel_material` method
-        :param density: Steel bar density (mass per unit volume)
-        :param phi_os: Overstrength factor depending on reinforcement grade
-            (:math:`\phi_{o,f_y}`), refer to NZS3101:2006 CL 2.6.5.5 or NZSEE C5
-            assessment guidelines C5.4.3
-        :param stress_strain_profile: Steel bar stress-strain profile
-        :param colour: Colour of the material for rendering
+        Args:
+            name: Steel bar material name
+            steel_grade: Designation of the grade of reinforcement bar to be analysed,
+                included predefined current and historic grades are detailed in the
+                :meth:`NZS3101.create_steel_material` method
+            density: Steel bar density (mass per unit volume)
+            phi_os: Overstrength factor depending on reinforcement grade
+                (:math:`\phi_{o,f_y}`), refer to NZS3101:2006 CL 2.6.5.5 or NZSEE C5
+                assessment guidelines C5.4.3
+            stress_strain_profile: Steel bar stress-strain profile
+            colour: Colour of the material for rendering
         """
 
         name: str
@@ -65,30 +73,31 @@ class NZS3101(DesignCode):
         concrete_section: ConcreteSection,
         section_type: str = "column",
     ) -> None:
-        """Assigns a concrete section and the section type for the concrete section to
-        the design code.
+        """Assigns a concrete section and section type to the design code.
 
-        :param concrete_section: Concrete section object to analyse
-        :param section_type: The type of member being analysed:-
+        Args:
+            concrete_section: Concrete section object to analyse
+            section_type: The type of member being analysed:
 
-            - **column** - Analyses assigned concrete section object as a column (or
-              beam) member in accordance with NZS3101:2006 Chapter 9 or 10 as
-              appropriate
+                - **column** - Analyses assigned concrete section object as a column (or
+                  beam) member in accordance with NZS3101:2006 Chapter 9 or 10 as
+                  appropriate
 
-            - **wall** - Analyses assigned concrete section object as a doubly
-              reinforced wall member in accordance with NZS3101:2006 Chapter 11
+                - **wall** - Analyses assigned concrete section object as a doubly
+                  reinforced wall member in accordance with NZS3101:2006 Chapter 11
 
-            - **wall_sr_s** - Analyses assigned concrete section object as a singly
-              reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
-              design actions causing bending about the strong axis
+                - **wall_sr_s** - Analyses assigned concrete section object as a singly
+                  reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
+                  design actions causing bending about the strong axis
 
-            - **wall_sr_m**- Analyses assigned concrete section object as a singly
-              reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
-              design actions causing bending about the minor axis
+                - **wall_sr_m**- Analyses assigned concrete section object as a singly
+                  reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
+                  design actions causing bending about the minor axis
 
-        :raises ValueError: If the concrete section contains meshed reinforcement
-        :raises ValueError: If section type for the analysis of the concrete section is
-            not valid
+        Raises:
+            ValueError: If the concrete section contains meshed reinforcement
+            ValueError: If section type for the analysis of the concrete section is not
+                valid
         """
         # assign concrete sections relevant to each analysis type
         self.concrete_section = concrete_section
@@ -114,7 +123,7 @@ class NZS3101(DesignCode):
             "wall_sr_m",
         ]:
             raise ValueError(
-                f"The specified section type of '{self.section_type}' should be either "
+                f"The specified section type of *{self.section_type}* should be either "
                 f"'column', 'wall', 'wall_sr_s' or 'wall_sr_m' for a "
                 f"{self.analysis_code} code analysis"
             )
@@ -123,16 +132,23 @@ class NZS3101(DesignCode):
         self,
         analysis_type: str = "nom_chk",
     ) -> ConcreteSection:
-        """Assigns the appropriate concrete section to be analysed depending on the
+        """Assigns an analysis section.
+
+        Assigns the appropriate concrete section to be analysed depending on the
         analysis type requested.
 
-        :param analysis_type: The type of cross section analysis to undertake on the
+        Args:
+            analysis_type: The type of cross section analysis to undertake on the
             defined concrete section, by default a normal nominal strength design check
             is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor` for
             further information on analysis types.
-        :raises ValueError: If analysis type is not valid
-        :return: Returns the appropriate concrete section object for the analysis
-            depending on the analysis type
+
+        Raises:
+            ValueError: If analysis type is not valid
+
+        Returns:
+            Returns the appropriate concrete section object for the analysis depending
+            on the analysis type
         """
         # determine the section to analyse
         if analysis_type.lower() in ["nom_chk", "cpe_chk"]:
@@ -146,23 +162,32 @@ class NZS3101(DesignCode):
         else:
             # ensure analysis_type is bound
             raise ValueError(
-                f"The specified analysis type of '{analysis_type}' should be either "
+                f"The specified analysis type of *{analysis_type}* should be either "
                 f"'nom_chk', 'cpe_chk', 'os_chk', 'prob_chk' or 'prob_os_chk'"
                 f"for a {self.analysis_code} code analysis"
             )
 
         return analysis_section
 
-    def e_conc(self, compressive_strength: float, density: float = 2300) -> float:
-        r"""Calculates Youngs Modulus (:math:`E_c`) for concrete in accordance with
+    def e_conc(
+        self,
+        compressive_strength: float,
+        density: float = 2300,
+    ) -> float:
+        r"""Calculates the elastic modulus.
+
+        Calculates Youngs Modulus (:math:`E_c`) for concrete in accordance with
         NZS3101:2006 CL 5.2.3(b).
 
         :math:`E_c=\displaystyle{4700\sqrt{f'_c}\frac{\rho}{2300}}`
 
-        :param compressive_strength: 28 day compressive concrete strength (MPa)
-        :param density: Concrete density :math:`\rho` in accordance with NZS3101:2006
-            CL 5.2.2, defaults to 2300 kg/m\ :sup:`3` for normal weight concrete
-        :return: :math:`E_c`, Youngs Modulus (MPa)
+        Args:
+            compressive_strength: 28 day compressive concrete strength (MPa)
+            density: Concrete density :math:`\rho` in accordance with NZS3101:2006
+                CL 5.2.2, defaults to 2300 kg/m\ :sup:`3` for normal weight concrete
+
+        Returns:
+            :math:`E_c`, Youngs Modulus (MPa)
         """
         # Check low and high limit on density in NZS3101:2006 CL 5.2.2 for E_c equation
         # to be valid
@@ -172,23 +197,30 @@ class NZS3101(DesignCode):
         # check upper and lower concrete strengths
         self.check_density_limits(density, low_limit, high_limit)
 
-        E_c = (4700 * (compressive_strength**0.5)) * (density / 2300) ** 1.5
+        e_c = (4700 * (compressive_strength**0.5)) * (density / 2300) ** 1.5
 
-        return E_c
+        return e_c
 
     def check_density_limits(
-        self, density: float, low_limit: float, high_limit: float
+        self,
+        density: float,
+        low_limit: float,
+        high_limit: float,
     ) -> None:
-        r"""Checks that the density is within the bounds outlined within NZS3101:2006
+        r"""Checks density limits.
+
+        Checks that the density is within the bounds outlined within NZS3101:2006
         CL 5.2.2 for the elastic modulus expression within NZS3101:2006 CL 5.2.3(b) to
         be valid.
 
-        :param density: Concrete density :math:`\rho` in accordance with NZS3101:2006
-            CL 5.2.2
-        :param low_limit: Lower limit for density from NZS3101:2006 CL 5.2.2
-        :param high_limit: Upper limit for density from NZS3101:2006 CL 5.2.2
-        :raises ValueError: If density is outside of the limits within NZS3101:2006 CL
-            5.2.2
+        Args:
+            density: Concrete density :math:`\rho` in accordance with NZS3101:2006
+                CL 5.2.2
+            low_limit: Lower limit for density from NZS3101:2006 CL 5.2.2
+            high_limit: Upper limit for density from NZS3101:2006 CL 5.2.2
+
+        Raises:
+            ValueError: If density is outside of the limits within NZS3101:2006 CL 5.2.2
         """
         if not (low_limit <= density <= high_limit):
             raise ValueError(
@@ -197,8 +229,13 @@ class NZS3101(DesignCode):
                 f"{self.analysis_code} Elastic Modulus eqn to be applicable"
             )
 
-    def alpha_1(self, compressive_strength: float) -> float:
-        r"""Scaling factor relating the nominal 28 day concrete compressive strength to
+    def alpha_1(
+        self,
+        compressive_strength: float,
+    ) -> float:
+        r"""Calculates alpha_1 scaling factor.
+
+        Scaling factor relating the nominal 28 day concrete compressive strength to
         the effective concrete compressive strength used for design purposes within the
         concrete stress block. For an equivalent rectangular compressive stress block it
         relates the 28 day concrete compressive strength (:math:`f'_c`) to the average
@@ -207,12 +244,15 @@ class NZS3101(DesignCode):
 
         :math:`\quad\alpha_1=\displaystyle{\frac{f_{ave}}{f'_c}}`
 
-        Where:-
+        where:
 
         :math:`\quad\alpha_1=0.85-0.004(f'_c-55)\quad:0.75\leq\alpha_1\leq0.85`
 
-        :param compressive_strength: 28 day compressive design strength (MPa)
-        :return: :math:`\alpha_1` factor
+        Args:
+            compressive_strength: 28 day compressive design strength (MPa)
+
+        Returns:
+            :math:`\alpha_1` factor
         """
         if compressive_strength <= 55:
             alpha_1 = 0.85
@@ -221,19 +261,27 @@ class NZS3101(DesignCode):
 
         return alpha_1
 
-    def beta_1(self, compressive_strength: float) -> float:
-        r"""Scaling factor relating the depth of an equivalent rectangular compressive
+    def beta_1(
+        self,
+        compressive_strength: float,
+    ) -> float:
+        r"""Calculates beta_1 scaling factor.
+
+        Scaling factor relating the depth of an equivalent rectangular compressive
         stress block (:math:`a`) to the depth of the neutral axis (:math:`c`).
         A function of the concrete compressive strength.
 
         :math:`\quad\beta_1=\displaystyle{\frac{a}{c}}`
 
-        Where:-
+        where:
 
         :math:`\quad\beta_1=0.85-0.008(f'_c-30)\quad:0.65\leq\beta_1\leq0.85`
 
-        :param compressive_strength: 28 day compressive design strength (MPa)
-        :return: :math:`\beta_1` factor
+        Args:
+            compressive_strength: 28 day compressive design strength (MPa)
+
+        Returns:
+            :math:`\beta_1` factor
         """
         if compressive_strength <= 30:
             beta_1 = 0.85
@@ -242,15 +290,23 @@ class NZS3101(DesignCode):
 
         return beta_1
 
-    def lamda(self, density: float) -> float:
-        r"""Modification factor reflecting the reduced mechanical properties of
+    def lamda(
+        self,
+        density: float,
+    ) -> float:
+        r"""Calculates lamda modification factor.
+
+        Modification factor reflecting the reduced mechanical properties of
         lightweight concrete relative to normal weight concrete of the same compression
         strength.
 
         :math:`\quad\lambda=0.4+\displaystyle{\frac{0.6\rho}{2200}}\leq1.0`
 
-        :param density: Saturated surface dry density of concrete material
-        :return: :math:`\lambda` factor
+        Args:
+            density: Saturated surface dry density of concrete material
+
+        Returns:
+            :math:`\lambda` factor
         """
         lamda = min(0.4 + 0.6 * density / 2200, 1)
 
@@ -262,24 +318,29 @@ class NZS3101(DesignCode):
         density: float = 2300,
         prob_design: bool = False,
     ) -> float:
-        r"""Calculates the lower characteristic tensile strength of concrete
+        r"""Calculates the concrete tensile strength.
+
+        Calculates the lower characteristic tensile strength of concrete
         (:math:`f_t`) in accordance with NZS3101:2006 CL 5.2.4, or calculates the
         probable tensile strength of concrete in accordance with NZSEE C5 assessment
         guidelines C5.4.2.4.
 
-        For design to NZS3101:2006:-
+        For design to NZS3101:2006:
 
         :math:`\quad f_t=0.38\lambda({f'_c})^{0.5}`
 
-        For design to NZSEE C5 assessment guidelines:-
+        For design to NZSEE C5 assessment guidelines:
 
         :math:`\quad f_{ct}=0.55({f'_{cp}})^{0.5}`
 
-        :param compressive_strength: 28 day compressive design strength (MPa)
-        :param density: Saturated surface dry density of concrete material
-        :param prob_design: True if the probable tensile strength of concrete is to be
-            calculated in accordance with NZSEE C5 assessment guidelines
-        :return: Lower characteristic (:math:`f_t`) or probable (:math:`f_{ct}`) tensile
+        Args:
+            compressive_strength: 28 day compressive design strength (MPa)
+            density: Saturated surface dry density of concrete material
+            prob_design: True if the probable tensile strength of concrete is to be
+                calculated in accordance with NZSEE C5 assessment guidelines
+
+        Returns:
+            Lower characteristic (:math:`f_t`) or probable (:math:`f_{ct}`) tensile
             strength of concrete
         """
         if prob_design:
@@ -297,29 +358,42 @@ class NZS3101(DesignCode):
         compressive_strength: float,
         density: float = 2300,
     ) -> float:
-        r"""Calculates the average modulus of rupture of concrete (:math:`f_r`) in
+        r"""Calculates the modulus of rupture.
+
+        Calculates the average modulus of rupture of concrete (:math:`f_r`) in
         accordance with NZS3101:2006 CL 5.2.5 for deflection calculations.
 
         :math:`\quad f_r=0.6\lambda({f'_c})^{0.5}`
 
-        :param compressive_strength: 28 day compressive design strength (MPa)
-        :param density: Saturated surface dry density of concrete material
-        :return: Modulus of rupture (:math:`f_r`)
+        Args:
+            compressive_strength: 28 day compressive design strength (MPa)
+            density: Saturated surface dry density of concrete material
+
+        Returns:
+            Modulus of rupture (:math:`f_r`)
         """
         f_r = 0.6 * self.lamda(density) * np.sqrt(compressive_strength)
 
         return f_r
 
-    def prob_compressive_strength(self, compressive_strength: float) -> float:
-        """Calculate the probable compressive strength of concrete in accordance with
+    def prob_compressive_strength(
+        self,
+        compressive_strength: float,
+    ) -> float:
+        """Calculates the probable compressive strength.
+
+        Calculate the probable compressive strength of concrete in accordance with
         NZSEE C5 assessement guidelines C5.4.2.2.
 
         Taken as the nominal 28-day compressive strenght of the concrete specified for
         the original construciton, multiplied by 1.5 for strengths less than or equal to
         40 MPa, and 1.4 for strengths greater than 40 MPa.
 
-        :param compressive_strength: 28 day compressive design strength (MPa)
-        :return: Probable comopressive strength of concrete (:math:`f'_{cp}`)
+        Args:
+            compressive_strength: 28 day compressive design strength (MPa)
+
+        Returns:
+            Probable comopressive strength of concrete (:math:`f'_{cp}`)
         """
         # convert lower characteristic compressive strength to probable concrete
         # compressive strength
@@ -334,7 +408,9 @@ class NZS3101(DesignCode):
         prob_design: bool = False,
         add_compressive_strength: float = 15,
     ) -> float:
-        r"""Function to return the nominal, overstrength or probable concrete capacity
+        r"""Calculates the concrete capacity.
+
+        Function to return the nominal, overstrength or probable concrete capacity
         capacity of a concrete section.
 
         - Note for a column section type outputs the unfactored concrete yield force
@@ -349,19 +425,25 @@ class NZS3101(DesignCode):
 
           :math:`\quad N_c = A_gf'_c`
 
-        :param os_design: True if an overstrength capacity of a concrete section is
-            required, then the material properties for concrete are scaled to reflect
-            the likely maximum material strength properties
-        :param prob_design: True if the probable capacity of a concrete section is
-            required, then the material properties for concrete and lumped reinforcement
-            are scaled to reflect the probable material strength properties
-        :param add_compressive_strength: The increase in compressive strength of the
-            specified 28 day compressive strength of concrete to reflect the likely
-            maximum material strength, defaults to an additional 15 MPa as per
-            NZS3101:2006 CL 2.6.5.5(c)
-        :raises ValueError: If section type for the analysis of the concrete section is
-            not valid
-        :return: Nominal, overstrength or probable concrete yield force (N) for the
+        Args:
+            os_design: True if an overstrength capacity of a concrete section is
+                required, then the material properties for concrete are scaled to
+                reflect the likely maximum material strength properties
+            prob_design: True if the probable capacity of a concrete section is
+                required, then the material properties for concrete and lumped
+                reinforcement are scaled to reflect the probable material strength
+                properties
+            add_compressive_strength: The increase in compressive strength of the
+                specified 28 day compressive strength of concrete to reflect the likely
+                maximum material strength, defaults to an additional 15 MPa as per
+                NZS3101:2006 CL 2.6.5.5(c)
+
+        Raises:
+            ValueError: If section type for the analysis of the concrete section is
+                not valid
+
+        Returns:
+            Nominal, overstrength or probable concrete yield force (N) for the
             defined section/member type provided
         """
         # initiate force variable
@@ -402,7 +484,7 @@ class NZS3101(DesignCode):
             else:
                 # ensure section_type is bound
                 raise ValueError(
-                    f"The specified section type of '{self.section_type}' should be "
+                    f"The specified section type of *{self.section_type}* should be "
                     f"either 'column', 'wall', 'wall_sr_s' or 'wall_sr_m' for a "
                     f"{self.analysis_code} code analysis"
                 )
@@ -410,21 +492,30 @@ class NZS3101(DesignCode):
         return force
 
     def steel_capacity(
-        self, os_design: bool = False, prob_design: bool = False
+        self,
+        os_design: bool = False,
+        prob_design: bool = False,
     ) -> float:
-        """Function to return the nominal, overstrength or probable steel reinforcement
+        """Calculates the steel capacity.
+
+        Function to return the nominal, overstrength or probable steel reinforcement
         capacity of a concrete section.
 
-        :param os_design: True if an overstrength capacity of a concrete section is
-            required, then the material properties for lumped reinforcement are scaled
-            to reflect the likely maximum material strength properties
-        :param prob_design: True if the probable capacity of a concrete
-            section is required, then the material properties for concrete and lumped
-            reinforcement are scaled to reflect the probable material strength
-            properties
-        :raises ValueError: If concrete section contains a steel material that is not
-            :class:`NZS3101.SteelBarNZ`
-        :return: Nominal, overstrength or probable steel yield force (N)
+        Args:
+            os_design: True if an overstrength capacity of a concrete section is
+                required, then the material properties for lumped reinforcement are
+                scaled to reflect the likely maximum material strength properties
+            prob_design: True if the probable capacity of a concrete
+                section is required, then the material properties for concrete and
+                lumped reinforcement are scaled to reflect the probable material
+                strength properties
+
+        Raises:
+            ValueError: If concrete section contains a steel material that is not
+                :class:`NZS3101.SteelBarNZ`
+
+        Returns:
+            Nominal, overstrength or probable steel yield force (N)
         """
         # Retrieve predefined names of probable strength based materials
         _, _, prob_properties = self.predefined_steel_materials()
@@ -464,73 +555,80 @@ class NZS3101(DesignCode):
         os_design: bool = False,
         prob_design: bool = False,
     ) -> float:
-        r"""Function to return the nominal, overstrength or probable axial load
+        r"""Calculates the axial load compressive strength.
+
+        Function to return the nominal, overstrength or probable axial load
         compressive strength of a concrete section when the load is applied with zero
         eccentricity.
 
-        For column members, the maximum design load in compression is as follows:-
+        For column members, the maximum design load in compression is as follows:
 
-        For non-capacity design situations, refer to NZS3101:2006 CL 10.3.4.2:-
+        For non-capacity design situations, refer to NZS3101:2006 CL 10.3.4.2:
 
         :math:`\quad\displaystyle{\frac{N^*}{\phi} < 0.85N_{n,max}}`
 
-        For capacity design situations, refer to NZS3101:2006 CL 10.4.4:-
+        For capacity design situations, refer to NZS3101:2006 CL 10.4.4:
 
         :math:`\quad N^*_o < 0.7N_{n,max}`
 
-        Where:-
+        where:
 
         :math:`\quad N_{n,max} = \alpha_1f'_c(A_g-A_{st})+f_yA_{st}`
 
         For doubly reinforced wall members, the maximum design load in compression is as
-        follows:-
+        follows:
 
-        For non-capacity design situations, refer to NZS3101:2006 CL 11.3.1.6:-
+        For non-capacity design situations, refer to NZS3101:2006 CL 11.3.1.6:
 
         :math:`\quad\displaystyle{\frac{N^*}{\phi} < 0.3A_gf'_c}`
 
         For ductile wall design situations within potential plastic regions, refer to
-        NZS3101:2006 CL 11.4.1.1:-
+        NZS3101:2006 CL 11.4.1.1:
 
         :math:`\quad N^*_o < 0.3A_gf'_c`
 
         For singly reinforced wall members, the maximum design load in compression
-        depends on the axis the design actions are causing bending about:-
+        depends on the axis the design actions are causing bending about:
 
         .. warning::
-          Note singly reinforced walls are only allowed in nominally ductile structures
-          designed in accordance with NZS3101:2006.
 
-          Refer NZS3101:2006 Chapter 2 & 11 for other limitations on the use of
-          singly reinforced walls.
+            Note singly reinforced walls are only allowed in nominally ductile
+            structures designed in accordance with NZS3101:2006.
 
-          Note because of the different maximum axial compression load limits and
-          strength reduction factors for singly reinforced walls depending upon the
-          bending axis, care should be taken to only analyse a singly reinforced wall
-          member about the appropriate axis. Engineering judgement should be exercised
-          when analysing a singly reinforced wall about non-principal axes.
+            Refer NZS3101:2006 Chapter 2 & 11 for other limitations on the use of
+            singly reinforced walls.
+
+            Note because of the different maximum axial compression load limits and
+            strength reduction factors for singly reinforced walls depending upon the
+            bending axis, care should be taken to only analyse a singly reinforced wall
+            member about the appropriate axis. Engineering judgement should be exercised
+            when analysing a singly reinforced wall about non-principal axes.
 
         For design situations where the design actions cause bending about the strong
-        axis of a singly reinforced wall, refer to NZS3101:2006 CL 11.3.1.6:-
+        axis of a singly reinforced wall, refer to NZS3101:2006 CL 11.3.1.6:
 
         :math:`\quad N^* < 0.015A_gf'_c`
 
         For design situations where the design actions cause bending about the minor
-        axis of a singly reinforced wall, refer to NZS3101:2006 CL 11.3.5:-
+        axis of a singly reinforced wall, refer to NZS3101:2006 CL 11.3.5:
 
         :math:`\quad N^* < 0.06A_gf'_c`
 
-        :param cpe_design: True if the capacity protected element capacity of a concrete
-            section is required (i.e. design capacity being checked against O/S
-            actions)
-        :param os_design: True if the overstrength capacity of a concrete section is
-            required, then the material properties for concrete and lumped reinforcement
-            are scaled to reflect the likely maximum material strength properties
-        :param prob_design: True if the probable capacity of a concrete
-            section is required, then the material properties for concrete and lumped
-            reinforcement are scaled to reflect the probable material strength
-            properties
-        :return: Returns the nominal, overstrength or probable axial load compressive
+        Args:
+            cpe_design: True if the capacity protected element capacity of a concrete
+                section is required (i.e. design capacity being checked against O/S
+                actions)
+            os_design: True if the overstrength capacity of a concrete section is
+                required, then the material properties for concrete and lumped
+                reinforcement are scaled to reflect the likely maximum material strength
+                properties
+            prob_design: True if the probable capacity of a concrete
+                section is required, then the material properties for concrete and
+                lumped reinforcement are scaled to reflect the probable material
+                strength properties
+
+        Returns:
+            Returns the nominal, overstrength or probable axial load compressive
             strength of a concrete section :math:`N_{n,max}`
         """
         # concrete capacity
@@ -560,21 +658,29 @@ class NZS3101(DesignCode):
         return max_comp
 
     def max_ten_strength(
-        self, os_design: bool = False, prob_design: bool = False
+        self,
+        os_design: bool = False,
+        prob_design: bool = False,
     ) -> float:
-        r"""Function to return the nominal axial load tension strength of a concrete
+        r"""Calculates the axial load tensile strength.
+
+        Function to return the nominal axial load tension strength of a concrete
         section when the load is applied with zero eccentricity.
 
         :math:`\quad N_{t,max} = f_yA_{st}`
 
-        :param os_design: True if an overstrength capacity of a concrete section is
-            required, then the material properties for concrete and lumped reinforcement
-            are scaled to reflect the likely maximum material strength properties
-        :param prob_design: True if the probable capacity of a concrete
-            section is required, then the material properties for concrete and lumped
-            reinforcement are scaled to reflect the probable material strength
-            properties
-        :return: Returns the nominal, overstrength or probable axial tension strength of
+        Args:
+            os_design: True if an overstrength capacity of a concrete section is
+                required, then the material properties for concrete and lumped
+                reinforcement are scaled to reflect the likely maximum material strength
+                properties
+            prob_design: True if the probable capacity of a concrete
+                section is required, then the material properties for concrete and
+                lumped reinforcement are scaled to reflect the probable material
+                strength properties
+
+        Returns:
+            Returns the nominal, overstrength or probable axial tension strength of
             a concrete section :math:`N_{t,max}`
         """
         # Calculate maximum axial tension strength
@@ -591,24 +697,30 @@ class NZS3101(DesignCode):
         prob_design: bool = False,
         n_scale: float = 1e-3,
     ) -> None:
-        r"""Checks that the specified axial load is within the maximum tensile and
+        r"""Checks the axial load is within limits.
+
+        Checks that the specified axial load is within the maximum tensile and
         compressive capacity of the concrete cross section.
 
-        :param n_design: Axial design force (:math:`N^*`)
-        :param phi: Strength reduction factor :math:`\phi`
-        :param cpe_design: True if the capacity protected element capacity of a concrete
-            section is required (i.e. design capacity being checked against O/S
-            actions)
-        :param os_design: True if the overstrength capacity of a concrete section is
-            required, then the material properties for concrete and lumped reinforcement
-            are scaled to reflect the likely maximum material strength properties
-        :param prob_design: True if the probable capacity of a concrete
-            section is required, then the material properties for concrete and lumped
-            reinforcement are scaled to reflect the probable material strength
-            properties
-        :param n_scale: Scaling factor to apply to axial load
-        :raises ValueError: If the supplied axial load is less than or greater than the
-            the tensile or compressive strength of a concrete section
+        Args:
+            n_design: Axial design force (:math:`N^*`)
+            phi: Strength reduction factor :math:`\phi`
+            cpe_design: True if the capacity protected element capacity of a concrete
+                section is required (i.e. design capacity being checked against O/S
+                actions)
+            os_design: True if the overstrength capacity of a concrete section is
+                required, then the material properties for concrete and lumped
+                reinforcement are scaled to reflect the likely maximum material strength
+                properties
+            prob_design: True if the probable capacity of a concrete
+                section is required, then the material properties for concrete and
+                lumped reinforcement are scaled to reflect the probable material
+                strength properties
+            n_scale: Scaling factor to apply to axial load
+
+        Raises:
+            ValueError: If the supplied axial load is less than or greater than the
+                the tensile or compressive strength of a concrete section
         """
         # determine NZS3101:2006 maximum tension and compression capacity
         max_ten = -self.max_ten_strength(os_design, prob_design)
@@ -629,16 +741,21 @@ class NZS3101(DesignCode):
             )
 
     def check_f_y_limit(self) -> None:
-        """Checks that the specified steel reinforcement strengths for all defined
+        """Checks the reinforcement strenghts are within limits.
+
+        Checks that the specified steel reinforcement strengths for all defined
         steel geometries comply with NZS3101:2006 CL 5.3.3.
 
-        .. note:: Note this check does not apply to predefined steel materials based on
+        .. note::
+
+            Note this check does not apply to predefined steel materials based on
             probable strength properties.
 
-        :raises ValueError: If concrete section contains a steel material that is not
-            :class:`NZS3101.SteelBarNZ`
-        :raises ValueError: If characteristic steel reinforcement yield strength is
-            greater than the 500MPa limit in NZS3101:2006 CL 5.3.3
+        Raises:
+            ValueError: If concrete section contains a steel material that is not
+                :class:`NZS3101.SteelBarNZ`
+            ValueError: If characteristic steel reinforcement yield strength is
+                greater than the 500MPa limit in NZS3101:2006 CL 5.3.3
         """
         # Retrieve predefined names of probable strength based materials
         _, _, prob_properties = self.predefined_steel_materials()
@@ -660,32 +777,39 @@ class NZS3101(DesignCode):
             if steel_grade not in prob_properties:
                 if yield_strength > f_y_upper:
                     raise ValueError(
-                        f"Steel yield strength for '{steel_geom.material.name}' "
+                        f"Steel yield strength for *{steel_geom.material.name}* "
                         f"material must be less than {f_y_upper} MPa for the "
                         f"{self.analysis_code} code, {yield_strength:.0f} MPa was "
                         f"specified for this material"
                     )
 
-    def check_f_c_limits(self, pphr_class: str) -> None:
-        """Checks that a valid Potential Plastic Hinge Region (PPHR) classification has
+    def check_f_c_limits(
+        self,
+        pphr_class: str,
+    ) -> None:
+        """Checks the concrete strenght complies with the PPHR classification.
+
+        Checks that a valid Potential Plastic Hinge Region (PPHR) classification has
         been specified, and that the specified compressive strengths for all defined
         concrete geometries comply with NZS3101:2006 CL 5.2.1 for the specified PPHR
         classification.
 
-        :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
-            **NDPR**/**LDPR**/**DPR**.
+        Args:
+            pphr_class: Potential Plastic Hinge Region (PPHR) classification,
+                **NDPR**/**LDPR**/**DPR**.
 
-            - **NDPR** = Nominally Ductile Plastic Region
+                - **NDPR** = Nominally Ductile Plastic Region
 
-            - **LDPR** = Limited Ductile Plastic Region
+                - **LDPR** = Limited Ductile Plastic Region
 
-            - **DPR** = Ductile Plastic Region
+                - **DPR** = Ductile Plastic Region
 
-        :raises ValueError: If specified Potential Plastic Hinge Region (PPHR)
-            classification is not NDPR, LDPR or DPR
-        :raises ValueError: If specified compressive strength for a concrete geometry
-            is not between 20 MPa and 100 MPa for NDPR PPHR's, or is not between 20 MPa
-            and 70 MPa for LDPR or DPR PPHR's
+        Raises:
+            ValueError: If specified Potential Plastic Hinge Region (PPHR)
+                classification is not NDPR, LDPR or DPR
+            ValueError: If specified compressive strength for a concrete geometry
+                is not between 20 MPa and 100 MPa for NDPR PPHR's, or is not between 20
+                MPa and 70 MPa for LDPR or DPR PPHR's
         """
         # Lower bound compressive strength
         f_c_lower = 20
@@ -710,7 +834,7 @@ class NZS3101(DesignCode):
             )
             if not (f_c_lower <= compressive_strength <= f_c_upper):
                 raise ValueError(
-                    f"Concrete compressive strength for '{conc_geom.material.name}' "
+                    f"Concrete compressive strength for *{conc_geom.material.name}* "
                     f"material must be between {f_c_lower} MPa & {f_c_upper} MPa for a "
                     f"{pphr_class} PPHR for the {self.analysis_code} code, "
                     f"{compressive_strength:.0f} MPa was specified for this material"
@@ -739,12 +863,15 @@ class NZS3101(DesignCode):
           - *Lower characteristic tensile strength of concrete*: Calculated from
             NZS3101:2006 Eq. 5-2
 
-        :param compressive_strength: 28 day compressive design strength (MPa)
-        :param ultimate_strain: Maximum concrete compressive strain at crushing of the
-            concrete for design
-        :param density: Saturated surface dry density of concrete material
-        :param colour: Colour of the concrete for rendering, defaults to 'lightgrey'
-        :return: Concrete material object
+        Args:
+            compressive_strength: 28 day compressive design strength (MPa)
+            ultimate_strain: Maximum concrete compressive strain at crushing of the
+                concrete for design
+            density: Saturated surface dry density of concrete material
+            colour: Colour of the concrete for rendering, defaults to 'lightgrey'
+
+        Returns:
+            Concrete material object
         """
         # create concrete name
         name = (
@@ -782,23 +909,24 @@ class NZS3101(DesignCode):
             colour=colour,
         )
 
-    def predefined_steel_materials(
-        self,
-    ) -> Tuple[Dict, List[str], List[str]]:
-        r"""Returns a list of predefined material properties for steel grades for design
+    def predefined_steel_materials(self) -> tuple[dict, list[str], list[str]]:
+        r"""Returns predefined steel material properties for NZS3101.
+
+        Returns a list of predefined material properties for steel grades for design
         to NZS3101:2006 & NZSEE C5 assessment guidelines.
 
         Refer to :meth:`NZS3101.create_steel_material` for details of predefined steel
         grades.
 
-        :return: Returns :class:`dict` with standard predefined steel material
+        Returns:
+            Returns a ``dict`` with standard predefined steel material
             properties based on current steel grade 300E & 500E material properties in
             accordance with NZS3101:2006, and based on historic steel grade material
             properties in accordance with NZSEE C5 assessment guidelines.
 
-            Returns :class:`list` with predefined material grades that have been
+            Returns a ``list`` with predefined material grades that have been
             defined on characteristic strength material properties and
-            :class:`list` of predefined material grades that have been defined
+            a ``list`` of predefined material grades that have been defined
             based on probable strength material properties.
 
         .. admonition:: Dictionary keys
@@ -856,10 +984,10 @@ class NZS3101(DesignCode):
 
     def create_steel_material(
         self,
-        steel_grade: Optional[str] = None,
-        yield_strength: Optional[float] = None,
-        fracture_strain: Optional[float] = None,
-        phi_os: Optional[float] = None,
+        steel_grade: str | None = None,
+        yield_strength: float | None = None,
+        fracture_strain: float | None = None,
+        phi_os: float | None = None,
         colour: str = "red",
     ) -> NZS3101.SteelBarNZ:
         r"""Returns a steel material object specific to the NZS3101:2006 code.
@@ -874,10 +1002,13 @@ class NZS3101(DesignCode):
             :math:`\varepsilon_{su}` from AS/NZS4671 Table 7.2(A) or NZSEE C5
             assessment guidelines (for historic reinforcement grades)
 
-        :param steel_grade: Designation of the grade of reinforcement bar to be
-            analysed, included predefined current and historic grades are as follows:-
+        Args:
+            steel_grade: Designation of the grade of reinforcement bar to be
+                analysed, included predefined current and historic grades are as
+                follows:
 
         .. note::
+
           By using a valid steel grade designation the required input parameters are
           initiated with the required values for current reinforcement grades from the
           AS/NZS4671 standard or for historic grades from the NZSEE C5 assessment
@@ -1018,32 +1149,37 @@ class NZS3101(DesignCode):
 
             - Overstrength factor :math:`\phi_{f_o}` = 1.2
 
-        :param yield_strength: Steel characteristic yield strength (MPa)
+        Args:
+            yield_strength: Steel characteristic yield strength (MPa)
 
-            - Note for a predefined steel grade based on probable strength
-              properties this is interpreted as the probable yield strength.
+                - Note for a predefined steel grade based on probable strength
+                  properties this is interpreted as the probable yield strength.
 
-            - Note for a user defined steel grade, this is **always** entered on the
-              basis of a characteristic yield strength, even if undertaking a probable
-              strength based analysis. The analysis will internally scale the
-              characteristic yield stress by 1.08 as per NZSEE C5 assessment guidelines
-              C5.4.3.
+                - Note for a user defined steel grade, this is **always** entered on the
+                  basis of a characteristic yield strength, even if undertaking a
+                  probable strength based analysis. The analysis will internally scale
+                  the characteristic yield stress by 1.08 as per NZSEE C5 assessment
+                  guidelines C5.4.3.
 
-        :param fracture_strain: Lower bound tensile strain (:math:`\varepsilon_{su}`),
-            based on characteristic uniform elongation limit from AS/NZS4671 Table
-            7.2(A) or NZSEE C5 assessment guidelines Table C5.4.
-        :param phi_os: Overstrength factor depending on reinforcement grade
-            (:math:`\phi_{o,f_y}` or :math:`\phi_o`), refer to NZS3101:2006 CL 2.6.5.5,
-            or for a probable strength assessment to the NZSEE C5 assessment guidelines
-            refer to NZSEE C5 Table C5.4.
-        :param colour: Colour of the steel for rendering, if user does not provide a
-            value, characteristic strength based materials will be rendered as red, and
-            probable strength based materials will be rendered as blue.
-        :raises Exception: If a predefined steel grade is not provided and the required
-            material properties have not been provided. For creating a user defined
-            steel material, values for **yield_strength**, **fracture_strain** &
-            **phi_os** are required to define a valid user defined material.
-        :return: Steel bar material object
+            fracture_strain: Lower bound tensile strain (:math:`\varepsilon_{su}`),
+                based on characteristic uniform elongation limit from AS/NZS4671 Table
+                7.2(A) or NZSEE C5 assessment guidelines Table C5.4.
+            phi_os: Overstrength factor depending on reinforcement grade
+                (:math:`\phi_{o,f_y}` or :math:`\phi_o`), refer to NZS3101:2006
+                CL 2.6.5.5, or for a probable strength assessment to the NZSEE C5
+                assessment guidelines refer to NZSEE C5 Table C5.4.
+            colour: Colour of the steel for rendering, if user does not provide a
+                value, characteristic strength based materials will be rendered as red,
+                and probable strength based materials will be rendered as blue.
+
+        Raises:
+            Exception: If a predefined steel grade is not provided and the required
+                material properties have not been provided. For creating a user defined
+                steel material, values for **yield_strength**, **fracture_strain** &
+                **phi_os** are required to define a valid user defined material.
+
+        Returns:
+            Steel bar material object
         """
         # Populate dictionary with predefined material properties
         (
@@ -1107,136 +1243,145 @@ class NZS3101(DesignCode):
         )
 
     def capacity_reduction_factor(
-        self, analysis_type: str
-    ) -> Tuple[float, bool, bool, bool]:
-        r"""Returns the appropriate NZS3101:2006 or NZSEE C5 assessment guidelines
+        self,
+        analysis_type: str,
+    ) -> tuple[float, bool, bool, bool]:
+        r"""Calculates the capacity reduction factor.
+
+        Returns the appropriate NZS3101:2006 or NZSEE C5 assessment guidelines
         capacity reduction factor dependant on the type of analysis specified. Refer to
         NZS3101:2006 CL 2.3.2.2 or NZSEE C5 assessment guidelines C5.5.1.4.
 
-        :param analysis_type: The type of cross section analysis to undertake on the
-            defined concrete section, by default a normal nominal strength design check
-            is undertaken:-
+        Arg:
+            analysis_type: The type of cross section analysis to undertake on the
+                defined concrete section, by default a normal nominal strength design
+                check is undertaken:-
 
-            - **nom_chk** - Nominal strength design check.
+                - **nom_chk** - Nominal strength design check.
 
-              Returns the normal nominal strength section design capacity, i.e.
-              undertakes the cross section analysis based on the following
-              assumptions:-
+                Returns the normal nominal strength section design capacity, i.e.
+                undertakes the cross section analysis based on the following
+                assumptions:-
 
-              - Using a strength reduction factor of :math:`\phi` = 0.85 in accordance
-                with NZS3101:2006 CL 2.3.2.2.
+                - Using a strength reduction factor of :math:`\phi` = 0.85 in accordance
+                    with NZS3101:2006 CL 2.3.2.2.
 
-                - Except that for a singly reinforced wall for in-plane actions (flexure
-                  about the strong axis) a strength reduction factor of :math:`\phi` =
-                  0.7 applies in accordance with NZS3101:2006 CL 2.3.2.2.
+                    - Except that for a singly reinforced wall for in-plane actions
+                      (flexure about the strong axis) a strength reduction factor of
+                      :math:`\phi` = 0.7 applies in accordance with NZS3101:2006
+                      CL 2.3.2.2.
 
-              - Using the lower 5% characteristic reinforcement yield strengths.
+                - Using the lower 5% characteristic reinforcement yield strengths.
 
-              - Using the lower 5% characteristic concrete 28 day compressive
-                design strength.
+                - Using the lower 5% characteristic concrete 28 day compressive
+                    design strength.
 
-            - **cpe_chk** - Capacity Protected Element (CPE) strength design check.
+                - **cpe_chk** - Capacity Protected Element (CPE) strength design check.
 
-              Returns the capacity protected element section design capacity, i.e.
-              undertakes the cross section analysis based on the following
-              assumptions:-
+                Returns the capacity protected element section design capacity, i.e.
+                undertakes the cross section analysis based on the following
+                assumptions:-
 
-              - Using a strength reduction factor of :math:`\phi` = 1.0 in
-                accordance with NZS3101:2006 CL 2.3.2.2.
+                - Using a strength reduction factor of :math:`\phi` = 1.0 in
+                  accordance with NZS3101:2006 CL 2.3.2.2.
 
-              - Using the lower 5% characteristic reinforcement yield strengths.
+                - Using the lower 5% characteristic reinforcement yield strengths.
 
-              - Using the lower 5% characteristic concrete 28 day compressive
-                design strength.
+                - Using the lower 5% characteristic concrete 28 day compressive
+                  design strength.
 
-            - **os_chk** - Overstrength (O/S) strength design check.
+                - **os_chk** - Overstrength (O/S) strength design check.
 
-              Returns the O/S (overstrength) section design capacity, i.e. undertakes
-              the cross section analysis based on the following assumptions:-
+                Returns the O/S (overstrength) section design capacity, i.e. undertakes
+                the cross section analysis based on the following assumptions:-
 
-              - Using a strength reduction factor of :math:`\phi` = 1.0 in
-                accordance with NZS3101:2006 CL 2.3.2.2.
+                - Using a strength reduction factor of :math:`\phi` = 1.0 in
+                  accordance with NZS3101:2006 CL 2.3.2.2.
 
-              - Using a likely maximum reinforcement yield strength of
-                :math:`\phi_{o,f_y}f_y`, typically :math:`\phi_{o,f_y}=1.35` in
-                accordance with NZS3101:2006 CL 2.6.5.5(a) for grade 300E or grade
-                500E reinforcement which complies with AS/NZS4671. User may define
-                custom overstrength factors when defining steel reinforcement
-                materials using :class:`NZS3101.SteelBarNZ`.
+                - Using a likely maximum reinforcement yield strength of
+                  :math:`\phi_{o,f_y}f_y`, typically :math:`\phi_{o,f_y}=1.35` in
+                  accordance with NZS3101:2006 CL 2.6.5.5(a) for grade 300E or grade
+                  500E reinforcement which complies with AS/NZS4671. User may define
+                  custom overstrength factors when defining steel reinforcement
+                  materials using :class:`NZS3101.SteelBarNZ`.
 
-              - Using a likely maximum compression strength of the concrete based
-                on the lower 5% characteristic concrete 28 day strength plus 15
-                MPa, i.e. :math:`f'_c` + 15 in accordance with NZS3101:2006 CL
-                2.6.5.5(c).
+                - Using a likely maximum compression strength of the concrete based
+                  on the lower 5% characteristic concrete 28 day strength plus 15
+                  MPa, i.e. :math:`f'_c` + 15 in accordance with NZS3101:2006 CL
+                  2.6.5.5(c).
 
-            - **prob_chk** - Probable strength design check to NZSEE C5 guidelines based
-              on NZS3101:2006 analysis provisions.
+                - **prob_chk** - Probable strength design check to NZSEE C5 guidelines
+                  based on NZS3101:2006 analysis provisions.
 
-              Returns the probable strength section design capacity, i.e.
-              undertakes the cross section analysis based on the following assumptions:-
+                Returns the probable strength section design capacity, i.e.
+                undertakes the cross section analysis based on the following
+                assumptions:
 
-              - Using a strength reduction factor of :math:`\phi` = 1.0 in
-                accordance with NZSEE C5 assessment guidelines C5.5.1.4.
+                - Using a strength reduction factor of :math:`\phi` = 1.0 in
+                  accordance with NZSEE C5 assessment guidelines C5.5.1.4.
 
-              - Using the probable reinforcement yield strengths in accordance
-                with NZSEE C5 assessment guidelines C5.4.3, typically
-                :math:`f_{yp}=1.08f_y` in accordance with NZSEE C5 assessment
-                guidelines C5.4.3. User may define custom probable strengths when
-                defining steel reinforcement materials using
-                :class:`NZS3101.SteelBarNZ`. Note if one of the predefined
-                probable strength based steel grade materials are being utilised, then
-                the yield strength is inclusive of the 1.08 factor noted above.
+                - Using the probable reinforcement yield strengths in accordance
+                  with NZSEE C5 assessment guidelines C5.4.3, typically
+                  :math:`f_{yp}=1.08f_y` in accordance with NZSEE C5 assessment
+                  guidelines C5.4.3. User may define custom probable strengths when
+                  defining steel reinforcement materials using
+                  :class:`NZS3101.SteelBarNZ`. Note if one of the predefined
+                  probable strength based steel grade materials are being utilised,
+                  then the yield strength is inclusive of the 1.08 factor noted above.
 
-              - Using the probable compressive strength of the concrete in
-                accordance with NZSEE C5 guidelines C5.4.2.2, typically for
-                specified 28 day concrete compressive strengths of less than or
-                equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
-                40 MPa, :math:`f'_{cp}=1.4f'_c`.
+                - Using the probable compressive strength of the concrete in
+                  accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+                  specified 28 day concrete compressive strengths of less than or
+                  equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
+                  40 MPa, :math:`f'_{cp}=1.4f'_c`.
 
-            - **prob_os_chk** - Probable overstrength design check to NZSEE C5
-              guidelines based on NZS3101:2006 analysis provisions.
+                - **prob_os_chk** - Probable overstrength design check to NZSEE C5
+                  guidelines based on NZS3101:2006 analysis provisions.
 
-              Returns the probable O/S (overstrength) strength section design
-              capacity, i.e. undertakes the cross section analysis based on the
-              following assumptions:-
+                Returns the probable O/S (overstrength) strength section design
+                capacity, i.e. undertakes the cross section analysis based on the
+                following assumptions:-
 
-              - Using a strength reduction factor of :math:`\phi` = 1.0 in
-                accordance with NZSEE C5 assessment guidelines C5.5.1.4.
+                - Using a strength reduction factor of :math:`\phi` = 1.0 in
+                  accordance with NZSEE C5 assessment guidelines C5.5.1.4.
 
-              - Using the probable overstrength reinforcement yield strengths in
-                accordance with NZSEE C5 assessment guidelines C5.4.3, typically
-                :math:`f_o=\phi_of_{yp}` in accordance with NZSEE C5 assessment
-                guidelines C5.4.3 & C5.5.2.3. User may define custom overstrength
-                factors strengths when defining steel reinforcement materials
-                using :class:`NZS3101.SteelBarNZ`. Note if one of the predefined
-                probable strength based steel grade materials are being utilised,
-                then the overstrength factor being applied to the yield strength
-                is inclusive of the 1.08 factor on the lower bound yield strength.
+                - Using the probable overstrength reinforcement yield strengths in
+                  accordance with NZSEE C5 assessment guidelines C5.4.3, typically
+                  :math:`f_o=\phi_of_{yp}` in accordance with NZSEE C5 assessment
+                  guidelines C5.4.3 & C5.5.2.3. User may define custom overstrength
+                  factors strengths when defining steel reinforcement materials
+                  using :class:`.NZS3101.SteelBarNZ`. Note if one of the predefined
+                  probable strength based steel grade materials are being utilised,
+                  then the overstrength factor being applied to the yield strength
+                  is inclusive of the 1.08 factor on the lower bound yield strength.
 
-                :math:`\quad\phi_o=\displaystyle{\frac{f_o}{f_{yp}}}`
+                    :math:`\quad\phi_o=\displaystyle{\frac{f_o}{f_{yp}}}`
 
-                Where:-
+                    Where:-
 
-                :math:`\quad f_{yp}=1.08f_y`
+                    :math:`\quad f_{yp}=1.08f_y`
 
-              - Using the probable compressive strength of the concrete in
-                accordance with NZSEE C5 guidelines C5.4.2.2, typically for
-                specified 28 day concrete compressive strengths of less than or
-                equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
-                40 MPa, :math:`f'_{cp}=1.4f'_c`.
+                - Using the probable compressive strength of the concrete in
+                  accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+                  specified 28 day concrete compressive strengths of less than or
+                  equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
+                  40 MPa, :math:`f'_{cp}=1.4f'_c`.
 
-                Note there is no enhancement to concrete strength for overstrength
-                checks in accordance with the NZSEE C5 assessment guidelines.
+                  Note there is no enhancement to concrete strength for overstrength
+                  checks in accordance with the NZSEE C5 assessment guidelines.
 
-        :raises ValueError: If analysis type is not valid
-        :raises ValueError: If concrete section contains a steel material that is not
-            :class:`NZS3101.SteelBarNZ`
-        :raises Exception: If a characteristic strength based analysis is specified, but
-            a predefined probable strength based steel grade has been specified.
-            Undertaking a non NZSEE C5 assessment guidelines analysis on a probable
-            strength based steel grade is not consistent with an analysis to
-            NZS3101:2006.
-        :return: Returns the appropriate strength reduction factor :math:`\phi` and
+        Raises:
+            ValueError: If analysis type is not valid
+            ValueError: If concrete section contains a steel material that is not
+                :class:`NZS3101.SteelBarNZ`
+            Exception: If a characteristic strength based analysis is specified, but
+                a predefined probable strength based steel grade has been specified.
+                Undertaking a non NZSEE C5 assessment guidelines analysis on a probable
+                strength based steel grade is not consistent with an analysis to
+                NZS3101:2006.
+
+        Returns:
+            Returns the appropriate strength reduction factor :math:`\phi` and
             variables to indicate the type of analysis being requested.
         """
         # determine analysis parameters
@@ -1270,7 +1415,7 @@ class NZS3101(DesignCode):
             prob_design = True
         else:
             raise ValueError(
-                f"The specified analysis type of '{analysis_type}' should be either "
+                f"The specified analysis type of *{analysis_type}* should be either "
                 f"'nom_chk', 'cpe_chk', 'os_chk', 'prob_chk' or 'prob_os_chk'"
                 f"for a {self.analysis_code} code analysis"
             )
@@ -1288,14 +1433,14 @@ class NZS3101(DesignCode):
                 and steel_geom.material.steel_grade.lower() in prob_properties
             ):
                 raise Exception(
-                    f"'{analysis_type}' analysis is not able to be undertaken on the "
+                    f"*{analysis_type}* analysis is not able to be undertaken on the "
                     f"provided concrete section as it contains predefined steel "
                     f"materials based on probable yield strengths and will give "
                     f"erroneous results for a design to {self.analysis_code} as "
                     f"material is not based on characteristic yield strengths. Define "
                     f"a user defined or predefined steel material based on "
                     f"characteristic yield properties to undertake a "
-                    f"'{analysis_type}' concrete section analysis.\n   Note "
+                    f"*{analysis_type}* concrete section analysis.\n   Note "
                     f"predefined steel grades based on characteristic strength based "
                     f"materials are {nom_properties}\n   Note analysis types "
                     f"consistent with a probable strength based material are "
@@ -1306,20 +1451,28 @@ class NZS3101(DesignCode):
         return phi, cpe_design, os_design, prob_design
 
     def create_os_section(
-        self, add_compressive_strength: float = 15
+        self,
+        add_compressive_strength: float = 15,
     ) -> ConcreteSection:
-        """Creates a concrete section with likely maximum material strength properties
+        """Creates an overstrength concrete section.
+
+        Creates a concrete section with likely maximum material strength properties
         for a cross section analysis to NZS3101:2006. Concrete and steel reinforcement
         strength properties are modified in accordance with NZS3101:2006 CL 2.6.5.5 to
         reflect likely maximum material strengths.
 
-        :param add_compressive_strength: The increase in compressive strength of the
-            specified 28 day compressive strength of concrete to reflect the likely
-            maximum material strength, defaults to an additional 15 MPa as per
-            NZS3101:2006 CL 2.6.5.5(c)
-        :raises ValueError: If concrete section contains a steel material that is not
-            :class:`NZS3101.SteelBarNZ`
-        :return: Returns a concrete section with material strengths modified to reflect
+        Args:
+            add_compressive_strength: The increase in compressive strength of the
+                specified 28 day compressive strength of concrete to reflect the likely
+                maximum material strength, defaults to an additional 15 MPa as per
+                NZS3101:2006 CL 2.6.5.5(c)
+
+        Raises:
+            ValueError: If concrete section contains a steel material that is not
+                :class:`NZS3101.SteelBarNZ`
+
+        Returns:
+            Returns a concrete section with material strengths modified to reflect
             likely maximum material strengths to enable an overstrength based analysis
             to be undertaken
         """
@@ -1384,20 +1537,31 @@ class NZS3101(DesignCode):
 
         return os_concrete_section
 
-    def create_prob_section(self, os_design: bool = False) -> ConcreteSection:
-        """Creates a concrete section with probable strength material properties
+    def create_prob_section(
+        self,
+        os_design: bool = False,
+    ) -> ConcreteSection:
+        """Creates a probable strength concrete section.
+
+        Creates a concrete section with probable strength material properties
         for a cross section analysis to NZS3101:2006 & NZSEE C5 assessment guidelines.
         Concrete and steel reinforcement strength properties are modified in accordance
         with NZSEE C5 assessment guidelines C5.4.2.2 & C5.4.3.
 
-        :param os_design: True if an overstrength probable capacity of a concrete
-            section is required, then the material properties for concrete and lumped
-            reinforcement are scaled to reflect the probable overstrength material
-            strength properties, defaults to False which only scales the material
-            properties for concrete to reflec tthe probable material strength properties
-        :raises ValueError: If concrete section contains a steel material that is not
-            :class:`NZS3101.SteelBarNZ`
-        :return: Returns a concrete section with material strengths modified to reflect
+        Args:
+            os_design: True if an overstrength probable capacity of a concrete
+                section is required, then the material properties for concrete and
+                lumped reinforcement are scaled to reflect the probable overstrength
+                material strength properties, defaults to False which only scales the
+                material properties for concrete to reflec tthe probable material
+                strength properties
+
+        Raises:
+            ValueError: If concrete section contains a steel material that is not
+                :class:`NZS3101.SteelBarNZ`
+
+        Returns:
+            Returns a concrete section with material strengths modified to reflect
             probable material strengths or probable overstrength material strengths, to
             enable a probable strength or probable overstrength based analysis
             to be undertaken
@@ -1491,21 +1655,26 @@ class NZS3101(DesignCode):
         self,
         pphr_class: str = "NDPR",
         analysis_type: str = "nom_chk",
-        theta: float = 0,
-        n_design: float = 0,
-    ) -> Tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]:
-        r"""Calculates the ultimate bending capacity with capacity factors to
-        NZS3101:2006 or the NZSEE C5 assessment guidelines dependant on analysis type.
+        theta: float = 0.0,
+        n_design: float = 0.0,
+    ) -> tuple[res.UltimateBendingResults, res.UltimateBendingResults, float]:
+        r"""Calculates the ultimate bending capacity.
 
-        :param analysis_type: The type of cross section analysis to undertake on the
-            defined concrete section, by default a normal nominal strength design check
-            is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor` for
-            further information on analysis types.
-        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
-            (:math:`-\pi \leq \theta \leq \pi`)
-        :param n_design: Axial design force (:math:`N^*`)
-        :return: Factored and unfactored ultimate bending results objects, and capacity
-            reduction factor *(factored_results, unfactored_results, phi)*
+        Calculates the ultimate bending capacity with capacity factors to NZS3101:2006
+        or the NZSEE C5 assessment guidelines dependant on analysis type.
+
+        Args:
+            analysis_type: The type of cross section analysis to undertake on the
+                defined concrete section, by default a normal nominal strength design
+                check is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor`
+                for further information on analysis types.
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            n_design: Axial design force (:math:`N^*`)
+
+        Returns:
+            Factored and unfactored ultimate bending results objects, and capacity
+            reduction factor (``factored_results``, ``unfactored_results``, ``phi``)
         """
         # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
         # (dependant on PPHR class)
@@ -1545,64 +1714,69 @@ class NZS3101(DesignCode):
         pphr_class: str = "NDPR",
         analysis_type: str = "nom_chk",
         theta: float = 0,
-        control_points: List[Tuple[str, float]] = [
-            ("fy", 1.0),
-            ("fy", 0.5),
-            ("fy", 0.0),
-            ("N", 0.0),
-        ],
-        labels: Optional[List[str]] = None,
+        control_points: list[tuple[str, float]] | None = None,
+        labels: list[str] | None = None,
         n_points: int = 24,
-        n_spacing: Optional[int] = None,
-        max_comp_labels: Optional[List[str]] = None,
+        n_spacing: int | None = None,
+        max_comp_labels: list[str] | None = None,
         progress_bar: bool = True,
-    ) -> Tuple[res.MomentInteractionResults, res.MomentInteractionResults, List[float]]:
-        r"""Generates a moment interaction diagram with capacity factors and material
+    ) -> tuple[res.MomentInteractionResults, res.MomentInteractionResults, list[float]]:
+        r"""Generates a moment interaction diagram.
+
+        Generates a moment interaction diagram with capacity factors and material
         strengths to NZS3101:2006 or the NZSEE C5 assessment guidelines dependant
         on analysis type.
 
-        :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
-            **NDPR**/**LDPR**/**DPR**.
+        Args:
+            pphr_class: Potential Plastic Hinge Region (PPHR) classification,
+                **NDPR**/**LDPR**/**DPR**.
 
-            - **NDPR** = Nominally Ductile Plastic Region
+                - **NDPR** = Nominally Ductile Plastic Region
 
-            - **LDPR** = Limited Ductile Plastic Region
+                - **LDPR** = Limited Ductile Plastic Region
 
-            - **DPR** = Ductile Plastic Region
+                - **DPR** = Ductile Plastic Region
 
-        :param analysis_type: The type of cross section analysis to undertake on the
-            defined concrete section, by default a normal nominal strength design check
-            is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor` for
-            further information on analysis types.
-        :param theta: Angle (in radians) the neutral axis makes with the horizontal axis
-            (:math:`-\pi \leq \theta \leq \pi`)
-        :param control_points: List of additional control points to add to the moment
-            interaction diagram. The default control points include the balanced point,
-            the 50% reinforcement strain point, the 0% reinforcement strain point
-            (``fy=1``, ``fy=0.5``, ``fy=0``), and the pure bending point (``N=0``).
-            Control points may lie outside the limits of the moment interaction diagram
-            as long as equilibrium can be found.
-        :param labels: List of labels to apply to the ``limits`` and ``control_points``
-            for plotting purposes. The first two values in ``labels`` apply labels to
-            the ``limits``, the remaining values apply labels to the ``control_points``.
-            If a single value is provided, this value will be applied to both ``limits``
-            and all ``control_points``. The length of ``labels`` must equal ``1`` or
-            ``2 + len(control_points)``.
-        :param n_points: Number of points to compute including and between the
-            ``limits`` of the moment interaction diagram. Generates equally spaced
-            neutral axes between the ``limits``.
-        :param n_spacing: If provided, overrides ``n_points`` and generates the moment
-            interaction diagram using ``n_spacing`` equally spaced axial loads. Note
-            that using ``n_spacing`` negatively affects performance, as the neutral axis
-            depth must first be located for each point on the moment interaction
-            diagram.
-        :param max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
-            first value is at zero moment, second value is at the intersection with the
-            interaction diagram.
-        :param progress_bar: If set to True, displays the progress bar
-        :return: Factored and unfactored moment interaction results objects, and list of
-            capacity reduction factors *(factored_results, unfactored_results, phis)*
+            analysis_type: The type of cross section analysis to undertake on the
+                defined concrete section, by default a normal nominal strength design
+                check is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor`
+                for further information on analysis types.
+            theta: Angle (in radians) the neutral axis makes with the horizontal axis
+                (:math:`-\pi \leq \theta \leq \pi`)
+            control_points: List of additional control points to add to the moment
+                interaction diagram. The default control points include the balanced
+                point, the 50% reinforcement strain point, the 0% reinforcement strain
+                point (``fy=1``, ``fy=0.5``, ``fy=0``), and the pure bending point
+                (``N=0``), i.e. ``[("fy", 1.0), ("fy", 0.5), ("fy", 0.0), ("N", 0.0)]``.
+                Control points may lie outside the limits of the moment interaction
+                diagram as long as equilibrium can be found.
+            labels: List of labels to apply to the ``limits`` and ``control_points`` for
+                plotting purposes. The first two values in ``labels`` apply labels to
+                the ``limits``, the remaining values apply labels to the
+                ``control_points``. If a single value is provided, this value will be
+                applied to both ``limits`` and all ``control_points``. The length of
+                ``labels`` must equal ``1`` or ``2 + len(control_points)``.
+            n_points: Number of points to compute including and between the
+                ``limits`` of the moment interaction diagram. Generates equally spaced
+                neutral axes between the ``limits``.
+            n_spacing: If provided, overrides ``n_points`` and generates the moment
+                interaction diagram using ``n_spacing`` equally spaced axial loads. Note
+                that using ``n_spacing`` negatively affects performance, as the neutral
+                axis depth must first be located for each point on the moment
+                interaction diagram.
+            max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
+                first value is at zero moment, second value is at the intersection with
+                the interaction diagram.
+            progress_bar: If set to True, displays the progress bar
+
+        Returns:
+            Factored and unfactored moment interaction results objects, and list of
+            capacity reduction factors (``factored_results``, ``unfactored_results``,
+            ``phis``)
         """
+        if control_points is None:
+            control_points = [("fy", 1.0), ("fy", 0.5), ("fy", 0.0), ("N", 0.0)]
+
         # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
         # (dependant on PPHR class)
         self.check_f_c_limits(pphr_class)
@@ -1661,30 +1835,34 @@ class NZS3101(DesignCode):
         n_design: float = 0.0,
         n_points: int = 48,
         progress_bar: bool = True,
-    ) -> Tuple[res.BiaxialBendingResults, List[float]]:
-        """Generates a biaxial bending with capacity factors to NZS3101:2006 or the
-        NZSEE C5 assessment guidelines dependant on analysis type.
+    ) -> tuple[res.BiaxialBendingResults, list[float]]:
+        """Generates a biaxial bending diagram.
 
-        :param pphr_class: Potential Plastic Hinge Region (PPHR) classification,
-            **NDPR**/**LDPR**/**DPR**.
+         Generates a biaxial bending with capacity factors to NZS3101:2006 or the
+         NZSEE C5 assessment guidelines dependant on analysis type.
 
-            - **NDPR** = Nominally Ductile Plastic Region
+         Args:
+             pphr_class: Potential Plastic Hinge Region (PPHR) classification,
+                 **NDPR**/**LDPR**/**DPR**.
 
-            - **LDPR** = Limited Ductile Plastic Region
+                 - **NDPR** = Nominally Ductile Plastic Region
 
-            - **DPR** = Ductile Plastic Region
+                 - **LDPR** = Limited Ductile Plastic Region
 
-        :param analysis_type: The type of cross section analysis to undertake on the
-            defined concrete section, by default a normal nominal strength design check
-            is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor` for
-            further information on analysis types.
-        :param n_design: Axial design force (:math:`N^*`)
-        :param n_points: Number of calculation points for neutral axis orientation
-        :param progress_bar: If set to True, displays the progress bar
-        :return: Factored biaxial bending results object and list of capacity reduction
-            factors *(factored_results, phis)*.
+                 - **DPR** = Ductile Plastic Region
+
+             analysis_type: The type of cross section analysis to undertake on the
+                 defined concrete section, by default a normal nominal strength design
+                 check is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor`
+                 for further information on analysis types.
+             n_design: Axial design force (:math:`N^*`)
+             n_points: Number of calculation points for neutral axis orientation
+             progress_bar: If set to True, displays the progress bar
+
+        Returns:
+             Factored biaxial bending results object and list of capacity reduction
+             factors (``factored_results``, ``phis``)
         """
-
         # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
         # (dependant on PPHR class)
         self.check_f_c_limits(pphr_class)
