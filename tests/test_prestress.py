@@ -1,3 +1,5 @@
+"""Tests for prestressed concrete sections."""
+
 import pytest
 from sectionproperties.pre.library.primitive_sections import rectangular_section
 
@@ -6,6 +8,7 @@ import concreteproperties.utils as utils
 from concreteproperties.material import Concrete, Steel, SteelStrand
 from concreteproperties.pre import add_bar
 from concreteproperties.prestressed_section import PrestressedSection
+
 
 # material properties
 concrete = Concrete(
@@ -37,7 +40,8 @@ strand = SteelStrand(
 
 
 def test_asymmetric_section():
-    geom = rectangular_section(b=100, d=100, material=concrete)  # type: ignore
+    """Tests asymmetric section detection."""
+    geom = rectangular_section(b=100, d=100, material=concrete)
     geom = add_bar(
         geometry=geom,
         area=100,
@@ -49,10 +53,11 @@ def test_asymmetric_section():
     with pytest.raises(
         ValueError, match="PrestressedSection must be symmetric about y-axis."
     ):
-        conc_sec = PrestressedSection(geom)
+        PrestressedSection(geom)
 
 
 def test_meshed_sections():
+    """Tests meshed steel section detection."""
     steel = Steel(
         name="500 MPa Steel",
         density=7.85e-6,
@@ -64,7 +69,7 @@ def test_meshed_sections():
         colour="grey",
     )
 
-    geom = rectangular_section(b=100, d=100, material=concrete)  # type: ignore
+    geom = rectangular_section(b=100, d=100, material=concrete)  #
     geom = add_bar(
         geometry=geom,
         area=100,
@@ -75,23 +80,21 @@ def test_meshed_sections():
     geom = add_bar(
         geometry=geom,
         area=100,
-        material=steel,  # type: ignore
+        material=steel,
         x=50,
         y=80,
     )
 
-    with pytest.raises(
-        ValueError,
-        match="Meshed reinforcement geometries are not permitted in PrestressedSection.",
-    ):
-        conc_sec = PrestressedSection(geom)
+    msg = "Meshed reinforcement geometries are not permitted in PrestressedSection."
+    with pytest.raises(ValueError, match=msg):
+        PrestressedSection(geom)
 
 
 # define section to be used in cracked analysis
-geom_bot = rectangular_section(d=400, b=300, material=concrete)  # type: ignore
-geom_top = rectangular_section(
-    d=400, b=300, material=concrete  # type: ignore
-).shift_section(y_offset=400)
+geom_bot = rectangular_section(d=400, b=300, material=concrete)
+geom_top = rectangular_section(d=400, b=300, material=concrete).shift_section(
+    y_offset=400
+)
 geom = geom_top + geom_bot
 geom = add_bar(
     geometry=geom,
@@ -104,16 +107,18 @@ conc_sec = PrestressedSection(geom)
 
 
 def test_cracked_full_compression():
+    """Tests cracked analysis when section in compression."""
     with pytest.raises(utils.AnalysisError):
         conc_sec.calculate_cracked_properties(m_ext=300e6)
 
 
 def test_cracked_multiple_sections():
+    """Tests cracked analysis on a combined section is equal to a single section."""
     # calculate with two separate sections
     cr = conc_sec.calculate_cracked_properties(m_ext=500e6)
 
     # calculate with one section
-    geom2 = rectangular_section(d=800, b=300, material=concrete)  # type: ignore
+    geom2 = rectangular_section(d=800, b=300, material=concrete)
     geom2 = add_bar(
         geometry=geom2,
         area=1000,
@@ -130,10 +135,12 @@ def test_cracked_multiple_sections():
 
 
 def test_moment_interaction():
+    """Tests NotImplementedError for moment interaction diagram."""
     with pytest.raises(NotImplementedError):
         conc_sec.moment_interaction_diagram()
 
 
 def test_biaxial_bending():
+    """Tests NotImplementedError for biaxial bending diagram."""
     with pytest.raises(NotImplementedError):
         conc_sec.biaxial_bending_diagram()

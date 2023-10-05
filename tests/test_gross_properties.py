@@ -1,14 +1,18 @@
+"""Tests the calculation of gross properties."""
+
 import pytest
 import sectionproperties.pre.library.primitive_sections as sp_ps
+
 from concreteproperties.analysis_section import AnalysisSection
 
 
 def test_rectangle_second_moment_of_area():
+    """Test rectangular second moments of area."""
     d = 100
     b = 100
 
     rect = sp_ps.rectangular_section(d=d, b=b)
-    sec = AnalysisSection(geometry=rect)  # type: ignore
+    sec = AnalysisSection(geometry=rect)
 
     ixx_g = 0
     iyy_g = 0

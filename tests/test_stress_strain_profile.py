@@ -1,10 +1,13 @@
+"""Tests for stress-strain profiles."""
+
 import pytest
 
-from concreteproperties.stress_strain_profile import *
+import concreteproperties.stress_strain_profile as ssp
 
 
 def test_whitney():
-    profile = RectangularStressBlock(40, 0.85, 0.77, 0.003)
+    """Tests the Whitney stress block."""
+    profile = ssp.RectangularStressBlock(40, 0.85, 0.77, 0.003)
 
     assert pytest.approx(profile.get_stress(0)) == 0
     assert pytest.approx(profile.get_stress(0.003)) == 0.85 * 40
@@ -18,16 +21,17 @@ def test_whitney():
 
 
 def test_piecewise_linear():
+    """Tests the piecewise linear profile."""
     with pytest.raises(ValueError):
-        profile = StressStrainProfile([0], [0])
+        profile = ssp.StressStrainProfile([0], [0])
 
     with pytest.raises(ValueError):
-        profile = StressStrainProfile([-1, 0, 1], [0, 2])
+        profile = ssp.StressStrainProfile([-1, 0, 1], [0, 2])
 
     with pytest.raises(ValueError):
-        profile = StressStrainProfile([0, 1, 0.5], [0, 3, 5])
+        profile = ssp.StressStrainProfile([0, 1, 0.5], [0, 3, 5])
 
-    profile = StressStrainProfile([-0.05, 0, 0.0025, 0.05], [0, 0, 500, 600])
+    profile = ssp.StressStrainProfile([-0.05, 0, 0.0025, 0.05], [0, 0, 500, 600])
 
     assert pytest.approx(profile.get_stress(0)) == 0
     assert pytest.approx(profile.get_stress(0.0025)) == 500
@@ -39,8 +43,9 @@ def test_piecewise_linear():
 
 
 def test_modifiedmander_invalid_sect_type():
+    """Tests the modified mander profile (invalid section type)."""
     with pytest.raises(ValueError):
-        ModifiedMander(
+        ssp.ModifiedMander(
             elastic_modulus=30e3,
             compressive_strength=30,
             tensile_strength=4.5,
@@ -50,8 +55,9 @@ def test_modifiedmander_invalid_sect_type():
 
 
 def test_modifiedmander_confined_warning():
+    """Tests the modified mander profile (confined warning)."""
     with pytest.warns(UserWarning):
-        ModifiedMander(
+        ssp.ModifiedMander(
             elastic_modulus=30e3,
             compressive_strength=30,
             tensile_strength=4.5,
@@ -78,7 +84,8 @@ def test_modifiedmander_unconfined_stress_strain(
     strain_index,
     strain,
 ):
-    stress_strain_profile = ModifiedMander(
+    """Tests the modified mander profile (unconfined stress-strain)."""
+    stress_strain_profile = ssp.ModifiedMander(
         elastic_modulus=elastic_modulus,
         compressive_strength=compressive_strength,
         tensile_strength=tensile_strength,
@@ -121,7 +128,8 @@ def test_modifiedmander_confined_stress_strain(
     strain_index,
     strain,
 ):
-    stress_strain_profile = ModifiedMander(
+    """Tests the modified mander profile (confined stress-strain)."""
+    stress_strain_profile = ssp.ModifiedMander(
         elastic_modulus=elastic_modulus,
         compressive_strength=compressive_strength,
         tensile_strength=tensile_strength,

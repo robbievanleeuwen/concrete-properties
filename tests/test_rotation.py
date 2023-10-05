@@ -1,5 +1,9 @@
+"""Tests confirming functionality of rotation and theta."""
+
 import numpy as np
 import pytest
+from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
+
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import Concrete, SteelBar
 from concreteproperties.stress_strain_profile import (
@@ -7,7 +11,7 @@ from concreteproperties.stress_strain_profile import (
     RectangularStressBlock,
     SteelElasticPlastic,
 )
-from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
+
 
 # generate list of angles to test
 thetas = np.linspace(start=-np.pi, stop=np.pi, num=31)
@@ -43,15 +47,16 @@ ref_geom = concrete_rectangular_section(
     b=400,
     d=600,
     dia_top=20,
+    c_top=30,
     n_top=3,
     dia_bot=20,
     n_bot=3,
+    c_bot=30,
     n_circle=4,
-    cover=30,
     area_top=310,
     area_bot=310,
-    conc_mat=concrete,  # type: ignore
-    steel_mat=steel,  # type: ignore
+    conc_mat=concrete,
+    steel_mat=steel,
 )
 
 ref_sec = ConcreteSection(ref_geom)
@@ -61,6 +66,7 @@ ref_cracked = ref_sec.calculate_cracked_properties()
 
 @pytest.mark.parametrize("theta", thetas)
 def test_rotated_gross_properties(theta):
+    """Tests rotated gross properties."""
     # rotate reference geometry
     new_geom = ref_geom.rotate_section(angle=theta, use_radians=True)
     new_sec = ConcreteSection(new_geom)
@@ -92,6 +98,7 @@ def test_rotated_gross_properties(theta):
 
 @pytest.mark.parametrize("theta", thetas)
 def test_rotated_cracked_properties(theta):
+    """Tests rotated cracked properties."""
     # rotate reference geometry
     new_geom = ref_geom.rotate_section(angle=theta, use_radians=True)
     new_sec = ConcreteSection(new_geom)
@@ -109,6 +116,7 @@ normal_forces = [-1e3, 0, 1e3, 1e5]
 
 @pytest.mark.parametrize("theta", thetas)
 def test_rotated_ultimate_properties(theta):
+    """Tests rotated ultimate properties."""
     # rotate reference geometry
     new_geom = ref_geom.rotate_section(angle=theta, use_radians=True)
     new_sec = ConcreteSection(new_geom)
@@ -127,6 +135,7 @@ normal_forces = [-1e3, 0, 1e3, 1e5]
 
 @pytest.mark.parametrize("theta", thetas)
 def test_rotated_uncracked_stress(theta):
+    """Tests rotated uncracked stresses."""
     # rotate reference geometry
     new_geom = ref_geom.rotate_section(angle=theta, use_radians=True)
     new_sec = ConcreteSection(new_geom)
@@ -162,6 +171,7 @@ normal_forces = [-1e3, 0, 1e3, 1e5]
 
 @pytest.mark.parametrize("theta", thetas)
 def test_rotated_cracked_stress(theta):
+    """Tests rotated cracked stresses."""
     # rotate reference geometry
     new_geom = ref_geom.rotate_section(angle=theta, use_radians=True)
     new_sec = ConcreteSection(new_geom)
@@ -194,6 +204,7 @@ normal_forces = [-1e3, 0, 1e3, 1e5]
 
 @pytest.mark.parametrize("theta", thetas)
 def test_rotated_ultimate_stress(theta):
+    """Tests rotated ultimate stresses."""
     # rotate reference geometry
     new_geom = ref_geom.rotate_section(angle=theta, use_radians=True)
     new_sec = ConcreteSection(new_geom)

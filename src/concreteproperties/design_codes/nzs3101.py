@@ -476,7 +476,7 @@ class NZS3101(DesignCode):
                 # calculate gross concrete area (area of concrete & reinforcement)
                 for steel_geom in self.concrete_section.reinf_geometries_lumped:
                     for bar_hole in conc_geom.geom.interiors:
-                        if steel_geom.geom.exterior.equals(bar_hole):  # type: ignore
+                        if steel_geom.geom.exterior.equals(bar_hole):
                             concrete_area += steel_geom.calculate_area()
 
                 # calculate cumulative gross concrete force
@@ -1233,11 +1233,11 @@ class NZS3101(DesignCode):
             name=name,
             steel_grade=steel_grade,
             density=density,
-            phi_os=phi_os,  # type: ignore
+            phi_os=phi_os,
             stress_strain_profile=ssp.SteelElasticPlastic(
-                yield_strength=yield_strength,  # type: ignore
+                yield_strength=yield_strength,
                 elastic_modulus=elastic_modulus,
-                fracture_strain=fracture_strain,  # type: ignore
+                fracture_strain=fracture_strain,
             ),
             colour=colour,
         )

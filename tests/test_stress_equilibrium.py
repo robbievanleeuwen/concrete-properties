@@ -1,6 +1,9 @@
+"""Tests confirming stress equilibrium."""
+
 import numpy as np
 import pytest
 import sectionproperties.pre.library.concrete_sections as sp_cs
+
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import Concrete, SteelBar
 from concreteproperties.stress_strain_profile import (
@@ -8,6 +11,7 @@ from concreteproperties.stress_strain_profile import (
     RectangularStressBlock,
     SteelElasticPlastic,
 )
+
 
 # generate list of angles to test
 thetas = np.linspace(start=-np.pi, stop=np.pi, num=31)
@@ -41,20 +45,22 @@ steel = SteelBar(
 
 @pytest.mark.parametrize("theta", thetas)
 def test_stress_equilibrium_rectangle(theta):
+    """Tests stress equilibirum for a rectangular section."""
     # reference geometry
     geom = sp_cs.concrete_rectangular_section(
         b=300,
         d=900,
         dia_top=16,
         n_top=3,
+        c_top=30,
         dia_bot=24,
         n_bot=3,
+        c_bot=30,
         n_circle=4,
-        cover=30,
         area_top=200,
         area_bot=450,
-        conc_mat=concrete,  # type: ignore
-        steel_mat=steel,  # type: ignore
+        conc_mat=concrete,
+        steel_mat=steel,
     )
 
     sec = ConcreteSection(geom.rotate_section(angle=theta, use_radians=True))
@@ -93,18 +99,19 @@ normal_forces = [-1e3, 0, 1e3, 1e5, 1e6]
 
 @pytest.mark.parametrize("nf", normal_forces)
 def test_stress_equilibrium_circular(nf):
+    """Tests stress equilibirum for a circular section."""
     # reference geometry
     geom = sp_cs.concrete_circular_section(
         d=750,
-        n=64,
-        dia=24,
+        area_conc=np.pi * 750 * 750 / 4,
+        n_conc=64,
+        dia_bar=24,
+        area_bar=450,
         n_bar=12,
         n_circle=4,
-        area_conc=np.pi * 750 * 750 / 4,
-        area_bar=450,
         cover=50,
-        conc_mat=concrete,  # type: ignore
-        steel_mat=steel,  # type: ignore
+        conc_mat=concrete,
+        steel_mat=steel,
     )
 
     sec = ConcreteSection(geom)
@@ -133,6 +140,7 @@ def test_stress_equilibrium_circular(nf):
 
 @pytest.mark.parametrize("theta", thetas)
 def test_stress_equilibrium_tee(theta):
+    """Tests stress equilibirum for a tee section."""
     # reference geometry
     geom = sp_cs.concrete_tee_section(
         b=450,
@@ -141,14 +149,15 @@ def test_stress_equilibrium_tee(theta):
         d_f=200,
         dia_top=16,
         n_top=12,
+        c_top=30,
         dia_bot=24,
         n_bot=4,
+        c_bot=30,
         n_circle=4,
-        cover=30,
         area_top=200,
         area_bot=450,
-        conc_mat=concrete,  # type: ignore
-        steel_mat=steel,  # type: ignore
+        conc_mat=concrete,
+        steel_mat=steel,
     )
 
     sec = ConcreteSection(geom.rotate_section(angle=theta, use_radians=True))

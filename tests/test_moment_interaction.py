@@ -1,7 +1,11 @@
-import concreteproperties.results as res
-import concreteproperties.utils as utils
+"""Tests moment interaction diagrams."""
+
 import numpy as np
 import pytest
+from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
+
+import concreteproperties.results as res
+import concreteproperties.utils as utils
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import Concrete, SteelBar
 from concreteproperties.stress_strain_profile import (
@@ -9,7 +13,7 @@ from concreteproperties.stress_strain_profile import (
     RectangularStressBlock,
     SteelElasticPlastic,
 )
-from sectionproperties.pre.library.concrete_sections import concrete_rectangular_section
+
 
 concrete = Concrete(
     name="32 MPa Concrete",
@@ -44,19 +48,21 @@ geometry = concrete_rectangular_section(
     dia_top=24,
     n_top=3,
     dia_bot=24,
+    c_top=30,
     n_bot=3,
+    c_bot=30,
     n_circle=4,
-    cover=30,
     area_top=450,
     area_bot=450,
-    conc_mat=concrete,  # type: ignore
-    steel_mat=steel,  # type: ignore
+    conc_mat=concrete,
+    steel_mat=steel,
 )
 
 conc_sec = ConcreteSection(geometry)
 
 
 def test_control_points():
+    """Tests control points."""
     control_points = [
         ("D", 0.8),
         ("d_n", 310),
@@ -101,6 +107,7 @@ limits_list = [
 
 @pytest.mark.parametrize("limits", limits_list)
 def test_limits(limits):
+    """Tests limits."""
     theta = 0
 
     # compute extreme tensile fibre
@@ -130,6 +137,7 @@ def test_limits(limits):
 
 
 def test_sorting_and_duplicates():
+    """Tests sorting of control points and duplicate detection."""
     n_points = 10
 
     limits = [("kappa0", 0), ("d_n", 1e-6)]
@@ -144,22 +152,23 @@ def test_sorting_and_duplicates():
     )
 
     # testing sorting
-    for idx, res in enumerate(mi_res.results):
+    for idx, m_res in enumerate(mi_res.results):
         if idx > 0:
-            assert res.n < mi_res.results[idx - 1].n
+            assert m_res.n < mi_res.results[idx - 1].n
 
     # 1 duplicate therefore length should be n_points + len(control_points) - 1
     assert len(mi_res.results) == n_points + len(control_points) - 1
 
 
 def test_limit_validation():
+    """Tests limits validation."""
     with pytest.raises(ValueError):
-        mi_res = conc_sec.moment_interaction_diagram(
+        conc_sec.moment_interaction_diagram(
             limits=[("D", 1)],
         )
 
     with pytest.raises(ValueError):
-        mi_res = conc_sec.moment_interaction_diagram(
+        conc_sec.moment_interaction_diagram(
             limits=[
                 ("D", 1),
                 ("D", 0.5),
@@ -169,12 +178,11 @@ def test_limit_validation():
 
 
 def test_label_validation():
-    mi_res = conc_sec.moment_interaction_diagram(labels=["Hi"])
-    mi_res = conc_sec.moment_interaction_diagram(
-        labels=["Hi", "Bye"], control_points=[]
-    )
-    mi_res = conc_sec.moment_interaction_diagram(labels=["A", "B", "C", "D", "E"])
-    mi_res = conc_sec.moment_interaction_diagram(
+    """Tests label validation."""
+    conc_sec.moment_interaction_diagram(labels=["Hi"])
+    conc_sec.moment_interaction_diagram(labels=["Hi", "Bye"], control_points=[])
+    conc_sec.moment_interaction_diagram(labels=["A", "B", "C", "D", "E"])
+    conc_sec.moment_interaction_diagram(
         control_points=[
             ("D", 1),
             ("d_n", 310),
@@ -184,7 +192,7 @@ def test_label_validation():
     )
 
     with pytest.raises(ValueError):
-        mi_res = conc_sec.moment_interaction_diagram(
+        conc_sec.moment_interaction_diagram(
             control_points=[
                 ("D", 1),
                 ("d_n", 310),
@@ -194,25 +202,29 @@ def test_label_validation():
         )
 
     with pytest.raises(ValueError):
-        mi_res = conc_sec.moment_interaction_diagram(
-            labels="Hi",  # type: ignore
+        conc_sec.moment_interaction_diagram(
+            labels="Hi",
         )
 
 
 def test_n_spacing():
+    """Tests axial force spacing."""
     n_spacing = 24
     mi_res = conc_sec.moment_interaction_diagram(n_spacing=n_spacing, control_points=[])
 
     spacing = 0
 
-    for idx, res in enumerate(mi_res.results):
+    for idx, m_res in enumerate(mi_res.results):
         if idx == 1:
-            spacing = mi_res.results[idx - 1].n - res.n
+            spacing = mi_res.results[idx - 1].n - m_res.n
         elif idx > 1:
-            assert pytest.approx(mi_res.results[idx - 1].n - res.n, rel=1e-3) == spacing
+            assert (
+                pytest.approx(mi_res.results[idx - 1].n - m_res.n, rel=1e-3) == spacing
+            )
 
 
 def test_max_comp():
+    """Tests maximum compression point."""
     mc = 4000e3  # N.B point chosen to be between first two points on MI diagram
     mi_res_ref = conc_sec.moment_interaction_diagram()
     mi_res_mc = conc_sec.moment_interaction_diagram(max_comp=mc)
@@ -249,11 +261,12 @@ def test_max_comp():
     )
 
     # check max axial load (with buffer) is less than or equal to mc
-    for res in mi_res.results:
-        assert res.n <= (1 + 1e-6) * mc
+    for m_res in mi_res.results:
+        assert m_res.n <= (1 + 1e-6) * mc
 
 
 def test_labels():
+    """Tests labels."""
     axial_load_list = [0, 1e6, 2e6, 3e6, 4e6]
     limits = [
         ("N", 4000e3),
@@ -272,11 +285,11 @@ def test_labels():
     )
 
     # check labels applied to limits/control points
-    for res in mi_res.results:
-        if any(np.isclose([res.n] * len(axial_load_list), axial_load_list, atol=50)):
-            assert res.label == "HI"
+    for m_res in mi_res.results:
+        if any(np.isclose([m_res.n] * len(axial_load_list), axial_load_list, atol=50)):
+            assert m_res.label == "HI"
         else:
-            assert res.label is None
+            assert m_res.label is None
 
     labels = ["A", "E", "B", "C", "D"]
     labels_ordered = ["A", "B", "C", "D", "E"]
@@ -289,12 +302,12 @@ def test_labels():
     label_counter = 0
 
     # check labels applied to limits/control points
-    for res in mi_res.results:
-        if any(np.isclose([res.n] * len(axial_load_list), axial_load_list, atol=50)):
-            assert res.label == labels_ordered[label_counter]
+    for m_res in mi_res.results:
+        if any(np.isclose([m_res.n] * len(axial_load_list), axial_load_list, atol=50)):
+            assert m_res.label == labels_ordered[label_counter]
             label_counter += 1
         else:
-            assert res.label is None
+            assert m_res.label is None
 
     # check max_comp_labels pt 1
     mc = 4000e3  # N.B point chosen to be between first two points on MI diagram

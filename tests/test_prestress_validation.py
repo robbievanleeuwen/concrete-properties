@@ -1,3 +1,5 @@
+"""Test examples for prestressed concrete sections from Gilbert et. al."""
+
 import pytest
 from sectionproperties.analysis.section import Section
 from sectionproperties.pre.geometry import Geometry
@@ -9,12 +11,14 @@ from concreteproperties.material import Concrete, SteelBar, SteelStrand
 from concreteproperties.pre import add_bar, add_bar_rectangular_array
 from concreteproperties.prestressed_section import PrestressedSection
 
+
 # All examples come from:
 # Gilbert, R. I., Mickleborough, N. C., & Ranzi, G. (2016). Design of Prestressed
 # Concrete to AS3600-2009 (2nd ed.). CRC Press.
 
 
 def test_example_5_4():
+    """Tests Example 5.4."""
     # create materials
     concrete = Concrete(
         name="40 MPa Concrete",
@@ -65,7 +69,7 @@ def test_example_5_4():
     assert pytest.approx(gross_sec.get_c()[1], rel=1e-3) == -602
 
     # recreate geometry with materials
-    geom = i_girder_section(girder_type=3, material=concrete)  # type: ignore
+    geom = i_girder_section(girder_type=3, material=concrete)  #
 
     # add top steel bars
     geom = add_bar_rectangular_array(
@@ -130,13 +134,13 @@ def test_example_5_4():
 
     # apply external forces
     d_f = 300
-    N_ext = 100e3  # at d_f from top
-    M_ext = 1000e6  # at d_f from top
+    n_ext = 100e3  # at d_f from top
+    m_ext = 1000e6  # at d_f from top
     cy = conc_sec.get_gross_properties().cy
-    M_ext_c = M_ext - N_ext * (cy + d_f)
+    m_ext_c = m_ext - n_ext * (cy + d_f)
 
     # calculate elastic stress
-    res = conc_sec.calculate_uncracked_stress(n=N_ext, m=M_ext_c)
+    res = conc_sec.calculate_uncracked_stress(n=n_ext, m=m_ext_c)
     min_c, max_c = res.get_concrete_stress_limits()
     max_steel = max(res.lumped_reinforcement_stresses)
     min_steel = min(res.lumped_reinforcement_stresses)
@@ -155,6 +159,7 @@ def test_example_5_4():
 
 
 def test_example_5_7():
+    """Tests Example 5.7."""
     # create materials
     concrete = Concrete(
         name="40 MPa Concrete",
@@ -195,7 +200,7 @@ def test_example_5_7():
     )
 
     # create geometry
-    geom = rectangular_section(d=750, b=200, material=concrete)  # type: ignore
+    geom = rectangular_section(d=750, b=200, material=concrete)  #
 
     # add top steel bars
     geom = add_bar_rectangular_array(
@@ -237,7 +242,7 @@ def test_example_5_7():
     assert pytest.approx(strand, rel=1e-3) == -1216.0
 
     # check cracking moment with zero tensile strength
-    assert pytest.approx(cr.m_cr[0], rel=1e-3) == 293e6  # type: ignore
+    assert pytest.approx(cr.m_cr[0], rel=1e-3) == 293e6  #
 
     # calculate moment curvature
     mk_res = conc_sec.moment_curvature_analysis(kappa_inc=1e-6, delta_m_min=2)
@@ -247,6 +252,7 @@ def test_example_5_7():
 
 
 def test_example_6_1_2_3():
+    """Tests Example 6.1, 6.2 and 6.3."""
     # create materials
     concrete = Concrete(
         name="40 MPa Concrete",
@@ -291,7 +297,7 @@ def test_example_6_1_2_3():
     )
 
     # create geometry
-    geom = rectangular_section(d=750, b=350, material=concrete)  # type: ignore
+    geom = rectangular_section(d=750, b=350, material=concrete)
 
     # add prestressing strand
     geom = add_bar(
@@ -342,6 +348,7 @@ def test_example_6_1_2_3():
 
 
 def test_example_6_9():
+    """Tests Example 6.9."""
     # create materials
     concrete = Concrete(
         name="40 MPa Concrete",
@@ -377,9 +384,9 @@ def test_example_6_9():
     # create geometry and check gross section properties
     slab = rectangular_section(b=2400, d=50).shift_section(x_offset=-1200, y_offset=-50)
     beam_l = Geometry.from_points(
-        points=[[-65, -800], [65, -800], [102.5, -50], [-102.5, -50]],
-        facets=[[0, 1], [1, 2], [2, 3], [3, 0]],
-        control_points=[[0, 375]],
+        points=[(-65, -800), (65, -800), (102.5, -50), (-102.5, -50)],
+        facets=[(0, 1), (1, 2), (2, 3), (3, 0)],
+        control_points=[(0, 375)],
     ).shift_section(x_offset=-600)
     beam_r = beam_l.shift_section(x_offset=1200)
 
@@ -395,9 +402,9 @@ def test_example_6_9():
     assert pytest.approx(gross_sec.get_c()[1], rel=1e-3) == -277
 
     # recreate geometry with materials
-    slab.material = concrete  # type: ignore
-    beam_l.material = concrete  # type: ignore
-    beam_r.material = concrete  # type: ignore
+    slab.material = concrete  #
+    beam_l.material = concrete  #
+    beam_r.material = concrete  #
     geom = slab + beam_l + beam_r
 
     # add prestressing strands

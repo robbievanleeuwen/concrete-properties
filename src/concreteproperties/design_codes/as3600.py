@@ -382,7 +382,7 @@ class AS3600(DesignCode):
             a=phi_0,
             b=0.85,
             xtol=1e-3,
-            rtol=1e-6,  # type: ignore
+            rtol=1e-6,
             full_output=True,
             disp=False,
         )
