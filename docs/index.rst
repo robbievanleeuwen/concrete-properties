@@ -9,6 +9,7 @@
 
     installation
     user_guide
+    examples
     api
 
 .. toctree::
