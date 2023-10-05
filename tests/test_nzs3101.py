@@ -23,7 +23,7 @@ def create_dummy_section(design_code, prob_section=False, section_type="column")
     b = 550
     d = 900
     dia = 20
-    area = 310
+    area = np.pi * dia**2 / 4
     n = 5
     cvr = 30
 
@@ -330,7 +330,7 @@ def test_nzs3101_check_f_c_limits_valid(pphr_class, compressive_strength):
         conc_geom.material.ultimate_stress_strain_profile.__setattr__(
             "compressive_strength", compressive_strength
         )
-    assert pytest.approx(design_code.check_f_c_limits(pphr_class)) is None
+    assert design_code.check_f_c_limits(pphr_class) is None
 
 
 @pytest.mark.parametrize(
@@ -368,7 +368,7 @@ def test_nzs3101_check_f_y_limit_valid(yield_strength):
         steel_geom.material.stress_strain_profile.__setattr__(
             "yield_strength", yield_strength
         )
-    assert pytest.approx(design_code.check_f_y_limit()) is None
+    assert design_code.check_f_y_limit() is None
 
 
 @pytest.mark.parametrize(
@@ -1140,16 +1140,19 @@ def test_nzs3101_ultimate_bending_capacity_beam_no_axial(
     steel = design_code.create_steel_material(steel_grade)
 
     dia_top = 20
+    area_top = np.pi * dia_top**2 / 4
     dia_bot = 25
+    area_bot = np.pi * dia_bot**2 / 4
+
     geometry = concrete_rectangular_section(
         b=500,
         d=800,
         dia_top=dia_top,
-        area_top=310,
+        area_top=area_top,
         n_top=5,
         c_top=50,
         dia_bot=dia_bot,
-        area_bot=490,
+        area_bot=area_bot,
         n_bot=5,
         c_bot=50,
         n_circle=16,
@@ -1198,16 +1201,19 @@ def test_nzs3101_ultimate_bending_capacity_beam_with_axial(
     steel = design_code.create_steel_material(steel_grade)
 
     dia_top = 20
+    area_top = np.pi * dia_top**2 / 4
     dia_bot = 25
+    area_bot = np.pi * dia_bot**2 / 4
+
     geometry = concrete_rectangular_section(
         b=500,
         d=800,
         dia_top=dia_top,
-        area_top=310,
+        area_top=area_top,
         n_top=5,
         c_top=50,
         dia_bot=dia_bot,
-        area_bot=490,
+        area_bot=area_bot,
         n_bot=5,
         c_bot=50,
         n_circle=16,
@@ -1255,19 +1261,23 @@ def test_nzs3101_moment_interaction_diagram(
     steel = design_code.create_steel_material(steel_grade)
 
     dia = 20
+    area = np.pi * dia**2 / 4
+
     geometry = concrete_rectangular_section(
         b=600,
         d=600,
         dia_top=dia,
-        area_top=310,
+        area_top=area,
         n_top=5,
         c_top=50,
         dia_bot=dia,
-        area_bot=310,
+        area_bot=area,
         n_bot=5,
         c_bot=50,
         dia_side=dia,
+        area_side=area,
         n_side=3,
+        c_side=50,
         n_circle=16,
         conc_mat=concrete,
         steel_mat=steel,
@@ -1318,19 +1328,23 @@ def test_nzs3101_biaxial_bending_diagram(
     steel = design_code.create_steel_material(steel_grade)
 
     dia = 20
+    area = np.pi * dia**2 / 4
+
     geometry = concrete_rectangular_section(
         b=600,
         d=600,
         dia_top=dia,
-        area_top=310,
+        area_top=area,
         n_top=5,
         c_top=50,
         dia_bot=dia,
-        area_bot=310,
+        area_bot=area,
         n_bot=5,
         c_bot=50,
         dia_side=dia,
+        area_side=area,
         n_side=3,
+        c_side=50,
         n_circle=16,
         conc_mat=concrete,
         steel_mat=steel,

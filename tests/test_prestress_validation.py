@@ -69,7 +69,7 @@ def test_example_5_4():
     assert pytest.approx(gross_sec.get_c()[1], rel=1e-3) == -602
 
     # recreate geometry with materials
-    geom = i_girder_section(girder_type=3, material=concrete)  #
+    geom = i_girder_section(girder_type=3, material=concrete)
 
     # add top steel bars
     geom = add_bar_rectangular_array(
@@ -200,7 +200,7 @@ def test_example_5_7():
     )
 
     # create geometry
-    geom = rectangular_section(d=750, b=200, material=concrete)  #
+    geom = rectangular_section(d=750, b=200, material=concrete)
 
     # add top steel bars
     geom = add_bar_rectangular_array(
@@ -242,7 +242,7 @@ def test_example_5_7():
     assert pytest.approx(strand, rel=1e-3) == -1216.0
 
     # check cracking moment with zero tensile strength
-    assert pytest.approx(cr.m_cr[0], rel=1e-3) == 293e6  #
+    assert pytest.approx(cr.m_cr[0], rel=1e-3) == 293e6
 
     # calculate moment curvature
     mk_res = conc_sec.moment_curvature_analysis(kappa_inc=1e-6, delta_m_min=2)
@@ -386,7 +386,7 @@ def test_example_6_9():
     beam_l = Geometry.from_points(
         points=[(-65, -800), (65, -800), (102.5, -50), (-102.5, -50)],
         facets=[(0, 1), (1, 2), (2, 3), (3, 0)],
-        control_points=[(0, 375)],
+        control_points=[(0, -375)],
     ).shift_section(x_offset=-600)
     beam_r = beam_l.shift_section(x_offset=1200)
 
@@ -402,9 +402,9 @@ def test_example_6_9():
     assert pytest.approx(gross_sec.get_c()[1], rel=1e-3) == -277
 
     # recreate geometry with materials
-    slab.material = concrete  #
-    beam_l.material = concrete  #
-    beam_r.material = concrete  #
+    slab.material = concrete
+    beam_l.material = concrete
+    beam_r.material = concrete
     geom = slab + beam_l + beam_r
 
     # add prestressing strands
