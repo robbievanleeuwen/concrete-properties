@@ -13,7 +13,7 @@ Here is a list of important resources for contributors:
 
 -  `Source
    Code <https://github.com/robbievanleeuwen/concrete-properties>`__
--  `Documentation <https://concreteproperties.readthedocs.io/>`__
+-  `Documentation <https://concrete-properties.readthedocs.io/>`__
 -  `Issue
    Tracker <https://github.com/robbievanleeuwen/concrete-properties/issues>`__
 -  :doc:`Code of Conduct <codeofconduct>`

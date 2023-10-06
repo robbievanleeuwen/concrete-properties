@@ -13,7 +13,7 @@ Here is a list of important resources for contributors:
 
 [mit license]: https://opensource.org/licenses/MIT
 [source code]: https://github.com/robbievanleeuwen/concrete-properties
-[documentation]: https://concreteproperties.readthedocs.io/
+[documentation]: https://concrete-properties.readthedocs.io/
 [issue tracker]: https://github.com/robbievanleeuwen/concrete-properties/issues
 
 ## How to report a bug

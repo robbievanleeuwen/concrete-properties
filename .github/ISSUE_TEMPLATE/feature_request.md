@@ -18,7 +18,7 @@ labels: enhancement
 
 - [ ] I have searched the [issues](https://github.com/robbievanleeuwen/concrete-properties/issues)
       of this repo and believe that this is not a duplicate.
-- [ ] I have searched the [documentation](https://concreteproperties.readthedocs.io/) and
+- [ ] I have searched the [documentation](https://concrete-properties.readthedocs.io/) and
       believe that my question is not already covered.
 
 ## Feature Request

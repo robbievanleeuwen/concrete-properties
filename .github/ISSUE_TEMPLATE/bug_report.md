@@ -25,7 +25,7 @@ labels: bug
       stable concreteproperties version, installed using a recommended method.
 - [ ] I have searched the [issues](https://github.com/robbievanleeuwen/concrete-properties/issues)
       of this repo and believe that this is not a duplicate.
-- [ ] I have consulted the [documentation](https://concreteproperties.readthedocs.io/)
+- [ ] I have consulted the [documentation](https://concrete-properties.readthedocs.io/)
       for any relevant information.
 
 ## Issue
