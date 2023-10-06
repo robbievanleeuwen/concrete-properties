@@ -82,14 +82,11 @@ class NZS3101(DesignCode):
                 - **column** - Analyses assigned concrete section object as a column (or
                   beam) member in accordance with NZS3101:2006 Chapter 9 or 10 as
                   appropriate
-
                 - **wall** - Analyses assigned concrete section object as a doubly
                   reinforced wall member in accordance with NZS3101:2006 Chapter 11
-
                 - **wall_sr_s** - Analyses assigned concrete section object as a singly
                   reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
                   design actions causing bending about the strong axis
-
                 - **wall_sr_m**- Analyses assigned concrete section object as a singly
                   reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
                   design actions causing bending about the minor axis
@@ -415,13 +412,13 @@ class NZS3101(DesignCode):
 
         - Note for a column section type outputs the unfactored concrete yield force
           for a column member designed in accordance with NZS3101:2006 Chapter 10
-          based on net concrete area:-
+          based on net concrete area:
 
           :math:`\quad N_c = \alpha_1A_nf'_c`
 
         - Note for a wall section type outputs the unfactored concrete yield force for
           a doubly or singly reinforced wall member designed in accordance with
-          NZS3101:2006 Chapter 11 based on gross concrete area:-
+          NZS3101:2006 Chapter 11 based on gross concrete area:
 
           :math:`\quad N_c = A_gf'_c`
 
@@ -796,12 +793,10 @@ class NZS3101(DesignCode):
 
         Args:
             pphr_class: Potential Plastic Hinge Region (PPHR) classification,
-                **NDPR**/**LDPR**/**DPR**.
+                **NDPR**/**LDPR**/**DPR**:
 
                 - **NDPR** = Nominally Ductile Plastic Region
-
                 - **LDPR** = Limited Ductile Plastic Region
-
                 - **DPR** = Ductile Plastic Region
 
         Raises:
@@ -994,143 +989,25 @@ class NZS3101(DesignCode):
 
         .. admonition:: Material assumptions
 
-          * *Density*: 7850 kg/m\ :sup:`3`
-          * *Elastic modulus*: 200000 MPa
-          * *Stress-strain profile*: Elastic-plastic, fracture strain
+          - *Density*: 7850 kg/m\ :sup:`3`
+
+          - *Elastic modulus*: 200000 MPa
+
+          - *Stress-strain profile*: Elastic-plastic, fracture strain
             :math:`\varepsilon_{su}` from AS/NZS4671 Table 7.2(A) or NZSEE C5
             assessment guidelines (for historic reinforcement grades)
 
         Args:
             steel_grade: Designation of the grade of reinforcement bar to be
-                analysed, included predefined current and historic grades are as
-                follows:
-
-                .. note::
-
-                    By using a valid steel grade designation the required input
-                    parameters are initiated with the required values for current
-                    reinforcement grades from the AS/NZS4671 standard or for historic
-                    grades from the NZSEE C5 assessment guidelines. Note user may
-                    overwrite any parameter of a predefined material by providing that
-                    parameter as input to :meth:`NZS3101.create_steel_material`.
-
-                Note if no predefined steel grade is provided, a steel grade name of
-                ``'user_' + yield strength`` is utilised.
-
-                .. admonition:: NZS3101:2006 & NZSEE C5 asessment guidelines predefined
-                    steel materials
-
-                    **NZS3101:2006 characteristic yield strength based predefined
-                    materials:**
-
-                    * **300e** - Use for design to NZS3101:2006 provisions
-
-                        * Characteristic yield strength :math:`f_y` = 300 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
-                        * Overstrength factor :math:`\phi_{o,f_y}` = 1.35
-
-                    * **500e** - Use for design to NZS3101:2006 provisions
-
-                        * Characteristic yield strength :math:`f_y` = 500 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
-                        * Overstrength factor :math:`\phi_{o,f_y}` = 1.35
-
-                    **NZSEE C5 guidelines probable yield strength based predefined
-                    materials:**
-
-                    * **pre_1945** - Use for probable strength design to NZSEE C5
-                        assessment guidelines
-
-                        * Probable yield strength :math:`f_{yp}` = 280 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
-                        * Overstrength factor :math:`\phi_{f_o}` = 1.25
-
-                    * **33** - Use for probable strength design to NZSEE C5 assessment
-                        guidelines
-
-                        * Probable yield strength :math:`f_{yp}` = 280 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
-                        * Overstrength factor :math:`\phi_{f_o}` = 1.25
-
-                    * **40** - Use for probable strength design to NZSEE C5 assessment
-                        guidelines
-
-                        * Probable yield strength :math:`f_{yp}` = 324 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
-                        * Overstrength factor :math:`\phi_{f_o}` = 1.25
-
-                    * **275** - Use for probable strength design to NZSEE C5 assessment
-                        guidelines
-
-                        * Probable yield strength :math:`f_{yp}` = 324 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
-                        * Overstrength factor :math:`\phi_{f_o}` = 1.25
-
-                    * **hy60** - Use for probable strength design to NZSEE C5 assessment
-                        guidelines
-
-                        * Probable yield strength :math:`f_{yp}` = 455 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 12% or 0.12
-                        * Overstrength factor :math:`\phi_{f_o}` = 1.5
-
-                    * **380** - Use for probable strength design to NZSEE C5 assessment
-                        guidelines
-
-                        * Probable yield strength :math:`f_{yp}` = 455 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 12% or 0.12
-                        * Overstrength factor :math:`\phi_{f_o}` = 1.5
-
-                    * **430** - Use for probable strength design to NZSEE C5 assessment
-                        guidelines
-
-                        * Probable yield strength :math:`f_{yp}` = 464 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 12% or 0.12
-                        * Overstrength factor :math:`\phi_{f_o}` = 1.25
-
-                    * **300** - Use for probable strength design to NZSEE C5 assessment
-                        guidelines
-
-                        * Probable yield strength :math:`f_{yp}` = 324 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
-                        * Overstrength factor :math:`\phi_{f_o}` = 1.25
-
-                    * **500n** - Use for probable strength design to NZSEE C5 assessment
-                        guidelines
-
-                        * Probable yield strength :math:`f_{yp}` = 500 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 5% or 0.05
-                        * Overstrength factor :math:`\phi_{f_o}` = 1.5
-
-                    * **500** - Use for probable strength design to NZSEE C5 assessment
-                        guidelines
-
-                        * Probable yield strength :math:`f_{yp}` = 540 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
-                        * Overstrength factor :math:`\phi_{f_o}` = 1.25
-
-                    * **cd_mesh** - Use for probable strength design to NZSEE C5
-                        assessment guidelines
-                        * Probable yield strength :math:`f_{yp}` = 600 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 1.5% or 0.015
-                        * Overstrength factor :math:`\phi_{f_o}` = 1.2
-
-                    * **duc_mesh** - Use for probable strength design to NZSEE C5
-                        assessment guidelines
-
-                        * Probable yield strength :math:`f_{yp}` = 500 MPa
-                        * Fracture strain :math:`\varepsilon_{su}` = 3% or 0.03
-                        * Overstrength factor :math:`\phi_{f_o}` = 1.2
-
-            yield_strength: Steel characteristic yield strength (MPa)
-
-                * Note for a predefined steel grade based on probable strength
-                  properties this is interpreted as the probable yield strength.
-                * Note for a user defined steel grade, this is **always** entered on the
-                  basis of a characteristic yield strength, even if undertaking a
-                  probable strength based analysis. The analysis will internally scale
-                  the characteristic yield stress by 1.08 as per NZSEE C5 assessment
-                  guidelines C5.4.3.
-
+                analysed, included predefined current and historic grades. See below for
+                further information.
+            yield_strength: Steel characteristic yield strength (MPa). Note for a
+                predefined steel grade based on probable strength properties this is
+                interpreted as the probable yield strength. Also note for a user defined
+                steel grade, this is **always** entered on the basis of a characteristic
+                yield strength, even if undertaking a probable strength based analysis.
+                The analysis will internally scale the characteristic yield stress by
+                1.08 as per NZSEE C5 assessment guidelines C5.4.3.
             fracture_strain: Lower bound tensile strain (:math:`\varepsilon_{su}`),
                 based on characteristic uniform elongation limit from AS/NZS4671 Table
                 7.2(A) or NZSEE C5 assessment guidelines Table C5.4.
@@ -1141,6 +1018,125 @@ class NZS3101(DesignCode):
             colour: Colour of the steel for rendering, if user does not provide a
                 value, characteristic strength based materials will be rendered as red,
                 and probable strength based materials will be rendered as blue.
+
+        .. note::
+
+            **Steel grade designation**
+
+            By using a valid steel grade designation the required input
+            parameters are initiated with the required values for current
+            reinforcement grades from the AS/NZS4671 standard or for historic
+            grades from the NZSEE C5 assessment guidelines. Note user may
+            overwrite any parameter of a predefined material by providing that
+            parameter as input to :meth:`NZS3101.create_steel_material`.
+
+            Note if no predefined steel grade is provided, a steel grade name of
+            ``'user_' + yield strength`` is utilised.
+
+        .. admonition:: NZS3101:2006 & NZSEE C5 asessment guidelines predefined
+            steel materials
+
+            **NZS3101:2006 characteristic yield strength based predefined
+            materials:**
+
+            - ``""300e""`` - Use for design to NZS3101:2006 provisions
+
+              - Characteristic yield strength :math:`f_y` = 300 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
+              - Overstrength factor :math:`\phi_{o,f_y}` = 1.35
+
+            - ``""500e""`` - Use for design to NZS3101:2006 provisions
+
+              - Characteristic yield strength :math:`f_y` = 500 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
+              - Overstrength factor :math:`\phi_{o,f_y}` = 1.35
+
+            **NZSEE C5 guidelines probable yield strength based predefined
+            materials:**
+
+            - ``""pre_1945""``- Use for probable strength design to NZSEE C5
+              assessment guidelines
+
+              - Probable yield strength :math:`f_{yp}` = 280 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
+              - Overstrength factor :math:`\phi_{f_o}` = 1.25
+
+            - ``""33""`` - Use for probable strength design to NZSEE C5 assessment
+              guidelines
+
+              - Probable yield strength :math:`f_{yp}` = 280 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
+              - Overstrength factor :math:`\phi_{f_o}` = 1.25
+
+            - ``""40""`` - Use for probable strength design to NZSEE C5 assessment
+              guidelines
+
+              - Probable yield strength :math:`f_{yp}` = 324 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
+              - Overstrength factor :math:`\phi_{f_o}` = 1.25
+
+            - ``""275""`` - Use for probable strength design to NZSEE C5 assessment
+              guidelines
+
+              - Probable yield strength :math:`f_{yp}` = 324 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
+              - Overstrength factor :math:`\phi_{f_o}` = 1.25
+
+            - ``""hy60""`` - Use for probable strength design to NZSEE C5 assessment
+              guidelines
+
+              - Probable yield strength :math:`f_{yp}` = 455 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 12% or 0.12
+              - Overstrength factor :math:`\phi_{f_o}` = 1.5
+
+            - ``""380""`` - Use for probable strength design to NZSEE C5 assessment
+              guidelines
+
+              - Probable yield strength :math:`f_{yp}` = 455 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 12% or 0.12
+              - Overstrength factor :math:`\phi_{f_o}` = 1.5
+
+            - ``""430""`` - Use for probable strength design to NZSEE C5 assessment
+              guidelines
+
+              - Probable yield strength :math:`f_{yp}` = 464 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 12% or 0.12
+              - Overstrength factor :math:`\phi_{f_o}` = 1.25
+
+            - ``""300""`` - Use for probable strength design to NZSEE C5 assessment
+              guidelines
+
+              - Probable yield strength :math:`f_{yp}` = 324 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
+              - Overstrength factor :math:`\phi_{f_o}` = 1.25
+
+            - ``""500n""`` - Use for probable strength design to NZSEE C5 assessment
+              guidelines
+
+              - Probable yield strength :math:`f_{yp}` = 500 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 5% or 0.05
+              - Overstrength factor :math:`\phi_{f_o}` = 1.5
+
+            - ``""500""`` - Use for probable strength design to NZSEE C5 assessment
+              guidelines
+
+              - Probable yield strength :math:`f_{yp}` = 540 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
+              - Overstrength factor :math:`\phi_{f_o}` = 1.25
+
+            - ``""cd_mesh""`` - Use for probable strength design to NZSEE C5
+              assessment guidelines
+
+              - Probable yield strength :math:`f_{yp}` = 600 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 1.5% or 0.015
+              - Overstrength factor :math:`\phi_{f_o}` = 1.2
+
+            - ``""duc_mesh""`` - Use for probable strength design to NZSEE C5
+              assessment guidelines
+
+              - Probable yield strength :math:`f_{yp}` = 500 MPa
+              - Fracture strain :math:`\varepsilon_{su}` = 3% or 0.03
+              - Overstrength factor :math:`\phi_{f_o}` = 1.2
 
         Raises:
             RuntimeError: If a predefined steel grade is not provided and the required
@@ -1225,120 +1221,122 @@ class NZS3101(DesignCode):
         Args:
             analysis_type: The type of cross section analysis to undertake on the
                 defined concrete section, by default a normal nominal strength design
-                check is undertaken:-
+                check is undertaken:
 
-                - **nom_chk** - Nominal strength design check.
+                - ``""nom_chk""`` - Nominal strength design check.
 
-                Returns the normal nominal strength section design capacity, i.e.
-                undertakes the cross section analysis based on the following
-                assumptions:-
+                  Returns the normal nominal strength section design capacity, i.e.
+                  undertakes the cross section analysis based on the following
+                  assumptions:
 
-                - Using a strength reduction factor of :math:`\phi` = 0.85 in accordance
-                    with NZS3101:2006 CL 2.3.2.2.
+                  - Using a strength reduction factor of :math:`\phi` = 0.85 in
+                    accordance with NZS3101:2006 CL 2.3.2.2.
 
                     - Except that for a singly reinforced wall for in-plane actions
                       (flexure about the strong axis) a strength reduction factor of
                       :math:`\phi` = 0.7 applies in accordance with NZS3101:2006
                       CL 2.3.2.2.
 
-                - Using the lower 5% characteristic reinforcement yield strengths.
+                  - Using the lower 5% characteristic reinforcement yield strengths.
 
-                - Using the lower 5% characteristic concrete 28 day compressive
+                  - Using the lower 5% characteristic concrete 28 day compressive
                     design strength.
 
-                - **cpe_chk** - Capacity Protected Element (CPE) strength design check.
+                - ``""cpe_chk""`` - Capacity Protected Element (CPE) strength design
+                  check.
 
-                Returns the capacity protected element section design capacity, i.e.
-                undertakes the cross section analysis based on the following
-                assumptions:-
+                  Returns the capacity protected element section design capacity, i.e.
+                  undertakes the cross section analysis based on the following
+                  assumptions:
 
-                - Using a strength reduction factor of :math:`\phi` = 1.0 in
-                  accordance with NZS3101:2006 CL 2.3.2.2.
+                  - Using a strength reduction factor of :math:`\phi` = 1.0 in
+                    accordance with NZS3101:2006 CL 2.3.2.2.
 
-                - Using the lower 5% characteristic reinforcement yield strengths.
+                  - Using the lower 5% characteristic reinforcement yield strengths.
 
-                - Using the lower 5% characteristic concrete 28 day compressive
-                  design strength.
+                  - Using the lower 5% characteristic concrete 28 day compressive
+                    design strength.
 
-                - **os_chk** - Overstrength (O/S) strength design check.
+                - ``""os_chk""`` - Overstrength (O/S) strength design check.
 
-                Returns the O/S (overstrength) section design capacity, i.e. undertakes
-                the cross section analysis based on the following assumptions:-
+                  Returns the O/S (overstrength) section design capacity, i.e.
+                  undertakes the cross section analysis based on the following
+                  assumptions:
 
-                - Using a strength reduction factor of :math:`\phi` = 1.0 in
-                  accordance with NZS3101:2006 CL 2.3.2.2.
+                  - Using a strength reduction factor of :math:`\phi` = 1.0 in
+                    accordance with NZS3101:2006 CL 2.3.2.2.
 
-                - Using a likely maximum reinforcement yield strength of
-                  :math:`\phi_{o,f_y}f_y`, typically :math:`\phi_{o,f_y}=1.35` in
-                  accordance with NZS3101:2006 CL 2.6.5.5(a) for grade 300E or grade
-                  500E reinforcement which complies with AS/NZS4671. User may define
-                  custom overstrength factors when defining steel reinforcement
-                  materials using :class:`NZS3101.SteelBarNZ`.
+                  - Using a likely maximum reinforcement yield strength of
+                    :math:`\phi_{o,f_y}f_y`, typically :math:`\phi_{o,f_y}=1.35` in
+                    accordance with NZS3101:2006 CL 2.6.5.5(a) for grade 300E or grade
+                    500E reinforcement which complies with AS/NZS4671. User may define
+                    custom overstrength factors when defining steel reinforcement
+                    materials using :class:`NZS3101.SteelBarNZ`.
 
-                - Using a likely maximum compression strength of the concrete based
-                  on the lower 5% characteristic concrete 28 day strength plus 15
-                  MPa, i.e. :math:`f'_c` + 15 in accordance with NZS3101:2006 CL
-                  2.6.5.5(c).
+                  - Using a likely maximum compression strength of the concrete based
+                    on the lower 5% characteristic concrete 28 day strength plus 15
+                    MPa, i.e. :math:`f'_c` + 15 in accordance with NZS3101:2006 CL
+                    2.6.5.5(c).
 
-                - **prob_chk** - Probable strength design check to NZSEE C5 guidelines
-                  based on NZS3101:2006 analysis provisions.
-
-                Returns the probable strength section design capacity, i.e.
-                undertakes the cross section analysis based on the following
-                assumptions:
-
-                - Using a strength reduction factor of :math:`\phi` = 1.0 in
-                  accordance with NZSEE C5 assessment guidelines C5.5.1.4.
-
-                - Using the probable reinforcement yield strengths in accordance
-                  with NZSEE C5 assessment guidelines C5.4.3, typically
-                  :math:`f_{yp}=1.08f_y` in accordance with NZSEE C5 assessment
-                  guidelines C5.4.3. User may define custom probable strengths when
-                  defining steel reinforcement materials using
-                  :class:`NZS3101.SteelBarNZ`. Note if one of the predefined
-                  probable strength based steel grade materials are being utilised,
-                  then the yield strength is inclusive of the 1.08 factor noted above.
-
-                - Using the probable compressive strength of the concrete in
-                  accordance with NZSEE C5 guidelines C5.4.2.2, typically for
-                  specified 28 day concrete compressive strengths of less than or
-                  equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
-                  40 MPa, :math:`f'_{cp}=1.4f'_c`.
-
-                - **prob_os_chk** - Probable overstrength design check to NZSEE C5
+                - ``""prob_chk""`` - Probable strength design check to NZSEE C5
                   guidelines based on NZS3101:2006 analysis provisions.
 
-                Returns the probable O/S (overstrength) strength section design
-                capacity, i.e. undertakes the cross section analysis based on the
-                following assumptions:-
+                  Returns the probable strength section design capacity, i.e.
+                  undertakes the cross section analysis based on the following
+                  assumptions:
 
-                - Using a strength reduction factor of :math:`\phi` = 1.0 in
-                  accordance with NZSEE C5 assessment guidelines C5.5.1.4.
+                  - Using a strength reduction factor of :math:`\phi` = 1.0 in
+                    accordance with NZSEE C5 assessment guidelines C5.5.1.4.
 
-                - Using the probable overstrength reinforcement yield strengths in
-                  accordance with NZSEE C5 assessment guidelines C5.4.3, typically
-                  :math:`f_o=\phi_of_{yp}` in accordance with NZSEE C5 assessment
-                  guidelines C5.4.3 & C5.5.2.3. User may define custom overstrength
-                  factors strengths when defining steel reinforcement materials
-                  using :class:`.NZS3101.SteelBarNZ`. Note if one of the predefined
-                  probable strength based steel grade materials are being utilised,
-                  then the overstrength factor being applied to the yield strength
-                  is inclusive of the 1.08 factor on the lower bound yield strength.
+                  - Using the probable reinforcement yield strengths in accordance
+                    with NZSEE C5 assessment guidelines C5.4.3, typically
+                    :math:`f_{yp}=1.08f_y` in accordance with NZSEE C5 assessment
+                    guidelines C5.4.3. User may define custom probable strengths when
+                    defining steel reinforcement materials using
+                    :class:`NZS3101.SteelBarNZ`. Note if one of the predefined
+                    probable strength based steel grade materials are being utilised,
+                    then the yield strength is inclusive of the 1.08 factor noted above.
+
+                  - Using the probable compressive strength of the concrete in
+                    accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+                    specified 28 day concrete compressive strengths of less than or
+                    equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
+                    40 MPa, :math:`f'_{cp}=1.4f'_c`.
+
+                - ``""prob_os_chk""`` - Probable overstrength design check to NZSEE C5
+                  guidelines based on NZS3101:2006 analysis provisions.
+
+                  Returns the probable O/S (overstrength) strength section design
+                  capacity, i.e. undertakes the cross section analysis based on the
+                  following assumptions:
+
+                  - Using a strength reduction factor of :math:`\phi` = 1.0 in
+                    accordance with NZSEE C5 assessment guidelines C5.5.1.4.
+
+                  - Using the probable overstrength reinforcement yield strengths in
+                    accordance with NZSEE C5 assessment guidelines C5.4.3, typically
+                    :math:`f_o=\phi_of_{yp}` in accordance with NZSEE C5 assessment
+                    guidelines C5.4.3 & C5.5.2.3. User may define custom overstrength
+                    factors strengths when defining steel reinforcement materials
+                    using :class:`.NZS3101.SteelBarNZ`. Note if one of the predefined
+                    probable strength based steel grade materials are being utilised,
+                    then the overstrength factor being applied to the yield strength
+                    is inclusive of the 1.08 factor on the lower bound yield strength.
 
                     :math:`\quad\phi_o=\displaystyle{\frac{f_o}{f_{yp}}}`
 
-                    Where:-
+                    where:
 
                     :math:`\quad f_{yp}=1.08f_y`
 
-                - Using the probable compressive strength of the concrete in
-                  accordance with NZSEE C5 guidelines C5.4.2.2, typically for
-                  specified 28 day concrete compressive strengths of less than or
-                  equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
-                  40 MPa, :math:`f'_{cp}=1.4f'_c`.
+                  - Using the probable compressive strength of the concrete in
+                    accordance with NZSEE C5 guidelines C5.4.2.2, typically for
+                    specified 28 day concrete compressive strengths of less than or
+                    equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
+                    40 MPa, :math:`f'_{cp}=1.4f'_c`.
 
-                  Note there is no enhancement to concrete strength for overstrength
-                  checks in accordance with the NZSEE C5 assessment guidelines.
+                    Note there is no enhancement to concrete strength for overstrength
+                    checks in accordance with the NZSEE C5 assessment guidelines.
 
         Raises:
             ValueError: If analysis type is not valid
@@ -1635,14 +1633,7 @@ class NZS3101(DesignCode):
 
         Args:
             pphr_class: Potential Plastic Hinge Region (PPHR) classification,
-                **NDPR**/**LDPR**/**DPR**.
-
-                - **NDPR** = Nominally Ductile Plastic Region
-
-                - **LDPR** = Limited Ductile Plastic Region
-
-                - **DPR** = Ductile Plastic Region
-
+                **NDPR**/**LDPR**/**DPR**. See below for definitions.
             analysis_type: The type of cross section analysis to undertake on the
                 defined concrete section, by default a normal nominal strength design
                 check is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor`
@@ -1650,6 +1641,12 @@ class NZS3101(DesignCode):
             theta: Angle (in radians) the neutral axis makes with the horizontal axis
                 (:math:`-\pi \leq \theta \leq \pi`)
             n_design: Axial design force (:math:`N^*`)
+
+        .. admonition:: PPHR Classifications
+
+          - **NDPR** = Nominally Ductile Plastic Region
+          - **LDPR** = Limited Ductile Plastic Region
+          - **DPR** = Ductile Plastic Region
 
         Returns:
             Factored and unfactored ultimate bending results objects, and capacity
@@ -1709,11 +1706,6 @@ class NZS3101(DesignCode):
         Args:
             pphr_class: Potential Plastic Hinge Region (PPHR) classification,
                 **NDPR**/**LDPR**/**DPR**.
-
-                - **NDPR** = Nominally Ductile Plastic Region
-                - **LDPR** = Limited Ductile Plastic Region
-                - **DPR** = Ductile Plastic Region
-
             analysis_type: The type of cross section analysis to undertake on the
                 defined concrete section, by default a normal nominal strength design
                 check is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor`
@@ -1745,6 +1737,12 @@ class NZS3101(DesignCode):
                 first value is at zero moment, second value is at the intersection with
                 the interaction diagram.
             progress_bar: If set to True, displays the progress bar
+
+        .. admonition:: PPHR Classifications
+
+          - **NDPR** = Nominally Ductile Plastic Region
+          - **LDPR** = Limited Ductile Plastic Region
+          - **DPR** = Ductile Plastic Region
 
         Returns:
             Factored and unfactored moment interaction results objects, and list of
@@ -1821,11 +1819,6 @@ class NZS3101(DesignCode):
         Args:
             pphr_class: Potential Plastic Hinge Region (PPHR) classification,
                 **NDPR**/**LDPR**/**DPR**.
-
-                - **NDPR** = Nominally Ductile Plastic Region
-                - **LDPR** = Limited Ductile Plastic Region
-                - **DPR** = Ductile Plastic Region
-
             analysis_type: The type of cross section analysis to undertake on the
                 defined concrete section, by default a normal nominal strength design
                 check is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor`
@@ -1833,6 +1826,12 @@ class NZS3101(DesignCode):
             n_design: Axial design force (:math:`N^*`)
             n_points: Number of calculation points for neutral axis orientation
             progress_bar: If set to True, displays the progress bar
+
+        .. admonition:: PPHR Classifications
+
+          - **NDPR** = Nominally Ductile Plastic Region
+          - **LDPR** = Limited Ductile Plastic Region
+          - **DPR** = Ductile Plastic Region
 
         Returns:
             Factored biaxial bending results object and list of capacity reduction
