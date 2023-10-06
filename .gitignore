@@ -1,12 +1,9 @@
 # Compiled python modules.
 *.pyc
 
-# pycache test directory tmp files from local testing
-/concreteproperties/tests/__pycache__
-
 # Setuptools distribution folder.
-/dist/
-/build/
+dist/
+build/
 
 # Common virtual environments
 .venv/
@@ -14,15 +11,15 @@
 .python-version
 
 # doc generated
-/docs/build
-/docs/source/sphinx_gallery_examples/
-/docs/source/gen
+docs/_build
+docs/gen
 
 # Python egg metadata, regenerated from source files by setuptools.
-/*.egg-info
+*.egg-info
+src/*.egg-info/
 
 # Pycharm IDE file folder
-/.idea/
+.idea/
 
 # vscode
 .vscode/
@@ -31,9 +28,16 @@
 # mac
 .DS_Store
 
+# coverage reports
+.coverage
+.coverage.*
+
+# nox
+.nox/
+
+# cache
+__pycache__/
+.pytest_cache
+
 # Jupyter Notebook
 .ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py

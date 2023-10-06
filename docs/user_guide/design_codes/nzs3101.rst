@@ -1,0 +1,104 @@
+.. _label-nzs3101-2006:
+
+NZS3101:2006
+============
+
+..  autoclass:: concreteproperties.design_codes.nzs3101.NZS3101
+  :noindex:
+
+Using the NZS3101:2006 design code starts by creating an
+:class:`~concreteproperties.design_codes.nzs3101.NZS3101` object::
+
+  from concreteproperties.design_codes.nzs3101 import NZS3101
+
+  design_code = NZS3101()
+
+After a :class:`~concreteproperties.concrete_section.ConcreteSection` object has been
+created it must be assigned to the design code::
+
+  design_code.assign_concrete_section(concrete_section=concrete_section)
+
+..  automethod:: concreteproperties.design_codes.nzs3101.NZS3101.assign_concrete_section
+  :noindex:
+
+.. note::
+
+  To maintain unit consistency, the cross-section dimensions should be entered in
+  *[mm]*.
+
+
+Creating Material Properties
+----------------------------
+
+The :class:`~concreteproperties.design_codes.nzs3101.NZS3101` class can be used to
+easily create material objects whose attributes comply with the standard.
+
+..  automethod:: concreteproperties.design_codes.nzs3101.NZS3101.create_concrete_material
+  :noindex:
+
+.. plot::
+  :include-source: True
+
+  from concreteproperties.design_codes import NZS3101
+
+  design_code = NZS3101()
+  concrete = design_code.create_concrete_material(compressive_strength=40)
+
+  concrete.stress_strain_profile.plot_stress_strain(
+    title=f"{concrete.name} - Service Profile"
+  )
+  concrete.ultimate_stress_strain_profile.plot_stress_strain(
+    title=f"{concrete.name} - Ultimate Profile"
+  )
+
+..  automethod:: concreteproperties.design_codes.nzs3101.NZS3101.create_steel_material
+  :noindex:
+
+.. plot::
+  :include-source: True
+
+  from concreteproperties.design_codes import NZS3101
+
+  design_code = NZS3101()
+  steel = design_code.create_steel_material(steel_grade="500E")
+
+  steel.stress_strain_profile.plot_stress_strain(
+    title=f"{steel.name} - Stress-Strain Profile"
+  )
+
+
+Calculating Section Properties
+------------------------------
+
+Analysis methods can be called from the
+:class:`~concreteproperties.design_codes.nzs3101.NZS3101` object similar to
+:class:`~concreteproperties.concrete_section.ConcreteSection` object. The following
+methods are identical to those found in the
+:class:`~concreteproperties.concrete_section.ConcreteSection` object, i.e. do not apply
+any capacity reduction factors:
+
+- :meth:`~concreteproperties.design_codes.nzs3101.NZS3101.get_gross_properties`
+- :meth:`~concreteproperties.design_codes.nzs3101.NZS3101.get_transformed_gross_properties`
+- :meth:`~concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_properties`
+- :meth:`~concreteproperties.design_codes.nzs3101.NZS3101.moment_curvature_analysis`
+- :meth:`~concreteproperties.design_codes.nzs3101.NZS3101.calculate_uncracked_stress`
+- :meth:`~concreteproperties.design_codes.nzs3101.NZS3101.calculate_cracked_stress`
+- :meth:`~concreteproperties.design_codes.nzs3101.NZS3101.calculate_service_stress`
+- :meth:`~concreteproperties.design_codes.nzs3101.NZS3101.calculate_ultimate_stress`
+
+The following methods have been modified for NZS3101:2006, with codified capacity
+reduction factors applied.
+
+..  automethod:: concreteproperties.design_codes.nzs3101.NZS3101.ultimate_bending_capacity
+  :noindex:
+
+..  automethod:: concreteproperties.design_codes.nzs3101.NZS3101.moment_interaction_diagram
+  :noindex:
+
+..  automethod:: concreteproperties.design_codes.nzs3101.NZS3101.biaxial_bending_diagram
+  :noindex:
+
+
+.. seealso::
+  For an application of the use of the design code object, see the example
+  :ref:`/examples/nzs3101.ipynb`.

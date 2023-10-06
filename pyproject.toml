@@ -1,8 +1,106 @@
-[project]
-requires-python = ">=3.8,<3.11"
+[tool.poetry]
+name = "concreteproperties"
+version = "0.5.1"
+description = "A python package to determine cross-section propreties of reinforced concrete sections."
+license = "MIT"
+authors = [
+    "Robbie van Leeuwen <robbie.vanleeuwen@gmail.com>",
+]
+maintainers = [
+    "Robbie van Leeuwen <robbie.vanleeuwen@gmail.com>",
+]
+readme = "README.md"
+homepage = "https://github.com/robbievanleeuwen/concrete-properties"
+repository = "https://github.com/robbievanleeuwen/concrete-properties"
+documentation = "https://concreteproperties.readthedocs.io"
+keywords = [
+    "concrete",
+    "reinforced-concrete",
+    "prestressed-concrete",
+    "post-tensioned-concrete",
+    "cross-section",
+    "structural-engineering",
+    "finite-element-analysis",
+    "computational-mechanics",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Topic :: Scientific/Engineering",
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+packages = [
+    { include = "concreteproperties", from = "src" },
+    { include = "src/concreteproperties/py.typed"},
+]
+include = []
+
+[tool.poetry.urls]
+Changelog = "https://github.com/robbievanleeuwen/concrete-properties/releases"
+"Bug Tracker" = "https://github.com/robbievanleeuwen/concrete-properties/issues"
+
+[tool.poetry.dependencies]
+python = ">=3.9.0,<3.12"
+numpy = "^1.26.0"
+scipy = "^1.11.3"
+matplotlib = "^3.8.0"
+shapely = "^2.0.1"
+triangle = "^20230923"
+rich = "^13.6.0"
+click = "^8.1.7"
+more-itertools = "^10.1.0"
+sectionproperties = "^3.0.2"
+
+[tool.poetry.dev-dependencies]
+black = { extras = ["jupyter"], version = "^23.9.1" }
+coverage = { extras = ["toml"], version = "^7.3.2" }
+darglint = "^1.8.1"
+flake8 = "^6.1.0"
+flake8-bugbear = "^23.9.16"
+flake8-docstrings = "^1.7.0"
+flake8-rst-docstrings = "^0.3.0"
+furo = "^2023.9.10"
+ipykernel = "^6.25.2"
+ipython = "^8.16.1"
+ipywidgets = "^8.1.1"
+isort = "^5.12.0"
+nbconvert = "^7.9.2"
+nbsphinx = "^0.9.3"
+notebook = "^7.0.4"
+pep8-naming = "^0.13.3"
+pre-commit = "^3.4.0"
+pre-commit-hooks = "^4.4.0"
+Pygments = "^2.16.1"
+pytest = "^7.4.2"
+pyupgrade = "^3.14.0"
+sphinx = "^7.2.6"
+sphinx-autobuild = "^2021.3.14"
+sphinx-click = "^5.0.1"
+sphinx-copybutton = "^0.5.2"
+sphinxext-opengraph = "^0.8.2"
+
+[tool.poetry.scripts]
+concreteproperties = "concreteproperties.__main__:main"
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+tests = ["tests", "*/tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["concreteproperties", "tests"]
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.isort]
+profile = "black"
+lines_after_imports = 2
 
 [build-system]
-# These are the assumed default build requirements from pip:
-# https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
-requires = ["setuptools>=43.0.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
