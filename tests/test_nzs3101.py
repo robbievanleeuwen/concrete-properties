@@ -22,7 +22,7 @@ def create_dummy_section(
         prob_section: Whether or not to use probable strength properties
         section_type: The type of member being analysed
 
-    Return:
+    Returns:
         ConcreteSection object
     """
     # dummy beam section with fixed properties to fulfil design_code.concrete_section

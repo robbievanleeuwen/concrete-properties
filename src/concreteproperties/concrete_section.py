@@ -616,9 +616,6 @@ class ConcreteSection:
                 increment
             progress_bar: If set to True, displays the progress bar
 
-        Raises:
-            AnalysisError: If the analysis fails
-
         Returns:
             Moment curvature results object
         """
