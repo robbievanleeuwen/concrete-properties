@@ -77,6 +77,12 @@ Alternatively you can get support on the
 `discussions <https://github.com/robbievanleeuwen/concrete-properties/discussions>`_
 page.
 
+Legacy Documentation
+--------------------
+
+The documentation for ``concreteproperties`` ``v0.5.x`` and earlier can be found
+`here <https://robbievanleeuwen.github.io/concrete-properties/>`_.
+
 Disclaimer
 ----------
 
