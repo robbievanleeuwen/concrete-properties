@@ -1,23 +1,43 @@
-![Logo Dark](docs/source/_static/cp_logo_dark.png#gh-dark-mode-only)
-![Logo Light](docs/source/_static/cp_logo.png#gh-light-mode-only)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/_static/cp_logo_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/_static/cp_logo.png">
+  <img alt="concreteproperties logo" src="docs/_static/cp_logo.png">
+</picture>
 
-[![Run Tests](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/tests.yml/badge.svg)](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/tests.yml) [![Lint with Black](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/black.yml/badge.svg)](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/black.yml) [![Build Documentation](https://github.com/robbievanleeuwen/concrete-properties/actions/workflows/build_docs.yml/badge.svg)](https://robbievanleeuwen.github.io/concrete-properties/) [![codecov](https://codecov.io/gh/robbievanleeuwen/concrete-properties/branch/master/graph/badge.svg?token=3WXMUQITTD)](https://codecov.io/gh/robbievanleeuwen/concrete-properties) [![PyPI version](https://badge.fury.io/py/concreteproperties.svg)](https://badge.fury.io/py/concreteproperties) [![Python versions](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue?style=flat&logo=python)](https://badge.fury.io/py/concreteproperties) [![GitHub license](https://img.shields.io/github/license/robbievanleeuwen/concrete-properties)](https://github.com/robbievanleeuwen/concrete-properties/blob/master/LICENSE.md) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/robbievanleeuwen/concrete-properties-examples/master)
+[![PyPI](https://img.shields.io/pypi/v/concreteproperties.svg)][pypi_]
+[![Status](https://img.shields.io/pypi/status/concreteproperties.svg)][status]
+[![Python Version](https://img.shields.io/pypi/pyversions/concreteproperties)][python version]
+[![License](https://img.shields.io/pypi/l/concreteproperties)][license]
+[![Read the documentation at https://concreteproperties.readthedocs.io/](https://img.shields.io/readthedocs/concreteproperties/stable.svg?label=Read%20the%20Docs)][read the docs]
+[![Tests](https://github.com/robbievanleeuwen/concrete-properties/workflows/Tests/badge.svg)][tests]
+[![Codecov](https://codecov.io/gh/robbievanleeuwen/concrete-properties/branch/master/graph/badge.svg)][codecov]
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
+[![Black](https://img.shields.io/badge/code%20style-black-000000.svg)][black]
 
-_concreteproperties_ is a python package that can be used to calculate the section
-properties of arbitrary reinforced concrete sections. _concreteproperties_ can calculate
+[pypi_]: https://pypi.org/project/concreteproperties/
+[status]: https://pypi.org/project/concreteproperties/
+[python version]: https://pypi.org/project/concreteproperties
+[read the docs]: https://concreteproperties.readthedocs.io/
+[tests]: https://github.com/robbievanleeuwen/concrete-properties/actions?workflow=Tests
+[codecov]: https://app.codecov.io/gh/robbievanleeuwen/concrete-properties
+[pre-commit]: https://github.com/pre-commit/pre-commit
+[black]: https://github.com/psf/black
+
+`concreteproperties` is a python package that can be used to calculate the section
+properties of arbitrary reinforced concrete sections. `concreteproperties` can calculate
 gross, cracked and ultimate properties. It can perform moment curvature analyses
 and generate moment interaction and biaxial bending diagrams. On top of this,
-_concreteproperties_ can also generate pretty stress plots!
+`concreteproperties` can also generate pretty stress plots!
 
-Here's an example of some of the non-linear output _concreteproperties_ can generate:
+Here's an example of some of the non-linear output `concreteproperties` can generate:
 
 <p align="center">
-  <img src="docs/source/_static/anim/anim_compress.gif" width="500"/>
+  <img src="docs/_static/anim/anim_compress.gif" width="500"/>
 </p>
 
 ## Installation
 
-For more detailed installation instructions, refer to the [documentation](https://robbievanleeuwen.github.io/concrete-properties/installation.html).
+You can install `concreteproperties` via [pip] from [PyPI]:
 
 ```shell
 pip install concreteproperties
@@ -25,23 +45,47 @@ pip install concreteproperties
 
 ## Documentation
 
-_concreteproperties_ is fully documented including examples and a fully documented API.
-The documentation can found at [https://robbievanleeuwen.github.io/concrete-properties](https://robbievanleeuwen.github.io/concrete-properties).
+`concreteproperties` is fully documented including a user walkthrough, examples,
+background theory and an API guide. The documentation can found at
+[https://concreteproperties.readthedocs.io/](https://concreteproperties.readthedocs.io/).
+
+## Features
+
+See the complete list of `concreteproperties` features
+[here](https://concreteproperties.readthedocs.io/en/stable/user_guide.html).
 
 ## Contributing
 
-We welcome anyone interested in contributing to _concreteproperties_, whether it be
-through submitting bug reports, feature requests or pull requests. Please read the
-[contributing guide](.github/CONTRIBUTING.md) prior to contributing.
+Contributions are very welcome. To learn more, see the [Contributor Guide].
 
-## Current Capabilities
+## License
 
-aslkdjaskld
+Distributed under the terms of the [MIT license][license], `concreteproperties` is free
+and open source software.
+
+## Support
+
+Found a bug 🐛, or have a feature request ✨, raise an issue on the
+GitHub [issue tracker](https://github.com/robbievanleeuwen/concrete-properties/issues)
+Alternatively you can get support on the
+[discussions](https://github.com/robbievanleeuwen/concrete-properties/discussions) page.
 
 ## Disclaimer
 
-_concreteproperties_ is an open source engineering tool that continues to benefit from
+`concreteproperties` is an open source engineering tool that continues to benefit from
 the collaboration of many contributors. Although efforts have been made to ensure the
 that relevant engineering theories have been correctly implemented, it remains the
 user's responsibility to confirm and accept the output. Refer to the
 [license](LICENSE.md) for clarification of the conditions of use.
+
+## Credits
+
+This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter]
+template.
+
+[@cjolowicz]: https://github.com/cjolowicz
+[pypi]: https://pypi.org/
+[hypermodern python cookiecutter]: https://github.com/cjolowicz/cookiecutter-hypermodern-python
+[pip]: https://pip.pypa.io/
+[license]: https://github.com/robbievanleeuwen/concrete-properties/blob/master/LICENSE
+[contributor guide]: https://github.com/robbievanleeuwen/concrete-properties/blob/master/CONTRIBUTING.md
