@@ -25,7 +25,7 @@ package index:
 
 .. code-block:: shell
 
-    pip install sectionproperties
+    pip install concreteproperties
 
 Using ``sectionproperties`` CAD Modules
 ---------------------------------------

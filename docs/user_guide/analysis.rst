@@ -4,16 +4,17 @@ Analysis
 ========
 
 This section of the documentation outlines how to perform analyses in
-*concreteproperties*. The :ref:`label-results` section outlines how to retrieve and
+``concreteproperties``. The :ref:`label-results` section outlines how to retrieve and
 display the results obtained from these analyses.
 
-An analysis in *concreteproperties* begins by creating a
+An analysis in ``concreteproperties`` begins by creating a
 :class:`~concreteproperties.concrete_section.ConcreteSection` object from a
 :class:`~sectionproperties.pre.geometry.CompoundGeometry` object with assigned
 material properties.
 
 ..  autoclass:: concreteproperties.concrete_section.ConcreteSection
   :noindex:
+  :members: __init__
 
 If a prestressed concrete section is being analysed, a
 :class:`~concreteproperties.prestressed_section.PrestressedSection` object must be used
@@ -43,7 +44,7 @@ Gross Area Properties
 ---------------------
 
 Upon creating a :class:`~concreteproperties.concrete_section.ConcreteSection` object,
-*concreteproperties* will automatically calculate the area properties based on the gross
+``concreteproperties`` will automatically calculate the area properties based on the gross
 reinforced concrete cross-section.
 
 .. seealso::
@@ -166,7 +167,7 @@ ultimate bending moments about the ``x`` and ``y`` axes.
 Stress Analysis
 ---------------
 
-*concreteproperties* allows you to perform four different kinds of stress analysis. Each
+``concreteproperties`` allows you to perform four different kinds of stress analysis. Each
 is detailed separately below.
 
 .. seealso::

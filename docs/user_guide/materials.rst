@@ -1,7 +1,7 @@
 Materials
 =========
 
-*concreteproperties* requires material properties to be defined for the concrete and
+``concreteproperties`` requires material properties to be defined for the concrete and
 steel components of the reinforced concrete section. Any number of different material
 properties can be used for a single cross-section. For example, higher strength precast
 sections can be topped with lower grade in-situ slabs, and high tensile steel can be
@@ -11,22 +11,22 @@ The structural behaviour of materials is described by :ref:`stress-strain-profil
 
 .. note::
 
-  In *concreteproperties*, a positive sign is given to compressive forces, stresses and
-  strains, while a negative sign is given to tensile forces, stresses and strains.
+  In ``concreteproperties``, a positive sign is given to compressive forces, stresses
+  and strains, while a negative sign is given to tensile forces, stresses and strains.
 
 
 Material Classes
 ----------------
 
-*concreteproperties* ships with material objects describing the structural behaviour of
-both concrete and steel. The generic :class:`~concreteproperties.material.Material`
+``concreteproperties`` ships with material objects describing the structural behaviour
+of both concrete and steel. The generic :class:`~concreteproperties.material.Material`
 class can be used to describe the behaviour of any other material.
 
-By default, all geometries in *concreteproperties* are meshed to capture strain
+By default, all geometries in ``concreteproperties`` are meshed to capture strain
 variation across the section. However, for smaller geometries (such as reinforcement),
-*concreteproperties* can treat the area as having a constant strain with a lumped mass,
-which increases the performance of the analysis with almost no loss in fidelity. The
-meshing can be switched off by setting the attribute ``meshed=False``.
+``concreteproperties`` can treat the area as having a constant strain with a lumped
+mass, which increases the performance of the analysis with almost no loss in fidelity.
+The meshing can be switched off by setting the attribute ``meshed=False``.
 
 The :class:`~concreteproperties.material.SteelBar` class has meshing disabled by default
 and should be used when defining steel reinforcement. On the other hand, the
@@ -76,7 +76,7 @@ SteelStrand
 Stress-Strain Profiles
 ----------------------
 
-*concreteproperties* uses stress-strain profiles to define material behaviour for both
+``concreteproperties`` uses stress-strain profiles to define material behaviour for both
 service and ultimate analyses. A :class:`~concreteproperties.material.Concrete` object
 requires both a **service** stress-strain profile (calculation of area properties,
 moment-curvature analysis, elastic and service stress analysis) and an **ultimate**
@@ -259,9 +259,9 @@ Concrete Ultimate Stress-Strain Profiles
 
 .. warning::
 
-  *concreteproperties* currently only supports a single unique ``ultimate_strain`` to be
-  used for a given :class:`~concreteproperties.concrete_section.ConcreteSection`. While
-  multiple concrete materials, with differing stress-strain profiles, can be
+  ``concreteproperties`` currently only supports a single unique ``ultimate_strain`` to
+  be used for a given :class:`~concreteproperties.concrete_section.ConcreteSection`.
+  While multiple concrete materials, with differing stress-strain profiles, can be
   used within a given :class:`~concreteproperties.concrete_section.ConcreteSection`, the
   ultimate analysis will use the smallest value of the ``ultimate_strain`` amongst the
   various concrete materials to define the strain profile at ultimate.

@@ -479,12 +479,12 @@ class ModifiedMander(ConcreteServiceProfile):
 
     .. admonition:: Modifications to Mander confined concrete model:
 
-        The original formulation of the expression for confined concrete presented by
-        Mander et al. [1]_ can predict high levels of confined concrete strain dependant
-        on the assumed value for the ultimate steel strain for the transverse
-        reinforcement. The modified expression given the NZSEE C5 assesment guidelines
-        [3]_ provides a correction and is directly implemented in the
-        :class:`ModifiedMander` material class.
+      The original formulation of the expression for confined concrete presented by
+      Mander et al. [1]_ can predict high levels of confined concrete strain dependant
+      on the assumed value for the ultimate steel strain for the transverse
+      reinforcement. The modified expression given the NZSEE C5 assesment guidelines
+      [3]_ provides a correction and is directly implemented in the
+      :class:`ModifiedMander` material class.
 
       These corrections to avoid overestimating the confined concrete limiting strain
       consist of three allowances:
@@ -828,9 +828,10 @@ class ModifiedMander(ConcreteServiceProfile):
 class ConcreteUltimateProfile(StressStrainProfile):
     """Abstract class for a concrete ultimate stress-strain profile.
 
-    strains: List of strains (must be increasing or at least equal to last)
-    stresses: List of stresses
-    compressive_strength: Concrete compressive strength
+    Args:
+        strains: List of strains (must be increasing or at least equal to last)
+        stresses: List of stresses
+        compressive_strength: Concrete compressive strength
     """
 
     strains: list[float]

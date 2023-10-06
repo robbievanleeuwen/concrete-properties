@@ -79,15 +79,15 @@ class NZS3101(DesignCode):
             concrete_section: Concrete section object to analyse
             section_type: The type of member being analysed:
 
-                - **column** - Analyses assigned concrete section object as a column (or
-                  beam) member in accordance with NZS3101:2006 Chapter 9 or 10 as
+                - ``"column"`` - Analyses assigned concrete section object as a column
+                  (or beam) member in accordance with NZS3101:2006 Chapter 9 or 10 as
                   appropriate
-                - **wall** - Analyses assigned concrete section object as a doubly
+                - ``"wall"`` - Analyses assigned concrete section object as a doubly
                   reinforced wall member in accordance with NZS3101:2006 Chapter 11
-                - **wall_sr_s** - Analyses assigned concrete section object as a singly
-                  reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
-                  design actions causing bending about the strong axis
-                - **wall_sr_m**- Analyses assigned concrete section object as a singly
+                - ``"wall_sr_s"`` - Analyses assigned concrete section object as a
+                  singly reinforced wall member in accordance with NZS3101:2006 Chapter
+                  11 for design actions causing bending about the strong axis
+                - ``"wall_sr_m"``- Analyses assigned concrete section object as a singly
                   reinforced wall member in accordance with NZS3101:2006 Chapter 11 for
                   design actions causing bending about the minor axis
 
@@ -793,11 +793,7 @@ class NZS3101(DesignCode):
 
         Args:
             pphr_class: Potential Plastic Hinge Region (PPHR) classification,
-                **NDPR**/**LDPR**/**DPR**:
-
-                - **NDPR** = Nominally Ductile Plastic Region
-                - **LDPR** = Limited Ductile Plastic Region
-                - **DPR** = Ductile Plastic Region
+                ``"NDPR"``/``"LDPR"``/``"DPR"``
 
         Raises:
             ValueError: If specified Potential Plastic Hinge Region (PPHR)
@@ -805,6 +801,12 @@ class NZS3101(DesignCode):
             ValueError: If specified compressive strength for a concrete geometry
                 is not between 20 MPa and 100 MPa for NDPR PPHR's, or is not between 20
                 MPa and 70 MPa for LDPR or DPR PPHR's
+
+        .. admonition:: PPHR Classifications
+
+          - **NDPR** = Nominally Ductile Plastic Region
+          - **LDPR** = Limited Ductile Plastic Region
+          - **DPR** = Ductile Plastic Region
         """
         # Lower bound compressive strength
         f_c_lower = 20
@@ -1019,6 +1021,15 @@ class NZS3101(DesignCode):
                 value, characteristic strength based materials will be rendered as red,
                 and probable strength based materials will be rendered as blue.
 
+        Raises:
+            RuntimeError: If a predefined steel grade is not provided and the required
+                material properties have not been provided. For creating a user defined
+                steel material, values for **yield_strength**, **fracture_strain** &
+                **phi_os** are required to define a valid user defined material.
+
+        Returns:
+            Steel bar material object
+
         .. note::
 
             **Steel grade designation**
@@ -1137,15 +1148,6 @@ class NZS3101(DesignCode):
               - Probable yield strength :math:`f_{yp}` = 500 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 3% or 0.03
               - Overstrength factor :math:`\phi_{f_o}` = 1.2
-
-        Raises:
-            RuntimeError: If a predefined steel grade is not provided and the required
-                material properties have not been provided. For creating a user defined
-                steel material, values for **yield_strength**, **fracture_strain** &
-                **phi_os** are required to define a valid user defined material.
-
-        Returns:
-            Steel bar material object
         """
         # Populate dictionary with predefined material properties
         (
@@ -1223,7 +1225,7 @@ class NZS3101(DesignCode):
                 defined concrete section, by default a normal nominal strength design
                 check is undertaken:
 
-                - ``""nom_chk""`` - Nominal strength design check.
+                - ``"nom_chk"`` - Nominal strength design check.
 
                   Returns the normal nominal strength section design capacity, i.e.
                   undertakes the cross section analysis based on the following
@@ -1242,7 +1244,7 @@ class NZS3101(DesignCode):
                   - Using the lower 5% characteristic concrete 28 day compressive
                     design strength.
 
-                - ``""cpe_chk""`` - Capacity Protected Element (CPE) strength design
+                - ``"cpe_chk"`` - Capacity Protected Element (CPE) strength design
                   check.
 
                   Returns the capacity protected element section design capacity, i.e.
@@ -1257,7 +1259,7 @@ class NZS3101(DesignCode):
                   - Using the lower 5% characteristic concrete 28 day compressive
                     design strength.
 
-                - ``""os_chk""`` - Overstrength (O/S) strength design check.
+                - ``"os_chk"`` - Overstrength (O/S) strength design check.
 
                   Returns the O/S (overstrength) section design capacity, i.e.
                   undertakes the cross section analysis based on the following
@@ -1278,7 +1280,7 @@ class NZS3101(DesignCode):
                     MPa, i.e. :math:`f'_c` + 15 in accordance with NZS3101:2006 CL
                     2.6.5.5(c).
 
-                - ``""prob_chk""`` - Probable strength design check to NZSEE C5
+                - ``"prob_chk"`` - Probable strength design check to NZSEE C5
                   guidelines based on NZS3101:2006 analysis provisions.
 
                   Returns the probable strength section design capacity, i.e.
@@ -1303,7 +1305,7 @@ class NZS3101(DesignCode):
                     equal to 40 MPa, :math:`f'_{cp}=1.5f'_c`, and for greater than
                     40 MPa, :math:`f'_{cp}=1.4f'_c`.
 
-                - ``""prob_os_chk""`` - Probable overstrength design check to NZSEE C5
+                - ``"prob_os_chk"`` - Probable overstrength design check to NZSEE C5
                   guidelines based on NZS3101:2006 analysis provisions.
 
                   Returns the probable O/S (overstrength) strength section design
@@ -1633,7 +1635,7 @@ class NZS3101(DesignCode):
 
         Args:
             pphr_class: Potential Plastic Hinge Region (PPHR) classification,
-                **NDPR**/**LDPR**/**DPR**. See below for definitions.
+                ``"NDPR"``/``"LDPR"``/``"DPR"``
             analysis_type: The type of cross section analysis to undertake on the
                 defined concrete section, by default a normal nominal strength design
                 check is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor`
@@ -1642,15 +1644,15 @@ class NZS3101(DesignCode):
                 (:math:`-\pi \leq \theta \leq \pi`)
             n_design: Axial design force (:math:`N^*`)
 
+        Returns:
+            Factored and unfactored ultimate bending results objects, and capacity
+            reduction factor (``factored_results``, ``unfactored_results``, ``phi``)
+
         .. admonition:: PPHR Classifications
 
           - **NDPR** = Nominally Ductile Plastic Region
           - **LDPR** = Limited Ductile Plastic Region
           - **DPR** = Ductile Plastic Region
-
-        Returns:
-            Factored and unfactored ultimate bending results objects, and capacity
-            reduction factor (``factored_results``, ``unfactored_results``, ``phi``)
         """
         # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
         # (dependant on PPHR class)
@@ -1705,7 +1707,7 @@ class NZS3101(DesignCode):
 
         Args:
             pphr_class: Potential Plastic Hinge Region (PPHR) classification,
-                **NDPR**/**LDPR**/**DPR**.
+                ``"NDPR"``/``"LDPR"``/``"DPR"``
             analysis_type: The type of cross section analysis to undertake on the
                 defined concrete section, by default a normal nominal strength design
                 check is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor`
@@ -1738,16 +1740,16 @@ class NZS3101(DesignCode):
                 the interaction diagram.
             progress_bar: If set to True, displays the progress bar
 
+        Returns:
+            Factored and unfactored moment interaction results objects, and list of
+            capacity reduction factors (``factored_results``, ``unfactored_results``,
+            ``phis``)
+
         .. admonition:: PPHR Classifications
 
           - **NDPR** = Nominally Ductile Plastic Region
           - **LDPR** = Limited Ductile Plastic Region
           - **DPR** = Ductile Plastic Region
-
-        Returns:
-            Factored and unfactored moment interaction results objects, and list of
-            capacity reduction factors (``factored_results``, ``unfactored_results``,
-            ``phis``)
         """
         if control_points is None:
             control_points = [("fy", 1.0), ("fy", 0.5), ("fy", 0.0), ("N", 0.0)]
@@ -1818,7 +1820,7 @@ class NZS3101(DesignCode):
 
         Args:
             pphr_class: Potential Plastic Hinge Region (PPHR) classification,
-                **NDPR**/**LDPR**/**DPR**.
+                ``"NDPR"``/``"LDPR"``/``"DPR"``
             analysis_type: The type of cross section analysis to undertake on the
                 defined concrete section, by default a normal nominal strength design
                 check is undertaken, refer to :meth:`NZS3101.capacity_reduction_factor`
@@ -1827,15 +1829,15 @@ class NZS3101(DesignCode):
             n_points: Number of calculation points for neutral axis orientation
             progress_bar: If set to True, displays the progress bar
 
+        Returns:
+            Factored biaxial bending results object and list of capacity reduction
+            factors (``factored_results``, ``phis``)
+
         .. admonition:: PPHR Classifications
 
           - **NDPR** = Nominally Ductile Plastic Region
           - **LDPR** = Limited Ductile Plastic Region
           - **DPR** = Ductile Plastic Region
-
-        Returns:
-            Factored biaxial bending results object and list of capacity reduction
-            factors (``factored_results``, ``phis``)
         """
         # Check NZS3101:2006 CL 5.2.1 concrete compressive strength limits
         # (dependant on PPHR class)

@@ -77,7 +77,9 @@ Now that you have all the dependencies up and running, you can install
 `concreteproperties` with development requirements:
 
 ```shell
-poetry install
+git clone https://github.com/robbievanleeuwen/concrete-properties.git
+cd concrete-properties
+poetry install --all-extras
 ```
 
 You can now run an interactive Python session, or the command-line interface:

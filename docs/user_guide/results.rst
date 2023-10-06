@@ -4,7 +4,7 @@ Results
 =======
 
 After performing an analysis on a reinforced concrete cross-section (see
-:ref:`label-analysis`), *concreteproperties* provides the user with a results object
+:ref:`label-analysis`), ``concreteproperties`` provides the user with a results object
 specific to the conducted analysis. These results objects have methods tailored for the
 post-processing of analysis results.
 

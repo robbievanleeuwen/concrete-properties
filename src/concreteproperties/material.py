@@ -15,7 +15,9 @@ class Material:
         name: Material name
         density: Material density (mass per unit volume)
         stress_strain_profile: Material stress-strain profile
-        colour: Colour of the material for rendering
+        colour: Colour of the material for rendering, see
+            https://matplotlib.org/stable/gallery/color/named_colors.html for a list of
+            named colours
         meshed: If set to True, the entire material region is meshed; if set to False,
             the material region is treated as a lumped circular mass at its centroid
     """
@@ -43,7 +45,9 @@ class Concrete(Material):
         ultimate_stress_strain_profile: Ultimate concrete stress-strain profile
         flexural_tensile_strength: Absolute value of the concrete flexural tensile
             strength
-        colour: Colour of the material for rendering
+        colour: Colour of the material for rendering, see
+            https://matplotlib.org/stable/gallery/color/named_colors.html for a list of
+            named colours
 
     Raises:
         ValueError: If concrete stress_strain_profile is not a ConcreteServiceProfile
@@ -95,7 +99,9 @@ class Steel(Material):
         name: Steel material name
         density: Steel density (mass per unit volume)
         stress_strain_profile: Steel stress-strain profile
-        colour: Colour of the material for rendering
+        colour: Colour of the material for rendering, see
+            https://matplotlib.org/stable/gallery/color/named_colors.html for a list of
+            named colours
     """
 
     name: str
@@ -115,7 +121,9 @@ class SteelBar(Steel):
         name: Steel bar material name
         density: Steel bar density (mass per unit volume)
         stress_strain_profile: Steel bar stress-strain profile
-        colour: Colour of the material for rendering
+        Colour of the material for rendering, see
+            https://matplotlib.org/stable/gallery/color/named_colors.html for a list of
+            named colours
     """
 
     name: str
@@ -145,7 +153,9 @@ class SteelStrand(Steel):
         name: Steel strand material name
         density: Steel strand density (mass per unit volume)
         stress_strain_profile: Steel strand stress-strain profile
-        colour: Colour of the material for rendering
+        Colour of the material for rendering, see
+            https://matplotlib.org/stable/gallery/color/named_colors.html for a list of
+            named colours
         prestress_stress: Prestressing stress applied to the strand
     """
 

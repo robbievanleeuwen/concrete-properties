@@ -24,7 +24,7 @@ General
 * Moment inputs for elastic stress analysis (cracked and uncracked), are assumed to be
   taken to be about the geometric centroid (material properties applied)
 * Finite element assumptions and background can be found
-  `here <https://sectionproperties.readthedocs.io/en/stable/user_guide/theory.html>`_
+  `here <https://sectionproperties.readthedocs.io/en/stable/user_guide/theory.html>`_.
 
 Cracked Analysis
 ----------------
