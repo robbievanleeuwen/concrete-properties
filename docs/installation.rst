@@ -38,6 +38,3 @@ use the ``dxf`` and/or ``rhino`` options:
 
     pip install sectionproperties[dxf]
     pip install sectionproperties[rhino]
-
-Note that the ``rhino`` option only supports python ``3.9`` due to incomplete wheel
-coverage of ``rhino3dm``.

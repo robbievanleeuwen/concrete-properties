@@ -79,7 +79,7 @@ Now that you have all the dependencies up and running, you can install
 ```shell
 git clone https://github.com/robbievanleeuwen/concrete-properties.git
 cd concrete-properties
-poetry install --all-extras
+poetry install
 ```
 
 You can now run an interactive Python session, or the command-line interface:
