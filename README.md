@@ -8,7 +8,7 @@
 [![Status](https://img.shields.io/pypi/status/concreteproperties.svg)][status]
 [![Python Version](https://img.shields.io/pypi/pyversions/concreteproperties)][python version]
 [![License](https://img.shields.io/pypi/l/concreteproperties)][license]
-[![Read the documentation at https://concrete-properties.readthedocs.io/](https://img.shields.io/readthedocs/concreteproperties/stable.svg?label=Read%20the%20Docs)][read the docs]
+[![Read the documentation at https://concrete-properties.readthedocs.io/](https://img.shields.io/readthedocs/concrete-properties/stable.svg?label=Read%20the%20Docs)][read the docs]
 [![Tests](https://github.com/robbievanleeuwen/concrete-properties/workflows/Tests/badge.svg)][tests]
 [![Codecov](https://codecov.io/gh/robbievanleeuwen/concrete-properties/branch/master/graph/badge.svg)][codecov]
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
