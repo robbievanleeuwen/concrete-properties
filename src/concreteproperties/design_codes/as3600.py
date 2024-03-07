@@ -428,7 +428,7 @@ class AS3600(DesignCode):
                 m_xy=(decomp.m_xy + factor * (squash.m_xy - decomp.m_xy)) / phi,
             )
         # regular calculation
-        elif n_design > 0:
+        elif n_design >= 0:
             ult_res = self.concrete_section.ultimate_bending_capacity(
                 theta=theta, n=n_design / phi
             )
