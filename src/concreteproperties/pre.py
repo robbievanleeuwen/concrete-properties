@@ -211,15 +211,19 @@ class CPGeom:
 
         # assign material properties and create cp geometry objects
         top_geoms = [
-            CPGeomConcrete(geom=poly, material=self.material)
-            if isinstance(self.material, Concrete)
-            else CPGeom(geom=poly, material=self.material)
+            (
+                CPGeomConcrete(geom=poly, material=self.material)
+                if isinstance(self.material, Concrete)
+                else CPGeom(geom=poly, material=self.material)
+            )
             for poly in top_polys
         ]
         bot_geoms = [
-            CPGeomConcrete(geom=poly, material=self.material)
-            if isinstance(self.material, Concrete)
-            else CPGeom(geom=poly, material=self.material)
+            (
+                CPGeomConcrete(geom=poly, material=self.material)
+                if isinstance(self.material, Concrete)
+                else CPGeom(geom=poly, material=self.material)
+            )
             for poly in bot_polys
         ]
 
