@@ -685,7 +685,7 @@ def test_nzs3101_create_os_section(
     for steel_geom in concrete_os_section.reinf_geometries_lumped:
         assert (
             pytest.approx(steel_geom.material.__getattribute__("steel_grade"))
-            == f"user_{yield_strength*phi_os:.0f}"
+            == f"user_{yield_strength * phi_os:.0f}"
         )
         assert (
             pytest.approx(
@@ -833,7 +833,7 @@ def test_nzs3101_create_prob_section(
     for steel_geom in concrete_prob_section.reinf_geometries_lumped:
         assert (
             pytest.approx(steel_geom.material.__getattribute__("steel_grade"))
-            == f"user_{yield_strength*1.08:.0f}"
+            == f"user_{yield_strength * 1.08:.0f}"
         )
         assert (
             pytest.approx(
@@ -974,7 +974,7 @@ def test_nzs3101_create_prob_os_section(
     for steel_geom in concrete_prob_section.reinf_geometries_lumped:
         assert (
             pytest.approx(steel_geom.material.__getattribute__("steel_grade"))
-            == f"user_{yield_strength*phi_os:.0f}"
+            == f"user_{yield_strength * phi_os:.0f}"
         )
         assert (
             pytest.approx(

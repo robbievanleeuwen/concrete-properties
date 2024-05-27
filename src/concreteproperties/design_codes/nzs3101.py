@@ -726,15 +726,15 @@ class NZS3101(DesignCode):
         # compare to axial load
         if n_design < phi * max_ten:
             raise ValueError(
-                f"The specified axial load of {n_design*n_scale:.2f} kN, is less than "
-                f"the tension capacity of the concrete section, phiN_t = "
-                f"{phi*max_ten*n_scale:.2f} kN"
+                f"The specified axial load of {n_design * n_scale:.2f} kN, is less "
+                f"than the tension capacity of the concrete section, phiN_t = "
+                f"{phi * max_ten * n_scale:.2f} kN"
             )
         elif n_design > phi * max_comp:
             raise ValueError(
-                f"The specified axial load of {n_design*n_scale:.2f} kN, is greater "
+                f"The specified axial load of {n_design * n_scale:.2f} kN, is greater "
                 f"than the compression capacity of the concrete section, phiN_c = "
-                f"{phi*max_comp*n_scale:.2f} kN"
+                f"{phi * max_comp * n_scale:.2f} kN"
             )
 
     def check_f_y_limit(self) -> None:
