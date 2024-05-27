@@ -6,6 +6,7 @@ import warnings
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
+import matplotlib
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import matplotlib.tri as tri
