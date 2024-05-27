@@ -6,7 +6,7 @@ import warnings
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
-import matplotlib.cm as cm
+import matplotlib
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import matplotlib.tri as tri
@@ -276,6 +276,7 @@ class CrackedResults:
         theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
     """
+
     theta: float
     n: float = 0
     m: float = 0
@@ -461,6 +462,7 @@ class MomentCurvatureResults:
             the cross-section for each curvature step in the analysis. A value of one
             indicates failure.
     """
+
     # results
     theta: float
     n_target: float
@@ -618,6 +620,7 @@ class UltimateBendingResults:
         m_xy: Resultant bending moment
         label: Result label
     """
+
     # bending angle
     theta: float
 
@@ -1172,8 +1175,8 @@ class StressResult:
             )
 
             # set up the colormaps
-            cmap_conc = cm.get_cmap(name=conc_cmap)
-            cmap_reinf = cm.get_cmap(name=reinf_cmap)
+            cmap_conc = matplotlib.colormaps.get_cmap(cmap=conc_cmap)
+            cmap_reinf = matplotlib.colormaps.get_cmap(cmap=reinf_cmap)
 
             # determine minimum and maximum stress values for the contour list
             # add tolerance for plotting stress blocks
