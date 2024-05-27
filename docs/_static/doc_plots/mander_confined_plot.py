@@ -1,6 +1,5 @@
 """Plotting function to generate the mander confined plot."""
 
-
 import matplotlib.pyplot as plt
 import numpy as np
 

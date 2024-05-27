@@ -276,6 +276,7 @@ class CrackedResults:
         theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
     """
+
     theta: float
     n: float = 0
     m: float = 0
@@ -461,6 +462,7 @@ class MomentCurvatureResults:
             the cross-section for each curvature step in the analysis. A value of one
             indicates failure.
     """
+
     # results
     theta: float
     n_target: float
@@ -618,6 +620,7 @@ class UltimateBendingResults:
         m_xy: Resultant bending moment
         label: Result label
     """
+
     # bending angle
     theta: float
 
