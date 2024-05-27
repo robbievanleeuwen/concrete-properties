@@ -4,7 +4,7 @@ Installation
 ============
 
 These instructions will get you a copy of ``concreteproperties`` up and running on your
-machine. You will need a working copy of python 3.9, 3.10 or 3.11 to get started.
+machine. You will need a working copy of python 3.9, 3.10, 3.11 or 3.12 to get started.
 
 Installing ``concreteproperties``
 ---------------------------------
