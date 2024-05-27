@@ -596,6 +596,7 @@ class ModifiedMander(ConcreteServiceProfile):
     Raises:
         ValueError: If specified section type is not rect, circ_hoop or circ_spiral
     """
+
     strains: list[float] = field(init=False)
     stresses: list[float] = field(init=False)
     elastic_modulus: float

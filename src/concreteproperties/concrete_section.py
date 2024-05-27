@@ -663,9 +663,7 @@ class ConcreteSection:
                         msg += "/issues"
                         raise utils.AnalysisError(msg) from exc
 
-                m_xy = np.sqrt(
-                    moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2
-                )
+                m_xy = np.sqrt(moment_curvature._m_x_i**2 + moment_curvature._m_y_i**2)
 
                 if progress:
                     text_update = "[red]Generating M-K diagram: "

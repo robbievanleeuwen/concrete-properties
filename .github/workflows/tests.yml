@@ -23,9 +23,9 @@ jobs:
           - { python: "3.11", os: "windows-latest", session: "tests" }
           - { python: "3.10", os: "windows-latest", session: "tests" }
           - { python: "3.9", os: "windows-latest", session: "tests" }
-          - { python: "3.11", os: "macos-latest", session: "tests" }
-          - { python: "3.10", os: "macos-latest", session: "tests" }
-          - { python: "3.9", os: "macos-latest", session: "tests" }
+          - { python: "3.11", os: "macos-13", session: "tests" }
+          - { python: "3.10", os: "macos-13", session: "tests" }
+          - { python: "3.9", os: "macos-13", session: "tests" }
           - { python: "3.10", os: "ubuntu-latest", session: "docs-build" }
 
     env:
@@ -58,13 +58,13 @@ jobs:
 
       - name: Install Poetry
         run: |
-          pipx install --pip-args=--constraint=.github/workflows/constraints.txt poetry
+          pipx install --pip-args=--constraint=${{ github.workspace }}/.github/workflows/constraints.txt poetry
           poetry --version
 
       - name: Install Nox
         run: |
-          pipx install --pip-args=--constraint=.github/workflows/constraints.txt nox
-          pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
+          pipx install --pip-args=--constraint=${{ github.workspace }}/.github/workflows/constraints.txt nox
+          pipx inject --pip-args=--constraint=${{ github.workspace }}/.github/workflows/constraints.txt nox nox-poetry
           nox --version
 
       - name: Install pandoc
@@ -132,13 +132,13 @@ jobs:
 
       - name: Install Poetry
         run: |
-          pipx install --pip-args=--constraint=.github/workflows/constraints.txt poetry
+          pipx install --pip-args=--constraint=${{ github.workspace }}/.github/workflows/constraints.txt poetry
           poetry --version
 
       - name: Install Nox
         run: |
-          pipx install --pip-args=--constraint=.github/workflows/constraints.txt nox
-          pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
+          pipx install --pip-args=--constraint=${{ github.workspace }}/.github/workflows/constraints.txt nox
+          pipx inject --pip-args=--constraint=${{ github.workspace }}/.github/workflows/constraints.txt nox nox-poetry
           nox --version
 
       - name: Download coverage data
