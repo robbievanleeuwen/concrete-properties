@@ -10,7 +10,7 @@ Installing ``concreteproperties``
 ---------------------------------
 
 ``concreteproperties`` uses `shapely <https://github.com/shapely/shapely>`_ to prepare
-the cross-section geometry and `triangle <https://github.com/drufat/triangle>`_ to
+the cross-section geometry and `CyTriangle <https://github.com/m-clare/cytriangle>`_ to
 efficiently generate a conforming triangular mesh.
 `sectionproperties <https://github.com/robbievanleeuwen/section-properties>`_ is used to
 generate concrete geometries, while `numpy <https://github.com/numpy/numpy>`_ and
