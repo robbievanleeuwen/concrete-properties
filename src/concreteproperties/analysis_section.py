@@ -6,8 +6,8 @@ from dataclasses import dataclass
 from math import isinf
 from typing import TYPE_CHECKING
 
+import cytriangle as triangle
 import numpy as np
-import triangle
 from matplotlib.colors import ListedColormap
 
 import concreteproperties.utils as utils
