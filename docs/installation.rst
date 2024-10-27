@@ -4,7 +4,7 @@ Installation
 ============
 
 These instructions will get you a copy of ``concreteproperties`` up and running on your
-machine. You will need a working copy of python 3.9, 3.10, 3.11 or 3.12 to get started.
+machine. You will need a working copy of python 3.10, 3.11 or 3.12 to get started.
 
 Installing ``concreteproperties``
 ---------------------------------
@@ -17,8 +17,6 @@ generate concrete geometries, while `numpy <https://github.com/numpy/numpy>`_ an
 `scipy <https://github.com/scipy/scipy>`_ are used to aid computations, and
 `matplotlib <https://github.com/matplotlib/matplotlib>`_ and
 `rich <https://github.com/Textualize/rich>`_ are used for post-processing.
-Finally, `click <https://github.com/pallets/click>`_ is used to power the
-``concreteproperties`` CLI.
 
 ``concreteproperties`` and all of its dependencies can be installed through the python
 package index:
