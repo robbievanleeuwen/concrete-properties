@@ -804,7 +804,7 @@ class MomentInteractionResults:
                                     "arrowstyle": "->",
                                     "connectionstyle": style,
                                 },
-                                "bbox": {"boxstyle": "round", "fc": 0.8},
+                                "bbox": {"boxstyle": "round", "fc": "0.8"},
                             }
                         else:
                             annotate_dict = {}
