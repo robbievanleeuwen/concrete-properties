@@ -77,7 +77,7 @@ def test_nzs3101_assign_concrete_section_valueerror(section_type):
 
 
 @pytest.mark.parametrize(
-    ("density", "rel_tol", "calc_value"),
+    ("compressive_strength", "rel_tol", "calc_value"),
     [
         (20, 0, 0.85),
         (36, 0, 0.85),
@@ -99,7 +99,7 @@ def test_nzs3101_alpha_1(compressive_strength, rel_tol, calc_value):
 
 
 @pytest.mark.parametrize(
-    ("density", "rel_tol", "calc_value"),
+    ("compressive_strength", "rel_tol", "calc_value"),
     [
         (20, 0, 0.85),
         (30, 0, 0.85),
