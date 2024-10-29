@@ -12,7 +12,6 @@ from more_itertools import peekable
 from sectionproperties.pre.geometry import Geometry
 from sectionproperties.pre.library.primitive_sections import circular_section_by_area
 from shapely import LineString, Polygon
-from shapely.geometry.base import GeometrySequence
 from shapely.ops import split
 
 from concreteproperties.material import Concrete
@@ -20,6 +19,7 @@ from concreteproperties.material import Concrete
 if TYPE_CHECKING:
     import matplotlib.axes
     from sectionproperties.pre.geometry import CompoundGeometry
+    from shapely.geometry.base import GeometrySequence
 
     from concreteproperties.material import Material, SteelBar, SteelStrand
 
@@ -206,10 +206,6 @@ class CPGeom:
             polys = [self.geom]
 
         # sort geometries
-        if isinstance(polys, GeometrySequence):
-            msg = "Geometry split failure."
-            raise RuntimeError(msg)
-
         top_polys, bot_polys = self.sort_polys(polys=polys, point=point, vector=vector)
 
         # assign material properties and create cp geometry objects
@@ -277,7 +273,7 @@ class CPGeom:
 
     def sort_polys(
         self,
-        polys: list[Polygon],
+        polys: list[Polygon] | GeometrySequence,
         point: tuple[float, float],
         vector: tuple[float, float],
     ) -> tuple[list[Polygon], list[Polygon]]:

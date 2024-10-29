@@ -785,11 +785,11 @@ class ModifiedMander(ConcreteServiceProfile):
         if self.conc_confined:
             np_strains = np.linspace(0, eps_c_max, self.n_points)
             # add eps_cc point corresponding to max stress point at end
-            np_strains = np.append(self.strains, eps_cc)
+            np_strains = np.append(np_strains, eps_cc)
         else:
             np_strains = np.linspace(0, min(2 * eps_cc, eps_c_max), self.n_points)
             # add eps_cc point corresponding to max stress point at end
-            np_strains = np.append(self.strains, eps_cc)
+            np_strains = np.append(np_strains, eps_cc)
 
         # sort strains numerically
         np_strains.sort()
