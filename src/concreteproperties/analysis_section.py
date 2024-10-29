@@ -14,7 +14,6 @@ import concreteproperties.utils as utils
 from concreteproperties.material import Concrete
 from concreteproperties.post import plotting_context
 
-
 if TYPE_CHECKING:
     import matplotlib.axes
 
@@ -413,7 +412,9 @@ class AnalysisSection:
             Matplotlib axes object
         """
         with plotting_context(title=title, aspect=True, **kwargs) as (fig, ax):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
 
             colour_array = []
             c = []  # Indices of elements for mapping colours
@@ -426,10 +427,10 @@ class AnalysisSection:
             cmap = ListedColormap(colour_array)
 
             # plot the mesh colours
-            ax.tripcolor(
+            ax.tripcolor(  # pyright: ignore
                 self.mesh_nodes[:, 0],
                 self.mesh_nodes[:, 1],
-                self.mesh_elements[:, 0:3],
+                self.mesh_elements[:, 0:3],  # pyright: ignore
                 c,
                 cmap=cmap,
             )
@@ -438,7 +439,7 @@ class AnalysisSection:
             ax.triplot(
                 self.mesh_nodes[:, 0],
                 self.mesh_nodes[:, 1],
-                self.mesh_elements[:, 0:3],
+                self.mesh_elements[:, 0:3],  # pyright: ignore
                 lw=0.5,
                 color="black",
                 alpha=alpha,
@@ -466,10 +467,10 @@ class AnalysisSection:
         cmap = ListedColormap(colour_array)
 
         # plot the mesh colours
-        ax.tripcolor(
+        ax.tripcolor(  # pyright: ignore
             self.mesh_nodes[:, 0],
             self.mesh_nodes[:, 1],
-            self.mesh_elements[:, 0:3],
+            self.mesh_elements[:, 0:3],  # pyright: ignore
             c,
             cmap=cmap,
         )

@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 import matplotlib.patches as mpatches
 import numpy as np
 import sectionproperties.pre.geometry as sp_geom
+import sectionproperties.pre.pre as sp_pre
 from rich.live import Live
 from scipy.optimize import brentq
 
@@ -18,7 +19,6 @@ from concreteproperties.analysis_section import AnalysisSection
 from concreteproperties.material import Concrete, SteelStrand
 from concreteproperties.post import plotting_context
 from concreteproperties.pre import CPGeom, CPGeomConcrete
-
 
 if TYPE_CHECKING:
     import matplotlib.axes
@@ -41,14 +41,14 @@ class ConcreteSection:
             moment_centroid: If specified, all moments for service and ultimate
                 analyses are calculated about this point. If not specified, all moments
                 are calculated about the gross cross-section centroid, i.e. no material
-                properties applied.
+                properties applied. Defaults to ``None``.
             geometric_centroid_override: If set to True, sets ``moment_centroid`` to
                 the geometric centroid i.e. material properties applied (useful for
-                composite section analysis)
+                composite section analysis). Defaults to ``False``.
 
         Raises:
-            ValueError: If steel strand materials are detected, use a PrestressedSection
-                instead
+            ValueError: If steel strand materials are detected, use a
+                ``PrestressedSection`` instead
         """
         self.compound_geometry = geometry
 
@@ -58,7 +58,7 @@ class ConcreteSection:
         if overlapped_regions:
             msg = "The provided geometry contains overlapping regions, results may be"
             msg += " incorrect."
-            warnings.warn(msg)
+            warnings.warn(msg, stacklevel=1)
 
         # sort into concrete, reinforcement (meshed and lumped) and strand geometries
         self.all_geometries: list[CPGeomConcrete | CPGeom] = []
@@ -77,13 +77,18 @@ class ConcreteSection:
             elif isinstance(geom.material, SteelStrand):
                 # SteelStrand materials can only be in PrestressedSection
                 if type(self) is ConcreteSection:
-                    raise ValueError(
-                        "SteelStrand material detected. Use PrestressedSection instead."
-                    )
+                    msg = "SteelStrand material detected. Use PrestressedSection "
+                    msg += "instead."
+                    raise ValueError(msg)
                 else:
                     cp_geom = CPGeom(geom=geom.geom, material=geom.material)
                     self.strand_geometries.append(cp_geom)
             else:
+                if isinstance(geom.material, sp_pre.Material):
+                    msg = "'material' must be a concreteproperties Material object, "
+                    msg += "not a sectionproperties Material object."
+                    raise RuntimeError(msg)
+
                 cp_geom = CPGeom(geom=geom.geom, material=geom.material)
 
                 if cp_geom.material.meshed:
@@ -261,9 +266,8 @@ class ConcreteSection:
         conc_ult_strain = 0
 
         for idx, conc_geom in enumerate(self.concrete_geometries):
-            ult_strain = (
-                conc_geom.material.ultimate_stress_strain_profile.get_ultimate_compressive_strain()
-            )
+            conc_ult_ssp = conc_geom.material.ultimate_stress_strain_profile
+            ult_strain = conc_ult_ssp.get_ultimate_compressive_strain()
             if idx == 0:
                 conc_ult_strain = ult_strain
             else:
@@ -305,7 +309,7 @@ class ConcreteSection:
 
         Args:
             theta: Angle (in radians) the neutral axis makes with the horizontal axis
-                (:math:`-\pi \leq \theta \leq \pi`)
+                (:math:`-\pi \leq \theta \leq \pi`). Defaults to ``0``.
 
         Raises:
             AnalysisError: If the analysis fails
@@ -332,7 +336,7 @@ class ConcreteSection:
                 b=b,
                 args=(cracked_results),
                 xtol=1e-3,
-                rtol=1e-6,
+                rtol=1e-6,  # pyright: ignore [reportArgumentType]
                 full_output=True,
                 disp=False,
             )
@@ -392,11 +396,8 @@ class ConcreteSection:
             m_c_geom = (f_t / conc_geom.material.elastic_modulus) * (e_iuu / d)
 
             # if we are the first geometry, initialise cracking moment
-            if idx == 0:
-                m_c = m_c_geom
             # otherwise take smaller cracking moment
-            else:
-                m_c = min(m_c, m_c_geom)
+            m_c = m_c_geom if idx == 0 else min(m_c, m_c_geom)
 
         return m_c
 
@@ -427,9 +428,11 @@ class ConcreteSection:
 
         # validate d_nc input
         if d_nc <= 0:
-            raise ValueError("d_nc must be positive.")
+            msg = "d_nc must be positive."
+            raise ValueError(msg)
         elif d_nc > d_t:
-            raise ValueError("d_nc must lie within the section, i.e. d_nc <= d_t")
+            msg = "d_nc must lie within the section, i.e. d_nc <= d_t"
+            raise ValueError(msg)
 
         # find point on neutral axis by shifting by d_nc
         point_na = utils.point_on_neutral_axis(
@@ -602,19 +605,21 @@ class ConcreteSection:
 
         Args:
             theta: Angle (in radians) the neutral axis makes with the horizontal axis
-                (:math:`-\pi \leq \theta \leq \pi`)
-            n: Axial force
-            kappa0: Initial curvature
-            kappa_inc: Initial curvature increment
+                (:math:`-\pi \leq \theta \leq \pi`). Defaults to ``0``.
+            n: Axial force. Defaults to ``0``.
+            kappa0: Initial curvature. Defaults to ``0``.
+            kappa_inc: Initial curvature increment. Defaults to ``1e-7``.
             kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
                 when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied,
-                the inverse of this multipler is applied to ``kappa_inc``.
-            kappa_inc_max: Maximum curvature increment
+                the inverse of this multipler is applied to ``kappa_inc``. Defaults to
+                ``2``.
+            kappa_inc_max: Maximum curvature increment. Defaults to ``5e-6``.
             delta_m_min: Relative change in moment at which to reduce the curvature
-                increment
+                increment. Defaults to ``0.15``.
             delta_m_max: Relative change in moment at which to increase the curvature
-                increment
-            progress_bar: If set to True, displays the progress bar
+                increment. Defaults to ``0.3``.
+            progress_bar: If set to True, displays the progress bar. Defaults to
+                ``True``.
 
         Returns:
             Moment curvature results object
@@ -624,12 +629,12 @@ class ConcreteSection:
 
         # function that performs moment curvature analysis
         def mcurve(kappa_inc=kappa_inc, progress=None):
-            iter = 0
+            iteration = 0
             kappa = kappa0
 
             while not moment_curvature._failure:
                 # calculate adaptive step size for curvature
-                if iter > 2:
+                if iteration > 2:
                     moment_diff = (
                         abs(moment_curvature.kappa[-1] - moment_curvature.kappa[-2])
                         / moment_curvature.kappa[-1]
@@ -644,7 +649,9 @@ class ConcreteSection:
                         kappa_inc = kappa_inc_max
 
                 # update curvature
-                kappa = kappa0 if iter == 0 else moment_curvature.kappa[-1] + kappa_inc
+                kappa = (
+                    kappa0 if iteration == 0 else moment_curvature.kappa[-1] + kappa_inc
+                )
 
                 # find neutral axis that gives convergence of the axial force
                 try:
@@ -680,7 +687,7 @@ class ConcreteSection:
                     moment_curvature.convergence.append(
                         moment_curvature._failure_convergence
                     )
-                    iter += 1
+                    iteration += 1
 
             # find kappa corresponding to failure strain:
             # curvature before and after failure
@@ -910,8 +917,8 @@ class ConcreteSection:
 
         Args:
             theta: Angle (in radians) the neutral axis makes with the horizontal axis
-                (:math:`-\pi \leq \theta \leq \pi`)
-            n: Net axial force (nominal axial load)
+                (:math:`-\pi \leq \theta \leq \pi`). Defaults to ``0``.
+            n: Net axial force (nominal axial load). Defaults to ``0``.
 
         Raises:
             AnalysisError: If the analysis fails
@@ -938,7 +945,7 @@ class ConcreteSection:
                 b=b,
                 args=(n, ultimate_results),
                 xtol=1e-3,
-                rtol=1e-6,
+                rtol=1e-6,  # pyright: ignore [reportArgumentType]
                 full_output=True,
                 disp=False,
             )
@@ -1016,7 +1023,8 @@ class ConcreteSection:
 
         # validate d_n input
         if d_n <= 0:
-            raise ValueError("d_n must be positive.")
+            msg = "d_n must be positive."
+            raise ValueError(msg)
 
         # find point on neutral axis by shifting by d_n
         if isinf(d_n):
@@ -1156,37 +1164,41 @@ class ConcreteSection:
             limits: List of control points that define the start and end of the
                 interaction diagram. List length must equal two. The default limits
                 range from concrete decompression strain to zero curvature tension, i.e.
-                ``[("D", 1.0), ("d_n", 1e-6)]``.
+                ``[("D", 1.0), ("d_n", 1e-6)]``. Defaults to ``None``.
             control_points: List of additional control points to add to the moment
                 interatction diagram. The default control points include the pure
                 compression point (``kappa0``), the balanced point (``fy = 1``) and the
                 pure bending point (``N=0``), i.e. ``[("kappa0", 0.0), ("fy", 1.0),
                 ("N", 0.0)]``. Control points may lie outside the limits of the moment
-                interaction diagram as long as equilibrium can be found.
+                interaction diagram as long as equilibrium can be found. Defaults to
+                ``None``.
             labels: List of labels to apply to the ``limits`` and ``control_points``
                 for plotting purposes. The first two values in ``labels`` apply labels
                 to the ``limits``, the remaining values apply labels to the
                 ``control_points``. If a single value is provided, this value will be
                 applied to both ``limits`` and all ``control_points``. The length of
-                ``labels`` must equal ``1`` or ``2 + len(control_points)``.
+                ``labels`` must equal ``1`` or ``2 + len(control_points)``. Defaults to
+                ``None``.
             n_points: Number of points to compute including and between the
                 ``limits`` of the moment interaction diagram. Generates equally spaced
-                neutral axis depths between the ``limits``.
+                neutral axis depths between the ``limits``. Defaults to ``24``.
             n_spacing: If provided, overrides ``n_points`` and generates the moment
                 interaction diagram using ``n_spacing`` equally spaced axial loads. Note
                 that using ``n_spacing`` negatively affects performance, as the neutral
                 axis depth must first be located for each point on the moment
-                interaction diagram.
+                interaction diagram. Defaults to ``None``.
             max_comp: If provided, limits the maximum compressive force in the moment
-                interaction diagram to ``max_comp``
+                interaction diagram to ``max_comp``. Defaults to ``None``.
             max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
                 first value is at zero moment, second value is at the intersection with
                 the interaction diagram
-            progress_bar: If set to True, displays the progress bar
+            progress_bar: If set to True, displays the progress bar. Defaults to
+                ``True``.
 
         Raises:
-            ValueError: Length of ``limits`` must equal 2
-            ValueError: Length of ``labels`` must be 1 or 2 + number of control points
+            ValueError: Length of ``limits`` must equal ``2``
+            ValueError: Length of ``labels`` must be ``1`` or
+                ``2 + len(control_points)``
             ValueError: If ``max_comp`` is greater than the maximum axial capacity
 
         Returns:
@@ -1205,25 +1217,21 @@ class ConcreteSection:
 
         # validate limits length
         if len(limits) != 2:
-            raise ValueError("Length of limits must equal 2.")
+            msg = "Length of limits must equal 2."
+            raise ValueError(msg)
 
         # get neutral axis depths for limits
-        limits_dn = []
-
-        for cp in limits:
-            limits_dn.append(self.decode_d_n(theta=theta, cp=cp, d_t=d_t))
+        limits_dn = [self.decode_d_n(theta=theta, cp=cp, d_t=d_t) for cp in limits]
 
         # get neutral axis depths for additional control points
-        add_cp_dn = []
-
-        for cp in control_points:
-            add_cp_dn.append(self.decode_d_n(theta=theta, cp=cp, d_t=d_t))
+        add_cp_dn = [
+            self.decode_d_n(theta=theta, cp=cp, d_t=d_t) for cp in control_points
+        ]
 
         # validate labels length
         if labels and len(labels) != 1 and len(labels) != 2 + len(control_points):
-            raise ValueError(
-                "Length of labels must be 1 or 2 + number of control points"
-            )
+            msg = "Length of labels must be 1 or 2 + number of control points"
+            raise ValueError(msg)
 
         # if one label is provided, generate a list
         if labels and len(labels) == 1:
@@ -1252,15 +1260,8 @@ class ConcreteSection:
         else:
             # check for infinity in limits - this will not work with linspace
             # for sake of distributing neutral axes let kappa0 ~= 2 * D
-            if limits_dn[0] == inf:
-                start = 2 * d_t
-            else:
-                start = limits_dn[0]
-
-            if limits_dn[1] == inf:
-                stop = 2 * d_t
-            else:
-                stop = limits_dn[1]
+            start = 2 * d_t if limits_dn[0] == inf else limits_dn[0]
+            stop = 2 * d_t if limits_dn[1] == inf else limits_dn[1]
 
             # generate list of neutral axes
             analysis_list = np.linspace(
@@ -1419,9 +1420,10 @@ class ConcreteSection:
         ``n_points`` calculation points.
 
         Args:
-            n: Net axial force
-            n_points: Number of calculation points
-            progress_bar: If set to True, displays the progress bar
+            n: Net axial force. Defaults to ``0``.
+            n_points: Number of calculation points. Defaults to ``48``.
+            progress_bar: If set to True, displays the progress bar. Defaults to
+                ``True``.
 
         Returns:
             Biaxial bending results
@@ -1482,9 +1484,9 @@ class ConcreteSection:
         and ``m_y``.
 
         Args:
-            n: Axial force
-            m_x: Bending moment about the x-axis
-            m_y: Bending moment about the y-axis
+            n: Axial force. Defaults to ``0``.
+            m_x: Bending moment about the x-axis. Defaults to ``0``.
+            m_y: Bending moment about the y-axis. Defaults to ``0``.
 
         Returns:
             Stress results object
@@ -1617,8 +1619,8 @@ class ConcreteSection:
 
         Args:
             cracked_results: Cracked results objects
-            n: Axial force
-            m: Bending moment
+            n: Axial force. Defaults to ``0``.
+            m: Bending moment. Defaults to ``0``.
 
         Returns:
             Stress results object
@@ -1663,10 +1665,7 @@ class ConcreteSection:
             elif c > 0:
                 sign = 1
         else:
-            if c < 0:
-                sign = 1
-            else:
-                sign = -1
+            sign = 1 if c < 0 else -1
 
         m_x = sign * np.sqrt(m * m / (1 + 1 / (c * c)))
         m_y = m_x / c
@@ -1760,7 +1759,7 @@ class ConcreteSection:
             moment_curvature_results: Moment-curvature results objects
             m: Bending moment
             kappa: Curvature, if provided overrides the supplied bending moment and
-                calculates the stress at the given curvature
+                calculates the stress at the given curvature. Defaults to ``None``.
 
         Raises:
             AnalysisError: If the stress analysis fails
@@ -2094,9 +2093,8 @@ class ConcreteSection:
         if cp[0] == "D":
             # check D
             if cp[1] <= 0:
-                raise ValueError(
-                    f"Provided section depth (D) {cp[1]:.3f} must be greater than 0."
-                )
+                msg = f"Provided section depth (D) {cp[1]:.3f} must be greater than 0."
+                raise ValueError(msg)
 
             return cp[1] * d_t
 
@@ -2104,7 +2102,8 @@ class ConcreteSection:
         elif cp[0] == "d_n":
             # check d_n
             if cp[1] <= 0:
-                raise ValueError(f"Provided d_n {cp[1]:.3f} must be greater than zero.")
+                msg = f"Provided d_n {cp[1]:.3f} must be greater than zero."
+                raise ValueError(msg)
 
             return cp[1]
 
@@ -2143,15 +2142,18 @@ class ConcreteSection:
         """Plots the reinforced concrete section.
 
         Args:
-            title: Plot title
-            background: If set to True, uses the plot as a background plot
+            title: Plot title. Defaults to ``"Reinforced Concrete Section"``.
+            background: If set to True, uses the plot as a background plot. Defaults to
+                ``False``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
         with plotting_context(title=title, aspect=True, **kwargs) as (fig, ax):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
 
             # create list of already plotted materials
             plotted_materials = []
@@ -2175,11 +2177,7 @@ class ConcreteSection:
 
                 # plot the points and facets
                 for f in meshed_geom.facets:
-                    if background:
-                        fmt = "k-"
-                    else:
-                        fmt = "ko-"
-
+                    fmt = "k-" if background else "ko-"
                     ax.plot(
                         [meshed_geom.points[f[0]][0], meshed_geom.points[f[1]][0]],
                         [meshed_geom.points[f[0]][1], meshed_geom.points[f[1]][1]],

@@ -1,7 +1,8 @@
+"""Script that combines multiple pngs into a gif."""
+
 import glob
 
 from PIL import Image
-
 
 # filepaths
 fp_in = "*.png"

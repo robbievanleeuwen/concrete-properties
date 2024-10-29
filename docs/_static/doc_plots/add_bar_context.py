@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING
 import numpy as np
 import sectionproperties.pre.library.primitive_sections as sp_ps
 
-
 if TYPE_CHECKING:
     from sectionproperties.pre.geometry import CompoundGeometry, Geometry
 

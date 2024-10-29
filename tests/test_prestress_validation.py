@@ -11,7 +11,6 @@ from concreteproperties.material import Concrete, SteelBar, SteelStrand
 from concreteproperties.pre import add_bar, add_bar_rectangular_array
 from concreteproperties.prestressed_section import PrestressedSection
 
-
 # All examples come from:
 # Gilbert, R. I., Mickleborough, N. C., & Ranzi, G. (2016). Design of Prestressed
 # Concrete to AS3600-2009 (2nd ed.). CRC Press.

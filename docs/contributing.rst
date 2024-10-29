@@ -3,26 +3,21 @@
 Contributor Guide
 =================
 
-Thank you for your interest in improving this project. This project is
-open-source under the `MIT
-license <https://opensource.org/licenses/MIT>`__ and welcomes
-contributions in the form of bug reports, feature requests, and pull
-requests.
+Thank you for your interest in improving this project. This project is open-source
+under the `MIT license <https://opensource.org/licenses/MIT>`__ and welcomes
+contributions in the form of bug reports, feature requests, and pull requests.
 
 Here is a list of important resources for contributors:
 
--  `Source
-   Code <https://github.com/robbievanleeuwen/concrete-properties>`__
+-  `Source Code <https://github.com/robbievanleeuwen/concrete-properties>`__
 -  `Documentation <https://concrete-properties.readthedocs.io/>`__
--  `Issue
-   Tracker <https://github.com/robbievanleeuwen/concrete-properties/issues>`__
+-  `Issue Tracker <https://github.com/robbievanleeuwen/concrete-properties/issues>`__
 -  :doc:`Code of Conduct <codeofconduct>`
 
 How to report a bug
 -------------------
 
-Report bugs on the `Issue
-Tracker <https://github.com/robbievanleeuwen/concrete-properties/issues>`__.
+Report bugs on the `Issue Tracker <https://github.com/robbievanleeuwen/concrete-properties/issues>`__.
 
 When filing an issue, make sure to answer these questions:
 
@@ -32,120 +27,129 @@ When filing an issue, make sure to answer these questions:
 -  What did you expect to see?
 -  What did you see instead?
 
-The best way to get your bug fixed is to provide a test case, and/or
-steps to reproduce the issue.
+The best way to get your bug fixed is to provide a test case, and/or steps to reproduce
+the issue.
 
 How to request a feature
 ------------------------
 
 Features that improve ``concreteproperties`` can be suggested on the
-`Issue
-Tracker <https://github.com/robbievanleeuwen/concrete-properties/issues>`__.
-It's a good idea to first submit the proposal as a feature request prior
-to submitting a pull request as this allows for the best coordination of
-efforts by preventing the duplication of work, and allows for feedback
-on your ideas.
+`Issue Tracker <https://github.com/robbievanleeuwen/concrete-properties/issues>`__.
+It's a good idea to first submit the proposal as a feature request prior to submitting a
+pull request as this allows for the best coordination of efforts by preventing the
+duplication of work, and allows for feedback on your ideas.
 
 How to set up your development environment
 ------------------------------------------
-
-You need Python 3.9, 3.10, 3.11 or 3.12, and the following tools:
-
--  `Poetry <https://python-poetry.org/>`__
--  `Nox <https://nox.thea.codes/>`__
--  `nox-poetry <https://nox-poetry.readthedocs.io/>`__
-
-Recommended dependency installation method:
-
-#. Install `pipx <https://pypa.github.io/pipx/installation/>`_:
-
-   .. code:: shell
-
-      python3 -m pip install --user pipx
-      python3 -m pipx ensurepath
-
-
-#. Install `Poetry <https://python-poetry.org/>`__:
-
-   .. code:: shell
-
-      pipx install poetry
-      poetry --version
-
-#. Install `Nox <https://nox.thea.codes/>`__ and
-   `nox-poetry <https://nox-poetry.readthedocs.io/>`__:
-
-   .. code:: shell
-
-      pipx install nox
-      pipx inject nox nox-poetry
-
-#. If you do not have ``pandoc`` installed, it will be required to build the docs. The
-   `installation method <https://pandoc.org/installing.html>`_ depends on which OS you
-   are running.
-
-Now that you have all the dependencies up and running, you can install
-``concreteproperties`` with development requirements:
+``concreteproperties`` uses ``uv`` for python project management. ``uv`` can be installed
+on using the standalone installer:
 
 .. code:: shell
 
-   git clone https://github.com/robbievanleeuwen/concrete-properties.git
-   cd concrete-properties
-   poetry install
+   curl -LsSf https://astral.sh/uv/install.sh | sh
 
-You can now run an interactive Python session, or the command-line interface:
+Installation instructions for other methods and Windows can be found
+`here <https://docs.astral.sh/uv/getting-started/installation/>`__.
+
+``uv`` can then be used to install the latest compatible version of python:
 
 .. code:: shell
 
-   poetry run python
-   poetry run concreteproperties
+   uv python install 3.12
+
+``concreteproperties`` and it's development dependencies can be installed with:
+
+.. code:: shell
+
+   uv sync
+
+If you want to build the documentation locally, you will need to install ``pandoc``. The
+`installation method <https://pandoc.org/installing.html>`__ depends on what OS you are
+running.
+
+To run a script using the development virtual environment, you can run:
+
+.. code:: shell
+
+   uv run example.py
+
+Refer to the ``uv`` `documentation <https://docs.astral.sh/uv/>`__ for more information
+relating to using ``uv`` for project management.
 
 How to test the project
 -----------------------
 
-Run the full test suite:
+Pre-commit
+^^^^^^^^^^
+
+`Pre-commit <https://pre-commit.com/>`__ ensures code quality and consistency by running
+the ``ruff`` linter and formatter, stripping out execution cells in jupyter notebooks,
+and running several pre-commit hooks.
+
+These can be run against all files in the project with:
 
 .. code:: shell
 
-   nox
+   uv run pre-commit run --all-files
 
-List the available Nox sessions:
-
-.. code:: shell
-
-   nox --list-sessions
-
-You can also run a specific Nox session. For example, invoke the unit test suite like
-this:
+However, the best way to ensure code quality is by installing the git pre-commit hook:
 
 .. code:: shell
 
-   nox --session=tests
+   uv run pre-commit install
 
-Unit tests are located in the *tests* directory, and are written using
-the `pytest <https://pytest.readthedocs.io/>`__ testing framework.
+This will run ``pre-commit`` against all changed files when attempting to
+``git commit``. You will need to fix the offending files prior to being able to commit a
+change unless you run ``git commit --no-verify``.
+
+Type Checking
+^^^^^^^^^^^^^
+
+``concreteproperties`` uses ``pyright`` to ensure type-checking where possible.
+``pyright`` can be run on all files with:
+
+.. code:: shell
+
+   uv run pyright
+
+Tests
+^^^^^
+
+The ``concreteproperties`` tests are located in the ``tests/`` directory and are written
+using the `pytest <https://pytest.readthedocs.io/>`__ testing framework. The test suite
+can be run with:
+
+.. code:: shell
+
+   uv run pytest
+
+Documentation
+-------------
+
+You can build the documentation locally with:
+
+.. code:: shell
+
+   uv run sphinx-build docs docs/_build
+
+Make sure that you have a recent version of ``pandoc`` installed so that the example
+notebooks can be generated.
+
+Note that all pull requests also build the documentation on Read the Docs, so building
+the documentation locally is not required.
 
 How to submit changes
 ---------------------
 
-Open a `pull
-request <https://github.com/robbievanleeuwen/concrete-properties/pulls>`__
+Open a `pull request <https://github.com/robbievanleeuwen/concrete-properties/pulls>`__
 to submit changes to this project.
 
 Your pull request needs to meet the following guidelines for acceptance:
 
--  The Nox test suite must pass without errors and warnings.
+-  The test suite, pre-commit and pyright checks must pass without errors and warnings.
 -  Include unit tests. This project aims for a high code coverage.
 -  If your changes add functionality, update the documentation
    accordingly.
-
-To run linting and code formatting checks before committing your change,
-you can install pre-commit as a Git hook by running the following
-command:
-
-.. code:: shell
-
-   nox --session=pre-commit -- install
 
 It is recommended to open an issue before starting work on anything.
 This will allow a chance to talk it over with the owners and validate

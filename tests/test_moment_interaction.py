@@ -14,7 +14,6 @@ from concreteproperties.stress_strain_profile import (
     SteelElasticPlastic,
 )
 
-
 concrete = Concrete(
     name="32 MPa Concrete",
     density=2.4e-6,
@@ -115,21 +114,14 @@ def test_limits(limits):
         points=conc_sec.compound_geometry.points, theta=theta
     )
 
-    limit_results = []
-
     # get results for limits
-    for lim in limits:
-        limit_results.append(
-            conc_sec.calculate_ultimate_section_actions(
-                d_n=conc_sec.decode_d_n(
-                    theta=0,
-                    cp=lim,
-                    d_t=d_t,
-                ),
-                ultimate_results=res.UltimateBendingResults(theta=theta),
-            )
+    limit_results = [
+        conc_sec.calculate_ultimate_section_actions(
+            d_n=conc_sec.decode_d_n(theta=0, cp=lim, d_t=d_t),
+            ultimate_results=res.UltimateBendingResults(theta=theta),
         )
-
+        for lim in limits
+    ]
     mi_res = conc_sec.moment_interaction_diagram(limits=limits)
 
     for lim_res in limit_results:
@@ -162,12 +154,12 @@ def test_sorting_and_duplicates():
 
 def test_limit_validation():
     """Tests limits validation."""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Length of limits must equal 2."):
         conc_sec.moment_interaction_diagram(
             limits=[("D", 1)],
         )
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Length of limits must equal 2."):
         conc_sec.moment_interaction_diagram(
             limits=[
                 ("D", 1),
@@ -191,7 +183,7 @@ def test_label_validation():
         labels=["Hi"],
     )
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Length of labels must be 1 or 2"):
         conc_sec.moment_interaction_diagram(
             control_points=[
                 ("D", 1),
@@ -201,7 +193,7 @@ def test_label_validation():
             labels=["Hi", "Bye"],
         )
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Length of labels must be 1 or 2"):
         conc_sec.moment_interaction_diagram(
             labels="Hi",
         )
@@ -252,7 +244,7 @@ def test_max_comp():
     assert pytest.approx(mi_res_mc.results[1].m_xy, rel=3e-2) == mxy
 
     # test max_comp larger than squash load
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="is greater than the maximum axial capacity"):
         mi_res = conc_sec.moment_interaction_diagram(max_comp=6000e3)
 
     # test control point above max_comp

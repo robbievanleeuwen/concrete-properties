@@ -1,8 +1,9 @@
+"""Script to generate the concreteproperties logo."""
+
 from sectionproperties.analysis.section import Section
 from sectionproperties.pre.geometry import Geometry
 from sectionproperties.pre.library.primitive_sections import circular_section
 from sectionproperties.pre.pre import Material
-
 
 concrete = Material(
     name="Concrete",

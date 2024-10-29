@@ -6,7 +6,8 @@ import warnings
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
-import matplotlib
+import matplotlib as mpl
+import matplotlib.axes
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import matplotlib.tri as tri
@@ -21,10 +22,7 @@ from shapely import Point, Polygon
 
 from concreteproperties.post import plotting_context
 
-
 if TYPE_CHECKING:
-    import matplotlib.axes
-
     from concreteproperties.analysis_section import AnalysisSection
     from concreteproperties.concrete_section import ConcreteSection
     from concreteproperties.pre import CPGeom
@@ -101,7 +99,7 @@ class GrossProperties:
         """Prints the gross concrete section properties to the terminal.
 
         Args:
-            fmt: Number format
+            fmt: Number format. Defaults to ``"8.6e"``.
         """
         table = Table(title="Gross Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
@@ -232,7 +230,7 @@ class TransformedGrossProperties:
         """Prints the transformed gross concrete section properties to the terminal.
 
         Args:
-            fmt: Number format
+            fmt: Number format. Defaults to ``"8.6e"``.
         """
         table = Table(title="Transformed Gross Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
@@ -363,7 +361,7 @@ class CrackedResults:
         """Plots geometries that remain (compression/reinf.) after a cracked analysis.
 
         Args:
-            title: Plot title
+            title: Plot title. Defaults to ``"Cracked Geometries"``.
             kwargs: Passed to
                 :meth:`~sectionproperties.pre.geometry.CompoundGeometry.plot_geometry`
 
@@ -381,7 +379,7 @@ class CrackedResults:
         """Prints the cracked concrete section properties to the terminal.
 
         Args:
-            fmt: Number format
+            fmt: Number format. Defaults to ``"8.6e"``.
         """
         table = Table(title="Cracked Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
@@ -491,8 +489,8 @@ class MomentCurvatureResults:
         """Plots the moment curvature results.
 
         Args:
-            m_scale: Scaling factor to apply to bending moment
-            fmt: Plot format string
+            m_scale: Scaling factor to apply to bending moment. Defaults ``1e-6``.
+            fmt: Plot format string. Defaults ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -503,7 +501,10 @@ class MomentCurvatureResults:
 
         # create plot and setup the plot
         with plotting_context(title="Moment-Curvature", **kwargs) as (fig, ax):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
+
             ax.plot(self.kappa, moments, fmt)
             plt.xlabel("Curvature")
             plt.ylabel("Moment")
@@ -524,8 +525,8 @@ class MomentCurvatureResults:
         Args:
             moment_curvature_results: List of moment curvature results objects
             labels: List of labels for each moment curvature diagram
-            m_scale: Scaling factor to apply to bending moment
-            fmt: Plot format string
+            m_scale: Scaling factor to apply to bending moment. Defaults ``1e-6``.
+            fmt: Plot format string. Defaults ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -533,7 +534,10 @@ class MomentCurvatureResults:
         """
         # create plot and setup the plot
         with plotting_context(title="Moment-Curvature", **kwargs) as (fig, ax):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
+
             idx = 0
 
             # for each M-k curve
@@ -562,7 +566,7 @@ class MomentCurvatureResults:
         """Plots the geometry that fails in the moment curvature analysis.
 
         Args:
-            title: Plot title
+            title: Plot title. Defaults to ``"Failure Geometry"``.
             kwargs: Passed to
                 :meth:`~sectionproperties.pre.geometry.CompoundGeometry.plot_geometry`
 
@@ -592,9 +596,8 @@ class MomentCurvatureResults:
         m_max = max(self.m_xy)
 
         if moment > m_max or moment < m_min:
-            raise ValueError(
-                "moment must be within the bounds of the moment-curvature results."
-            )
+            msg = "moment must be within the bounds of the moment-curvature results."
+            raise ValueError(msg)
 
         f_kappa = interp1d(
             x=self.m_xy,
@@ -644,7 +647,7 @@ class UltimateBendingResults:
         """Prints the ultimate bending results to the terminal.
 
         Args:
-            fmt: Number format
+            fmt: Number format. Defaults to ``"8.6e"``.
         """
         table = Table(title="Ultimate Bending Results")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
@@ -697,14 +700,15 @@ class MomentInteractionResults:
         """Returns a list of axial forces and moments.
 
         Args:
-            moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
-                ``"m_xy"``
+            moment: Which moment to return, acceptable values are ``"m_x"``, ``"m_y"``
+                or ``"m_xy"``
 
         Raises:
             ValueError: If the moment string is not valid
 
         Returns:
-            List of axial forces and moments (``n``, ``m``)
+            Tuple containing a list of axial forces and a list of moments
+            (``n_list``, ``m_list``)
         """
         # build list of results
         n_list = []
@@ -720,7 +724,8 @@ class MomentInteractionResults:
             elif moment == "m_xy":
                 m_list.append(result.m_xy)
             else:
-                raise ValueError(f"{moment} not an acceptable value for moment.")
+                msg = f"{moment} not an acceptable value for moment."
+                raise ValueError(msg)
 
         return n_list, m_list
 
@@ -737,13 +742,16 @@ class MomentInteractionResults:
         """Plots a moment interaction diagram.
 
         Args:
-            n_scale: Scaling factor to apply to axial force
-            m_scale: Scaling factor to apply to the bending moment
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1e-3``.
+            m_scale: Scaling factor to apply to the bending moment. Defaults to
+                ``1e-6``.
             moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
-                ``"m_xy"``
-            fmt: Plot format string
-            labels: If set to True, also plots labels on the diagram
-            label_offset: If set to True, attempts to offset the label from the diagram
+                ``"m_xy"``. Defaults to ``"m_x"``.
+            fmt: Plot format string. Defaults to ``"o-"``.
+            labels: If set to True, also plots labels on the diagram. Defaults to
+                ``False``.
+            label_offset: If set to True, attempts to offset the label from the diagram.
+                Defaults to ``False``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -754,7 +762,9 @@ class MomentInteractionResults:
             fig,
             ax,
         ):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
 
             # get results
             n_list, m_list = self.get_results_lists(moment=moment)
@@ -776,35 +786,38 @@ class MomentInteractionResults:
                     ar = (y_diff[1] - y_diff[0]) / (x_diff[1] - x_diff[0])
 
                 for idx, m in enumerate(m_list):
-                    if self.results[idx].label:
+                    if self.results[idx].label is not None:
                         # get x,y position on plot
                         x = m * m_scale
                         y = n_list[idx] * n_scale
 
                         if label_offset:
                             # calculate text offset
-                            grad_pt = grad[1, idx] / grad[0, idx] / ar
+                            grad_pt = grad[1, idx] / grad[0, idx] / ar  # pyright: ignore
                             if grad_pt == 0:
                                 norm_angle = np.pi / 2
                             else:
                                 norm_angle = np.arctan2(-1 / grad_pt, 1)
                             x_t = np.cos(norm_angle) * 20
                             y_t = np.sin(norm_angle) * 20
+                            style = "angle,angleA=0,angleB=90,rad=10"
                             annotate_dict = {
                                 "xytext": (x_t, y_t),
                                 "textcoords": "offset points",
-                                "arrowprops": dict(
-                                    arrowstyle="->",
-                                    connectionstyle="angle,angleA=0,angleB=90,rad=10",
-                                ),
-                                "bbox": dict(boxstyle="round", fc="0.8"),
+                                "arrowprops": {
+                                    "arrowstyle": "->",
+                                    "connectionstyle": style,
+                                },
+                                "bbox": {"boxstyle": "round", "fc": "0.8"},
                             }
                         else:
                             annotate_dict = {}
 
                         # plot text
                         ax.annotate(
-                            text=self.results[idx].label, xy=(x, y), **annotate_dict
+                            text=self.results[idx].label,  # pyright: ignore
+                            xy=(x, y),
+                            **annotate_dict,
                         )
 
             plt.xlabel("Bending Moment")
@@ -827,12 +840,12 @@ class MomentInteractionResults:
 
         Args:
             moment_interaction_results: List of moment interaction results objects
-            labels: List of labels for each moment interaction diagram
-            n_scale: Scaling factor to apply to axial force
-            m_scale: Scaling factor to apply to bending moment
+            labels: List of labels for each moment interaction diagram.
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1e-3``.
+            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
             moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
-                ``"m_xy"``
-            fmt: Plot format string
+                ``"m_xy"``. Defaults to ``"m_x"``.
+            fmt: Plot format string. Defaults to ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -843,7 +856,10 @@ class MomentInteractionResults:
             fig,
             ax,
         ):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
+
             idx = 0
 
             # for each M-N curve
@@ -878,7 +894,7 @@ class MomentInteractionResults:
             n: Axial force
             m: Bending moment
             moment: Which moment to analyse, acceptable values are ``"m_x"``, ``"m_y"``
-                or ``"m_xy"``
+                or ``"m_xy"``. Defaults to ``"m_x"``.
 
         Returns:
             True, if combination of axial force and moment is within the diagram
@@ -916,7 +932,7 @@ class BiaxialBendingResults:
         """Returns a list and moments about the ``x`` and ``y`` axes.
 
         Returns:
-            List of axial forces and moments (``mx``, ``my``)
+            Tuple containing two list of moments (``mx_list``, ``my_list``)
         """
         # build list of results
         m_x_list = []
@@ -937,8 +953,8 @@ class BiaxialBendingResults:
         """Plots a biaxial bending diagram.
 
         Args:
-            m_scale: Scaling factor to apply to bending moment
-            fmt: Plot format string
+            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
+            fmt: Plot format string. Defaults to ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -950,7 +966,9 @@ class BiaxialBendingResults:
         with plotting_context(
             title=f"Biaxial Bending Diagram, $N = {self.n:.3e}$", **kwargs
         ) as (fig, ax):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
 
             # scale results
             m_x = np.array(m_x_list) * m_scale
@@ -977,9 +995,9 @@ class BiaxialBendingResults:
         Args:
             biaxial_bending_results: List of biaxial bending results objects
             labels: List of labels for each biaxial bending diagram, if not provided
-                labels are axial forces
-            m_scale: Scaling factor to apply to bending moment
-            fmt: Plot format string
+                labels are axial forces. Defaults to ``None``.
+            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
+            fmt: Plot format string. Defaults to ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -987,7 +1005,10 @@ class BiaxialBendingResults:
         """
         # create plot and setup the plot
         with plotting_context(title="Biaxial Bending Diagram", **kwargs) as (fig, ax):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
+
             idx = 0
 
             # generate default labels
@@ -1032,9 +1053,9 @@ class BiaxialBendingResults:
 
         Args:
             biaxial_bending_results: List of biaxial bending results objects
-            n_scale: Scaling factor to apply to axial force
-            m_scale: Scaling factor to apply to bending moment
-            fmt: Plot format string
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1e-3``.
+            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
+            fmt: Plot format string. Defaults to ``"-"``.
 
         Returns:
             Matplotlib axes object
@@ -1052,11 +1073,11 @@ class BiaxialBendingResults:
             m_x_list = np.array(m_x_list) * m_scale
             m_y_list = np.array(m_y_list) * m_scale
 
-            ax.plot3D(m_x_list, m_y_list, n_list, fmt)
+            ax.plot3D(m_x_list, m_y_list, n_list, fmt)  # pyright: ignore
 
         ax.set_xlabel("Bending Moment $M_x$")
         ax.set_ylabel("Bending Moment $M_y$")
-        ax.set_zlabel("Axial Force $N$")
+        ax.set_zlabel("Axial Force $N$")  # pyright: ignore
         plt.show()
 
         return ax
@@ -1073,14 +1094,10 @@ class BiaxialBendingResults:
             m_y: Bending moment about the y-axis
 
         Returns:
-            True, if combination of bendings moments is within the diagram
+            ``True``, if combination of bendings moments is within the diagram
         """
         # create a polygon from points on diagram
-        poly_points = []
-
-        for ult_res in self.results:
-            poly_points.append((ult_res.m_x, ult_res.m_y))
-
+        poly_points = [(ult_res.m_x, ult_res.m_y) for ult_res in self.results]
         poly = Polygon(poly_points)
         point = Point(m_x, m_y)
 
@@ -1151,9 +1168,9 @@ class StressResult:
         """Plots concrete and steel stresses on a concrete section.
 
         Args:
-            title: Plot title
-            conc_cmap: Colour map for the concrete stress
-            reinf_cmap: Colour map for the reinforcement stress
+            title: Plot title. Defaults to ``"Stress"``.
+            conc_cmap: Colour map for the concrete stress. Defaults to ``"RdGy"``.
+            reinf_cmap: Colour map for the reinforcement stress. Defaults to ``"bwr"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -1164,19 +1181,21 @@ class StressResult:
             aspect=True,
             **dict(
                 kwargs, nrows=1, ncols=3, gridspec_kw={"width_ratios": [1, 0.08, 0.08]}
-            ),
+            ),  # pyright: ignore
         ) as (fig, ax):
-            assert fig
-            assert ax
+            if ax is None or fig is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
 
             # plot background
             self.concrete_section.plot_section(
-                background=True, **dict(kwargs, ax=fig.axes[0])
+                background=True,
+                **dict(kwargs, ax=fig.axes[0]),  # pyright: ignore
             )
 
             # set up the colormaps
-            cmap_conc = matplotlib.colormaps.get_cmap(cmap=conc_cmap)
-            cmap_reinf = matplotlib.colormaps.get_cmap(cmap=reinf_cmap)
+            cmap_conc = mpl.colormaps.get_cmap(cmap=conc_cmap)
+            cmap_reinf = mpl.colormaps.get_cmap(cmap=reinf_cmap)
 
             # determine minimum and maximum stress values for the contour list
             # add tolerance for plotting stress blocks
@@ -1251,7 +1270,7 @@ class StressResult:
                     triang_conc = tri.Triangulation(
                         self.concrete_analysis_sections[idx].mesh_nodes[:, 0],
                         self.concrete_analysis_sections[idx].mesh_nodes[:, 1],
-                        self.concrete_analysis_sections[idx].mesh_elements[:, 0:3],
+                        self.concrete_analysis_sections[idx].mesh_elements[:, 0:3],  # pyright: ignore
                     )
 
                     # plot the filled contour
@@ -1267,13 +1286,11 @@ class StressResult:
                         # set zero stress for neutral axis contour
                         zero_level = 0
 
-                        if min(sig) > 0:
-                            if min(sig) < 1e-3:
-                                zero_level = min(sig) + 1e-12
+                        if min(sig) > 0 and min(sig) < 1e-3:
+                            zero_level = min(sig) + 1e-12
 
-                        if max(sig) < 0:
-                            if max(sig) > -1e-3:
-                                zero_level = max(sig) - 1e-12
+                        if max(sig) < 0 and max(sig) > -1e-3:
+                            zero_level = max(sig) - 1e-12
 
                         if min(sig) == 0:
                             zero_level = 1e-12
@@ -1299,7 +1316,7 @@ class StressResult:
                     triang_reinf = tri.Triangulation(
                         self.meshed_reinforcement_sections[idx].mesh_nodes[:, 0],
                         self.meshed_reinforcement_sections[idx].mesh_nodes[:, 1],
-                        self.meshed_reinforcement_sections[idx].mesh_elements[:, 0:3],
+                        self.meshed_reinforcement_sections[idx].mesh_elements[:, 0:3],  # pyright: ignore
                     )
 
                     # plot the filled contour
@@ -1315,13 +1332,11 @@ class StressResult:
                         # set zero stress for neutral axis contour
                         zero_level = 0
 
-                        if min(sig) > 0:
-                            if min(sig) < 1e-3:
-                                zero_level = min(sig) + 1e-12
+                        if min(sig) > 0 and min(sig) < 1e-3:
+                            zero_level = min(sig) + 1e-12
 
-                        if max(sig) < 0:
-                            if max(sig) > -1e-3:
-                                zero_level = max(sig) - 1e-12
+                        if max(sig) < 0 and max(sig) > -1e-3:
+                            zero_level = max(sig) - 1e-12
 
                         if min(sig) == 0:
                             zero_level = 1e-12
@@ -1366,17 +1381,14 @@ class StressResult:
 
             # add the colour bars
             fig.colorbar(
-                trictr_conc,
+                trictr_conc,  # pyright: ignore
                 label="Concrete Stress",
                 format="%.2e",
                 ticks=ticks_conc,
                 cax=fig.axes[1],
             )
 
-            if trictr_reinf:
-                mappable = trictr_reinf
-            else:
-                mappable = patch
+            mappable = trictr_reinf if trictr_reinf else patch
 
             fig.colorbar(
                 mappable,

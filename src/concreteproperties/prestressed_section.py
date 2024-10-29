@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from math import isinf
+from typing import TYPE_CHECKING
 
 import numpy as np
-import sectionproperties.pre.geometry as sp_geom
 from scipy.optimize import brentq, root_scalar
 
 import concreteproperties.results as res
@@ -14,6 +14,9 @@ from concreteproperties.analysis_section import AnalysisSection
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import SteelStrand
 from concreteproperties.pre import CPGeom, CPGeomConcrete
+
+if TYPE_CHECKING:
+    import sectionproperties.pre.geometry as sp_geom
 
 
 class PrestressedSection(ConcreteSection):
@@ -44,9 +47,10 @@ class PrestressedSection(ConcreteSection):
             moment_centroid: If specified, all moments for service and ultimate
                 analyses are calculated about this point. If not specified, all moments
                 are calculated about the gross cross-section centroid, i.e. no material
-                properties applied.
+                properties applied. Defaults to ``None``.
             geometric_centroid_override: If set to True, sets ``moment_centroid`` to
-                the geometric centroid i.e. material properties applied
+                the geometric centroid i.e. material properties applied. Defaults to
+                ``True``.
 
         Raises:
             ValueError: If the section is not symmetric about the y-axis
@@ -62,7 +66,8 @@ class PrestressedSection(ConcreteSection):
         if not np.isclose(
             self.gross_properties.e_zyy_minus, self.gross_properties.e_zyy_plus
         ):
-            raise ValueError("PrestressedSection must be symmetric about y-axis.")
+            msg = "PrestressedSection must be symmetric about y-axis."
+            raise ValueError(msg)
 
         # check for any meshed geometries
         if self.reinf_geometries_meshed:
@@ -93,7 +98,7 @@ class PrestressedSection(ConcreteSection):
         self.gross_properties.n_prestress = n_prestress
         self.gross_properties.m_prestress = m_prestress
 
-    def calculate_cracked_properties(
+    def calculate_cracked_properties(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         m_ext: float,
         n_ext: float = 0,
@@ -104,7 +109,7 @@ class PrestressedSection(ConcreteSection):
 
         Args:
             m_ext: External bending moment
-            n_ext: External axial force
+            n_ext: External axial force. Defaults to ``0``.
 
         Raises:
             AnalysisError: If the provided loads do not result in tension within the
@@ -160,7 +165,7 @@ class PrestressedSection(ConcreteSection):
                 b=b,
                 args=(cracked_results),
                 xtol=1e-3,
-                rtol=1e-6,
+                rtol=1e-6,  # pyright: ignore [reportArgumentType]
                 full_output=True,
                 disp=False,
             )
@@ -171,7 +176,7 @@ class PrestressedSection(ConcreteSection):
 
         return cracked_results
 
-    def calculate_cracking_moment(
+    def calculate_cracking_moment(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         n: float,
         m_int: float,
@@ -227,11 +232,8 @@ class PrestressedSection(ConcreteSection):
             ) + m_int_sign * m_int
 
             # if we are the first geometry, initialise cracking moment
-            if valid_geom_count == 0:
-                m_c = m_c_geom
             # otherwise take smaller cracking moment
-            else:
-                m_c = min(m_c, m_c_geom)
+            m_c = m_c_geom if valid_geom_count == 0 else min(m_c, m_c_geom)
 
             valid_geom_count += 1
 
@@ -257,11 +259,7 @@ class PrestressedSection(ConcreteSection):
         """
         # guess hogging or sagging
         m_net_guess = cracked_results.m + self.gross_properties.m_prestress
-
-        if m_net_guess > 0:
-            theta = 0
-        else:
-            theta = np.pi
+        theta = 0 if m_net_guess > 0 else np.pi
 
         def calc_min_stress():
             # calculate extreme fibre in global coordinates
@@ -311,7 +309,7 @@ class PrestressedSection(ConcreteSection):
 
         return min_stress
 
-    def moment_curvature_analysis(
+    def moment_curvature_analysis(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         positive: bool = True,
         n: float = 0,
@@ -330,17 +328,19 @@ class PrestressedSection(ConcreteSection):
             positive: If set to True, performs the moment curvature analysis for
                 positive bending, otherwise performs the moment curvature analysis for
                 negative bending
-            n: Axial force
-            kappa_inc: Initial curvature increment
+            n: Axial force. Defaults to ``0``.
+            kappa_inc: Initial curvature increment. Defaults to ``1e-7``.
             kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
                 when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied,
-                the inverse of this multipler is applied to ``kappa_inc``.
-            kappa_inc_max: Maximum curvature increment
+                the inverse of this multipler is applied to ``kappa_inc``. Defaults to
+                ``2``.
+            kappa_inc_max: Maximum curvature increment. Defaults to ``5e-6``.
             delta_m_min: Relative change in moment at which to reduce the curvature
-                increment
+                increment. Defaults to ``0.15``.
             delta_m_max: Relative change in moment at which to increase the curvature
-                increment
-            progress_bar: If set to True, displays the progress bar
+                increment. Defaults to ``0.3``.
+            progress_bar: If set to True, displays the progress bar. Defaults to
+                ``True``.
 
         Returns:
             Moment curvature results object
@@ -379,7 +379,7 @@ class PrestressedSection(ConcreteSection):
             progress_bar=progress_bar,
         )
 
-    def ultimate_bending_capacity(
+    def ultimate_bending_capacity(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         positive: bool = True,
         n: float = 0,
@@ -391,7 +391,8 @@ class PrestressedSection(ConcreteSection):
         Args:
             positive: If set to True, calculates the positive bending capacity,
                 otherwise calculates the negative bending capacity.
-            n: Net axial force
+                Defaults to ``True``.
+            n: Net axial force. Defaults to ``0``.
 
         Returns:
             Ultimate bending results object
@@ -401,7 +402,7 @@ class PrestressedSection(ConcreteSection):
 
         return super().ultimate_bending_capacity(theta=theta, n=n)
 
-    def moment_interaction_diagram(self):
+    def moment_interaction_diagram(self):  # pyright: ignore [reportIncompatibleMethodOverride]
         """Generates a moment interaction diagram.
 
         Raises:
@@ -409,7 +410,7 @@ class PrestressedSection(ConcreteSection):
         """
         raise NotImplementedError
 
-    def biaxial_bending_diagram(self):
+    def biaxial_bending_diagram(self):  # pyright: ignore [reportIncompatibleMethodOverride]
         """Generates a biaxial bending diagram.
 
         Raises:
@@ -417,7 +418,7 @@ class PrestressedSection(ConcreteSection):
         """
         raise NotImplementedError
 
-    def calculate_uncracked_stress(
+    def calculate_uncracked_stress(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         n: float = 0,
         m: float = 0,
@@ -430,8 +431,8 @@ class PrestressedSection(ConcreteSection):
         ``m``.
 
         Args:
-            n: Axial force
-            m: Bending moment
+            n: Axial force. Defaults to ``0``.
+            m: Bending moment. Defaults to ``0``.
 
         Returns:
             Stress results object
@@ -557,7 +558,7 @@ class PrestressedSection(ConcreteSection):
             strand_forces=strand_forces,
         )
 
-    def calculate_cracked_stress(
+    def calculate_cracked_stress(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         cracked_results: res.CrackedResults,
     ) -> res.StressResult:
@@ -705,7 +706,7 @@ class PrestressedSection(ConcreteSection):
             moment_curvature_results: Moment-curvature results objects
             m: Bending moment
             kappa: Curvature, if provided overrides the supplied bending moment and
-                calculates the stress at the given curvature
+                calculates the stress at the given curvature. Defaults to ``None``.
 
         Raises:
             AnalysisError: If the analysis fails

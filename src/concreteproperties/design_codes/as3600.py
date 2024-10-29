@@ -17,7 +17,6 @@ from concreteproperties.design_codes.design_code import DesignCode
 from concreteproperties.material import Concrete, SteelBar
 from concreteproperties.utils import AnalysisError, create_known_progress
 
-
 if TYPE_CHECKING:
     from concreteproperties.concrete_section import ConcreteSection
 
@@ -54,9 +53,8 @@ class AS3600(DesignCode):
 
         # check to make sure there are no meshed reinforcement regions
         if self.concrete_section.reinf_geometries_meshed:
-            raise ValueError(
-                "Meshed reinforcement is not supported in this design code."
-            )
+            msg = "Meshed reinforcement is not supported in this design code."
+            raise ValueError(msg)
 
         # determine reinforcement class
         self.reinforcement_class = "N"
@@ -101,7 +99,7 @@ class AS3600(DesignCode):
         Args:
             compressive_strength: Characteristic compressive strength of concrete at 28
                 days in megapascals (MPa)
-            colour: Colour of the concrete for rendering
+            colour: Colour of the concrete for rendering. Defaults to ``"lightgrey"``.
 
         Raises:
             ValueError: If ``compressive_strength`` is not between 20 MPa and 100 MPa.
@@ -110,7 +108,8 @@ class AS3600(DesignCode):
             Concrete material object
         """
         if compressive_strength < 20 or compressive_strength > 100:
-            raise ValueError("compressive_strength must be between 20 MPa and 100 MPa.")
+            msg = "compressive_strength must be between 20 MPa and 100 MPa."
+            raise ValueError(msg)
 
         # create concrete name
         name = f"{compressive_strength:.0f} MPa Concrete (AS 3600:2018)"
@@ -148,7 +147,7 @@ class AS3600(DesignCode):
             colour=colour,
         )
 
-    def create_steel_material(
+    def create_steel_material(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         yield_strength: float = 500,
         ductility_class: str = "N",
@@ -166,9 +165,9 @@ class AS3600(DesignCode):
 
 
         Args:
-            yield_strength: Steel yield strength
-            ductility_class: Steel ductility class ("N" or "L")
-            colour: Colour of the steel for rendering
+            yield_strength: Steel yield strength. Defaults to ``500``.
+            ductility_class: Steel ductility class ("N" or "L"). Defaults to ``"N"``.
+            colour: Colour of the steel for rendering. Defaults to ``"grey"``.
 
         Raises:
             ValueError: If ``ductility_class`` is not "N" or "L"
@@ -181,7 +180,8 @@ class AS3600(DesignCode):
         elif ductility_class == "L":
             fracture_strain = 0.015
         else:
-            raise ValueError("ductility_class must be N or L.")
+            msg = "ductility_class must be N or L."
+            raise ValueError(msg)
 
         return SteelBar(
             name=f"{yield_strength:.0f} MPa Steel (AS 3600:2018)",
@@ -338,7 +338,7 @@ class AS3600(DesignCode):
 
         return balanced_res.n
 
-    def ultimate_bending_capacity(
+    def ultimate_bending_capacity(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         theta: float = 0,
         n_design: float = 0,
@@ -348,9 +348,10 @@ class AS3600(DesignCode):
 
         Args:
             theta: Angle (in radians) the neutral axis makes with the horizontal axis
-                (:math:`-\pi \leq \theta \leq \pi`)
-            n_design: Design axial force, N*
-            phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
+                (:math:`-\pi \leq \theta \leq \pi`). Defaults to ``0``.
+            n_design: Design axial force, N*. Defaults to ``0``.
+            phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d).
+                Defaults to ``0.6``.
 
         Raises:
             AnalysisError: If the design load is greater than the squash load
@@ -382,7 +383,7 @@ class AS3600(DesignCode):
             a=phi_0,
             b=0.85,
             xtol=1e-3,
-            rtol=1e-6,
+            rtol=1e-6,  # pyright: ignore [reportArgumentType]
             full_output=True,
             disp=False,
         )
@@ -406,13 +407,12 @@ class AS3600(DesignCode):
         # DETERMINE where we are on interaction diagram
         # if we are above the squash load or tensile load
         if n_design > n_squash:
-            raise AnalysisError(
-                f"N = {n_design} is greater than the squash load, phiNc = {n_squash}."
-            )
+            msg = f"N = {n_design} is greater than the squash load, phiNc = {n_squash}."
+            raise AnalysisError(msg)
         elif n_design < n_tensile:
-            raise AnalysisError(
-                f"N = {n_design} is greater than the tensile load, phiNt = {n_tensile}"
-            )
+            msg = f"N = {n_design} is greater than the tensile load, phiNt = "
+            msg += f"{n_tensile}"
+            raise AnalysisError(msg)
         # compression linear interpolation
         elif n_design > n_decomp:
             factor = (n_design - n_decomp) / (n_squash - n_decomp)
@@ -455,7 +455,7 @@ class AS3600(DesignCode):
 
         return f_ult_res, ult_res, phi
 
-    def moment_interaction_diagram(
+    def moment_interaction_diagram(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         theta: float = 0,
         limits: list[tuple[str, float]] | None = None,
@@ -479,32 +479,35 @@ class AS3600(DesignCode):
 
         Args:
             theta: Angle (in radians) the neutral axis makes with the horizontal axis
-                (:math:`-\pi \leq \theta \leq \pi`)
+                (:math:`-\pi \leq \theta \leq \pi`). Defaults to ``0``.
             limits: List of control points that define the start and end of the
                 interaction diagram. List length must equal two. The default limits
                 range from concrete decompression strain to the pure bending point,
-                ``[("D", 1.0), ("N", 0.0)]``.
+                ``[("D", 1.0), ("N", 0.0)]``. Defaults to ``None``.
             control_points: List of additional control points to add to the moment
                 interaction diagram. The default control points include the balanced
                 point, ``fy = 1``, i.e. ``[("fy", 1.0)]``. Control points may lie
                 outside the limits of the moment interaction diagram as long as
-                equilibrium can be found.
+                equilibrium can be found. Defaults to ``None``.
             labels: List of labels to apply to the ``limits`` and ``control_points`` for
                 plotting purposes. The first two values in ``labels`` apply labels to
                 the ``limits``, the remaining values apply labels to the
                 ``control_points``. If a single value is provided, this value will be
                 applied to both ``limits`` and all ``control_points``. The length of
-                ``labels`` must equal ``1`` or ``2 + len(control_points)``.
+                ``labels`` must equal ``1`` or ``2 + len(control_points)``. Defaults to
+                ``None``.
             n_points: Number of points to compute including and between the ``limits``
                 of the moment interaction diagram. Generates equally spaced neutral axes
-                between the ``limits``.
+                between the ``limits``. Defaults to ``24``.
             n_spacing: If provided, overrides ``n_points`` and generates the moment
                 interaction diagram using ``n_spacing`` equally spaced axial loads. Note
                 that using ``n_spacing`` negatively affects performance, as the neutral
                 axis depth must first be located for each point on the moment
-                interaction diagram.
-            phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
-            progress_bar: If set to True, displays the progress bar
+                interaction diagram. Defaults to ``None``.
+            phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d).
+                Defaults to ``0.6``.
+            progress_bar: If set to True, displays the progress bar. Defaults to
+                ``True``.
 
         Returns:
             Factored and unfactored moment interaction results objects, and list of
@@ -581,7 +584,7 @@ class AS3600(DesignCode):
 
         return f_mi_res, mi_res, phis
 
-    def biaxial_bending_diagram(
+    def biaxial_bending_diagram(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         n_design: float = 0,
         n_points: int = 48,
@@ -591,10 +594,12 @@ class AS3600(DesignCode):
         """Generates a biaxial bending with capacity factors to AS 3600.
 
         Args:
-            n_design: Design axial force, N*
-            n_points: Number of calculation points
-            phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d)
-            progress_bar: If set to True, displays the progress bar
+            n_design: Design axial force, N*. Defaults to ``0``.
+            n_points: Number of calculation points. Defaults to ``48``.
+            phi_0: Compression dominant capacity reduction factor, see Table 2.2.2(d).
+                Defaults to ``0.6``.
+            progress_bar: If set to True, displays the progress bar. Defaults to
+                ``True``.
 
         Returns:
             Factored biaxial bending results object and list of capacity reduction

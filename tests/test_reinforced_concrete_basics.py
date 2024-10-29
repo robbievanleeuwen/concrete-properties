@@ -14,7 +14,6 @@ from concreteproperties.stress_strain_profile import (
     SteelElasticPlastic,
 )
 
-
 # All examples come from:
 # Warner, R. F., Foster, S. J., & Kilpatrick, A. E. (2007). Reinforced Concrete Basics
 # (1st ed.). Pearson Australia.
@@ -203,7 +202,9 @@ def test_example_3_4():
     )
 
     beam = sp_ps.rectangular_section(
-        d=800 - 120, b=300, material=concrete  #
+        d=800 - 120,
+        b=300,
+        material=concrete,  #
     ).shift_section(x_offset=350)
     slab = sp_ps.rectangular_section(d=120, b=1000, material=concrete).align_to(  #
         other=beam, on="top"

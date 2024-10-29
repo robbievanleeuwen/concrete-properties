@@ -9,7 +9,6 @@ from concreteproperties.material import Concrete, Steel, SteelStrand
 from concreteproperties.pre import add_bar
 from concreteproperties.prestressed_section import PrestressedSection
 
-
 # material properties
 concrete = Concrete(
     name="40 MPa Concrete",

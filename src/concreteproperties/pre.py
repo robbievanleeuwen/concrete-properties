@@ -16,10 +16,10 @@ from shapely.ops import split
 
 from concreteproperties.material import Concrete
 
-
 if TYPE_CHECKING:
     import matplotlib.axes
     from sectionproperties.pre.geometry import CompoundGeometry
+    from shapely.geometry.base import GeometrySequence
 
     from concreteproperties.material import Material, SteelBar, SteelStrand
 
@@ -77,9 +77,7 @@ class CPGeom:
         else:
             rounded_exterior = np.array([None])
 
-        rounded_interiors = []
-        for interior in geometry.interiors:
-            rounded_interiors.append(np.round(interior.coords, tol))
+        rounded_interiors = [np.round(intr.coords, tol) for intr in geometry.interiors]
 
         if not rounded_exterior.any():
             return Polygon()
@@ -188,7 +186,8 @@ class CPGeom:
             Geometries above and below the line
         """
         # round point
-        point = np.round(point, 6)
+        pt_rounded = np.round(np.array(point), 6)
+        point = (pt_rounded[0], pt_rounded[1])
 
         # generate unit vector
         vector = np.cos(theta), np.sin(theta)
@@ -274,7 +273,7 @@ class CPGeom:
 
     def sort_polys(
         self,
-        polys: list[Polygon],
+        polys: list[Polygon] | GeometrySequence,
         point: tuple[float, float],
         vector: tuple[float, float],
     ) -> tuple[list[Polygon], list[Polygon]]:
@@ -342,7 +341,7 @@ class CPGeom:
         Returns:
             ``sectionproperties`` geometry object
         """
-        return Geometry(geom=self.geom, material=self.material)
+        return Geometry(geom=self.geom, material=self.material)  # pyright: ignore [reportArgumentType]
 
 
 class CPGeomConcrete(CPGeom):
@@ -375,7 +374,7 @@ def add_bar(
     x: float,
     y: float,
     n: int = 4,
-) -> CompoundGeometry:
+) -> Geometry | CompoundGeometry:
     """Adds a reinforcing bar to a ``sectionproperties`` geometry.
 
     Bars are discretised by four points by default.
@@ -386,12 +385,12 @@ def add_bar(
         material: Material object for the bar
         x: x-position of the bar
         y: y-position of the bar
-        n: Number of points to discretise the bar circle
+        n: Number of points to discretise the bar circle. Defaults to ``4``.
 
     Returns:
         Reinforced concrete geometry with added bar
     """
-    bar = circular_section_by_area(area=area, n=n, material=material).shift_section(
+    bar = circular_section_by_area(area=area, n=n, material=material).shift_section(  # pyright: ignore [reportArgumentType]
         x_offset=x, y_offset=y
     )
 
@@ -409,7 +408,7 @@ def add_bar_rectangular_array(
     anchor: tuple[float, float] = (0, 0),
     exterior_only: bool = False,
     n: int = 4,
-) -> CompoundGeometry:
+) -> Geometry | CompoundGeometry:
     """Adds a rectangular array of reinforcing bars to a ``sectionproperties`` geometry.
 
     Bars are discretised by four points by default.
@@ -420,11 +419,13 @@ def add_bar_rectangular_array(
         material: Material object for the bar
         n_x: Number of bars in the x-direction
         x_s: Spacing in the x-direction
-        n_y: Number of bars in the y-direction
-        y_s: Spacing in the y-direction
-        anchor: Coordinates of the bottom left hand bar in the rectangular array
-        exterior_only: If set to True, only returns bars on the external perimeter
-        n: Number of points to discretise the bar circle
+        n_y: Number of bars in the y-direction. Defaults to ``1``.
+        y_s: Spacing in the y-direction. Defaults to ``0``.
+        anchor: Coordinates of the bottom left hand bar in the rectangular array.
+            Defaults to ``(0, 0)``.
+        exterior_only: If set to True, only returns bars on the external perimeter.
+            Defaults to ``False``.
+        n: Number of points to discretise the bar circle. Defaults to ``4``.
 
     Returns:
         Reinforced concrete geometry with added bar
@@ -441,7 +442,7 @@ def add_bar_rectangular_array(
                 add_bar = True
 
             if add_bar:
-                bar = circular_section_by_area(area=area, n=n, material=material)
+                bar = circular_section_by_area(area=area, n=n, material=material)  # pyright: ignore [reportArgumentType]
                 x = anchor[0] + i_idx * x_s
                 y = anchor[1] + j_idx * y_s
                 bar = bar.shift_section(x_offset=x, y_offset=y)
@@ -459,7 +460,7 @@ def add_bar_circular_array(
     theta_0: float = 0,
     ctr: tuple[float, float] = (0, 0),
     n: int = 4,
-) -> CompoundGeometry:
+) -> Geometry | CompoundGeometry:
     """Adds a circular array of reinforcing bars to a ``sectionproperties`` geometry.
 
     Bars are discretised by four points by default.
@@ -471,9 +472,9 @@ def add_bar_circular_array(
         n_bar: Number of bars in the array
         r_array: Radius of the circular array
         theta_0: Initial angle (in radians) that the first bar makes with the
-            horizontal axis in the circular array
-        ctr: Centre of the circular array
-        n: Number of points to discretise the bar circle
+            horizontal axis in the circular array. Defaults to ``0``.
+        ctr: Centre of the circular array. Defaults to ``(0, 0)``.
+        n: Number of points to discretise the bar circle. Defaults to ``4``.
 
     Returns:
         Reinforced concrete geometry with added bar
@@ -481,7 +482,7 @@ def add_bar_circular_array(
     d_theta = 2 * np.pi / n_bar
 
     for idx in range(n_bar):
-        bar = circular_section_by_area(area=area, n=n, material=material)
+        bar = circular_section_by_area(area=area, n=n, material=material)  # pyright: ignore [reportArgumentType]
         theta = theta_0 + idx * d_theta
         x = ctr[0] + r_array * np.cos(theta)
         y = ctr[1] + r_array * np.sin(theta)

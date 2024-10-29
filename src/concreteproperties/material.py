@@ -50,15 +50,15 @@ class Concrete(Material):
             named colours
 
     Raises:
-        ValueError: If concrete stress_strain_profile is not a ConcreteServiceProfile
-            object
-        ValueError: If concrete ultimate_stress_strain_profile is not a
-            ConcreteUltimateProfile object
+        ValueError: If concrete ``stress_strain_profile`` is not a
+            ``ConcreteServiceProfile`` object
+        ValueError: If concrete ``ultimate_stress_strain_profile`` is not a
+            ``ConcreteUltimateProfile`` object
     """
 
     name: str
     density: float
-    stress_strain_profile: ssp.ConcreteServiceProfile
+    stress_strain_profile: ssp.ConcreteServiceProfile  # pyright: ignore [reportIncompatibleVariableOverride]
     ultimate_stress_strain_profile: ssp.ConcreteUltimateProfile
     flexural_tensile_strength: float
     colour: str
@@ -68,10 +68,10 @@ class Concrete(Material):
         """Post init method.
 
         Raises:
-            ValueError: If concrete stress_strain_profile is not a
-                ConcreteServiceProfile object
-            ValueError: If concrete ultimate_stress_strain_profile is not a
-                ConcreteUltimateProfile object
+            ValueError: If concrete ``stress_strain_profile`` is not a
+                ``ConcreteServiceProfile`` object
+            ValueError: If concrete ``ultimate_stress_strain_profile`` is not a
+                ``ConcreteUltimateProfile`` object
         """
         super().__post_init__()
 
@@ -121,7 +121,7 @@ class SteelBar(Steel):
         name: Steel bar material name
         density: Steel bar density (mass per unit volume)
         stress_strain_profile: Steel bar stress-strain profile
-        Colour of the material for rendering, see
+        colour: Colour of the material for rendering, see
             https://matplotlib.org/stable/gallery/color/named_colors.html for a list of
             named colours
     """
@@ -153,15 +153,15 @@ class SteelStrand(Steel):
         name: Steel strand material name
         density: Steel strand density (mass per unit volume)
         stress_strain_profile: Steel strand stress-strain profile
-        Colour of the material for rendering, see
+        colour: Colour of the material for rendering, see
             https://matplotlib.org/stable/gallery/color/named_colors.html for a list of
             named colours
-        prestress_stress: Prestressing stress applied to the strand
+        prestress_stress: Prestressing stress applied to the strand. Defaults to ``0``.
     """
 
     name: str
     density: float
-    stress_strain_profile: ssp.StrandProfile
+    stress_strain_profile: ssp.StrandProfile  # pyright: ignore [reportIncompatibleVariableOverride]
     colour: str
     prestress_stress: float = 0
     meshed: bool = field(default=False, init=False)

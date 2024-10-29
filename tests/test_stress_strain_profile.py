@@ -22,13 +22,13 @@ def test_whitney():
 
 def test_piecewise_linear():
     """Tests the piecewise linear profile."""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="must be greater than 1"):
         profile = ssp.StressStrainProfile([0], [0])
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Length of strains must equal length of"):
         profile = ssp.StressStrainProfile([-1, 0, 1], [0, 2])
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Strains must contain increasing or equal"):
         profile = ssp.StressStrainProfile([0, 1, 0.5], [0, 3, 5])
 
     profile = ssp.StressStrainProfile([-0.05, 0, 0.0025, 0.05], [0, 0, 500, 600])
@@ -44,7 +44,7 @@ def test_piecewise_linear():
 
 def test_modifiedmander_invalid_sect_type():
     """Tests the modified mander profile (invalid section type)."""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="The specified section type"):
         ssp.ModifiedMander(
             elastic_modulus=30e3,
             compressive_strength=30,
@@ -67,8 +67,15 @@ def test_modifiedmander_confined_warning():
 
 
 @pytest.mark.parametrize(
-    "elastic_modulus, compressive_strength, tensile_strength, stress_index, stress, "
-    "strain_index, strain",
+    (
+        "elastic_modulus",
+        "compressive_strength",
+        "tensile_strength",
+        "stress_index",
+        "stress",
+        "strain_index",
+        "strain",
+    ),
     [
         (30e3, 30, 4.5, 27, 29.9936, 45, 0.00334694),
         (40e3, 40, 5.5, 34, 39.1935, 22, 0.00155102),
@@ -109,8 +116,17 @@ def test_modifiedmander_unconfined_stress_strain(
 
 
 @pytest.mark.parametrize(
-    "sect_type, elastic_modulus, compressive_strength, tensile_strength, max_fc, "
-    "stress_index, stress, strain_index, strain",
+    (
+        "sect_type",
+        "elastic_modulus",
+        "compressive_strength",
+        "tensile_strength",
+        "max_fc",
+        "stress_index",
+        "stress",
+        "strain_index",
+        "strain",
+    ),
     [
         ("rect", 30e3, 30, 4.5, 37.5859, 27, 37.0829, 41, 0.00957687),
         ("circ_hoop", 40e3, 40, 5.5, 47.3521, 22, 45.4338, 25, 0.00292869),
