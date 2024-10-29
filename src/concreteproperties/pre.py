@@ -12,6 +12,7 @@ from more_itertools import peekable
 from sectionproperties.pre.geometry import Geometry
 from sectionproperties.pre.library.primitive_sections import circular_section_by_area
 from shapely import LineString, Polygon
+from shapely.geometry.base import GeometrySequence
 from shapely.ops import split
 
 from concreteproperties.material import Concrete
@@ -185,7 +186,8 @@ class CPGeom:
             Geometries above and below the line
         """
         # round point
-        point = np.round(point, 6)
+        pt_rounded = np.round(np.array(point), 6)
+        point = (pt_rounded[0], pt_rounded[1])
 
         # generate unit vector
         vector = np.cos(theta), np.sin(theta)
@@ -204,6 +206,10 @@ class CPGeom:
             polys = [self.geom]
 
         # sort geometries
+        if isinstance(polys, GeometrySequence):
+            msg = "Geometry split failure."
+            raise RuntimeError(msg)
+
         top_polys, bot_polys = self.sort_polys(polys=polys, point=point, vector=vector)
 
         # assign material properties and create cp geometry objects
@@ -339,7 +345,7 @@ class CPGeom:
         Returns:
             ``sectionproperties`` geometry object
         """
-        return Geometry(geom=self.geom, material=self.material)
+        return Geometry(geom=self.geom, material=self.material)  # pyright: ignore [reportArgumentType]
 
 
 class CPGeomConcrete(CPGeom):
@@ -372,7 +378,7 @@ def add_bar(
     x: float,
     y: float,
     n: int = 4,
-) -> CompoundGeometry:
+) -> Geometry | CompoundGeometry:
     """Adds a reinforcing bar to a ``sectionproperties`` geometry.
 
     Bars are discretised by four points by default.
@@ -388,7 +394,7 @@ def add_bar(
     Returns:
         Reinforced concrete geometry with added bar
     """
-    bar = circular_section_by_area(area=area, n=n, material=material).shift_section(
+    bar = circular_section_by_area(area=area, n=n, material=material).shift_section(  # pyright: ignore [reportArgumentType]
         x_offset=x, y_offset=y
     )
 
@@ -406,7 +412,7 @@ def add_bar_rectangular_array(
     anchor: tuple[float, float] = (0, 0),
     exterior_only: bool = False,
     n: int = 4,
-) -> CompoundGeometry:
+) -> Geometry | CompoundGeometry:
     """Adds a rectangular array of reinforcing bars to a ``sectionproperties`` geometry.
 
     Bars are discretised by four points by default.
@@ -438,7 +444,7 @@ def add_bar_rectangular_array(
                 add_bar = True
 
             if add_bar:
-                bar = circular_section_by_area(area=area, n=n, material=material)
+                bar = circular_section_by_area(area=area, n=n, material=material)  # pyright: ignore [reportArgumentType]
                 x = anchor[0] + i_idx * x_s
                 y = anchor[1] + j_idx * y_s
                 bar = bar.shift_section(x_offset=x, y_offset=y)
@@ -456,7 +462,7 @@ def add_bar_circular_array(
     theta_0: float = 0,
     ctr: tuple[float, float] = (0, 0),
     n: int = 4,
-) -> CompoundGeometry:
+) -> Geometry | CompoundGeometry:
     """Adds a circular array of reinforcing bars to a ``sectionproperties`` geometry.
 
     Bars are discretised by four points by default.
@@ -478,7 +484,7 @@ def add_bar_circular_array(
     d_theta = 2 * np.pi / n_bar
 
     for idx in range(n_bar):
-        bar = circular_section_by_area(area=area, n=n, material=material)
+        bar = circular_section_by_area(area=area, n=n, material=material)  # pyright: ignore [reportArgumentType]
         theta = theta_0 + idx * d_theta
         x = ctr[0] + r_array * np.cos(theta)
         y = ctr[1] + r_array * np.sin(theta)

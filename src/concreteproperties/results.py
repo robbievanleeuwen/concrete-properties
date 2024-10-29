@@ -782,14 +782,14 @@ class MomentInteractionResults:
                     ar = (y_diff[1] - y_diff[0]) / (x_diff[1] - x_diff[0])
 
                 for idx, m in enumerate(m_list):
-                    if self.results[idx].label:
+                    if self.results[idx].label is not None:
                         # get x,y position on plot
                         x = m * m_scale
                         y = n_list[idx] * n_scale
 
                         if label_offset:
                             # calculate text offset
-                            grad_pt = grad[1, idx] / grad[0, idx] / ar
+                            grad_pt = grad[1, idx] / grad[0, idx] / ar  # pyright: ignore
                             if grad_pt == 0:
                                 norm_angle = np.pi / 2
                             else:
@@ -811,7 +811,9 @@ class MomentInteractionResults:
 
                         # plot text
                         ax.annotate(
-                            text=self.results[idx].label, xy=(x, y), **annotate_dict
+                            text=self.results[idx].label,  # pyright: ignore
+                            xy=(x, y),
+                            **annotate_dict,
                         )
 
             plt.xlabel("Bending Moment")
@@ -1067,11 +1069,11 @@ class BiaxialBendingResults:
             m_x_list = np.array(m_x_list) * m_scale
             m_y_list = np.array(m_y_list) * m_scale
 
-            ax.plot3D(m_x_list, m_y_list, n_list, fmt)
+            ax.plot3D(m_x_list, m_y_list, n_list, fmt)  # pyright: ignore
 
         ax.set_xlabel("Bending Moment $M_x$")
         ax.set_ylabel("Bending Moment $M_y$")
-        ax.set_zlabel("Axial Force $N$")
+        ax.set_zlabel("Axial Force $N$")  # pyright: ignore
         plt.show()
 
         return ax
@@ -1175,7 +1177,7 @@ class StressResult:
             aspect=True,
             **dict(
                 kwargs, nrows=1, ncols=3, gridspec_kw={"width_ratios": [1, 0.08, 0.08]}
-            ),
+            ),  # pyright: ignore
         ) as (fig, ax):
             if ax is None or fig is None:
                 msg = "Plot failed."
@@ -1183,7 +1185,8 @@ class StressResult:
 
             # plot background
             self.concrete_section.plot_section(
-                background=True, **dict(kwargs, ax=fig.axes[0])
+                background=True,
+                **dict(kwargs, ax=fig.axes[0]),  # pyright: ignore
             )
 
             # set up the colormaps
@@ -1263,7 +1266,7 @@ class StressResult:
                     triang_conc = tri.Triangulation(
                         self.concrete_analysis_sections[idx].mesh_nodes[:, 0],
                         self.concrete_analysis_sections[idx].mesh_nodes[:, 1],
-                        self.concrete_analysis_sections[idx].mesh_elements[:, 0:3],
+                        self.concrete_analysis_sections[idx].mesh_elements[:, 0:3],  # pyright: ignore
                     )
 
                     # plot the filled contour
@@ -1309,7 +1312,7 @@ class StressResult:
                     triang_reinf = tri.Triangulation(
                         self.meshed_reinforcement_sections[idx].mesh_nodes[:, 0],
                         self.meshed_reinforcement_sections[idx].mesh_nodes[:, 1],
-                        self.meshed_reinforcement_sections[idx].mesh_elements[:, 0:3],
+                        self.meshed_reinforcement_sections[idx].mesh_elements[:, 0:3],  # pyright: ignore
                     )
 
                     # plot the filled contour
@@ -1374,7 +1377,7 @@ class StressResult:
 
             # add the colour bars
             fig.colorbar(
-                trictr_conc,
+                trictr_conc,  # pyright: ignore
                 label="Concrete Stress",
                 format="%.2e",
                 ticks=ticks_conc,

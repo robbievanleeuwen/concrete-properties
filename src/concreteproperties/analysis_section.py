@@ -427,10 +427,10 @@ class AnalysisSection:
             cmap = ListedColormap(colour_array)
 
             # plot the mesh colours
-            ax.tripcolor(
+            ax.tripcolor(  # pyright: ignore
                 self.mesh_nodes[:, 0],
                 self.mesh_nodes[:, 1],
-                self.mesh_elements[:, 0:3],
+                self.mesh_elements[:, 0:3],  # pyright: ignore
                 c,
                 cmap=cmap,
             )
@@ -439,7 +439,7 @@ class AnalysisSection:
             ax.triplot(
                 self.mesh_nodes[:, 0],
                 self.mesh_nodes[:, 1],
-                self.mesh_elements[:, 0:3],
+                self.mesh_elements[:, 0:3],  # pyright: ignore
                 lw=0.5,
                 color="black",
                 alpha=alpha,
@@ -467,10 +467,10 @@ class AnalysisSection:
         cmap = ListedColormap(colour_array)
 
         # plot the mesh colours
-        ax.tripcolor(
+        ax.tripcolor(  # pyright: ignore
             self.mesh_nodes[:, 0],
             self.mesh_nodes[:, 1],
-            self.mesh_elements[:, 0:3],
+            self.mesh_elements[:, 0:3],  # pyright: ignore
             c,
             cmap=cmap,
         )

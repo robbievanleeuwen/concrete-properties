@@ -60,8 +60,8 @@ def plotting_context(
 
         try:
             if axis_index is None:
-                axis_index = (0,) * ax.ndim
-            ax = ax[axis_index]
+                axis_index = (0,) * ax.ndim  # pyright: ignore
+            ax = ax[axis_index]  # pyright: ignore
         except (AttributeError, TypeError):
             pass  # only 1 axis, not an array
         except IndexError as exc:

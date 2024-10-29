@@ -641,6 +641,9 @@ class NZS3101(DesignCode):
             # Calculate maximum axial compression strength for a singly reinf wall
             # member about minor axis
             max_comp = 0.06 * conc_capacity
+        else:
+            msg = "Invalid section type"
+            raise RuntimeError(msg)
 
         return max_comp
 
@@ -821,7 +824,7 @@ class NZS3101(DesignCode):
                 msg += f"{compressive_strength:.0f} MPa was specified for this material"
                 raise ValueError(msg)
 
-    def create_concrete_material(
+    def create_concrete_material(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         compressive_strength: float,
         ultimate_strain: float = 0.003,
@@ -963,7 +966,7 @@ class NZS3101(DesignCode):
 
         return properties_dict, nom_properties, prob_properties
 
-    def create_steel_material(
+    def create_steel_material(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         steel_grade: str | None = None,
         yield_strength: float | None = None,
@@ -1179,6 +1182,11 @@ class NZS3101(DesignCode):
         # change colour if predefined probable strength based steel grade
         if steel_grade.lower() in prob_properties and colour in ["red"]:
             colour = "steelblue"
+
+        # ensure properties are valid
+        if phi_os is None or yield_strength is None or fracture_strain is None:
+            msg = "Invalid property specification"
+            raise RuntimeError(msg)
 
         return NZS3101.SteelBarNZ(
             name=name,
@@ -1602,7 +1610,7 @@ class NZS3101(DesignCode):
 
         return prob_concrete_section
 
-    def ultimate_bending_capacity(
+    def ultimate_bending_capacity(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         pphr_class: str = "NDPR",
         analysis_type: str = "nom_chk",
@@ -1668,7 +1676,7 @@ class NZS3101(DesignCode):
 
         return f_ult_res, ult_res, phi
 
-    def moment_interaction_diagram(
+    def moment_interaction_diagram(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         pphr_class: str = "NDPR",
         analysis_type: str = "nom_chk",
@@ -1786,7 +1794,7 @@ class NZS3101(DesignCode):
 
         return f_mi_res, mi_res, phis
 
-    def biaxial_bending_diagram(
+    def biaxial_bending_diagram(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         pphr_class: str = "NDPR",
         analysis_type: str = "nom_chk",

@@ -85,7 +85,7 @@ class StressStrainProfile:
             x=self.strains,
             y=self.stresses,
             kind="linear",
-            fill_value="extrapolate",
+            fill_value="extrapolate",  # pyright: ignore [reportArgumentType]
         )
 
         return stress_function(strain)
@@ -290,7 +290,7 @@ class ConcreteServiceProfile(StressStrainProfile):
         except AttributeError:
             return super().get_elastic_modulus()
 
-    def get_compressive_strength(self) -> float | None:
+    def get_compressive_strength(self) -> float | None:  # pyright: ignore [reportIncompatibleMethodOverride]
         """Returns the most positive stress.
 
         Returns:
@@ -298,7 +298,7 @@ class ConcreteServiceProfile(StressStrainProfile):
         """
         return None
 
-    def get_tensile_strength(self) -> float | None:
+    def get_tensile_strength(self) -> float | None:  # pyright: ignore [reportIncompatibleMethodOverride]
         """Returns the most negative stress.
 
         Returns:
@@ -672,38 +672,39 @@ class ModifiedMander(ConcreteServiceProfile):
             )
 
         # calculate confined/unconfined compressive strength
+        # N.B. ignore pyright errors below as above check not recognised
         if self.conc_confined:
             # calculate clear distance between transverse reinforcement
-            s_dash = self.trans_spacing - self.trans_d_b
+            s_dash = self.trans_spacing - self.trans_d_b  # pyright: ignore
 
-            if self.sect_type.lower() in ["rect"]:
+            if self.sect_type.lower() in ["rect"]:  # pyright: ignore
                 # calculate core dimensions (between centrelines of confining transverse
                 # reinforcement)
-                d_core = self.d - 2 * self.cvr - self.trans_d_b
-                b_core = self.b - 2 * self.cvr - self.trans_d_b
+                d_core = self.d - 2 * self.cvr - self.trans_d_b  # pyright: ignore
+                b_core = self.b - 2 * self.cvr - self.trans_d_b  # pyright: ignore
 
                 # calculate core area
                 a_c = d_core * b_core
 
                 # calculate area of transverse reinforcement in each direction within a
                 # depth s
-                a_vd = self.trans_num_d * self.trans_d_b**2 * np.pi / 4
-                a_vb = self.trans_num_b * self.trans_d_b**2 * np.pi / 4
+                a_vd = self.trans_num_d * self.trans_d_b**2 * np.pi / 4  # pyright: ignore
+                a_vb = self.trans_num_b * self.trans_d_b**2 * np.pi / 4  # pyright: ignore
 
                 # calculate volumetric ratio of confinement reinforcement
                 rho_st = (
-                    self.n_confinement
+                    self.n_confinement  # pyright: ignore
                     / self.trans_spacing
                     * (a_vd / b_core + a_vb / d_core)
                 )
 
                 # calculate ratio of reinforcement area to core area
-                rho_cc = self.long_reinf_area / a_c
+                rho_cc = self.long_reinf_area / a_c  # pyright: ignore
 
                 # calculate plan area of ineffectually confined core concrete at the
                 # level of the transverse reinforcement
                 a_i = 0
-                for w in self.w_dash:
+                for w in self.w_dash:  # pyright: ignore
                     a_i = a_i + pow(w, 2)
 
                 # calculate confinement effectiveness coefficient
@@ -716,13 +717,13 @@ class ModifiedMander(ConcreteServiceProfile):
 
                 # calculate tranverse reinforcement ratios and confining pressures
                 # across defined depth
-                rho_d = a_vd / (self.trans_spacing * b_core)
-                f_ld = k_e * rho_d * self.trans_f_y
+                rho_d = a_vd / (self.trans_spacing * b_core)  # pyright: ignore
+                f_ld = k_e * rho_d * self.trans_f_y  # pyright: ignore
 
                 # calculate tranverse reinforcement ratios and confining pressures
                 # across defined width
-                rho_b = a_vb / (self.trans_spacing * d_core)
-                f_lb = k_e * rho_b * self.trans_f_y
+                rho_b = a_vb / (self.trans_spacing * d_core)  # pyright: ignore
+                f_lb = k_e * rho_b * self.trans_f_y  # pyright: ignore
 
                 # calculate confined concrete strength
                 f_cc = self.compressive_strength * (
@@ -733,19 +734,19 @@ class ModifiedMander(ConcreteServiceProfile):
                 )
             else:
                 # calculate core diameter
-                d_s = self.d - 2 * self.cvr - self.trans_d_b
+                d_s = self.d - 2 * self.cvr - self.trans_d_b  # pyright: ignore
 
                 # calculate core area
                 a_c = d_s**2 * np.pi / 4
 
                 # calculate volumetric ratio of confinement reinforcement
                 rho_st = (
-                    self.n_confinement
+                    self.n_confinement  # pyright: ignore
                     / self.trans_spacing
-                    * (4 * self.trans_d_b**2 * np.pi / 4 / d_s)
+                    * (4 * self.trans_d_b**2 * np.pi / 4 / d_s)  # pyright: ignore
                 )
                 # calculate ratio of reinforcement area to core area
-                rho_cc = self.long_reinf_area / a_c
+                rho_cc = self.long_reinf_area / a_c  # pyright: ignore
 
                 # calculate confinement effectiveness coefficient
                 exp = 2 if self.sect_type in ["circ_hoop"] else 1
@@ -753,7 +754,7 @@ class ModifiedMander(ConcreteServiceProfile):
 
                 # calculate tranverse confining pressures
                 # rho_b = a_vb / (self.trans_spacing * d_core)
-                f_l = k_e * rho_st * self.trans_f_y
+                f_l = k_e * rho_st * self.trans_f_y  # pyright: ignore
 
                 # calculate confined concrete strength
                 f_cc = self.compressive_strength * (
@@ -772,7 +773,7 @@ class ModifiedMander(ConcreteServiceProfile):
         if self.conc_confined:
             eps_c_max = min(
                 0.004
-                + self.n_steel_strain * rho_st * self.trans_f_y * self.eps_su / f_cc,
+                + self.n_steel_strain * rho_st * self.trans_f_y * self.eps_su / f_cc,  # pyright: ignore
                 0.05,
             )
         else:
@@ -782,21 +783,21 @@ class ModifiedMander(ConcreteServiceProfile):
         e_sec = f_cc / eps_cc
 
         if self.conc_confined:
-            self.strains = np.linspace(0, eps_c_max, self.n_points)
+            np_strains = np.linspace(0, eps_c_max, self.n_points)
             # add eps_cc point corresponding to max stress point at end
-            self.strains = np.append(self.strains, eps_cc)
+            np_strains = np.append(self.strains, eps_cc)
         else:
-            self.strains = np.linspace(0, min(2 * eps_cc, eps_c_max), self.n_points)
+            np_strains = np.linspace(0, min(2 * eps_cc, eps_c_max), self.n_points)
             # add eps_cc point corresponding to max stress point at end
-            self.strains = np.append(self.strains, eps_cc)
+            np_strains = np.append(self.strains, eps_cc)
 
         # sort strains numerically
-        self.strains.sort()
+        np_strains.sort()
 
         # calculate stresses from strains & convert to List
         r = self.elastic_modulus / (self.elastic_modulus - e_sec)
-        x = self.strains / eps_cc
-        self.strains = self.strains.tolist()
+        x = np_strains / eps_cc
+        self.strains = np_strains.tolist()
         self.stresses = (f_cc * x * r / (r - 1 + x**r)).tolist()
 
         # add spalling branch if specified for unconfined curve
@@ -858,7 +859,7 @@ class ConcreteUltimateProfile(StressStrainProfile):
             Ultimate strain
         """
         try:
-            return self.ultimate_strain
+            return self.ultimate_strain  # pyright: ignore [reportAttributeAccessIssue]
         except AttributeError:
             return super().get_ultimate_compressive_strain()
 
@@ -1203,7 +1204,7 @@ class StrandProfile(StressStrainProfile):
             x=self.stresses,
             y=self.strains,
             kind="linear",
-            fill_value="extrapolate",
+            fill_value="extrapolate",  # pyright: ignore [reportArgumentType]
         )
 
         return strain_function(stress)

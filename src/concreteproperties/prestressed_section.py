@@ -97,7 +97,7 @@ class PrestressedSection(ConcreteSection):
         self.gross_properties.n_prestress = n_prestress
         self.gross_properties.m_prestress = m_prestress
 
-    def calculate_cracked_properties(
+    def calculate_cracked_properties(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         m_ext: float,
         n_ext: float = 0,
@@ -164,7 +164,7 @@ class PrestressedSection(ConcreteSection):
                 b=b,
                 args=(cracked_results),
                 xtol=1e-3,
-                rtol=1e-6,
+                rtol=1e-6,  # pyright: ignore [reportArgumentType]
                 full_output=True,
                 disp=False,
             )
@@ -175,7 +175,7 @@ class PrestressedSection(ConcreteSection):
 
         return cracked_results
 
-    def calculate_cracking_moment(
+    def calculate_cracking_moment(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         n: float,
         m_int: float,
@@ -308,7 +308,7 @@ class PrestressedSection(ConcreteSection):
 
         return min_stress
 
-    def moment_curvature_analysis(
+    def moment_curvature_analysis(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         positive: bool = True,
         n: float = 0,
@@ -376,7 +376,7 @@ class PrestressedSection(ConcreteSection):
             progress_bar=progress_bar,
         )
 
-    def ultimate_bending_capacity(
+    def ultimate_bending_capacity(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         positive: bool = True,
         n: float = 0,
@@ -398,7 +398,7 @@ class PrestressedSection(ConcreteSection):
 
         return super().ultimate_bending_capacity(theta=theta, n=n)
 
-    def moment_interaction_diagram(self):
+    def moment_interaction_diagram(self):  # pyright: ignore [reportIncompatibleMethodOverride]
         """Generates a moment interaction diagram.
 
         Raises:
@@ -406,7 +406,7 @@ class PrestressedSection(ConcreteSection):
         """
         raise NotImplementedError
 
-    def biaxial_bending_diagram(self):
+    def biaxial_bending_diagram(self):  # pyright: ignore [reportIncompatibleMethodOverride]
         """Generates a biaxial bending diagram.
 
         Raises:
@@ -414,7 +414,7 @@ class PrestressedSection(ConcreteSection):
         """
         raise NotImplementedError
 
-    def calculate_uncracked_stress(
+    def calculate_uncracked_stress(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         n: float = 0,
         m: float = 0,
@@ -554,7 +554,7 @@ class PrestressedSection(ConcreteSection):
             strand_forces=strand_forces,
         )
 
-    def calculate_cracked_stress(
+    def calculate_cracked_stress(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         cracked_results: res.CrackedResults,
     ) -> res.StressResult:

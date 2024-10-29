@@ -147,7 +147,7 @@ class AS3600(DesignCode):
             colour=colour,
         )
 
-    def create_steel_material(
+    def create_steel_material(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         yield_strength: float = 500,
         ductility_class: str = "N",
@@ -338,7 +338,7 @@ class AS3600(DesignCode):
 
         return balanced_res.n
 
-    def ultimate_bending_capacity(
+    def ultimate_bending_capacity(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         theta: float = 0,
         n_design: float = 0,
@@ -382,7 +382,7 @@ class AS3600(DesignCode):
             a=phi_0,
             b=0.85,
             xtol=1e-3,
-            rtol=1e-6,
+            rtol=1e-6,  # pyright: ignore [reportArgumentType]
             full_output=True,
             disp=False,
         )
@@ -454,7 +454,7 @@ class AS3600(DesignCode):
 
         return f_ult_res, ult_res, phi
 
-    def moment_interaction_diagram(
+    def moment_interaction_diagram(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         theta: float = 0,
         limits: list[tuple[str, float]] | None = None,
@@ -580,7 +580,7 @@ class AS3600(DesignCode):
 
         return f_mi_res, mi_res, phis
 
-    def biaxial_bending_diagram(
+    def biaxial_bending_diagram(  # pyright: ignore [reportIncompatibleMethodOverride]
         self,
         n_design: float = 0,
         n_points: int = 48,

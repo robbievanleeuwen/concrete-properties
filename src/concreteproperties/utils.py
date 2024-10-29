@@ -12,6 +12,7 @@ from rich.text import Text
 from concreteproperties.pre import CPGeomConcrete
 
 if TYPE_CHECKING:
+    from rich.progress import Task
     from sectionproperties.pre.geometry import CompoundGeometry
 
     from concreteproperties.pre import CPGeom
@@ -498,7 +499,7 @@ class CustomTimeElapsedColumn(ProgressColumn):
 
     def render(
         self,
-        task: str = "Task",
+        task: Task,
     ) -> Text:
         """Show time remaining.
 

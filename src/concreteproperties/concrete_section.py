@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 import matplotlib.patches as mpatches
 import numpy as np
 import sectionproperties.pre.geometry as sp_geom
+import sectionproperties.pre.pre as sp_pre
 from rich.live import Live
 from scipy.optimize import brentq
 
@@ -83,6 +84,11 @@ class ConcreteSection:
                     cp_geom = CPGeom(geom=geom.geom, material=geom.material)
                     self.strand_geometries.append(cp_geom)
             else:
+                if isinstance(geom.material, sp_pre.Material):
+                    msg = "'material' must be a concreteproperties Material object, "
+                    msg += "not a sectionproperties Material object."
+                    raise RuntimeError(msg)
+
                 cp_geom = CPGeom(geom=geom.geom, material=geom.material)
 
                 if cp_geom.material.meshed:
@@ -330,7 +336,7 @@ class ConcreteSection:
                 b=b,
                 args=(cracked_results),
                 xtol=1e-3,
-                rtol=1e-6,
+                rtol=1e-6,  # pyright: ignore [reportArgumentType]
                 full_output=True,
                 disp=False,
             )
@@ -937,7 +943,7 @@ class ConcreteSection:
                 b=b,
                 args=(n, ultimate_results),
                 xtol=1e-3,
-                rtol=1e-6,
+                rtol=1e-6,  # pyright: ignore [reportArgumentType]
                 full_output=True,
                 disp=False,
             )
