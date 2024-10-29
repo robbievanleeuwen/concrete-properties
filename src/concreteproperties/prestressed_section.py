@@ -47,9 +47,10 @@ class PrestressedSection(ConcreteSection):
             moment_centroid: If specified, all moments for service and ultimate
                 analyses are calculated about this point. If not specified, all moments
                 are calculated about the gross cross-section centroid, i.e. no material
-                properties applied.
+                properties applied. Defaults to ``None``.
             geometric_centroid_override: If set to True, sets ``moment_centroid`` to
-                the geometric centroid i.e. material properties applied
+                the geometric centroid i.e. material properties applied. Defaults to
+                ``True``.
 
         Raises:
             ValueError: If the section is not symmetric about the y-axis
@@ -108,7 +109,7 @@ class PrestressedSection(ConcreteSection):
 
         Args:
             m_ext: External bending moment
-            n_ext: External axial force
+            n_ext: External axial force. Defaults to ``0``.
 
         Raises:
             AnalysisError: If the provided loads do not result in tension within the
@@ -327,17 +328,19 @@ class PrestressedSection(ConcreteSection):
             positive: If set to True, performs the moment curvature analysis for
                 positive bending, otherwise performs the moment curvature analysis for
                 negative bending
-            n: Axial force
-            kappa_inc: Initial curvature increment
+            n: Axial force. Defaults to ``0``.
+            kappa_inc: Initial curvature increment. Defaults to ``1e-7``.
             kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
                 when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied,
-                the inverse of this multipler is applied to ``kappa_inc``.
-            kappa_inc_max: Maximum curvature increment
+                the inverse of this multipler is applied to ``kappa_inc``. Defaults to
+                ``2``.
+            kappa_inc_max: Maximum curvature increment. Defaults to ``5e-6``.
             delta_m_min: Relative change in moment at which to reduce the curvature
-                increment
+                increment. Defaults to ``0.15``.
             delta_m_max: Relative change in moment at which to increase the curvature
-                increment
-            progress_bar: If set to True, displays the progress bar
+                increment. Defaults to ``0.3``.
+            progress_bar: If set to True, displays the progress bar. Defaults to
+                ``True``.
 
         Returns:
             Moment curvature results object
@@ -388,7 +391,8 @@ class PrestressedSection(ConcreteSection):
         Args:
             positive: If set to True, calculates the positive bending capacity,
                 otherwise calculates the negative bending capacity.
-            n: Net axial force
+                Defaults to ``True``.
+            n: Net axial force. Defaults to ``0``.
 
         Returns:
             Ultimate bending results object
@@ -427,8 +431,8 @@ class PrestressedSection(ConcreteSection):
         ``m``.
 
         Args:
-            n: Axial force
-            m: Bending moment
+            n: Axial force. Defaults to ``0``.
+            m: Bending moment. Defaults to ``0``.
 
         Returns:
             Stress results object
@@ -702,7 +706,7 @@ class PrestressedSection(ConcreteSection):
             moment_curvature_results: Moment-curvature results objects
             m: Bending moment
             kappa: Curvature, if provided overrides the supplied bending moment and
-                calculates the stress at the given curvature
+                calculates the stress at the given curvature. Defaults to ``None``.
 
         Raises:
             AnalysisError: If the analysis fails

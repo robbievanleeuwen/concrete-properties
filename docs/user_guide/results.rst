@@ -87,7 +87,7 @@ object can be used to plot moment curvature results.
 
 ..  autoclass:: concreteproperties.results.MomentCurvatureResults()
   :noindex:
-  :members: plot_results, plot_multiple_results
+  :members: plot_results, plot_multiple_results, plot_failure_geometry, get_curvature
 
 .. seealso::
   For an application of the above, see the example
@@ -123,7 +123,7 @@ This object can be used to plot moment interaction results.
 
 ..  autoclass:: concreteproperties.results.MomentInteractionResults()
   :noindex:
-  :members: plot_diagram, plot_multiple_diagrams, point_in_diagram
+  :members: plot_diagram, plot_multiple_diagrams, point_in_diagram, get_results_lists
 
 .. seealso::
   For an application of the above, see the example
@@ -140,7 +140,7 @@ This object can be used to plot biaxial bending results.
 
 ..  autoclass:: concreteproperties.results.BiaxialBendingResults()
   :noindex:
-  :members: plot_diagram, plot_multiple_diagrams_2d, plot_multiple_diagrams_3d, point_in_diagram
+  :members: plot_diagram, plot_multiple_diagrams_2d, plot_multiple_diagrams_3d, point_in_diagram, get_results_lists
 
 .. seealso::
   For an application of the above, see the example

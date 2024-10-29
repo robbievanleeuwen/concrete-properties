@@ -99,7 +99,7 @@ class GrossProperties:
         """Prints the gross concrete section properties to the terminal.
 
         Args:
-            fmt: Number format
+            fmt: Number format. Defaults to ``"8.6e"``.
         """
         table = Table(title="Gross Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
@@ -230,7 +230,7 @@ class TransformedGrossProperties:
         """Prints the transformed gross concrete section properties to the terminal.
 
         Args:
-            fmt: Number format
+            fmt: Number format. Defaults to ``"8.6e"``.
         """
         table = Table(title="Transformed Gross Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
@@ -361,7 +361,7 @@ class CrackedResults:
         """Plots geometries that remain (compression/reinf.) after a cracked analysis.
 
         Args:
-            title: Plot title
+            title: Plot title. Defaults to ``"Cracked Geometries"``.
             kwargs: Passed to
                 :meth:`~sectionproperties.pre.geometry.CompoundGeometry.plot_geometry`
 
@@ -379,7 +379,7 @@ class CrackedResults:
         """Prints the cracked concrete section properties to the terminal.
 
         Args:
-            fmt: Number format
+            fmt: Number format. Defaults to ``"8.6e"``.
         """
         table = Table(title="Cracked Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
@@ -489,8 +489,8 @@ class MomentCurvatureResults:
         """Plots the moment curvature results.
 
         Args:
-            m_scale: Scaling factor to apply to bending moment
-            fmt: Plot format string
+            m_scale: Scaling factor to apply to bending moment. Defaults ``1e-6``.
+            fmt: Plot format string. Defaults ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -525,8 +525,8 @@ class MomentCurvatureResults:
         Args:
             moment_curvature_results: List of moment curvature results objects
             labels: List of labels for each moment curvature diagram
-            m_scale: Scaling factor to apply to bending moment
-            fmt: Plot format string
+            m_scale: Scaling factor to apply to bending moment. Defaults ``1e-6``.
+            fmt: Plot format string. Defaults ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -566,7 +566,7 @@ class MomentCurvatureResults:
         """Plots the geometry that fails in the moment curvature analysis.
 
         Args:
-            title: Plot title
+            title: Plot title. Defaults to ``"Failure Geometry"``.
             kwargs: Passed to
                 :meth:`~sectionproperties.pre.geometry.CompoundGeometry.plot_geometry`
 
@@ -647,7 +647,7 @@ class UltimateBendingResults:
         """Prints the ultimate bending results to the terminal.
 
         Args:
-            fmt: Number format
+            fmt: Number format. Defaults to ``"8.6e"``.
         """
         table = Table(title="Ultimate Bending Results")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
@@ -700,14 +700,15 @@ class MomentInteractionResults:
         """Returns a list of axial forces and moments.
 
         Args:
-            moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
-                ``"m_xy"``
+            moment: Which moment to return, acceptable values are ``"m_x"``, ``"m_y"``
+                or ``"m_xy"``
 
         Raises:
             ValueError: If the moment string is not valid
 
         Returns:
-            List of axial forces and moments (``n``, ``m``)
+            Tuple containing a list of axial forces and a list of moments
+            (``n_list``, ``m_list``)
         """
         # build list of results
         n_list = []
@@ -741,13 +742,16 @@ class MomentInteractionResults:
         """Plots a moment interaction diagram.
 
         Args:
-            n_scale: Scaling factor to apply to axial force
-            m_scale: Scaling factor to apply to the bending moment
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1e-3``.
+            m_scale: Scaling factor to apply to the bending moment. Defaults to
+                ``1e-6``.
             moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
-                ``"m_xy"``
-            fmt: Plot format string
-            labels: If set to True, also plots labels on the diagram
-            label_offset: If set to True, attempts to offset the label from the diagram
+                ``"m_xy"``. Defaults to ``"m_x"``.
+            fmt: Plot format string. Defaults to ``"o-"``.
+            labels: If set to True, also plots labels on the diagram. Defaults to
+                ``False``.
+            label_offset: If set to True, attempts to offset the label from the diagram.
+                Defaults to ``False``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -836,12 +840,12 @@ class MomentInteractionResults:
 
         Args:
             moment_interaction_results: List of moment interaction results objects
-            labels: List of labels for each moment interaction diagram
-            n_scale: Scaling factor to apply to axial force
-            m_scale: Scaling factor to apply to bending moment
+            labels: List of labels for each moment interaction diagram.
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1e-3``.
+            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
             moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
-                ``"m_xy"``
-            fmt: Plot format string
+                ``"m_xy"``. Defaults to ``"m_x"``.
+            fmt: Plot format string. Defaults to ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -890,7 +894,7 @@ class MomentInteractionResults:
             n: Axial force
             m: Bending moment
             moment: Which moment to analyse, acceptable values are ``"m_x"``, ``"m_y"``
-                or ``"m_xy"``
+                or ``"m_xy"``. Defaults to ``"m_x"``.
 
         Returns:
             True, if combination of axial force and moment is within the diagram
@@ -928,7 +932,7 @@ class BiaxialBendingResults:
         """Returns a list and moments about the ``x`` and ``y`` axes.
 
         Returns:
-            List of axial forces and moments (``mx``, ``my``)
+            Tuple containing two list of moments (``mx_list``, ``my_list``)
         """
         # build list of results
         m_x_list = []
@@ -949,8 +953,8 @@ class BiaxialBendingResults:
         """Plots a biaxial bending diagram.
 
         Args:
-            m_scale: Scaling factor to apply to bending moment
-            fmt: Plot format string
+            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
+            fmt: Plot format string. Defaults to ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -991,9 +995,9 @@ class BiaxialBendingResults:
         Args:
             biaxial_bending_results: List of biaxial bending results objects
             labels: List of labels for each biaxial bending diagram, if not provided
-                labels are axial forces
-            m_scale: Scaling factor to apply to bending moment
-            fmt: Plot format string
+                labels are axial forces. Defaults to ``None``.
+            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
+            fmt: Plot format string. Defaults to ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -1049,9 +1053,9 @@ class BiaxialBendingResults:
 
         Args:
             biaxial_bending_results: List of biaxial bending results objects
-            n_scale: Scaling factor to apply to axial force
-            m_scale: Scaling factor to apply to bending moment
-            fmt: Plot format string
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1e-3``.
+            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
+            fmt: Plot format string. Defaults to ``"-"``.
 
         Returns:
             Matplotlib axes object
@@ -1090,7 +1094,7 @@ class BiaxialBendingResults:
             m_y: Bending moment about the y-axis
 
         Returns:
-            True, if combination of bendings moments is within the diagram
+            ``True``, if combination of bendings moments is within the diagram
         """
         # create a polygon from points on diagram
         poly_points = [(ult_res.m_x, ult_res.m_y) for ult_res in self.results]
@@ -1164,9 +1168,9 @@ class StressResult:
         """Plots concrete and steel stresses on a concrete section.
 
         Args:
-            title: Plot title
-            conc_cmap: Colour map for the concrete stress
-            reinf_cmap: Colour map for the reinforcement stress
+            title: Plot title. Defaults to ``"Stress"``.
+            conc_cmap: Colour map for the concrete stress. Defaults to ``"RdGy"``.
+            reinf_cmap: Colour map for the reinforcement stress. Defaults to ``"bwr"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:

@@ -41,14 +41,14 @@ class ConcreteSection:
             moment_centroid: If specified, all moments for service and ultimate
                 analyses are calculated about this point. If not specified, all moments
                 are calculated about the gross cross-section centroid, i.e. no material
-                properties applied.
+                properties applied. Defaults to ``None``.
             geometric_centroid_override: If set to True, sets ``moment_centroid`` to
                 the geometric centroid i.e. material properties applied (useful for
-                composite section analysis)
+                composite section analysis). Defaults to ``False``.
 
         Raises:
-            ValueError: If steel strand materials are detected, use a PrestressedSection
-                instead
+            ValueError: If steel strand materials are detected, use a
+                ``PrestressedSection`` instead
         """
         self.compound_geometry = geometry
 
@@ -309,7 +309,7 @@ class ConcreteSection:
 
         Args:
             theta: Angle (in radians) the neutral axis makes with the horizontal axis
-                (:math:`-\pi \leq \theta \leq \pi`)
+                (:math:`-\pi \leq \theta \leq \pi`). Defaults to ``0``.
 
         Raises:
             AnalysisError: If the analysis fails
@@ -605,19 +605,21 @@ class ConcreteSection:
 
         Args:
             theta: Angle (in radians) the neutral axis makes with the horizontal axis
-                (:math:`-\pi \leq \theta \leq \pi`)
-            n: Axial force
-            kappa0: Initial curvature
-            kappa_inc: Initial curvature increment
+                (:math:`-\pi \leq \theta \leq \pi`). Defaults to ``0``.
+            n: Axial force. Defaults to ``0``.
+            kappa0: Initial curvature. Defaults to ``0``.
+            kappa_inc: Initial curvature increment. Defaults to ``1e-7``.
             kappa_mult: Multiplier to apply to the curvature increment ``kappa_inc``
                 when ``delta_m_max`` is satisfied. When ``delta_m_min`` is satisfied,
-                the inverse of this multipler is applied to ``kappa_inc``.
-            kappa_inc_max: Maximum curvature increment
+                the inverse of this multipler is applied to ``kappa_inc``. Defaults to
+                ``2``.
+            kappa_inc_max: Maximum curvature increment. Defaults to ``5e-6``.
             delta_m_min: Relative change in moment at which to reduce the curvature
-                increment
+                increment. Defaults to ``0.15``.
             delta_m_max: Relative change in moment at which to increase the curvature
-                increment
-            progress_bar: If set to True, displays the progress bar
+                increment. Defaults to ``0.3``.
+            progress_bar: If set to True, displays the progress bar. Defaults to
+                ``True``.
 
         Returns:
             Moment curvature results object
@@ -915,8 +917,8 @@ class ConcreteSection:
 
         Args:
             theta: Angle (in radians) the neutral axis makes with the horizontal axis
-                (:math:`-\pi \leq \theta \leq \pi`)
-            n: Net axial force (nominal axial load)
+                (:math:`-\pi \leq \theta \leq \pi`). Defaults to ``0``.
+            n: Net axial force (nominal axial load). Defaults to ``0``.
 
         Raises:
             AnalysisError: If the analysis fails
@@ -1162,37 +1164,41 @@ class ConcreteSection:
             limits: List of control points that define the start and end of the
                 interaction diagram. List length must equal two. The default limits
                 range from concrete decompression strain to zero curvature tension, i.e.
-                ``[("D", 1.0), ("d_n", 1e-6)]``.
+                ``[("D", 1.0), ("d_n", 1e-6)]``. Defaults to ``None``.
             control_points: List of additional control points to add to the moment
                 interatction diagram. The default control points include the pure
                 compression point (``kappa0``), the balanced point (``fy = 1``) and the
                 pure bending point (``N=0``), i.e. ``[("kappa0", 0.0), ("fy", 1.0),
                 ("N", 0.0)]``. Control points may lie outside the limits of the moment
-                interaction diagram as long as equilibrium can be found.
+                interaction diagram as long as equilibrium can be found. Defaults to
+                ``None``.
             labels: List of labels to apply to the ``limits`` and ``control_points``
                 for plotting purposes. The first two values in ``labels`` apply labels
                 to the ``limits``, the remaining values apply labels to the
                 ``control_points``. If a single value is provided, this value will be
                 applied to both ``limits`` and all ``control_points``. The length of
-                ``labels`` must equal ``1`` or ``2 + len(control_points)``.
+                ``labels`` must equal ``1`` or ``2 + len(control_points)``. Defaults to
+                ``None``.
             n_points: Number of points to compute including and between the
                 ``limits`` of the moment interaction diagram. Generates equally spaced
-                neutral axis depths between the ``limits``.
+                neutral axis depths between the ``limits``. Defaults to ``24``.
             n_spacing: If provided, overrides ``n_points`` and generates the moment
                 interaction diagram using ``n_spacing`` equally spaced axial loads. Note
                 that using ``n_spacing`` negatively affects performance, as the neutral
                 axis depth must first be located for each point on the moment
-                interaction diagram.
+                interaction diagram. Defaults to ``None``.
             max_comp: If provided, limits the maximum compressive force in the moment
-                interaction diagram to ``max_comp``
+                interaction diagram to ``max_comp``. Defaults to ``None``.
             max_comp_labels: Labels to apply to the ``max_comp`` intersection points,
                 first value is at zero moment, second value is at the intersection with
                 the interaction diagram
-            progress_bar: If set to True, displays the progress bar
+            progress_bar: If set to True, displays the progress bar. Defaults to
+                ``True``.
 
         Raises:
-            ValueError: Length of ``limits`` must equal 2
-            ValueError: Length of ``labels`` must be 1 or 2 + number of control points
+            ValueError: Length of ``limits`` must equal ``2``
+            ValueError: Length of ``labels`` must be ``1`` or
+                ``2 + len(control_points)``
             ValueError: If ``max_comp`` is greater than the maximum axial capacity
 
         Returns:
@@ -1414,9 +1420,10 @@ class ConcreteSection:
         ``n_points`` calculation points.
 
         Args:
-            n: Net axial force
-            n_points: Number of calculation points
-            progress_bar: If set to True, displays the progress bar
+            n: Net axial force. Defaults to ``0``.
+            n_points: Number of calculation points. Defaults to ``48``.
+            progress_bar: If set to True, displays the progress bar. Defaults to
+                ``True``.
 
         Returns:
             Biaxial bending results
@@ -1477,9 +1484,9 @@ class ConcreteSection:
         and ``m_y``.
 
         Args:
-            n: Axial force
-            m_x: Bending moment about the x-axis
-            m_y: Bending moment about the y-axis
+            n: Axial force. Defaults to ``0``.
+            m_x: Bending moment about the x-axis. Defaults to ``0``.
+            m_y: Bending moment about the y-axis. Defaults to ``0``.
 
         Returns:
             Stress results object
@@ -1612,8 +1619,8 @@ class ConcreteSection:
 
         Args:
             cracked_results: Cracked results objects
-            n: Axial force
-            m: Bending moment
+            n: Axial force. Defaults to ``0``.
+            m: Bending moment. Defaults to ``0``.
 
         Returns:
             Stress results object
@@ -1752,7 +1759,7 @@ class ConcreteSection:
             moment_curvature_results: Moment-curvature results objects
             m: Bending moment
             kappa: Curvature, if provided overrides the supplied bending moment and
-                calculates the stress at the given curvature
+                calculates the stress at the given curvature. Defaults to ``None``.
 
         Raises:
             AnalysisError: If the stress analysis fails
@@ -2135,8 +2142,9 @@ class ConcreteSection:
         """Plots the reinforced concrete section.
 
         Args:
-            title: Plot title
-            background: If set to True, uses the plot as a background plot
+            title: Plot title. Defaults to ``"Reinforced Concrete Section"``.
+            background: If set to True, uses the plot as a background plot. Defaults to
+                ``False``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:

@@ -385,7 +385,7 @@ def add_bar(
         material: Material object for the bar
         x: x-position of the bar
         y: y-position of the bar
-        n: Number of points to discretise the bar circle
+        n: Number of points to discretise the bar circle. Defaults to ``4``.
 
     Returns:
         Reinforced concrete geometry with added bar
@@ -419,11 +419,13 @@ def add_bar_rectangular_array(
         material: Material object for the bar
         n_x: Number of bars in the x-direction
         x_s: Spacing in the x-direction
-        n_y: Number of bars in the y-direction
-        y_s: Spacing in the y-direction
-        anchor: Coordinates of the bottom left hand bar in the rectangular array
-        exterior_only: If set to True, only returns bars on the external perimeter
-        n: Number of points to discretise the bar circle
+        n_y: Number of bars in the y-direction. Defaults to ``1``.
+        y_s: Spacing in the y-direction. Defaults to ``0``.
+        anchor: Coordinates of the bottom left hand bar in the rectangular array.
+            Defaults to ``(0, 0)``.
+        exterior_only: If set to True, only returns bars on the external perimeter.
+            Defaults to ``False``.
+        n: Number of points to discretise the bar circle. Defaults to ``4``.
 
     Returns:
         Reinforced concrete geometry with added bar
@@ -470,9 +472,9 @@ def add_bar_circular_array(
         n_bar: Number of bars in the array
         r_array: Radius of the circular array
         theta_0: Initial angle (in radians) that the first bar makes with the
-            horizontal axis in the circular array
-        ctr: Centre of the circular array
-        n: Number of points to discretise the bar circle
+            horizontal axis in the circular array. Defaults to ``0``.
+        ctr: Centre of the circular array. Defaults to ``(0, 0)``.
+        n: Number of points to discretise the bar circle. Defaults to ``4``.
 
     Returns:
         Reinforced concrete geometry with added bar

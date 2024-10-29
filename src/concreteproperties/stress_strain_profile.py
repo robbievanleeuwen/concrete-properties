@@ -31,9 +31,9 @@ class StressStrainProfile:
         stresses: List of stresses
 
     Raises:
-        ValueError: If length of strains is not equal to length of stresses
-        ValueError: If length of strains/stresses is not greater than 1
-        ValueError: If strains do not contain increasing or equal values
+        ValueError: If length of ``strains`` is not equal to length of ``stresses``
+        ValueError: If length of ``strains``/``stresses`` is not greater than ``1``
+        ValueError: If ``strains`` does not contain increasing or equal values
     """
 
     strains: list[float]
@@ -181,7 +181,7 @@ class StressStrainProfile:
         """Prints the stress-strain profile properties to the terminal.
 
         Args:
-            fmt: Number format
+            fmt: Number format. Defaults to ``"8.6e"``.
         """
         table = Table(title=f"Stress-Strain Profile - {type(self).__name__}")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
@@ -219,8 +219,8 @@ class StressStrainProfile:
         """Plots the stress-strain profile.
 
         Args:
-            title: Plot title
-            fmt: Plot format string
+            title: Plot title. Defaults to ``"Stress-Strain Profile"``.
+            fmt: Plot format string. Defaults to ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -321,7 +321,7 @@ class ConcreteLinear(ConcreteServiceProfile):
 
     Args:
         elastic_modulus: Elastic modulus of the stress-strain profile
-        ultimate_strain: Concrete strain at failure
+        ultimate_strain: Concrete strain at failure. Defaults to ``1``.
     """
 
     strains: list[float] = field(init=False)
@@ -341,7 +341,7 @@ class ConcreteLinearNoTension(ConcreteServiceProfile):
 
     Args:
         elastic_modulus: Elastic modulus of the stress-strain profile
-        ultimate_strain: Concrete strain at failure
+        ultimate_strain: Concrete strain at failure. Defaults to ``1``.
         compressive_strength: Compressive strength of the concrete
     """
 
@@ -380,8 +380,10 @@ class EurocodeNonLinear(ConcreteServiceProfile):
         tensile_strength:  Concrete tensile strength
         tension_softening_stiffness: Slope of the linear tension softening
             branch
-        n_points_1: Number of points to discretise the curve prior to the peak stress
-        n_points_2: Number of points to discretise the curve after the peak stress
+        n_points_1: Number of points to discretise the curve prior to the peak stress.
+            Defaults to ``10``.
+        n_points_2: Number of points to discretise the curve after the peak stress.
+            Defaults to ``3``.
     """
 
     strains: list[float] = field(init=False)
@@ -548,12 +550,12 @@ class ModifiedMander(ConcreteServiceProfile):
         sect_type: The type of concrete cross section for which to create a confined
             concrete stress-strain relationship for:
 
-            - **rect** = Rectangular section with closed stirrup/tie transverse
+            - ``rect`` - Rectangular section with closed stirrup/tie transverse
               reinforcement
 
-            - **circ_hoop** = Circular section with closed hoop transverse reinforcement
+            - ``circ_hoop`` - Circular section with closed hoop transverse reinforcement
 
-            - **circ_spiral** = Circular section with spiral transverse reinforcement
+            - ``circ_spiral`` - Circular section with spiral transverse reinforcement
 
         conc_confined: True to return a confined concrete stress-strain relationship
             based on provided reinforcing parameters, False to return an unconfined
@@ -565,11 +567,12 @@ class ModifiedMander(ConcreteServiceProfile):
             False to not consider the spalling branch and truncate the unconfined
             concrete curve at min(:math:`2 \varepsilon_{co},\varepsilon_{c,max}`)
         eps_co: Strain at which the maximum concrete stress is obtained for an
-            unconfined concrete material (:math:`\varepsilon_{co}`)
+            unconfined concrete material (:math:`\varepsilon_{co}`). Defaults to
+            ``0.002``.
         eps_c_max_unconfined: Maximum strain that is able to be supported within
-            unconfined concrete (:math:`\varepsilon_{c,max}`)
+            unconfined concrete (:math:`\varepsilon_{c,max}`). Defaults to ``0.004``.
         eps_sp: Spalling strain, the strain at which the stress returns to zero for
-            unconfined concrete (:math:`\varepsilon_{sp}`)
+            unconfined concrete (:math:`\varepsilon_{sp}`). Defaults to ``0.006``.
         d: Depth of a rectangular concrete cross section, or diameter of circular
             concrete cross section (:math:`d`)
         b: Breadth of a rectangular concrete cross section (:math:`b`)
@@ -593,14 +596,16 @@ class ModifiedMander(ConcreteServiceProfile):
             stress-strain curve between :math:`\varepsilon_{c}=0` &
             :math:`\varepsilon_{c} =2\varepsilon_{co}` for an unconfined concrete, or
             between :math:`\varepsilon_{c}=0` & :math:`\varepsilon_{c}=\varepsilon_{cu}`
-            for a confined concrete
+            for a confined concrete. Defaults to ``50``.
         n_steel_strain: Modifier for maximum steel reinforcement strain. Steel
             reinforcement material within the concrete cross section should also be
-            defined with the same limit for the fracture strain
-        n_confinement: Modifier for volumetric ratio of confinement reinforcement
+            defined with the same limit for the fracture strain. Defaults to ``0.6``.
+        n_confinement: Modifier for volumetric ratio of confinement reinforcement.
+            Defaults to ``0.75``.
 
     Raises:
-        ValueError: If specified section type is not rect, circ_hoop or circ_spiral
+        ValueError: If specified section type is not ``rect``, ``circ_hoop`` or
+            ``circ_spiral``
     """
 
     strains: list[float] = field(init=False)
@@ -987,7 +992,8 @@ class EurocodeParabolicUltimate(ConcreteUltimateProfile):
             strength
         ultimate_strain: Concrete strain at failure
         n: Parabolic curve exponent
-        n_points: Number of points to discretise the parabolic segment of the curve
+        n_points: Number of points to discretise the parabolic segment of the curve.
+            Defaults to ``10``.
     """
 
     strains: list[float] = field(init=False)
@@ -1313,12 +1319,12 @@ class StrandPCI1992(StrandProfile):
         fracture_strain: Strand fracture strain
         breaking_strength: Strand breaking strength
         bilinear_yield_ratio: Ratio between the stress at the intersection of a bilinear
-            profile, and the yield strength
+            profile, and the yield strength. Defaults to ``1.04``.
         strain_cps: Strain control points, generates the following strain segments:
             ``[0, strain_cps[0], strain_cps[1], fracture_strain]``. Length must be equal
-            to 2.
+            to 2. Defaults to ``[0.005, 0.015]``.
         n_points: Number of points to discretise within each strain segment. Length must
-            be equal to 3.
+            be equal to 3. Defaults to ``[5, 14, 5]``.
     """
 
     strains: list[float] = field(init=False)
