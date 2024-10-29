@@ -4,10 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import concreteproperties.results as res
-
-
 if TYPE_CHECKING:
+    import concreteproperties.results as res
     from concreteproperties.concrete_section import ConcreteSection
     from concreteproperties.material import Concrete, SteelBar
 

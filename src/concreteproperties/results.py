@@ -6,7 +6,8 @@ import warnings
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
-import matplotlib
+import matplotlib as mpl
+import matplotlib.axes
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import matplotlib.tri as tri
@@ -21,10 +22,7 @@ from shapely import Point, Polygon
 
 from concreteproperties.post import plotting_context
 
-
 if TYPE_CHECKING:
-    import matplotlib.axes
-
     from concreteproperties.analysis_section import AnalysisSection
     from concreteproperties.concrete_section import ConcreteSection
     from concreteproperties.pre import CPGeom
@@ -503,7 +501,10 @@ class MomentCurvatureResults:
 
         # create plot and setup the plot
         with plotting_context(title="Moment-Curvature", **kwargs) as (fig, ax):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
+
             ax.plot(self.kappa, moments, fmt)
             plt.xlabel("Curvature")
             plt.ylabel("Moment")
@@ -533,7 +534,10 @@ class MomentCurvatureResults:
         """
         # create plot and setup the plot
         with plotting_context(title="Moment-Curvature", **kwargs) as (fig, ax):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
+
             idx = 0
 
             # for each M-k curve
@@ -592,9 +596,8 @@ class MomentCurvatureResults:
         m_max = max(self.m_xy)
 
         if moment > m_max or moment < m_min:
-            raise ValueError(
-                "moment must be within the bounds of the moment-curvature results."
-            )
+            msg = "moment must be within the bounds of the moment-curvature results."
+            raise ValueError(msg)
 
         f_kappa = interp1d(
             x=self.m_xy,
@@ -720,7 +723,8 @@ class MomentInteractionResults:
             elif moment == "m_xy":
                 m_list.append(result.m_xy)
             else:
-                raise ValueError(f"{moment} not an acceptable value for moment.")
+                msg = f"{moment} not an acceptable value for moment."
+                raise ValueError(msg)
 
         return n_list, m_list
 
@@ -754,7 +758,9 @@ class MomentInteractionResults:
             fig,
             ax,
         ):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
 
             # get results
             n_list, m_list = self.get_results_lists(moment=moment)
@@ -790,14 +796,15 @@ class MomentInteractionResults:
                                 norm_angle = np.arctan2(-1 / grad_pt, 1)
                             x_t = np.cos(norm_angle) * 20
                             y_t = np.sin(norm_angle) * 20
+                            style = "angle,angleA=0,angleB=90,rad=10"
                             annotate_dict = {
                                 "xytext": (x_t, y_t),
                                 "textcoords": "offset points",
-                                "arrowprops": dict(
-                                    arrowstyle="->",
-                                    connectionstyle="angle,angleA=0,angleB=90,rad=10",
-                                ),
-                                "bbox": dict(boxstyle="round", fc="0.8"),
+                                "arrowprops": {
+                                    "arrowstyle": "->",
+                                    "connectionstyle": style,
+                                },
+                                "bbox": {"boxstyle": "round", "fc": 0.8},
                             }
                         else:
                             annotate_dict = {}
@@ -843,7 +850,10 @@ class MomentInteractionResults:
             fig,
             ax,
         ):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
+
             idx = 0
 
             # for each M-N curve
@@ -950,7 +960,9 @@ class BiaxialBendingResults:
         with plotting_context(
             title=f"Biaxial Bending Diagram, $N = {self.n:.3e}$", **kwargs
         ) as (fig, ax):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
 
             # scale results
             m_x = np.array(m_x_list) * m_scale
@@ -987,7 +999,10 @@ class BiaxialBendingResults:
         """
         # create plot and setup the plot
         with plotting_context(title="Biaxial Bending Diagram", **kwargs) as (fig, ax):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
+
             idx = 0
 
             # generate default labels
@@ -1076,11 +1091,7 @@ class BiaxialBendingResults:
             True, if combination of bendings moments is within the diagram
         """
         # create a polygon from points on diagram
-        poly_points = []
-
-        for ult_res in self.results:
-            poly_points.append((ult_res.m_x, ult_res.m_y))
-
+        poly_points = [(ult_res.m_x, ult_res.m_y) for ult_res in self.results]
         poly = Polygon(poly_points)
         point = Point(m_x, m_y)
 
@@ -1166,8 +1177,9 @@ class StressResult:
                 kwargs, nrows=1, ncols=3, gridspec_kw={"width_ratios": [1, 0.08, 0.08]}
             ),
         ) as (fig, ax):
-            assert fig
-            assert ax
+            if ax is None or fig is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
 
             # plot background
             self.concrete_section.plot_section(
@@ -1175,8 +1187,8 @@ class StressResult:
             )
 
             # set up the colormaps
-            cmap_conc = matplotlib.colormaps.get_cmap(cmap=conc_cmap)
-            cmap_reinf = matplotlib.colormaps.get_cmap(cmap=reinf_cmap)
+            cmap_conc = mpl.colormaps.get_cmap(cmap=conc_cmap)
+            cmap_reinf = mpl.colormaps.get_cmap(cmap=reinf_cmap)
 
             # determine minimum and maximum stress values for the contour list
             # add tolerance for plotting stress blocks
@@ -1267,13 +1279,11 @@ class StressResult:
                         # set zero stress for neutral axis contour
                         zero_level = 0
 
-                        if min(sig) > 0:
-                            if min(sig) < 1e-3:
-                                zero_level = min(sig) + 1e-12
+                        if min(sig) > 0 and min(sig) < 1e-3:
+                            zero_level = min(sig) + 1e-12
 
-                        if max(sig) < 0:
-                            if max(sig) > -1e-3:
-                                zero_level = max(sig) - 1e-12
+                        if max(sig) < 0 and max(sig) > -1e-3:
+                            zero_level = max(sig) - 1e-12
 
                         if min(sig) == 0:
                             zero_level = 1e-12
@@ -1315,13 +1325,11 @@ class StressResult:
                         # set zero stress for neutral axis contour
                         zero_level = 0
 
-                        if min(sig) > 0:
-                            if min(sig) < 1e-3:
-                                zero_level = min(sig) + 1e-12
+                        if min(sig) > 0 and min(sig) < 1e-3:
+                            zero_level = min(sig) + 1e-12
 
-                        if max(sig) < 0:
-                            if max(sig) > -1e-3:
-                                zero_level = max(sig) - 1e-12
+                        if max(sig) < 0 and max(sig) > -1e-3:
+                            zero_level = max(sig) - 1e-12
 
                         if min(sig) == 0:
                             zero_level = 1e-12
@@ -1373,10 +1381,7 @@ class StressResult:
                 cax=fig.axes[1],
             )
 
-            if trictr_reinf:
-                mappable = trictr_reinf
-            else:
-                mappable = patch
+            mappable = trictr_reinf if trictr_reinf else patch
 
             fig.colorbar(
                 mappable,

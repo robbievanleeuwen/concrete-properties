@@ -19,7 +19,6 @@ from concreteproperties.material import Concrete, SteelStrand
 from concreteproperties.post import plotting_context
 from concreteproperties.pre import CPGeom, CPGeomConcrete
 
-
 if TYPE_CHECKING:
     import matplotlib.axes
 
@@ -58,7 +57,7 @@ class ConcreteSection:
         if overlapped_regions:
             msg = "The provided geometry contains overlapping regions, results may be"
             msg += " incorrect."
-            warnings.warn(msg)
+            warnings.warn(msg, stacklevel=1)
 
         # sort into concrete, reinforcement (meshed and lumped) and strand geometries
         self.all_geometries: list[CPGeomConcrete | CPGeom] = []
@@ -77,9 +76,9 @@ class ConcreteSection:
             elif isinstance(geom.material, SteelStrand):
                 # SteelStrand materials can only be in PrestressedSection
                 if type(self) is ConcreteSection:
-                    raise ValueError(
-                        "SteelStrand material detected. Use PrestressedSection instead."
-                    )
+                    msg = "SteelStrand material detected. Use PrestressedSection "
+                    msg += "instead."
+                    raise ValueError(msg)
                 else:
                     cp_geom = CPGeom(geom=geom.geom, material=geom.material)
                     self.strand_geometries.append(cp_geom)
@@ -261,9 +260,8 @@ class ConcreteSection:
         conc_ult_strain = 0
 
         for idx, conc_geom in enumerate(self.concrete_geometries):
-            ult_strain = (
-                conc_geom.material.ultimate_stress_strain_profile.get_ultimate_compressive_strain()
-            )
+            conc_ult_ssp = conc_geom.material.ultimate_stress_strain_profile
+            ult_strain = conc_ult_ssp.get_ultimate_compressive_strain()
             if idx == 0:
                 conc_ult_strain = ult_strain
             else:
@@ -392,11 +390,8 @@ class ConcreteSection:
             m_c_geom = (f_t / conc_geom.material.elastic_modulus) * (e_iuu / d)
 
             # if we are the first geometry, initialise cracking moment
-            if idx == 0:
-                m_c = m_c_geom
             # otherwise take smaller cracking moment
-            else:
-                m_c = min(m_c, m_c_geom)
+            m_c = m_c_geom if idx == 0 else min(m_c, m_c_geom)
 
         return m_c
 
@@ -427,9 +422,11 @@ class ConcreteSection:
 
         # validate d_nc input
         if d_nc <= 0:
-            raise ValueError("d_nc must be positive.")
+            msg = "d_nc must be positive."
+            raise ValueError(msg)
         elif d_nc > d_t:
-            raise ValueError("d_nc must lie within the section, i.e. d_nc <= d_t")
+            msg = "d_nc must lie within the section, i.e. d_nc <= d_t"
+            raise ValueError(msg)
 
         # find point on neutral axis by shifting by d_nc
         point_na = utils.point_on_neutral_axis(
@@ -624,12 +621,12 @@ class ConcreteSection:
 
         # function that performs moment curvature analysis
         def mcurve(kappa_inc=kappa_inc, progress=None):
-            iter = 0
+            iteration = 0
             kappa = kappa0
 
             while not moment_curvature._failure:
                 # calculate adaptive step size for curvature
-                if iter > 2:
+                if iteration > 2:
                     moment_diff = (
                         abs(moment_curvature.kappa[-1] - moment_curvature.kappa[-2])
                         / moment_curvature.kappa[-1]
@@ -644,7 +641,9 @@ class ConcreteSection:
                         kappa_inc = kappa_inc_max
 
                 # update curvature
-                kappa = kappa0 if iter == 0 else moment_curvature.kappa[-1] + kappa_inc
+                kappa = (
+                    kappa0 if iteration == 0 else moment_curvature.kappa[-1] + kappa_inc
+                )
 
                 # find neutral axis that gives convergence of the axial force
                 try:
@@ -680,7 +679,7 @@ class ConcreteSection:
                     moment_curvature.convergence.append(
                         moment_curvature._failure_convergence
                     )
-                    iter += 1
+                    iteration += 1
 
             # find kappa corresponding to failure strain:
             # curvature before and after failure
@@ -1016,7 +1015,8 @@ class ConcreteSection:
 
         # validate d_n input
         if d_n <= 0:
-            raise ValueError("d_n must be positive.")
+            msg = "d_n must be positive."
+            raise ValueError(msg)
 
         # find point on neutral axis by shifting by d_n
         if isinf(d_n):
@@ -1205,25 +1205,21 @@ class ConcreteSection:
 
         # validate limits length
         if len(limits) != 2:
-            raise ValueError("Length of limits must equal 2.")
+            msg = "Length of limits must equal 2."
+            raise ValueError(msg)
 
         # get neutral axis depths for limits
-        limits_dn = []
-
-        for cp in limits:
-            limits_dn.append(self.decode_d_n(theta=theta, cp=cp, d_t=d_t))
+        limits_dn = [self.decode_d_n(theta=theta, cp=cp, d_t=d_t) for cp in limits]
 
         # get neutral axis depths for additional control points
-        add_cp_dn = []
-
-        for cp in control_points:
-            add_cp_dn.append(self.decode_d_n(theta=theta, cp=cp, d_t=d_t))
+        add_cp_dn = [
+            self.decode_d_n(theta=theta, cp=cp, d_t=d_t) for cp in control_points
+        ]
 
         # validate labels length
         if labels and len(labels) != 1 and len(labels) != 2 + len(control_points):
-            raise ValueError(
-                "Length of labels must be 1 or 2 + number of control points"
-            )
+            msg = "Length of labels must be 1 or 2 + number of control points"
+            raise ValueError(msg)
 
         # if one label is provided, generate a list
         if labels and len(labels) == 1:
@@ -1252,15 +1248,8 @@ class ConcreteSection:
         else:
             # check for infinity in limits - this will not work with linspace
             # for sake of distributing neutral axes let kappa0 ~= 2 * D
-            if limits_dn[0] == inf:
-                start = 2 * d_t
-            else:
-                start = limits_dn[0]
-
-            if limits_dn[1] == inf:
-                stop = 2 * d_t
-            else:
-                stop = limits_dn[1]
+            start = 2 * d_t if limits_dn[0] == inf else limits_dn[0]
+            stop = 2 * d_t if limits_dn[1] == inf else limits_dn[1]
 
             # generate list of neutral axes
             analysis_list = np.linspace(
@@ -1663,10 +1652,7 @@ class ConcreteSection:
             elif c > 0:
                 sign = 1
         else:
-            if c < 0:
-                sign = 1
-            else:
-                sign = -1
+            sign = 1 if c < 0 else -1
 
         m_x = sign * np.sqrt(m * m / (1 + 1 / (c * c)))
         m_y = m_x / c
@@ -2094,9 +2080,8 @@ class ConcreteSection:
         if cp[0] == "D":
             # check D
             if cp[1] <= 0:
-                raise ValueError(
-                    f"Provided section depth (D) {cp[1]:.3f} must be greater than 0."
-                )
+                msg = f"Provided section depth (D) {cp[1]:.3f} must be greater than 0."
+                raise ValueError(msg)
 
             return cp[1] * d_t
 
@@ -2104,7 +2089,8 @@ class ConcreteSection:
         elif cp[0] == "d_n":
             # check d_n
             if cp[1] <= 0:
-                raise ValueError(f"Provided d_n {cp[1]:.3f} must be greater than zero.")
+                msg = f"Provided d_n {cp[1]:.3f} must be greater than zero."
+                raise ValueError(msg)
 
             return cp[1]
 
@@ -2151,7 +2137,9 @@ class ConcreteSection:
             Matplotlib axes object
         """
         with plotting_context(title=title, aspect=True, **kwargs) as (fig, ax):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
 
             # create list of already plotted materials
             plotted_materials = []
@@ -2175,11 +2163,7 @@ class ConcreteSection:
 
                 # plot the points and facets
                 for f in meshed_geom.facets:
-                    if background:
-                        fmt = "k-"
-                    else:
-                        fmt = "ko-"
-
+                    fmt = "k-" if background else "ko-"
                     ax.plot(
                         [meshed_geom.points[f[0]][0], meshed_geom.points[f[1]][0]],
                         [meshed_geom.points[f[0]][1], meshed_geom.points[f[1]][1]],

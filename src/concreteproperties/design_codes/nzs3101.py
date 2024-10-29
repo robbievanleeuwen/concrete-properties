@@ -15,7 +15,6 @@ import concreteproperties.utils as utils
 from concreteproperties.design_codes.design_code import DesignCode
 from concreteproperties.material import Concrete, SteelBar
 
-
 if TYPE_CHECKING:
     from concreteproperties.concrete_section import ConcreteSection
 
@@ -107,23 +106,21 @@ class NZS3101(DesignCode):
 
         # check to make sure there are no meshed reinforcement regions
         if self.concrete_section.reinf_geometries_meshed:
-            raise ValueError(
-                f"Meshed reinforcement is not supported in the {self.analysis_code} "
-                f"code"
-            )
+            msg = f"Meshed reinforcement is not supported in the {self.analysis_code} "
+            msg += "code"
+            raise ValueError(msg)
 
         # check section type is valid
-        if not self.section_type.lower() in [
+        if self.section_type.lower() not in [
             "column",
             "wall",
             "wall_sr_s",
             "wall_sr_m",
         ]:
-            raise ValueError(
-                f"The specified section type of *{self.section_type}* should be either "
-                f"'column', 'wall', 'wall_sr_s' or 'wall_sr_m' for a "
-                f"{self.analysis_code} code analysis"
-            )
+            msg = f"The specified section type of *{self.section_type}* should be "
+            msg += "either 'column', 'wall', 'wall_sr_s' or 'wall_sr_m' for a "
+            msg += f"{self.analysis_code} code analysis"
+            raise ValueError(msg)
 
     def assign_analysis_section(
         self,
@@ -158,11 +155,10 @@ class NZS3101(DesignCode):
             analysis_section = self.prob_os_concrete_section
         else:
             # ensure analysis_type is bound
-            raise ValueError(
-                f"The specified analysis type of *{analysis_type}* should be either "
-                f"'nom_chk', 'cpe_chk', 'os_chk', 'prob_chk' or 'prob_os_chk'"
-                f"for a {self.analysis_code} code analysis"
-            )
+            msg = f"The specified analysis type of *{analysis_type}* should be either "
+            msg += "'nom_chk', 'cpe_chk', 'os_chk', 'prob_chk' or 'prob_os_chk'"
+            msg += f"for a {self.analysis_code} code analysis"
+            raise ValueError(msg)
 
         return analysis_section
 
@@ -220,11 +216,10 @@ class NZS3101(DesignCode):
             ValueError: If density is outside of the limits within NZS3101:2006 CL 5.2.2
         """
         if not (low_limit <= density <= high_limit):
-            raise ValueError(
-                f"The specified concrete density of {density}kg/m^3 is not within the "
-                f"bounds of {low_limit}kg/m^3 & {high_limit}kg/m^3 for the "
-                f"{self.analysis_code} Elastic Modulus eqn to be applicable"
-            )
+            msg = f"The specified concrete density of {density}kg/m^3 is not within "
+            msg += f"the bounds of {low_limit}kg/m^3 & {high_limit}kg/m^3 for the "
+            msg += f"{self.analysis_code} Elastic Modulus eqn to be applicable"
+            raise ValueError(msg)
 
     def alpha_1(
         self,
@@ -450,9 +445,8 @@ class NZS3101(DesignCode):
         for conc_geom in self.concrete_section.concrete_geometries:
             # calculate net concrete area & compressive strength
             concrete_area = conc_geom.calculate_area()
-            compressive_strength = (
-                conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
-            )
+            conc_ult_ssp = conc_geom.material.ultimate_stress_strain_profile
+            compressive_strength = conc_ult_ssp.get_compressive_strength()
 
             # scale concrete compressive strength for overstrength if specified
             if prob_design:
@@ -480,11 +474,10 @@ class NZS3101(DesignCode):
                 force += concrete_area * compressive_strength
             else:
                 # ensure section_type is bound
-                raise ValueError(
-                    f"The specified section type of *{self.section_type}* should be "
-                    f"either 'column', 'wall', 'wall_sr_s' or 'wall_sr_m' for a "
-                    f"{self.analysis_code} code analysis"
-                )
+                msg = f"The specified section type of *{self.section_type}* should be "
+                msg += "either 'column', 'wall', 'wall_sr_s' or 'wall_sr_m' for a "
+                msg += f"{self.analysis_code} code analysis"
+                raise ValueError(msg)
 
         return force
 
@@ -524,7 +517,8 @@ class NZS3101(DesignCode):
         for steel_geom in self.concrete_section.reinf_geometries_lumped:
             # check all materials are SteelBarNZ, else following code will fail
             if not isinstance(steel_geom.material, self.SteelBarNZ):
-                raise ValueError("Material must be a SteelBarNZ")
+                msg = "Material must be a SteelBarNZ"
+                raise ValueError(msg)
 
             # calculate reinforcement area & yield strength & steel_grade
             steel_area = steel_geom.calculate_area()
@@ -634,11 +628,7 @@ class NZS3101(DesignCode):
         if self.section_type.lower() in ["column"]:
             # Calculate maximum axial compression strength for a column member
             n_n_max = self.steel_capacity(os_design, prob_design) + conc_capacity
-
-            if cpe_design:
-                max_comp = 0.7 * n_n_max
-            else:
-                max_comp = 0.85 * n_n_max
+            max_comp = 0.7 * n_n_max if cpe_design else 0.85 * n_n_max
 
         elif self.section_type.lower() in ["wall"]:
             # Calculate maximum axial compression strength for a wall member
@@ -725,17 +715,15 @@ class NZS3101(DesignCode):
 
         # compare to axial load
         if n_design < phi * max_ten:
-            raise ValueError(
-                f"The specified axial load of {n_design * n_scale:.2f} kN, is less "
-                f"than the tension capacity of the concrete section, phiN_t = "
-                f"{phi * max_ten * n_scale:.2f} kN"
-            )
+            msg = f"The specified axial load of {n_design * n_scale:.2f} kN, is less "
+            msg += "than the tension capacity of the concrete section, phiN_t = "
+            msg += f"{phi * max_ten * n_scale:.2f} kN"
+            raise ValueError(msg)
         elif n_design > phi * max_comp:
-            raise ValueError(
-                f"The specified axial load of {n_design * n_scale:.2f} kN, is greater "
-                f"than the compression capacity of the concrete section, phiN_c = "
-                f"{phi * max_comp * n_scale:.2f} kN"
-            )
+            msg = f"The specified axial load of {n_design * n_scale:.2f} kN, is "
+            msg += "greaterthan the compression capacity of the concrete section, "
+            msg += f"phiN_c = {phi * max_comp * n_scale:.2f} kN"
+            raise ValueError(msg)
 
     def check_f_y_limit(self) -> None:
         """Checks the reinforcement strenghts are within limits.
@@ -764,21 +752,20 @@ class NZS3101(DesignCode):
         for steel_geom in self.concrete_section.reinf_geometries_lumped:
             # check all materials are SteelBarNZ, else following code will fail
             if not isinstance(steel_geom.material, self.SteelBarNZ):
-                raise ValueError("Material must be a SteelBarNZ")
+                msg = "Material must be a SteelBarNZ"
+                raise ValueError(msg)
 
             # calculate defined steel grade & yield strength
             steel_grade = steel_geom.material.steel_grade
             yield_strength = (
                 steel_geom.material.stress_strain_profile.get_yield_strength()
             )
-            if steel_grade not in prob_properties:
-                if yield_strength > f_y_upper:
-                    raise ValueError(
-                        f"Steel yield strength for *{steel_geom.material.name}* "
-                        f"material must be less than {f_y_upper} MPa for the "
-                        f"{self.analysis_code} code, {yield_strength:.0f} MPa was "
-                        f"specified for this material"
-                    )
+            if steel_grade not in prob_properties and yield_strength > f_y_upper:
+                msg = f"Steel yield strength for *{steel_geom.material.name}* "
+                msg += f"material must be less than {f_y_upper} MPa for the "
+                msg += f"{self.analysis_code} code, {yield_strength:.0f} MPa was "
+                msg += "specified for this material"
+                raise ValueError(msg)
 
     def check_f_c_limits(
         self,
@@ -817,25 +804,22 @@ class NZS3101(DesignCode):
         elif pphr_class.upper() in ["LDPR", "DPR"]:
             f_c_upper = 70
         else:
-            raise ValueError(
-                f"The specified PPHR class specified ({pphr_class}) should be NDPR, "
-                f"LDPR or DPR for the {self.analysis_code} code, {pphr_class} was "
-                f"specified"
-            )
+            msg = f"The specified PPHR class specified ({pphr_class}) should be NDPR, "
+            msg += f"LDPR or DPR for the {self.analysis_code} code, {pphr_class} was "
+            msg += "specified"
+            raise ValueError(msg)
 
         # loop through all concrete geometries
         for conc_geom in self.concrete_section.concrete_geometries:
             # calculate compressive strength
-            compressive_strength = (
-                conc_geom.material.ultimate_stress_strain_profile.get_compressive_strength()
-            )
+            conc_ult_prof = conc_geom.material.ultimate_stress_strain_profile
+            compressive_strength = conc_ult_prof.get_compressive_strength()
             if not (f_c_lower <= compressive_strength <= f_c_upper):
-                raise ValueError(
-                    f"Concrete compressive strength for *{conc_geom.material.name}* "
-                    f"material must be between {f_c_lower} MPa & {f_c_upper} MPa for a "
-                    f"{pphr_class} PPHR for the {self.analysis_code} code, "
-                    f"{compressive_strength:.0f} MPa was specified for this material"
-                )
+                msg = f"Concrete compressive strength for *{conc_geom.material.name}* "
+                msg += f"material must be between {f_c_lower} MPa & {f_c_upper} MPa "
+                msg += f"for a {pphr_class} PPHR for the {self.analysis_code} code, "
+                msg += f"{compressive_strength:.0f} MPa was specified for this material"
+                raise ValueError(msg)
 
     def create_concrete_material(
         self,
@@ -1157,20 +1141,19 @@ class NZS3101(DesignCode):
         ) = self.predefined_steel_materials()
 
         # Create list of all predefined steel materials
-        pre_def_properties = [key.lower() for key in properties_dict.keys()]
+        pre_def_properties = [key.lower() for key in properties_dict]
 
         if steel_grade is None or steel_grade.lower() not in pre_def_properties:
             # check if all user defined parameters are provided
             if yield_strength is None or fracture_strain is None or phi_os is None:
-                raise RuntimeError(
-                    f"A predefined steel grade has not been provided, to create a user "
-                    f"defined steel material a yield strength, fracture strain and "
-                    f"overstrength factor are required to be specified.\n   Valid "
-                    f"predefined Characteristic strength based steel grades are "
-                    f"{nom_properties}, refer AS/NZS4671\n   Valid predefined Probable "
-                    f"strength based steel grades are {prob_properties}, refer NZSEE "
-                    f"C5 assessment guidelines"
-                )
+                msg = "A predefined steel grade has not been provided, to create a "
+                msg += "user defined steel material a yield strength, fracture strain "
+                msg += "and overstrength factor are required to be specified.\nValid "
+                msg += "predefined Characteristic strength based steel grades are "
+                msg += f"{nom_properties}, refer AS/NZS4671\nValid predefined Probable "
+                msg += f"strength based steel grades are {prob_properties}, refer "
+                msg += "NZSEE C5 assessment guidelines"
+                raise RuntimeError(msg)
         elif steel_grade.lower() in pre_def_properties:
             # initiate predefined properties unless there is a user defined property
             if yield_strength is None:
@@ -1356,10 +1339,7 @@ class NZS3101(DesignCode):
         """
         # determine analysis parameters
         if analysis_type.lower() in ["nom_chk"]:
-            if self.section_type.lower() in ["wall_sr_s"]:
-                phi = 0.7
-            else:
-                phi = 0.85
+            phi = 0.7 if self.section_type.lower() in ["wall_sr_s"] else 0.85
             cpe_design = False
             os_design = False
             prob_design = False
@@ -1384,11 +1364,10 @@ class NZS3101(DesignCode):
             os_design = True
             prob_design = True
         else:
-            raise ValueError(
-                f"The specified analysis type of *{analysis_type}* should be either "
-                f"'nom_chk', 'cpe_chk', 'os_chk', 'prob_chk' or 'prob_os_chk'"
-                f"for a {self.analysis_code} code analysis"
-            )
+            msg = f"The specified analysis type of *{analysis_type}* should be either "
+            msg += "'nom_chk', 'cpe_chk', 'os_chk', 'prob_chk' or 'prob_os_chk'"
+            msg += f"for a {self.analysis_code} code analysis"
+            raise ValueError(msg)
 
         # check that if using a predefined probable strength based steel grade
         # that only a probable strength check is being undertaken
@@ -1396,27 +1375,27 @@ class NZS3101(DesignCode):
         for steel_geom in self.concrete_section.reinf_geometries_lumped:
             # check all materials are SteelBarNZ, else following code will fail
             if not isinstance(steel_geom.material, self.SteelBarNZ):
-                raise ValueError("Material must be a SteelBarNZ")
+                msg = "Material must be a SteelBarNZ"
+                raise ValueError(msg)
 
             if (
                 analysis_type.lower() in ["nom_chk", "cpe_chk", "os_chk"]
                 and steel_geom.material.steel_grade.lower() in prob_properties
             ):
-                raise RuntimeError(
-                    f"*{analysis_type}* analysis is not able to be undertaken on the "
-                    f"provided concrete section as it contains predefined steel "
-                    f"materials based on probable yield strengths and will give "
-                    f"erroneous results for a design to {self.analysis_code} as "
-                    f"material is not based on characteristic yield strengths. Define "
-                    f"a user defined or predefined steel material based on "
-                    f"characteristic yield properties to undertake a "
-                    f"*{analysis_type}* concrete section analysis.\n   Note "
-                    f"predefined steel grades based on characteristic strength based "
-                    f"materials are {nom_properties}\n   Note analysis types "
-                    f"consistent with a probable strength based material are "
-                    f"['prob_chk', 'prob_os_chk'], undertaken in accordance with NZSEE "
-                    f"C5 assessment guidelines"
-                )
+                msg = f"*{analysis_type}* analysis is not able to be undertaken on the "
+                msg += "provided concrete section as it contains predefined steel "
+                msg += "materials based on probable yield strengths and will give "
+                msg += f"erroneous results for a design to {self.analysis_code} as "
+                msg += "material is not based on characteristic yield strengths. "
+                msg += "Define a user defined or predefined steel material based on "
+                msg += "characteristic yield properties to undertake a "
+                msg += f"*{analysis_type}* concrete section analysis.\n   Note "
+                msg += "predefined steel grades based on characteristic strength "
+                msg += f"based materials are {nom_properties}\n   Note analysis types "
+                msg += "consistent with a probable strength based material are "
+                msg += "['prob_chk', 'prob_os_chk'], undertaken in accordance with "
+                msg += "NZSEE C5 assessment guidelines"
+                raise RuntimeError(msg)
 
         return phi, cpe_design, os_design, prob_design
 
@@ -1478,7 +1457,8 @@ class NZS3101(DesignCode):
         for steel_geom in os_concrete_section.reinf_geometries_lumped:
             # check all materials are SteelBarNZ, else following code will fail
             if not isinstance(steel_geom.material, self.SteelBarNZ):
-                raise ValueError("Material must be a SteelBarNZ")
+                msg = "Material must be a SteelBarNZ"
+                raise ValueError(msg)
 
             # retrieve previous nominal/characteristic material properties
             prev_steel_grade = steel_geom.material.steel_grade
@@ -1581,7 +1561,8 @@ class NZS3101(DesignCode):
         for steel_geom in prob_concrete_section.reinf_geometries_lumped:
             # check all materials are SteelBarNZ, else following code will fail
             if not isinstance(steel_geom.material, self.SteelBarNZ):
-                raise ValueError("Material must be a SteelBarNZ")
+                msg = "Material must be a SteelBarNZ"
+                raise ValueError(msg)
 
             # retrieve previous nominal/characteristic material properties
             prev_steel_grade = steel_geom.material.steel_grade

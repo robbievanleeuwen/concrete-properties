@@ -11,7 +11,6 @@ from rich.text import Text
 
 from concreteproperties.pre import CPGeomConcrete
 
-
 if TYPE_CHECKING:
     from sectionproperties.pre.geometry import CompoundGeometry
 
@@ -370,7 +369,8 @@ def gauss_points(n: float) -> list[list[float]]:
             [1.0 / 6, 1.0 / 6, 2.0 / 3],
         ]
     else:
-        raise ValueError(f"{n} gauss points not implemented.")
+        msg = f"{n} gauss points not implemented."
+        raise ValueError(msg)
 
 
 def shape_function(

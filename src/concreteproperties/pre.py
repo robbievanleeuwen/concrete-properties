@@ -16,7 +16,6 @@ from shapely.ops import split
 
 from concreteproperties.material import Concrete
 
-
 if TYPE_CHECKING:
     import matplotlib.axes
     from sectionproperties.pre.geometry import CompoundGeometry
@@ -77,9 +76,7 @@ class CPGeom:
         else:
             rounded_exterior = np.array([None])
 
-        rounded_interiors = []
-        for interior in geometry.interiors:
-            rounded_interiors.append(np.round(interior.coords, tol))
+        rounded_interiors = [np.round(intr.coords, tol) for intr in geometry.interiors]
 
         if not rounded_exterior.any():
             return Polygon()

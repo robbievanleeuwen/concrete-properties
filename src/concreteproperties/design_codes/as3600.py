@@ -17,7 +17,6 @@ from concreteproperties.design_codes.design_code import DesignCode
 from concreteproperties.material import Concrete, SteelBar
 from concreteproperties.utils import AnalysisError, create_known_progress
 
-
 if TYPE_CHECKING:
     from concreteproperties.concrete_section import ConcreteSection
 
@@ -54,9 +53,8 @@ class AS3600(DesignCode):
 
         # check to make sure there are no meshed reinforcement regions
         if self.concrete_section.reinf_geometries_meshed:
-            raise ValueError(
-                "Meshed reinforcement is not supported in this design code."
-            )
+            msg = "Meshed reinforcement is not supported in this design code."
+            raise ValueError(msg)
 
         # determine reinforcement class
         self.reinforcement_class = "N"
@@ -110,7 +108,8 @@ class AS3600(DesignCode):
             Concrete material object
         """
         if compressive_strength < 20 or compressive_strength > 100:
-            raise ValueError("compressive_strength must be between 20 MPa and 100 MPa.")
+            msg = "compressive_strength must be between 20 MPa and 100 MPa."
+            raise ValueError(msg)
 
         # create concrete name
         name = f"{compressive_strength:.0f} MPa Concrete (AS 3600:2018)"
@@ -181,7 +180,8 @@ class AS3600(DesignCode):
         elif ductility_class == "L":
             fracture_strain = 0.015
         else:
-            raise ValueError("ductility_class must be N or L.")
+            msg = "ductility_class must be N or L."
+            raise ValueError(msg)
 
         return SteelBar(
             name=f"{yield_strength:.0f} MPa Steel (AS 3600:2018)",
@@ -406,13 +406,12 @@ class AS3600(DesignCode):
         # DETERMINE where we are on interaction diagram
         # if we are above the squash load or tensile load
         if n_design > n_squash:
-            raise AnalysisError(
-                f"N = {n_design} is greater than the squash load, phiNc = {n_squash}."
-            )
+            msg = f"N = {n_design} is greater than the squash load, phiNc = {n_squash}."
+            raise AnalysisError(msg)
         elif n_design < n_tensile:
-            raise AnalysisError(
-                f"N = {n_design} is greater than the tensile load, phiNt = {n_tensile}"
-            )
+            msg = f"N = {n_design} is greater than the tensile load, phiNt = "
+            msg += f"{n_tensile}"
+            raise AnalysisError(msg)
         # compression linear interpolation
         elif n_design > n_decomp:
             factor = (n_design - n_decomp) / (n_squash - n_decomp)

@@ -14,7 +14,6 @@ import concreteproperties.utils as utils
 from concreteproperties.material import Concrete
 from concreteproperties.post import plotting_context
 
-
 if TYPE_CHECKING:
     import matplotlib.axes
 
@@ -413,7 +412,9 @@ class AnalysisSection:
             Matplotlib axes object
         """
         with plotting_context(title=title, aspect=True, **kwargs) as (fig, ax):
-            assert ax
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
 
             colour_array = []
             c = []  # Indices of elements for mapping colours

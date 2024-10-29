@@ -72,12 +72,12 @@ def test_nzs3101_assign_concrete_section_valueerror(section_type):
     design_code = NZS3101()
     conc_sec = create_dummy_section(design_code)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="The specified section type of"):
         design_code.assign_concrete_section(conc_sec, section_type)
 
 
 @pytest.mark.parametrize(
-    "compressive_strength, rel_tol, calc_value",
+    ("density", "rel_tol", "calc_value"),
     [
         (20, 0, 0.85),
         (36, 0, 0.85),
@@ -99,7 +99,7 @@ def test_nzs3101_alpha_1(compressive_strength, rel_tol, calc_value):
 
 
 @pytest.mark.parametrize(
-    "compressive_strength, rel_tol, calc_value",
+    ("density", "rel_tol", "calc_value"),
     [
         (20, 0, 0.85),
         (30, 0, 0.85),
@@ -121,7 +121,7 @@ def test_nzs3101_beta_1(compressive_strength, rel_tol, calc_value):
 
 
 @pytest.mark.parametrize(
-    "density, rel_tol, calc_value",
+    ("density", "rel_tol", "calc_value"),
     [
         (2800, 0, 1),
         (2400, 0, 1),
@@ -137,7 +137,7 @@ def test_nzs3101_lamda(density, rel_tol, calc_value):
 
 
 @pytest.mark.parametrize(
-    "compressive_strength, density, prob_design, calc_value",
+    ("compressive_strength", "density", "prob_design", "calc_value"),
     [
         (25, 2800, True, 3.36805),
         (35, 2400, False, 2.24811),
@@ -163,7 +163,7 @@ def test_nzs3101_concrete_tensile_strength(
 
 
 @pytest.mark.parametrize(
-    "compressive_strength, density, calc_value",
+    ("compressive_strength", "density", "calc_value"),
     [
         (25, 2800, 3.00000),
         (35, 2400, 3.54965),
@@ -201,7 +201,7 @@ def test_nzs3101_prob_compressive_strength(compressive_strength):
 
 
 @pytest.mark.parametrize(
-    "compressive_strength, density, rel_tol, calc_value",
+    ("compressive_strength", "density", "rel_tol", "calc_value"),
     [
         (30, 2300, 0.01, 25742.960),
         (50, 1800, 0.01, 23009.112),
@@ -223,14 +223,14 @@ def test_nzs3101_e_conc_valid(compressive_strength, density, rel_tol, calc_value
 def test_nzs3101_e_conc_valueerror():
     """Tests elastic modulus ValueError."""
     design_code = NZS3101()
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="The specified concrete density of"):
         design_code.e_conc(20, 1799)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="The specified concrete density of"):
         design_code.e_conc(20, 2801)
 
 
 @pytest.mark.parametrize(
-    "analysis_type, section_type, calc_value",
+    ("analysis_type", "section_type", "calc_value"),
     [
         ("nom_chk", "column", (0.85, False, False, False)),
         ("nom_chk", "wall", (0.85, False, False, False)),
@@ -262,7 +262,8 @@ def test_nzs3101_capacity_reduction_factor_valueerror(analysis_type):
     """Tests capacity reduction factor ValueError."""
     design_code = NZS3101()
     create_dummy_section(design_code)
-    with pytest.raises(ValueError):
+
+    with pytest.raises(ValueError, match="The specified analysis type of"):
         design_code.capacity_reduction_factor(analysis_type)
 
 
@@ -292,12 +293,13 @@ def test_nzs3101_assign_analysis_section_valueerror(analysis_type):
     """Tests assign analysis section ValueError."""
     design_code = NZS3101()
     create_dummy_section(design_code)
-    with pytest.raises(ValueError):
+
+    with pytest.raises(ValueError, match="The specified analysis type of"):
         design_code.assign_analysis_section(analysis_type)
 
 
 @pytest.mark.parametrize(
-    "pphr_class, compressive_strength",
+    ("pphr_class", "compressive_strength"),
     [
         ("this_is_not_a_valid_pphr_class", 20),
         ("NDPR", 19),
@@ -317,12 +319,17 @@ def test_nzs3101_check_f_c_limits_valueerror(pphr_class, compressive_strength):
         conc_geom.material.ultimate_stress_strain_profile.__setattr__(
             "compressive_strength", compressive_strength
         )
-    with pytest.raises(ValueError):
-        design_code.check_f_c_limits(pphr_class)
+
+    if pphr_class == "this_is_not_a_valid_pphr_class":
+        with pytest.raises(ValueError, match="The specified PPHR class specified"):
+            design_code.check_f_c_limits(pphr_class)
+    else:
+        with pytest.raises(ValueError, match="material must be between"):
+            design_code.check_f_c_limits(pphr_class)
 
 
 @pytest.mark.parametrize(
-    "pphr_class, compressive_strength",
+    ("pphr_class", "compressive_strength"),
     [
         ("NDPR", 20),
         ("NDPR", 100),
@@ -359,7 +366,7 @@ def test_nzs3101_check_f_y_limit_valueerror(yield_strength):
         steel_geom.material.stress_strain_profile.__setattr__(
             "yield_strength", yield_strength
         )
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="material must be less than"):
         design_code.check_f_y_limit()
 
 
@@ -393,12 +400,18 @@ def test_nzs3101_check_axial_limits_valueerror(n_design):
     """Tests check axial limits ValueError."""
     design_code = NZS3101()
     create_dummy_section(design_code)
-    with pytest.raises(ValueError):
-        design_code.check_axial_limits(n_design, 1)
+
+    if n_design > 0:
+        with pytest.raises(ValueError, match="kN, is greater"):
+            design_code.check_axial_limits(n_design, 1)
+
+    if n_design < 0:
+        with pytest.raises(ValueError, match="kN, is less"):
+            design_code.check_axial_limits(n_design, 1)
 
 
 @pytest.mark.parametrize(
-    "steel_grade, yield_strength, fracture_strain, phi_os",
+    ("steel_grade", "yield_strength", "fracture_strain", "phi_os"),
     [
         ("pre_1945", 280, 0.1, 1.25),
         ("33", 280, 0.1, 1.25),
@@ -439,7 +452,7 @@ def test_nzs3101_create_steel_material_predefined(
 
 
 @pytest.mark.parametrize(
-    "steel_grade, yield_strength, fracture_strain, phi_os",
+    ("steel_grade", "yield_strength", "fracture_strain", "phi_os"),
     [
         (None, 280, 0.1, 1.25),
     ],
@@ -511,12 +524,12 @@ def test_nzs3101_create_steel_material_meshed_valueerror():
 
     concrete_section = ConcreteSection(geom)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Meshed reinforcement is not supported"):
         design_code.assign_concrete_section(concrete_section=concrete_section)
 
 
 @pytest.mark.parametrize(
-    "steel_grade, yield_strength, fracture_strain, phi_os",
+    ("steel_grade", "yield_strength", "fracture_strain", "phi_os"),
     [
         (None, 500, None, None),
         (None, None, 0.1, None),
@@ -542,8 +555,15 @@ def test_nzs3101_create_steel_material_exception(
 
 
 @pytest.mark.parametrize(
-    "compressive_strength, ultimate_strain, density, calc_value_e_conc, "
-    "calc_value_alpha_1, calc_value_beta_1, calc_value_tensile_strength",
+    (
+        "compressive_strength",
+        "ultimate_strain",
+        "density",
+        "calc_value_e_conc",
+        "calc_value_alpha_1",
+        "calc_value_beta_1",
+        "calc_value_tensile_strength",
+    ),
     [
         (20, 0.004, 2400, 22404.639, 0.85, 0.85, 1.69941),
         (30, 0.004, 2200, 24082.454, 0.85, 0.85, 2.08135),
@@ -626,9 +646,18 @@ def test_nzs3101_create_concrete_material(
 
 
 @pytest.mark.parametrize(
-    "yield_strength, fracture_strain, phi_os, compressive_strength, "
-    "ultimate_strain, density, calc_value_e_conc, calc_value_alpha_1, "
-    "calc_value_beta_1, calc_value_tensile_strength",
+    (
+        "yield_strength",
+        "fracture_strain",
+        "phi_os",
+        "compressive_strength",
+        "ultimate_strain",
+        "density",
+        "calc_value_e_conc",
+        "calc_value_alpha_1",
+        "calc_value_beta_1",
+        "calc_value_tensile_strength",
+    ),
     [
         (280, 0.1, 1.25, 20, 0.003, 2400, 29638.552, 0.85, 0.81, 2.24811),
         (280, 0.1, 1.25, 27.5, 0.003, 2200, 28663.854, 0.85, 0.75, 2.47730),
@@ -775,9 +804,17 @@ def test_nzs3101_create_os_section(
 
 
 @pytest.mark.parametrize(
-    "yield_strength, fracture_strain, phi_os, compressive_strength, "
-    "ultimate_strain, calc_value_e_conc, calc_value_alpha_1, calc_value_beta_1, "
-    "calc_value_tensile_strength",
+    (
+        "yield_strength",
+        "fracture_strain",
+        "phi_os",
+        "compressive_strength",
+        "ultimate_strain",
+        "calc_value_e_conc",
+        "calc_value_alpha_1",
+        "calc_value_beta_1",
+        "calc_value_tensile_strength",
+    ),
     [
         (280, 0.1, 1.25, 20, 0.003, 25742.960, 0.85, 0.85, 3.01247),
         (280, 0.1, 1.25, 27.5, 0.003, 30186.297, 0.85, 0.76, 3.53243),
@@ -916,9 +953,17 @@ def test_nzs3101_create_prob_section(
 
 
 @pytest.mark.parametrize(
-    "yield_strength, fracture_strain, phi_os, compressive_strength, "
-    "ultimate_strain, calc_value_e_conc, calc_value_alpha_1, calc_value_beta_1, "
-    "calc_value_tensile_strength",
+    (
+        "yield_strength",
+        "fracture_strain",
+        "phi_os",
+        "compressive_strength",
+        "ultimate_strain",
+        "calc_value_e_conc",
+        "calc_value_alpha_1",
+        "calc_value_beta_1",
+        "calc_value_tensile_strength",
+    ),
     [
         (280, 0.1, 1.25, 20, 0.003, 25742.960, 0.85, 0.85, 3.01247),
         (280, 0.1, 1.25, 27.5, 0.003, 30186.297, 0.85, 0.76, 3.53243),
@@ -1057,7 +1102,7 @@ def test_nzs3101_create_prob_os_section(
 
 
 @pytest.mark.parametrize(
-    "analysis_type, section_type, rel_tol, calc_value",
+    ("analysis_type", "section_type", "rel_tol", "calc_value"),
     [
         ("nom_chk", "column", 0.1, 15549884.85),
         ("cpe_chk", "column", 0.1, 12805787.52),
@@ -1085,12 +1130,7 @@ def test_nzs3101_max_comp_strength(analysis_type, section_type, rel_tol, calc_va
     )
 
 
-@pytest.mark.parametrize(
-    "section_type",
-    [
-        ("this_is_not_a_valid_section_type"),
-    ],
-)
+@pytest.mark.parametrize("section_type", [("this_is_not_a_valid_section_type")])
 def test_nzs3101_max_comp_strength_valueerror(section_type):
     """Tests max compressive strength ValueError."""
     design_code = NZS3101()
@@ -1098,12 +1138,12 @@ def test_nzs3101_max_comp_strength_valueerror(section_type):
     design_code.section_type = section_type
 
     # raises ValueError in concrete_capacity()
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="The specified section type"):
         design_code.max_comp_strength()
 
 
 @pytest.mark.parametrize(
-    "analysis_type, rel_tol, calc_value",
+    ("analysis_type", "rel_tol", "calc_value"),
     [
         ("nom_chk", 0.1, 1570796.33),
         ("cpe_chk", 0.1, 1570796.33),
@@ -1127,7 +1167,15 @@ def test_nzs3101_max_ten_strength(analysis_type, rel_tol, calc_value):
 
 
 @pytest.mark.parametrize(
-    "compressive_strength, steel_grade, pphr_class, analysis_type, theta, phi_mn, d_n",
+    (
+        "compressive_strength",
+        "steel_grade",
+        "pphr_class",
+        "analysis_type",
+        "theta",
+        "phi_mn",
+        "d_n",
+    ),
     [
         (40, "500e", "LDPR", "nom_chk", 0, 732.7142, 77.4952),
         (40, "500e", "NDPR", "cpe_chk", 0, 862.0167, 77.4952),
@@ -1186,8 +1234,16 @@ def test_nzs3101_ultimate_bending_capacity_beam_no_axial(
 
 
 @pytest.mark.parametrize(
-    "n_design, compressive_strength, steel_grade, pphr_class, analysis_type, theta, "
-    "phi_mn, d_n",
+    (
+        "n_design",
+        "compressive_strength",
+        "steel_grade",
+        "pphr_class",
+        "analysis_type",
+        "theta",
+        "phi_mn",
+        "d_n",
+    ),
     [
         (1000, 40, "500e", "LDPR", "nom_chk", 0, 1053.2022, 145.4137),
         (-500, 40, "500e", "NDPR", "cpe_chk", 0, 690.0205, 58.0155),
@@ -1245,8 +1301,17 @@ def test_nzs3101_ultimate_bending_capacity_beam_with_axial(
 
 
 @pytest.mark.parametrize(
-    "compressive_strength, steel_grade, pphr_class, analysis_type, theta, n_design, "
-    "progress_bar, phi_mn, d_n",
+    (
+        "compressive_strength",
+        "steel_grade",
+        "pphr_class",
+        "analysis_type",
+        "theta",
+        "n_design",
+        "progress_bar",
+        "phi_mn",
+        "d_n",
+    ),
     [
         (40, "500e", "LDPR", "nom_chk", 0, 1000, False, 742.4384, 140.6187),
         (40, "500e", "NDPR", "cpe_chk", 0, -500, True, 519.5037, 69.7683),
@@ -1313,8 +1378,16 @@ def test_nzs3101_moment_interaction_diagram(
 
 
 @pytest.mark.parametrize(
-    "compressive_strength, steel_grade, pphr_class, analysis_type, n_design, "
-    "progress_bar, phi_mn, d_n",
+    (
+        "compressive_strength",
+        "steel_grade",
+        "pphr_class",
+        "analysis_type",
+        "n_design",
+        "progress_bar",
+        "phi_mn",
+        "d_n",
+    ),
     [
         (40, "500e", "LDPR", "nom_chk", 1000, True, 742.4384, 140.6187),
         (40, "500e", "NDPR", "cpe_chk", -500, False, 519.5037, 69.7683),

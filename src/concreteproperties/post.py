@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt
 
-
 if TYPE_CHECKING:
     import matplotlib.axes
 
@@ -51,9 +50,7 @@ def plotting_context(
         render = False
 
     if ax is None:
-        if not render:
-            plt.ioff()
-        elif pause:
+        if not render or pause:
             plt.ioff()
         else:
             plt.ion()

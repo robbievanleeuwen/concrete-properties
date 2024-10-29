@@ -15,7 +15,6 @@ from scipy.optimize import brentq
 
 from concreteproperties.post import plotting_context
 
-
 if TYPE_CHECKING:
     import matplotlib.axes
 
@@ -50,11 +49,13 @@ class StressStrainProfile:
         """
         # validate input - same length lists
         if len(self.strains) != len(self.stresses):
-            raise ValueError("Length of strains must equal length of stresses")
+            msg = "Length of strains must equal length of stresses"
+            raise ValueError(msg)
 
         # validate input - length > 1
         if len(self.strains) < 2:
-            raise ValueError("Length of strains and stresses must be greater than 1")
+            msg = "Length of strains and stresses must be greater than 1"
+            raise ValueError(msg)
 
         # validate input - increasing values
         prev_strain = self.strains[0]
@@ -111,11 +112,13 @@ class StressStrainProfile:
         # check elastic moduli are equal, if not print warning
         if not np.isclose(em_positive, em_negative):
             warnings.warn(
-                "Initial compressive and tensile elastic moduli are not equal"
+                "Initial compressive and tensile elastic moduli are not equal",
+                stacklevel=1,
             )
 
         if np.isclose(em_positive, 0):
-            raise ValueError("Elastic modulus is zero.")
+            msg = "Elastic modulus is zero."
+            raise ValueError(msg)
 
         return em_positive
 
@@ -224,8 +227,11 @@ class StressStrainProfile:
             Matplotlib axes object
         """
         # create plot and setup the plot
-        with plotting_context(title=title, **kwargs) as (fig, ax):
-            assert ax
+        with plotting_context(title=title, **kwargs) as (_, ax):
+            if ax is None:
+                msg = "Plot failed."
+                raise RuntimeError(msg)
+
             ax.plot(self.strains, self.stresses, fmt)
             plt.xlabel("Strain")
             plt.ylabel("Stress")
@@ -640,10 +646,9 @@ class ModifiedMander(ConcreteServiceProfile):
             "circ_hoop",
             "circ_spiral",
         ]:
-            raise ValueError(
-                f"The specified section type {str(self.sect_type).lower()} should be "
-                f"'rect', 'circ_hoop' or 'circ_spiral'."
-            )
+            msg = f"The specified section type {str(self.sect_type).lower()} should be "
+            msg += "'rect', 'circ_hoop' or 'circ_spiral'."
+            raise ValueError(msg)
 
         if self.conc_confined and self.sect_type in ["circ_hoop", "circ_spiral"]:
             self.b = 0
@@ -654,9 +659,7 @@ class ModifiedMander(ConcreteServiceProfile):
         # if confined concrete required, check that all inputs have been provided,
         # otherwise reset to unconfined stress-strain relationship and provide warning
         input_not_provided = [
-            i
-            for i in self.__dataclass_fields__.keys()
-            if self.__getattribute__(i) is None
+            i for i in self.__dataclass_fields__ if self.__getattribute__(i) is None
         ]
         if self.conc_confined and input_not_provided:
             self.conc_confined = False
@@ -664,7 +667,8 @@ class ModifiedMander(ConcreteServiceProfile):
                 f"Reverting analysis to utilise an unconfined concrete Mander "
                 f"stress-strain model, as the following input variables required for a "
                 f"confined concrete Mander stress-strain model have not been "
-                f"provided:\n{input_not_provided}"
+                f"provided:\n{input_not_provided}",
+                stacklevel=1,
             )
 
         # calculate confined/unconfined compressive strength
@@ -1338,10 +1342,12 @@ class StrandPCI1992(StrandProfile):
         """
         # validate control points
         if len(self.strain_cps) != 2:
-            raise ValueError("Length of strain_cps must be equal to 2.")
+            msg = "Length of strain_cps must be equal to 2."
+            raise ValueError(msg)
 
         if len(self.n_points) != 3:
-            raise ValueError("Length of n_points must be equal to 3.")
+            msg = "Length of n_points must be equal to 3."
+            raise ValueError(msg)
 
         # determine constants
         f_so = self.bilinear_yield_ratio * self.yield_strength
@@ -1355,11 +1361,7 @@ class StrandPCI1992(StrandProfile):
 
         # function that determines the stress
         def stress_eq(a, b, c, d, eps_ps, f_pu):
-            if eps_ps != 0:
-                sign = eps_ps / abs(eps_ps)  # get sign of strain
-            else:
-                sign = 1
-
+            sign = eps_ps / abs(eps_ps) if eps_ps != 0 else 1  # get sign of strain
             eps_ps = abs(eps_ps)  # ensure strain is positive
             denom = pow(1 + pow(c * eps_ps, d), 1 / d)  # calculate denominator
             stress = min(eps_ps * (a + b / denom), f_pu)  # calculate stress

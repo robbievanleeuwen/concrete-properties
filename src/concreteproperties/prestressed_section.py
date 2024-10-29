@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from math import isinf
+from typing import TYPE_CHECKING
 
 import numpy as np
-import sectionproperties.pre.geometry as sp_geom
 from scipy.optimize import brentq, root_scalar
 
 import concreteproperties.results as res
@@ -14,6 +14,9 @@ from concreteproperties.analysis_section import AnalysisSection
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import SteelStrand
 from concreteproperties.pre import CPGeom, CPGeomConcrete
+
+if TYPE_CHECKING:
+    import sectionproperties.pre.geometry as sp_geom
 
 
 class PrestressedSection(ConcreteSection):
@@ -62,7 +65,8 @@ class PrestressedSection(ConcreteSection):
         if not np.isclose(
             self.gross_properties.e_zyy_minus, self.gross_properties.e_zyy_plus
         ):
-            raise ValueError("PrestressedSection must be symmetric about y-axis.")
+            msg = "PrestressedSection must be symmetric about y-axis."
+            raise ValueError(msg)
 
         # check for any meshed geometries
         if self.reinf_geometries_meshed:
@@ -227,11 +231,8 @@ class PrestressedSection(ConcreteSection):
             ) + m_int_sign * m_int
 
             # if we are the first geometry, initialise cracking moment
-            if valid_geom_count == 0:
-                m_c = m_c_geom
             # otherwise take smaller cracking moment
-            else:
-                m_c = min(m_c, m_c_geom)
+            m_c = m_c_geom if valid_geom_count == 0 else min(m_c, m_c_geom)
 
             valid_geom_count += 1
 
@@ -257,11 +258,7 @@ class PrestressedSection(ConcreteSection):
         """
         # guess hogging or sagging
         m_net_guess = cracked_results.m + self.gross_properties.m_prestress
-
-        if m_net_guess > 0:
-            theta = 0
-        else:
-            theta = np.pi
+        theta = 0 if m_net_guess > 0 else np.pi
 
         def calc_min_stress():
             # calculate extreme fibre in global coordinates

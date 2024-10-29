@@ -12,7 +12,6 @@ from concreteproperties.stress_strain_profile import (
     SteelElasticPlastic,
 )
 
-
 # generate list of angles to test
 thetas = np.linspace(start=-np.pi, stop=np.pi, num=31)
 
