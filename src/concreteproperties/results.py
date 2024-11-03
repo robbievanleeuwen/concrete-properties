@@ -20,7 +20,7 @@ from scipy.interpolate import interp1d
 from sectionproperties.pre.geometry import CompoundGeometry
 from shapely import Point, Polygon
 
-from concreteproperties.post import plotting_context
+from concreteproperties.post import plotting_context, string_formatter
 
 if TYPE_CHECKING:
     from concreteproperties.analysis_section import AnalysisSection
@@ -94,69 +94,140 @@ class GrossProperties:
 
     def print_results(
         self,
-        fmt: str = "8.6e",
+        eng: bool = True,
+        prec: int = 3,
     ) -> None:
         """Prints the gross concrete section properties to the terminal.
 
         Args:
-            fmt: Number format. Defaults to ``"8.6e"``.
+            eng: If set to ``True``, formats with engineering notation. If set to
+                ``False``, formats with fixed notation. Defaults to ``True``.
+            prec: The desired precision (i.e. one plus this value is the desired number
+                of digits). Defaults to ``3``.
         """
+        # setup table
         table = Table(title="Gross Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
-        table.add_row("Total Area", "{:>{fmt}}".format(self.total_area, fmt=fmt))
-        table.add_row("Concrete Area", "{:>{fmt}}".format(self.concrete_area, fmt=fmt))
+        # add table rows
+        table.add_row(
+            "Total Area", string_formatter(value=self.total_area, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "Concrete Area",
+            string_formatter(value=self.concrete_area, eng=eng, prec=prec),
+        )
 
         if self.reinf_meshed_area:
             table.add_row(
                 "Meshed Reinforcement Area",
-                "{:>{fmt}}".format(self.reinf_meshed_area, fmt=fmt),
+                string_formatter(value=self.reinf_meshed_area, eng=eng, prec=prec),
             )
 
         table.add_row(
             "Lumped Reinforcement Area",
-            "{:>{fmt}}".format(self.reinf_lumped_area, fmt=fmt),
+            string_formatter(value=self.reinf_lumped_area, eng=eng, prec=prec),
         )
 
         if self.strand_area:
-            table.add_row("Strand Area", "{:>{fmt}}".format(self.strand_area, fmt=fmt))
+            table.add_row(
+                "Strand Area",
+                string_formatter(value=self.strand_area, eng=eng, prec=prec),
+            )
 
-        table.add_row("Axial Rigidity (EA)", "{:>{fmt}}".format(self.e_a, fmt=fmt))
-        table.add_row("Mass (per unit length)", "{:>{fmt}}".format(self.mass, fmt=fmt))
-        table.add_row("Perimeter", "{:>{fmt}}".format(self.perimeter, fmt=fmt))
-        table.add_row("E.Qx", "{:>{fmt}}".format(self.e_qx, fmt=fmt))
-        table.add_row("E.Qy", "{:>{fmt}}".format(self.e_qy, fmt=fmt))
-        table.add_row("x-Centroid", "{:>{fmt}}".format(self.cx, fmt=fmt))
-        table.add_row("y-Centroid", "{:>{fmt}}".format(self.cy, fmt=fmt))
-        table.add_row("x-Centroid (Gross)", "{:>{fmt}}".format(self.cx_gross, fmt=fmt))
-        table.add_row("y-Centroid (Gross)", "{:>{fmt}}".format(self.cy_gross, fmt=fmt))
-        table.add_row("E.Ixx_g", "{:>{fmt}}".format(self.e_ixx_g, fmt=fmt))
-        table.add_row("E.Iyy_g", "{:>{fmt}}".format(self.e_iyy_g, fmt=fmt))
-        table.add_row("E.Ixy_g", "{:>{fmt}}".format(self.e_ixy_g, fmt=fmt))
-        table.add_row("E.Ixx_c", "{:>{fmt}}".format(self.e_ixx_c, fmt=fmt))
-        table.add_row("E.Iyy_c", "{:>{fmt}}".format(self.e_iyy_c, fmt=fmt))
-        table.add_row("E.Ixy_c", "{:>{fmt}}".format(self.e_ixy_c, fmt=fmt))
-        table.add_row("E.I11", "{:>{fmt}}".format(self.e_i11, fmt=fmt))
-        table.add_row("E.I22", "{:>{fmt}}".format(self.e_i22, fmt=fmt))
-        table.add_row("Principal Axis Angle", "{:>{fmt}}".format(self.phi, fmt=fmt))
-        table.add_row("E.Zxx+", "{:>{fmt}}".format(self.e_zxx_plus, fmt=fmt))
-        table.add_row("E.Zxx-", "{:>{fmt}}".format(self.e_zxx_minus, fmt=fmt))
-        table.add_row("E.Zyy+", "{:>{fmt}}".format(self.e_zyy_plus, fmt=fmt))
-        table.add_row("E.Zyy-", "{:>{fmt}}".format(self.e_zyy_minus, fmt=fmt))
-        table.add_row("E.Z11+", "{:>{fmt}}".format(self.e_z11_plus, fmt=fmt))
-        table.add_row("E.Z11-", "{:>{fmt}}".format(self.e_z11_minus, fmt=fmt))
-        table.add_row("E.Z22+", "{:>{fmt}}".format(self.e_z22_plus, fmt=fmt))
-        table.add_row("E.Z22-", "{:>{fmt}}".format(self.e_z22_minus, fmt=fmt))
+        table.add_row(
+            "Axial Rigidity (EA)", string_formatter(value=self.e_a, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "Mass (per unit length)",
+            string_formatter(value=self.mass, eng=eng, prec=prec),
+        )
+        table.add_row(
+            "Perimeter",
+            string_formatter(value=self.perimeter, eng=eng, prec=prec),
+            end_section=True,
+        )
+        table.add_row("E.Qx", string_formatter(value=self.e_qx, eng=eng, prec=prec))
+        table.add_row("E.Qy", string_formatter(value=self.e_qy, eng=eng, prec=prec))
+        table.add_row("x-Centroid", string_formatter(value=self.cx, eng=eng, prec=prec))
+        table.add_row("y-Centroid", string_formatter(value=self.cy, eng=eng, prec=prec))
+        table.add_row(
+            "x-Centroid (Gross)",
+            string_formatter(value=self.cx_gross, eng=eng, prec=prec),
+        )
+        table.add_row(
+            "y-Centroid (Gross)",
+            string_formatter(value=self.cy_gross, eng=eng, prec=prec),
+            end_section=True,
+        )
+        table.add_row(
+            "E.Ixx_g", string_formatter(value=self.e_ixx_g, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Iyy_g", string_formatter(value=self.e_iyy_g, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Ixy_g", string_formatter(value=self.e_ixy_g, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Ixx_c", string_formatter(value=self.e_ixx_c, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Iyy_c", string_formatter(value=self.e_iyy_c, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Ixy_c", string_formatter(value=self.e_ixy_c, eng=eng, prec=prec)
+        )
+        table.add_row("E.I11", string_formatter(value=self.e_i11, eng=eng, prec=prec))
+        table.add_row("E.I22", string_formatter(value=self.e_i22, eng=eng, prec=prec))
+        table.add_row(
+            "Principal Axis Angle",
+            string_formatter(value=self.phi, eng=eng, prec=prec),
+            end_section=True,
+        )
+        table.add_row(
+            "E.Zxx+", string_formatter(value=self.e_zxx_plus, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Zxx-", string_formatter(value=self.e_zxx_minus, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Zyy+", string_formatter(value=self.e_zyy_plus, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Zyy-", string_formatter(value=self.e_zyy_minus, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Z11+", string_formatter(value=self.e_z11_plus, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Z11-", string_formatter(value=self.e_z11_minus, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Z22+", string_formatter(value=self.e_z22_plus, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Z22-",
+            string_formatter(value=self.e_z22_minus, eng=eng, prec=prec),
+            end_section=True,
+        )
         table.add_row(
             "Ultimate Concrete Strain",
-            "{:>{fmt}}".format(self.conc_ultimate_strain, fmt=fmt),
+            string_formatter(value=self.conc_ultimate_strain, eng=eng, prec=prec),
+            end_section=True,
         )
 
         # add prestressed results if they exist
         if self.n_prestress:
-            table.add_row("n_prestress", "{:>{fmt}}".format(self.n_prestress, fmt=fmt))
-            table.add_row("m_prestress", "{:>{fmt}}".format(self.m_prestress, fmt=fmt))
+            table.add_row(
+                "n_prestress",
+                string_formatter(value=self.n_prestress, eng=eng, prec=prec),
+            )
+            table.add_row(
+                "m_prestress",
+                string_formatter(value=self.m_prestress, eng=eng, prec=prec),
+            )
 
         console = Console()
         console.print(table)
@@ -225,37 +296,61 @@ class TransformedGrossProperties:
 
     def print_results(
         self,
-        fmt: str = "8.6e",
+        eng: bool = True,
+        prec: int = 3,
     ) -> None:
         """Prints the transformed gross concrete section properties to the terminal.
 
         Args:
-            fmt: Number format. Defaults to ``"8.6e"``.
+            eng: If set to ``True``, formats with engineering notation. If set to
+                ``False``, formats with fixed notation. Defaults to ``True``.
+            prec: The desired precision (i.e. one plus this value is the desired number
+                of digits). Defaults to ``3``.
         """
+        # setup table
         table = Table(title="Transformed Gross Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
-        table.add_row("E_ref", "{:>{fmt}}".format(self.elastic_modulus, fmt=fmt))
-        table.add_row("Area", "{:>{fmt}}".format(self.area, fmt=fmt))
-        table.add_row("Qx", "{:>{fmt}}".format(self.qx, fmt=fmt))
-        table.add_row("Qy", "{:>{fmt}}".format(self.qy, fmt=fmt))
-        table.add_row("Ixx_g", "{:>{fmt}}".format(self.ixx_g, fmt=fmt))
-        table.add_row("Iyy_g", "{:>{fmt}}".format(self.iyy_g, fmt=fmt))
-        table.add_row("Ixy_g", "{:>{fmt}}".format(self.ixy_g, fmt=fmt))
-        table.add_row("Ixx_c", "{:>{fmt}}".format(self.ixx_c, fmt=fmt))
-        table.add_row("Iyy_c", "{:>{fmt}}".format(self.iyy_c, fmt=fmt))
-        table.add_row("Ixy_c", "{:>{fmt}}".format(self.ixy_c, fmt=fmt))
-        table.add_row("I11", "{:>{fmt}}".format(self.i11, fmt=fmt))
-        table.add_row("I22", "{:>{fmt}}".format(self.i22, fmt=fmt))
-        table.add_row("Zxx+", "{:>{fmt}}".format(self.zxx_plus, fmt=fmt))
-        table.add_row("Zxx-", "{:>{fmt}}".format(self.zxx_minus, fmt=fmt))
-        table.add_row("Zyy+", "{:>{fmt}}".format(self.zyy_plus, fmt=fmt))
-        table.add_row("Zyy-", "{:>{fmt}}".format(self.zyy_minus, fmt=fmt))
-        table.add_row("Z11+", "{:>{fmt}}".format(self.z11_plus, fmt=fmt))
-        table.add_row("Z11-", "{:>{fmt}}".format(self.z11_minus, fmt=fmt))
-        table.add_row("Z22+", "{:>{fmt}}".format(self.z22_plus, fmt=fmt))
-        table.add_row("Z22-", "{:>{fmt}}".format(self.z22_minus, fmt=fmt))
+        # add table rows
+        table.add_row(
+            "E_ref", string_formatter(value=self.elastic_modulus, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "Area",
+            string_formatter(value=self.area, eng=eng, prec=prec),
+            end_section=True,
+        )
+        table.add_row("Qx", string_formatter(value=self.qx, eng=eng, prec=prec))
+        table.add_row("Qy", string_formatter(value=self.qy, eng=eng, prec=prec))
+        table.add_row("Ixx_g", string_formatter(value=self.ixx_g, eng=eng, prec=prec))
+        table.add_row("Iyy_g", string_formatter(value=self.iyy_g, eng=eng, prec=prec))
+        table.add_row("Ixy_g", string_formatter(value=self.ixy_g, eng=eng, prec=prec))
+        table.add_row("Ixx_c", string_formatter(value=self.ixx_c, eng=eng, prec=prec))
+        table.add_row("Iyy_c", string_formatter(value=self.iyy_c, eng=eng, prec=prec))
+        table.add_row("Ixy_c", string_formatter(value=self.ixy_c, eng=eng, prec=prec))
+        table.add_row("I11", string_formatter(value=self.i11, eng=eng, prec=prec))
+        table.add_row(
+            "I22",
+            string_formatter(value=self.i22, eng=eng, prec=prec),
+            end_section=True,
+        )
+        table.add_row("Zxx+", string_formatter(value=self.zxx_plus, eng=eng, prec=prec))
+        table.add_row(
+            "Zxx-", string_formatter(value=self.zxx_minus, eng=eng, prec=prec)
+        )
+        table.add_row("Zyy+", string_formatter(value=self.zyy_plus, eng=eng, prec=prec))
+        table.add_row(
+            "Zyy-", string_formatter(value=self.zyy_minus, eng=eng, prec=prec)
+        )
+        table.add_row("Z11+", string_formatter(value=self.z11_plus, eng=eng, prec=prec))
+        table.add_row(
+            "Z11-", string_formatter(value=self.z11_minus, eng=eng, prec=prec)
+        )
+        table.add_row("Z22+", string_formatter(value=self.z22_plus, eng=eng, prec=prec))
+        table.add_row(
+            "Z22-", string_formatter(value=self.z22_minus, eng=eng, prec=prec)
+        )
 
         console = Console()
         console.print(table)
@@ -374,69 +469,164 @@ class CrackedResults:
 
     def print_results(
         self,
-        fmt: str = "8.6e",
+        eng: bool = True,
+        prec: int = 3,
+        n_scale: float = 1.0,
+        m_scale: float = 1.0,
     ) -> None:
-        """Prints the cracked concrete section properties to the terminal.
+        """Prints cracked concrete section properties to the terminal.
 
         Args:
-            fmt: Number format. Defaults to ``"8.6e"``.
+            eng: If set to ``True``, formats with engineering notation. If set to
+                ``False``, formats with fixed notation. Defaults to ``True``.
+            prec: The desired precision (i.e. one plus this value is the desired number
+                of digits). Defaults to ``3``.
+            n_scale: Scale factor to apply to forces
+            m_scale: Scale factor to apply to moments
         """
+        # setup table
         table = Table(title="Cracked Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
-        table.add_row("theta", "{:>{fmt}}".format(self.theta, fmt=fmt))
-        table.add_row("n", "{:>{fmt}}".format(self.n, fmt=fmt))
-        table.add_row("m", "{:>{fmt}}".format(self.m, fmt=fmt))
+        # add table rows
+        table.add_row("theta", string_formatter(value=self.theta, eng=eng, prec=prec))
 
-        if self.elastic_modulus_ref:
+        # only show n & m if one is non-zero
+        if self.n != 0 or self.m != 0:
             table.add_row(
-                "E_ref", "{:>{fmt}}".format(self.elastic_modulus_ref, fmt=fmt)
+                "n", string_formatter(value=self.n, eng=eng, prec=prec, scale=n_scale)
+            )
+            table.add_row(
+                "m", string_formatter(value=self.m, eng=eng, prec=prec, scale=m_scale)
             )
 
+        if self.elastic_modulus_ref is not None:
+            table.add_row(
+                "E_ref",
+                string_formatter(value=self.elastic_modulus_ref, eng=eng, prec=prec),
+            )
+
+        table.add_section()
+
         if isinstance(self.m_cr, tuple):
-            table.add_row("m_cr_pos", "{:>{fmt}}".format(self.m_cr[0], fmt=fmt))
-            table.add_row("m_cr_neg", "{:>{fmt}}".format(self.m_cr[1], fmt=fmt))
+            table.add_row(
+                "m_cr_pos",
+                string_formatter(value=self.m_cr[0], eng=eng, prec=prec, scale=m_scale),
+            )
+            table.add_row(
+                "m_cr_neg",
+                string_formatter(value=self.m_cr[1], eng=eng, prec=prec, scale=m_scale),
+            )
         else:
-            table.add_row("m_cr", "{:>{fmt}}".format(self.m_cr, fmt=fmt))
+            table.add_row(
+                "m_cr",
+                string_formatter(value=self.m_cr, eng=eng, prec=prec, scale=m_scale),
+            )
 
-        table.add_row("d_nc", "{:>{fmt}}".format(self.d_nc, fmt=fmt))
+        table.add_row("d_nc", string_formatter(value=self.d_nc, eng=eng, prec=prec))
 
-        if self.a_cr:
-            table.add_row("A_cr", "{:>{fmt}}".format(self.a_cr, fmt=fmt))
+        if self.a_cr is not None:
+            table.add_row("A_cr", string_formatter(value=self.a_cr, eng=eng, prec=prec))
 
-        table.add_row("E.A_cr", "{:>{fmt}}".format(self.e_a_cr, fmt=fmt))
+        table.add_row(
+            "E.A_cr",
+            string_formatter(value=self.e_a_cr, eng=eng, prec=prec),
+            end_section=True,
+        )
 
-        if self.qx_cr:
-            table.add_row("Qx_cr", "{:>{fmt}}".format(self.qx_cr, fmt=fmt))
-            table.add_row("Qy_cr", "{:>{fmt}}".format(self.qy_cr, fmt=fmt))
+        if self.qx_cr is not None and self.qy_cr is not None:
+            table.add_row(
+                "Qx_cr", string_formatter(value=self.qx_cr, eng=eng, prec=prec)
+            )
+            table.add_row(
+                "Qy_cr", string_formatter(value=self.qy_cr, eng=eng, prec=prec)
+            )
 
-        table.add_row("E.Qx_cr", "{:>{fmt}}".format(self.e_qx_cr, fmt=fmt))
-        table.add_row("E.Qy_cr", "{:>{fmt}}".format(self.e_qy_cr, fmt=fmt))
-        table.add_row("x-Centroid", "{:>{fmt}}".format(self.cx, fmt=fmt))
-        table.add_row("y-Centroid", "{:>{fmt}}".format(self.cy, fmt=fmt))
+        table.add_row(
+            "E.Qx_cr", string_formatter(value=self.e_qx_cr, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Qy_cr", string_formatter(value=self.e_qy_cr, eng=eng, prec=prec)
+        )
+        table.add_row("x-Centroid", string_formatter(value=self.cx, eng=eng, prec=prec))
+        table.add_row(
+            "y-Centroid",
+            string_formatter(value=self.cy, eng=eng, prec=prec),
+            end_section=True,
+        )
 
-        if self.ixx_g_cr:
-            table.add_row("Ixx_g_cr", "{:>{fmt}}".format(self.ixx_g_cr, fmt=fmt))
-            table.add_row("Iyy_g_cr", "{:>{fmt}}".format(self.iyy_g_cr, fmt=fmt))
-            table.add_row("Ixy_g_cr", "{:>{fmt}}".format(self.ixy_g_cr, fmt=fmt))
-            table.add_row("Ixx_c_cr", "{:>{fmt}}".format(self.ixx_c_cr, fmt=fmt))
-            table.add_row("Iyy_c_cr", "{:>{fmt}}".format(self.iyy_c_cr, fmt=fmt))
-            table.add_row("Ixy_c_cr", "{:>{fmt}}".format(self.ixy_c_cr, fmt=fmt))
-            table.add_row("Iuu_cr", "{:>{fmt}}".format(self.iuu_cr, fmt=fmt))
-            table.add_row("I11_cr", "{:>{fmt}}".format(self.i11_cr, fmt=fmt))
-            table.add_row("I22_cr", "{:>{fmt}}".format(self.i22_cr, fmt=fmt))
+        if (
+            self.ixx_g_cr is not None
+            and self.iyy_g_cr is not None
+            and self.ixy_g_cr is not None
+            and self.ixx_c_cr is not None
+            and self.iyy_c_cr is not None
+            and self.ixy_c_cr is not None
+            and self.iuu_cr is not None
+            and self.i11_cr is not None
+            and self.i22_cr is not None
+        ):
+            table.add_row(
+                "Ixx_g_cr", string_formatter(value=self.ixx_g_cr, eng=eng, prec=prec)
+            )
+            table.add_row(
+                "Iyy_g_cr", string_formatter(value=self.iyy_g_cr, eng=eng, prec=prec)
+            )
+            table.add_row(
+                "Ixy_g_cr", string_formatter(value=self.ixy_g_cr, eng=eng, prec=prec)
+            )
+            table.add_row(
+                "Ixx_c_cr", string_formatter(value=self.ixx_c_cr, eng=eng, prec=prec)
+            )
+            table.add_row(
+                "Iyy_c_cr", string_formatter(value=self.iyy_c_cr, eng=eng, prec=prec)
+            )
+            table.add_row(
+                "Ixy_c_cr", string_formatter(value=self.ixy_c_cr, eng=eng, prec=prec)
+            )
+            table.add_row(
+                "Iuu_cr", string_formatter(value=self.iuu_cr, eng=eng, prec=prec)
+            )
+            table.add_row(
+                "I11_cr", string_formatter(value=self.i11_cr, eng=eng, prec=prec)
+            )
+            table.add_row(
+                "I22_cr",
+                string_formatter(value=self.i22_cr, eng=eng, prec=prec),
+                end_section=True,
+            )
 
-        table.add_row("E.Ixx_g_cr", "{:>{fmt}}".format(self.e_ixx_g_cr, fmt=fmt))
-        table.add_row("E.Iyy_g_cr", "{:>{fmt}}".format(self.e_iyy_g_cr, fmt=fmt))
-        table.add_row("E.Ixy_g_cr", "{:>{fmt}}".format(self.e_ixy_g_cr, fmt=fmt))
-        table.add_row("E.Ixx_c_cr", "{:>{fmt}}".format(self.e_ixx_c_cr, fmt=fmt))
-        table.add_row("E.Iyy_c_cr", "{:>{fmt}}".format(self.e_iyy_c_cr, fmt=fmt))
-        table.add_row("E.Ixy_c_cr", "{:>{fmt}}".format(self.e_ixy_c_cr, fmt=fmt))
-        table.add_row("E.Iuu_cr", "{:>{fmt}}".format(self.e_iuu_cr, fmt=fmt))
-        table.add_row("E.I11_cr", "{:>{fmt}}".format(self.e_i11_cr, fmt=fmt))
-        table.add_row("E.I22_cr", "{:>{fmt}}".format(self.e_i22_cr, fmt=fmt))
-        table.add_row("phi_cr", "{:>{fmt}}".format(self.phi_cr, fmt=fmt))
+        table.add_row(
+            "E.Ixx_g_cr", string_formatter(value=self.e_ixx_g_cr, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Iyy_g_cr", string_formatter(value=self.e_iyy_g_cr, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Ixy_g_cr", string_formatter(value=self.e_ixy_g_cr, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Ixx_c_cr", string_formatter(value=self.e_ixx_c_cr, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Iyy_c_cr", string_formatter(value=self.e_iyy_c_cr, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Ixy_c_cr", string_formatter(value=self.e_ixy_c_cr, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.Iuu_cr", string_formatter(value=self.e_iuu_cr, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.I11_cr", string_formatter(value=self.e_i11_cr, eng=eng, prec=prec)
+        )
+        table.add_row(
+            "E.I22_cr",
+            string_formatter(value=self.e_i22_cr, eng=eng, prec=prec),
+            end_section=True,
+        )
+        table.add_row("phi_cr", string_formatter(value=self.phi_cr, eng=eng, prec=prec))
 
         console = Console()
         console.print(table)
@@ -642,29 +832,56 @@ class UltimateBendingResults:
 
     def print_results(
         self,
-        fmt: str = "8.6e",
+        eng: bool = True,
+        prec: int = 3,
+        n_scale: float = 1.0,
+        m_scale: float = 1.0,
     ) -> None:
         """Prints the ultimate bending results to the terminal.
 
         Args:
-            fmt: Number format. Defaults to ``"8.6e"``.
+            eng: If set to ``True``, formats with engineering notation. If set to
+                ``False``, formats with fixed notation. Defaults to ``True``.
+            prec: The desired precision (i.e. one plus this value is the desired number
+                of digits). Defaults to ``3``.
+            n_scale: Scale factor to apply to forces
+            m_scale: Scale factor to apply to moments
         """
+        # setup table
         table = Table(title="Ultimate Bending Results")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
+        # add table rows
         if self.label:
-            table.add_row("Label", self.label)
+            table.add_row("Label", self.label, end_section=True)
 
-        table.add_row("Bending Angle - theta", "{:>{fmt}}".format(self.theta, fmt=fmt))
-        table.add_row("Neutral Axis Depth - d_n", "{:>{fmt}}".format(self.d_n, fmt=fmt))
         table.add_row(
-            "Neutral Axis Parameter - k_u", "{:>{fmt}}".format(self.k_u, fmt=fmt)
+            "Bending Angle - theta",
+            string_formatter(value=self.theta, eng=eng, prec=prec),
         )
-        table.add_row("Axial Force", "{:>{fmt}}".format(self.n, fmt=fmt))
-        table.add_row("Bending Capacity - m_x", "{:>{fmt}}".format(self.m_x, fmt=fmt))
-        table.add_row("Bending Capacity - m_y", "{:>{fmt}}".format(self.m_y, fmt=fmt))
-        table.add_row("Bending Capacity - m_xy", "{:>{fmt}}".format(self.m_xy, fmt=fmt))
+        table.add_row(
+            "Neutral Axis Depth - d_n",
+            string_formatter(value=self.d_n, eng=eng, prec=prec),
+        )
+        table.add_row(
+            "Neutral Axis Parameter - k_u",
+            string_formatter(value=self.k_u, eng=eng, prec=prec),
+            end_section=True,
+        )
+        table.add_row("Axial Force", string_formatter(value=self.n, eng=eng, prec=prec))
+        table.add_row(
+            "Bending Capacity - m_x",
+            string_formatter(value=self.m_x, eng=eng, prec=prec),
+        )
+        table.add_row(
+            "Bending Capacity - m_y",
+            string_formatter(value=self.m_y, eng=eng, prec=prec),
+        )
+        table.add_row(
+            "Bending Capacity - m_xy",
+            string_formatter(value=self.m_xy, eng=eng, prec=prec),
+        )
 
         console = Console()
         console.print(table)

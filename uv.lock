@@ -295,13 +295,14 @@ dependencies = [
     { name = "matplotlib" },
     { name = "more-itertools" },
     { name = "numpy" },
+    { name = "quantiphy" },
     { name = "rich", extra = ["jupyter"] },
     { name = "scipy" },
     { name = "sectionproperties" },
     { name = "shapely" },
 ]
 
-[package.dependency-groups]
+[package.dev-dependencies]
 docs = [
     { name = "furo" },
     { name = "ipykernel" },
@@ -330,13 +331,14 @@ requires-dist = [
     { name = "matplotlib", specifier = "~=3.9.2" },
     { name = "more-itertools", specifier = "~=10.5.0" },
     { name = "numpy", specifier = "~=1.26.4" },
+    { name = "quantiphy", specifier = "~=2.20" },
     { name = "rich", extras = ["jupyter"], specifier = "~=13.9.3" },
     { name = "scipy", specifier = "~=1.14.1" },
     { name = "sectionproperties", specifier = "~=3.5.0" },
     { name = "shapely", specifier = "~=2.0.6" },
 ]
 
-[package.metadata.dependency-groups]
+[package.metadata.requires-dev]
 docs = [
     { name = "furo", specifier = "==2024.8.6" },
     { name = "ipykernel", specifier = "==6.29.5" },
@@ -1747,6 +1749,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/ee/1c/bf8cd66730a866b16db8483286078892b7f6536f8c389fb46e4beba0a970/pyzmq-26.2.0-pp310-pypy310_pp73-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:160c7e0a5eb178011e72892f99f918c04a131f36056d10d9c1afb223fc952c2d", size = 794312 },
     { url = "https://files.pythonhosted.org/packages/71/43/91fa4ff25bbfdc914ab6bafa0f03241d69370ef31a761d16bb859f346582/pyzmq-26.2.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2c4a71d5d6e7b28a47a394c0471b7e77a0661e2d651e7ae91e0cab0a587859ca", size = 752775 },
     { url = "https://files.pythonhosted.org/packages/ec/d2/3b2ab40f455a256cb6672186bea95cd97b459ce4594050132d71e76f0d6f/pyzmq-26.2.0-pp310-pypy310_pp73-win_amd64.whl", hash = "sha256:90412f2db8c02a3864cbfc67db0e3dcdbda336acf1c469526d3e869394fe001c", size = 550762 },
+]
+
+[[package]]
+name = "quantiphy"
+version = "2.20"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/92/dc/dec6a98d5ef472812848c1141630f819bfaf2e469f3733083ded2f3b08aa/quantiphy-2.20.tar.gz", hash = "sha256:ba5375ac55c3b90077a793588dd5a88aaf81b2c3b0fc9c9359513ac39f6ed84d", size = 42073 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/37/91/42c59c137bf3d82a6525f3200f23ea6cad81f53828f96e187a519cdf34c3/quantiphy-2.20-py3-none-any.whl", hash = "sha256:afdf5f9d1cc87359bd7daf19dc1cb23808eb2e264d9395b36ca6527fb4d71b3a", size = 41254 },
 ]
 
 [[package]]

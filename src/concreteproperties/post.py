@@ -6,6 +6,7 @@ import contextlib
 from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt
+from quantiphy import Quantity
 
 if TYPE_CHECKING:
     import matplotlib.axes
@@ -100,3 +101,41 @@ def plotting_context(
         else:
             plt.draw()
             plt.pause(0.001)
+
+
+def string_formatter(
+    value: float,
+    eng: bool,
+    prec: int,
+    scale: float = 1.0,
+) -> str:
+    """Formats a float using engineering or fixed notation.
+
+    Args:
+        value: Number to format
+        eng: If set to ``True``, formats with engineering notation. If set to ``False``,
+            formats with fixed notation.
+        prec: The desired precision (i.e. one plus this value is the desired number of
+            digits)
+        scale: Factor by which to scale the value. Defaults to ``1.0``.
+
+    Returns:
+        Formatted string
+    """
+    q = Quantity(value)
+    form = "eng" if eng else "fixed"
+    val_fmt = q.render(
+        form=form, show_units=False, prec=prec, scale=scale, strip_zeros=False
+    )
+    spl = val_fmt.split("e")
+
+    # if there is an exponent, render as 'x 10^n'
+    if eng and len(spl) > 1:
+        num = spl[0]
+        exp = spl[1]
+        return f"{num} x 10^{exp}"
+    else:
+        return val_fmt
+
+
+# TODO: FuncFormatter for plots
