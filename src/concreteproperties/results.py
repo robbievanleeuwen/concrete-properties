@@ -96,6 +96,7 @@ class GrossProperties:
         self,
         eng: bool = True,
         prec: int = 3,
+        radians: bool = True,
     ) -> None:
         """Prints the gross concrete section properties to the terminal.
 
@@ -104,6 +105,8 @@ class GrossProperties:
                 ``False``, formats with fixed notation. Defaults to ``True``.
             prec: The desired precision (i.e. one plus this value is the desired number
                 of digits). Defaults to ``3``.
+            radians: If set to ``True``, prints angles in radians, else converts angles
+                to degrees. Defaults to ``True``.
         """
         # setup table
         table = Table(title="Gross Concrete Section Properties")
@@ -181,9 +184,17 @@ class GrossProperties:
         )
         table.add_row("E.I11", string_formatter(value=self.e_i11, eng=eng, prec=prec))
         table.add_row("E.I22", string_formatter(value=self.e_i22, eng=eng, prec=prec))
+
+        if radians:
+            phi = self.phi
+            ang_units = "rads"
+        else:
+            phi = self.phi * 180.0 / np.pi
+            ang_units = "degs"
+
         table.add_row(
             "Principal Axis Angle",
-            string_formatter(value=self.phi, eng=eng, prec=prec),
+            string_formatter(value=phi, eng=eng, prec=prec) + f" {ang_units}",
             end_section=True,
         )
         table.add_row(
@@ -471,8 +482,9 @@ class CrackedResults:
         self,
         eng: bool = True,
         prec: int = 3,
-        n_scale: float = 1.0,
-        m_scale: float = 1.0,
+        n_scale: float = 1,
+        m_scale: float = 1,
+        radians: bool = True,
     ) -> None:
         """Prints cracked concrete section properties to the terminal.
 
@@ -483,14 +495,26 @@ class CrackedResults:
                 of digits). Defaults to ``3``.
             n_scale: Scale factor to apply to forces
             m_scale: Scale factor to apply to moments
+            radians: If set to ``True``, prints angles in radians, else converts angles
+                to degrees. Defaults to ``True``.
         """
         # setup table
-        table = Table(title="Cracked Concrete Section Properties")
+        caption = f"{n_scale=}, {m_scale=}" if n_scale != 1 or m_scale != 1 else None
+        table = Table(title="Cracked Concrete Section Properties", caption=caption)
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
         # add table rows
-        table.add_row("theta", string_formatter(value=self.theta, eng=eng, prec=prec))
+        if radians:
+            theta = self.theta
+            ang_units = "rads"
+        else:
+            theta = self.theta * 180.0 / np.pi
+            ang_units = "degs"
+
+        table.add_row(
+            "theta", string_formatter(value=theta, eng=eng, prec=prec) + f" {ang_units}"
+        )
 
         # only show n & m if one is non-zero
         if self.n != 0 or self.m != 0:
@@ -626,7 +650,18 @@ class CrackedResults:
             string_formatter(value=self.e_i22_cr, eng=eng, prec=prec),
             end_section=True,
         )
-        table.add_row("phi_cr", string_formatter(value=self.phi_cr, eng=eng, prec=prec))
+
+        if radians:
+            phi_cr = self.phi_cr
+            ang_units = "rads"
+        else:
+            phi_cr = self.phi_cr * 180.0 / np.pi
+            ang_units = "degs"
+
+        table.add_row(
+            "phi_cr",
+            string_formatter(value=phi_cr, eng=eng, prec=prec) + f" {ang_units}",
+        )
 
         console = Console()
         console.print(table)
@@ -686,7 +721,7 @@ class MomentCurvatureResults:
         Returns:
             Matplotlib axes object
         """
-        # scale moments
+        # scale moments # TODO: add note re: n & m scales
         moments = np.array(self.m_xy) * m_scale
 
         # create plot and setup the plot
@@ -722,7 +757,7 @@ class MomentCurvatureResults:
         Returns:
             Matplotlib axes object
         """
-        # create plot and setup the plot
+        # create plot and setup the plot # TODO: add note re: n & m scales
         with plotting_context(title="Moment-Curvature", **kwargs) as (fig, ax):
             if ax is None:
                 msg = "Plot failed."
@@ -834,8 +869,9 @@ class UltimateBendingResults:
         self,
         eng: bool = True,
         prec: int = 3,
-        n_scale: float = 1.0,
-        m_scale: float = 1.0,
+        n_scale: float = 1,
+        m_scale: float = 1,
+        radians: bool = True,
     ) -> None:
         """Prints the ultimate bending results to the terminal.
 
@@ -846,9 +882,13 @@ class UltimateBendingResults:
                 of digits). Defaults to ``3``.
             n_scale: Scale factor to apply to forces
             m_scale: Scale factor to apply to moments
+            radians: If set to ``True``, prints angles in radians, else converts angles
+                to degrees. Defaults to ``True``.
         """
         # setup table
-        table = Table(title="Ultimate Bending Results")
+        caption = f"{n_scale=}, {m_scale=}" if n_scale != 1 or m_scale != 1 else None
+
+        table = Table(title="Ultimate Bending Results", caption=caption)
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
@@ -856,9 +896,16 @@ class UltimateBendingResults:
         if self.label:
             table.add_row("Label", self.label, end_section=True)
 
+        if radians:
+            theta = self.theta
+            ang_units = "rads"
+        else:
+            theta = self.theta * 180.0 / np.pi
+            ang_units = "degs"
+
         table.add_row(
             "Bending Angle - theta",
-            string_formatter(value=self.theta, eng=eng, prec=prec),
+            string_formatter(value=theta, eng=eng, prec=prec) + f" {ang_units}",
         )
         table.add_row(
             "Neutral Axis Depth - d_n",
@@ -869,18 +916,21 @@ class UltimateBendingResults:
             string_formatter(value=self.k_u, eng=eng, prec=prec),
             end_section=True,
         )
-        table.add_row("Axial Force", string_formatter(value=self.n, eng=eng, prec=prec))
+        table.add_row(
+            "Axial Force",
+            string_formatter(value=self.n, eng=eng, prec=prec, scale=n_scale),
+        )
         table.add_row(
             "Bending Capacity - m_x",
-            string_formatter(value=self.m_x, eng=eng, prec=prec),
+            string_formatter(value=self.m_x, eng=eng, prec=prec, scale=m_scale),
         )
         table.add_row(
             "Bending Capacity - m_y",
-            string_formatter(value=self.m_y, eng=eng, prec=prec),
+            string_formatter(value=self.m_y, eng=eng, prec=prec, scale=m_scale),
         )
         table.add_row(
             "Bending Capacity - m_xy",
-            string_formatter(value=self.m_xy, eng=eng, prec=prec),
+            string_formatter(value=self.m_xy, eng=eng, prec=prec, scale=m_scale),
         )
 
         console = Console()
@@ -974,7 +1024,7 @@ class MomentInteractionResults:
         Returns:
             Matplotlib axes object
         """
-        # create plot and setup the plot
+        # create plot and setup the plot # TODO: add note re: n & m scales
         with plotting_context(title="Moment Interaction Diagram", **kwargs) as (
             fig,
             ax,
@@ -1068,7 +1118,7 @@ class MomentInteractionResults:
         Returns:
             Matplotlib axes object
         """
-        # create plot and setup the plot
+        # create plot and setup the plot # TODO: add note re: n & m scales
         with plotting_context(title="Moment Interaction Diagram", **kwargs) as (
             fig,
             ax,
@@ -1179,7 +1229,7 @@ class BiaxialBendingResults:
         """
         m_x_list, m_y_list = self.get_results_lists()
 
-        # create plot and setup the plot
+        # create plot and setup the plot # TODO: add note re: n & m scales
         with plotting_context(
             title=f"Biaxial Bending Diagram, $N = {self.n:.3e}$", **kwargs
         ) as (fig, ax):
@@ -1220,7 +1270,7 @@ class BiaxialBendingResults:
         Returns:
             Matplotlib axes object
         """
-        # create plot and setup the plot
+        # create plot and setup the plot # TODO: add note re: n & m scales
         with plotting_context(title="Biaxial Bending Diagram", **kwargs) as (fig, ax):
             if ax is None:
                 msg = "Plot failed."
@@ -1277,7 +1327,7 @@ class BiaxialBendingResults:
         Returns:
             Matplotlib axes object
         """
-        # make 3d plot
+        # make 3d plot # TODO: add note re: n & m scales
         plt.figure()
         ax = plt.axes(projection="3d")
 
