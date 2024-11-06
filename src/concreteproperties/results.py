@@ -482,14 +482,14 @@ class MomentCurvatureResults:
 
     def plot_results(
         self,
-        m_scale: float = 1e-6,
+        m_scale: float = 1,
         fmt: str = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots the moment curvature results.
 
         Args:
-            m_scale: Scaling factor to apply to bending moment. Defaults ``1e-6``.
+            m_scale: Scaling factor to apply to bending moment. Defaults ``1``.
             fmt: Plot format string. Defaults ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
@@ -516,7 +516,7 @@ class MomentCurvatureResults:
     def plot_multiple_results(
         moment_curvature_results: list[MomentCurvatureResults],
         labels: list[str],
-        m_scale: float = 1e-6,
+        m_scale: float = 1,
         fmt: str = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
@@ -525,7 +525,7 @@ class MomentCurvatureResults:
         Args:
             moment_curvature_results: List of moment curvature results objects
             labels: List of labels for each moment curvature diagram
-            m_scale: Scaling factor to apply to bending moment. Defaults ``1e-6``.
+            m_scale: Scaling factor to apply to bending moment. Defaults ``1``.
             fmt: Plot format string. Defaults ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
@@ -731,8 +731,8 @@ class MomentInteractionResults:
 
     def plot_diagram(
         self,
-        n_scale: float = 1e-3,
-        m_scale: float = 1e-6,
+        n_scale: float = 1,
+        m_scale: float = 1,
         moment: str = "m_x",
         fmt: str = "o-",
         labels: bool = False,
@@ -742,9 +742,8 @@ class MomentInteractionResults:
         """Plots a moment interaction diagram.
 
         Args:
-            n_scale: Scaling factor to apply to axial force. Defaults to ``1e-3``.
-            m_scale: Scaling factor to apply to the bending moment. Defaults to
-                ``1e-6``.
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
+            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
             moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
                 ``"m_xy"``. Defaults to ``"m_x"``.
             fmt: Plot format string. Defaults to ``"o-"``.
@@ -830,8 +829,8 @@ class MomentInteractionResults:
     def plot_multiple_diagrams(
         moment_interaction_results: list[MomentInteractionResults],
         labels: list[str],
-        n_scale: float = 1e-3,
-        m_scale: float = 1e-6,
+        n_scale: float = 1,
+        m_scale: float = 1,
         moment: str = "m_x",
         fmt: str = "o-",
         **kwargs,
@@ -841,8 +840,8 @@ class MomentInteractionResults:
         Args:
             moment_interaction_results: List of moment interaction results objects
             labels: List of labels for each moment interaction diagram.
-            n_scale: Scaling factor to apply to axial force. Defaults to ``1e-3``.
-            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
+            m_scale: Scaling factor to apply to bending moment. Defaults to ``1``.
             moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
                 ``"m_xy"``. Defaults to ``"m_x"``.
             fmt: Plot format string. Defaults to ``"o-"``.
@@ -946,14 +945,14 @@ class BiaxialBendingResults:
 
     def plot_diagram(
         self,
-        m_scale: float = 1e-6,
+        m_scale: float = 1,
         fmt: str = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots a biaxial bending diagram.
 
         Args:
-            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
+            m_scale: Scaling factor to apply to bending moment. Defaults to ``1``.
             fmt: Plot format string. Defaults to ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
@@ -986,7 +985,7 @@ class BiaxialBendingResults:
     def plot_multiple_diagrams_2d(
         biaxial_bending_results: list[BiaxialBendingResults],
         labels: list[str] | None = None,
-        m_scale: float = 1e-6,
+        m_scale: float = 1,
         fmt: str = "o-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
@@ -996,7 +995,7 @@ class BiaxialBendingResults:
             biaxial_bending_results: List of biaxial bending results objects
             labels: List of labels for each biaxial bending diagram, if not provided
                 labels are axial forces. Defaults to ``None``.
-            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
+            m_scale: Scaling factor to apply to bending moment. Defaults to ``1``.
             fmt: Plot format string. Defaults to ``"o-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
@@ -1045,16 +1044,16 @@ class BiaxialBendingResults:
     @staticmethod
     def plot_multiple_diagrams_3d(
         biaxial_bending_results: list[BiaxialBendingResults],
-        n_scale: float = 1e-3,
-        m_scale: float = 1e-6,
+        n_scale: float = 1,
+        m_scale: float = 1,
         fmt: str = "-",
     ) -> matplotlib.axes.Axes:
         """Plots multiple biaxial bending diagrams in a 3D plot.
 
         Args:
             biaxial_bending_results: List of biaxial bending results objects
-            n_scale: Scaling factor to apply to axial force. Defaults to ``1e-3``.
-            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
+            m_scale: Scaling factor to apply to bending moment. Defaults to ``1``.
             fmt: Plot format string. Defaults to ``"-"``.
 
         Returns:
