@@ -138,4 +138,21 @@ def string_formatter(
         return val_fmt
 
 
-# TODO: FuncFormatter for plots
+def string_formatter_plots(
+    value: float,
+    prec: int,
+) -> str:
+    """Formats a float using engineering notation for plotting.
+
+    Args:
+        value: Number to format
+        prec: The desired precision (i.e. one plus this value is the desired number of
+            digits)
+
+    Returns:
+        Formatted string
+    """
+    q = Quantity(value)
+    return q.render(
+        form="eng", show_units=False, prec=prec, strip_zeros=True, strip_radix=True
+    )

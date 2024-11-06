@@ -1,5 +1,6 @@
 """AS3600 class for designing to the Australian Standard AS 3600:2018."""
 
+# TODO: have built in options for result classes that can be set by codes!!
 from __future__ import annotations
 
 from copy import deepcopy

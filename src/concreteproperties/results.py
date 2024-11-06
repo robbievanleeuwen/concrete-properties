@@ -14,13 +14,18 @@ import matplotlib.tri as tri
 import numpy as np
 from matplotlib.collections import PatchCollection
 from matplotlib.colors import CenteredNorm
+from matplotlib.ticker import FuncFormatter
 from rich.console import Console
 from rich.table import Table
 from scipy.interpolate import interp1d
 from sectionproperties.pre.geometry import CompoundGeometry
 from shapely import Point, Polygon
 
-from concreteproperties.post import plotting_context, string_formatter
+from concreteproperties.post import (
+    plotting_context,
+    string_formatter,
+    string_formatter_plots,
+)
 
 if TYPE_CHECKING:
     from concreteproperties.analysis_section import AnalysisSection
@@ -707,32 +712,54 @@ class MomentCurvatureResults:
 
     def plot_results(
         self,
-        m_scale: float = 1e-6,
         fmt: str = "o-",
+        eng: bool = False,
+        prec: int = 2,
+        m_scale: float = 1,
+        m_unit: str = "-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots the moment curvature results.
 
         Args:
-            m_scale: Scaling factor to apply to bending moment. Defaults ``1e-6``.
             fmt: Plot format string. Defaults ``"o-"``.
+            eng: If set to ``True``, formats the plot ticks with engineering notation.
+                If set to ``False``, uses the default ``matplotlib`` ticker formatting.
+                Defaults to ``False``.
+            prec: If ``eng=True``, sets the desired precision of the ticker formatting
+                (i.e. one plus this value is the desired number of digits). Defaults to
+                ``2``.
+            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
+            m_unit: Unit string to apply to the bending moment plot label. Defaults to
+                ``"-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
-        # scale moments # TODO: add note re: n & m scales
+        # scale momentss
         moments = np.array(self.m_xy) * m_scale
 
         # create plot and setup the plot
-        with plotting_context(title="Moment-Curvature", **kwargs) as (fig, ax):
+        with plotting_context(title="Moment-Curvature", **kwargs) as (_, ax):
             if ax is None:
                 msg = "Plot failed."
                 raise RuntimeError(msg)
 
             ax.plot(self.kappa, moments, fmt)
-            plt.xlabel("Curvature")
-            plt.ylabel("Moment")
+
+            if eng:
+                x_formatter = FuncFormatter(
+                    lambda x, _: string_formatter_plots(value=x, prec=prec)
+                )
+                y_formatter = FuncFormatter(
+                    lambda y, _: string_formatter_plots(value=y, prec=prec)
+                )
+                ax.xaxis.set_major_formatter(x_formatter)
+                ax.yaxis.set_major_formatter(y_formatter)
+
+            plt.xlabel("Curvature [-]")
+            plt.ylabel(f"Bending Moment [{m_unit}]")
             plt.grid(True)
 
         return ax
@@ -741,8 +768,11 @@ class MomentCurvatureResults:
     def plot_multiple_results(
         moment_curvature_results: list[MomentCurvatureResults],
         labels: list[str],
-        m_scale: float = 1e-6,
         fmt: str = "o-",
+        eng: bool = False,
+        prec: int = 2,
+        m_scale: float = 1,
+        m_unit: str = "-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots multiple moment curvature results.
@@ -750,15 +780,23 @@ class MomentCurvatureResults:
         Args:
             moment_curvature_results: List of moment curvature results objects
             labels: List of labels for each moment curvature diagram
-            m_scale: Scaling factor to apply to bending moment. Defaults ``1e-6``.
             fmt: Plot format string. Defaults ``"o-"``.
+            eng: If set to ``True``, formats the plot ticks with engineering notation.
+                If set to ``False``, uses the default ``matplotlib`` ticker formatting.
+                Defaults to ``False``.
+            prec: If ``eng=True``, sets the desired precision of the ticker formatting
+                (i.e. one plus this value is the desired number of digits). Defaults to
+                ``2``.
+            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
+            m_unit: Unit string to apply to the bending moment plot label. Defaults to
+                ``"-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
-        # create plot and setup the plot # TODO: add note re: n & m scales
-        with plotting_context(title="Moment-Curvature", **kwargs) as (fig, ax):
+        # create plot and setup the plots
+        with plotting_context(title="Moment-Curvature", **kwargs) as (_, ax):
             if ax is None:
                 msg = "Plot failed."
                 raise RuntimeError(msg)
@@ -773,8 +811,18 @@ class MomentCurvatureResults:
 
                 ax.plot(kappas, moments, fmt, label=labels[idx])
 
-            plt.xlabel("Curvature")
-            plt.ylabel("Moment")
+                if eng:
+                    x_formatter = FuncFormatter(
+                        lambda x, _: string_formatter_plots(value=x, prec=prec)
+                    )
+                    y_formatter = FuncFormatter(
+                        lambda y, _: string_formatter_plots(value=y, prec=prec)
+                    )
+                    ax.xaxis.set_major_formatter(x_formatter)
+                    ax.yaxis.set_major_formatter(y_formatter)
+
+            plt.xlabel("Curvature [-]")
+            plt.ylabel(f"Bending Moment [{m_unit}]")
             plt.grid(True)
 
             # if there is more than one curve show legend
@@ -998,20 +1046,21 @@ class MomentInteractionResults:
 
     def plot_diagram(
         self,
-        n_scale: float = 1e-3,
-        m_scale: float = 1e-6,
         moment: str = "m_x",
         fmt: str = "o-",
         labels: bool = False,
         label_offset: bool = False,
+        eng: bool = False,
+        prec: int = 2,
+        n_scale: float = 1,
+        m_scale: float = 1,
+        n_unit: str = "-",
+        m_unit: str = "-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots a moment interaction diagram.
 
         Args:
-            n_scale: Scaling factor to apply to axial force. Defaults to ``1e-3``.
-            m_scale: Scaling factor to apply to the bending moment. Defaults to
-                ``1e-6``.
             moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
                 ``"m_xy"``. Defaults to ``"m_x"``.
             fmt: Plot format string. Defaults to ``"o-"``.
@@ -1019,16 +1068,25 @@ class MomentInteractionResults:
                 ``False``.
             label_offset: If set to True, attempts to offset the label from the diagram.
                 Defaults to ``False``.
+            eng: If set to ``True``, formats the plot ticks with engineering notation.
+                If set to ``False``, uses the default ``matplotlib`` ticker formatting.
+                Defaults to ``False``.
+            prec: If ``eng=True``, sets the desired precision of the ticker formatting
+                (i.e. one plus this value is the desired number of digits). Defaults to
+                ``2``.
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
+            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
+            n_unit: Unit string to apply to the axial force plot label. Defaults to
+                ``"-"``.
+            m_unit: Unit string to apply to the bending moment plot label. Defaults to
+                ``"-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
-        # create plot and setup the plot # TODO: add note re: n & m scales
-        with plotting_context(title="Moment Interaction Diagram", **kwargs) as (
-            fig,
-            ax,
-        ):
+        # create plot and setup the plots
+        with plotting_context(title="Moment Interaction Diagram", **kwargs) as (_, ax):
             if ax is None:
                 msg = "Plot failed."
                 raise RuntimeError(msg)
@@ -1087,8 +1145,18 @@ class MomentInteractionResults:
                             **annotate_dict,
                         )
 
-            plt.xlabel("Bending Moment")
-            plt.ylabel("Axial Force")
+            if eng:
+                x_formatter = FuncFormatter(
+                    lambda x, _: string_formatter_plots(value=x, prec=prec)
+                )
+                y_formatter = FuncFormatter(
+                    lambda y, _: string_formatter_plots(value=y, prec=prec)
+                )
+                ax.xaxis.set_major_formatter(x_formatter)
+                ax.yaxis.set_major_formatter(y_formatter)
+
+            plt.xlabel(f"Bending Moment [{m_unit}]")
+            plt.ylabel(f"Axial Force [{n_unit}]")
             plt.grid(True)
 
         return ax
@@ -1097,10 +1165,14 @@ class MomentInteractionResults:
     def plot_multiple_diagrams(
         moment_interaction_results: list[MomentInteractionResults],
         labels: list[str],
-        n_scale: float = 1e-3,
-        m_scale: float = 1e-6,
         moment: str = "m_x",
         fmt: str = "o-",
+        eng: bool = False,
+        prec: int = 2,
+        n_scale: float = 1,
+        m_scale: float = 1,
+        n_unit: str = "-",
+        m_unit: str = "-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots multiple moment interaction diagrams.
@@ -1108,21 +1180,28 @@ class MomentInteractionResults:
         Args:
             moment_interaction_results: List of moment interaction results objects
             labels: List of labels for each moment interaction diagram.
-            n_scale: Scaling factor to apply to axial force. Defaults to ``1e-3``.
-            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
             moment: Which moment to plot, acceptable values are ``"m_x"``, ``"m_y"`` or
                 ``"m_xy"``. Defaults to ``"m_x"``.
             fmt: Plot format string. Defaults to ``"o-"``.
+            eng: If set to ``True``, formats the plot ticks with engineering notation.
+                If set to ``False``, uses the default ``matplotlib`` ticker formatting.
+                Defaults to ``False``.
+            prec: If ``eng=True``, sets the desired precision of the ticker formatting
+                (i.e. one plus this value is the desired number of digits). Defaults to
+                ``2``.
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
+            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
+            n_unit: Unit string to apply to the axial force plot label. Defaults to
+                ``"-"``.
+            m_unit: Unit string to apply to the bending moment plot label. Defaults to
+                ``"-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
-        # create plot and setup the plot # TODO: add note re: n & m scales
-        with plotting_context(title="Moment Interaction Diagram", **kwargs) as (
-            fig,
-            ax,
-        ):
+        # create plot and setup the plots
+        with plotting_context(title="Moment Interaction Diagram", **kwargs) as (_, ax):
             if ax is None:
                 msg = "Plot failed."
                 raise RuntimeError(msg)
@@ -1139,8 +1218,18 @@ class MomentInteractionResults:
 
                 ax.plot(moments, forces, fmt, label=labels[idx])
 
-            plt.xlabel("Bending Moment")
-            plt.ylabel("Axial Force")
+                if eng:
+                    x_formatter = FuncFormatter(
+                        lambda x, _: string_formatter_plots(value=x, prec=prec)
+                    )
+                    y_formatter = FuncFormatter(
+                        lambda y, _: string_formatter_plots(value=y, prec=prec)
+                    )
+                    ax.xaxis.set_major_formatter(x_formatter)
+                    ax.yaxis.set_major_formatter(y_formatter)
+
+            plt.xlabel(f"Bending Moment [{m_unit}]")
+            plt.ylabel(f"Axial Force [{n_unit}]")
             plt.grid(True)
 
             # if there is more than one curve show legend
@@ -1213,15 +1302,31 @@ class BiaxialBendingResults:
 
     def plot_diagram(
         self,
-        m_scale: float = 1e-6,
         fmt: str = "o-",
+        eng: bool = False,
+        prec: int = 2,
+        n_scale: float = 1,
+        m_scale: float = 1,
+        n_unit: str = "",
+        m_unit: str = "-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots a biaxial bending diagram.
 
         Args:
-            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
             fmt: Plot format string. Defaults to ``"o-"``.
+            eng: If set to ``True``, formats the plot ticks with engineering notation.
+                If set to ``False``, uses the default ``matplotlib`` ticker formatting.
+                Defaults to ``False``.
+            prec: If ``eng=True``, sets the desired precision of the ticker formatting
+                (i.e. one plus this value is the desired number of digits). Defaults to
+                ``2``.
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
+            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
+            n_unit: Unit string to apply to the axial force plot label. Defaults to
+                ``""``.
+            m_unit: Unit string to apply to the bending moment plot label. Defaults to
+                ``"-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
@@ -1229,9 +1334,14 @@ class BiaxialBendingResults:
         """
         m_x_list, m_y_list = self.get_results_lists()
 
-        # create plot and setup the plot # TODO: add note re: n & m scales
+        if eng:
+            n_str = string_formatter_plots(value=self.n * n_scale, prec=prec)
+        else:
+            n_str = f"{self.n * n_scale:.3e}"
+
+        # create plot and setup the plots
         with plotting_context(
-            title=f"Biaxial Bending Diagram, $N = {self.n:.3e}$", **kwargs
+            title=f"Biaxial Bending Diagram, N = {n_str} {n_unit}", **kwargs
         ) as (fig, ax):
             if ax is None:
                 msg = "Plot failed."
@@ -1243,8 +1353,18 @@ class BiaxialBendingResults:
 
             ax.plot(m_x, m_y, fmt)
 
-            plt.xlabel("Bending Moment $M_x$")
-            plt.ylabel("Bending Moment $M_y$")
+            if eng:
+                x_formatter = FuncFormatter(
+                    lambda x, _: string_formatter_plots(value=x, prec=prec)
+                )
+                y_formatter = FuncFormatter(
+                    lambda y, _: string_formatter_plots(value=y, prec=prec)
+                )
+                ax.xaxis.set_major_formatter(x_formatter)
+                ax.yaxis.set_major_formatter(y_formatter)
+
+            plt.xlabel("Bending Moment $M_x$" + f" [{m_unit}]")
+            plt.ylabel("Bending Moment $M_y$" + f" [{m_unit}]")
             plt.grid(True)
 
         return ax
@@ -1253,8 +1373,13 @@ class BiaxialBendingResults:
     def plot_multiple_diagrams_2d(
         biaxial_bending_results: list[BiaxialBendingResults],
         labels: list[str] | None = None,
-        m_scale: float = 1e-6,
         fmt: str = "o-",
+        eng: bool = False,
+        prec: int = 2,
+        n_scale: float = 1,
+        m_scale: float = 1,
+        n_unit: str = "",
+        m_unit: str = "-",
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots multiple biaxial bending diagrams in a 2D plot.
@@ -1263,15 +1388,26 @@ class BiaxialBendingResults:
             biaxial_bending_results: List of biaxial bending results objects
             labels: List of labels for each biaxial bending diagram, if not provided
                 labels are axial forces. Defaults to ``None``.
-            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
             fmt: Plot format string. Defaults to ``"o-"``.
+            eng: If set to ``True``, formats the plot ticks with engineering notation.
+                If set to ``False``, uses the default ``matplotlib`` ticker formatting.
+                Defaults to ``False``.
+            prec: If ``eng=True``, sets the desired precision of the ticker formatting
+                (i.e. one plus this value is the desired number of digits). Defaults to
+                ``2``.
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
+            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
+            n_unit: Unit string to apply to the axial force plot label. Defaults to
+                ``""``.
+            m_unit: Unit string to apply to the bending moment plot label. Defaults to
+                ``"-"``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
-        # create plot and setup the plot # TODO: add note re: n & m scales
-        with plotting_context(title="Biaxial Bending Diagram", **kwargs) as (fig, ax):
+        # create plot and setup the plots
+        with plotting_context(title="Biaxial Bending Diagram", **kwargs) as (_, ax):
             if ax is None:
                 msg = "Plot failed."
                 raise RuntimeError(msg)
@@ -1295,12 +1431,29 @@ class BiaxialBendingResults:
 
                 # generate default labels
                 if default_labels:
-                    labels.append(f"N = {bb_result.n:.3e}")
+                    if eng:
+                        n_str = string_formatter_plots(
+                            value=bb_result.n * n_scale, prec=prec
+                        )
+                    else:
+                        n_str = f"{bb_result.n * n_scale:.3e}"
+
+                    labels.append(f"N = {n_str} {n_unit}")
 
                 ax.plot(m_x_list, m_y_list, fmt, label=labels[idx])
 
-            plt.xlabel("Bending Moment $M_x$")
-            plt.ylabel("Bending Moment $M_y$")
+                if eng:
+                    x_formatter = FuncFormatter(
+                        lambda x, _: string_formatter_plots(value=x, prec=prec)
+                    )
+                    y_formatter = FuncFormatter(
+                        lambda y, _: string_formatter_plots(value=y, prec=prec)
+                    )
+                    ax.xaxis.set_major_formatter(x_formatter)
+                    ax.yaxis.set_major_formatter(y_formatter)
+
+            plt.xlabel("Bending Moment $M_x$" + f" [{m_unit}]")
+            plt.ylabel("Bending Moment $M_y$" + f" [{m_unit}]")
             plt.grid(True)
 
             # if there is more than one curve show legend
@@ -1312,22 +1465,36 @@ class BiaxialBendingResults:
     @staticmethod
     def plot_multiple_diagrams_3d(
         biaxial_bending_results: list[BiaxialBendingResults],
-        n_scale: float = 1e-3,
-        m_scale: float = 1e-6,
         fmt: str = "-",
+        eng: bool = False,
+        prec: int = 2,
+        n_scale: float = 1,
+        m_scale: float = 1,
+        n_unit: str = "",
+        m_unit: str = "-",
     ) -> matplotlib.axes.Axes:
         """Plots multiple biaxial bending diagrams in a 3D plot.
 
         Args:
             biaxial_bending_results: List of biaxial bending results objects
-            n_scale: Scaling factor to apply to axial force. Defaults to ``1e-3``.
-            m_scale: Scaling factor to apply to bending moment. Defaults to ``1e-6``.
             fmt: Plot format string. Defaults to ``"-"``.
+            eng: If set to ``True``, formats the plot ticks with engineering notation.
+                If set to ``False``, uses the default ``matplotlib`` ticker formatting.
+                Defaults to ``False``.
+            prec: If ``eng=True``, sets the desired precision of the ticker formatting
+                (i.e. one plus this value is the desired number of digits). Defaults to
+                ``2``.
+            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
+            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
+            n_unit: Unit string to apply to the axial force plot label. Defaults to
+                ``""``.
+            m_unit: Unit string to apply to the bending moment plot label. Defaults to
+                ``"-"``.
 
         Returns:
             Matplotlib axes object
         """
-        # make 3d plot # TODO: add note re: n & m scales
+        # make 3d plots
         plt.figure()
         ax = plt.axes(projection="3d")
 
@@ -1342,9 +1509,23 @@ class BiaxialBendingResults:
 
             ax.plot3D(m_x_list, m_y_list, n_list, fmt)  # pyright: ignore
 
-        ax.set_xlabel("Bending Moment $M_x$")
-        ax.set_ylabel("Bending Moment $M_y$")
-        ax.set_zlabel("Axial Force $N$")  # pyright: ignore
+            if eng:
+                x_formatter = FuncFormatter(
+                    lambda x, _: string_formatter_plots(value=x, prec=prec)
+                )
+                y_formatter = FuncFormatter(
+                    lambda y, _: string_formatter_plots(value=y, prec=prec)
+                )
+                z_formatter = FuncFormatter(
+                    lambda z, _: string_formatter_plots(value=z, prec=prec)
+                )
+                ax.xaxis.set_major_formatter(x_formatter)
+                ax.yaxis.set_major_formatter(y_formatter)
+                ax.zaxis.set_major_formatter(z_formatter)  # pyright: ignore
+
+        plt.xlabel("Bending Moment $M_x$" + f" [{m_unit}]")
+        plt.ylabel("Bending Moment $M_y$" + f" [{m_unit}]")
+        ax.set_zlabel("Axial Force $N$" + f" [{n_unit}]")  # pyright: ignore
         plt.show()
 
         return ax
