@@ -1179,7 +1179,7 @@ class ConcreteSection:
 
         Args:
             theta: Angle (in radians) the neutral axis makes with the horizontal axis
-                (:math:`-\pi \leq \theta \leq \pi`)
+                (:math:`-\pi \leq \theta \leq \pi`). Defaults to ``0``.
             limits: List of control points that define the start and end of the
                 interaction diagram. List length must equal two. The default limits
                 range from concrete decompression strain to zero curvature tension, i.e.

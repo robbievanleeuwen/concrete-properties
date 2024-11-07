@@ -1,6 +1,7 @@
 """Tests the post methods."""
 
 import math
+import platform
 
 import pytest
 from sectionproperties.pre.library import concrete_rectangular_section
@@ -14,6 +15,58 @@ from concreteproperties import (
     SteelElasticPlastic,
 )
 from concreteproperties.post import DEFAULT_UNITS, si_kn_m, si_n_mm, string_formatter
+
+linux_only = pytest.mark.skipif(
+    platform.system() != "Linux",
+    reason="Only test plotting on Linux",
+)
+
+
+@pytest.fixture
+def concrete_section() -> ConcreteSection:
+    """Generates a simple ConcreteSection object.
+
+    Returns:
+        Geometry
+    """
+    concrete = Concrete(
+        name="32 MPa Concrete",
+        density=2.4e-6,
+        stress_strain_profile=ConcreteLinear(elastic_modulus=30.1e3),
+        ultimate_stress_strain_profile=RectangularStressBlock(
+            compressive_strength=32,
+            alpha=0.802,
+            gamma=0.89,
+            ultimate_strain=0.003,
+        ),
+        flexural_tensile_strength=3.4,
+        colour="lightgrey",
+    )
+    steel = SteelBar(
+        name="500 MPa Steel",
+        density=7.85e-6,
+        stress_strain_profile=SteelElasticPlastic(
+            yield_strength=500,
+            elastic_modulus=200e3,
+            fracture_strain=0.05,
+        ),
+        colour="grey",
+    )
+    geom = concrete_rectangular_section(
+        d=300,
+        b=300,
+        dia_top=20,
+        area_top=310,
+        n_top=2,
+        c_top=30,
+        dia_bot=24,
+        area_bot=450,
+        n_bot=2,
+        c_bot=30,
+        conc_mat=concrete,
+        steel_mat=steel,
+    )
+    return ConcreteSection(geom)
 
 
 def test_string_formatter():
@@ -91,46 +144,9 @@ def test_unit_display():
     assert si_kn_m.length_4_scale == pytest.approx(1e-12)
 
 
-def test_print():
+def test_print(concrete_section: ConcreteSection):
     """Tests printing results to terminal."""
-    concrete = Concrete(
-        name="32 MPa Concrete",
-        density=2.4e-6,
-        stress_strain_profile=ConcreteLinear(elastic_modulus=30.1e3),
-        ultimate_stress_strain_profile=RectangularStressBlock(
-            compressive_strength=32,
-            alpha=0.802,
-            gamma=0.89,
-            ultimate_strain=0.003,
-        ),
-        flexural_tensile_strength=3.4,
-        colour="lightgrey",
-    )
-    steel = SteelBar(
-        name="500 MPa Steel",
-        density=7.85e-6,
-        stress_strain_profile=SteelElasticPlastic(
-            yield_strength=500,
-            elastic_modulus=200e3,
-            fracture_strain=0.05,
-        ),
-        colour="grey",
-    )
-    geom = concrete_rectangular_section(
-        d=600,
-        b=400,
-        dia_top=20,
-        area_top=310,
-        n_top=3,
-        c_top=30,
-        dia_bot=24,
-        area_bot=450,
-        n_bot=3,
-        c_bot=30,
-        conc_mat=concrete,
-        steel_mat=steel,
-    )
-    conc_sec = ConcreteSection(geom)
+    conc_sec = concrete_section
     gross_props = conc_sec.get_gross_properties()
     gross_props.print_results()
     gross_props.print_results(units=DEFAULT_UNITS)
@@ -148,3 +164,26 @@ def test_print():
     ult_res.print_results()
     si_n_mm.radians = False  # display angles in degrees
     ult_res.print_results(units=si_n_mm)
+
+
+@linux_only
+def test_plot(concrete_section: ConcreteSection):
+    """Tests plotting results."""
+    conc_sec = concrete_section
+
+    # mk
+    mk = conc_sec.moment_curvature_analysis(kappa_inc=1e-6, progress_bar=False)
+    mk.plot_results()
+    mk.plot_failure_geometry()
+    mk.plot_multiple_results([mk, mk], ["1", "2"])
+
+    # mi
+    mi = conc_sec.moment_interaction_diagram()
+    mi.plot_diagram()
+    mi.plot_multiple_diagrams([mi, mi], ["1", "2"])
+
+    # bbd
+    bbd = conc_sec.biaxial_bending_diagram(n=16)
+    bbd.plot_diagram()
+    bbd.plot_multiple_diagrams_2d([bbd, bbd])
+    bbd.plot_multiple_diagrams_3d([bbd, bbd])
