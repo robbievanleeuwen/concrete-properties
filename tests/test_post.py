@@ -3,8 +3,17 @@
 import math
 
 import pytest
+from sectionproperties.pre.library import concrete_rectangular_section
 
-from concreteproperties.post import si_kn_m, si_n_mm, string_formatter
+from concreteproperties import (
+    Concrete,
+    ConcreteLinear,
+    ConcreteSection,
+    RectangularStressBlock,
+    SteelBar,
+    SteelElasticPlastic,
+)
+from concreteproperties.post import DEFAULT_UNITS, si_kn_m, si_n_mm, string_formatter
 
 
 def test_string_formatter():
@@ -80,3 +89,62 @@ def test_unit_display():
     assert si_kn_m.length_4_unit == " m^4"
     assert si_n_mm.length_4_scale == pytest.approx(1)
     assert si_kn_m.length_4_scale == pytest.approx(1e-12)
+
+
+def test_print():
+    """Tests printing results to terminal."""
+    concrete = Concrete(
+        name="32 MPa Concrete",
+        density=2.4e-6,
+        stress_strain_profile=ConcreteLinear(elastic_modulus=30.1e3),
+        ultimate_stress_strain_profile=RectangularStressBlock(
+            compressive_strength=32,
+            alpha=0.802,
+            gamma=0.89,
+            ultimate_strain=0.003,
+        ),
+        flexural_tensile_strength=3.4,
+        colour="lightgrey",
+    )
+    steel = SteelBar(
+        name="500 MPa Steel",
+        density=7.85e-6,
+        stress_strain_profile=SteelElasticPlastic(
+            yield_strength=500,
+            elastic_modulus=200e3,
+            fracture_strain=0.05,
+        ),
+        colour="grey",
+    )
+    geom = concrete_rectangular_section(
+        d=600,
+        b=400,
+        dia_top=20,
+        area_top=310,
+        n_top=3,
+        c_top=30,
+        dia_bot=24,
+        area_bot=450,
+        n_bot=3,
+        c_bot=30,
+        conc_mat=concrete,
+        steel_mat=steel,
+    )
+    conc_sec = ConcreteSection(geom)
+    gross_props = conc_sec.get_gross_properties()
+    gross_props.print_results()
+    gross_props.print_results(units=DEFAULT_UNITS)
+    gross_props.print_results(units=si_n_mm)
+    gross_props.print_results(units=si_kn_m)
+    transformed_props = conc_sec.get_transformed_gross_properties(
+        elastic_modulus=30.1e3
+    )
+    transformed_props.print_results()
+    cracked_res = conc_sec.calculate_cracked_properties()
+    cracked_res.print_results()
+    cracked_res.calculate_transformed_properties(elastic_modulus=32.8e3)
+    cracked_res.print_results()
+    ult_res = conc_sec.ultimate_bending_capacity()
+    ult_res.print_results()
+    si_n_mm.radians = False  # display angles in degrees
+    ult_res.print_results(units=si_n_mm)
