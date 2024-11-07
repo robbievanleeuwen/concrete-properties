@@ -196,7 +196,7 @@ def string_formatter_stress(
 
 @dataclass
 class UnitDisplay:
-    """Class for displaying units in concreteproperties.
+    """Class for displaying units in ``concreteproperties``.
 
     Attributes:
         length: Length unit string
@@ -204,9 +204,12 @@ class UnitDisplay:
         mass: Mass unit string
         radians: If set to ``True``, displays angles in radians, otherwise displays
             angles in degrees. Defaults to ``True``.
-        length_factor: Factor by which the ``length`` unit differs from the base units
-        force_factor: Factor by which the ``force`` unit differs from the base units
-        mass_factor: Factor by which the ``mass`` unit differs from the base units
+        length_factor: Factor by which the ``length`` unit differs from the base units.
+            Defaults to ``1.0``.
+        force_factor: Factor by which the ``force`` unit differs from the base units.
+            Defaults to ``1.0``.
+        mass_factor: Factor by which the ``mass`` unit differs from the base units.
+            Defaults to ``1.0``.
     """
 
     length: str
@@ -335,6 +338,7 @@ class UnitDisplay:
         return 1 / self.length_factor**4
 
 
+DEFAULT_UNITS = UnitDisplay(length="", force="", mass="")
 si_n_mm = UnitDisplay(length="mm", force="N", mass="kg")
 si_kn_m = UnitDisplay(
     length="m", force="kN", mass="kg", length_factor=1e3, force_factor=1e3

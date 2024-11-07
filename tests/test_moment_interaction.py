@@ -8,6 +8,7 @@ import concreteproperties.results as res
 import concreteproperties.utils as utils
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import Concrete, SteelBar
+from concreteproperties.post import DEFAULT_UNITS
 from concreteproperties.stress_strain_profile import (
     ConcreteLinear,
     RectangularStressBlock,
@@ -118,7 +119,9 @@ def test_limits(limits):
     limit_results = [
         conc_sec.calculate_ultimate_section_actions(
             d_n=conc_sec.decode_d_n(theta=0, cp=lim, d_t=d_t),
-            ultimate_results=res.UltimateBendingResults(theta=theta),
+            ultimate_results=res.UltimateBendingResults(
+                default_units=DEFAULT_UNITS, theta=theta
+            ),
         )
         for lim in limits
     ]

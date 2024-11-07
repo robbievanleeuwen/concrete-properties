@@ -1,6 +1,5 @@
 """AS3600 class for designing to the Australian Standard AS 3600:2018."""
 
-# TODO: have built in options for result classes that can be set by codes!!
 from __future__ import annotations
 
 from copy import deepcopy
@@ -16,6 +15,7 @@ import concreteproperties.results as res
 import concreteproperties.stress_strain_profile as ssp
 from concreteproperties.design_codes.design_code import DesignCode
 from concreteproperties.material import Concrete, SteelBar
+from concreteproperties.post import DEFAULT_UNITS, si_n_mm
 from concreteproperties.utils import AnalysisError, create_known_progress
 
 if TYPE_CHECKING:
@@ -57,6 +57,11 @@ class AS3600(DesignCode):
             msg = "Meshed reinforcement is not supported in this design code."
             raise ValueError(msg)
 
+        # assign default units if not provided
+        if self.concrete_section.default_units is DEFAULT_UNITS:
+            self.concrete_section.default_units = si_n_mm
+            self.concrete_section.gross_properties.default_units = si_n_mm
+
         # determine reinforcement class
         self.reinforcement_class = "N"
 
@@ -83,7 +88,7 @@ class AS3600(DesignCode):
 
         .. admonition:: Material assumptions
 
-          - *Density*: 2400 kg/m\ :sup:`3`
+          - *Density*: 2400 kg/m\ :sup:`3` (2.4 x 10\ :sup:`-6` kg/mm\ :sup:`3`)
 
           - *Elastic modulus*: Interpolated from Table 3.1.2
 
@@ -334,7 +339,10 @@ class AS3600(DesignCode):
 
         # calculate axial force at balanced load
         balanced_res = self.concrete_section.calculate_ultimate_section_actions(
-            d_n=d_nb, ultimate_results=res.UltimateBendingResults(theta=theta)
+            d_n=d_nb,
+            ultimate_results=res.UltimateBendingResults(
+                default_units=self.concrete_section.default_units, theta=theta
+            ),
         )
 
         return balanced_res.n
@@ -420,6 +428,7 @@ class AS3600(DesignCode):
             squash = f_mi_res.results[0]
             decomp = f_mi_res.results[1]
             ult_res = res.UltimateBendingResults(
+                default_units=self.concrete_section.default_units,
                 theta=theta,
                 d_n=inf,
                 k_u=0,
@@ -438,6 +447,7 @@ class AS3600(DesignCode):
             factor = n_design / n_tensile
             pure = f_mi_res.results[-2]
             ult_res = res.UltimateBendingResults(
+                default_units=self.concrete_section.default_units,
                 theta=theta,
                 d_n=inf,
                 k_u=0,
@@ -538,6 +548,7 @@ class AS3600(DesignCode):
         mi_res.results.insert(
             0,
             res.UltimateBendingResults(
+                default_units=self.concrete_section.default_units,
                 theta=theta,
                 d_n=inf,
                 k_u=0,
@@ -551,6 +562,7 @@ class AS3600(DesignCode):
         # add tensile load
         mi_res.results.append(
             res.UltimateBendingResults(
+                default_units=self.concrete_section.default_units,
                 theta=theta,
                 d_n=0,
                 k_u=0,
@@ -607,7 +619,9 @@ class AS3600(DesignCode):
             factors (``factored_results``, ``phis``)
         """
         # initialise results
-        f_bb_res = res.BiaxialBendingResults(n=n_design)
+        f_bb_res = res.BiaxialBendingResults(
+            default_units=self.concrete_section.default_units, n=n_design
+        )
         phis = []
 
         # calculate d_theta

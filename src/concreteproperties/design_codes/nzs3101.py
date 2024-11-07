@@ -14,6 +14,7 @@ import concreteproperties.stress_strain_profile as ssp
 import concreteproperties.utils as utils
 from concreteproperties.design_codes.design_code import DesignCode
 from concreteproperties.material import Concrete, SteelBar
+from concreteproperties.post import si_n_mm
 
 if TYPE_CHECKING:
     from concreteproperties.concrete_section import ConcreteSection
@@ -103,6 +104,11 @@ class NZS3101(DesignCode):
 
         # assign section type
         self.section_type = section_type
+
+        # assign default units if not provided
+        if self.concrete_section.default_units.length == "":
+            self.concrete_section.default_units = si_n_mm
+            self.concrete_section.gross_properties.default_units = si_n_mm
 
         # check to make sure there are no meshed reinforcement regions
         if self.concrete_section.reinf_geometries_meshed:
@@ -377,7 +383,7 @@ class NZS3101(DesignCode):
         Calculate the probable compressive strength of concrete in accordance with
         NZSEE C5 assessement guidelines C5.4.2.2.
 
-        Taken as the nominal 28-day compressive strenght of the concrete specified for
+        Taken as the nominal 28-day compressive strength of the concrete specified for
         the original construciton, multiplied by 1.5 for strengths less than or equal to
         40 MPa, and 1.4 for strengths greater than 40 MPa.
 
@@ -729,7 +735,7 @@ class NZS3101(DesignCode):
             raise ValueError(msg)
 
     def check_f_y_limit(self) -> None:
-        """Checks the reinforcement strenghts are within limits.
+        """Checks the reinforcement strengths are within limits.
 
         Checks that the specified steel reinforcement strengths for all defined
         steel geometries comply with NZS3101:2006 CL 5.3.3.
@@ -774,7 +780,7 @@ class NZS3101(DesignCode):
         self,
         pphr_class: str,
     ) -> None:
-        """Checks the concrete strenght complies with the PPHR classification.
+        """Checks the concrete strength complies with the PPHR classification.
 
         Checks that a valid Potential Plastic Hinge Region (PPHR) classification has
         been specified, and that the specified compressive strengths for all defined
@@ -1836,7 +1842,9 @@ class NZS3101(DesignCode):
         self.check_f_y_limit()
 
         # initialise results
-        f_bb_res = res.BiaxialBendingResults(n=n_design)
+        f_bb_res = res.BiaxialBendingResults(
+            default_units=self.concrete_section.default_units, n=n_design
+        )
 
         # list to store phis
         phis = []

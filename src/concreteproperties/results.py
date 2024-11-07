@@ -22,7 +22,7 @@ from sectionproperties.pre.geometry import CompoundGeometry
 from shapely import Point, Polygon
 
 from concreteproperties.post import (
-    UnitDisplay,
+    DEFAULT_UNITS,
     plotting_context,
     string_formatter,
     string_formatter_plots,
@@ -32,6 +32,7 @@ from concreteproperties.post import (
 if TYPE_CHECKING:
     from concreteproperties.analysis_section import AnalysisSection
     from concreteproperties.concrete_section import ConcreteSection
+    from concreteproperties.post import UnitDisplay
     from concreteproperties.pre import CPGeom
 
 
@@ -44,6 +45,9 @@ class GrossProperties:
     :meth:`~concreteproperties.concrete_section.ConcreteSection.get_transformed_gross_properties`
     method.
     """
+
+    # units
+    default_units: UnitDisplay
 
     # section areas
     total_area: float = 0
@@ -119,9 +123,9 @@ class GrossProperties:
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
-        # assign default unit if no units applied
+        # assign default unit if no units provided
         if units is None:
-            units = UnitDisplay("", "", "")
+            units = self.default_units
 
         # add table rows
         table.add_row(
@@ -387,9 +391,13 @@ class TransformedGrossProperties:
     """Class for storing transformed gross concrete section properties.
 
     Args:
-        concrete_properties: Concrete properties object
+        default_units: Default units to use for reporting
+        concrete_properties: Gross properties object
         elastic_modulus: Reference elastic modulus
     """
+
+    # units
+    default_units: UnitDisplay
 
     concrete_properties: GrossProperties = field(repr=False)
     elastic_modulus: float
@@ -463,9 +471,9 @@ class TransformedGrossProperties:
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
-        # assign default unit if no units applied
+        # assign default unit if no units provided
         if units is None:
-            units = UnitDisplay("", "", "")
+            units = self.default_units
 
         # add table rows
         table.add_row(
@@ -625,9 +633,13 @@ class CrackedResults:
     method.
 
     Args:
+        default_units: Default units to use for reporting
         theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
     """
+
+    # units
+    default_units: UnitDisplay
 
     theta: float
     n: float = 0
@@ -734,6 +746,9 @@ class CrackedResults:
     ) -> None:
         """Prints cracked concrete section properties to the terminal.
 
+        If ``calculate_transformed_properties()`` has been called, also prints the
+        transformed properties.
+
         Args:
             eng: If set to ``True``, formats with engineering notation. If set to
                 ``False``, formats with fixed notation. Defaults to ``True``.
@@ -746,9 +761,9 @@ class CrackedResults:
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
-        # assign default unit if no units applied
+        # assign default unit if no units provided
         if units is None:
-            units = UnitDisplay("", "", "")
+            units = self.default_units
 
         # add table rows
         table.add_row(
@@ -1044,6 +1059,7 @@ class MomentCurvatureResults:
     r"""Class for storing moment curvature results.
 
     Args:
+        default_units: Default units to use for reporting
         theta: Angle (in radians) the neutral axis makes with the horizontal
         n_target: Target axial force axis (:math:`-\pi \leq \theta \leq \pi`)
         kappa: List of curvatures
@@ -1057,6 +1073,9 @@ class MomentCurvatureResults:
             the cross-section for each curvature step in the analysis. A value of one
             indicates failure.
     """
+
+    # units
+    default_units: UnitDisplay
 
     # results
     theta: float
@@ -1101,12 +1120,12 @@ class MomentCurvatureResults:
         Returns:
             Matplotlib axes object
         """
-        # assign default unit if no units applied
+        # assign default unit if no units provided
         if units is None:
-            units = UnitDisplay("", "", "")
-            moment_unit = "-"
-        else:
-            moment_unit = units.moment_unit[1:]
+            units = self.default_units
+
+        # check moment unit
+        moment_unit = "-" if units is DEFAULT_UNITS else units.moment_unit[1:]
 
         # scale moments
         moments = np.array(self.m_xy) * units.moment_scale
@@ -1162,7 +1181,7 @@ class MomentCurvatureResults:
         """
         # assign default unit if no units applied
         if units is None:
-            units = UnitDisplay("", "", "")
+            units = DEFAULT_UNITS
             moment_unit = "-"
         else:
             moment_unit = units.moment_unit[1:]
@@ -1255,6 +1274,7 @@ class UltimateBendingResults:
     r"""Class for storing ultimate bending results.
 
     Args:
+        default_units: Default units to use for reporting
         theta: Angle (in radians) the neutral axis makes with the horizontal axis
             (:math:`-\pi \leq \theta \leq \pi`)
         d_n: Ultimate neutral axis depth
@@ -1265,6 +1285,9 @@ class UltimateBendingResults:
         m_xy: Resultant bending moment
         label: Result label
     """
+
+    # units
+    default_units: UnitDisplay
 
     # bending angle
     theta: float
@@ -1302,9 +1325,9 @@ class UltimateBendingResults:
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
-        # assign default unit if no units applied
+        # assign default unit if no units provided
         if units is None:
-            units = UnitDisplay("", "", "")
+            units = self.default_units
 
         # add table rows
         if self.label:
@@ -1365,8 +1388,12 @@ class MomentInteractionResults:
     """Class for storing moment interaction results.
 
     Args:
+        default_units: Default units to use for reporting
         results: List of ultimate bending result objects
     """
+
+    # units
+    default_units: UnitDisplay
 
     results: list[UltimateBendingResults] = field(default_factory=list)
 
@@ -1452,14 +1479,17 @@ class MomentInteractionResults:
         Returns:
             Matplotlib axes object
         """
-        # assign default unit if no units applied
+        # assign default unit if no units provided
         if units is None:
-            units = UnitDisplay("", "", "")
-            force_unit = "-"
+            units = self.default_units
+
+        # check moment/force unit
+        if units is DEFAULT_UNITS:
             moment_unit = "-"
+            force_unit = "-"
         else:
-            force_unit = units.force_unit[1:]
             moment_unit = units.moment_unit[1:]
+            force_unit = units.force_unit[1:]
 
         # create plot and setup the plots
         with plotting_context(title="Moment Interaction Diagram", **kwargs) as (_, ax):
@@ -1567,7 +1597,7 @@ class MomentInteractionResults:
         """
         # assign default unit if no units applied
         if units is None:
-            units = UnitDisplay("", "", "")
+            units = DEFAULT_UNITS
             force_unit = "-"
             moment_unit = "-"
         else:
@@ -1649,9 +1679,13 @@ class BiaxialBendingResults:
     """Class for storing biaxial bending results.
 
     Args:
+        default_units: Default units to use for reporting
         n: Net axial force
         results: List of ultimate bending result objects
     """
+
+    # units
+    default_units: UnitDisplay
 
     n: float
     results: list[UltimateBendingResults] = field(default_factory=list)
@@ -1698,14 +1732,17 @@ class BiaxialBendingResults:
         Returns:
             Matplotlib axes object
         """
-        # assign default unit if no units applied
+        # assign default unit if no units provided
         if units is None:
-            units = UnitDisplay("", "", "")
-            force_unit = ""
+            units = self.default_units
+
+        # check moment/force unit
+        if units is DEFAULT_UNITS:
             moment_unit = "-"
+            force_unit = "-"
         else:
-            force_unit = units.force_unit[1:]
             moment_unit = units.moment_unit[1:]
+            force_unit = units.force_unit[1:]
 
         # get biaxial results
         m_x_list, m_y_list = self.get_results_lists()
@@ -1774,7 +1811,7 @@ class BiaxialBendingResults:
         """
         # assign default unit if no units applied
         if units is None:
-            units = UnitDisplay("", "", "")
+            units = DEFAULT_UNITS
             force_unit = ""
             moment_unit = "-"
         else:
@@ -1782,7 +1819,9 @@ class BiaxialBendingResults:
             moment_unit = units.moment_unit[1:]
 
         # create plot and setup the plots
-        with plotting_context(title="Biaxial Bending Diagram", **kwargs) as (_, ax):
+        with plotting_context(
+            title="Biaxial Bending Diagram", aspect=True, **kwargs
+        ) as (_, ax):
             if ax is None:
                 msg = "Plot failed."
                 raise RuntimeError(msg)
@@ -1860,7 +1899,7 @@ class BiaxialBendingResults:
         """
         # assign default unit if no units applied
         if units is None:
-            units = UnitDisplay("", "", "")
+            units = DEFAULT_UNITS
             force_unit = ""
             moment_unit = "-"
         else:
@@ -1926,6 +1965,7 @@ class StressResult:
     The lever arm is computed to the elastic centroid.
 
     Args:
+        default_units: Default units to use for reporting
         concrete_analysis_sections: List of concrete analysis section objects
             present in the stress analysis, which can be visualised by calling the
             :meth:`~concreteproperties.analysis_section.AnalysisSection.plot_mesh` or
@@ -1955,6 +1995,9 @@ class StressResult:
         strand_forces: List of net forces for each strand geometry and its lever arm
             (``force``, ``d_x``, ``d_y``)
     """
+
+    # units
+    default_units: UnitDisplay
 
     concrete_section: ConcreteSection
     concrete_analysis_sections: list[AnalysisSection]
@@ -1992,16 +2035,23 @@ class StressResult:
             eng: If set to ``True``, formats with engineering notation. If set to
                 ``False``, formats with fixed notation. Defaults to ``False``.
             prec: The desired precision (i.e. one plus this value is the desired number
-                of digits). Defaults to ``2``..
+                of digits). Defaults to ``2``.
             units: Unit system to display. Defaults to ``None``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
+        # assign default unit if no units provided
+        if units is None:
+            units = self.default_units
+
+        # check stress unit
+        stress_unit = "-" if units is DEFAULT_UNITS else units.stress_unit[1:]
+
         # assign default unit if no units applied
         if units is None:
-            units = UnitDisplay("", "", "")
+            units = DEFAULT_UNITS
             stress_unit = "-"
         else:
             stress_unit = units.stress_unit[1:]

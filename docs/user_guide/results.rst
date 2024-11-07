@@ -40,9 +40,8 @@ attributes. The transformed gross area properties can be printed to the terminal
 calling the
 :meth:`~concreteproperties.results.TransformedGrossProperties.print_results` method.
 
-..  autoclass:: concreteproperties.results.TransformedGrossProperties()
+..  automethod:: concreteproperties.results.TransformedGrossProperties.print_results()
   :noindex:
-  :members:
 
 .. seealso::
   For an application of the above, see the example
@@ -68,7 +67,7 @@ returns a :class:`~concreteproperties.results.CrackedResults` object.
   bending.
 
 Calling
-:meth:`~concreteproperties.results.TransformedGrossProperties.calculate_transformed_properties`
+:meth:`~concreteproperties.results.CrackedResults.calculate_transformed_properties`
 on a :class:`~concreteproperties.results.CrackedResults` object stores the transformed
 cracked properties as attributes within the current object.
 
@@ -167,3 +166,49 @@ stress results.
 .. seealso::
   For an application of the above, see the example
   :ref:`/examples/stress_analysis.ipynb`.
+
+
+Units
+-----
+
+Most of the above methods take an optional ``units`` argument as a
+:class:`~concreteproperties.post.UnitDisplay()` object. This argument allows results to
+be scaled and unit labels applied to numbers/plot axes.
+
+..  autoclass:: concreteproperties.post.UnitDisplay()
+  :noindex:
+
+For example, if the model data is specified in ``[N]`` and ``[mm]``, results can be
+expressed using ``[kN]`` and ``[m]`` by creating an appropriate ``UnitDisplay`` object:
+
+.. code-block:: python
+
+  from concreteproperties.post import UnitDisplay
+
+  kn_m = UnitDisplay(si_kn_m = UnitDisplay(
+    length="m", force="kN", mass="kg", length_factor=1e3, force_factor=1e3
+  )
+
+Note that stresses will automatically be displayed as kilopascals using the above
+unit system as ``[kPa]`` is equivalent to |kpa|. Similarly, results in ``[N.mm]``,
+``[MPa]`` etc. can be automatically displayed by creating a ``UnitDisplay`` object that
+represents the base unit system:
+
+.. |kpa| raw:: html
+
+  <code class="docutils literal notranslate"><span class="pre">[kN/m<sup>2</sup>]</span></code>
+
+.. code-block:: python
+
+  from concreteproperties.post import UnitDisplay
+
+  n_mm = UnitDisplay(length="mm", force="N", mass="kg")
+
+Note that the above two unit systems are baked into ``concreteproperties`` in the
+``post`` module with the ``si_n_mm`` and ``si_kn_m`` objects:
+
+.. code-block:: python
+
+  from concreteproperties.post import si_kn_m, si_n_mm
+
+``concreteproperties`` welcomes the contribution of further unit systems!

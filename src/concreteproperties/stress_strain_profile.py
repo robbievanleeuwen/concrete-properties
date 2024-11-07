@@ -15,13 +15,15 @@ from scipy.interpolate import interp1d
 from scipy.optimize import brentq
 
 from concreteproperties.post import (
-    UnitDisplay,
+    DEFAULT_UNITS,
     plotting_context,
     string_formatter_plots,
 )
 
 if TYPE_CHECKING:
     import matplotlib.axes
+
+    from concreteproperties.post import UnitDisplay
 
 
 @dataclass
@@ -243,7 +245,7 @@ class StressStrainProfile:
         """
         # assign default unit if no units applied
         if units is None:
-            units = UnitDisplay("", "", "")
+            units = DEFAULT_UNITS
             stress_unit = "-"
         else:
             stress_unit = units.stress_unit[1:]

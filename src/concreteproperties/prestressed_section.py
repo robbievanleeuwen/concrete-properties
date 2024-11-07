@@ -18,6 +18,8 @@ from concreteproperties.pre import CPGeom, CPGeomConcrete
 if TYPE_CHECKING:
     import sectionproperties.pre.geometry as sp_geom
 
+    from concreteproperties.post import UnitDisplay
+
 
 class PrestressedSection(ConcreteSection):
     """Class for a prestressed concrete section.
@@ -38,6 +40,7 @@ class PrestressedSection(ConcreteSection):
         geometry: sp_geom.CompoundGeometry,
         moment_centroid: tuple[float, float] | None = None,
         geometric_centroid_override: bool = True,
+        default_units: UnitDisplay | None = None,
     ) -> None:
         """Inits the ConcreteSection class.
 
@@ -51,6 +54,8 @@ class PrestressedSection(ConcreteSection):
             geometric_centroid_override: If set to True, sets ``moment_centroid`` to
                 the geometric centroid i.e. material properties applied. Defaults to
                 ``True``.
+            default_units: Default unit system to use for formatting results. Defaults
+                to ``None``.
 
         Raises:
             ValueError: If the section is not symmetric about the y-axis
@@ -60,6 +65,7 @@ class PrestressedSection(ConcreteSection):
             geometry=geometry,
             moment_centroid=moment_centroid,
             geometric_centroid_override=geometric_centroid_override,
+            default_units=default_units,
         )
 
         # check symmetry about y-axis
@@ -129,6 +135,7 @@ class PrestressedSection(ConcreteSection):
 
         # initialise cracked results object
         cracked_results = res.CrackedResults(
+            default_units=self.default_units,
             theta=0,
             n=self.gross_properties.n_prestress + n_ext,
             m=m_ext,
@@ -351,7 +358,9 @@ class PrestressedSection(ConcreteSection):
         # determine initial curvature that gives zero moment
         def find_intial_curvature(kappa0):
             # initialise moment curvature result
-            mk_res = res.MomentCurvatureResults(theta=theta, n_target=n)
+            mk_res = res.MomentCurvatureResults(
+                default_units=self.default_units, theta=theta, n_target=n
+            )
 
             # find neutral axis that gives convergence of axial force
             brentq(
@@ -541,6 +550,7 @@ class PrestressedSection(ConcreteSection):
                 lumped_reinf_geoms.append(lumped_geom)
 
         return res.StressResult(
+            default_units=self.default_units,
             concrete_section=self,
             concrete_analysis_sections=conc_sections,
             concrete_stresses=conc_sigs,
@@ -671,6 +681,7 @@ class PrestressedSection(ConcreteSection):
                 lumped_reinf_geoms.append(lumped_geom)
 
         return res.StressResult(
+            default_units=self.default_units,
             concrete_section=self,
             concrete_analysis_sections=conc_sections,
             concrete_stresses=conc_sigs,
@@ -720,7 +731,9 @@ class PrestressedSection(ConcreteSection):
 
         # initialise variables
         mk = res.MomentCurvatureResults(
-            theta=0, n_target=moment_curvature_results.n_target
+            default_units=self.default_units,
+            theta=0,
+            n_target=moment_curvature_results.n_target,
         )
 
         # find neutral axis that gives convergence of the axial force
@@ -836,6 +849,7 @@ class PrestressedSection(ConcreteSection):
                 lumped_reinf_geoms.append(lumped_geom)
 
         return res.StressResult(
+            default_units=self.default_units,
             concrete_section=self,
             concrete_analysis_sections=conc_sections,
             concrete_stresses=conc_sigs,
@@ -979,6 +993,7 @@ class PrestressedSection(ConcreteSection):
                 lumped_reinf_geoms.append(lumped_geom)
 
         return res.StressResult(
+            default_units=self.default_units,
             concrete_section=self,
             concrete_analysis_sections=conc_sections,
             concrete_stresses=conc_sigs,
