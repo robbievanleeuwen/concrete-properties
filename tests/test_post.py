@@ -22,3 +22,6 @@ def test_string_formatter():
         == "14.44 x 10^6"
     )
     assert string_formatter(value=14435.654, eng=True, prec=3, scale=1e-3) == "14.44"
+
+
+# TODO: unit display tests

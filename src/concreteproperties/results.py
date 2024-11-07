@@ -22,9 +22,11 @@ from sectionproperties.pre.geometry import CompoundGeometry
 from shapely import Point, Polygon
 
 from concreteproperties.post import (
+    UnitDisplay,
     plotting_context,
     string_formatter,
     string_formatter_plots,
+    string_formatter_stress,
 )
 
 if TYPE_CHECKING:
@@ -101,7 +103,7 @@ class GrossProperties:
         self,
         eng: bool = True,
         prec: int = 3,
-        radians: bool = True,
+        units: UnitDisplay | None = None,
     ) -> None:
         """Prints the gross concrete section properties to the terminal.
 
@@ -110,122 +112,247 @@ class GrossProperties:
                 ``False``, formats with fixed notation. Defaults to ``True``.
             prec: The desired precision (i.e. one plus this value is the desired number
                 of digits). Defaults to ``3``.
-            radians: If set to ``True``, prints angles in radians, else converts angles
-                to degrees. Defaults to ``True``.
+            units: Unit system to display. Defaults to ``None``.
         """
         # setup table
         table = Table(title="Gross Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
+        # assign default unit if no units applied
+        if units is None:
+            units = UnitDisplay("", "", "")
+
         # add table rows
         table.add_row(
-            "Total Area", string_formatter(value=self.total_area, eng=eng, prec=prec)
+            "Total Area",
+            string_formatter(
+                value=self.total_area, eng=eng, prec=prec, scale=units.area_scale
+            )
+            + units.area_unit,
         )
         table.add_row(
             "Concrete Area",
-            string_formatter(value=self.concrete_area, eng=eng, prec=prec),
+            string_formatter(
+                value=self.concrete_area, eng=eng, prec=prec, scale=units.area_scale
+            )
+            + units.area_unit,
         )
 
         if self.reinf_meshed_area:
             table.add_row(
                 "Meshed Reinforcement Area",
-                string_formatter(value=self.reinf_meshed_area, eng=eng, prec=prec),
+                string_formatter(
+                    value=self.reinf_meshed_area,
+                    eng=eng,
+                    prec=prec,
+                    scale=units.area_scale,
+                )
+                + units.area_unit,
             )
 
         table.add_row(
             "Lumped Reinforcement Area",
-            string_formatter(value=self.reinf_lumped_area, eng=eng, prec=prec),
+            string_formatter(
+                value=self.reinf_lumped_area, eng=eng, prec=prec, scale=units.area_scale
+            )
+            + units.area_unit,
         )
 
         if self.strand_area:
             table.add_row(
                 "Strand Area",
-                string_formatter(value=self.strand_area, eng=eng, prec=prec),
+                string_formatter(
+                    value=self.strand_area, eng=eng, prec=prec, scale=units.area_scale
+                )
+                + units.area_unit,
             )
 
         table.add_row(
-            "Axial Rigidity (EA)", string_formatter(value=self.e_a, eng=eng, prec=prec)
+            "Axial Rigidity (EA)",
+            string_formatter(
+                value=self.e_a, eng=eng, prec=prec, scale=units.force_scale
+            )
+            + units.force_unit,
         )
         table.add_row(
             "Mass (per unit length)",
-            string_formatter(value=self.mass, eng=eng, prec=prec),
+            string_formatter(
+                value=self.mass, eng=eng, prec=prec, scale=units.mass_per_length_scale
+            )
+            + units.mass_per_length_unit,
         )
         table.add_row(
             "Perimeter",
-            string_formatter(value=self.perimeter, eng=eng, prec=prec),
+            string_formatter(
+                value=self.perimeter, eng=eng, prec=prec, scale=units.length_scale
+            )
+            + units.length_unit,
             end_section=True,
         )
-        table.add_row("E.Qx", string_formatter(value=self.e_qx, eng=eng, prec=prec))
-        table.add_row("E.Qy", string_formatter(value=self.e_qy, eng=eng, prec=prec))
-        table.add_row("x-Centroid", string_formatter(value=self.cx, eng=eng, prec=prec))
-        table.add_row("y-Centroid", string_formatter(value=self.cy, eng=eng, prec=prec))
+        table.add_row(
+            "E.Qx",
+            string_formatter(
+                value=self.e_qx, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
+        )
+        table.add_row(
+            "E.Qy",
+            string_formatter(
+                value=self.e_qy, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
+        )
+        table.add_row(
+            "x-Centroid",
+            string_formatter(
+                value=self.cx, eng=eng, prec=prec, scale=units.length_scale
+            )
+            + units.length_unit,
+        )
+        table.add_row(
+            "y-Centroid",
+            string_formatter(
+                value=self.cy, eng=eng, prec=prec, scale=units.length_scale
+            )
+            + units.length_unit,
+        )
         table.add_row(
             "x-Centroid (Gross)",
-            string_formatter(value=self.cx_gross, eng=eng, prec=prec),
+            string_formatter(
+                value=self.cx_gross, eng=eng, prec=prec, scale=units.length_scale
+            )
+            + units.length_unit,
         )
         table.add_row(
             "y-Centroid (Gross)",
-            string_formatter(value=self.cy_gross, eng=eng, prec=prec),
+            string_formatter(
+                value=self.cy_gross, eng=eng, prec=prec, scale=units.length_scale
+            )
+            + units.length_unit,
             end_section=True,
         )
         table.add_row(
-            "E.Ixx_g", string_formatter(value=self.e_ixx_g, eng=eng, prec=prec)
+            "E.Ixx_g",
+            string_formatter(
+                value=self.e_ixx_g, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
-            "E.Iyy_g", string_formatter(value=self.e_iyy_g, eng=eng, prec=prec)
+            "E.Iyy_g",
+            string_formatter(
+                value=self.e_iyy_g, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
-            "E.Ixy_g", string_formatter(value=self.e_ixy_g, eng=eng, prec=prec)
+            "E.Ixy_g",
+            string_formatter(
+                value=self.e_ixy_g, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
-            "E.Ixx_c", string_formatter(value=self.e_ixx_c, eng=eng, prec=prec)
+            "E.Ixx_c",
+            string_formatter(
+                value=self.e_ixx_c, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
-            "E.Iyy_c", string_formatter(value=self.e_iyy_c, eng=eng, prec=prec)
+            "E.Iyy_c",
+            string_formatter(
+                value=self.e_iyy_c, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
-            "E.Ixy_c", string_formatter(value=self.e_ixy_c, eng=eng, prec=prec)
+            "E.Ixy_c",
+            string_formatter(
+                value=self.e_ixy_c, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
-        table.add_row("E.I11", string_formatter(value=self.e_i11, eng=eng, prec=prec))
-        table.add_row("E.I22", string_formatter(value=self.e_i22, eng=eng, prec=prec))
-
-        if radians:
-            phi = self.phi
-            ang_units = "rads"
-        else:
-            phi = self.phi * 180.0 / np.pi
-            ang_units = "degs"
+        table.add_row(
+            "E.I11",
+            string_formatter(
+                value=self.e_i11, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
+        )
+        table.add_row(
+            "E.I22",
+            string_formatter(
+                value=self.e_i22, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
+        )
 
         table.add_row(
             "Principal Axis Angle",
-            string_formatter(value=phi, eng=eng, prec=prec) + f" {ang_units}",
+            string_formatter(
+                value=self.phi, eng=eng, prec=prec, scale=units.angle_scale
+            )
+            + units.angle_unit,
             end_section=True,
         )
         table.add_row(
-            "E.Zxx+", string_formatter(value=self.e_zxx_plus, eng=eng, prec=prec)
+            "E.Zxx+",
+            string_formatter(
+                value=self.e_zxx_plus, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
         )
         table.add_row(
-            "E.Zxx-", string_formatter(value=self.e_zxx_minus, eng=eng, prec=prec)
+            "E.Zxx-",
+            string_formatter(
+                value=self.e_zxx_minus, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
         )
         table.add_row(
-            "E.Zyy+", string_formatter(value=self.e_zyy_plus, eng=eng, prec=prec)
+            "E.Zyy+",
+            string_formatter(
+                value=self.e_zyy_plus, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
         )
         table.add_row(
-            "E.Zyy-", string_formatter(value=self.e_zyy_minus, eng=eng, prec=prec)
+            "E.Zyy-",
+            string_formatter(
+                value=self.e_zyy_minus, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
         )
         table.add_row(
-            "E.Z11+", string_formatter(value=self.e_z11_plus, eng=eng, prec=prec)
+            "E.Z11+",
+            string_formatter(
+                value=self.e_z11_plus, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
         )
         table.add_row(
-            "E.Z11-", string_formatter(value=self.e_z11_minus, eng=eng, prec=prec)
+            "E.Z11-",
+            string_formatter(
+                value=self.e_z11_minus, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
         )
         table.add_row(
-            "E.Z22+", string_formatter(value=self.e_z22_plus, eng=eng, prec=prec)
+            "E.Z22+",
+            string_formatter(
+                value=self.e_z22_plus, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
         )
         table.add_row(
             "E.Z22-",
-            string_formatter(value=self.e_z22_minus, eng=eng, prec=prec),
+            string_formatter(
+                value=self.e_z22_minus, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
             end_section=True,
         )
         table.add_row(
@@ -238,11 +365,17 @@ class GrossProperties:
         if self.n_prestress:
             table.add_row(
                 "n_prestress",
-                string_formatter(value=self.n_prestress, eng=eng, prec=prec),
+                string_formatter(
+                    value=self.n_prestress, eng=eng, prec=prec, scale=units.force_scale
+                )
+                + units.force_unit,
             )
             table.add_row(
                 "m_prestress",
-                string_formatter(value=self.m_prestress, eng=eng, prec=prec),
+                string_formatter(
+                    value=self.m_prestress, eng=eng, prec=prec, scale=units.moment_scale
+                )
+                + units.moment_unit,
             )
 
         console = Console()
@@ -314,6 +447,7 @@ class TransformedGrossProperties:
         self,
         eng: bool = True,
         prec: int = 3,
+        units: UnitDisplay | None = None,
     ) -> None:
         """Prints the transformed gross concrete section properties to the terminal.
 
@@ -322,50 +456,159 @@ class TransformedGrossProperties:
                 ``False``, formats with fixed notation. Defaults to ``True``.
             prec: The desired precision (i.e. one plus this value is the desired number
                 of digits). Defaults to ``3``.
+            units: Unit system to display. Defaults to ``None``.
         """
         # setup table
         table = Table(title="Transformed Gross Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
+        # assign default unit if no units applied
+        if units is None:
+            units = UnitDisplay("", "", "")
+
         # add table rows
         table.add_row(
-            "E_ref", string_formatter(value=self.elastic_modulus, eng=eng, prec=prec)
+            "E_ref",
+            string_formatter(
+                value=self.elastic_modulus, eng=eng, prec=prec, scale=units.stress_scale
+            )
+            + units.stress_unit,
         )
         table.add_row(
             "Area",
-            string_formatter(value=self.area, eng=eng, prec=prec),
+            string_formatter(
+                value=self.area, eng=eng, prec=prec, scale=units.area_scale
+            )
+            + units.area_unit,
             end_section=True,
         )
-        table.add_row("Qx", string_formatter(value=self.qx, eng=eng, prec=prec))
-        table.add_row("Qy", string_formatter(value=self.qy, eng=eng, prec=prec))
-        table.add_row("Ixx_g", string_formatter(value=self.ixx_g, eng=eng, prec=prec))
-        table.add_row("Iyy_g", string_formatter(value=self.iyy_g, eng=eng, prec=prec))
-        table.add_row("Ixy_g", string_formatter(value=self.ixy_g, eng=eng, prec=prec))
-        table.add_row("Ixx_c", string_formatter(value=self.ixx_c, eng=eng, prec=prec))
-        table.add_row("Iyy_c", string_formatter(value=self.iyy_c, eng=eng, prec=prec))
-        table.add_row("Ixy_c", string_formatter(value=self.ixy_c, eng=eng, prec=prec))
-        table.add_row("I11", string_formatter(value=self.i11, eng=eng, prec=prec))
+        table.add_row(
+            "Qx",
+            string_formatter(
+                value=self.qx, eng=eng, prec=prec, scale=units.length_3_scale
+            )
+            + units.length_3_unit,
+        )
+        table.add_row(
+            "Qy",
+            string_formatter(
+                value=self.qy, eng=eng, prec=prec, scale=units.length_3_scale
+            )
+            + units.length_3_unit,
+        )
+        table.add_row(
+            "Ixx_g",
+            string_formatter(
+                value=self.ixx_g, eng=eng, prec=prec, scale=units.length_4_scale
+            )
+            + units.length_4_unit,
+        )
+        table.add_row(
+            "Iyy_g",
+            string_formatter(
+                value=self.iyy_g, eng=eng, prec=prec, scale=units.length_4_scale
+            )
+            + units.length_4_unit,
+        )
+        table.add_row(
+            "Ixy_g",
+            string_formatter(
+                value=self.ixy_g, eng=eng, prec=prec, scale=units.length_4_scale
+            )
+            + units.length_4_unit,
+        )
+        table.add_row(
+            "Ixx_c",
+            string_formatter(
+                value=self.ixx_c, eng=eng, prec=prec, scale=units.length_4_scale
+            )
+            + units.length_4_unit,
+        )
+        table.add_row(
+            "Iyy_c",
+            string_formatter(
+                value=self.iyy_c, eng=eng, prec=prec, scale=units.length_4_scale
+            )
+            + units.length_4_unit,
+        )
+        table.add_row(
+            "Ixy_c",
+            string_formatter(
+                value=self.ixy_c, eng=eng, prec=prec, scale=units.length_4_scale
+            )
+            + units.length_4_unit,
+        )
+        table.add_row(
+            "I11",
+            string_formatter(
+                value=self.i11, eng=eng, prec=prec, scale=units.length_4_scale
+            )
+            + units.length_4_unit,
+        )
         table.add_row(
             "I22",
-            string_formatter(value=self.i22, eng=eng, prec=prec),
+            string_formatter(
+                value=self.i22, eng=eng, prec=prec, scale=units.length_4_scale
+            )
+            + units.length_4_unit,
             end_section=True,
         )
-        table.add_row("Zxx+", string_formatter(value=self.zxx_plus, eng=eng, prec=prec))
         table.add_row(
-            "Zxx-", string_formatter(value=self.zxx_minus, eng=eng, prec=prec)
+            "Zxx+",
+            string_formatter(
+                value=self.zxx_plus, eng=eng, prec=prec, scale=units.length_3_scale
+            )
+            + units.length_3_unit,
         )
-        table.add_row("Zyy+", string_formatter(value=self.zyy_plus, eng=eng, prec=prec))
         table.add_row(
-            "Zyy-", string_formatter(value=self.zyy_minus, eng=eng, prec=prec)
+            "Zxx-",
+            string_formatter(
+                value=self.zxx_minus, eng=eng, prec=prec, scale=units.length_3_scale
+            )
+            + units.length_3_unit,
         )
-        table.add_row("Z11+", string_formatter(value=self.z11_plus, eng=eng, prec=prec))
         table.add_row(
-            "Z11-", string_formatter(value=self.z11_minus, eng=eng, prec=prec)
+            "Zyy+",
+            string_formatter(
+                value=self.zyy_plus, eng=eng, prec=prec, scale=units.length_3_scale
+            )
+            + units.length_3_unit,
         )
-        table.add_row("Z22+", string_formatter(value=self.z22_plus, eng=eng, prec=prec))
         table.add_row(
-            "Z22-", string_formatter(value=self.z22_minus, eng=eng, prec=prec)
+            "Zyy-",
+            string_formatter(
+                value=self.zyy_minus, eng=eng, prec=prec, scale=units.length_3_scale
+            )
+            + units.length_3_unit,
+        )
+        table.add_row(
+            "Z11+",
+            string_formatter(
+                value=self.z11_plus, eng=eng, prec=prec, scale=units.length_3_scale
+            )
+            + units.length_3_unit,
+        )
+        table.add_row(
+            "Z11-",
+            string_formatter(
+                value=self.z11_minus, eng=eng, prec=prec, scale=units.length_3_scale
+            )
+            + units.length_3_unit,
+        )
+        table.add_row(
+            "Z22+",
+            string_formatter(
+                value=self.z22_plus, eng=eng, prec=prec, scale=units.length_3_scale
+            )
+            + units.length_3_unit,
+        )
+        table.add_row(
+            "Z22-",
+            string_formatter(
+                value=self.z22_minus, eng=eng, prec=prec, scale=units.length_3_scale
+            )
+            + units.length_3_unit,
         )
 
         console = Console()
@@ -487,9 +730,7 @@ class CrackedResults:
         self,
         eng: bool = True,
         prec: int = 3,
-        n_scale: float = 1,
-        m_scale: float = 1,
-        radians: bool = True,
+        units: UnitDisplay | None = None,
     ) -> None:
         """Prints cracked concrete section properties to the terminal.
 
@@ -497,43 +738,54 @@ class CrackedResults:
             eng: If set to ``True``, formats with engineering notation. If set to
                 ``False``, formats with fixed notation. Defaults to ``True``.
             prec: The desired precision (i.e. one plus this value is the desired number
-                of digits). Defaults to ``3``.
-            n_scale: Scale factor to apply to forces
-            m_scale: Scale factor to apply to moments
-            radians: If set to ``True``, prints angles in radians, else converts angles
-                to degrees. Defaults to ``True``.
+                of digits). Defaults to ``3``..
+            units: Unit system to display. Defaults to ``None``.
         """
         # setup table
-        caption = f"{n_scale=}, {m_scale=}" if n_scale != 1 or m_scale != 1 else None
-        table = Table(title="Cracked Concrete Section Properties", caption=caption)
+        table = Table(title="Cracked Concrete Section Properties")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
 
-        # add table rows
-        if radians:
-            theta = self.theta
-            ang_units = "rads"
-        else:
-            theta = self.theta * 180.0 / np.pi
-            ang_units = "degs"
+        # assign default unit if no units applied
+        if units is None:
+            units = UnitDisplay("", "", "")
 
+        # add table rows
         table.add_row(
-            "theta", string_formatter(value=theta, eng=eng, prec=prec) + f" {ang_units}"
+            "theta",
+            string_formatter(
+                value=self.theta, eng=eng, prec=prec, scale=units.angle_scale
+            )
+            + units.angle_unit,
         )
 
         # only show n & m if one is non-zero
         if self.n != 0 or self.m != 0:
             table.add_row(
-                "n", string_formatter(value=self.n, eng=eng, prec=prec, scale=n_scale)
+                "n",
+                string_formatter(
+                    value=self.n, eng=eng, prec=prec, scale=units.force_scale
+                )
+                + units.force_unit,
             )
             table.add_row(
-                "m", string_formatter(value=self.m, eng=eng, prec=prec, scale=m_scale)
+                "m",
+                string_formatter(
+                    value=self.m, eng=eng, prec=prec, scale=units.moment_scale
+                )
+                + units.moment_unit,
             )
 
         if self.elastic_modulus_ref is not None:
             table.add_row(
                 "E_ref",
-                string_formatter(value=self.elastic_modulus_ref, eng=eng, prec=prec),
+                string_formatter(
+                    value=self.elastic_modulus_ref,
+                    eng=eng,
+                    prec=prec,
+                    scale=units.stress_scale,
+                )
+                + units.stress_unit,
             )
 
         table.add_section()
@@ -541,47 +793,96 @@ class CrackedResults:
         if isinstance(self.m_cr, tuple):
             table.add_row(
                 "m_cr_pos",
-                string_formatter(value=self.m_cr[0], eng=eng, prec=prec, scale=m_scale),
+                string_formatter(
+                    value=self.m_cr[0], eng=eng, prec=prec, scale=units.moment_scale
+                )
+                + units.moment_unit,
             )
             table.add_row(
                 "m_cr_neg",
-                string_formatter(value=self.m_cr[1], eng=eng, prec=prec, scale=m_scale),
+                string_formatter(
+                    value=self.m_cr[1], eng=eng, prec=prec, scale=units.moment_scale
+                )
+                + units.moment_unit,
             )
         else:
             table.add_row(
                 "m_cr",
-                string_formatter(value=self.m_cr, eng=eng, prec=prec, scale=m_scale),
+                string_formatter(
+                    value=self.m_cr, eng=eng, prec=prec, scale=units.moment_scale
+                )
+                + units.moment_unit,
             )
 
-        table.add_row("d_nc", string_formatter(value=self.d_nc, eng=eng, prec=prec))
+        table.add_row(
+            "d_nc",
+            string_formatter(
+                value=self.d_nc, eng=eng, prec=prec, scale=units.length_scale
+            )
+            + units.length_unit,
+        )
 
         if self.a_cr is not None:
-            table.add_row("A_cr", string_formatter(value=self.a_cr, eng=eng, prec=prec))
+            table.add_row(
+                "A_cr",
+                string_formatter(
+                    value=self.a_cr, eng=eng, prec=prec, scale=units.area_scale
+                )
+                + units.area_unit,
+            )
 
         table.add_row(
             "E.A_cr",
-            string_formatter(value=self.e_a_cr, eng=eng, prec=prec),
+            string_formatter(
+                value=self.e_a_cr, eng=eng, prec=prec, scale=units.force_scale
+            )
+            + units.force_unit,
             end_section=True,
         )
 
         if self.qx_cr is not None and self.qy_cr is not None:
             table.add_row(
-                "Qx_cr", string_formatter(value=self.qx_cr, eng=eng, prec=prec)
+                "Qx_cr",
+                string_formatter(
+                    value=self.qx_cr, eng=eng, prec=prec, scale=units.length_3_scale
+                )
+                + units.length_3_unit,
             )
             table.add_row(
-                "Qy_cr", string_formatter(value=self.qy_cr, eng=eng, prec=prec)
+                "Qy_cr",
+                string_formatter(
+                    value=self.qy_cr, eng=eng, prec=prec, scale=units.length_3_scale
+                )
+                + units.length_3_unit,
             )
 
         table.add_row(
-            "E.Qx_cr", string_formatter(value=self.e_qx_cr, eng=eng, prec=prec)
+            "E.Qx_cr",
+            string_formatter(
+                value=self.e_qx_cr, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
         )
         table.add_row(
-            "E.Qy_cr", string_formatter(value=self.e_qy_cr, eng=eng, prec=prec)
+            "E.Qy_cr",
+            string_formatter(
+                value=self.e_qy_cr, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
         )
-        table.add_row("x-Centroid", string_formatter(value=self.cx, eng=eng, prec=prec))
+        table.add_row(
+            "x-Centroid",
+            string_formatter(
+                value=self.cx, eng=eng, prec=prec, scale=units.length_scale
+            )
+            + units.length_unit,
+        )
         table.add_row(
             "y-Centroid",
-            string_formatter(value=self.cy, eng=eng, prec=prec),
+            string_formatter(
+                value=self.cy, eng=eng, prec=prec, scale=units.length_scale
+            )
+            + units.length_unit,
             end_section=True,
         )
 
@@ -597,75 +898,141 @@ class CrackedResults:
             and self.i22_cr is not None
         ):
             table.add_row(
-                "Ixx_g_cr", string_formatter(value=self.ixx_g_cr, eng=eng, prec=prec)
+                "Ixx_g_cr",
+                string_formatter(
+                    value=self.ixx_g_cr, eng=eng, prec=prec, scale=units.length_4_scale
+                )
+                + units.length_4_unit,
             )
             table.add_row(
-                "Iyy_g_cr", string_formatter(value=self.iyy_g_cr, eng=eng, prec=prec)
+                "Iyy_g_cr",
+                string_formatter(
+                    value=self.iyy_g_cr, eng=eng, prec=prec, scale=units.length_4_scale
+                )
+                + units.length_4_unit,
             )
             table.add_row(
-                "Ixy_g_cr", string_formatter(value=self.ixy_g_cr, eng=eng, prec=prec)
+                "Ixy_g_cr",
+                string_formatter(
+                    value=self.ixy_g_cr, eng=eng, prec=prec, scale=units.length_4_scale
+                )
+                + units.length_4_unit,
             )
             table.add_row(
-                "Ixx_c_cr", string_formatter(value=self.ixx_c_cr, eng=eng, prec=prec)
+                "Ixx_c_cr",
+                string_formatter(
+                    value=self.ixx_c_cr, eng=eng, prec=prec, scale=units.length_4_scale
+                )
+                + units.length_4_unit,
             )
             table.add_row(
-                "Iyy_c_cr", string_formatter(value=self.iyy_c_cr, eng=eng, prec=prec)
+                "Iyy_c_cr",
+                string_formatter(
+                    value=self.iyy_c_cr, eng=eng, prec=prec, scale=units.length_4_scale
+                )
+                + units.length_4_unit,
             )
             table.add_row(
-                "Ixy_c_cr", string_formatter(value=self.ixy_c_cr, eng=eng, prec=prec)
+                "Ixy_c_cr",
+                string_formatter(
+                    value=self.ixy_c_cr, eng=eng, prec=prec, scale=units.length_4_scale
+                )
+                + units.length_4_unit,
             )
             table.add_row(
-                "Iuu_cr", string_formatter(value=self.iuu_cr, eng=eng, prec=prec)
+                "Iuu_cr",
+                string_formatter(
+                    value=self.iuu_cr, eng=eng, prec=prec, scale=units.length_4_scale
+                )
+                + units.length_4_unit,
             )
             table.add_row(
-                "I11_cr", string_formatter(value=self.i11_cr, eng=eng, prec=prec)
+                "I11_cr",
+                string_formatter(
+                    value=self.i11_cr, eng=eng, prec=prec, scale=units.length_4_scale
+                )
+                + units.length_4_unit,
             )
             table.add_row(
                 "I22_cr",
-                string_formatter(value=self.i22_cr, eng=eng, prec=prec),
+                string_formatter(
+                    value=self.i22_cr, eng=eng, prec=prec, scale=units.length_4_scale
+                )
+                + units.length_4_unit,
                 end_section=True,
             )
 
         table.add_row(
-            "E.Ixx_g_cr", string_formatter(value=self.e_ixx_g_cr, eng=eng, prec=prec)
+            "E.Ixx_g_cr",
+            string_formatter(
+                value=self.e_ixx_g_cr, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
-            "E.Iyy_g_cr", string_formatter(value=self.e_iyy_g_cr, eng=eng, prec=prec)
+            "E.Iyy_g_cr",
+            string_formatter(
+                value=self.e_iyy_g_cr, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
-            "E.Ixy_g_cr", string_formatter(value=self.e_ixy_g_cr, eng=eng, prec=prec)
+            "E.Ixy_g_cr",
+            string_formatter(
+                value=self.e_ixy_g_cr, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
-            "E.Ixx_c_cr", string_formatter(value=self.e_ixx_c_cr, eng=eng, prec=prec)
+            "E.Ixx_c_cr",
+            string_formatter(
+                value=self.e_ixx_c_cr, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
-            "E.Iyy_c_cr", string_formatter(value=self.e_iyy_c_cr, eng=eng, prec=prec)
+            "E.Iyy_c_cr",
+            string_formatter(
+                value=self.e_iyy_c_cr, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
-            "E.Ixy_c_cr", string_formatter(value=self.e_ixy_c_cr, eng=eng, prec=prec)
+            "E.Ixy_c_cr",
+            string_formatter(
+                value=self.e_ixy_c_cr, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
-            "E.Iuu_cr", string_formatter(value=self.e_iuu_cr, eng=eng, prec=prec)
+            "E.Iuu_cr",
+            string_formatter(
+                value=self.e_iuu_cr, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
-            "E.I11_cr", string_formatter(value=self.e_i11_cr, eng=eng, prec=prec)
+            "E.I11_cr",
+            string_formatter(
+                value=self.e_i11_cr, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
         )
         table.add_row(
             "E.I22_cr",
-            string_formatter(value=self.e_i22_cr, eng=eng, prec=prec),
+            string_formatter(
+                value=self.e_i22_cr, eng=eng, prec=prec, scale=units.flex_rig_scale
+            )
+            + units.flex_rig_unit,
             end_section=True,
         )
 
-        if radians:
-            phi_cr = self.phi_cr
-            ang_units = "rads"
-        else:
-            phi_cr = self.phi_cr * 180.0 / np.pi
-            ang_units = "degs"
-
         table.add_row(
             "phi_cr",
-            string_formatter(value=phi_cr, eng=eng, prec=prec) + f" {ang_units}",
+            string_formatter(
+                value=self.phi_cr, eng=eng, prec=prec, scale=units.angle_scale
+            )
+            + units.angle_unit,
         )
 
         console = Console()
@@ -715,8 +1082,7 @@ class MomentCurvatureResults:
         fmt: str = "o-",
         eng: bool = False,
         prec: int = 2,
-        m_scale: float = 1,
-        m_unit: str = "-",
+        units: UnitDisplay | None = None,
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots the moment curvature results.
@@ -729,16 +1095,21 @@ class MomentCurvatureResults:
             prec: If ``eng=True``, sets the desired precision of the ticker formatting
                 (i.e. one plus this value is the desired number of digits). Defaults to
                 ``2``.
-            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
-            m_unit: Unit string to apply to the bending moment plot label. Defaults to
-                ``"-"``.
+            units: Unit system to display. Defaults to ``None``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
-        # scale momentss
-        moments = np.array(self.m_xy) * m_scale
+        # assign default unit if no units applied
+        if units is None:
+            units = UnitDisplay("", "", "")
+            moment_unit = "-"
+        else:
+            moment_unit = units.moment_unit[1:]
+
+        # scale moments
+        moments = np.array(self.m_xy) * units.moment_scale
 
         # create plot and setup the plot
         with plotting_context(title="Moment-Curvature", **kwargs) as (_, ax):
@@ -749,17 +1120,14 @@ class MomentCurvatureResults:
             ax.plot(self.kappa, moments, fmt)
 
             if eng:
-                x_formatter = FuncFormatter(
+                tick_formatter = FuncFormatter(
                     lambda x, _: string_formatter_plots(value=x, prec=prec)
                 )
-                y_formatter = FuncFormatter(
-                    lambda y, _: string_formatter_plots(value=y, prec=prec)
-                )
-                ax.xaxis.set_major_formatter(x_formatter)
-                ax.yaxis.set_major_formatter(y_formatter)
+                ax.xaxis.set_major_formatter(tick_formatter)
+                ax.yaxis.set_major_formatter(tick_formatter)
 
             plt.xlabel("Curvature [-]")
-            plt.ylabel(f"Bending Moment [{m_unit}]")
+            plt.ylabel(f"Bending Moment [{moment_unit}]")
             plt.grid(True)
 
         return ax
@@ -771,8 +1139,7 @@ class MomentCurvatureResults:
         fmt: str = "o-",
         eng: bool = False,
         prec: int = 2,
-        m_scale: float = 1,
-        m_unit: str = "-",
+        units: UnitDisplay | None = None,
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots multiple moment curvature results.
@@ -787,14 +1154,19 @@ class MomentCurvatureResults:
             prec: If ``eng=True``, sets the desired precision of the ticker formatting
                 (i.e. one plus this value is the desired number of digits). Defaults to
                 ``2``.
-            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
-            m_unit: Unit string to apply to the bending moment plot label. Defaults to
-                ``"-"``.
+            units: Unit system to display. Defaults to ``None``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
+        # assign default unit if no units applied
+        if units is None:
+            units = UnitDisplay("", "", "")
+            moment_unit = "-"
+        else:
+            moment_unit = units.moment_unit[1:]
+
         # create plot and setup the plots
         with plotting_context(title="Moment-Curvature", **kwargs) as (_, ax):
             if ax is None:
@@ -807,22 +1179,19 @@ class MomentCurvatureResults:
             for idx, mk_result in enumerate(moment_curvature_results):
                 # scale results
                 kappas = np.array(mk_result.kappa)
-                moments = np.array(mk_result.m_xy) * m_scale
+                moments = np.array(mk_result.m_xy) * units.moment_scale
 
                 ax.plot(kappas, moments, fmt, label=labels[idx])
 
                 if eng:
-                    x_formatter = FuncFormatter(
+                    tick_formatter = FuncFormatter(
                         lambda x, _: string_formatter_plots(value=x, prec=prec)
                     )
-                    y_formatter = FuncFormatter(
-                        lambda y, _: string_formatter_plots(value=y, prec=prec)
-                    )
-                    ax.xaxis.set_major_formatter(x_formatter)
-                    ax.yaxis.set_major_formatter(y_formatter)
+                    ax.xaxis.set_major_formatter(tick_formatter)
+                    ax.yaxis.set_major_formatter(tick_formatter)
 
             plt.xlabel("Curvature [-]")
-            plt.ylabel(f"Bending Moment [{m_unit}]")
+            plt.ylabel(f"Bending Moment [{moment_unit}]")
             plt.grid(True)
 
             # if there is more than one curve show legend
@@ -917,9 +1286,7 @@ class UltimateBendingResults:
         self,
         eng: bool = True,
         prec: int = 3,
-        n_scale: float = 1,
-        m_scale: float = 1,
-        radians: bool = True,
+        units: UnitDisplay | None = None,
     ) -> None:
         """Prints the ultimate bending results to the terminal.
 
@@ -928,36 +1295,34 @@ class UltimateBendingResults:
                 ``False``, formats with fixed notation. Defaults to ``True``.
             prec: The desired precision (i.e. one plus this value is the desired number
                 of digits). Defaults to ``3``.
-            n_scale: Scale factor to apply to forces
-            m_scale: Scale factor to apply to moments
-            radians: If set to ``True``, prints angles in radians, else converts angles
-                to degrees. Defaults to ``True``.
+            units: Unit system to display. Defaults to ``None``.
         """
         # setup table
-        caption = f"{n_scale=}, {m_scale=}" if n_scale != 1 or m_scale != 1 else None
-
-        table = Table(title="Ultimate Bending Results", caption=caption)
+        table = Table(title="Ultimate Bending Results")
         table.add_column("Property", justify="left", style="cyan", no_wrap=True)
         table.add_column("Value", justify="right", style="green")
+
+        # assign default unit if no units applied
+        if units is None:
+            units = UnitDisplay("", "", "")
 
         # add table rows
         if self.label:
             table.add_row("Label", self.label, end_section=True)
 
-        if radians:
-            theta = self.theta
-            ang_units = "rads"
-        else:
-            theta = self.theta * 180.0 / np.pi
-            ang_units = "degs"
-
         table.add_row(
             "Bending Angle - theta",
-            string_formatter(value=theta, eng=eng, prec=prec) + f" {ang_units}",
+            string_formatter(
+                value=self.theta, eng=eng, prec=prec, scale=units.angle_scale
+            )
+            + units.angle_unit,
         )
         table.add_row(
             "Neutral Axis Depth - d_n",
-            string_formatter(value=self.d_n, eng=eng, prec=prec),
+            string_formatter(
+                value=self.d_n, eng=eng, prec=prec, scale=units.length_scale
+            )
+            + units.length_unit,
         )
         table.add_row(
             "Neutral Axis Parameter - k_u",
@@ -966,19 +1331,29 @@ class UltimateBendingResults:
         )
         table.add_row(
             "Axial Force",
-            string_formatter(value=self.n, eng=eng, prec=prec, scale=n_scale),
+            string_formatter(value=self.n, eng=eng, prec=prec, scale=units.force_scale)
+            + units.force_unit,
         )
         table.add_row(
             "Bending Capacity - m_x",
-            string_formatter(value=self.m_x, eng=eng, prec=prec, scale=m_scale),
+            string_formatter(
+                value=self.m_x, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
         )
         table.add_row(
             "Bending Capacity - m_y",
-            string_formatter(value=self.m_y, eng=eng, prec=prec, scale=m_scale),
+            string_formatter(
+                value=self.m_y, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
         )
         table.add_row(
             "Bending Capacity - m_xy",
-            string_formatter(value=self.m_xy, eng=eng, prec=prec, scale=m_scale),
+            string_formatter(
+                value=self.m_xy, eng=eng, prec=prec, scale=units.moment_scale
+            )
+            + units.moment_unit,
         )
 
         console = Console()
@@ -1052,10 +1427,7 @@ class MomentInteractionResults:
         label_offset: bool = False,
         eng: bool = False,
         prec: int = 2,
-        n_scale: float = 1,
-        m_scale: float = 1,
-        n_unit: str = "-",
-        m_unit: str = "-",
+        units: UnitDisplay | None = None,
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots a moment interaction diagram.
@@ -1074,17 +1446,21 @@ class MomentInteractionResults:
             prec: If ``eng=True``, sets the desired precision of the ticker formatting
                 (i.e. one plus this value is the desired number of digits). Defaults to
                 ``2``.
-            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
-            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
-            n_unit: Unit string to apply to the axial force plot label. Defaults to
-                ``"-"``.
-            m_unit: Unit string to apply to the bending moment plot label. Defaults to
-                ``"-"``.
+            units: Unit system to display. Defaults to ``None``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
+        # assign default unit if no units applied
+        if units is None:
+            units = UnitDisplay("", "", "")
+            force_unit = "-"
+            moment_unit = "-"
+        else:
+            force_unit = units.force_unit[1:]
+            moment_unit = units.moment_unit[1:]
+
         # create plot and setup the plots
         with plotting_context(title="Moment Interaction Diagram", **kwargs) as (_, ax):
             if ax is None:
@@ -1095,8 +1471,8 @@ class MomentInteractionResults:
             n_list, m_list = self.get_results_lists(moment=moment)
 
             # scale results
-            forces = np.array(n_list) * n_scale
-            moments = np.array(m_list) * m_scale
+            forces = np.array(n_list) * units.force_scale
+            moments = np.array(m_list) * units.moment_scale
 
             # plot diagram
             ax.plot(moments, forces, fmt)
@@ -1113,8 +1489,8 @@ class MomentInteractionResults:
                 for idx, m in enumerate(m_list):
                     if self.results[idx].label is not None:
                         # get x,y position on plot
-                        x = m * m_scale
-                        y = n_list[idx] * n_scale
+                        x = m * units.moment_scale
+                        y = n_list[idx] * units.force_scale
 
                         if label_offset:
                             # calculate text offset
@@ -1146,17 +1522,14 @@ class MomentInteractionResults:
                         )
 
             if eng:
-                x_formatter = FuncFormatter(
+                tick_formatter = FuncFormatter(
                     lambda x, _: string_formatter_plots(value=x, prec=prec)
                 )
-                y_formatter = FuncFormatter(
-                    lambda y, _: string_formatter_plots(value=y, prec=prec)
-                )
-                ax.xaxis.set_major_formatter(x_formatter)
-                ax.yaxis.set_major_formatter(y_formatter)
+                ax.xaxis.set_major_formatter(tick_formatter)
+                ax.yaxis.set_major_formatter(tick_formatter)
 
-            plt.xlabel(f"Bending Moment [{m_unit}]")
-            plt.ylabel(f"Axial Force [{n_unit}]")
+            plt.xlabel(f"Bending Moment [{moment_unit}]")
+            plt.ylabel(f"Axial Force [{force_unit}]")
             plt.grid(True)
 
         return ax
@@ -1169,10 +1542,7 @@ class MomentInteractionResults:
         fmt: str = "o-",
         eng: bool = False,
         prec: int = 2,
-        n_scale: float = 1,
-        m_scale: float = 1,
-        n_unit: str = "-",
-        m_unit: str = "-",
+        units: UnitDisplay | None = None,
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots multiple moment interaction diagrams.
@@ -1189,17 +1559,21 @@ class MomentInteractionResults:
             prec: If ``eng=True``, sets the desired precision of the ticker formatting
                 (i.e. one plus this value is the desired number of digits). Defaults to
                 ``2``.
-            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
-            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
-            n_unit: Unit string to apply to the axial force plot label. Defaults to
-                ``"-"``.
-            m_unit: Unit string to apply to the bending moment plot label. Defaults to
-                ``"-"``.
+            units: Unit system to display. Defaults to ``None``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
+        # assign default unit if no units applied
+        if units is None:
+            units = UnitDisplay("", "", "")
+            force_unit = "-"
+            moment_unit = "-"
+        else:
+            force_unit = units.force_unit[1:]
+            moment_unit = units.moment_unit[1:]
+
         # create plot and setup the plots
         with plotting_context(title="Moment Interaction Diagram", **kwargs) as (_, ax):
             if ax is None:
@@ -1213,8 +1587,8 @@ class MomentInteractionResults:
                 n_list, m_list = mi_result.get_results_lists(moment=moment)
 
                 # scale results
-                forces = np.array(n_list) * n_scale
-                moments = np.array(m_list) * m_scale
+                forces = np.array(n_list) * units.force_scale
+                moments = np.array(m_list) * units.moment_scale
 
                 ax.plot(moments, forces, fmt, label=labels[idx])
 
@@ -1228,8 +1602,8 @@ class MomentInteractionResults:
                     ax.xaxis.set_major_formatter(x_formatter)
                     ax.yaxis.set_major_formatter(y_formatter)
 
-            plt.xlabel(f"Bending Moment [{m_unit}]")
-            plt.ylabel(f"Axial Force [{n_unit}]")
+            plt.xlabel(f"Bending Moment [{moment_unit}]")
+            plt.ylabel(f"Axial Force [{force_unit}]")
             plt.grid(True)
 
             # if there is more than one curve show legend
@@ -1305,10 +1679,7 @@ class BiaxialBendingResults:
         fmt: str = "o-",
         eng: bool = False,
         prec: int = 2,
-        n_scale: float = 1,
-        m_scale: float = 1,
-        n_unit: str = "",
-        m_unit: str = "-",
+        units: UnitDisplay | None = None,
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots a biaxial bending diagram.
@@ -1321,50 +1692,53 @@ class BiaxialBendingResults:
             prec: If ``eng=True``, sets the desired precision of the ticker formatting
                 (i.e. one plus this value is the desired number of digits). Defaults to
                 ``2``.
-            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
-            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
-            n_unit: Unit string to apply to the axial force plot label. Defaults to
-                ``""``.
-            m_unit: Unit string to apply to the bending moment plot label. Defaults to
-                ``"-"``.
+            units: Unit system to display. Defaults to ``None``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
+        # assign default unit if no units applied
+        if units is None:
+            units = UnitDisplay("", "", "")
+            force_unit = ""
+            moment_unit = "-"
+        else:
+            force_unit = units.force_unit[1:]
+            moment_unit = units.moment_unit[1:]
+
+        # get biaxial results
         m_x_list, m_y_list = self.get_results_lists()
 
+        # format axial force string
         if eng:
-            n_str = string_formatter_plots(value=self.n * n_scale, prec=prec)
+            n_str = string_formatter_plots(value=self.n * units.force_scale, prec=prec)
         else:
-            n_str = f"{self.n * n_scale:.3e}"
+            n_str = f"{self.n * units.force_scale:.2e}"
 
         # create plot and setup the plots
         with plotting_context(
-            title=f"Biaxial Bending Diagram, N = {n_str} {n_unit}", **kwargs
+            title=f"Biaxial Bending Diagram, N = {n_str} {force_unit}", **kwargs
         ) as (fig, ax):
             if ax is None:
                 msg = "Plot failed."
                 raise RuntimeError(msg)
 
             # scale results
-            m_x = np.array(m_x_list) * m_scale
-            m_y = np.array(m_y_list) * m_scale
+            m_x = np.array(m_x_list) * units.moment_scale
+            m_y = np.array(m_y_list) * units.moment_scale
 
             ax.plot(m_x, m_y, fmt)
 
             if eng:
-                x_formatter = FuncFormatter(
+                tick_formatter = FuncFormatter(
                     lambda x, _: string_formatter_plots(value=x, prec=prec)
                 )
-                y_formatter = FuncFormatter(
-                    lambda y, _: string_formatter_plots(value=y, prec=prec)
-                )
-                ax.xaxis.set_major_formatter(x_formatter)
-                ax.yaxis.set_major_formatter(y_formatter)
+                ax.xaxis.set_major_formatter(tick_formatter)
+                ax.yaxis.set_major_formatter(tick_formatter)
 
-            plt.xlabel("Bending Moment $M_x$" + f" [{m_unit}]")
-            plt.ylabel("Bending Moment $M_y$" + f" [{m_unit}]")
+            plt.xlabel("Bending Moment $M_x$" + f" [{moment_unit}]")
+            plt.ylabel("Bending Moment $M_y$" + f" [{moment_unit}]")
             plt.grid(True)
 
         return ax
@@ -1376,10 +1750,7 @@ class BiaxialBendingResults:
         fmt: str = "o-",
         eng: bool = False,
         prec: int = 2,
-        n_scale: float = 1,
-        m_scale: float = 1,
-        n_unit: str = "",
-        m_unit: str = "-",
+        units: UnitDisplay | None = None,
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots multiple biaxial bending diagrams in a 2D plot.
@@ -1395,17 +1766,21 @@ class BiaxialBendingResults:
             prec: If ``eng=True``, sets the desired precision of the ticker formatting
                 (i.e. one plus this value is the desired number of digits). Defaults to
                 ``2``.
-            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
-            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
-            n_unit: Unit string to apply to the axial force plot label. Defaults to
-                ``""``.
-            m_unit: Unit string to apply to the bending moment plot label. Defaults to
-                ``"-"``.
+            units: Unit system to display. Defaults to ``None``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
+        # assign default unit if no units applied
+        if units is None:
+            units = UnitDisplay("", "", "")
+            force_unit = ""
+            moment_unit = "-"
+        else:
+            force_unit = units.force_unit[1:]
+            moment_unit = units.moment_unit[1:]
+
         # create plot and setup the plots
         with plotting_context(title="Biaxial Bending Diagram", **kwargs) as (_, ax):
             if ax is None:
@@ -1426,34 +1801,31 @@ class BiaxialBendingResults:
                 m_x_list, m_y_list = bb_result.get_results_lists()
 
                 # scale results
-                m_x_list = np.array(m_x_list) * m_scale
-                m_y_list = np.array(m_y_list) * m_scale
+                m_x_list = np.array(m_x_list) * units.moment_scale
+                m_y_list = np.array(m_y_list) * units.moment_scale
 
                 # generate default labels
                 if default_labels:
                     if eng:
                         n_str = string_formatter_plots(
-                            value=bb_result.n * n_scale, prec=prec
+                            value=bb_result.n * units.force_scale, prec=prec
                         )
                     else:
-                        n_str = f"{bb_result.n * n_scale:.3e}"
+                        n_str = f"{bb_result.n * units.force_scale:.3e}"
 
-                    labels.append(f"N = {n_str} {n_unit}")
+                    labels.append(f"N = {n_str} {force_unit}")
 
                 ax.plot(m_x_list, m_y_list, fmt, label=labels[idx])
 
                 if eng:
-                    x_formatter = FuncFormatter(
+                    tick_formatter = FuncFormatter(
                         lambda x, _: string_formatter_plots(value=x, prec=prec)
                     )
-                    y_formatter = FuncFormatter(
-                        lambda y, _: string_formatter_plots(value=y, prec=prec)
-                    )
-                    ax.xaxis.set_major_formatter(x_formatter)
-                    ax.yaxis.set_major_formatter(y_formatter)
+                    ax.xaxis.set_major_formatter(tick_formatter)
+                    ax.yaxis.set_major_formatter(tick_formatter)
 
-            plt.xlabel("Bending Moment $M_x$" + f" [{m_unit}]")
-            plt.ylabel("Bending Moment $M_y$" + f" [{m_unit}]")
+            plt.xlabel("Bending Moment $M_x$" + f" [{moment_unit}]")
+            plt.ylabel("Bending Moment $M_y$" + f" [{moment_unit}]")
             plt.grid(True)
 
             # if there is more than one curve show legend
@@ -1468,10 +1840,7 @@ class BiaxialBendingResults:
         fmt: str = "-",
         eng: bool = False,
         prec: int = 2,
-        n_scale: float = 1,
-        m_scale: float = 1,
-        n_unit: str = "",
-        m_unit: str = "-",
+        units: UnitDisplay | None = None,
     ) -> matplotlib.axes.Axes:
         """Plots multiple biaxial bending diagrams in a 3D plot.
 
@@ -1484,16 +1853,20 @@ class BiaxialBendingResults:
             prec: If ``eng=True``, sets the desired precision of the ticker formatting
                 (i.e. one plus this value is the desired number of digits). Defaults to
                 ``2``.
-            n_scale: Scaling factor to apply to axial force. Defaults to ``1``.
-            m_scale: Scaling factor to apply to the bending moment. Defaults to ``1``.
-            n_unit: Unit string to apply to the axial force plot label. Defaults to
-                ``""``.
-            m_unit: Unit string to apply to the bending moment plot label. Defaults to
-                ``"-"``.
+            units: Unit system to display. Defaults to ``None``.
 
         Returns:
             Matplotlib axes object
         """
+        # assign default unit if no units applied
+        if units is None:
+            units = UnitDisplay("", "", "")
+            force_unit = ""
+            moment_unit = "-"
+        else:
+            force_unit = units.force_unit[1:]
+            moment_unit = units.moment_unit[1:]
+
         # make 3d plots
         plt.figure()
         ax = plt.axes(projection="3d")
@@ -1503,29 +1876,23 @@ class BiaxialBendingResults:
             m_x_list, m_y_list = bb_result.get_results_lists()
 
             # scale results
-            n_list = bb_result.n * n_scale * np.ones(len(m_x_list))
-            m_x_list = np.array(m_x_list) * m_scale
-            m_y_list = np.array(m_y_list) * m_scale
+            n_list = bb_result.n * units.force_scale * np.ones(len(m_x_list))
+            m_x_list = np.array(m_x_list) * units.moment_scale
+            m_y_list = np.array(m_y_list) * units.moment_scale
 
             ax.plot3D(m_x_list, m_y_list, n_list, fmt)  # pyright: ignore
 
             if eng:
-                x_formatter = FuncFormatter(
+                tick_formatter = FuncFormatter(
                     lambda x, _: string_formatter_plots(value=x, prec=prec)
                 )
-                y_formatter = FuncFormatter(
-                    lambda y, _: string_formatter_plots(value=y, prec=prec)
-                )
-                z_formatter = FuncFormatter(
-                    lambda z, _: string_formatter_plots(value=z, prec=prec)
-                )
-                ax.xaxis.set_major_formatter(x_formatter)
-                ax.yaxis.set_major_formatter(y_formatter)
-                ax.zaxis.set_major_formatter(z_formatter)  # pyright: ignore
+                ax.xaxis.set_major_formatter(tick_formatter)
+                ax.yaxis.set_major_formatter(tick_formatter)
+                ax.zaxis.set_major_formatter(tick_formatter)  # pyright: ignore
 
-        plt.xlabel("Bending Moment $M_x$" + f" [{m_unit}]")
-        plt.ylabel("Bending Moment $M_y$" + f" [{m_unit}]")
-        ax.set_zlabel("Axial Force $N$" + f" [{n_unit}]")  # pyright: ignore
+        plt.xlabel("Bending Moment $M_x$" + f" [{moment_unit}]")
+        plt.ylabel("Bending Moment $M_y$" + f" [{moment_unit}]")
+        ax.set_zlabel("Axial Force $N$" + f" [{force_unit}]")  # pyright: ignore
         plt.show()
 
         return ax
@@ -1611,6 +1978,9 @@ class StressResult:
         title: str = "Stress",
         conc_cmap: str = "RdGy",
         reinf_cmap: str = "bwr",
+        eng: bool = False,
+        prec: int = 2,
+        units: UnitDisplay | None = None,
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots concrete and steel stresses on a concrete section.
@@ -1619,11 +1989,23 @@ class StressResult:
             title: Plot title. Defaults to ``"Stress"``.
             conc_cmap: Colour map for the concrete stress. Defaults to ``"RdGy"``.
             reinf_cmap: Colour map for the reinforcement stress. Defaults to ``"bwr"``.
+            eng: If set to ``True``, formats with engineering notation. If set to
+                ``False``, formats with fixed notation. Defaults to ``False``.
+            prec: The desired precision (i.e. one plus this value is the desired number
+                of digits). Defaults to ``2``..
+            units: Unit system to display. Defaults to ``None``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
+        # assign default unit if no units applied
+        if units is None:
+            units = UnitDisplay("", "", "")
+            stress_unit = "-"
+        else:
+            stress_unit = units.stress_unit[1:]
+
         with plotting_context(
             title=title,
             aspect=True,
@@ -1647,16 +2029,26 @@ class StressResult:
 
             # determine minimum and maximum stress values for the contour list
             # add tolerance for plotting stress blocks
-            conc_sig_min = min([min(x) for x in self.concrete_stresses]) - 1e-12
-            conc_sig_max = max([max(x) for x in self.concrete_stresses]) + 1e-12
+            conc_sig_min = (
+                min([min(x) for x in self.concrete_stresses]) * units.stress_scale
+                - 1e-12
+            )
+            conc_sig_max = (
+                max([max(x) for x in self.concrete_stresses]) * units.stress_scale
+                + 1e-12
+            )
 
             # if there is meshed reinforcement, calculate min and max
             if self.meshed_reinforcement_stresses:
                 meshed_reinf_sig_min = (
-                    min([min(x) for x in self.meshed_reinforcement_stresses]) - 1e-12
+                    min([min(x) for x in self.meshed_reinforcement_stresses])
+                    * units.stress_scale
+                    - 1e-12
                 )
                 meshed_reinf_sig_max = (
-                    max([max(x) for x in self.meshed_reinforcement_stresses]) + 1e-12
+                    max([max(x) for x in self.meshed_reinforcement_stresses])
+                    * units.stress_scale
+                    + 1e-12
                 )
             else:
                 meshed_reinf_sig_min = None
@@ -1664,11 +2056,13 @@ class StressResult:
 
             # if there is lumped reinforcement, calculate min and max
             if self.lumped_reinforcement_stresses or self.strand_stresses:
-                lumped_reinf_sig_min = min(
-                    self.lumped_reinforcement_stresses + self.strand_stresses
+                lumped_reinf_sig_min = (
+                    min(self.lumped_reinforcement_stresses + self.strand_stresses)
+                    * units.stress_scale
                 )
-                lumped_reinf_sig_max = max(
-                    self.lumped_reinforcement_stresses + self.strand_stresses
+                lumped_reinf_sig_max = (
+                    max(self.lumped_reinforcement_stresses + self.strand_stresses)
+                    * units.stress_scale
                 )
             else:
                 lumped_reinf_sig_min = None
@@ -1676,17 +2070,17 @@ class StressResult:
 
             # determine min and max reinforcement stresess
             if (
-                meshed_reinf_sig_min
-                and meshed_reinf_sig_max
-                and lumped_reinf_sig_min
-                and lumped_reinf_sig_max
+                meshed_reinf_sig_min is not None
+                and meshed_reinf_sig_max is not None
+                and lumped_reinf_sig_min is not None
+                and lumped_reinf_sig_max is not None
             ):
                 reinf_sig_min = min(meshed_reinf_sig_min, lumped_reinf_sig_min)
                 reinf_sig_max = max(meshed_reinf_sig_max, lumped_reinf_sig_max)
-            elif meshed_reinf_sig_min and meshed_reinf_sig_max:
+            elif meshed_reinf_sig_min is not None and meshed_reinf_sig_max is not None:
                 reinf_sig_min = meshed_reinf_sig_min
                 reinf_sig_max = meshed_reinf_sig_max
-            elif lumped_reinf_sig_min and lumped_reinf_sig_max:
+            elif lumped_reinf_sig_min is not None and lumped_reinf_sig_max is not None:
                 reinf_sig_min = lumped_reinf_sig_min
                 reinf_sig_max = lumped_reinf_sig_max
             else:
@@ -1720,6 +2114,9 @@ class StressResult:
                         self.concrete_analysis_sections[idx].mesh_nodes[:, 1],
                         self.concrete_analysis_sections[idx].mesh_elements[:, 0:3],  # pyright: ignore
                     )
+
+                    # scale stress
+                    sig = sig * units.stress_scale
 
                     # plot the filled contour
                     trictr_conc = fig.axes[0].tricontourf(
@@ -1767,6 +2164,9 @@ class StressResult:
                         self.meshed_reinforcement_sections[idx].mesh_elements[:, 0:3],  # pyright: ignore
                     )
 
+                    # scale stress
+                    sig = sig * units.stress_scale
+
                     # plot the filled contour
                     trictr_reinf = fig.axes[0].tricontourf(
                         triang_reinf, sig, v_reinf, cmap=cmap_reinf, norm=CenteredNorm()
@@ -1805,6 +2205,9 @@ class StressResult:
             colours = []
 
             for idx, sig in enumerate(self.lumped_reinforcement_stresses):
+                # scale stress
+                sig = sig * units.stress_scale
+
                 lumped_geom = self.lumped_reinforcement_geometries[idx].geom
                 lumped_reinf_patches.append(
                     mpatches.Polygon(xy=list(lumped_geom.exterior.coords))
@@ -1812,6 +2215,9 @@ class StressResult:
                 colours.append(sig)
 
             for idx, sig in enumerate(self.strand_stresses):
+                # scale stress
+                sig = sig * units.stress_scale
+
                 lumped_reinf_patches.append(
                     mpatches.Polygon(
                         xy=list(self.strand_geometries[idx].geom.exterior.coords)
@@ -1821,17 +2227,24 @@ class StressResult:
 
             patch = PatchCollection(lumped_reinf_patches, cmap=cmap_reinf)
             patch.set_array(colours)
+
             if reinf_tick_same:
                 patch.set_clim(vmin=0.99 * v_reinf[0], vmax=1.01 * v_reinf[-1])
             else:
                 patch.set_clim(vmin=v_reinf[0], vmax=v_reinf[-1])
+
             fig.axes[0].add_collection(patch)
+
+            # set the tick formatter
+            tick_formatter = FuncFormatter(
+                lambda x, _: string_formatter_stress(value=x, eng=eng, prec=prec)
+            )
 
             # add the colour bars
             fig.colorbar(
                 trictr_conc,  # pyright: ignore
-                label="Concrete Stress",
-                format="%.2e",
+                label="Concrete Stress" + f" [{stress_unit}]",
+                format=tick_formatter,
                 ticks=ticks_conc,
                 cax=fig.axes[1],
             )
@@ -1840,8 +2253,8 @@ class StressResult:
 
             fig.colorbar(
                 mappable,
-                label="Reinforcement Stress",
-                format="%.2e",
+                label="Reinforcement Stress" + f" [{stress_unit}]",
+                format=tick_formatter,
                 ticks=ticks_reinf,
                 cax=fig.axes[2],
             )
