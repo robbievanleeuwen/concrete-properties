@@ -8,15 +8,22 @@ from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.ticker import FuncFormatter
 from rich.console import Console
 from rich.table import Table
 from scipy.interpolate import interp1d
 from scipy.optimize import brentq
 
-from concreteproperties.post import plotting_context
+from concreteproperties.post import (
+    DEFAULT_UNITS,
+    plotting_context,
+    string_formatter_plots,
+)
 
 if TYPE_CHECKING:
     import matplotlib.axes
+
+    from concreteproperties.post import UnitDisplay
 
 
 @dataclass
@@ -214,6 +221,9 @@ class StressStrainProfile:
         self,
         title: str = "Stress-Strain Profile",
         fmt: str = "o-",
+        eng: bool = False,
+        prec: int = 2,
+        units: UnitDisplay | None = None,
         **kwargs,
     ) -> matplotlib.axes.Axes:
         """Plots the stress-strain profile.
@@ -221,20 +231,45 @@ class StressStrainProfile:
         Args:
             title: Plot title. Defaults to ``"Stress-Strain Profile"``.
             fmt: Plot format string. Defaults to ``"o-"``.
+            eng: If set to ``True``, formats the plot ticks with engineering notation.
+                If set to ``False``, uses the default ``matplotlib`` ticker formatting.
+                Defaults to ``False``.
+            prec: If ``eng=True``, sets the desired precision of the ticker formatting
+                (i.e. one plus this value is the desired number of digits). Defaults to
+                ``2``.
+            units: Unit system to display. Defaults to ``None``.
             kwargs: Passed to :func:`~concreteproperties.post.plotting_context`
 
         Returns:
             Matplotlib axes object
         """
+        # assign default unit if no units applied
+        if units is None:
+            units = DEFAULT_UNITS
+            stress_unit = "-"
+        else:
+            stress_unit = units.stress_unit[1:]
+
         # create plot and setup the plot
         with plotting_context(title=title, **kwargs) as (_, ax):
             if ax is None:
                 msg = "Plot failed."
                 raise RuntimeError(msg)
 
-            ax.plot(self.strains, self.stresses, fmt)
-            plt.xlabel("Strain")
-            plt.ylabel("Stress")
+            # scale stresses
+            stresses = np.array(self.stresses) * units.stress_scale
+
+            ax.plot(self.strains, stresses, fmt)
+
+            if eng:
+                tick_formatter = FuncFormatter(
+                    lambda x, _: string_formatter_plots(value=x, prec=prec)
+                )
+                ax.xaxis.set_major_formatter(tick_formatter)
+                ax.yaxis.set_major_formatter(tick_formatter)
+
+            plt.xlabel("Strain [-]")
+            plt.ylabel(f"Stress [{stress_unit}]")
             plt.grid(True)
 
         return ax

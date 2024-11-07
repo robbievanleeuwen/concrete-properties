@@ -17,11 +17,13 @@ import concreteproperties.results as res
 import concreteproperties.utils as utils
 from concreteproperties.analysis_section import AnalysisSection
 from concreteproperties.material import Concrete, SteelStrand
-from concreteproperties.post import plotting_context
+from concreteproperties.post import DEFAULT_UNITS, plotting_context
 from concreteproperties.pre import CPGeom, CPGeomConcrete
 
 if TYPE_CHECKING:
     import matplotlib.axes
+
+    from concreteproperties.post import UnitDisplay
 
 
 class ConcreteSection:
@@ -32,6 +34,7 @@ class ConcreteSection:
         geometry: sp_geom.CompoundGeometry,
         moment_centroid: tuple[float, float] | None = None,
         geometric_centroid_override: bool = False,
+        default_units: UnitDisplay | None = None,
     ) -> None:
         """Inits the ConcreteSection class.
 
@@ -45,12 +48,18 @@ class ConcreteSection:
             geometric_centroid_override: If set to True, sets ``moment_centroid`` to
                 the geometric centroid i.e. material properties applied (useful for
                 composite section analysis). Defaults to ``False``.
+            default_units: Default unit system to use for formatting results. Defaults
+                to ``None``.
 
         Raises:
             ValueError: If steel strand materials are detected, use a
                 ``PrestressedSection`` instead
         """
         self.compound_geometry = geometry
+
+        # assign unitless unit if no default_unit applied
+        units = DEFAULT_UNITS if default_units is None else default_units
+        self.default_units = units
 
         # check overlapping regions
         polygons = [sec_geom.geom for sec_geom in self.compound_geometry.geoms]
@@ -100,7 +109,7 @@ class ConcreteSection:
             self.all_geometries.append(cp_geom)
 
         # calculate gross properties
-        self.gross_properties = res.GrossProperties()
+        self.gross_properties = res.GrossProperties(default_units=self.default_units)
         self.calculate_gross_area_properties()
 
         # set moment centroid
@@ -298,7 +307,9 @@ class ConcreteSection:
             Transformed concrete properties object
         """
         return res.TransformedGrossProperties(
-            concrete_properties=self.gross_properties, elastic_modulus=elastic_modulus
+            default_units=self.default_units,
+            concrete_properties=self.gross_properties,
+            elastic_modulus=elastic_modulus,
         )
 
     def calculate_cracked_properties(
@@ -317,7 +328,9 @@ class ConcreteSection:
         Returns:
             Cracked results object
         """
-        cracked_results = res.CrackedResults(theta=theta)
+        cracked_results = res.CrackedResults(
+            default_units=self.default_units, theta=theta
+        )
         cracked_results.m_cr = self.calculate_cracking_moment(theta=theta)
 
         # set neutral axis depth limits
@@ -625,7 +638,9 @@ class ConcreteSection:
             Moment curvature results object
         """
         # initialise variables
-        moment_curvature = res.MomentCurvatureResults(theta=theta, n_target=n)
+        moment_curvature = res.MomentCurvatureResults(
+            default_units=self.default_units, theta=theta, n_target=n
+        )
 
         # function that performs moment curvature analysis
         def mcurve(kappa_inc=kappa_inc, progress=None):
@@ -935,7 +950,9 @@ class ConcreteSection:
         b = 6 * d_t  # neutral axis at sufficiently large tensile fibre
 
         # initialise ultimate bending results
-        ultimate_results = res.UltimateBendingResults(theta=theta)
+        ultimate_results = res.UltimateBendingResults(
+            default_units=self.default_units, theta=theta
+        )
 
         # find neutral axis that gives convergence of the axial force
         try:
@@ -1007,7 +1024,9 @@ class ConcreteSection:
             Ultimate bending results object
         """
         if ultimate_results is None:
-            ultimate_results = res.UltimateBendingResults(theta=0)
+            ultimate_results = res.UltimateBendingResults(
+                default_units=self.default_units, theta=0
+            )
 
         # calculate extreme fibre in global coordinates
         extreme_fibre, _ = utils.calculate_extreme_fibre(
@@ -1160,7 +1179,7 @@ class ConcreteSection:
 
         Args:
             theta: Angle (in radians) the neutral axis makes with the horizontal axis
-                (:math:`-\pi \leq \theta \leq \pi`)
+                (:math:`-\pi \leq \theta \leq \pi`). Defaults to ``0``.
             limits: List of control points that define the start and end of the
                 interaction diagram. List length must equal two. The default limits
                 range from concrete decompression strain to zero curvature tension, i.e.
@@ -1238,7 +1257,9 @@ class ConcreteSection:
             labels = labels * (len(control_points) + 2)
 
         # initialise results
-        mi_results = res.MomentInteractionResults()
+        mi_results = res.MomentInteractionResults(
+            default_units=self.default_units,
+        )
 
         # generate list of neutral axis depths/axial forces to analyse
         # if we are spacing by axial force
@@ -1246,11 +1267,15 @@ class ConcreteSection:
             # get axial force of the limits
             start_res = self.calculate_ultimate_section_actions(
                 d_n=limits_dn[0],
-                ultimate_results=res.UltimateBendingResults(theta=theta),
+                ultimate_results=res.UltimateBendingResults(
+                    default_units=self.default_units, theta=theta
+                ),
             )
             end_res = self.calculate_ultimate_section_actions(
                 d_n=limits_dn[1],
-                ultimate_results=res.UltimateBendingResults(theta=theta),
+                ultimate_results=res.UltimateBendingResults(
+                    default_units=self.default_units, theta=theta
+                ),
             )
 
             # generate list of axial forces
@@ -1279,12 +1304,16 @@ class ConcreteSection:
                     if idx == 0:
                         ult_res = self.calculate_ultimate_section_actions(
                             d_n=limits_dn[0],
-                            ultimate_results=res.UltimateBendingResults(theta=theta),
+                            ultimate_results=res.UltimateBendingResults(
+                                default_units=self.default_units, theta=theta
+                            ),
                         )
                     elif idx == len(analysis_list) - 1:
                         ult_res = self.calculate_ultimate_section_actions(
                             d_n=limits_dn[1],
-                            ultimate_results=res.UltimateBendingResults(theta=theta),
+                            ultimate_results=res.UltimateBendingResults(
+                                default_units=self.default_units, theta=theta
+                            ),
                         )
                     else:
                         ult_res = self.ultimate_bending_capacity(
@@ -1294,7 +1323,9 @@ class ConcreteSection:
                 else:
                     ult_res = self.calculate_ultimate_section_actions(
                         d_n=analysis_point,
-                        ultimate_results=res.UltimateBendingResults(theta=theta),
+                        ultimate_results=res.UltimateBendingResults(
+                            default_units=self.default_units, theta=theta
+                        ),
                     )
 
                 # add labels for limits
@@ -1315,7 +1346,9 @@ class ConcreteSection:
             for idx, d_n in enumerate(add_cp_dn):
                 ult_res = self.calculate_ultimate_section_actions(
                     d_n=d_n,
-                    ultimate_results=res.UltimateBendingResults(theta=theta),
+                    ultimate_results=res.UltimateBendingResults(
+                        default_units=self.default_units, theta=theta
+                    ),
                 )
 
                 # add label
@@ -1395,6 +1428,7 @@ class ConcreteSection:
             mi_results.results.insert(
                 0,  # insertion index
                 res.UltimateBendingResults(
+                    default_units=self.default_units,
                     theta=theta,
                     d_n=inf,
                     k_u=0,
@@ -1429,7 +1463,7 @@ class ConcreteSection:
             Biaxial bending results
         """
         # initialise results
-        bb_results = res.BiaxialBendingResults(n=n)
+        bb_results = res.BiaxialBendingResults(default_units=self.default_units, n=n)
 
         # calculate d_theta
         d_theta = 2 * np.pi / n_points
@@ -1591,6 +1625,7 @@ class ConcreteSection:
             lumped_reinf_geoms.append(lumped_geom)
 
         return res.StressResult(
+            default_units=self.default_units,
             concrete_section=self,
             concrete_analysis_sections=conc_sections,
             concrete_stresses=conc_sigs,
@@ -1729,6 +1764,7 @@ class ConcreteSection:
             lumped_reinf_geoms.append(lumped_geom)
 
         return res.StressResult(
+            default_units=self.default_units,
             concrete_section=self,
             concrete_analysis_sections=conc_sections,
             concrete_stresses=conc_sigs,
@@ -1776,7 +1812,9 @@ class ConcreteSection:
 
         # initialise variables
         mk = res.MomentCurvatureResults(
-            theta=theta, n_target=moment_curvature_results.n_target
+            default_units=self.default_units,
+            theta=theta,
+            n_target=moment_curvature_results.n_target,
         )
 
         # find neutral axis that gives convergence of the axial force
@@ -1878,6 +1916,7 @@ class ConcreteSection:
             lumped_reinf_geoms.append(lumped_geom)
 
         return res.StressResult(
+            default_units=self.default_units,
             concrete_section=self,
             concrete_analysis_sections=conc_sections,
             concrete_stresses=conc_sigs,
@@ -2003,6 +2042,7 @@ class ConcreteSection:
             lumped_reinf_geoms.append(lumped_geom)
 
         return res.StressResult(
+            default_units=self.default_units,
             concrete_section=self,
             concrete_analysis_sections=conc_sections,
             concrete_stresses=conc_sigs,
