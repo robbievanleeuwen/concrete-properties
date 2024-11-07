@@ -841,7 +841,8 @@ class NZS3101(DesignCode):
 
         .. admonition:: Material assumptions
 
-          - *Density*: Defaults to 2300 kg/m\ :sup:`3` unless supplied as user input
+          - *Density*: Defaults to 2300 kg/m\ :sup:`3`
+            (2.3 x 10\ :sup:`-6` kg/mm\ :sup:`3`), unless supplied as user input
 
           - *Elastic modulus*: Calculated from NZS3101:2006 Eq. 5-1
 
@@ -883,7 +884,7 @@ class NZS3101(DesignCode):
 
         return Concrete(
             name=name,
-            density=density,
+            density=density / 1e9,
             stress_strain_profile=ssp.ConcreteLinearNoTension(
                 elastic_modulus=elastic_modulus,
                 ultimate_strain=ultimate_strain,
@@ -984,7 +985,7 @@ class NZS3101(DesignCode):
 
         .. admonition:: Material assumptions
 
-          - *Density*: 7850 kg/m\ :sup:`3`
+          - *Density*: 7850 kg/m\ :sup:`3` (7.85 x 10\ :sup:`-6` kg/mm\ :sup:`3`)
 
           - *Elastic modulus*: 200000 MPa
 
@@ -1043,13 +1044,13 @@ class NZS3101(DesignCode):
             **NZS3101:2006 characteristic yield strength based predefined
             materials:**
 
-            - ``""300e""`` - Use for design to NZS3101:2006 provisions
+            - ``"300e"`` - Use for design to NZS3101:2006 provisions
 
               - Characteristic yield strength :math:`f_y` = 300 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
               - Overstrength factor :math:`\phi_{o,f_y}` = 1.35
 
-            - ``""500e""`` - Use for design to NZS3101:2006 provisions
+            - ``"500e"`` - Use for design to NZS3101:2006 provisions
 
               - Characteristic yield strength :math:`f_y` = 500 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
@@ -1058,84 +1059,84 @@ class NZS3101(DesignCode):
             **NZSEE C5 guidelines probable yield strength based predefined
             materials:**
 
-            - ``""pre_1945""``- Use for probable strength design to NZSEE C5
+            - ``"pre_1945"``- Use for probable strength design to NZSEE C5
               assessment guidelines
 
               - Probable yield strength :math:`f_{yp}` = 280 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
               - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
-            - ``""33""`` - Use for probable strength design to NZSEE C5 assessment
+            - ``"33"`` - Use for probable strength design to NZSEE C5 assessment
               guidelines
 
               - Probable yield strength :math:`f_{yp}` = 280 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
               - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
-            - ``""40""`` - Use for probable strength design to NZSEE C5 assessment
+            - ``"40"`` - Use for probable strength design to NZSEE C5 assessment
               guidelines
 
               - Probable yield strength :math:`f_{yp}` = 324 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
               - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
-            - ``""275""`` - Use for probable strength design to NZSEE C5 assessment
+            - ``"275"`` - Use for probable strength design to NZSEE C5 assessment
               guidelines
 
               - Probable yield strength :math:`f_{yp}` = 324 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
               - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
-            - ``""hy60""`` - Use for probable strength design to NZSEE C5 assessment
+            - ``"hy60"`` - Use for probable strength design to NZSEE C5 assessment
               guidelines
 
               - Probable yield strength :math:`f_{yp}` = 455 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 12% or 0.12
               - Overstrength factor :math:`\phi_{f_o}` = 1.5
 
-            - ``""380""`` - Use for probable strength design to NZSEE C5 assessment
+            - ``"380"`` - Use for probable strength design to NZSEE C5 assessment
               guidelines
 
               - Probable yield strength :math:`f_{yp}` = 455 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 12% or 0.12
               - Overstrength factor :math:`\phi_{f_o}` = 1.5
 
-            - ``""430""`` - Use for probable strength design to NZSEE C5 assessment
+            - ``"430"`` - Use for probable strength design to NZSEE C5 assessment
               guidelines
 
               - Probable yield strength :math:`f_{yp}` = 464 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 12% or 0.12
               - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
-            - ``""300""`` - Use for probable strength design to NZSEE C5 assessment
+            - ``"300"`` - Use for probable strength design to NZSEE C5 assessment
               guidelines
 
               - Probable yield strength :math:`f_{yp}` = 324 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 15% or 0.15
               - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
-            - ``""500n""`` - Use for probable strength design to NZSEE C5 assessment
+            - ``"500n"`` - Use for probable strength design to NZSEE C5 assessment
               guidelines
 
               - Probable yield strength :math:`f_{yp}` = 500 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 5% or 0.05
               - Overstrength factor :math:`\phi_{f_o}` = 1.5
 
-            - ``""500""`` - Use for probable strength design to NZSEE C5 assessment
+            - ``"500"`` - Use for probable strength design to NZSEE C5 assessment
               guidelines
 
               - Probable yield strength :math:`f_{yp}` = 540 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 10% or 0.10
               - Overstrength factor :math:`\phi_{f_o}` = 1.25
 
-            - ``""cd_mesh""`` - Use for probable strength design to NZSEE C5
+            - ``"cd_mesh"`` - Use for probable strength design to NZSEE C5
               assessment guidelines
 
               - Probable yield strength :math:`f_{yp}` = 600 MPa
               - Fracture strain :math:`\varepsilon_{su}` = 1.5% or 0.015
               - Overstrength factor :math:`\phi_{f_o}` = 1.2
 
-            - ``""duc_mesh""`` - Use for probable strength design to NZSEE C5
+            - ``"duc_mesh"`` - Use for probable strength design to NZSEE C5
               assessment guidelines
 
               - Probable yield strength :math:`f_{yp}` = 500 MPa
@@ -1197,7 +1198,7 @@ class NZS3101(DesignCode):
         return NZS3101.SteelBarNZ(
             name=name,
             steel_grade=steel_grade,
-            density=density,
+            density=density / 1e9,
             phi_os=phi_os,
             stress_strain_profile=ssp.SteelElasticPlastic(
                 yield_strength=yield_strength,
@@ -1463,7 +1464,7 @@ class NZS3101(DesignCode):
                 compressive_strength=prev_compressive_strength
                 + add_compressive_strength,
                 ultimate_strain=prev_ultimate_strain,
-                density=prev_density,
+                density=prev_density * 1e9,
                 colour=prev_colour_conc,
             )
 
@@ -1557,7 +1558,7 @@ class NZS3101(DesignCode):
             conc_geom.material = self.create_concrete_material(
                 compressive_strength=prob_compressive_strength,
                 ultimate_strain=prev_ultimate_strain,
-                density=prev_density,
+                density=prev_density * 1e9,
                 colour=prev_colour_conc,
             )
 
