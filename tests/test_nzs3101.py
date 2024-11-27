@@ -477,7 +477,7 @@ def test_nzs3101_create_steel_material_meshed_valueerror():
     # create concrete material
     concrete = Concrete(
         name="50 MPa Concrete",
-        density=2300,
+        density=2.3e-6,
         stress_strain_profile=ssp.ConcreteLinearNoTension(
             elastic_modulus=design_code.e_conc(50),
             ultimate_strain=0.003,
@@ -496,7 +496,7 @@ def test_nzs3101_create_steel_material_meshed_valueerror():
     # create meshed steel material
     steel = Steel(
         name="Meshed Steel",
-        density=7850,
+        density=7.85e-6,
         stress_strain_profile=ssp.SteelElasticPlastic(
             yield_strength=300,
             elastic_modulus=200e3,
@@ -589,7 +589,7 @@ def test_nzs3101_create_concrete_material(
     concrete_mat = design_code.create_concrete_material(
         compressive_strength, ultimate_strain, density
     )
-    assert pytest.approx(concrete_mat.__getattribute__("density")) == density
+    assert pytest.approx(concrete_mat.__getattribute__("density")) == density * 1e-9
     assert (
         pytest.approx(
             concrete_mat.__getattribute__("flexural_tensile_strength"), rel=0.001
@@ -707,7 +707,7 @@ def test_nzs3101_create_os_section(
         conc_geom.material.ultimate_stress_strain_profile.__setattr__(
             "ultimate_strain", ultimate_strain
         )
-        conc_geom.material.__setattr__("density", density)
+        conc_geom.material.__setattr__("density", density * 1e-9)
 
     concrete_os_section = design_code.create_os_section()
     # check steel overstrength properties
@@ -736,7 +736,10 @@ def test_nzs3101_create_os_section(
 
     # check concrete overstrength properties
     for conc_geom in concrete_os_section.concrete_geometries:
-        assert pytest.approx(conc_geom.material.__getattribute__("density")) == density
+        assert (
+            pytest.approx(conc_geom.material.__getattribute__("density"))
+            == density * 1e-9
+        )
         assert (
             pytest.approx(
                 conc_geom.material.__getattribute__("flexural_tensile_strength"),
@@ -863,7 +866,7 @@ def test_nzs3101_create_prob_section(
         conc_geom.material.ultimate_stress_strain_profile.__setattr__(
             "ultimate_strain", ultimate_strain
         )
-        conc_geom.material.__setattr__("density", 2300)
+        conc_geom.material.__setattr__("density", 2.3e-6)
 
     concrete_prob_section = design_code.create_prob_section()
     # check steel overstrength properties
@@ -1012,7 +1015,7 @@ def test_nzs3101_create_prob_os_section(
         conc_geom.material.ultimate_stress_strain_profile.__setattr__(
             "ultimate_strain", ultimate_strain
         )
-        conc_geom.material.__setattr__("density", 2300)
+        conc_geom.material.__setattr__("density", 2.3e-6)
 
     concrete_prob_section = design_code.create_prob_section(os_design=True)
     # check steel overstrength properties
@@ -1463,7 +1466,7 @@ def test_nzs3101_create_section_with_non_steelbarnz_material():
     # create concrete material
     concrete = Concrete(
         name="50 MPa Concrete",
-        density=2300,
+        density=2.3e-6,
         stress_strain_profile=ssp.ConcreteLinearNoTension(
             elastic_modulus=design_code.e_conc(50),
             ultimate_strain=0.003,
@@ -1482,7 +1485,7 @@ def test_nzs3101_create_section_with_non_steelbarnz_material():
     # create non SteelBarNZ steel material
     steel = SteelBar(
         name="Meshed Steel",
-        density=7850,
+        density=7.85e-6,
         stress_strain_profile=ssp.SteelElasticPlastic(
             yield_strength=300,
             elastic_modulus=200e3,

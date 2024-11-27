@@ -163,7 +163,7 @@ class AS3600(DesignCode):
 
         .. admonition:: Material assumptions
 
-          - *Density*: 7850 kg/m\ :sup:`3`
+          - *Density*: 7850 kg/m\ :sup:`3` (7.85 x 10\ :sup:`-6` kg/mm\ :sup:`3`)
 
           - *Elastic modulus*: 200000 MPa
 
