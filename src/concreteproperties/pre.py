@@ -151,6 +151,20 @@ class CPGeom:
         """
         return self.geom.area
 
+    def is_degenerate(self) -> bool:
+        """Checks whether the geometry is degenerate.
+
+        After coordinate rounding, a very thin sliver (e.g. produced by splitting a
+        geometry at a point that lies extremely close to an existing vertex) can
+        collapse to fewer than three distinct points. Such a geometry has no area and
+        cannot be meshed, so it should be discarded rather than passed on to an
+        ``AnalysisSection``.
+
+        Returns:
+            ``True`` if the geometry has fewer than three distinct points
+        """
+        return len(set(self.points)) < 3
+
     def calculate_centroid(self) -> tuple[float, float]:
         """Calculates the centroid of the geometry.
 
@@ -226,6 +240,12 @@ class CPGeom:
             )
             for poly in bot_polys
         ]
+
+        # discard degenerate slivers that have collapsed to fewer than three
+        # distinct points after coordinate rounding - these have no area and
+        # cannot be meshed by AnalysisSection
+        top_geoms = [g for g in top_geoms if not g.is_degenerate()]
+        bot_geoms = [g for g in bot_geoms if not g.is_degenerate()]
 
         # ensure top geoms is in compression
         if theta <= np.pi / 2 and theta >= -np.pi / 2:
