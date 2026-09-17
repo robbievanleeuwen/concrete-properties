@@ -2070,9 +2070,22 @@ class ConcreteSection:
             theta: Angle (in radians) the neutral axis makes with the horizontal axis
                 (:math:`-\pi \leq \theta \leq \pi`)
 
+        Raises:
+            ValueError: If the section has no lumped reinforcement
+
         Returns:
             Depth of furthest bar and its yield strain
         """
+        if not self.reinf_geometries_lumped:
+            msg = (
+                "extreme_bar() requires at least one lumped reinforcement bar, but "
+                "this section has none. An 'fy' control point (used by default in "
+                "moment_interaction_diagram()) is not meaningful for a section with "
+                "no reinforcement; provide a control_points list that does not "
+                "include 'fy' for a plain concrete section."
+            )
+            raise ValueError(msg)
+
         # initialise variables
         d_ext = 0
 
