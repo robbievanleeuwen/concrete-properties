@@ -1,5 +1,7 @@
 """Tests for ConcreteSection.calculate_cracking_moment on composite sections."""
 
+from dataclasses import replace
+
 import pytest
 from sectionproperties.pre.library.primitive_sections import rectangular_section
 
@@ -17,7 +19,7 @@ def get_composite_section() -> ConcreteSection:
     Both materials share the same elastic modulus so the transformed and
     geometric centroids coincide, keeping the analytical check simple.
     """
-    material = Concrete(
+    beam_material = Concrete(
         name="32 MPa Concrete",
         density=2.4e-6,
         stress_strain_profile=ConcreteLinear(elastic_modulus=30e3),
@@ -31,17 +33,20 @@ def get_composite_section() -> ConcreteSection:
         colour="lightgrey",
     )
 
-    beam = rectangular_section(d=500, b=300, material=material)
-    topping = rectangular_section(d=100, b=500, material=material).shift_section(
-        x_offset=-100, y_offset=500
+    topping_material = replace(
+        beam_material, name="Topping Concrete", flexural_tensile_strength=2.8
     )
+
+    beam = rectangular_section(d=500, b=300, material=beam_material)
+    topping = rectangular_section(
+        d=100, b=500, material=topping_material
+    ).shift_section(x_offset=-100, y_offset=500)
 
     return ConcreteSection(topping + beam)
 
 
 def test_cracking_moment_composite_first_geometry_in_compression():
-    """The first-added geometry (topping) must not silently zero out the
-    cracking moment when it's the one in compression rather than tension.
+    """The first-added geometry must not zero out the cracking moment.
 
     Regression test: `calculate_cracking_moment` used `idx == 0` to decide
     whether to initialise the running minimum. If the geometry at index 0
@@ -55,7 +60,8 @@ def test_cracking_moment_composite_first_geometry_in_compression():
     # geometry order as added: topping (index 0) is in compression at
     # theta=0, beam (index 1) is in tension -- this is exactly the ordering
     # that triggered the bug.
-    assert conc_sec.concrete_geometries[0].material.name == "32 MPa Concrete"
+    assert conc_sec.concrete_geometries[0].material.name == "Topping Concrete"
+    assert conc_sec.concrete_geometries[1].material.name == "32 MPa Concrete"
 
     m_c = conc_sec.calculate_cracking_moment(theta=0)
 
