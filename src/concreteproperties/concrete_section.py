@@ -389,8 +389,8 @@ class ConcreteSection:
         )
 
         # loop through all concrete geometries to find lowest cracking moment
-        m_c = 0
-        for idx, conc_geom in enumerate(self.concrete_geometries):
+        m_c = None
+        for conc_geom in self.concrete_geometries:
             # get distance from centroid to extreme tensile fibre
             d = utils.calculate_max_bending_depth(
                 points=conc_geom.points,
@@ -408,11 +408,11 @@ class ConcreteSection:
             f_t = conc_geom.material.flexural_tensile_strength
             m_c_geom = (f_t / conc_geom.material.elastic_modulus) * (e_iuu / d)
 
-            # if we are the first geometry, initialise cracking moment
+            # if we haven't set a cracking moment yet, initialise it
             # otherwise take smaller cracking moment
-            m_c = m_c_geom if idx == 0 else min(m_c, m_c_geom)
+            m_c = m_c_geom if m_c is None else min(m_c, m_c_geom)
 
-        return m_c
+        return m_c if m_c is not None else 0.0
 
     def cracked_neutral_axis_convergence(
         self,
