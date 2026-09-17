@@ -156,14 +156,14 @@ class CPGeom:
 
         After coordinate rounding, a very thin sliver (e.g. produced by splitting a
         geometry at a point that lies extremely close to an existing vertex) can
-        collapse to fewer than three distinct points. Such a geometry has no area and
-        cannot be meshed, so it should be discarded rather than passed on to an
-        ``AnalysisSection``.
+        collapse to fewer than three distinct points or flatten to zero area.
+        Such a geometry cannot be meshed, so it should be discarded rather than
+        passed on to an ``AnalysisSection``.
 
         Returns:
-            ``True`` if the geometry has fewer than three distinct points
+            ``True`` if the geometry has fewer than three distinct points or zero area
         """
-        return len(set(self.points)) < 3
+        return len(set(self.points)) < 3 or self.geom.area == 0
 
     def calculate_centroid(self) -> tuple[float, float]:
         """Calculates the centroid of the geometry.

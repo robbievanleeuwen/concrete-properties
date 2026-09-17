@@ -3,7 +3,7 @@
 See https://github.com/robbievanleeuwen/concrete-properties/issues/153. For
 some load angles/curvatures the neutral axis passes so close to an existing
 vertex that, after coordinate rounding, the resulting sliver collapses to
-fewer than three distinct points. Passing such a sliver on to
+fewer than three distinct points or zero area. Passing such a sliver on to
 ``AnalysisSection`` used to raise a ``ValueError`` from the triangulation
 library instead of being silently discarded.
 """
@@ -13,9 +13,11 @@ import math
 import numpy as np
 import sectionproperties.pre.library.concrete_sections as sp_cs
 from sectionproperties.pre.library.primitive_sections import rectangular_section
+from shapely import Polygon
 
 from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import Concrete, SteelBar
+from concreteproperties.pre import CPGeom
 from concreteproperties.stress_strain_profile import (
     EurocodeNonLinear,
     EurocodeParabolicUltimate,
@@ -23,7 +25,21 @@ from concreteproperties.stress_strain_profile import (
 )
 
 
+def test_zero_area_geometry_with_three_distinct_points_is_degenerate():
+    """Discard a rounded polygon with distinct vertices but no area."""
+    # Rounding can also flatten a thin triangle without merging its vertices.
+    geom = CPGeom(
+        geom=Polygon([(0, 0), (1, 1e-7), (2, 0)]),
+        material=None,  # type: ignore[arg-type]
+    )
+
+    assert len(set(geom.points)) == 3
+    assert geom.is_degenerate()
+    assert geom.split_section(point=(0, 1), theta=0) == ([], [])
+
+
 def test_moment_curvature_analysis_does_not_crash_on_degenerate_split():
+    """Complete the reported load case without a triangulation error."""
     fck = 30
     fy = 500
     width = 250
@@ -66,7 +82,12 @@ def test_moment_curvature_analysis_does_not_crash_on_degenerate_split():
     )
 
     geom = rectangular_section(d=width, b=depth, material=concrete)
-    for dia, x, y in [(22.225, 35, 35), (22.225, 215, 215), (22.225, 35, 215), (22.225, 215, 35)]:
+    for dia, x, y in [
+        (22.225, 35, 35),
+        (22.225, 215, 215),
+        (22.225, 35, 215),
+        (22.225, 215, 35),
+    ]:
         geom = sp_cs.add_bar(
             geometry=geom,
             area=math.pi * dia**2 * 0.25,
