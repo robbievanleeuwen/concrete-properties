@@ -260,6 +260,19 @@ def test_max_comp():
         assert m_res.n <= (1 + 1e-6) * mc
 
 
+def test_max_comp_zero():
+    """Tests max_comp=0 is not treated the same as max_comp=None."""
+    mi_res_full = conc_sec.moment_interaction_diagram()
+    mi_res_mc = conc_sec.moment_interaction_diagram(max_comp=0)
+
+    # a full diagram has points in compression (n > 0)
+    assert max(m_res.n for m_res in mi_res_full.results) > 0
+
+    # max_comp=0 must truncate the diagram at zero axial force
+    assert mi_res_mc.results[0].n == 0
+    assert max(m_res.n for m_res in mi_res_mc.results) <= 1e-6
+
+
 def test_labels():
     """Tests labels."""
     axial_load_list = [0, 1e6, 2e6, 3e6, 4e6]

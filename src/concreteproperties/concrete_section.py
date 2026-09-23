@@ -1388,7 +1388,7 @@ class ConcreteSection:
             micurve()
 
         # cut diagram at max_comp
-        if max_comp:
+        if max_comp is not None:
             # check input - if value greater than maximum compression
             if max_comp > mi_results.results[0].n:
                 msg = f"max_comp={max_comp} is greater than the maximum axial capacity "
