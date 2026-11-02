@@ -19,6 +19,7 @@ from concreteproperties.material import Concrete
 if TYPE_CHECKING:
     import matplotlib.axes
     from sectionproperties.pre.geometry import CompoundGeometry
+    from shapely import LinearRing
     from shapely.geometry.base import GeometrySequence
 
     from concreteproperties.material import Material, SteelBar, SteelStrand
@@ -102,9 +103,8 @@ class CPGeom:
 
         # perimeter, note in shapely last point == first point
         if geometry.exterior:
-            for coords in list(geometry.exterior.coords[:-1]):
-                x, y = list(coords)
-                points.append((x, y))
+            for coords in self.ring_points(ring=geometry.exterior):
+                points.append(coords)
                 master_count += 1
 
         facets += self.create_facets(points)
@@ -115,7 +115,7 @@ class CPGeom:
             break_count = master_count
             int_points = []
 
-            for coords in hole.coords[:-1]:
+            for coords in self.ring_points(ring=hole):
                 int_points.append(coords)
                 master_count += 1
 
@@ -125,6 +125,32 @@ class CPGeom:
             points += int_points
 
         return points, facets
+
+    def ring_points(
+        self,
+        ring: LinearRing,
+    ) -> list[tuple[float, float]]:
+        """Returns the points of a ring without repeated consecutive points.
+
+        Rounding can merge neighbouring vertices, and ``triangle`` cannot mesh the
+        resulting zero length facet.
+
+        Args:
+            ring: Shapely linear ring
+
+        Returns:
+            Points of the ring, without the closing point
+        """
+        points: list[tuple[float, float]] = []
+
+        for x, y in ring.coords[:-1]:
+            if not points or (x, y) != points[-1]:
+                points.append((x, y))
+
+        if len(points) > 1 and points[-1] == points[0]:
+            points.pop()
+
+        return points
 
     def create_facets(
         self,
