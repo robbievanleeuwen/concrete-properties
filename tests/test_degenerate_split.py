@@ -11,6 +11,7 @@ library instead of being silently discarded.
 import math
 
 import numpy as np
+import pytest
 import sectionproperties.pre.library.concrete_sections as sp_cs
 from sectionproperties.pre.library.primitive_sections import rectangular_section
 from shapely import Polygon
@@ -19,8 +20,11 @@ from concreteproperties.concrete_section import ConcreteSection
 from concreteproperties.material import Concrete, SteelBar
 from concreteproperties.pre import CPGeom
 from concreteproperties.stress_strain_profile import (
+    BilinearStressStrain,
+    ConcreteLinearNoTension,
     EurocodeNonLinear,
     EurocodeParabolicUltimate,
+    SteelElasticPlastic,
     SteelProfile,
 )
 
@@ -111,3 +115,109 @@ def test_moment_curvature_analysis_does_not_crash_on_degenerate_split():
 
     # should complete without raising
     conc_section.moment_curvature_analysis(theta=theta, n=0, progress_bar=False)
+
+
+def test_vertices_merged_by_rounding_are_removed():
+    """Drop a vertex that becomes identical to its neighbour after rounding.
+
+    See https://github.com/robbievanleeuwen/concrete-properties/issues/155. The
+    repeated vertex gave a zero length facet that crashed the triangulation.
+    """
+    geom = CPGeom(
+        geom=Polygon([(300, 1e-6), (300, 0), (0, 1e-9), (0, 0), (0, 1e-6)]),
+        material=None,  # type: ignore[arg-type]
+    )
+
+    assert len(geom.points) == len(set(geom.points)) == 4
+    assert not geom.is_degenerate()
+
+
+def test_closing_and_hole_vertices_merged_by_rounding_are_removed():
+    """Also drop a last vertex that rounds onto the first, and repeats in holes."""
+    closing = CPGeom(
+        geom=Polygon([(0, 0), (300, 0), (300, 300), (0, 300), (1e-9, 0)]),
+        material=None,  # type: ignore[arg-type]
+    )
+
+    assert len(closing.points) == len(set(closing.points)) == 4
+    assert len(closing.facets) == 4
+
+    with_hole = CPGeom(
+        geom=Polygon(
+            [(0, 0), (300, 0), (300, 300), (0, 300)],
+            [[(100, 100), (200, 100), (200, 200), (200, 200 + 1e-9), (100, 200)]],
+        ),
+        material=None,  # type: ignore[arg-type]
+    )
+
+    assert len(with_hole.points) == len(set(with_hole.points)) == 8
+    assert len(with_hole.facets) == 8
+
+
+def test_sliver_collapsed_by_rounding_is_degenerate():
+    """A sliver whose vertices all round to one point is still discarded."""
+    geom = CPGeom(
+        geom=Polygon([(10, 10), (10 + 1e-9, 10), (10, 10 + 1e-9)]),
+        material=None,  # type: ignore[arg-type]
+    )
+
+    assert geom.points == [(10, 10)]
+    assert geom.is_degenerate()
+
+
+def test_moment_interaction_diagram_theta_pi():
+    """theta=pi gives the same diagram as theta=-pi for the reported section."""
+    concrete = Concrete(
+        name="C30/37",
+        density=2.5e-6,
+        stress_strain_profile=ConcreteLinearNoTension(
+            elastic_modulus=32.84e3,
+            ultimate_strain=0.0035,
+            compressive_strength=38,
+        ),
+        ultimate_stress_strain_profile=BilinearStressStrain(
+            compressive_strength=20,
+            compressive_strain=0.00175,
+            ultimate_strain=0.0035,
+        ),
+        flexural_tensile_strength=2.9,
+        colour="lightgrey",
+    )
+
+    steel = SteelBar(
+        name="B500B",
+        density=7.85e-6,
+        stress_strain_profile=SteelElasticPlastic(
+            yield_strength=500 / 1.15,
+            elastic_modulus=200e3,
+            fracture_strain=0.05,
+        ),
+        colour="grey",
+    )
+
+    geom = sp_cs.concrete_rectangular_section(
+        d=900,
+        b=300,
+        dia_top=16,
+        area_top=np.pi * 8**2,
+        n_top=3,
+        c_top=42,
+        dia_bot=16,
+        area_bot=np.pi * 8**2,
+        n_bot=3,
+        c_bot=42,
+        conc_mat=concrete,
+        steel_mat=steel,
+    )
+    conc_section = ConcreteSection(geom)
+
+    res_pos = conc_section.moment_interaction_diagram(
+        theta=np.pi, n_points=12, progress_bar=False
+    )
+    res_neg = conc_section.moment_interaction_diagram(
+        theta=-np.pi, n_points=12, progress_bar=False
+    )
+
+    for r_pos, r_neg in zip(res_pos.results, res_neg.results, strict=True):
+        assert r_pos.n == pytest.approx(r_neg.n)
+        assert r_pos.m_xy == pytest.approx(r_neg.m_xy)
