@@ -729,10 +729,13 @@ class PrestressedSection(ConcreteSection):
             # get curvature
             kappa = moment_curvature_results.get_curvature(moment=m)
 
+        # get theta
+        theta = moment_curvature_results.theta
+
         # initialise variables
         mk = res.MomentCurvatureResults(
             default_units=self.default_units,
-            theta=0,
+            theta=theta,
             n_target=moment_curvature_results.n_target,
         )
 
@@ -766,7 +769,7 @@ class PrestressedSection(ConcreteSection):
 
         # get global coordinates of extreme compressive fibre
         ecf, _ = utils.calculate_extreme_fibre(
-            points=self.compound_geometry.points, theta=0
+            points=self.compound_geometry.points, theta=theta
         )
 
         # create splits in meshed geometries at points in stress-strain profiles
@@ -775,7 +778,7 @@ class PrestressedSection(ConcreteSection):
         for meshed_geom in self.meshed_geometries:
             split_geoms = utils.split_geom_at_strains_service(
                 geom=meshed_geom,
-                theta=0,
+                theta=theta,
                 ecf=ecf,
                 eps0=eps0,
                 kappa=kappa,
@@ -792,7 +795,7 @@ class PrestressedSection(ConcreteSection):
                 kappa=kappa,
                 ecf=ecf,
                 eps0=eps0,
-                theta=0,
+                theta=theta,
                 centroid=self.moment_centroid,
             )
 
@@ -812,7 +815,7 @@ class PrestressedSection(ConcreteSection):
                 point=(centroid[0], centroid[1]),
                 ecf=ecf,
                 eps0=eps0,
-                theta=0,
+                theta=theta,
                 kappa=kappa,
             )
 
