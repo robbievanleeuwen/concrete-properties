@@ -1,5 +1,6 @@
 """Tests for prestressed concrete sections."""
 
+import numpy as np
 import pytest
 from sectionproperties.pre.library.primitive_sections import rectangular_section
 
@@ -143,3 +144,32 @@ def test_biaxial_bending():
     """Tests NotImplementedError for biaxial bending diagram."""
     with pytest.raises(NotImplementedError):
         conc_sec.biaxial_bending_diagram()
+
+
+def _service_stress_at_extremes(positive: bool) -> tuple[float, float]:
+    """Returns the mean concrete stress of the lowest and the highest section piece."""
+    mk = conc_sec.moment_curvature_analysis(positive=positive, progress_bar=False)
+    stress = conc_sec.calculate_service_stress(moment_curvature_results=mk, m=100e6)
+
+    pieces = sorted(
+        (sec.geometry.calculate_centroid()[1], float(np.mean(sig)))
+        for sec, sig in zip(
+            stress.concrete_analysis_sections, stress.concrete_stresses, strict=True
+        )
+    )
+
+    return pieces[0][1], pieces[-1][1]
+
+
+def test_service_stress_negative_moment():
+    """Tests the service stresses follow the bending direction of the analysis.
+
+    The strand sits below the centroid, so a negative (hogging) moment adds to the
+    eccentric prestress, compressing the bottom and tensioning the top more than the
+    same moment applied as a positive (sagging) moment.
+    """
+    bot_pos, top_pos = _service_stress_at_extremes(positive=True)
+    bot_neg, top_neg = _service_stress_at_extremes(positive=False)
+
+    assert bot_neg > bot_pos
+    assert top_neg < top_pos
